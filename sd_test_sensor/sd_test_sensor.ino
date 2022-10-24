@@ -1,6 +1,6 @@
 #include <SPI.h>
 #include <SD.h>
-#include <DS3231.h>
+#include <RTClib.h>
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
 #include "Adafruit_TSL2591.h"
@@ -8,7 +8,7 @@
 
 File myFile;
 File root;
-RTClib myRTC;
+RTC_DS3231 myRTC;
 int j;
 String print_data;
 String print_lux;
@@ -157,9 +157,9 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  myRTC.setAlarm1(rtc.now() + TimeSpan(0, 0, 0, 5), DS3231_A1_Minute) // In 5 seconds time from now
+  myRTC.setAlarm1(myRTC.now() + TimeSpan(0, 0, 0, 5), DS3231_A1_Minute); // In 5 seconds from now
   // FIXME this should be 5min not 5sec
-  if (alarmFired()) {
+  if (myRTC.alarmFired()) {
     DateTime now = myRTC.now();
     uint32_t timestamp = now.unixtime();
     String as;
