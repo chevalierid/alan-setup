@@ -1,11 +1,12 @@
 #include <SPI.h>
 #include <SD.h>
-
+#include <DS3231.h>
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
 #include "Adafruit_TSL2591.h"
 
 File myFile;
+RTClib myRTC;
 int j;
 String print_data;
 String print_lux;
@@ -23,7 +24,7 @@ void configureSensor(void)
   // longer timelines are slower, but are good in very low light situtations!
   //tsl.setTiming(TSL2591_INTEGRATIONTIME_100MS);  // shortest integration time (bright light)
   // tsl.setTiming(TSL2591_INTEGRATIONTIME_200MS);
-  tsl.setTiming(TSL2591_INTEGRATIONTIME_300MS);
+  tsl.setTiming(TSL2591_INTEGRATIONTIME_300MS); 
   // tsl.setTiming(TSL2591_INTEGRATIONTIME_400MS);
   // tsl.setTiming(TSL2591_INTEGRATIONTIME_500MS);
   // tsl.setTiming(TSL2591_INTEGRATIONTIME_600MS);  // longest integration time (dim light)
@@ -47,12 +48,14 @@ void advancedRead(void)
   uint16_t ir, full;
   ir = lum >> 16;
   full = lum & 0xFFFF;
+  DateTime now = myRTC.now();
+  uint32_t timestamp = now.unixtime();
   myFile = SD.open("readings.txt", FILE_WRITE);
 
   if (myFile) {
     Serial.println("Printing to file");
-    myFile.print(millis()); 
-    myFile.print(F(",")); 
+    myFile.print(timestamp); 
+    myFile.print(F(","));
     myFile.println(tsl.calculateLux(full, ir), 6);
     myFile.close();
     Serial.println("Done.");
@@ -64,7 +67,7 @@ void advancedRead(void)
 
 void setup() {
   Wire.begin();
-  Serial.begin(9600);
+  Serial.begin(115200);
   while (!Serial) {
     ; // wait for serial port to connect
   }
@@ -83,6 +86,18 @@ void setup() {
     Serial.println(F("No sensor found ... check your wiring?"));
     while (1);
   }
+  
+  if (SD.exists("readings.txt")) {
+    SD.remove("readings.txt");
+  } 
+  // FIXME this shouldn't be in final version
+
+  myFile = SD.open("readings.txt",FILE_WRITE);
+  if (myFile) {
+    myFile.println("Timestamp,Intensity");
+    myFile.close();
+  }
+  
   configureSensor();
   j = 0;
 }
