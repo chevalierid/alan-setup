@@ -20,8 +20,7 @@
 File myFile;
 File root;
 RTC_DS3231 rtc;
-uint32_t delta_ts[] = {10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
-                      10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10};
+uint32_t delta_ts[] = {60, 60, 60, 60, 60, 60, 60, 60, 60, 60};
 unsigned long next_time;
 unsigned long last_time;
 int day_index;
@@ -82,7 +81,7 @@ String asRead() {
   }
   for (int i = 0; i < 12; i++) {
     allReadings = allReadings + "," + String(as7341_readings[i]);
-    Serial.println(allReadings);
+    //Serial.println(allReadings);
   }
   return allReadings;
 }
@@ -140,15 +139,15 @@ void setup() {
   last_time = rtc.now().unixtime();
   
   // open file
-  myFile = SD.open("file0.txt", FILE_WRITE);
-  if (myFile) {
-    Serial.print("Writing to file...");
-    myFile.println("Timestamp,Amber,ArrOn,Intensity,AS0,AS1,AS2,AS3,AS4,AS5,AS6,AS7,AS8,AS9,AS10,AS11");
-    myFile.close();
-    Serial.println("Done.");
-  } else {
-    Serial.println("couldn't open in setup");
-  }
+//  myFile = SD.open("file0.txt", FILE_WRITE);
+//  if (myFile) {
+//    Serial.print("Writing to file...");
+//    myFile.println("Timestamp,Amber,ArrOn,Intensity,AS0,AS1,AS2,AS3,AS4,AS5,AS6,AS7,AS8,AS9,AS10,AS11");
+//    myFile.close();
+//    Serial.println("Done.");
+//  } else {
+//    Serial.println("couldn't open in setup");
+//  }
 
   if (tsl.begin()) 
   {
@@ -172,15 +171,17 @@ void setup() {
 }
 
 void loop() {
-  //Serial.println(day_index);
+//Serial.println("file"+String(rtc.now().minute())+".txt");
+
   Serial.println(getCurrentTime());
   Serial.print("hour: ");
   Serial.println(rtc.now().hour(), DEC);
   Serial.println(last_time + delta_ts[day_index]);
   if (day_index > (sizeof(delta_ts) / sizeof(delta_ts[0]))) {
-    day_index = 0;
+    return;
   }
-  if (getCurrentTime() >= last_time + delta_ts[day_index]*360) {
+  
+  if (getCurrentTime() >= last_time + delta_ts[day_index]) {
     if (arr_on) {
       digitalWrite(ENABLE_ARR_PIN, LOW);
       arr_on = false; 
@@ -198,9 +199,11 @@ void loop() {
     last_time = getCurrentTime();
     day_index = day_index + 1;
   }
-   
+
   if (getCurrentTime() >= last_time + 10) { //5*60) {
-    filename = "file" + rtc.now().hour();
+    filename = "file"+String(rtc.now().minute())+".txt";
+    Serial.print("filename: ");
+    Serial.println(filename);
     myFile = SD.open(filename, FILE_WRITE);   // FIXME have it change name every day
   
     if (myFile) {
