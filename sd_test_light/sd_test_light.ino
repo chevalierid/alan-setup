@@ -6,10 +6,11 @@
 #include "Adafruit_TSL2591.h"
 #include <Adafruit_AS7341.h>
 
+#define LED_PIN 1
 #define WHITE_PIN 2
 #define AMBER_PIN 3
 #define ENABLE_ARR_PIN 4
-#define POWER_PIN 5
+#define OVERRIDE_PIN 5
 #define SECONDS_FROM_1970_TO_2000 946684800
 
 /*
@@ -20,15 +21,20 @@
 File myFile;
 File root;
 RTC_DS3231 rtc;
-uint32_t delta_ts[] = {60, 60, 60, 60, 60, 60, 60, 60, 60, 60};
+uint32_t delta_ts[] = {3600, 3600, 3600, 3600, 3600, 3600, 3600, 3600, 3600, 3600};
 unsigned long next_time;
 unsigned long last_time;
+unsigned long last_arr_time;
 int day_index;
 String filename;
 String print_data;
 String print_lux;
+bool override_on;
 bool arr_on;
 bool amber;
+bool white;
+bool new_file;
+int ledState = LOW;
 
 Adafruit_TSL2591 tsl = Adafruit_TSL2591(2591); // pass in a number for the sensor identifier (for your use later)
 Adafruit_AS7341 as7341;
@@ -87,42 +93,64 @@ String asRead() {
 }
 
 unsigned long getCurrentTime() {
-  
-  return rtc.now().unixtime();
+  return rtc.now().unixtime();// - SECONDS_FROM_1970_TO_2000;
 }
 
-//void printDirectory(File dir, int numTabs) {
-//   while (true) {
-//
-//      File entry = dir.openNextFile();
-//      if (! entry) {
-//         // no more files
-//         break;
-//      }
-//      for (uint8_t i = 0; i < numTabs; i++) {
-//         Serial.print('\t');
-//      }
-//      Serial.print(entry.name());
-//      if (entry.isDirectory()) {
-//         Serial.println("/");
-//         printDirectory(entry, numTabs + 1);
-//      } else {
-//         // files have sizes, directories do not
-//         Serial.print("\t\t");
-//         Serial.println(entry.size(), DEC);
-//      }
-//      entry.close();
-//   }
-//}
+void printDirectory(File dir, int numTabs) {
+   while (true) {
+
+      File entry = dir.openNextFile();
+      if (! entry) {
+         // no more files
+         break;
+      }
+      for (uint8_t i = 0; i < numTabs; i++) {
+         Serial.print('\t');
+      }
+      Serial.print(entry.name());
+      if (entry.isDirectory()) {
+         Serial.println("/");
+         printDirectory(entry, numTabs + 1);
+      } else {
+         // files have sizes, directories do not
+         Serial.print("\t\t");
+         Serial.println(entry.size(), DEC);
+      }
+      entry.close();
+   }
+}
+
+void printToFile(bool is_newfile,File myFile) {
+  Serial.print("Writing to file...");
+  if (is_newfile) {
+    myFile.println("Timestamp,Amber,White,On,Intensity,AS00,AS01,AS02,AS03,AS04,AS05,AS06,AS07,AS08,AS09,AS10,AS11");
+  }
+  myFile.print(getCurrentTime());
+  myFile.print(",");
+  myFile.print(amber);
+  myFile.print(",");
+  myFile.print(white);
+  myFile.print(",");
+  myFile.print(arr_on);
+  myFile.print(",");
+  myFile.print(tslAdvancedRead(), 6);
+  myFile.print(asRead());
+  myFile.write("\n");
+  myFile.close();
+  Serial.println("Done.");
+}
 
 void setup() {
   Serial.begin(115200); 
   Wire.begin();
   rtc.begin();
+  pinMode(LED_PIN,OUTPUT);
+  digitalWrite(LED_PIN, ledState);
+  Serial.print("led off");
   pinMode(ENABLE_ARR_PIN, OUTPUT);
-  digitalWrite(ENABLE_ARR_PIN, LOW);
   pinMode(WHITE_PIN, INPUT_PULLUP);
   pinMode(AMBER_PIN, INPUT_PULLUP);
+  pinMode(OVERRIDE_PIN, INPUT_PULLUP);
   while (!Serial) {
     ; // wait for serial port to connect
   }
@@ -133,21 +161,12 @@ void setup() {
   }
   Serial.println("Initialization done.");
 
-  arr_on = false;
+  override_on = 0;
+  arr_on = 0;
+  digitalWrite(ENABLE_ARR_PIN, arr_on);
   day_index = 0;
-  amber = 0;
-  last_time = rtc.now().unixtime();
-  
-  // open file
-//  myFile = SD.open("file0.txt", FILE_WRITE);
-//  if (myFile) {
-//    Serial.print("Writing to file...");
-//    myFile.println("Timestamp,Amber,ArrOn,Intensity,AS0,AS1,AS2,AS3,AS4,AS5,AS6,AS7,AS8,AS9,AS10,AS11");
-//    myFile.close();
-//    Serial.println("Done.");
-//  } else {
-//    Serial.println("couldn't open in setup");
-//  }
+  last_time = getCurrentTime();
+  last_arr_time = getCurrentTime();
 
   if (tsl.begin()) 
   {
@@ -171,56 +190,63 @@ void setup() {
 }
 
 void loop() {
-//Serial.println("file"+String(rtc.now().minute())+".txt");
-
-  Serial.println(getCurrentTime());
-  Serial.print("hour: ");
-  Serial.println(rtc.now().hour(), DEC);
-  Serial.println(last_time + delta_ts[day_index]);
-  if (day_index > (sizeof(delta_ts) / sizeof(delta_ts[0]))) {
+  if (day_index > sizeof(delta_ts)) {// (sizeof(delta_ts) / sizeof(delta_ts[0]))) {
     return;
   }
+
+  Serial.println(digitalRead(OVERRIDE_PIN));
+  delay(500);
   
-  if (getCurrentTime() >= last_time + delta_ts[day_index]) {
-    if (arr_on) {
-      digitalWrite(ENABLE_ARR_PIN, LOW);
-      arr_on = false; 
-    }
-    else {
-      digitalWrite(ENABLE_ARR_PIN, HIGH); 
-      arr_on = true;
-    }
-    if (digitalRead(WHITE_PIN)) {
-      amber = 0;
-    }
-    else if (digitalRead(AMBER_PIN)) {
-      amber = 1;
-    }
-    last_time = getCurrentTime();
+  // if override state was previously engaged and button is no longer being depressed
+  if (override_on == 1 && digitalRead(OVERRIDE_PIN) == HIGH) {
+    Serial.println("in if 1");
+    override_on = 0;
+    arr_on = 0;
+    digitalWrite(ENABLE_ARR_PIN, arr_on);    
+  }
+  
+  if (digitalRead(OVERRIDE_PIN) == LOW) {
+    Serial.println("in if 2");
+    override_on = 1;
+    arr_on = 1; // make sure this doesn't throw off whether it registers array as on or off
+    digitalWrite(ENABLE_ARR_PIN, arr_on);
+  }
+  else if (getCurrentTime() >= last_arr_time + delta_ts[day_index]) {
+    digitalWrite(ENABLE_ARR_PIN, !arr_on);
+    Serial.print("arr is turning ");
+    Serial.println(!arr_on);
+    arr_on = !arr_on;
+    last_arr_time = getCurrentTime();
     day_index = day_index + 1;
   }
 
-  if (getCurrentTime() >= last_time + 10) { //5*60) {
-    filename = "file"+String(rtc.now().minute())+".txt";
-    Serial.print("filename: ");
-    Serial.println(filename);
-    myFile = SD.open(filename, FILE_WRITE);   // FIXME have it change name every day
-  
-    if (myFile) {
-      Serial.println("Printing to file");
-      myFile.print(getCurrentTime());
-      myFile.print(",");
-      myFile.print(amber);
-      myFile.print(",");
-      myFile.print(arr_on);
-      myFile.print(",");
-      myFile.print(tslAdvancedRead(), 6);
-      myFile.print(asRead());
-      myFile.write("\n");
-      myFile.close();
-      Serial.println("Done.");
-    } else {
-      Serial.println("couldn't open in loop");
-    }
-  }
+
+//  if (getCurrentTime() >= last_time + 5) {// FIXME *60) {
+//    //filename = "string0s.txt";// + String(0) + "string.txt";
+//    filename = String(rtc.now().day())+"-"+String(rtc.now().hour())+"-"+String(rtc.now().minute())+".txt";
+//    //filename = String(rtc.now().year())+"_"+String(rtc.now().month())+"_"+String(rtc.now().day())+".txt"; // FIXME update filename daily rather than hourly
+//    Serial.print("filename: ");
+//    Serial.println(filename);
+//
+//    // FIXME make the LED flash
+//
+//    ledState = HIGH;
+//    digitalWrite(LED_PIN, ledState);
+//
+//    if (SD.exists(filename)) {
+//      new_file = 0;
+//    }
+//    else {
+//      new_file = 1;
+//    }
+//    myFile = SD.open(filename, FILE_WRITE);
+//    amber = digitalRead(AMBER_PIN);
+//    white = digitalRead(WHITE_PIN);
+//    if (myFile) {
+//      printToFile(new_file,myFile);
+//    } else {
+//      Serial.println("couldn't open in loop");
+//    }
+//  last_time = getCurrentTime();
+//  }
 }
