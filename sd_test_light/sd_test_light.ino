@@ -201,16 +201,14 @@ void loop() {
   
   if (digitalRead(OVERRIDE_PIN) == LOW) {
     override_on = 1;
-    arr_on = 1; // make sure this doesn't throw off whether it registers array as on or off
-    digitalWrite(ENABLE_ARR_PIN, arr_on);
+    digitalWrite(ENABLE_ARR_PIN, override_on);
   }
   else if (override_on == 1 && digitalRead(OVERRIDE_PIN) == HIGH) {
     Serial.println("turning off override");
     override_on = 0;
-    arr_on = 0;
     digitalWrite(ENABLE_ARR_PIN, arr_on);    
   }
-  
+
   if (getCurrentTime() >= last_arr_time + delta_ts[day_index]) {
     digitalWrite(ENABLE_ARR_PIN, !arr_on);
     Serial.print("arr is turning ");
