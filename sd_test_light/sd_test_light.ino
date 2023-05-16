@@ -197,21 +197,20 @@ void loop() {
   Serial.println(digitalRead(OVERRIDE_PIN));
   delay(500);
   
-  // if override state was previously engaged and button is no longer being depressed
-  if (override_on == 1 && digitalRead(OVERRIDE_PIN) == HIGH) {
-    Serial.println("in if 1");
-    override_on = 0;
-    arr_on = 0;
-    digitalWrite(ENABLE_ARR_PIN, arr_on);    
-  }
-  
   if (digitalRead(OVERRIDE_PIN) == LOW) {
-    Serial.println("in if 2");
     override_on = 1;
     arr_on = 1; // make sure this doesn't throw off whether it registers array as on or off
     digitalWrite(ENABLE_ARR_PIN, arr_on);
   }
-  else if (getCurrentTime() >= last_arr_time + delta_ts[day_index]) {
+  else if (override_on == 1 && digitalRead(OVERRIDE_PIN) == HIGH) {
+    Serial.println("turning off override");
+    override_on = 0;
+    arr_on = 0;
+    digitalWrite(ENABLE_ARR_PIN, arr_on);    
+  }
+
+  
+  if (getCurrentTime() >= last_arr_time + delta_ts[day_index]) {
     digitalWrite(ENABLE_ARR_PIN, !arr_on);
     Serial.print("arr is turning ");
     Serial.println(!arr_on);
