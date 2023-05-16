@@ -6,11 +6,11 @@
 #include "Adafruit_TSL2591.h"
 #include <Adafruit_AS7341.h>
 
-#define LED_PIN 1
 #define WHITE_PIN 2
 #define AMBER_PIN 3
 #define ENABLE_ARR_PIN 4
 #define OVERRIDE_PIN 5
+#define LED_PIN 6
 #define SECONDS_FROM_1970_TO_2000 946684800
 
 /*
@@ -21,7 +21,7 @@
 File myFile;
 File root;
 RTC_DS3231 rtc;
-uint32_t delta_ts[] = {3600, 3600, 3600, 3600, 3600, 3600, 3600, 3600, 3600, 3600};
+uint32_t delta_ts[] = {3, 3, 3, 3, 3};
 unsigned long next_time;
 unsigned long last_time;
 unsigned long last_arr_time;
@@ -123,7 +123,7 @@ void printDirectory(File dir, int numTabs) {
 void printToFile(bool is_newfile,File myFile) {
   Serial.print("Writing to file...");
   if (is_newfile) {
-    myFile.println("Timestamp,Amber,White,On,Intensity,AS00,AS01,AS02,AS03,AS04,AS05,AS06,AS07,AS08,AS09,AS10,AS11");
+    myFile.println("Timestamp,Amber,White,On,Override,Intensity,AS00,AS01,AS02,AS03,AS04,AS05,AS06,AS07,AS08,AS09,AS10,AS11");
   }
   myFile.print(getCurrentTime());
   myFile.print(",");
@@ -132,6 +132,8 @@ void printToFile(bool is_newfile,File myFile) {
   myFile.print(white);
   myFile.print(",");
   myFile.print(arr_on);
+  myFile.print(",");
+  myFile.print(!digitalRead(OVERRIDE_PIN));
   myFile.print(",");
   myFile.print(tslAdvancedRead(), 6);
   myFile.print(asRead());
@@ -144,27 +146,28 @@ void setup() {
   Serial.begin(115200); 
   Wire.begin();
   rtc.begin();
-  pinMode(LED_PIN,OUTPUT);
-  digitalWrite(LED_PIN, ledState);
-  Serial.print("led off");
   pinMode(ENABLE_ARR_PIN, OUTPUT);
   pinMode(WHITE_PIN, INPUT_PULLUP);
   pinMode(AMBER_PIN, INPUT_PULLUP);
   pinMode(OVERRIDE_PIN, INPUT_PULLUP);
+  pinMode(LED_PIN,OUTPUT);
+  digitalWrite(LED_PIN, ledState);
   while (!Serial) {
     ; // wait for serial port to connect
   }
   Serial.print("Initializing SD card...");
   if (!SD.begin(53)) {
     Serial.println("Initialization failed!");
+    ledState = HIGH;
+    digitalWrite(LED_PIN, ledState);
     while(1);
   }
   Serial.println("Initialization done.");
 
-  override_on = 0;
-  arr_on = 0;
+  override_on = LOW;
+  arr_on = LOW;
   digitalWrite(ENABLE_ARR_PIN, arr_on);
-  day_index = 0;
+  day_index = LOW;
   last_time = getCurrentTime();
   last_arr_time = getCurrentTime();
 
@@ -195,7 +198,6 @@ void loop() {
   }
 
   Serial.println(digitalRead(OVERRIDE_PIN));
-  delay(500);
   
   if (digitalRead(OVERRIDE_PIN) == LOW) {
     override_on = 1;
@@ -208,7 +210,6 @@ void loop() {
     arr_on = 0;
     digitalWrite(ENABLE_ARR_PIN, arr_on);    
   }
-
   
   if (getCurrentTime() >= last_arr_time + delta_ts[day_index]) {
     digitalWrite(ENABLE_ARR_PIN, !arr_on);
@@ -220,32 +221,29 @@ void loop() {
   }
 
 
-//  if (getCurrentTime() >= last_time + 5) {// FIXME *60) {
-//    //filename = "string0s.txt";// + String(0) + "string.txt";
-//    filename = String(rtc.now().day())+"-"+String(rtc.now().hour())+"-"+String(rtc.now().minute())+".txt";
-//    //filename = String(rtc.now().year())+"_"+String(rtc.now().month())+"_"+String(rtc.now().day())+".txt"; // FIXME update filename daily rather than hourly
-//    Serial.print("filename: ");
-//    Serial.println(filename);
-//
-//    // FIXME make the LED flash
-//
+  if (getCurrentTime() >= last_time + 5) {// FIXME *60) {
+    filename = String(rtc.now().day())+"-"+String(rtc.now().hour())+"-"+String(rtc.now().minute())+".txt";
+    //filename = String(rtc.now().year())+"_"+String(rtc.now().month())+"_"+String(rtc.now().day())+".txt"; // FIXME update filename daily rather than hourly
+    Serial.print("filename: ");
+    Serial.println(filename);
+
 //    ledState = HIGH;
 //    digitalWrite(LED_PIN, ledState);
-//
-//    if (SD.exists(filename)) {
-//      new_file = 0;
-//    }
-//    else {
-//      new_file = 1;
-//    }
-//    myFile = SD.open(filename, FILE_WRITE);
-//    amber = digitalRead(AMBER_PIN);
-//    white = digitalRead(WHITE_PIN);
-//    if (myFile) {
-//      printToFile(new_file,myFile);
-//    } else {
-//      Serial.println("couldn't open in loop");
-//    }
-//  last_time = getCurrentTime();
-//  }
+
+    if (SD.exists(filename)) {
+      new_file = 0;
+    }
+    else {
+      new_file = 1;
+    }
+    myFile = SD.open(filename, FILE_WRITE);
+    amber = digitalRead(AMBER_PIN);
+    white = digitalRead(WHITE_PIN);
+    if (myFile) {
+      printToFile(new_file,myFile);
+    } else {
+      Serial.println("couldn't open in loop");
+    }
+  last_time = getCurrentTime();
+  }
 }
