@@ -1,11 +1,11 @@
 rm(list = ls(all = TRUE))
 # dates-sites-site_settings
-dates <- seq(as.Date("2023/6/21"),as.Date("2023/12/21"),by="5 days")
-dates_out <- t(matrix(rep(dates,each=12),nrow=12))
-dates_out <- as.data.frame(dates_out)
-dates_out <- as.data.frame(lapply(dates_out, as.Date, format = "%Y-%m-%d",origin="1970-01-01"))
+dates <- c(seq(as.Date("2023/6/21"),as.Date("2023/12/21"),by="5 days"))
+# dates_out <- t(matrix(rep(dates,each=12),nrow=12))
+# dates_out <- as.data.frame(dates_out)
+# dates_out <- as.data.frame(lapply(dates_out, as.Date, format = "%Y-%m-%d",origin="1970-01-01"))
 
-sites <- as.data.frame(matrix(rep(c(1:12),each=37),nrow=37))
+#sites <- as.data.frame(matrix(rep(c(1:12),each=37),nrow=37))
 #sites <- as.data.frame(matrix(rep(sites[,1:12],each=2),nrow=37))
 
 #create 0m and 5m alternating
@@ -24,22 +24,15 @@ assignments <- sample(1:12)
 
 site_settings <- site_settings[, c(assignments)]
 site_settings <- site_settings[rep(1:nrow(site_settings),times=10), ]
-site_settings_out <- as.data.frame(matrix(site_settings[1:37,],nrow=37))
+site_settings <- as.data.frame(matrix(site_settings[1:37,],nrow=37))
 #site_settings_out <- as.data.frame(site_settings[,rep(1:12,each=2)])
 
-labels <- data.frame(dates_out=dates_out,sites=sites,site_settings=site_settings_out)
-
-# we want [1,13,25]
-# [i, i+12, i+24]
-order <- matrix(1:36,nrow=12)
-order <- matrix(t(order),nrow=1)
-
-labels <- labels[, c(order)]
+labels <- data.frame(dates=dates,site_settings=site_settings)
 
 #site_labels <- rep(sites,length(dates),each=3)
 
-labels_out <- as.data.frame(sapply(seq(1,ncol(labels),by=3),function(i)
-  do.call(paste,c(sep="_",as.data.frame(labels[, i:(i+2)])))))
+# labels_out <- as.data.frame(sapply(seq(1,ncol(labels),by=3),function(i)
+#   do.call(paste,c(sep="_",as.data.frame(labels[, i:(i+2)])))))
 
 # n <- 3
 # tmp <- site_labels[-1]
@@ -48,7 +41,7 @@ labels_out <- as.data.frame(sapply(seq(1,ncol(labels),by=3),function(i)
 #       sapply(split.default(tmp, ceiling(seq_along(tmp)/n)), 
 #              function(x) do.call(paste(sep = "_"), x)))
 
-write.table(labels_out,file="site_states.csv", sep=",", row.names=FALSE, col.names=FALSE)
+write.table(labels,file="site_states.csv", sep=",", row.names=FALSE, col.names=FALSE)
 
 # to_csv <- sprintf(paste(labels_out, collapse=','))
 # cat(to_csv,file = "site_labels_test.csv")
