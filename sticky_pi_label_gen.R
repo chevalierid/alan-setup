@@ -12,7 +12,7 @@ rm(list = ls(all = TRUE))
 # dates <- t(as.POSIXct(as.numeric(dates),origin="1970-01-01"))
 # dates_out <- as.Date(dates)
 
-dates <- seq(as.Date("2023/6/21"),as.Date("2023/12/21"),by="5 days")
+dates <- seq(as.Date("2023/6/21"),as.Date("2023/12/21"),by="10 days")
 dates_out <- t(matrix(rep(dates,each=48),nrow=48))
 #df[, cols <- grep("^DATE", names(df))] <- lapply(df[, cols <- grep("^DATE", names(df))], as.Date, format = "%y%m%d")
 dates_out <- as.data.frame(dates_out)
@@ -25,11 +25,11 @@ dates_out <- as.data.frame(lapply(dates_out, as.Date, format = "%Y-%m-%d",origin
 #dates <- t(mapply(dates, origin="1970-01-01", FUN = as.POSIXct))
 #dates <- t(mapply(dates, tz = "PDT", FUN = format))
 
-sites <- matrix(rep(c(1:12),each=37),nrow=37)
-sites <- as.data.frame(matrix(rep(sites[,1:12],each=4),nrow=37))
+sites <- matrix(rep(c(1:12),each=19),nrow=19)
+sites <- as.data.frame(matrix(rep(sites[,1:12],each=4),nrow=19))
 
 #create 0m and 5m alternating
-spi_id <- as.data.frame(matrix(rep(rep(c("north","south","east","west"),12),each=37),nrow=37))
+spi_id <- as.data.frame(matrix(rep(rep(c("north","south","east","west"),12),each=19),nrow=19))
 
 # create our 12 columns
 seq1 <- c("C","W","C","A")
@@ -44,7 +44,7 @@ assignments <- sample(1:12)
 
 site_settings <- site_settings[, c(assignments)]
 site_settings <- site_settings[rep(1:nrow(site_settings),times=10), ]
-site_settings <- matrix(site_settings[1:37,],nrow=37)
+site_settings <- matrix(site_settings[1:19,],nrow=19)
 site_settings_out <- as.data.frame(site_settings[,rep(1:12,each=4)])
 
 labels <- data.frame(dates_out=dates_out,sites=sites,site_settings=site_settings_out,spi_id=spi_id)
