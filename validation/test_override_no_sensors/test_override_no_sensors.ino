@@ -13,7 +13,7 @@
     1 1 1 0
     -------------------------
     1 1 0 0
-    ------------------------- 
+    -------------------------
     1 1 1 1
     -------------------------
     1 0 1 0
@@ -185,25 +185,25 @@ void setup() {
   last_time = getCurrentTime();
   last_write_time = getCurrentTime();
 
-  if (tsl.begin()) 
-  {
-    Serial.println(F("Found a TSL2591 sensor"));
-  } 
-  else 
-  {
-    Serial.println(F("No sensor found ... check your wiring?"));
-    while (1);
-  }
-  configureTSL();
-  Serial.println("Configured");
-
-  if (!as7341.begin()){
-    Serial.println("Could not find AS7341");
-    while (1) { delay(10); }
-  }
-  as7341.setATIME(100);
-  as7341.setASTEP(999);
-  as7341.setGain(AS7341_GAIN_256X);
+//  if (tsl.begin()) 
+//  {
+//    Serial.println(F("Found a TSL2591 sensor"));
+//  } 
+//  else 
+//  {
+//    Serial.println(F("No sensor found ... check your wiring?"));
+//    while (1);
+//  }
+//  configureTSL();
+//  Serial.println("Configured");
+//
+//  if (!as7341.begin()){
+//    Serial.println("Could not find AS7341");
+//    while (1) { delay(10); }
+//  }
+//  as7341.setATIME(100);
+//  as7341.setASTEP(999);
+//  as7341.setGain(AS7341_GAIN_256X);
 
   Serial.println(getCurrentTime());
 }
