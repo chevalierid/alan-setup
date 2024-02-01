@@ -1,0 +1,698 @@
+* CIP: NDA is required as of 08/29/2019
+*****************************************************************************
+* LM3697
+*****************************************************************************
+* (C) Copyright 2013 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: LM3697
+* Date: 28NOV2013
+* Model Type:  TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: LM3697EVM
+* EVM Users Guide: SNVU278–JULY 2013
+* Datasheet: SNOSCS2 –FEBRUARY 2013
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+.SUBCKT LM3697_TRANS BR_REG EN GND HVLED1 HVLED1_EN HVLED2 HVLED2_EN
++  HVLED3 HVLED3_EN OVP PWM SWB VIN SDA SCL
+VSDA  SDA GND 1
+RSDA  SDA GND 10MEG
+VSCL  SCL GND 1
+RSCL  SCL GND 10MEG
+X_U11_U22         BACKLIGHT_EN U11_N16871446 BUF_DELAY_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=0.5 DELAY=50n
+X_U11_U30         U11_ONE_VOLT U11_N16871451 U11_N16871415 U11_ONE_VOLT
++  U11_N16871413 N16871516 DFFRS_ELAB
+E_U11_ABM22         U11_BR_REG_STEP_NEW 0 VALUE { (V(U11_N17484) * V(BR_REG) ) 
++    }
+V_U11_V8         U11_ONE_VOLT 0 1
+G_U11_ABMII2         U11_N17484 0 VALUE { IF ( V(U11_N16913416) > 0.5, ( 1u / 
++ {Brightness_Ramp_Fall_Rate}),0)    }
+E_U11_ABM4         U11_N00618 0 VALUE { {Mapping_mode}    }
+X_U11_U35         U11_N16910231 U11_N16913416 INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+E_U11_ABM20         BACKLIGHT_EN_PROC2 0 VALUE {
++  if(V(U11_N16871434)>0.5,V(U11_N16871546),V(U11_N16871446))    }
+E_U11_ABM21         U11_EXPONENTIAL 0 VALUE { if(V(U11_BR_REG_STEP_NEW)> 0.9,
++  V(U11_N00293),0)    }
+X_U11_U32         BACKLIGHT_EN U11_N16871451 INV_DIGITAL
+D_U11_D12         0 U11_N17484 D_D 
+E_U11_ABM6         U11_N16871546 0 VALUE { if(V(U11_BR_REG_STEP_NEW)>0.1,1,0)  
++   }
+C_U11_C2         0 U11_N17484  1u  TC=0,0 
+V_U11_V7         U11_N17506 0 1
+X_U11_U23         BACKLIGHT_EN_PROC2 U11_N16871575 inv_delay_digital PARAMS:
++  TPLH=10N TPHL=10N
+X_U11_U15         EN_INT BACKLIGHT_EN HVLED2_EN U11_N16820265 AND3_DIGITAL
+X_U11_U24         U11_N16871575 U11_N16871600 one_shot PARAMS:  T=50  
+E_U11_ABM1         ILED_CURRENT_2 0 VALUE { if(V(U11_N00618)>0.5,
++  V(U11_LINEAR),V(U11_EXPONENTIAL))    }
+X_U11_U16         U11_N16820265 U11_N16910231 BUF_DIGITAL
+E_U11_ABM2         U11_LINEAR 0 VALUE { V(U11_BR_REG_STEP_NEW) *
++ {ILED_FULL_SCALE}*V(DUTY_CYCLE)/255    }
+G_U11_ABMII1         U11_N17506 U11_N17484 VALUE { IF ( V(U11_N16910231) > 0.5,
++  ( 1u / {Brightness_Ramp_rise_Rate}),0)    }
+E_U11_ABM3         U11_N00293 0 VALUE { 
++ {ILED_FULL_SCALE}*V(DUTY_CYCLE)*0.85**(44-((V(U11_BR_REG_STEP_NEW)+1)/5.8181818))
++     }
+D_U11_D11         U11_N17484 U11_N17506 D_D 
+X_U11_U33         U11_N16871600 U11_N16871518 INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+X_U11_U34         U11_N16871518 U11_N16871415 BUF_DIGITAL
+X_U11_U31         U11_N16871413 U11_N16871434 BUF_DIGITAL
+X_U21         N16810617 N16810618 BUF_DIGITAL
+G_ABM3I3         HVLED3 0 VALUE {
++  if(V(N17026648)>0.5,(V(HVLED3)*V(ILED_CURRENT_3)/0.4),0)    }
+X_S1    N16810576 0 SWB S1 LM3639_BACKLIGHT_TRANS_S1 
+X_U26         EN_INT HVLED3_EN N17026645 AND2_DIGITAL
+E_ABM4         N17002129 0 VALUE { max(V(HVLED1), V(HVLED2))    }
+X_U29         N17026645 N17026648 BUF_DIGITAL
+X_U23         N17027157 BACKLIGHT_EN_PROC_COMB BUF_DIGITAL
+R_U1_Rz         GND U1_N16775742  300k TC=0,0 
+E_U1_ABM2         COMP 0 VALUE { limit(V(U1_N16779526),0.2u,150u)    }
+R_U1_R0         GND U1_N7413559  45Meg  
+E_U1_E1         U1_N16777371 GND U1_N7413559 GND 19
+R_U1_R1         GND U1_N16778350  11k TC=0,0 
+C_U1_Cc         U1_N16775742 U1_N7413559  90p  
+X_U1_H1    U1_N16777371 U1_N16778350 U1_N16779526 0 loop_implementation_U1_H1 
+D_U1_D9         U1_N167802531 U1_N7413559 D_D 
+D_U1_D10         U1_N7413559 U1_N16780260 D_D 
+V_U1_V6         U1_N16780260 GND 90m
+G_U1_ABM2I3         GND U1_N7413559 VALUE { (V(N16810544) -
++  V(BLED_MIN_PROC))*2.25u    }
+V_U1_V7         U1_N167802531 GND 0.1m
+X_U13_U22         BACKLIGHT_EN U13_N16871446 BUF_DELAY_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=0.5 DELAY=50n
+X_U13_U30         U13_ONE_VOLT U13_N16871451 U13_N16871415 U13_ONE_VOLT
++  U13_N16871413 N16871516 DFFRS_ELAB
+E_U13_ABM22         U13_BR_REG_STEP_NEW 0 VALUE { (V(U13_N17484) * V(BR_REG) ) 
++    }
+V_U13_V8         U13_ONE_VOLT 0 1
+G_U13_ABMII2         U13_N17484 0 VALUE { IF ( V(U13_N16913416) > 0.5, ( 1u / 
++ {Brightness_Ramp_Fall_Rate}),0)    }
+E_U13_ABM4         U13_N00618 0 VALUE { {Mapping_mode}    }
+X_U13_U35         U13_N16910231 U13_N16913416 INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+E_U13_ABM20         BACKLIGHT_EN_PROC3 0 VALUE {
++  if(V(U13_N16871434)>0.5,V(U13_N16871546),V(U13_N16871446))    }
+E_U13_ABM21         U13_EXPONENTIAL 0 VALUE { if(V(U13_BR_REG_STEP_NEW)> 0.9,
++  V(U13_N00293),0)    }
+X_U13_U32         BACKLIGHT_EN U13_N16871451 INV_DIGITAL
+D_U13_D12         0 U13_N17484 D_D 
+E_U13_ABM6         U13_N16871546 0 VALUE { if(V(U13_BR_REG_STEP_NEW)>0.1,1,0)  
++   }
+C_U13_C2         0 U13_N17484  1u  TC=0,0 
+V_U13_V7         U13_N17506 0 1
+X_U13_U23         BACKLIGHT_EN_PROC3 U13_N16871575 inv_delay_digital PARAMS:
++  TPLH=10N TPHL=10N
+X_U13_U15         EN_INT BACKLIGHT_EN HVLED3_EN U13_N16820265 AND3_DIGITAL
+X_U13_U24         U13_N16871575 U13_N16871600 one_shot PARAMS:  T=50  
+E_U13_ABM1         ILED_CURRENT_3 0 VALUE { if(V(U13_N00618)>0.5,
++  V(U13_LINEAR),V(U13_EXPONENTIAL))    }
+X_U13_U16         U13_N16820265 U13_N16910231 BUF_DIGITAL
+E_U13_ABM2         U13_LINEAR 0 VALUE { V(U13_BR_REG_STEP_NEW) *
++ {ILED_FULL_SCALE}*V(DUTY_CYCLE)/255    }
+G_U13_ABMII1         U13_N17506 U13_N17484 VALUE { IF ( V(U13_N16910231) > 0.5,
++  ( 1u / {Brightness_Ramp_rise_Rate}),0)    }
+E_U13_ABM3         U13_N00293 0 VALUE { 
++ {ILED_FULL_SCALE}*V(DUTY_CYCLE)*0.85**(44-((V(U13_BR_REG_STEP_NEW)+1)/5.8181818))
++     }
+D_U13_D11         U13_N17484 U13_N17506 D_D 
+X_U13_U33         U13_N16871600 U13_N16871518 INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+X_U13_U34         U13_N16871518 U13_N16871415 BUF_DIGITAL
+X_U13_U31         U13_N16871413 U13_N16871434 BUF_DIGITAL
+E_U5_E1         U5_N16877285 0 PWM 0 1
+E_U5_ABM1         DUTY_CYCLE 0 VALUE { IF ( {PWM_ENABLE} > 0.5 ,
++  V(U5_N16877285), 1)    }
+X_U2_U13         U2_N16790058 U2_N16791039 BUF_DIGITAL
+C_U2_C1         0 HDRV  1n  TC=0,0 
+R_U2_R1         U2_N16791039 HDRV  1 TC=0,0 
+E_U2_ABM1         U2_ISENSE_LEB 0 VALUE { IF (V(U2_PWM_LEB) > 0.5,
++  V(U2_ISENSE), 0)    }
+X_U2_U94         HDRV U2_PWM_LEB buf_delay_digital PARAMS: TPLH=2n TPHL=2n
+V_U2_V1         U2_N16778318 GND {1/50000}
+X_U2_U7         N16810547 U2_N16778776 U2_N16785405 U2_NU SRLATCH_SHP_DIGITAL
+X_U2_U96         U2_ISENSE_LEB U2_N16778318 U2_N16778333 COMP_BASIC_GEN PARAMS:
++  VDD=1 VSS=0 VTHRESH=0.5
+X_U2_U9         U2_N16778333 U2_CBC BUF_DIGITAL
+X_U2_U97         U2_N00530 U2_CBC U2_N16778776 OR2_DIGITAL
+X_U2_U11         N16810547 U2_N16785378 BUF_DIGITAL
+X_U2_U601         U2_ISENSE_LEB U2_ICTRL U2_N00530 COMP_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=0.5
+X_U2_U602         U2_N16785378 U2_N16785382 one_shot PARAMS:  T=
++ {(1/BOOST_FREQ)*1e9*0.94}  
+E_U2_ABM8         U2_ICTRL 0 VALUE { V(COMP)-V(N16810548)    }
+X_U2_U12         U2_N16785382 U2_N16785403 BUF_DIGITAL
+E_U2_E1         U2_ISENSE GND S1 GND {1/2500}
+X_U2_U603         U2_N16785405 U2_N16785403 U2_N16790058 AND2_DIGITAL
+R_R7         0 PWM  100k TC=0,0 
+X_U31         HVLED3_EN HVLED2_EN HVLED1_EN N17041627 OR3_BASIC_GEN PARAMS:
++  VDD=1 VSS=0 VTHRESH=500E-3
+V_V2         N170079260 0 0.8
+E_ABM1         N17049903 0 VALUE { min(V(HVLED1), V(HVLED2))    }
+E_ABM5         BLED_MIN_PROC 0 VALUE { if(V(N16997305)<0.5,
++  V(N17002311),V(N17046914))    }
+X_U8_U22         BACKLIGHT_EN U8_N16871446 BUF_DELAY_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=0.5 DELAY=50n
+X_U8_U30         U8_ONE_VOLT U8_N16871451 U8_N16871415 U8_ONE_VOLT U8_N16871413
++  N16871516 DFFRS_ELAB
+E_U8_ABM22         U8_BR_REG_STEP_NEW 0 VALUE { (V(U8_N17484) * V(BR_REG) )   
++  }
+V_U8_V8         U8_ONE_VOLT 0 1
+G_U8_ABMII2         U8_N17484 0 VALUE { IF ( V(U8_N16913416) > 0.5, ( 1u / 
++ {Brightness_Ramp_Fall_Rate}),0)    }
+E_U8_ABM4         U8_N00618 0 VALUE { {Mapping_mode}    }
+X_U8_U35         U8_N16910231 U8_N16913416 INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+E_U8_ABM20         BACKLIGHT_EN_PROC1 0 VALUE {
++  if(V(U8_N16871434)>0.5,V(U8_N16871546),V(U8_N16871446))    }
+E_U8_ABM21         U8_EXPONENTIAL 0 VALUE { if(V(U8_BR_REG_STEP_NEW)> 0.9,
++  V(U8_N00293),0)    }
+X_U8_U32         BACKLIGHT_EN U8_N16871451 INV_DIGITAL
+D_U8_D12         0 U8_N17484 D_D 
+E_U8_ABM6         U8_N16871546 0 VALUE { if(V(U8_BR_REG_STEP_NEW)>0.1,1,0)    }
+C_U8_C2         0 U8_N17484  1u  TC=0,0 
+V_U8_V7         U8_N17506 0 1
+X_U8_U23         BACKLIGHT_EN_PROC1 U8_N16871575 inv_delay_digital PARAMS:
++  TPLH=10N TPHL=10N
+X_U8_U15         EN_INT BACKLIGHT_EN HVLED1_EN U8_N16820265 AND3_DIGITAL
+X_U8_U24         U8_N16871575 U8_N16871600 one_shot PARAMS:  T=50  
+E_U8_ABM1         ILED_CURRENT_1 0 VALUE { if(V(U8_N00618)>0.5,
++  V(U8_LINEAR),V(U8_EXPONENTIAL))    }
+X_U8_U16         U8_N16820265 U8_N16910231 BUF_DIGITAL
+E_U8_ABM2         U8_LINEAR 0 VALUE { V(U8_BR_REG_STEP_NEW) *
++ {ILED_FULL_SCALE}*V(DUTY_CYCLE)/255    }
+G_U8_ABMII1         U8_N17506 U8_N17484 VALUE { IF ( V(U8_N16910231) > 0.5, (
++  1u / {Brightness_Ramp_rise_Rate}),0)    }
+E_U8_ABM3         U8_N00293 0 VALUE { 
++ {ILED_FULL_SCALE}*V(DUTY_CYCLE)*0.85**(44-((V(U8_BR_REG_STEP_NEW)+1)/5.8181818))
++     }
+D_U8_D11         U8_N17484 U8_N17506 D_D 
+X_U8_U33         U8_N16871600 U8_N16871518 INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+X_U8_U34         U8_N16871518 U8_N16871415 BUF_DIGITAL
+X_U8_U31         U8_N16871413 U8_N16871434 BUF_DIGITAL
+C_C1         0 N16810576  1n  TC=0,0 
+E_ABM7         BLED_MIN 0 VALUE { min(V(N17049903), V(HVLED3))    }
+G_ABM3I2         HVLED2 0 VALUE {
++  if(V(N16810618)>0.5,(V(HVLED2)*V(ILED_CURRENT_2)/0.4),0)    }
+X_U20         N16810606 N16810607 BUF_DIGITAL
+X_U10         N16810600 N16810581 BUF_DIGITAL
+X_U30         BACKLIGHT_EN_PROC1 BACKLIGHT_EN_PROC2 BACKLIGHT_EN_PROC3
++  N17027157 OR3_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=500E-3
+E_ABM6         N17002311 0 VALUE { max(V(N17002129), V(HVLED3))    }
+V_u12_V2         u12_N002093 0 1
+X_u12_U4         OVP u12_N00247 u12_N002093 u12_OVP_DET COMPHYS_BASIC_GEN
++  PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+X_u12_U5         u12_OVP_DET OVP_DET_BAR INV_DIGITAL
+V_u12_V1         u12_N00247 0 {OVP}
+R_R1         GND S1  50m TC=0,0 
+V_V4         BACKLIGHT_EN 0 1
+X_U27         N17041627 N16997305 BUF_DIGITAL
+X_U19         EN_INT HVLED2_EN N16810617 AND2_DIGITAL
+X_U3_U81         U3_N16774582 U3_N16774578 U3_N16774622 AND2_DIGITAL
+V_U3_V3         U3_N16774784 0 0.999
+V_U3_V5         $G_MYDGND 0 0
+E_U3_TABLE1         U3_N16788183 0 TABLE {V(U3_N16786667)} 0.5Meg          60n 
++  
++ 1Meg           60n  
++ 1.33Meg           140n  
++ 2Meg          130n 
+X_U3_S1    U3_N16775008 0 N16810548 0 OSC_U3_S1 
+X_U3_U70         U3_N16774582 U3_N16774578 inv_delay_digital PARAMS: TPLH=1n
++  TPHL=10n
+X_U3_U8         U3_C1 U3_N16774686 BUF_DIGITAL
+V_U3_V1         U3_N00096 0  
++PULSE 0 1 0 1n 1n 10n {1/BOOST_FREQ}
+X_U3_U12         U3_N16775024 U3_N16774622 U3_N16775008 OR2_DIGITAL
+D_U3_D4         N16810548 U3_N16774750 DD 
+X_U3_U95         U3_RAMP_EN U3_N16775024 INV_DIGITAL
+V_U3_V8         U3_N16775835 0 0.45
+X_U3_U2         EN_INT U3_N14558230 BUF_DIGITAL
+E_U3_ABM3         U3_N16786667 0 VALUE { {BOOST_FREQ}    }
+X_U3_U13         U3_N16774686 U3_N16774686 U3_N16774582 OR2_DIGITAL
+E_U3_ABM2         U3_N16792329 0 VALUE { IF(V(U3_N16792335) > 0.5,
++  V(U3_N16792286) , 0)    }
+V_U3_V4         $G_MYDPWR 0 1
+X_U3_U3         EN_INT U3_N16792335 BUF_DIGITAL
+V_U3_V6         U3_N16774750 0 2
+V_U3_V9         U3_N16792286 0  
++PULSE 0 1 10n {1/BOOST_FREQ-1n} 1n 0 {1/BOOST_FREQ}
+X_U3_U5         U3_N16792329 U3_N16775835 U3_RAMP_EN COMP_BASIC_GEN PARAMS:
++  VDD=1 VSS=0 VTHRESH=0.5
+C_U3_C1         0 N16810548  1n  TC=0,0 
+G_U3_ABMII1         U3_N16774750 N16810548 VALUE { V(U3_N16788183)    }
+X_U3_U4         N16810548 U3_N16774784 U3_C1 COMP_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+X_U3_U1         U3_N14557950 N16810547 BUF_DIGITAL
+E_U3_ABM1         U3_N14557950 0 VALUE { IF(V(U3_N14558230) > 0.5, V(U3_N00096)
++  , 0)    }
+E_ABM2         N17017537 0 VALUE { if(V(HVLED1_EN)>0.5, V(HVLED1),V(HVLED2))   
++  }
+R_R8         0 HVLED1  10e12 TC=0,0 
+R_R4         N16810581 N16810576  1 TC=0,0 
+R_R9         0 HVLED2  10e12 TC=0,0 
+V_V1         N16810561 0 1.2
+V_V3         N16810544 GND 0.4
+R_R10         0 HVLED3  10e12 TC=0,0 
+X_U18         EN_INT HVLED1_EN N16810606 AND2_DIGITAL
+X_U17         EN_INT BACKLIGHT_EN_PROC_COMB HDRV OVP_DET_BAR N16810600
++  AND4_DIGITAL
+G_ABM3I1         HVLED1 0 VALUE {
++  if(V(N16810607)>0.5,(V(HVLED1)*V(ILED_CURRENT_1)/0.4),0)    }
+X_U24         HVLED1_EN HVLED2_EN N17048386 XOR2_DIGITAL
+D_D9         S1 SWB D_D 
+X_U4         EN N16810561 N170079260 EN_INT COMPHYS_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=0.5
+X_U25         N17048386 N16994224 BUF_DIGITAL
+E_ABM3         N17046914 0 VALUE { if(V(N16994224)>0.5,
++  V(N17017537),V(BLED_MIN))    }
+.ENDS LM3697_TRANS
+*$
+.IC         V(U11_N17484 )=0
+.IC         V(U13_N17484 )=0
+.IC         V(U8_N17484 )=0
+.IC         V(N16810548 )=0
+*$
+.subckt LM3639_BACKLIGHT_TRANS_S1 1 2 3 4  
+S_S1         3 4 1 2 _S1
+RS_S1         1 2 1G
+.MODEL         _S1 VSWITCH Roff=1e9 Ron=230m Voff=0.2V Von=0.8V
+.ends LM3639_BACKLIGHT_TRANS_S1
+*$
+.subckt loop_implementation_U1_H1 1 2 3 4  
+H_U1_H1         3 4 VH_U1_H1 1
+VH_U1_H1         1 2 0V
+.ends loop_implementation_U1_H1
+*$
+.subckt OSC_U3_S1 1 2 3 4  
+S_U3_S1         3 4 1 2 _U3_S1
+RS_U3_S1         1 2 1G
+.MODEL         _U3_S1 VSWITCH Roff=100e6 Ron=1m Voff=0.2 Von=0.8
+.ends OSC_U3_S1
+*$
+.model D_D d
++ is=1e-015
++ tt=1e-011
++ rs=0.05
++ n=1e-005
+*$
+.subckt inv_delay_digital  a y
++	optional: dpwr=$g_mydpwr dgnd=$g_mydgnd
++     params: tplh=10n tphl=10n
+u1 inv dpwr  dgnd a y gate_timing_model_delay gate_io_model mntymxdly=2
++  io_level=1
+.model gate_timing_model_delay ugate
+.ends inv_delay_digital
+*$
+.subckt one_shot in out
++ params:  t=100
+s_s1         meas 0 reset2 0 s1
+e_abm1         ch 0 value { if( v(in)>0.5 | v(out)>0.5,1,0)    }
+r_r2         reset2 reset  0.1  
+e_abm3         out 0 value { if( v(meas)<0.5 & v(ch)>0.5,1,0)    }
+r_r1         meas ch  {t} 
+c_c2         0 reset2  1.4427n  
+c_c1         0 meas  1.4427n  
+e_abm2         reset 0 value { if(v(ch)<0.5,1,0)    }
+.model s1 vswitch
++ roff=1e+009
++ ron=1
++ voff=0.25
++ von=0.75
+.ends one_shot
+*$
+.subckt buf_delay_digital  a y
++	optional: dpwr=$g_mydpwr dgnd=$g_mydgnd
++     params: tplh=10n tphl=10n
+u1 buf dpwr  dgnd a y gate_timing_model_delay gate_io_model mntymxdly=2
++  io_level=1
+.model gate_timing_model_delay ugate
+.ends buf_delay_digital
+*$
+.model DD d
++ is=1e-015
++ n=0.01
++ tt=1e-011
+*$
+.SUBCKT DLED A K PARAMS: VF=0
+G_ABM2I1         A_INT K VALUE { 2.947E-10 * PWRS(V(A_INT)-V(K),17.42) }
+R_R6         A_INT K  1E6
+V_V4         A A_INT {VF}  
+C_C4         A_INT K  50p   
+.ENDS DLED
+*$
+.SUBCKT CESR IN OUT
++ PARAMs:  C=100u ESR=0.01 X=2 IC=0
+C	IN 1  {C*X} IC={IC}
+RESR	1 OUT {ESR/X}
+.ENDS CESR
+*$
+.SUBCKT LDCR IN OUT
++ PARAMs:  L=1u DCR=0.01 IC=0
+L	IN 1  {L} IC={IC}
+RDCR	1 OUT {DCR}
+.ENDS LDCR
+*$
+.SUBCKT BUF_DELAY_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 DELAY = 10n 
+E_ABMGATE1    YINT1 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT1 YINT2 1
+CINT YINT2 0 {DELAY*1.3}
+E_ABMGATE2    YINT3 0 VALUE {{IF(V(YINT2) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT2 YINT3 Y 1
+CINT2 Y 0 1n
+.ENDS BUF_DELAY_BASIC_GEN
+*$
+.SUBCKT INV_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS INV_BASIC_GEN
+*$
+.SUBCKT BUF_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS BUF_BASIC_GEN
+*$
+.SUBCKT INV_DELAY_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 DELAY = 10n 
+E_ABMGATE1    YINT1 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT1 YINT2 1
+CINT YINT2 0 {DELAY*1.3}
+E_ABMGATE2    YINT3 0 VALUE {{IF(V(YINT2) > {VTHRESH} , 
++ {VSS},{VDD})}}
+RINT2 YINT3 Y 1
+CINT2 Y 0 1n
+.ENDS INV_DELAY_BASIC_GEN
+*$
+.SUBCKT AND2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS AND2_BASIC_GEN
+*$
+.SUBCKT COMPHYS2_BASIC_GEN INP INM HYS OUT PARAMS: VDD=1 VSS=0 VTHRESH=0.5	
++ T=10
+EIN INP1 INM1 INP INM 1 
+EHYS INM2 INM1 VALUE { IF( V(1) > {VTHRESH},-V(HYS)/2,V(HYS)/2) }
+EOUT OUT 0 VALUE { IF( V(INP1)>V(INM2), {VDD} ,{VSS}) }
+R1 OUT 1 1
+C1 1 0 {T*1e-9}
+RINP1 INP1 0 10K
+RINM2 INM2 0 10K
+.ENDS COMPHYS2_BASIC_GEN
+*$
+.SUBCKT COMPHYS_BASIC_GEN INP INM HYS OUT PARAMS: VDD=1 VSS=0 VTHRESH=0.5	
+EIN INP1 INM1 INP INM 1 
+EHYS INP1 INP2 VALUE { IF( V(1) > {VTHRESH},-V(HYS),0) }
+EOUT OUT 0 VALUE { IF( V(INP2)>V(INM1), {VDD} ,{VSS}) }
+R1 OUT 1 1
+C1 1 0 5n
+RINP1 INP1 0 1K
+.ENDS COMPHYS_BASIC_GEN
+*$
+.SUBCKT COMP_BASIC_GEN INP INM Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5	
+E_ABM Yint 0 VALUE {IF (V(INP) > 
++ V(INM), {VDD},{VSS})}
+R1 Yint Y 1
+C1 Y 0 1n
+.ENDS COMP_BASIC_GEN
+*$
+.SUBCKT INV_digital  A Y
++	optional: DPWR=$G_MYDPWR DGND=$G_MYDGND
+U1 INV DPWR  DGND A Y gate_timing_model gate_io_model MNTYMXDLY=2 IO_LEVEL=1
+.ENDS INV_digital
+*$
+.SUBCKT SRLATCH_SHP_digital S R Q QB
++	optional: DPWR=$G_MYDPWR DGND=$G_MYDGND
+X_U2         R N00332 R_int AND2_digital
+X_U3         S N00332 INV_digital
+V1_preset int_preset_b 0 1
+V1_clear int_clear_b 0 1
+V1_gate int_gate 0 1
+U1 SRFF(1)
++  DPWR DGND
++  int_preset_b int_clear_b int_gate
++  S R_int 
++  Q  QB
++  SRLatch_Timing_Model SRLatch_IO_Model MNTYMXDLY=2 IO_LEVEL=1
+.ENDS SRLATCH_SHP_digital
+*$
+.SUBCKT BUF_digital  A Y
++	optional: DPWR=$G_MYDPWR DGND=$G_MYDGND
+U1 BUF DPWR  DGND A Y gate_timing_model gate_io_model MNTYMXDLY=2 IO_LEVEL=1
+.ENDS BUF_digital
+*$
+.model SRLatch_IO_Model uio (
++	drvh=1		drvl=1
++	AtoD1="AtoD_ff_elab"		AtoD2="AtoD_ff_elab"
++	AtoD3="AtoD_ff_elab"		AtoD4="AtoD_ff_elab"
++	DtoA1="DtoA_ff_elab"		DtoA2="DtoA_ff_elab"
++	DtoA3="DtoA_ff_elab"		DtoA4="DtoA_ff_elab"
++	tswhl1=2ns		tswlh1=2ns
++	tswhl2=2ns		tswlh2=2ns
++	tswhl3=2ns		tswlh3=2ns
++	tswhl4=2ns	      tswlh4=2ns
++	DIGPOWER="DIGIFPWR_elab"
++	)
+*$
+.model SRLatch_Timing_Model ugff (
++	twpclmn=10ns twpclty=10ns twpclmx=10ns	
++	tpdqlhmn=5ns tpdqlhty=5ns tpdqlhmx=5ns	
++	tpdqhlmn=5ns tpdqhlty=5ns tpdqhlmx=5ns	
++	tppcqlhmn=5ns tppcqlhty=5ns tppcqlhmx=5ns
++	tppcqhlmn=5ns tppcqhlty=5ns tppcqhlmx=5ns
++	)
+*$
+.model FF_IO_Model uio (
++	drvh=1		drvl=1
++	AtoD1="AtoD_ff_elab"		AtoD2="AtoD_ff_elab"
++	AtoD3="AtoD_ff_elab"		AtoD4="AtoD_ff_elab"
++	DtoA1="DtoA_ff_elab"		DtoA2="DtoA_ff_elab"
++	DtoA3="DtoA_ff_elab"		DtoA4="DtoA_ff_elab"
++	tswhl1=2ns		tswlh1=2ns
++	tswhl2=2ns		tswlh2=2ns
++	tswhl3=2ns		tswlh3=2ns
++	tswhl4=2ns	      tswlh4=2ns
++	DIGPOWER="DIGIFPWR_elab"
++	)
+*$
+.model FF_Timing_Model ueff (
++	twpclmn=10ns twpclty=10ns twpclmx=10ns	
++     twclklmn=10ns twclklty=10ns twclklmx=10ns
++     twclkhmn=10ns twclkhty=10ns twclkhmx=10ns
++	tsudclkmn=10ns tsudclkty=10ns	tsudclkmx=10ns
++     thdclkmn=3ns thdclkty=3ns thdclkmx=3ns
++	tppcqlhmn=5ns tppcqlhty=5ns tppcqlhmx=5ns	
++	tppcqhlmn=5ns tppcqhlty=5ns tppcqhlmx=5ns	
++	tpclkqlhmn=5ns tpclkqlhty=5ns	tpclkqlhmx=5ns
++	tpclkqhlmn=5ns tpclkqhlty=5ns	tpclkqhlmx=5ns
++	)
+*$
+.model gate_timing_model ugate (
++	tplhmn=2ns tplhty=2ns	tplhmx=2ns
++	tphlmn=2ns tphlty=2ns	tphlmx=2ns
++	)
+*$
+.model gate_io_model uio (
++	drvh=1	drvl=1
++	AtoD1="AtoD_gate_elab"	AtoD2="AtoD_gate_elab"
++	AtoD3="AtoD_gate_elab"	AtoD4="AtoD_gate_elab"
++	DtoA1="DtoA_gate_elab"	DtoA2="DtoA_gate_elab"
++	DtoA3="DtoA_gate_elab"	DtoA4="DtoA_gate_elab"
++     tswhl1=1ns		tswlh1=1ns
++     tswhl2=1ns		tswlh2=1ns
++     tswhl3=1ns		tswlh3=1ns
++     tswhl4=1ns		tswlh4=1ns
++	DIGPOWER="DIGIFPWR_elab"
++     INLD=0
++     INR=100MEG
++     OUTLD=0
++	)
+*$
+.subckt DtoA_gate_elab  D A  DPWR DGND
+N1  A DGND DPWR elab_inputmodel DGTLNET=D gate_io_model
+.ends DtoA_gate_elab
+*$
+.subckt DtoA_ff_elab  D A  DPWR DGND
+N1  A DGND DPWR elab_inputmodel DGTLNET=D FF_IO_model
+.ends DtoA_ff_elab
+***This uses the elab_inputmodel
+*$
+.model elab_inputmodel dinput (
++	s0name="0"	s0tsw=1ns	s0rlo=1	s0rhi=1k ; 1 ohm , 1mV
++	s1name="1"	s1tsw=1ns	s1rlo=1k	s1rhi=1 ; 1 ohm, 0.999v
++	s2name="X"	s2tsw=1ns	s2rlo=1	s2rhi=1k ; made sure that X is logic low 
++ chi=0 clo=0
+)
+*$
+.subckt AtoD_gate_elab  A D  DPWR DGND
++	params: CAPACITANCE=0
+O0  A DGND elab_outputmodel DGTLNET=D gate_io_model
+.ends AtoD_gate_elab
+*$
+.subckt AtoD_ff_elab  A D  DPWR DGND
++	params: CAPACITANCE=0
+O0  A DGND elab_outputmodel DGTLNET=D FF_IO_model
+.ends AtoD_ff_elab
+*$
+.model elab_outputmodel doutput (
++	s1name="0"	s1vlo=-1	s1vhi=0.7
++	s2name="1"	s2vlo=0.7	s2vhi=1.2
++     cload=0
+)
+*$
+.SUBCKT AND2_digital  A B  Y
++	optional: DPWR=$G_MYDPWR DGND=$G_MYDGND
+U1 AND(2)DPWR  DGND A B Y gate_timing_model gate_io_model MNTYMXDLY=2 IO_LEVEL=1
+.ENDS AND2_digital
+*$
+.SUBCKT AND3_digital  A B C  Y
++	optional: DPWR=$G_MYDPWR DGND=$G_MYDGND
+U1 AND(3)DPWR  DGND A B C Y gate_timing_model gate_io_model MNTYMXDLY=2 IO_LEVEL=1
+.ENDS AND3_digital
+*$
+.SUBCKT AND4_digital  A B C D Y
++	optional: DPWR=$G_MYDPWR DGND=$G_MYDGND
+U1 AND(4)DPWR  DGND A B C D Y gate_timing_model gate_io_model MNTYMXDLY=2 IO_LEVEL=1
+.ENDS AND4_digital
+*$
+.SUBCKT OR2_digital  A B  Y
++	optional: DPWR=$G_MYDPWR DGND=$G_MYDGND
+U1 OR(2)DPWR  DGND A B Y gate_timing_model gate_io_model MNTYMXDLY=2 IO_LEVEL=1
+.ENDS OR2_digital
+*$
+.SUBCKT XOR2_digital  A B  Y
++	optional: DPWR=$G_MYDPWR DGND=$G_MYDGND
+U1 XOR DPWR  DGND A B Y gate_timing_model gate_io_model MNTYMXDLY=2 IO_LEVEL=1
+.ENDS XOR2_digital
+*$
+.SUBCKT DFFRS_elab D CLK R S  Q QBAR
++	optional: DPWR=$G_MYDPWR DGND=$G_MYDGND
+*
+U1 DFF(1)
++  DPWR DGND
++  S R  CLK
++  D
++  Q
++  QBAR
++  D_LS74_my IO_LS_my
+*
+.ENDS
+
+*$
+.SUBCKT DFFSBRB_RHP_digital D CLK RB SB  Q QB
++	optional: DPWR=$G_MYDPWR DGND=$G_MYDGND
+X_U2         SB N00332 SB_int OR2_digital
+X_U3         RB N00332 INV_digital
+U1 DFF(1)
++  DPWR DGND
++  SB_int RB  CLK
++  D
++  Q
++  QB
++  FF_Timing_Model FF_IO_Model MNTYMXDLY=2 IO_LEVEL=1
+*
+.ENDS DFFSBRB_RHP_digital
+*$
+.model D_LS74_my ueff (
++	twpclmn=15ns	twclkhmn=15ns
++     twpclty=15ns	twclkhty=15ns
++	tsudclkmn=25ns	thdclkmn=5ns
++	tsudclkty=25ns	thdclkty=5ns
++	tppcqlhmx=20ns	tppcqlhty=20ns
++	tppcqhlmx=20ns	tppcqhlty=20ns
++	tpclkqlhty=20ns	tpclkqlhmx=20ns
++	tpclkqhlty=20ns	tpclkqhlmx=20ns
++	)
+*$
+.model IO_LS_my uio (
++	drvh=108.		drvl=157.
++	AtoD1="AtoD_elab"		AtoD2="AtoD_elab"
++	AtoD3="AtoD_elab"		AtoD4="AtoD_elab"
++	DtoA1="DtoA_elab"		DtoA2="DtoA_elab"
++	DtoA3="DtoA_elab"		DtoA4="DtoA_elab"
++	tswhl1=2.724ns		tswlh1=2.104ns
++	tswhl2=2.724ns		tswlh2=2.104ns
++	tswhl3=2.724ns		tswlh3=2.104ns
++	tswhl4=2.724ns		tswlh4=2.104ns
++	DIGPOWER="DIGIFPWR"
++	)
+*$
+.subckt D_Dmin 1 2
+d1 1 2 dd
+.model dd d
++ is=1e-015
++ n=0.0001
++ tt=1e-011
+.ends D_Dmin
+*$
+.subckt AtoD_elab  A D  DPWR DGND
++	params: CAPACITANCE=0
+O0  A DGND elab_outputmodel DGTLNET=D elab_io_model
+**C1  A DGND {CAPACITANCE+0.1pF}
+R1  A DGND 10MEG
+**D0	DGND	a	D74CLMP
+**D1	1	2	D74
+**D2      2       DGND	D74
+**R1	DPWR	3	4k
+**Q1      1       3       A       0	Q74 ; substrate should be DGND
+.ends
+*$
+.model elab_io_model uio (
++	drvh=96.4	drvl=104
++	AtoD1="AtoD_elab"	AtoD2="AtoD_elab"
++	AtoD3="AtoD_elab"	AtoD4="AtoD_elab"
++	DtoA1="DtoA_elab"	DtoA2="DtoA_elab"
++	DtoA3="DtoA_elab"	DtoA4="DtoA_elab"
++     tswhl1=1ns		tswlh1=1ns
++     tswhl2=1ns		tswlh2=1ns
++     tswhl3=1ns		tswlh3=1ns
++     tswhl4=1ns		tswlh4=1ns
++	DIGPOWER="DIGIFPWR_elab"
++	)
+*$
+.subckt DIGIFPWR_elab  AGND
++	optional: DPWR=$G_MYDPWR DGND=$G_MYDGND
++	params:   VOLTAGE=1.0v REFERENCE=0v
+.ends DIGIFPWR_elab
+*$
+.SUBCKT OR3_BASIC_GEN A B C Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  |  
++ V(B) > {VTHRESH} |
++ V(C) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS OR3_BASIC_GEN
+*$

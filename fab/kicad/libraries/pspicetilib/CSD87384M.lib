@@ -1,0 +1,196 @@
+***********************************************************************
+*  (C) Copyright 2013 Texas Instruments Incorporated. All rights reserved.
+***********************************************************************
+***********************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose. The model is
+** provided solely on an "as is" basis. The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: CSD87384M
+* Date: 09/24/2013
+* Model Type: Transient
+* Simulator: PSpice
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: 
+* EVM Users Guide: 
+* Datasheet: SLPS415 - SEPTEMBER 2013
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+* 
+* 1. The GND and PWRPD pins are internally connected to node 0. 
+*     Do not connect to a non-zero voltage.
+* 2. Operating supply current of the part has not been modeled.
+*
+*****************************************************************************
+*$
+**********************************************************************
+*                                                                    *
+* csd87384m -  PSpice Model for use with OrCAD                   *
+*                                                                    *
+**********************************************************************
+* SUBCKT Definition:  1=VIN  2=TG  3=BG 4=PGND 5=VSW
+.SUBCKT CSD87384M 1 2 3 4 5
+LDHS	1	dh	0.1e-9
+LGHS	2	gh	0.5e-9
+XH	dh	gh	sh	N37329  
+LSHS	sh	5	0.35e-9
+LDLS	5	dl	0.01e-9
+LGLS	3	gl	0.5e-9
+XL	dl	gl	sl	N17328
+LSLS	sl	4	0.05e-9
+.ends CSD87384M
+*$
+**********************************************************************
+*                                                                    *
+* n17328	-  PSpice Model for use with OrCAD                    *
+*                                                                    *
+**********************************************************************
+.SUBCKT n17328	1 2 3
+**********************************************************************
+* PARAMETER (local) DEFINITIONS SECTION
+****** Package Contributions *****************************************
+ .PARAM  pRclip    0.81e-3	 ; Ohms (source clip / bond wire res)
+ .PARAM  pRGwire   0.12		 ; Ohms  (gate wire resistance)
+* RG_wire = 0.1 for q5;  RG_wire = 0.25 for q3  (estimate)
+****** Device Geometry       *****************************************
+ .param	pitch	1.2
+ .param	AA		6.744
+ .PARAM	pWidth  {AA/pitch}      ; m, scale width 
+ .PARAM	perim  	{2*pWidth}
+ .PARAM	ptrc1  	5.75e-3		 ; temp coef of extr Rd / Rs
+ .PARAM	ptrc2  	10.00e-6
+**********************************************************************
+M1	 10 11 12 12  NMOS	W={pWidth} L=0.5u  PS={perim} PD={perim}
+DBD   8  7	 DBD
+CGD0  5  7	 1e-12
+CGS0  5  8	 1e-18
+*M2   12 11 12 20  PMOSd W={pWidth} L=0.075u PS={perim} PD={perim}
+*DDx  20  10  	DDx
+DDG  14  5	 DD
+DGD  14 10	 DD
+* Note:  gate oxide capacitance included in NMOS below
+CGS   5 13	 1e-18
+RGS  13  8	 500
+LGG   2  5	 1.45e-18
+RGG   5 11	 {0.90+ pRGwire}
+RSB  12  9	 0.55e-6
+RSS   9  8 	 0.18e-3
+RSP   8  6 	 0.15e-3
+LSS   6  3	 0.38e-18
+RDP   4  7	 0.11e-3
+RDD   7 10 	 RTEMP 1.45e-3
+LDD   1  4	 0.05E-18
+******************************************************************* 
+.MODEL  NMOS   NMOS (    LEVEL = 7              Version = 3.2  
++ TNOM   = 27            LINT   = 0.055e-6      CAPMOD = 2
++ TOX    = 1.75E-8       NCH    = 1.850e17      NSUB   = 5e15
++ AGS    = 0.0           PVAG   = 1.1
++ A0     = 1.00          A1     = 0.0           A2     = 0.90
++ UA     = 1.50e-9       UB     = 1.0e-18       VBM    = -5
++ UA1    = 2.4e-9        UB1    = -5.5e-18      UTE    = -1.50
++ KT1    = -0.825        KT2    =-0.022         KT1L   = 1.0e-12
++ DVT0   = 2.3           DVT1   = 0.55	        DVT2   = -0.033
++ ETA0   = 0.045         ETAB   = -0.07         XJ     = 3e-7
++ PDIBLC1= 0.08          PDIBLC2= 0.006         NLX    = 1.7e-7
++ PSCBE1 = 0.3e8         PSCBE2 = 2.5e-8        PCLM   = 3.00
++ VOFF   = -0.4          NFACTOR= 2.3           JS     = 0
++ DROUT  = 0.8           DSUB   = 1.6           DELTA  = 0.01
++ CJ     = 1e-18         CJSW   = 1e-18         CF     = 0
++ CGSO   = 1.0e-10     	 CGDO   = 1.0e-18       CGBO   = 0  )
+******************************************************************* 
+.MODEL DBD D (CJO=4.50e-09 VJ=0.90 M=0.55 TNOM=27
++ FC=0.5 TT=2e-09 XTI=3.0 BV=31
++ IS=3.5e-12 N=1.01 RS=0.35e-3 TRS1=4.0e-3)
+.MODEL DD  D (CJO=11.5e-10 VJ=0.90 M=0.883 IS=1e-12 RS=0.1 TNOM=27)
+*******************************************************************
+.MODEL RTEMP RES (TC1={ptrc1} TC2={ptrc2})
+*******************************************************************
+.ENDS n17328	
+*$
+**********************************************************************
+**********************************************************************
+*                                                                    *
+*   n37329	-  PSpice Model for use with OrCAD                   *
+*                                                                    *
+**********************************************************************
+**********************************************************************
+* SUBCKT Definition:  1=D  2=G  3=S
+**********************************************************************
+.SUBCKT n37329	1 2 3
+* PARAMETER (local) DEFINITIONS SECTION
+.param	pitch	2.01
+.param	AA		2.109
+.PARAM  pWidthP	{AA/pitch}
+.PARAM  pWidth	{pWidthP*1e6}
+.PARAM  pLen    0.56u
+.PARAM  perimP  {2.1*pWidthP}
+.PARAM  perim   {perimP*1e6}
+.PARAM  ptrc1   1.75e-3		; temp co of ext Rd / Rs
+.PARAM  ptrc2   4.0e-6
+****** MODEL SUBCIRCUIT BEGINS HERE     ******************************
+M1   10 11 12 12  NMOS	W={pWidthP} L={pLen}  PS={perimP} PD={perimP}
+DBD   3  1	 DBD
+CBD0  3  1   94e-12
+RBD0  3  1   9e9
+CGD0  2 13	 5E-12
+RGD  13  1   2e6
+CGS0  2  3	 6e-12
+*M2   12 11 12 20  PMOSd W={pWidthP} L=0.015u PS={perimP} PD={perimP}
+*RDx  20 12   1e14
+*CDx  20 12   2p
+*CGS   2 99 5e-10
+*RGS   99 3 5
+*DDx  20  10  DDx
+DDG  14  11	 DD
+DGD  14 10	 DD
+RGG   2 11	 0.95
+RSB  12  9	 rtemp 0.1543333e-3
+RSS   9  3 	 rtemp 0.1543333e-3
+RDD   1 10 	 rtemp 4.5533334e-3
+******************************************************************* 
+.MODEL  NMOS   NMOS (   LEVEL  = 7             	Version = 3.2  
++ TNOM   = 27           LINT   = 0.055e-6      	CAPMOD = 2
++ TOX    = 1.75e-8      NCH    = 2.52e17      	NSUB   = 2.5e16
++ AGS    = 0.0          PVAG   = 0.00          	U0     = 600
++ A0     = 1.0			A1     = 0.0           	A2     = 1.0
++ UA     = 2.25e-9      UB     = 5.87e-19       VBM    = -10
++ UA1    = 7.0e-9       UB1    = -7.61e-18      UTE    = -1.50
++ KT1    = -0.8         KT2    = 0.022         	KT1L   = 1.0e-13
++ DVT0   = 2.2          DVT1   = 0.53	      	DVT2   = -0.033
++ ETA0   = 0.080        ETAB   = -0.07         	XJ     = 4e-7
++ PDIBLC1= 0.01         PDIBLC2= 0.0086         NLX    = 1.75e-7
++ PSCBE1 = 4.24e8       PSCBE2 = 1e-5          	PCLM   = 1e-3
++ VOFF   = -0.1        	NFACTOR= 2.0          	JS     = 0
++ DROUT  = 0.9          DSUB   = 1.3           	DELTA  = 0.01
++ CJ     = 1e-18        CJSW   = 1e-18         	CF     = 0
++ CGSO   = 150.00e-12   CGDO   = 0.1e-12       	CGBO   = 1e-18  )
+******************************************************************* 
+.MODEL  PMOSd   PMOS (   LEVEL  = 1
++ TNOM   = 27            VTO    = -0.65         IS     = 4e-14
++ TOX    = 1.75e-8       NSUB   = 5e17          GAMMA  = 10.0
++ CJ     = 1e-18         CJSW   = 1e-18 
++ CGSO   = 1e-18         CGDO   = 1e-18         CGBO   = 1e-18  )
+******************************************************************* 
+.MODEL DBD D (CJO=110.0e-11 VJ=0.9 M=0.45 TNOM=27 FC=0.5 TT=1e-09 
++ XTI=3.4 BV=31 IS=10.0e-13 N=1.02 RS=1.5e-3 TRS1=2.5e-3)
+.MODEL DD  D (CJO=2.60e-10 VJ=0.9 M=0.90 IS=1e-13 TNOM=27)
+.MODEL DDx D (CJO=0.02e-09 VJ=1.0 M=0.9 IS=1e-13 RS=1.0 TNOM=25)
+*******************************************************************
+.model rtemp res (tc1={ptrc1} tc2={ptrc2})
+.ENDS n37329	
+*

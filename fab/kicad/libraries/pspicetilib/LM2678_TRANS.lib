@@ -1,0 +1,301 @@
+*$
+*  LM2678
+*****************************************************************************
+*  (C) Copyright 2012 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: LM2678
+* Date: 19JUN2012
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: LM267X 3A, 5A Evaluation Boards
+* EVM Users Guide: SNVA013C March 4, 2011
+* Datasheet: SNVS029G May 1, 2008
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+.SUBCKT LM2678_TRANS VIN FDBACK CBOOT VSWITCH ILIM_OR_ONOFF GND 
+* GM1 VALUES --> ADJ=0.673M, 3.3V - 0.48M, 5V - 0.673M, 12V - 1.54M
+* Assume either ILIM or ONOFF exclusively
+
+EVINX VINX1 0 VIN 0 1
+VVINX VINX1 VINX
+FVINX VIN 0 VVINX 1
+
+******************************************************
+*** ON/OFF - REMOVE I1, LZEN, V(ONOFF,GND) CLAUSES ***
+******************************************************
+
+I1 VINX ILIM_OR_ONOFF DC 20U
+XD1 GND ILIM_OR_ONOFF LZEN7_0
+
+EBSTARTUP ENABLE GND VALUE = { IF(V(ILIM_OR_ONOFF,GND) > 1.4 , IF(V(VINX,GND)>7.90 , V(ILIM_OR_ONOFF,GND) , 0),0)}
+EB12V REFV GND VALUE = { IF(V(ILIM_OR_ONOFF,GND) > 1.4 , 1.215 , 0)}
+EBREF REF5V GND VALUE = { IF((V(VINX,GND) > 7.90 & V(ILIM_OR_ONOFF,GND) > 1.4) , 5 , 0)}
+
+
+**********************
+*** NON SOFT START ***
+**********************
+
+GBSSClamp GND SS VALUE = { IF(V(VINX) > 3.3 , IF(V(SS) < 5 , 3.7E-6 , 0) , 0)}
+CSS SS GND 26.37p
+EBSSCL 361 GND VALUE = { IF (V(101) > 1.1 , 0 , 5)}
+DSS SS 361 DSS
+.MODEL DSS D RS=10k
+
+*****************
+*** 5A SWITCH ***
+*****************
+
+XSW2 31 30 VSWITCH NATIONALFET5A_0
+* SRC = NATIONALFET5A
+* SYM = POWMOSN
+
+
+
+**********************************
+*** CURRENT LIMIT FOR 5A PARTS ***
+**********************************
+
+*  FIRST CURRENT LIMIT I(VSENSE) = 7A*0.12(RDSON) = 0.84V
+*  FIRST CURRENT LIMIT SET TO 7A
+EBVRSEN 102 0 VALUE = {IF(I(VSENSE) > 7 , 5 , 0)}
+
+*  SECOND CURRENT LIMIT 18% HIGHER = 1V (SEE BR)
+*  SECOND CURRENT LIMIT 5-(I(VSENSE) * 45.5 * 0.2)
+*  2ND CURRENT LIMIT @8.26A REDUCES 5V OSC REF BY 30% OF I(VSENSE)
+EBFS2 103 0 VALUE = {IF(I(VSENSE) > 8.26 , 5-(I(VSENSE)*0.12*0.3) , 5)}
+
+***************************
+*** LM267X BASE CIRCUIT ***
+***************************
+
+*** CBOOST ***
+X4 VINX CBOOT REG1MA_0
+X1 VSWITCH CBOOT LZEN10_0
+
+*** 5V REF ***
+RREG 50 52 0.33
+CREF 52 GND 1N
+V3 REF5V 50
+
+*** ERROR AMP ***
+RFB2 FDBACK EA1 4320.0
+RFB1 EA1 0 2500.0
+
+GM1 GND 15 EA1 REFV 4.8E-4
+GBGM2 GND 17 VALUE={V(REFV,15) * V(13)}
+
+XA1 VINX 13 GM2GAIN
+D1 17 REF5V _D
+D2 400 17 _D
+VD2 400 Gnd 0.9 ; move voltage lower for longer recovery time, lower voltage swing
+.MODEL _D D
+R3 REFV 16 10K
+R4 15 16 2K
+L1 16 REFV 20MH
+R5 17 18 15K
+C1 18 GND 10NF IC = 2.5
+C6 17 18 105P
+R10 17 GND 300K
+E1 ErrOut Gnd 17 Gnd 0.8 ; ESOURCE GAIN
+EBSSERR 360 Gnd VALUE = {IF(V(SS) < V(ErrOut) , V(SS) , V(ErrOut))}
+
+*** COMPARATOR ***
+X3 RTCT 360 COMPOUT COMPDEL_0
+
+*** OSCILLATOR ***
+S1 26 GND RTCT GND _S1
+.MODEL _S1 VSWITCH VT=1.9 VH=1.3 RON=.01 ROFF=1MEG
+GBDISCH RTCT GND VALUE = {IF (V(26) < 0.6 , IF(V(REF5V) > 3.2 , .46M , 0),0)}
+RPULL 26 REF5V 100K
+RT RTCT 33 100K
+CT RTCT 9 .0399N
+VM 9 GND
+EBVM PULSE300N GND VALUE = {IF(I(VM) < 0 , 1 , 0)}
+
+*** OUTPUT DRIVER ***
+VSENSE VINX 31
+R103 103 33 200
+C103 33 GND 1N IC=5
+R101 102 101 200
+C101 101 GND 1N
+
+***********************************
+*          CONTROL LOGIC          *
+***********************************
+X2 35 REF5V 32 GND QB Q FFLOP_0
+EBR 32 GND VALUE= {IF(V(COMPOUT) > 2 , 5 , IF(V(101) > 1 , 5 , 0))}
+* IF PWM COMP HIGH (>2V) OR IF FIRST CURRENT LIMIT (>7A) THEN RESET FF
+EBS 35 GND VALUE = {IF(V(PULSE300N) < .5 , 5 , 0)}
+EBD 30 VSWITCH VALUE = { IF((V(Q) > 2.5) & (V(SS) > .63) & (V(ENABLE) > 1.4) & (V(PULSE300N) <.5) , 10 , 0)}
+.ENDS LM2678_TRANS
+
+
+.SUBCKT FFLOP_0 CLK D R S QB Q
+EFLOP1 QN 0 VALUE {IF(V(CLK)>1.5 & V(R) < 1.5,3.5,0.3)}
+RQN QN Q 3000
+CQN Q 0 20P
+rds d 0 1G
+RSS S 0 1G
+RQB QB 0 1G
+vQB QB 0 5
+.ENDS FFLOP_0
+
+
+.SUBCKT COMPDEL_0 1 2 3
+*               + - OUT
+EB1 4 0 VALUE = { IF(V(1) > V(2) , 1V , 0)}
+RT 4 5 100
+CT 5 0 0.1NF
+EB2 10 0 VALUE = {IF(V(5) > 500M , 5V , 0)}
+RD 10 3 100
+CD 3 0 250P
+.ENDS
+
+***********************************
+*        ZENER/JFET DIODES        *
+***********************************
+.SUBCKT LZEN7_0 1 2
+D7 1 2 DZEN
+.MODEL _D D
+.MODEL DZEN D(RS=3.5305 BV=6.9294 CJO=313.27P TT=50N M=.33 VJ=.75 IS=1E-11
++ N=1.27 IBV=20MA)
+.ENDS
+.SUBCKT LZEN10_0 1 2
+D1 1 2 DZEN
+.MODEL _D D
+.MODEL DZEN D(RS=8.4831 BV=9.8303 CJO=233.41P TT=50N M=.33 VJ=.75 IS=1E-11
++ N=1.27 IBV=20MA)
+.ENDS
+.SUBCKT REG1MA_0 1     2
+JFET 1 2 2 JREG1MA
+.MODEL JREG1MA NJF (VTO=-1.35 BETA=.67M LAMBDA=1.0M RD=49
++ RS=125 IS=1.56F PB=1 FC=.5 CGS=5P CGD=3.8P)
+.ENDS
+
+.SUBCKT GM2GAIN 1 3
+EPWL2  2 0 TABLE {V(1,0)} ((0,1.48M) (10 1.48M) (20 0.673M) (40 0.48M))
+EPWL3 3 0 VALUE={LIMIT(V(2),0.48m,1.48m)}
+.ENDS
+
+.SUBCKT NATIONALFET5A_0 10 20 40
+*** FULL POWER MOSFET MODEL 60V 14A 0.12OHM
+*     TERMINALS:  D  G  S
+M1   1  2  3  3  DMOS L=1U W=1U
+RD  10  1  46.5M
+RS  30  3  3.5M
+RG  20  2  50
+CGS  2  3  561P
+EGD 12  0  2  1  1
+VFB 14  0  0
+FFB  2  1  VFB  1
+CGD 13 14  1.01N
+R1  13  0  1
+D1  12 13  DLIM
+DDG 15 14  DCGD
+R2  12 15  1
+D2  15  0  DLIM
+DSD  3 10  DSUB
+LS  30 40  .1N
+.MODEL DMOS NMOS (LEVEL=3 VMAX=125K THETA=58.1M ETA=2M VTO=3.1 KP=5.39)
+.MODEL DCGD D (CJO=1.01N VJ=0.6 M=0.68)
+.MODEL DSUB D (IS=58.1N N=1.5 RS=53.6M BV=60 CJO=1.21N VJ=0.8 M=0.42 TT=90N)
+.MODEL DLIM D (IS=100U)
+.ENDS
+*********************************************
+******inp cap**************
+.SUBCKT CIN 1 2
+* C = 9.4E-6 F
+* ESR = 0.0010 Ohm
+
+Ccap 1 3 9.4E-6 
+Resr 3 2 0.0010
+.ENDS
+
+******************************************************************************************
+* WB_CAP_AL Spice Model
+*
+******************************************************************************************
+
+
+* Inputs: ESR, Cnom, TTemp, IC
+*
+* Calculations:
+*
+* C 		= Cnom*(1-((((27-32)/85)^2) * .12))
+* C1 		= C*0.2*2
+* R1 		= ESR*C/C1/0.2
+* R2 		= 3 * ESR
+* R2_MOD	= 1e3 / C
+* R4		= 100^5*R1
+* R6		= 100^2*R1
+* R9		= 100^4*R1
+* R10		= 100^3*R1
+
+.SUBCKT Cout 2 4
+R1 2 3 0.025
+C1 3 1 1.1399999999999999E-4 IC = 0.0
+R3 5 4 150; "free space" reduced by sqrt(dielectric constant)
+R2 2 4 8771929.824561404
+R4 3 26 3.125E9
+R6 3 7 3125.0
+C5 7 1 4.56E-5 IC = 0.0
+R7 3 10 3125.0
+C6 10 1 4.56E-5 IC = 0.0
+R8 3 13 3125.0
+C7 13 1 4.56E-5 IC = 0.0
+C2 26 1 4.56E-5 IC = 0.0
+R9 3 28 3.125E7
+C3 28 1 4.56E-5 IC = 0.0
+R10 3 29 312500.0
+C4 29 1 4.56E-5 IC = 0.0
+L8 1 5 0.2e-9
+R24 1 5 0.07500000000000001
+L12 5 4 10e-12
+.ends
+
+******************************************************************************************
+* WB_INDUCTOR Spice Model
+*
+******************************************************************************************
+
+
+.SUBCKT LM2678_IND 1 2
+*{ L = 1.5E-5 DCR = 0.027 }
+* PARAMETERS: L INDUCTANCE IN HENRIES, DCR DC SERIES RESISTANCE IN OHMS
+
+L1 2 3 1.5E-5 
+RDCR 3 1 0.027
+
+.ENDS
+
+
+******************************************************************************************
+*DIODE SCHOTTKY
+******************************************************************************************
+.SUBCKT DIODE_SCHOTTKY 1 2
+D1 1 2 D1
+.MODEL D1 D BV=500 CJO=470E-12 EG=0.69 IBV=1E-6
++ IS=9E-6 M=0.8 N=1.442 RS=60E-3 VJ=1 XTI=2
+.ENDS DIODE_SCHOTTKY
+***************************************
+

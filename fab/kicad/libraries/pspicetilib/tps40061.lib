@@ -1,0 +1,107 @@
+* PSpice Model Editor - Version 16.0.0
+*$
+* TPS40061
+*****************************************************************************
+* (C) Copyright 2009 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.                                             
+** TI and its licensors and suppliers make no warranties, either expressed                                           
+** or implied, with respect to this model, including the warranties of                                                    
+** merchantability or fitness for a particular purpose. The model is                                                      
+** provided solely on an "as is" basis. The entire risk as to its quality                                                    
+** and performance is with the customer                                                                  
+*****************************************************************************
+*
+* This model was developed for Texas Instruments Incorporated by:
+*   AEi Systems, LLC
+*   5777 W. Century Blvd., Suite 876
+*   Los Angeles, California  90045
+*
+* This model is subject to change without notice. Neither Texas Instruments Incorporated 
+* nor AEi Systems is responsible for updating this model.
+* For more information regarding modeling services, model libraries and simulation 
+* products, please call AEi Systems at (310) 216-1144, or contact AEi Systems by email: 
+* info@AENG.com. Or visit AEi Systems on the web at http://www.AENG.com.
+*
+*****************************************************************************
+*
+** Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: TPS40061
+* Date: 03/08/2009
+* Model Type: Average 
+* Simulator: PSpice 
+* Simulator Version: 16.0.0.p001
+* EVM Order Number: Based on TPS40060EVM 
+* EVM Users Guide: Based on SLUU183 - March 2004 
+* Datasheet: SLUS543E–DECEMBER 2002–REVISED JUNE 2006 
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+.SUBCKT TPS40061_AVG VIN KFF GND OUT COMP FB RT
+X1 KFF COMP 3 0 2 RT 40061MOD
+*R2 RT 0 200K
+X3 3 14 UTD
+EB A GND VALUE = {IF(V(14)>1 , 1, IF(V(14)<0 , 0, V(14)))}
+X2 VIN GND OUT A GND PWM40060
+E1 COMP GND 5 FB 1K
+V3 5 0 DC=0.7
+RF 2 0 1G
+.ENDS
+*$
+.SUBCKT PWM40060 1 2 3 4 5
+*
+*  1______
+*         )
+*         )
+*         )_______3
+*         )  ^
+*  2______)  |
+*            |
+*            |
+*  4 ________|
+*            |
+*  5_________|
+*
+RP 1 2 1MEG
+E 6 2 POLY(2) 1 2 4 5 0 0 0 0 1
+G 1 2 POLY(2) 6 3 4 5 0 0 0 0 1K
+RS 6 3 1M
+.ENDS
+*$
+.SUBCKT UTD 1 2
+RIN 1 0 1E15
+E1 3 0 1 0 1.0000 
+T1 3 0 2 0 Z0=1 TD=1.0000U
+R1 2 0 1
+.ENDS
+*$
+.SUBCKT 40061MOD KFF COMP DUTY GND FREQ RT
+VKFFM 3 GND DC=3.18
+VKFF KFF 4
+DKFF 4 3 _DMOD
+.MODEL _DMOD D IS=1.0E-9
+EBDUTY DUTY GND VALUE = {V(COMPL,GND)*135P/(I(VKFFM)+1P) * 56.116G / ((2.5/I(VRTM)) +
++ 23000)}
+H1 13 0 VKFFM 1
+VOFST COMP 6 DC=1.5
+Roff 6 GND 1G
+EBFREQ FREQ GND VALUE = {56.116G / ((2.5/I(VRTM))+23000)}
+EACOMP COMPL GND VALUE = {IF(V(6)>2 , 2, IF(V(6)<0 , 0, V(6)))} 
+VRT 11 GND DC=2.5
+VRTM 11 RT
+.ENDS
+*$
+.SUBCKT RVAR 101 102 201 202 
+RIN 201 202 1G
+R 301 0 1
+FCOPY 0 301 VSENSE 1
+EOUT 101 106 POLY(2) 201 202 301 0 0 0 0 0 1
+VSENSE 106 102 0; SENSE IOUT
+.ENDS
+*$

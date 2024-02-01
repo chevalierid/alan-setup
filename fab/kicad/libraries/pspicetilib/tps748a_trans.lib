@@ -1,0 +1,129 @@
+*$
+* TPS7748A_TRANS
+*****************************************************************************
+* (C) Copyright 2019 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose. The model is
+** provided solely on an "as is" basis. The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: TPS748A
+* Date: 16DEC2022
+* Model Type: Transient
+* Simulator: PSPICE
+* Simulator Version: 17.4
+* EVM Order Number:TPS74801EVM-177
+* EVM Users Guide:SLVU189A
+* Datasheet:SBVS442
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web
+*
+*****************************************************************************
+* Model Usage Notes:
+*
+* 1. The following features have been modeled
+*      a. Start-up behaviour is modeled
+*      b. Current Limit and current foldback is modeled
+*      c. PSRR is modeled only till 1st pole and 1st Zero (Model limitation)
+*      
+* 2. Noise characteristics, load, line transients and temperature effects are not modeled
+*$
+
+.SUBCKT TPS748A_TRANS IN IN2 BIAS EN SS GND PG FB OUT OUT2
+R_TPS748A_R1         TPS748A_VXX IN  {RINP}  
+R_TPS748A_R5         TPS748A_VZZ TPS748A_VYY  {ROUT}  
+C_TPS748A_C1         TPS748A_VXX IN  {1/(6.28*RINP*POLE)}  
+C_TPS748A_C3         0 TPS748A_VYY  1n  
+X_TPS748A_S3    TPS748A_N282524 GND FB GND TPS748A_TPS748A_S3 
+C_TPS748A_C2         TPS748A_VXX TPS748A_N282600  {1/(6.28*PSRR*RINP*ZERO)}  
+R_TPS748A_R2         TPS748A_N282600 TPS748A_VXX  {PSRR*RINP}  
+X_TPS748A_S1    TPS748A_N282524 GND OUT GND TPS748A_TPS748A_S1 
+X_TPS748A_F1    TPS748A_VZZ OUT IN TPS748A_VYY TPS748A_TPS748A_F1 
+E_TPS748A_ABM1         TPS748A_N282392 0 VALUE { MIN(V(TPS748A_VXX),
++  (V(TPS748A_VZZ)+(ILIM*ROUT)))    }
+E_TPS748A_U1_ABM4         TPS748A_U1_N321221 0 VALUE { V(TPS748A_N282524)  
++ * (ABS(V(OUT)) + 1e-6)  
++ / (ABS(V(FB)) + 1e-6)  }
+E_TPS748A_U1_ABM7         TPS748A_N282524 0 VALUE { IF((V(TPS748A_U1_N320911)>
++  0.6) & (V(TPS748A_U1_N321117) > 0.6) & (V(TPS748A_U1_N321209) > 0.6), VREF, 0)
++     }
+V_TPS748A_U1_V7         TPS748A_U1_N601889 0 100m
+E_TPS748A_U1_ABM5         TPS748A_U1_N321175 0 VALUE {
++  MIN(V(TPS748A_U1_N321227),  
++ MAX(V(IN) - {DROP}, 0))   }
+C_TPS748A_U1_C12         0 TPS748A_U1_N601879  1m  
+C_TPS748A_U1_C8         0 TPS748A_U1_N321183  1u  
+X_TPS748A_U1_S1    TPS748A_U1_N601851 0 PG 0 V_INT_TPS748A_U1_S1 
+V_TPS748A_U1_V6         TPS748A_U1_N321885 0 {BHYS}
+C_TPS748A_U1_C2         0 TPS748A_U1_N321227  1n  
+E_TPS748A_U1_ABM53         TPS748A_U1_N321829 0 VALUE {
++  MIN(V(TPS748A_U1_N321183),  
++ MAX(V(SS) - {DROP}, 0))   }
+E_TPS748A_U1_ABM1         TPS748A_U1_N6019391 0 VALUE {
++  MIN(V(TPS748A_N282600),V(TPS748A_N282600)*0.90)    }
+C_TPS748A_U1_C9         0 TPS748A_N282600  1u  
+R_TPS748A_U1_R2         GND TPS748A_U1_N321227  1G  
+R_TPS748A_U1_R11         TPS748A_U1_N321829 TPS748A_N282600  .1u TC=0,0 
+R_TPS748A_U1_R9         0 SS  1G  
+C_TPS748A_U1_C10         0 SS  .896459n  TC=0,0 
+V_TPS748A_U1_V4         TPS748A_U1_N320931 0 {UVLO}
+G_TPS748A_U1_G2         IN SS TPS748A_U1_N321585 0 1
+R_TPS748A_U1_R17         TPS748A_U1_N6019391 TPS748A_U1_N601879  1u  
+R_TPS748A_U1_R10         TPS748A_U1_N321175 TPS748A_U1_N321183  .1u TC=0,0 
+X_TPS748A_U1_U3         BIAS TPS748A_U1_N321789 TPS748A_U1_N321885
++  TPS748A_U1_N321209 COMPHYS_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+X_TPS748A_U1_U4         FB TPS748A_U1_N601879 TPS748A_U1_N601889
++  TPS748A_U1_N601851 COMPHYS_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+V_TPS748A_U1_V3         TPS748A_U1_N320961 0 {UHYS}
+V_TPS748A_U1_V5         TPS748A_U1_N321789 0 {VBIASB}
+X_TPS748A_U1_U2         IN TPS748A_U1_N320931 TPS748A_U1_N320961
++  TPS748A_U1_N320911 COMPHYS_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+X_TPS748A_U1_U1         EN TPS748A_U1_N321437 TPS748A_U1_N321489
++  TPS748A_U1_N321117 COMPHYS_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+E_TPS748A_U1_ABM9         TPS748A_U1_N321585 0 VALUE {
++  IF((V(TPS748A_U1_N320911)> 0.6) & (V(TPS748A_U1_N321117) > 0.4) &
++  (V(TPS748A_U1_N321209) > 0.4), 7.5e-6, 0)    }
+R_TPS748A_U1_R1         GND TPS748A_N282524  1G  
+V_TPS748A_U1_V1         TPS748A_U1_N321489 0 {EHYS}
+R_TPS748A_U1_R4         TPS748A_U1_N321221 TPS748A_U1_N321227  10 TC=0,0 
+V_TPS748A_U1_V2         TPS748A_U1_N321437 0 {VENB}
+R_TPS748A_R6         TPS748A_N282392 TPS748A_VYY  .1u TC=0,0 
+.PARAM  zero=500k ehys=55m uhys=0.0975 psrr=3.1623e-04 vref=0.8 uvlo=0.3575
++  drop=75m drop_bias=1.14 vbiasb=1.25 ttrn=350u bhys=43m venb=1.1 pole=10k
++  ilim=2.5 rout=4.7m rinp=1e7
+.ends
+
+.subckt TPS748A_TPS748A_S3 1 2 3 4  
+S_TPS748A_S3         3 4 1 2 _TPS748A_S3
+RS_TPS748A_S3         1 2 1G
+.MODEL         _TPS748A_S3 VSWITCH Roff=120 Ron=1G Voff=0.25 Von=0.5
+.ends TPS748A_TPS748A_S3
+
+.subckt TPS748A_TPS748A_S1 1 2 3 4  
+S_TPS748A_S1         3 4 1 2 _TPS748A_S1
+RS_TPS748A_S1         1 2 1G
+.MODEL         _TPS748A_S1 VSWITCH Roff=500 Ron=1G Voff=0.25 Von=0.5
+.ends TPS748A_TPS748A_S1
+
+.subckt TPS748A_TPS748A_F1 1 2 3 4  
+F_TPS748A_F1         3 4 VF_TPS748A_F1 1
+VF_TPS748A_F1         1 2 0V
+.ends TPS748A_TPS748A_F1
+
+.subckt V_INT_TPS748A_U1_S1 1 2 3 4  
+S_TPS748A_U1_S1         3 4 1 2 _TPS748A_U1_S1
+RS_TPS748A_U1_S1         1 2 1G
+.MODEL         _TPS748A_U1_S1 VSWITCH Roff=500u Ron=10e6 Voff=0.99 Von=0.25V
+.ends V_INT_TPS748A_U1_S1

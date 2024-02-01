@@ -1,0 +1,179 @@
+* LMG1020
+*****************************************************************************
+* (C) Copyright 2019 Texas Instruments Incorporated. All rights reserved.   
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+* Released by: Texas Instruments Inc.
+* Part: LMG1020
+* Date: 09/18/2019
+* Model Type:  TRANSIENT
+* Simulator: PSpice
+* Simulator Version: 17.2(x64)
+* Datasheet: SNOSD45B – FEBRUARY 2018 – REVISED OCTOBER 2018
+*
+* Model Version: 2.00
+*
+*****************************************************************************
+* source LMG1020
+
+.SUBCKT LMG1020 VDD GND INP OUTH OUTL INM
+C_C9         0 INP_SHIFTED_TOP  1p  
+V_V10         N16652210 0 2.2
+E_E8         VDD_SHIFTED_TOP 0 VDD GND 1
+E_E9         N03170 0 INM GND 1
+V_V9         N16652216 0 0.9
+R_R9         N03170 0  170k  
+X_U14         N03170 N16652210 N16652216 N02910 COMPHYS_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=0.5
+E_E7         INP_SHIFTED_TOP 0 INP GND 1
+V_UVLO_V7         UVLO_N16641969 0 3.915
+X_UVLO_U13         UVLO_N16641969 VDD_SHIFTED_TOP UVLO_N16641955 N02952
++  COMPHYS_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+V_UVLO_V8         UVLO_N16641955 0 0.085
+R_R10         VDD_SHIFTED_TOP INP_SHIFTED_TOP  170k  
+E_ABM1         N03999 0 VALUE { ( V(N02966)  
++ *V(N03064) ) / 1.0   }
+V_V7         N16652601 0 2.2
+V_V8         N16652637 0 0.9
+X_U18         N02910 N02960 INV_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=500E-3
+E_Core_E5         Core_VIN_INT 0 Core_N00838 0 1
+M_Core_M4         Core_N00962 Core_VGN OUTL OUTL PMOS01           
+X_Core_U12         N03999 Core_N00838 BUFFER_PS PARAMS: VHI=1 VLO=0
++  VTHRESH=500E-3 TPLH={Tlplh} TPHL={Tlphl} TR=1E-9 TF=1E-9
+C_Core_C7         Core_N00962 Core_VGN  2p  
+R_Core_R8         VDD Core_N00816  0.02  
+C_Core_C10         OUTH Core_VGP  2p  
+R_Core_R12         Core_N00962 GND  0.02  
+R_Core_R7         Core_N00764 Core_VGP  10  
+E_Core_E3         Core_N00764 OUTH VALUE { IF(V(Core_VIN_INT, 0) < 0.5, -5, 5)
++  }
+C_Core_C11         Core_VGP Core_N00816  2p  
+M_Core_M3         Core_N00816 Core_VGP OUTH OUTH NMOS01           
+C_Core_C8         OUTL Core_VGN  2p  
+R_Core_R11         Core_N01082 Core_VGN  10  
+E_Core_E4         OUTL Core_N01082 VALUE { IF(V(Core_VIN_INT, 0) < 0.5, 5, -5)
++  }
+C_C10         0 N03170  1p  
+X_U13         INP_SHIFTED_TOP N16652601 N16652637 N02948 COMPHYS_BASIC_GEN
++  PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+X_U20         N02948 N02960 N03064 AND2_BASIC_NODELAY PARAMS:  VDD=1 VSS=0
++  VTHRESH=0.5
+X_U19         N02952 N02966 INV_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=500E-3
+.PARAM  tlphl=1.7n tlplh=1.0n
+
+.ENDS LMG1020
+
+** Wrapper definitions for AA legacy support **
+
+
+.model PMOS01 pmos
+
++ vto=-2
++ kp=1.11
++ lambda=0.001
+
+
+.model NMOS01 nmos
+
++ vto=2
++ kp=1.55
++ lambda=0.001
+
+
+
+
+** Wrapper definitions for AA legacy support **
+**** ALL DIGITAL GATES***********
+******************************************************************************
+******************************************************************************
+.SUBCKT COMPHYS_BASIC_GEN INP INM HYS OUT PARAMS: VDD=1 VSS=0 VTHRESH=0.5	
+EIN INP1 INM1 INP INM 1 
+EHYS INP1 INP2 VALUE { IF( V(1) > {VTHRESH},-V(HYS),0) }
+EOUT OUT 0 VALUE { IF( V(INP2)>V(INM1), {VDD} ,{VSS}) }
+R1 OUT 1 1
+C1 1 0 5.0n
+RINP1 INP1 0 1K
+.ENDS COMPHYS_BASIC_GEN
+*$
+.SUBCKT INV_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS INV_BASIC_GEN
+*$
+* PSpice Model Editor - Version 16.2.0
+*************************************************************
+*************************************************************
+*************************************************************
+* PSpice Model Editor - Version 16.2.0
+
+.SUBCKT BUFFER_PS A Y PARAMS: vhi=1 vlo=0 vthresh=500e-3 tplh=1e-9 tphl=1e-9 tr=1e-9 tf=1e-9
+RA A 0 1e11
+CA A 0 0.01pF
+VS VSUP 0 DC 1
+EBUF1 Ypp 0 VALUE={IF(V(A) > ({vthresh}), 1, 0)}
+ROUTpp Ypp 0 1e11
+XNSW1 OUTp Ypp 0 NSW_PS PARAMS: RONval={(tplh+1e-15)/(1e-12*0.693)} VTHval=0.5
+XPSW1 OUTp Ypp VSUP PSW_PS PARAMS: RONval={(tphl+1e-15)/(1e-12*0.693)} VTHval=0.5
+CDEL1 OUTp 0 1pF
+ETHRESH Yp 0 VALUE={IF(V(OUTp) > 0.5, 1, 0)}
+ROUTp Yp 0 1e11
+XNSW2 OUTr Yp 0 NSW_PS PARAMS: RONval={(tf+1e-15)/(1e-12*2.3)} VTHval=0.5
+XPSW2 OUTr Yp VSUP PSW_PS PARAMS: RONval={(tr+1e-15)/(1e-12*2.3)} VTHval=0.5
+CDEL2 OUTr 0 1pF
+EOUT OUTf 0 VALUE={V(OUTr)*({vhi} - {vlo})+{vlo}}
+RDR OUTf Y  1000
+RO Y 0 1e11
+.ENDS BUFFER_PS
+*$
+.SUBCKT AND2_BASIC_nodelay A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 100p
+.ENDS AND2_BASIC_nodelay 
+*$
+
+*$
+.SUBCKT NSW_PS D G S PARAMS: RONval=10k VTHval=0.7 VCHARval=0.01 CGval=0.01pF CDval=0.01pF CSval=0.01pf
+RDDUM D 0 1e11
+RSDUM S 0 1e11
+RGDUM G 0 1e11
+CG G D {CGval}
+CD D S {CDval}
+CS G S {CSval}
+***EEXP F1 0 VALUE={LIMIT(((V(G,S)-VTHval)/VCHARval),-80,80)} 
+Etest test 0 VALUE={IF(V(D) > V(S), V(G,S), V(G,D))}
+GOUT D S VALUE={V(D,S)/(RONval*(1+EXP(-LIMIT(((V(test)-VTHval)/VCHARval),-80,80))))}
+.ENDS NSW_PS
+*$
+.SUBCKT PSW_PS D G S PARAMS: RONval=10k VTHval=0.7 VCHARval=0.01 CGval=0.01pF CDval=0.01pF 
+RDDUM D 0 1e11
+RSDUM S 0 1e11
+RGDUM G 0 1e11
+CG G D {CGval}
+CD D S {CDval}
+Etest test 0 VALUE={IF(V(S) > V(D), V(S,G), V(D,G))}
+GOUT S D VALUE={V(S,D)/(RONval*(1+EXP(-LIMIT(((V(test)-VTHval)/VCHARval),-80,80))))}
+.ENDS PSW_PS
+*$
+
+*$
+.SUBCKT D_D1 1 2
+D1 1 2 DD1
+.MODEL DD1 D( IS=1e-15 TT=10p Rs=0.05 N=.1  )
+.ENDS D_D1
+*$

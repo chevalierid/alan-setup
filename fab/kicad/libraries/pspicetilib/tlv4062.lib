@@ -1,0 +1,158 @@
+* source TLV4062
+* PSpice Model Editor - Version 17.2.0
+*$
+* TLV4062
+*****************************************************************************
+* (C) Copyright 2019 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model
+*
+*****************************************************************************
+*
+** Released by: Texas Instruments Inc.
+* Part: TLV4062
+* Date: 04/19/2020
+* Model Type: All In One
+* Simulator: PSPICE 
+* Simulator Version: 17.2.0.p001
+* EVM Order Number: N/A 
+* EVM Users Guide:  N/A 
+* Datasheet: SBVS404 - April 2020
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 : Release to Web        
+*
+*****************************************************************************
+* Notes:
+* The following parameters are modeled: 
+* Iq, tpd, Vcm, Vs, Vhys
+* If either input goes beyond the absolute maximum range, the output will float to mid supply for the respsective output
+* If the supply goes beyond the absolute maximum range, both outputs will float to mid supply
+*
+*****************************************************************************
+.SUBCKT TLV4062 IN1 IN2 OUT1 OUT2 V+ V-  
+X_U1 V- IN1 IN2 OUT1 OUT2 V+ SCHEMATIC1  
+.ENDS
+ 
+.SUBCKT SCHEMATIC1 GND IN1 IN2 OUT1 OUT2 V+  
+X_U33         SUPPLY_EN VIN1_EN VDD_B VSS_B N684486 OUT1 OUTPUT_EN
+X_U1         V+ GND VDD_B VSS_B SUPPLY_BUFFER
+X_U27         IN2_B REF N678240 VDD_B VSS_B HYS HPA_COMPHYS
+X_U34         SUPPLY_EN VIN2_EN VDD_B VSS_B N684979 OUT2 OUTPUT_EN
+X_U28         IN1_B REF N678035 VDD_B VSS_B HYS HPA_COMPHYS
+X_U29 N678035 N684486 Delay  
+X_U32 N678240 N684979 Delay  
+V_1_1_2m5         REF 0 1.164
+V_1_1_2m         HYS 0 60m
+X_U25 VIN2_EN IN2_B VDD_B VSS_B VinEn  
+I_I1         V+ 0 DC 2.29e-6  
+X_U24 VIN1_EN IN1_B VDD_B VSS_B VinEn  
+X_U3 SUPPLY_EN VDD_B VSS_B SupplyEn  
+X_U35         IN1 IN2 IN1_B IN2_B SUPPLY_BUFFER
+I_I2         IN1 0 DC 10e-9  
+I_I4         IN2 0 DC 10e-9  
+.ENDS
+ 
+.SUBCKT SupplyEn EN VDD_B VSS_B  
+X_U5         N681640 N681676 N681652 VDD_B VSS_B VCC_RANGE
+X_U15         N681676 N682250 N681786 VDD_B VSS_B VCC_Range
+X_U13         VDD_B VSS_B N681676 VDD_B VSS_B DIFFERENCE
+X_U16          N681652 N681786 EN VDD_B VSS_B ANDGATE
+V_V2         N682250 0 -.3
+V_V1         N681640 0 7
+.ENDS
+ 
+.SUBCKT VinEn INRANGE INX VDD_B VSS_B  
+V_V4         N32101 0 -.3
+X_U20         N31529 N31755 N31781 0 INRANGE VDD_B VSS_B ORGATE1701
+X_U2         N31587 INX N31545 VDD_B VSS_B VINRANGE_393
+V_V3         N31915 0 -.3
+X_U3         INX N31915 N31895 VDD_B VSS_B VINRANGE_393
+X_U17         INX N32101 N32017 VDD_B VSS_B VINRANGE_393
+V_V1         N31379 0 7
+V_V2         N31587 0 7
+X_U19         N31895 N32017 N31755 VDD_B VSS_B ORGATE
+V_V5         N31781 0 5
+X_U18         N31439 N31545 N31529 VDD_B VSS_B ORGATE
+X_U1         N31379 INX N31439 VDD_B VSS_B VINRANGE_393
+.ENDS
+ 
+.SUBCKT Delay VIN VOUT  
+R_R1         0 VOUT  50 TC=0,0 
+T_T1         N666219 0 VOUT 0 Z0=50 TD=9.943u  
+E_E2         N666219 0 N666207 0 1
+R_R13         VIN N666207  24 TC=0,0 
+C_C6         0 N666207  10n  TC=0,0 
+.ENDS
+
+
+
+
+.SUBCKT ANDGATE 1 2 3 VDD VSS
+E1 4 0 VALUE = { IF( ((V(1)> (V(VDD)+V(VSS))/2 ) & (V(2)> (V(VDD)+V(VSS))/2 )), V(VDD), V(VSS) ) }
+R1 4 3 1
+C1 3 0 1e-12
+.ENDS
+
+.SUBCKT Difference 1 2 OUT VDD VSS 
+EOUT OUT 0 VALUE = { V(1)- V(2)}
+R1 OUT 2 1
+C1 2 0 1e-12
+.ENDS
+
+ .SUBCKT hpa_comphys INP INN OUT_OUT VDD VSS VHYS
+EVMID VMID 0 VALUE = { ( V(VDD) + V(VSS) )/2 }
+EVH VH 0 VALUE = { ( V(VHYS)/2) }
+EINNNEW INNNEW 0 VALUE = { IF( ( V(OUT_OUT) < V(VMID) ),(V(INN) + (V(VH))),( V(INN) - V(VH) -1m ) ) }
+EOUT OUT 0 VALUE = { IF( ( V(INP) > V(INNNEW) ), V(VDD), V(VSS) ) }
+R1 OUT OUT_OUT 1
+C1 OUT_OUT 0 1e-12
+.ENDS
+
+.SUBCKT ORGATE 1 2 3 VDD VSS
+E1 4 0 VALUE = { IF( ((V(1)< (V(VDD)+V(VSS))/2 ) & (V(2)< (V(VDD)+V(VSS))/2 )), V(VSS), V(VDD) ) }
+R1 4 3 1
+C1 3 0 1e-12
+.ENDS
+
+.SUBCKT ORGATE1701 1 2 3 4 OUT VDD VSS
+EOUT OUT 0 VALUE = { IF( ((V(1) < (V(VDD)+V(VSS))/2 ) & (V(2) < (V(VDD)+V(VSS))/2 )), V(3), V(4) ) }
+.ENDS
+
+.SUBCKT OUTPUT_EN VS_EN IN_EN VDD_B VSS_B IN OUT
+EVMID VMID 0 VALUE = { ( V(VDD_B) + V(VSS_B) )/2 }
+EOUT OUT 0 VALUE = { IF( ((V(VS_EN)> V(VMID) ) & (V(IN_EN) > (V(VMID) ))), V(IN), V(VMID) ) }
+R1 OUT 2 1
+C1 2 0 1e-12
+.ENDS
+
+.SUBCKT SUPPLY_BUFFER 1 2 VDD_B VSS_B
+EVDD_NEW VDD_B 0 VALUE = {V(1)}
+EVSS_NEW VSS_B 0 VALUE = {V(2)}
+.ENDS
+
+.SUBCKT VCC_Range 1 2 OUT VDD VSS 
+EOUT OUT 0 VALUE = { IF( ( V(1) > V(2) - 1m ), V(VDD), V(VSS) ) }
+R1 OUT 2 1
+C1 2 0 1e-12
+.ENDS
+
+.SUBCKT VINRANGE_393 1 2 OUT VDD VSS 
+EOUT OUT 0 VALUE = { IF( ( V(1) >= V(2) ), V(VSS), V(VDD) ) }
+R1 OUT 2 1
+C1 2 0 1e-12
+.ENDS

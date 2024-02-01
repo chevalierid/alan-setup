@@ -1,0 +1,272 @@
+* PSpice Model Editor - Version 16.2.0
+*$
+*TPD3S044
+*****************************************************************************
+* (C) Copyright 2015 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose. The model is
+** provided solely on an "as is" basis. The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: TPD3S044
+* Date: 21FEB2015 
+* Model Type: Transient
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: 
+* EVM Users Guide: SLVUA95–September 2014  
+* Datasheet: SLVSCP4–OCTOBER 2014
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web
+*
+*****************************************************************************
+.SUBCKT TPD3S044_TRANS D1 D2 EN IN OUT GND
+C_C17         N16787578 GND  0.755p IC=0 TC=0,0 
+R_R9         N16787581 D2  0.0385  
+C_C15         D1 N16787578  0.134p IC=0 TC=0,0 
+L_L8         N16788855 GND  1.01n IC=0 
+C_C16         D2 N16787578  0.12p IC=0 TC=0,0 
+L_L6         N16787581 N16787511  1.42n IC=0 
+R_R10         N16787578 N16788855  0.0252  
+L_L10         N16788887 GND  1n IC=0 
+R_R12         N16787578 N16788887  0.02582  
+D_D7         N16787528 N16787545 D_DD 
+D_D9         N16787511 N16787545 D_DD 
+D_D10         N16787508 N16787528 D_DD 
+C_C14         D1 D2  0.0354p IC=0 TC=0,0 
+R_R11         N16787578 N16787735  0.025765  
+V_VILIM         ILIM GND 2.23Vdc
+X_U12         N16787545 N16787560 d_d PARAMS:
+L_L9         N16787735 GND  1.02n IC=0 
+D_D11         N16787531 N16787511 D_DD 
+R_R13         0 IN  1G  
+V_V12         N16787578 N16787508 0.95
+R_R8         D1 N16787563  0.0317  
+C_U2_C5         U2_TOFF GND  1u  
+X_U2_U648         U2_N17148630 GND ISENSE ILIM VCVSCLIP_PS PARAMS: GAIN=1
++  VOMAX=20 VOMIN=0
+R_U2_R8         POWEROK U2_TOFF  1790  
+V_U2_V1         GND U2_N17148798 0.7Vdc
+G_U2_ABMII1         U2_GATE GND VALUE {
++  LIMIT((0.111u)*PWRS(V(U2_N17148630),2)+(16.5u)*V(U2_N17148630),0,1m)    }
+X_U2_U651         U2_GATE GND POWEROK GND VCCS_CLIP_PS PARAMS: GM=-1m IOMAX=0
++  IOMIN=-125n
+R_U2_R5         U2_N17148849 OUT  10.2m  
+X_U2_U650         U2_GATE GND U2_N17148501 GND VCCS_CLIP_PS PARAMS: GM=1m
++  IOMAX=333n IOMIN=0
+R_U2_R4         IN U2_N17148649  5m  
+D_U2_D12         OUT U2_N17149736 D_D1 
+X_U2_U647         ISENSE GND IN U2_N17148649 VCVSCLIP_PS PARAMS: GAIN=200
++  VOMAX=10 VOMIN=-5
+D_U2_D10         U2_GATE U2_N17148506 D_D1 
+X_U2_S4    U2_N17181072 GND OUT GND GATE_DRIVE_U2_S4 
+X_U2_U825         U2_TOFF U2_N17148257 U2_NEG AND2_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=500E-3
+V_U2_V2         U2_N17148506 GND 12Vdc
+V_U2_V8         U2_N17149736 GND 6
+X_U2_U44         POWEROK U2_N17148257 INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+C_U2_C3         U2_TON GND  1u  
+R_U2_R7         POWEROK U2_TON  1550  
+C_U2_C7         GND OUT  10p IC=0 
+C_U2_C4         GND U2_GATE  21.3p IC=0 
+D_U2_D13         GND OUT D_D1 
+R_U2_R10         IN 0  1G  
+X_U2_U6         U2_TON U2_TOFF U2_NEG U2_N17148330 MUX2_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=0.5
+X_U2_U654         U2_N17148330 U2_N17148501 INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+R_U2_R9         IN U2_N17165097  25.5meg  
+X_U2_U655         U2_N17148649 U2_GATE U2_N17148849 NMOSIDEAL_PS PARAMS: K=2.8
++  VTH=1
+R_U2_R6         IN U2_N17181072  1e6  
+X_U2_U653         POWEROK U2_N17181072 GND SWITCH_PS PARAMS: VTH=500E-3 RON=1k
++  ROFF=1e9 TDELAY=0 TRISE=1E-6 TFALL=1E-6 INITVAL=0
+D_U2_D11         GND U2_GATE D_D1 
+D_U2_D9         U2_N17148798 OUT D_D1 
+X_U2_U5         OUT U2_N17165097 d_d PARAMS:
+V_V10         N16787560 N16787578 6.5
+R_U1_R13         0 IN  1G  
+V_U1_V11         U1_N7638368 GND 3.77Vdc
+V_U1_V13         U1_N7643416 GND 140mVdc
+V_U1_V9         U1_N7637958 GND 1.45Vdc
+V_U1_V14         U1_N7643981 GND 130mVdc
+X_U1_U49         IN U1_N7638368 U1_N7643416 U1_VCCOK COMPHYS_BASIC_GEN PARAMS:
++  VDD=1 VSS=0 VTHRESH=0.5
+X_U1_U48         EN U1_N7637958 U1_N7643981 U1_ENOK COMPHYS_BASIC_GEN PARAMS:
++  VDD=1 VSS=0 VTHRESH=0.5
+G_U1_ABMII1         IN GND VALUE { IF(V(U1_ENOK) > 0.5, 61u, 0.015u)    }
+X_U1_U27         U1_VCCOK U1_ENOK POWEROK AND2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+V_V13         N16787578 N16787531 0.95
+L_L7         N16787563 N16787528  1.14n IC=0 
+.ENDS TPD3S044_TRANS
+*$
+.subckt GATE_DRIVE_U2_S4 1 2 3 4  
+S_U2_S4         3 4 1 2 _U2_S4
+RS_U2_S4         1 2 1G
+.MODEL         _U2_S4 VSWITCH Roff=1e9 Ron=456 Voff=0.25V Von=1
+.ends GATE_DRIVE_U2_S4
+*$
+.subckt d_d 1 2
+d1 1 2 dd
+.model dd d(is=1e-15 n=0.01 tt=1e-11)
+.ends d_d
+*$
+.MODEL D_DD D(IS=1e-15 TT=1e-11 N=0.01 Rs=0.5)
+*.subckt D_DD 1 2
+*d2 1 2 dd1
+*.model dd1 d(is=1e-15 n=0.01 tt=1e-11 Rs=0.5)
+*.ends D_DD
+*$
+.MODEL D_D1 D( IS=1e-15 TT=10p Rs=0.05 N=.1  )
+*.subckt D_D1 1 2
+*d3 1 2 dd2
+*.model dd2 D( IS=1e-15 TT=10p Rs=0.05 N=.1  )
+*.ends D_D1
+*$
+.SUBCKT VCVSCLIP_PS YP YN POS NEG PARAMS: gain=1 vomax=1 vomin=-1
+RP POS 0 1e11
+CP POS 0 0.01pF
+RN NEG 0 1e11
+CN NEG 0 0.01pF
+ROUTN YN 0 1e11
+COUTN YN 0 0.01pF
+RO YP 0 1e11
+.ENDS VCVSCLIP_PS
+*$
+.SUBCKT NMOSIDEAL_PS D G S PARAMS: k=1 vth=0
+RDDUM D 0 1e11
+RSDUM S 0 1e11
+RGDUM G 0 1e11
+EON Yp 0 VALUE={IF(V(G,S) > {vth}, 1, 0)}
+GOUT D S VALUE={IF(V(D,S) >= (V(G,S)-{vth}), V(Yp)*({k}/2)*(V(G,S)-{vth})**2,
++ V(Yp)*({k})*(V(G,S)-{vth}-V(D,S)/2)*V(D,S))}
+.ENDS NMOSIDEAL_PS
+*$
+.SUBCKT VCCS_CLIP_PS IOUT_P IOUT_N VIN_P VIN_N PARAMS:
++ GM=1 IOMAX=1 IOMIN=-1
+RCTRLP VIN_P 0 1e11
+RCTRLN VIN_N 0 1e11
+GOUT IOUT_P IOUT_N VALUE={LIMIT({GM}*V(VIN_P,VIN_N), {IOMIN},{IOMAX})}
+ROUTP IOUT_P 0 1e11
+ROUTN IOUT_N 0 1e11
+.ends VCCS_CLIP_PS
+*$
+**** SWITCH***************** ********************************************************************************
+.SUBCKT SWITCH_PS A SWD SWC PARAMS: vth=500e-3 ron=1e3 roff=1e6 tdelay=1e-9 trise=1e-9 tfall=1e-9 initval=0
+*
+VS VSUP 0 DC 1
+***** boolean ************
+EBUF1 Ypp 0 VALUE={IF(V(A) > ({vth}), {1-initval}, {initval})}
+ROUTpp Ypp 0 1e11
+***** add delay lines ****
+XNSW1 OUTp Ypp 0 NSW_PS PARAMS: RONval={(tdelay+1e-15)/(1e-12*0.693)} VTHval=0.5
+XPSW1 OUTp Ypp VSUP PSW_PS PARAMS: RONval={(tdelay+1e-15)/(1e-12*0.693)} VTHval=0.5
+CDEL1 OUTp 0 1pF
+ETHRESH Yp 0 VALUE={IF(V(OUTp) > 0.5, 1, 0)}
+ROUTp Yp 0 1e11
+** Add rise and fall *****
+XNSW2 OUTr Yp 0 NSW_PS PARAMS: RONval={(trise+1e-15)/(1e-12*2.3)} VTHval=0.5
+XPSW2 OUTr Yp VSUP PSW_PS PARAMS: RONval={(tfall+1e-15)/(1e-12*2.3)} VTHval=0.5
+CDEL2 OUTr 0 1pF
+***Switch ************
+EOUT VG1 SWC VALUE={V(OUTr)}
+XNSW3 SWD VG1 SWC NSW_PS PARAMS: RONval={ron} VTHval=0.5
+.ENDS SWITCH_PS
+*$
+.SUBCKT AND2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS AND2_BASIC_GEN
+*$
+.SUBCKT OR2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  |  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS OR2_BASIC_GEN
+*$
+.SUBCKT INV_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS INV_BASIC_GEN
+*$
+.SUBCKT MUX2_BASIC_GEN A B S Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE  YINT 0 VALUE {{IF(V(S) > {VTHRESH},  
++ V(B),V(A))}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS MUX2_BASIC_GEN
+*$
+.SUBCKT BUF_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS BUF_BASIC_GEN
+*$
+.SUBCKT COMPHYS_BASIC_GEN INP INM HYS OUT PARAMS: 
++ VDD=1 VSS=0 VTHRESH=0.5	
+EIN INP1 INM1 INP INM 1 
+EHYS INP1 INP2 VALUE { IF( V(1) > {VTHRESH},-V(HYS),0) }
+EOUT OUT 0 VALUE { IF( V(INP2)>V(INM1), {VDD} ,{VSS}) }
+R1 OUT 1 1
+C1 1 0 5n
+RINP1 INP1 0 1K
+.ENDS COMPHYS_BASIC_GEN
+*$
+.SUBCKT COMP_BASIC_GEN INP INM Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5	
+E_ABM Yint 0 VALUE {IF (V(INP) > 
++ V(INM), {VDD},{VSS})}
+R1 Yint Y 1
+C1 Y 0 1n
+.ENDS COMP_BASIC_GEN
+*$
+.SUBCKT NSW_PS D G S PARAMS: RONval=10k VTHval=0.7 VCHARval=0.01
++ CGval=0.01pF CDval=0.01pF CSval=0.01pf
+RDDUM D 0 1e11
+RSDUM S 0 1e11
+RGDUM G 0 1e11
+CG G D {CGval}
+CD D S {CDval}
+CS G S {CSval}
+Etest test 0 VALUE={IF(V(D) > V(S), V(G,S), V(G,D))}
+GOUT D S VALUE={V(D,S)/(RONval*(1+EXP(-LIMIT
++ (((V(test)-VTHval)/VCHARval),-80,80))))}
+.ENDS NSW_PS
+*$
+.SUBCKT PSW_PS D G S PARAMS: RONval=10k VTHval=0.7 
++ VCHARval=0.01 CGval=0.01pF CDval=0.01pF 
+RDDUM D 0 1e11
+RSDUM S 0 1e11
+RGDUM G 0 1e11
+CG G D {CGval}
+CD D S {CDval}
+Etest test 0 VALUE={IF(V(S) > V(D), V(S,G), V(D,G))}
+GOUT S D VALUE={V(S,D)/(RONval*(1+EXP(-LIMIT((
++ (V(test)-VTHval)/VCHARval),-80,80))))}
+.ENDS PSW_PS
+*$
+.SUBCKT CESR IN OUT
++ PARAMs:  C=100u ESR=0.01 X=2 IC=0
+C	IN 1  {C*X} IC={IC}
+RESR	1 OUT {ESR/X}
+.ENDS CESR
+*$

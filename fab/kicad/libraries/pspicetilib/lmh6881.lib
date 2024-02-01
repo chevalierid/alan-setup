@@ -1,0 +1,407 @@
+* LMH6881
+*****************************************************************************
+* (C) Copyright 2011 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: LMH6881
+* Date: 08/013/12
+* Model Type: All In One
+* Simulator: TINA-TI
+* Simulator Version: 9.3.50.40 SF-TI
+* EVM Order Number: N/A 
+* EVM Users Guide: N/A
+* Datasheet:
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 : Release to Web
+*
+*****************************************************************************
+* Notes: 
+* 1. The model conforms to the published specs for:
+*    - Nominal max gain, min gain and gain steps
+*    - Noise figure with a 100 ohm signal source
+*    - Input impedance vs frequency
+*    - Output impedance at DC
+*    - Enabled & disabled supply current at +5V supply
+*         NOTE: Model is disabled if the power supply is outside 
+*         of the max supply range: 4.75V < Vsupp < 5.25V
+*    - Max output swing vs output current
+*    - Singe-tone distortion (HD2/3) at max gain is close to the 
+*      published specs for the case of a nominal 200 ohm resistive load.
+* 2. Digital functions: This model provides only a nominal, idealized 
+*      gain values available in the SERIAL MODE of operation.
+*      This model does not support the SERIAL MODE feature, only the
+*      equivalent, nominal gain settins via a 7 bit parallel 
+*      gain control word [B6 B5 B4 B3 B2 B1 B0].
+*    - This model does not provide many of the digital functions 
+*      described in the device data sheet. 
+*    - This model does not conform to many of the digital performance 
+*      metrics described in the device data sheet, such as setup time or 
+*      hold time. 
+* 3. Output: This model does not offer the same distortion performance 
+*      versus output load or gain as described in the device data sheet.
+*      The OIP3 of the macromodel is generally 4dB to 5dB better than the
+*      actual device. 
+*      This model can gives the same harmonic distortion behavior as 
+*      shown in the data sheet for maximum gain and a 200 ohm resistive load.
+* 4. Rejection ratios: this model does not conform to the published 
+*      specs for PSRR and CMRR. 
+*****************************************************************************
+
+
+.SUBCKT LMH6881 OUTP OUTM INPD INMD INPS INMS 
++        B6 B5 B4 B3 B2 B1 B0 OCM EN VCC GRND
+
+X_U1         ATTEN_OUT+ ATTEN_OUT- INPD INMD INPS INMS 
++ B6 B5 B4 B3 B2 B1 B0 EN VCC GRND LMH688x_DIG_ATTEN
+R_OSTG_R47         OSTG_OUT_E2+ OSTG_N2318853  2.5 TC=0,0 
+R_OSTG_R51         OSTG_FB- OSTG_N2366245  2.5 TC=0,0 
+E_OSTG_E23         OSTG_N2318853 GRND OCM OSTG_CM_OUT 1e4
+R_OSTG_R49         VCC GRND  10k TC=0,0 
+E_OSTG_E5         OSTG_VOUT GRND OUTP OUTM 1
+E_OSTG_E26         OSTG_CM_OUT GRND OUTP OSTG_N2319283 0.25
+X_OSTG_H1    OSTG_N2366105 OUTP OSTG_IOUT+ GRND LMH688x_OSTG_H1 
+E_OSTG_E27         OSTG_N2319283 GRND OUTM GRND -1
+R_OSTG_R27         GRND OSTG_VOUT  1k TC=0,0 
+R_OSTG_R48         OSTG_N2324407 OCM  10k TC=0,0 
+R_OSTG_R50         OSTG_FB+ OSTG_N2366105  2.5 TC=0,0 
+X_OSTG_U5         OSTG_OUT_LIM1+ OSTG_OUT_LIM1- GAIN_STAGE_OUT+ GAIN_STAGE_OUT- 
++ OSTG_IOUT+ LMH688x_LIMIT_POLY 
+X_OSTG_U6         OSTG_OUT_LIM2+ OSTG_OUT_LIM2- GAIN_STAGE_OUT+ GAIN_STAGE_OUT- 
++ OSTG_IOUT- LMH688x_LIMIT_POLY 
+E_OSTG_E15         OSTG_FB+ OSTG_OUT_E1- OSTG_OUT_LIM1+ OSTG_OUT_LIM1- 1
+X_OSTG_H2    OSTG_N2366245 OUTM OSTG_IOUT- GRND LMH688x_OSTG_H2 
+V_OSTG_V14         OSTG_N2324407 GRND 1.25Vdc
+R_OSTG_R46         OSTG_N2318853 OSTG_OUT_E1-  2.5 TC=0,0 
+E_OSTG_E16         OSTG_OUT_E2+ OSTG_FB- OSTG_OUT_LIM2+ OSTG_OUT_LIM2- 1
+V_V14         N2564834 0 0Vdc
+X_U2         ATTEN_OUT+ ATTEN_OUT- N2564978 N2564824 
++ B6 B5 B4 B3 B2 B1 B0 0 LMH688x_Noise_Source 
+R_R47         N2564834 N2564978  170 TC=0,0 
+R_R48         N2564824 N2564834  170 TC=0,0 
+R_R49         N2564824 N2564978  340 TC=0,0 
+R_GSTG_R10         GSTG_P1- GSTG_P1+ 2 TC=0,0 
+G_GSTG_G14         GSTG_N2597723 GRND GSTG_OUT2+ GSTG_OUT2- 1
+G_GSTG_G11         GSTG_N2331516 GSTG_N2331162 GSTG_N2737742 GSTG_N2738201 -1
+R_GSTG_R33         GRND GSTG_N2674570  1 TC=0,0 
+C_GSTG_C9         GSTG_N2619805 GSTG_N2620129  136.9pF  TC=0,0 
+E_GSTG_E20         GSTG_GAIN_IN+ GRND GSTG_N2331162 GSTG_FB- 1
+R_GSTG_R6         GSTG_GC- GSTG_GC+ 2 TC=0,0 
+C_GSTG_C11         GRND GSTG_N2566464  514.4pF TC=0,0 
+L_GSTG_L5         GRND GSTG_N2620129  197.8pH  
+X_GSTG_U4         GSTG_N2737742 GSTG_N2738201 GSTG_OUT2+ GSTG_OUT2- 
++ GSTG_OUT3+ GSTG_OUT3- ATTEN_OUT+ ATTEN_OUT- LMH688x_GAIN2 
+R_GSTG_R29         GRND GSTG_N2646951  1 TC=0,0 
+L_GSTG_L6         GSTG_N2566464 GSTG_N2674568  1.24nH  
+C_GSTG_C10         GSTG_N2620129 GSTG_N2647675  554.1pF  TC=0,0 
+R_GSTG_R28         GRND GSTG_N2597723  1 TC=0,0 
+R_GSTG_R31         GRND GSTG_N2566464  1 TC=0,0 
+R_GSTG_R7         GRND GAIN_STAGE_OUT+  1 TC=0,0 
+G_GSTG_G13         GSTG_N2566464 GRND GSTG_OUT3+ GSTG_OUT3- 0.018
+C_GSTG_C14         GSTG_N2690766 GSTG_N2691178  274.5pF  TC=0,0 
+G_GSTG_G15         GSTG_N2331516 GSTG_N2331162 GSTG_N2646951 GRND 1
+R_GSTG_R14         GAIN_STAGE_OUT- GRND  1 TC=0,0 
+L_GSTG_L10         GSTG_N2674568 GSTG_N2674570  514.4pH  
+R_GSTG_R16         GRND GSTG_N2331516  1 TC=0,0 
+R_GSTG_R34         GRND GSTG_N2691178  1 TC=0,0 
+E_GSTG_E17         GSTG_GAIN_IN- GRND GSTG_N2331516 GSTG_FB+ 1
+G_GSTG_G2         GSTG_P2+ GSTG_P2- GSTG_P1+ GSTG_P1- 1
+R_GSTG_R15         GAIN_STAGE_OUT- GAIN_STAGE_OUT+  2 TC=0,0 
+R_GSTG_R30         GRND GSTG_N2647675  1 TC=0,0 
+R_GSTG_R35         GSTG_N2332046 GSTG_N2332038  200 TC=0,0 
+G_GSTG_G18         GSTG_N2331516 GSTG_N2331162 GSTG_N2674570 GRND 1
+C_GSTG_C12         GRND GSTG_N2674568  1.24nF TC=0,0 
+R_GSTG_R17         GSTG_N2331162 GRND  1 TC=0,0 
+R_GSTG_R11         GRND GSTG_P2+  1 TC=0,0 
+G_GSTG_G12         GSTG_N2565789 GRND GSTG_OUT2+ GSTG_OUT2- 0.018
+E_GSTG_E18         GSTG_FB+ GRND GSTG_N2331516 OSTG_FB+ 0.045
+C_GSTG_C5         GRND GSTG_N2565789  949pF  TC=0,0
+G_GSTG_G1         GSTG_P1+ GSTG_P1- GSTG_GC+ GSTG_GC- 1
+L_GSTG_L7         GRND GSTG_N2690356  104.9pH  
+R_GSTG_R18         GSTG_N2331162 GSTG_N2331516  2 TC=0,0 
+L_GSTG_L1         GSTG_N2565789 GSTG_N2615254  2.29nH  
+C_GSTG_C4         GSTG_P2- GSTG_P2+ 20p  TC=0,0 
+R_GSTG_R32         GRND GSTG_N2663531  1 TC=0,0 
+G_GSTG_G19         GSTG_N2331516 GSTG_N2331162 GSTG_N2691178 GRND 1
+E_GSTG_E19         GSTG_FB- GRND GSTG_N2331162 OSTG_FB- 0.045
+R_GSTG_R27         GRND GSTG_N2565789  1 TC=0,0 
+C_GSTG_C6         GRND GSTG_N2615254  2.29nF TC=0,0 
+R_GSTG_R12         GSTG_P2- GRND  1 TC=0,0 
+X_GSTG_U2         GSTG_OUT1+ GSTG_OUT1- GSTG_N2332038 GSTG_N2332046 
++ GSTG_N2332076 GSTG_N2332064 GSTG_GAIN_IN+ GSTG_GAIN_IN- LMH688x_GAIN 
+G_GSTG_G17         GSTG_N2663531 GRND GSTG_OUT3+ GSTG_OUT3- 1
+G_GSTG_G16         GSTG_N2331516 GSTG_N2331162 GSTG_N2647675 GRND 1
+L_GSTG_L2         GSTG_N2615254 GSTG_N2646951  949.3pH  
+R_GSTG_R36         GSTG_N2332076 GSTG_N2332064  200 TC=0,0 
+C_GSTG_C15         GSTG_N2690356 GSTG_N2690766  84.8pF  TC=0,0 
+R_GSTG_R8         GRND GSTG_P1+  1 TC=0,0 
+R_GSTG_R13         GSTG_P2- GSTG_P2+ 2 TC=0,0 
+G_GSTG_G6         GAIN_STAGE_OUT+ GAIN_STAGE_OUT- GSTG_P2+ GSTG_P2- 1
+C_GSTG_C7         GSTG_N2597723 GSTG_N2619483  554.1pF  TC=0,0 
+G_GSTG_G10         GSTG_GC+ GSTG_GC- GSTG_OUT1+ GSTG_OUT1- 1
+C_GSTG_C1         GSTG_P1- GSTG_P1+ 150p  TC=0,0 
+R_GSTG_R4         GRND GSTG_GC+  1 TC=0,0 
+L_GSTG_L3         GRND GSTG_N2619483  197.8pH  
+C_GSTG_C8         GSTG_N2619483 GSTG_N2619805  136.9pF  TC=0,0 
+R_GSTG_R9         GSTG_P1- GRND  1 TC=0,0 
+C_GSTG_C13         GSTG_N2663531 GSTG_N2690356  274.5pF  TC=0,0 
+R_GSTG_R5         GSTG_GC- GRND  1 TC=0,0 
+C_GSTG_C2         GSTG_GC- GSTG_GC+ 1.5n  TC=0,0 
+L_GSTG_L4         GRND GSTG_N2619805  123.3pH  
+L_GSTG_L8         GRND GSTG_N2690766  104.9pH  
+
+.ENDS LMH6881
+
+.subckt LMH688x_OSTG_H1 1 2 3 4  
+H_LMH6881_OUTSTAGE_H1         3 4 VH_LMH6881_OUTSTAGE_H1 -0.7
+VH_LMH6881_OUTSTAGE_H1         1 2 0V
+.ends LMH688x_OSTG_H1
+
+.subckt LMH688x_OSTG_H2 1 2 3 4  
+H_LMH6881_OUTSTAGE_H2         3 4 VH_LMH6881_OUTSTAGE_H2 -0.7
+VH_LMH6881_OUTSTAGE_H2         1 2 0V
+.ends LMH688x_OSTG_H2
+
+.SUBCKT LMH688x_LIMIT_POLY OUT+ OUT- IN+ IN- VC
+.PARAM VCM_OUT = 0
+.PARAM GAIN = 0.5
+.PARAM a3 = -486.9354
+.PARAM a2 = -164.9378
+.PARAM a1 = 1.8034
+.PARAM a0 = 1.544
+* Calc upper & lower limits using polynomial, assumes 5V system
+E_UL UL 0 VALUE = {a3*PWRS(V(VC),3) + a2*PWR(V(VC),2) + a1*V(VC) + a0}
+E_LL LL 0 VALUE = {a3*PWRS(V(VC),3) - a2*PWR(V(VC),2) + a1*V(VC) - a0}
+* Apply limit function using clc'd upper & lower limits
+EOUT OUT+ OUT- VALUE = {MIN(MAX(GAIN*(V(IN+)-V(IN-)),V(LL)),V(UL))}
+V1CM N2 0 {VCM_OUT}
+ROUT1+ OUT+ N2 100
+ROUT1- OUT- N2 100
+.ENDS LMH688x_LIMIT_POLY
+
+.SUBCKT LMH688x_GAIN2 OUT1+ OUT1- OUT2+ OUT2- OUT3+ OUT3- IN+ IN-
+.PARAM a0 = 0
+.PARAM a1 = 1
+.PARAM a2 = {0.711*1.75}
+.PARAM a3 = {-2.845*1.414}
+.PARAM LL = -1000
+.PARAM UL = 1000
+Eid DIFF_IN 0 VALUE = {V(IN+) - V(IN-)}
+E1 OUT1+ OUT1- VALUE = {MAX(MIN(a1*V(DIFF_IN),UL),LL)}
+*E2 OUT2+ OUT2- VALUE = {MAX(MIN(a2*PWR(V(DIFF_IN),2),UL),LL)}
+*E3 OUT3+ OUT3- VALUE = {MAX(MIN(a3*PWRS(V(DIFF_IN),3),UL),LL)}
+E2 OUT2+ OUT2- VALUE = {MAX(MIN(a2*V(DIFF_IN)*V(DIFF_IN),UL),LL)}
+E3 OUT3+ OUT3- VALUE = {MAX(MIN(a3*V(DIFF_IN)*V(DIFF_IN)*V(DIFF_IN),UL),LL)}
+RE1+ OUT1+ 0 200
+RE1- 0 OUT1- 200
+RE1d OUT1+ OUT1- 400
+RE2+ OUT2+ 0 200
+RE2- 0 OUT2- 200
+RE2d OUT2+ OUT2- 400
+RE3+ OUT3+ 0 200
+RE3- 0 OUT3- 200
+RE3d OUT3+ OUT3- 400
+.ENDS LMH688x_GAIN2
+
+.SUBCKT LMH688x_GAIN OUT1+ OUT1- OUT2+ OUT2- OUT3+ OUT3- IN+ IN-
+.PARAM a0 = 0
+.PARAM a1 = 500
+.PARAM a2 = 0.01
+.PARAM a3 = 0.01
+.PARAM LL = -1000
+.PARAM UL = 1000
+Eid DIFF_IN 0 VALUE = {V(IN+) - V(IN-)}
+E1 OUT1+ OUT1- VALUE = {MAX(MIN(a1*V(DIFF_IN),UL),LL)}
+*E2 OUT2+ OUT2- VALUE = {MAX(MIN(a2*PWR(V(DIFF_IN),2),UL),LL)}
+*E3 OUT3+ OUT3- VALUE = {MAX(MIN(a3*PWRS(V(DIFF_IN),3),UL),LL)}
+E2 OUT2+ OUT2- VALUE = {MAX(MIN(a2*V(DIFF_IN)*V(DIFF_IN),UL),LL)}
+E3 OUT3+ OUT3- VALUE = {MAX(MIN(a3*V(DIFF_IN)*V(DIFF_IN)*V(DIFF_IN),UL),LL)}
+RE1+ OUT1+ 0 200
+RE1- 0 OUT1- 200
+RE1d OUT1+ OUT1- 400
+RE2+ OUT2+ 0 200
+RE2- 0 OUT2- 200
+RE2d OUT2+ OUT2- 400
+RE3+ OUT3+ 0 200
+RE3- 0 OUT3- 200
+RE3d OUT3+ OUT3- 400
+.ENDS LMH688x_GAIN
+
+.SUBCKT LMH688x_DIG_ATTEN VOUT+ VOUT- INPD INMD INPS INMS 
++ B6 B5 B4 B3 B2 B1 B0 EN VCC GRND
+* B5-B0 are active low digital inputs; Max gain is at [000000]
+* B6 -  16dB Gain Step
+* B5 -  8dB Gain Step
+* B4 -  4dB Gain Step  
+* B3 -  2dB Gain Step
+* B2 -  1dB Gain Step
+* B1 -  0.5dB Gain Step
+* B0 -  0.25dB Gain Step
+.PARAM VCM_OUT = 2.5
+.PARAM VTHRESH_DIG = 0.5
+.PARAM SCALE = {1/1.3}
+.PARAM G_B6 = -16
+.PARAM G_B5 = -8
+.PARAM G_B4 = -4
+.PARAM G_B3 = -2
+.PARAM G_B2 = -1
+.PARAM G_B1 = -0.5
+.PARAM G_B0 = -0.25
+.PARAM RINT = {5/260e-6}
+.PARAM VINT = {5*60e-6/260e-6}
+.PARAM VCC_MIN = 4.75
+.PARAM VCC_MAX = 5.25
+.PARAM VCC_NOM = 5.0
+.PARAM VIN_MAX = 3.5
+.PARAM VIN_MIN = 1.5
+.PARAM ATTEN_GAIN_MIN = -20
+.PARAM VCM_IN = 2.5
+.PARAM a3 = -1.13e-4
+.PARAM a2 = -4e-5
+.PARAM a0 = 0
+.PARAM b3 = -1.13e-4
+.PARAM b2 = -4e-5
+.PARAM b0 = 0
+EVCC_TEST N_VCC_TEST 0 VALUE = 
++ {0.5*(1 - SGN(V(VCC,GRND)-VCC_MIN)*SGN(V(VCC,GRND)-VCC_MAX))}
+VB6 B6n 0 {VINT}
+VB5 B5n 0 {VINT}
+VB4 B4n 0 {VINT}
+VB3 B3n 0 {VINT}
+VB2 B2n 0 {VINT}
+VB1 B1n 0 {VINT}
+VB0 B0n 0 {VINT}
+RB6 B6 B6n {RINT}
+RB5 B5 B5n {RINT}
+RB4 B4 B4n {RINT}
+RB3 B3 B3n {RINT}
+RB2 B2 B2n {RINT}
+RB1 B1 B1n {RINT}
+RB0 B0 B0n {RINT}
+VEN ENn 0 {VINT}
+REN EN ENn {RINT}
+* CONVERT DIGITAL INPUT VOLTAGES TO LOGIC LEVELS
+EB6 N_B6 0 VALUE = {MIN(MAX(SCALE*(V(B6)-VTHRESH_DIG),0),1)}
+EB5 N_B5 0 VALUE = {MIN(MAX(SCALE*(V(B5)-VTHRESH_DIG),0),1)}
+EB4 N_B4 0 VALUE = {MIN(MAX(SCALE*(V(B4)-VTHRESH_DIG),0),1)}
+EB3 N_B3 0 VALUE = {MIN(MAX(SCALE*(V(B3)-VTHRESH_DIG),0),1)}
+EB2 N_B2 0 VALUE = {MIN(MAX(SCALE*(V(B2)-VTHRESH_DIG),0),1)}
+EB1 N_B1 0 VALUE = {MIN(MAX(SCALE*(V(B1)-VTHRESH_DIG),0),1)}
+EB0 N_B0 0 VALUE = {MIN(MAX(SCALE*(V(B0)-VTHRESH_DIG),0),1)}
+EEN N_EN 0 VALUE = {MIN(MAX(SCALE*(V(EN)-VTHRESH_DIG),0),1)}
+E_ATTEN_GAIN_DB N_GAIN_DB 0 VALUE = {MAX(G_B6*V(N_B6)
++ +G_B5*V(N_B5)
++ +G_B4*V(N_B4)
++ +G_B3*V(N_B3)
++ +G_B2*V(N_B2)
++ +G_B1*V(N_B1)
++ +G_B0*V(N_B0),ATTEN_GAIN_MIN)}
+E_ATTEN_GAIN a1 0 VALUE = {(1-V(N_EN))*V(N_VCC_TEST)*(10^(V(N_GAIN_DB)/20))}
+VinCM CM_INT 0 {VCM_IN}
+RINPD INPD INPDmid 51
+LINPD INPDmid CM_INT 1.5nH
+RINMD INMD INMDmid 51
+LINMD INMDmid CM_INT 1.5nH
+CIN2 INmid1 INMD 0.954p
+LIN2 INmid1 INmid2 73.75n
+RIN2 INmid2 INPD 510
+*RIN2 INPD INmid 200
+RINPS INPS INPS_mid 50
+CINPS INPS INPS_mid 1e-12
+VINPS INPS_mid 0 {VCM_IN}
+RINMS INMS INMS_mid 50
+CINMS INMS INMS_mid 1e-12
+VINMS INMS_mid 0 {VCM_IN}
+E_LIM_INPD INPD_LIM 0 VALUE = {MIN(MAX(V(INPD),VIN_MIN),VIN_MAX)}
+E_LIM_INMD INMD_LIM 0 VALUE = {MIN(MAX(V(INMD),VIN_MIN),VIN_MAX)}
+E_LIM_INPS INPS_LIM 0 VALUE = {MIN(MAX(V(INPS),VIN_MIN),VIN_MAX)}
+E_LIM_INMS INMS_LIM 0 VALUE = {MIN(MAX(V(INMS),VIN_MIN),VIN_MAX)}
+E_ID DIFF_IN 0        VALUE = {V(INPD_LIM) - V(INMD_LIM)}
+E_INPS INPS_SHIFT 0   VALUE = {V(INPS_LIM) - V(CM_INT)}
+E_INMS INMS_SHIFT 0   VALUE = {V(INMS_LIM) - V(CM_INT)}
+G_DIFF_IN VOUT+ VOUT- VALUE = {(a0 + V(a1)*V(DIFF_IN)
++ + a2*PWR(V(DIFF_IN),2) + a3*PWRS(V(DIFF_IN),3))}
+G_SE_INP  VOUT+ VOUT- VALUE = {(b0 + 1.07*V(a1)*V(INPS_SHIFT)
++ + b2*PWR(V(INPS_SHIFT),2) + b3*PWRS(V(INPS_SHIFT),3))}
+G_SE_INM  VOUT- VOUT+ VALUE = {(b0 + 1.07*V(a1)*V(INMS_SHIFT)
++ + b2*PWR(V(INMS_SHIFT),2) + b3*PWRS(V(INMS_SHIFT),3))}
+* --- Current Drain ---
+GQ_EN VCC GRND VALUE = {(1-V(N_EN))*V(N_VCC_TEST)*0.085}
+GQ_DIS VCC GRND VALUE = {(V(N_EN))*V(N_VCC_TEST)*(0.005)}
+* --- Output Load & CM voltage -----
+ROUT1+ VOUT+ N2 1
+ROUT1- VOUT- N2 1
+ROUTp  VOUT+ VOUT- 2
+V1CM N2 0 {VCM_OUT}
+.ENDS LMH688x_DIG_ATTEN
+
+.SUBCKT LMH688x_Noise_Source IOUT+ IOUT- INPD INMD
++ B6 B5 B4 B3 B2 B1 B0 GRND
+* OUT+, OUT-, INPD, INMD pins must be externally loaded.
+* B6 -  6.4dB Gain Step
+* B5 -  3.2dB Gain Step
+* B4 -  1.6dB Gain Step  
+* B3 -  0.8dB Gain Step
+* B2 -  0.04dB Gain Step
+* B1 -  0.02dB Gain Step
+* B0 -  0.01dB Gain Step
+.PARAM VCM_OUT = 2.5
+.PARAM VTHRESH_DIG = 0.5
+.PARAM SCALE = {1/1.3}
+.PARAM G_B6 = -6.4
+.PARAM G_B5 = -3.2
+.PARAM G_B4 = -1.6
+.PARAM G_B3 = -0.8
+.PARAM G_B2 = -1
+.PARAM G_B1 = -0.5
+.PARAM G_B0 = -0.25
+.PARAM RINT = {5/260e-6}
+.PARAM VINT = {5*60e-6/260e-6}
+.PARAM ATTEN_GAIN_MIN = -8
+* -- Sources & Resistances for Digital Bias Currents -----
+VB6 B6n 0 {VINT}
+VB5 B5n 0 {VINT}
+VB4 B4n 0 {VINT}
+VB3 B3n 0 {VINT}
+VB2 B2n 0 {VINT}
+VB1 B1n 0 {VINT}
+VB0 B0n 0 {VINT}
+RB6 B6 B6n {RINT}
+RB5 B5 B5n {RINT}
+RB4 B4 B4n {RINT}
+RB3 B3 B3n {RINT}
+RB2 B2 B2n {RINT}
+RB1 B1 B1n {RINT}
+RB0 B0 B0n {RINT}
+* CONVERT DIGITAL INPUT VOLTAGES TO LOGIC LEVELS
+EB6 N_B6 0 VALUE = {MIN(MAX(SCALE*(V(B6)-VTHRESH_DIG),0),1)}
+EB5 N_B5 0 VALUE = {MIN(MAX(SCALE*(V(B5)-VTHRESH_DIG),0),1)}
+EB4 N_B4 0 VALUE = {MIN(MAX(SCALE*(V(B4)-VTHRESH_DIG),0),1)}
+EB3 N_B3 0 VALUE = {MIN(MAX(SCALE*(V(B3)-VTHRESH_DIG),0),1)}
+EB2 N_B2 0 VALUE = {MIN(MAX(SCALE*(V(B2)-VTHRESH_DIG),0),1)}
+EB1 N_B1 0 VALUE = {MIN(MAX(SCALE*(V(B1)-VTHRESH_DIG),0),1)}
+EB0 N_B0 0 VALUE = {MIN(MAX(SCALE*(V(B0)-VTHRESH_DIG),0),1)}
+E_ATTEN_GAIN_DB N_GAIN_DB 0 VALUE = {MAX(G_B6*V(N_B6)+G_B5*V(N_B5)
++ +G_B4*V(N_B4)+G_B3*V(N_B3)
++ +G_B2*V(N_B2)+G_B1*V(N_B1)
++ +G_B0*V(N_B0),ATTEN_GAIN_MIN)}
+E_ATTEN_GAIN a1 0 VALUE = {10^(V(N_GAIN_DB)/20)}
+
+E_ID DIFF_IN 0      VALUE = {V(INPD) - V(INMD)}
+G_DIFF_IN IOUT+ IOUT- VALUE = {V(a1)*V(DIFF_IN)}
+
+.ENDS LMH688x_Noise_Source
+*

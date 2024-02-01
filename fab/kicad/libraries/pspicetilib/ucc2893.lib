@@ -1,0 +1,550 @@
+* PSpice Model Editor - Version 16.0.0
+*$
+*UCC2893 TRANSIENT MODEL 
+*****************************************************************************
+** This product is designed as an aid for customers of Texas Instruments. **
+** No warranties, either expressed or implied, with respect to this third **
+** party software (if any) or with respect to its fitness for any **
+** particular purpose is claimed by Texas Instruments or the author. The **
+** software (if any) is provided solely on an "as is" basis. The entire **
+** risk as to its quality and performance is with the customer **
+*****************************************************************************
+*
+* This model was developed for Texas Instruments Incorporated by:
+* AEi Systems, LLC
+* 5777 W. Century Blvd., Suite 876
+* Los Angeles, California 90045
+*
+* This model is subject to change without notice. Neither Texas Instruments Incorporated 
+* nor AEi Systems is responsible for updating this model.
+* For more information regarding modeling services, model libraries and simulation 
+* products, please call AEi Systems at (310) 216-1144, or contact AEi Systems by email: 
+* info@AENG.com. Or visit AEi Systems on the web at http://www.AENG.com.
+*
+*****************************************************************************
+*
+* (C) Copyright 2008 Texas Instruments Incorporated. All rights reserved.
+* Released by: Analog e-Lab Design Center, Texas Instruments Inc.
+* Part: UCC2893
+* Date: 11/24/2008
+* Model Type: Transient
+* Simulator: PSpice
+* EVM Order Number: Based off UCC2891EVM
+* EVM Users Guide: sluu178a.pdf Revised December 2006
+* Datasheet: slus542c, revised April 2008
+*
+*****************************************************************************
+*
+* Updates:
+*
+* 1.00
+* Release to Web
+*
+*****************************************************************************
+.SUBCKT UCC2893 AUX CS FB GND LINEUV OUT PGND RDEL RSLOPE RTOFF RTON SS_SD SYNC
++  VDD VIN VREF  
+R_R1         VINLOV VIN  1m  
+X_U50_U3          VDDOK U50_N48553 ANALOG_BUFFER PARAMS:  GAIN=5 
+X_U50_U1          VREF HALFVREF ANALOG_BUFFER PARAMS:  GAIN=0.5 
+C_U50_C1         0 U50_N46463  1u  
+X_U50_U4          VREF VREFBUF ANALOG_BUFFER PARAMS:  GAIN=1 
+G_U50_G1         U50_N46463 VREF TABLE { V(U50_N46463, VREF) } 
++ ( (-5,-10m)(0,0) (1m,1m)(10m,10m)(5,15m) )
+R_U50_R1         U50_N46463 U50_N48553  1  
+X_U50_U2          VREF V1R27 ANALOG_BUFFER PARAMS:  GAIN=0.254 
+X_U20_U9         U20_13VOK U20_N78882 U20_N61652 RSFF_RDOM_VAR PARAMS:  T=100
+V_U20_V4         U20_N98822 0 8
+C_U20_C6         0 U20_N47072  100p  
+G_U20_G3         VREFBUF U20_N52350 VIRDEL 0 0.05
+X_U20_U5          U20_N51080 V1R27 U20_N51509 COMPARATOR
+C_U20_C8         0 U20_NSW  100p  
+X_U20_S1    U20_N48965 0 U20_N47072 VDD LINE_U20_S1 
+V_U20_V3         U20_N86091 0 10
+X_U20_U19          U20_N86091 U20_N56253 U20_N60729 COMPARATOR
+G_U20_G2         VREFBUF U20_N50082 VIRDEL 0 0.05
+R_U20_R6         U20_N105237 VDDOK  1  
+R_U20_R2         U20_N51080 VINLOV  {RLINEOV}  
+V_U20_V1         U20_N64758 0 {RLINEOV}
+C_U20_C2         0 U20_N48965  100n  
+R_U20_R5         U20_N72182 U20_13VOK  10K  
+C_U20_C5         0 VDDOK  100n  
+D_U20_D3          U20_N52350 VREFBUF DIDEAL
+C_U20_C4         0 U20_13VOK  100p  
+R_U20_R8         U20_N112177 U20_NSW  10K  
+X_U20_S2    U20_N51509 0 U20_N50082 U20_N51080 LINE_U20_S2 
+R_U20_R7         VDD U20_N56253  1  
+X_U20_U15          U20_N51509 U20_N64758 OV AND_1
+X_U20_U14          U20_N60729 U20_NSW U20_N78620 AND
+G_U20_G1         U20_N47010 U20_N47072 TABLE { V(U20_N47010, U20_N47072) } 
++ ( (-10,-1e-6)(0,0) (1,16.3m)(200,20m) )
+X_U20_U18          U20_N56253 U20_N83578 U20_N72182 COMPARATOR
+X_U20_U6          LINEUV V1R27 UVOFF COMPARATOR
+X_U20_U16          U20_N70798 U20_N78620 U20_N78882 OR
+C_U20_C7         0 U20_N56253  50n  
+R_U20_R4         U20_N71253 U20_N70798  10K  
+C_U20_C3         0 U20_N70798  100p  
+X_U20_U10         OUTIN SETON U20_N112177 RSFF_RDOM_VAR PARAMS:  T=50 
+X_U20_U20          U20_N98822 U20_N56253 U20_N71253 COMPARATOR
+V_U20_V2         U20_N83578 0 13
+X_U20_S3    UVOFF 0 U20_N52350 LINEUV LINE_U20_S3 
+R_U20_R3         U20_N61652 U20_N48965  1  
+D_U20_D2          U20_N50082 VREFBUF DIDEAL
+X_U20_U17         U20_N70798 U20_13VOK U20_N105237 RSFF_RDOM_VAR PARAMS:  T=100
+R_U20_R1         U20_N47010 VINLOV  {RVIN}  
+D_U10_D8         U10_N60223 VREFBUF DIDEAL 
+G_U10_G2         0 U10_N60223 VIRDEL 0 1
+D_U10_D6         U10_N96032 VDD DIDEAL 
+X_U10_U27          OVOFF U10_N113873 VREFOK U10_N96010 AND3
+X_U10_U11         U10_N60223 U10_N107698 DELAY PARAMS:  T=70  
+X_U10_U23          U10_N107698 PWM U10_N113717 AND
+X_U10_S5    U10_N96010 0 VDD U10_N96032 DRIVER_U10_S5 
+X_U10_U21          OUTIN U10_N90640 INVERTER
+G_U10_G3         U10_N90458 OUT TABLE { V(U10_N90458, OUT) } 
++ ( (-20,-2.4)(-1,-2.2)(-10m,-2)(0,0)(10m,2)(1,2.2)(20,2.4) )
+D_U10_D7         PGND U10_N96032 DIDEAL 
+D_U10_D5         U10_N93678 VREFBUF DIDEAL 
+D_U10_D3         U10_N90458 VDD DIDEAL 
+X_U10_S6    U10_N96022 0 U10_N96032 PGND DRIVER_U10_S6 
+X_U10_U12         U10_N93678 U10_N107973 DELAY PARAMS:  T=50  
+V_U10_V2         U10_N97232 0 {VINV}
+X_U10_S2    OUTIN 0 VDD U10_N90458 DRIVER_U10_S2 
+X_U10_U18          U10_N107822 U10_N97232 U10_N113873 XOR
+X_U10_S4    U10_N119082 0 U10_N93678 0 DRIVER_U10_S4 
+D_U10_D4         PGND U10_N90458 DIDEAL 
+X_U10_U16          OVOFF UVOFF PWM U10_N61077 NAND3
+X_U10_U25          OVOFF PWM U10_N119082 AND
+X_U10_S3    U10_N90640 0 U10_N90458 PGND DRIVER_U10_S3 
+X_U10_U22          U10_N96010 U10_N96022 INVERTER
+X_U10_S1    U10_N61077 0 U10_N60223 0 DRIVER_U10_S1 
+C_U10_C2         0 U10_N93678  55p  
+X_U10_U26          U10_N107973 PWM U10_N107822 AND_1
+G_U10_G4         0 U10_N93678 VIRDEL 0 1
+X_U10_U24          U10_N113717 VREFOK OUTIN AND
+G_U10_G5         U10_N96032 AUX TABLE { V(U10_N96032, AUX) } 
++ ( (-20,-2.4)(-1,-2.2)(-10m,-2)(0,0)(10m,2)(1,2.2)(20,2.4) )
+C_U10_C1         0 U10_N60223  55p  
+X_U40_U3          SETOFF U40_N55813 U40_N55849 U40_N55927 OR3
+V_U40_V1         U40_N54143 CS 0.5
+G_U40_G2         VREFBUF CS VISLOPE 0 5
+V_U40_V2         U40_N55157 0 {VS}
+X_U40_D2          CS VREFBUF DC_1mV_1A_1V_1nA
+X_U40_S1    TOFF 0 CS 0 PWM_U40_S1 
+X_U40_U4         U40_N55927 SETON PWM RSFF_RDOM_VAR PARAMS:  T=50 
+X_U40_U1          U40_N54143 FBINT U40_N55813 COMPARATOR
+X_U40_U2          CS U40_N55157 U40_N55849 COMPARATOR
+X_U60_U9         0 VIRON U60_N59495 U60_N54801 ANALOG_MUX 
+X_U60_D4          U60_N56840 U60_N57005 DC_1mV_1A_1V_1nA
+X_U60_U4          VDDOK UVOFF OVOFF VREFOK U60_N54984 AND4
+X_U60_U6          FB U60_N56788 ANALOG_BUFFER PARAMS:  GAIN=1 
+G_U60_G2         VREFBUF SS_SD VIRON 0 0.43
+X_U60_D5          0 SS_SD DC_1mV_1mA_1V_1nA
+X_U60_U7          SS_SD U60_N57005 ANALOG_BUFFER PARAMS:  GAIN=1 
+X_U60_D2          SS_SD VREFBUF DC_1mV_1A_1V_1nA
+X_U60_U1          VREFBUF VREFOK COMP_HYS2 PARAMS:  TH=4.5 HYS=0.1   
+G_U60_G3         SS_SD 0 U60_N54801 0 0.86
+X_U60_U5          U60_N54984 U60_N59495 INVERTER
+R_U60_R1         U60_N56788 U60_N56840  1k  
+X_U60_U3          OV OVOFF INVERTER
+X_U60_U8          U60_N56840 FBINT ANALOG_BUFFER PARAMS:  GAIN=0.4 
+X_U30_H1    HALFVREF RTON VIRON 0 OSC_U30_H1 
+X_U30_H2    HALFVREF RTOFF U30_N48570 0 OSC_U30_H2 
+X_U30_U2         VIRON U30_N48570 TOFF U30_N48826 ANALOG_MUX 
+X_U30_U18         U30_DIS U30_N75834 ONE_SHOT_1 PARAMS:  T=50  
+X_U30_S1    U30_N60145 0 U30_N49628 0 OSC_U30_S1 
+X_U30_U17          U30_DIS U30_SYNC2 0 U30_N80630 OR3
+X_U30_D1          0 U30_N49628 DC_1mV_1A_1V_1nA
+R_U30_R1         0 SYNC  75K  
+X_U30_U5         TOFF SETON ONE_SHOT_1 PARAMS:  T=150  
+X_U30_U11          SYNC U30_SYNC2 COMP_HYS2 PARAMS:  TH=2.3 HYS=0.1   
+X_U30_H3    HALFVREF RDEL VIRDEL 0 OSC_U30_H3 
+X_U30_U6         U30_SYNC2 U30_N75471 ONE_SHOT PARAMS:  T=50  
+X_U30_U3          U30_N49628 U30_N65491 ANALOG_BUFFER PARAMS:  GAIN=1 
+C_U30_C1         0 U30_N49628  46.66p IC=0 
+X_U30_U12          VDDOK U30_N60145 INVERTER
+X_U30_H4    U30_N61895 RSLOPE VISLOPE 0 OSC_U30_H4 
+V_U30_V2         U30_N61895 U30_N65491 0.2
+G_U30_G2         0 U30_N49628 U30_N48826 0 1
+C_U30_C2         TOFF 0  10n  
+X_U30_U14         U30_N75834 U30_N75471 N76136 RSFF_RDOM_VAR PARAMS:  T=50 
+X_U30_U4         TOFF SETOFF ONE_SHOT PARAMS:  T=150  
+X_U30_U13          U30_N49628 U30_DIS COMP_HYS2 PARAMS:  TH=1 HYS=2   
+R_U30_R2         U30_N80630 TOFF  1  
+R_R2         GND 0  1m  
+.model DIDEAL D Is=1e-14 Cjo=.1pF Rs=.1
+.ENDS UCC2893
+*$
+.PARAM  RLINEOV={(1E6*UCC2891)+(1E6*UCC2893)+1m} UCC2891=0 UCC2892=0 UCC2893=1
++  UCC2894=0 RVIN={(1E6*UCC2892)+(1E6*UCC2894)+1m} VINV={UCC2891+UCC2892} VS=
++ {(0.75*UCC2891)+(1.27*UCC2892)+(0.75*UCC2893)+(1.27*UCC2894)}
+*$
+.subckt LINE_U20_S1 1 2 3 4  
+S_U20_S1         3 4 1 2 _U20_S1
+RS_U20_S1         1 2 1G
+.MODEL         _U20_S1 VSWITCH Roff=1e6 Ron=50 Voff=0.25V Von=0.75V
+.ends LINE_U20_S1
+*$
+.subckt LINE_U20_S2 1 2 3 4  
+S_U20_S2         3 4 1 2 _U20_S2
+RS_U20_S2         1 2 1G
+.MODEL         _U20_S2 VSWITCH Roff=1e6 Ron=50 Voff=0.25V Von=0.75V
+.ends LINE_U20_S2
+*$
+.subckt LINE_U20_S3 1 2 3 4  
+S_U20_S3         3 4 1 2 _U20_S3
+RS_U20_S3         1 2 1G
+.MODEL         _U20_S3 VSWITCH Roff=1e6 Ron=50 Voff=0.25V Von=0.75V
+.ends LINE_U20_S3
+*$
+.subckt DRIVER_U10_S5 1 2 3 4  
+S_U10_S5         3 4 1 2 _U10_S5
+RS_U10_S5         1 2 1G
+.MODEL         _U10_S5 VSWITCH Roff=1e6 Ron=6 Voff=0.25V Von=0.75V
+.ends DRIVER_U10_S5
+*$
+.subckt DRIVER_U10_S6 1 2 3 4  
+S_U10_S6         3 4 1 2 _U10_S6
+RS_U10_S6         1 2 1G
+.MODEL         _U10_S6 VSWITCH Roff=1e6 Ron=2.67 Voff=0.25V Von=0.75V
+.ends DRIVER_U10_S6
+*$
+.subckt DRIVER_U10_S2 1 2 3 4  
+S_U10_S2         3 4 1 2 _U10_S2
+RS_U10_S2         1 2 1G
+.MODEL         _U10_S2 VSWITCH Roff=1e6 Ron=6 Voff=0.25V Von=0.75V
+.ends DRIVER_U10_S2
+*$
+.subckt DRIVER_U10_S4 1 2 3 4  
+S_U10_S4         3 4 1 2 _U10_S4
+RS_U10_S4         1 2 1G
+.MODEL         _U10_S4 VSWITCH Roff=1e9 Ron=1m Voff=0.25V Von=0.75V
+.ends DRIVER_U10_S4
+*$
+.subckt DRIVER_U10_S3 1 2 3 4  
+S_U10_S3         3 4 1 2 _U10_S3
+RS_U10_S3         1 2 1G
+.MODEL         _U10_S3 VSWITCH Roff=1e6 Ron=2.67 Voff=0.25V Von=0.75V
+.ends DRIVER_U10_S3
+*$
+.subckt DRIVER_U10_S1 1 2 3 4  
+S_U10_S1         3 4 1 2 _U10_S1
+RS_U10_S1         1 2 1G
+.MODEL         _U10_S1 VSWITCH Roff=1e9 Ron=1m Voff=0.25V Von=0.75V
+.ends DRIVER_U10_S1
+*$
+.subckt PWM_U40_S1 1 2 3 4  
+S_U40_S1         3 4 1 2 _U40_S1
+RS_U40_S1         1 2 1G
+.MODEL         _U40_S1 VSWITCH Roff=10e6 Ron=1.0 Voff=0.25V Von=0.75V
+.ends PWM_U40_S1
+*$
+.subckt OSC_U30_H1 1 2 3 4  
+H_U30_H1         3 4 VH_U30_H1 1
+VH_U30_H1         1 2 0V
+.ends OSC_U30_H1
+*$
+.subckt OSC_U30_H2 1 2 3 4  
+H_U30_H2         3 4 VH_U30_H2 -2.333
+VH_U30_H2         1 2 0V
+.ends OSC_U30_H2
+*$
+.subckt OSC_U30_S1 1 2 3 4  
+S_U30_S1         3 4 1 2 _U30_S1
+RS_U30_S1         1 2 1G
+.MODEL         _U30_S1 VSWITCH Roff=1e9 Ron=1m Voff=0.25V Von=0.75V
+.ends OSC_U30_S1
+*$
+.subckt OSC_U30_H3 1 2 3 4  
+H_U30_H3         3 4 VH_U30_H3 1
+VH_U30_H3         1 2 0V
+.ends OSC_U30_H3
+*$
+.subckt OSC_U30_H4 1 2 3 4  
+H_U30_H4         3 4 VH_U30_H4 1
+VH_U30_H4         1 2 0V
+.ends OSC_U30_H4
+*$
+.SUBCKT ANALOG_BUFFER IN OUT  
++ PARAMs:  GAIN=1
+EOUT OUT 0 VALUE { GAIN * V(IN)}
+.ends ANALOG_BUFFER
+*$
+.SUBCKT AND A B OUT  
+EOUT OUT 0 VALUE { IF( V(A)>0.5 & V(B)>0.5,1,0) }
+.ends AND
+*$
+.SUBCKT BUFFER IN OUT  
+EOUT OUT 0 VALUE { IF( V(IN)>0.5,1,0) }
+.ends BUFFER
+*$
+.SUBCKT RSFF_RDOM_VAR R S Q PARAMs:  T=10
+EABM1  1 0 VALUE { If( V(S)>0.5 | V(Q)>0.5, 1,0)    }
+EABM2  Q  0 VALUE { If( V(2)>0.5 & V(R)<0.5, 1,0)    }
+R1   1 2 1
+C1   2  0 {T*1e-9}
+.ENDS RSFF_RDOM_VAR
+*$
+.SUBCKT COMPARATOR INP INM OUT  
+EOUT OUT 0 VALUE { IF( V(INP)>V(INM),1,0) }
+.ends COMPARATOR
+*$
+.SUBCKT INVERTER IN OUT  
+EOUT OUT 0 VALUE { IF( V(IN)<0.5,1,0) }
+.ends INVERTER
+*$
+.SUBCKT OR A B OUT  
+EOUT OUT 0 VALUE { IF( V(A)>0.5 | V(B)>0.5,1,0) }
+.ends OR
+*$
+.SUBCKT AND_1 A B OUT  
+EOUT OUT 0 VALUE { IF( V(A)>0.5 & V(B)<0.5,1,0) }
+.ends AND_1
+*$
+.SUBCKT NAND3 A B C OUT  
+EOUT OUT 0 VALUE { IF( V(A)>0.5 & V(B)>0.5 & V(C)>0.5,0,1) }
+.ends NAND3
+*$
+.SUBCKT ANALOG_MUX A B SEL OUT  
+EOUT OUT 0 VALUE { IF( V(SEL)>0.5,V(B),V(A)) }
+.ends ANALOG_MUX
+*$
+.subckt DC_1mV_1mA_1V_1nA A C
+G1 A C TABLE { V(A, C) } ( (-1,-1n)(0,0)(1m,1m) (2m,100m) (3m,10) )
+.ends DC_1mV_1mA_1V_1nA 
+*$
+.SUBCKT COMP_HYS2 INP OUT 
++ PARAMs:  TH=1 HYS=0.1
+EIN INP1 0 INP 0 1 
+EHYS INP1 INP2 VALUE { IF( V(1)>0.5,-(HYS)/2,HYS/2) }
+EOUT OUT 0 VALUE { IF( V(INP2)>TH,1,0) }
+R1 OUT 1 1
+C1 1 0 5n
+RINP1 INP1 0 1K
+.ends COMP_HYS2
+*$
+.SUBCKT ONE_SHOT IN OUT
++ PARAMs:  T=100
+S_S1         MEAS 0 RESET2 0 S1
+E_ABM1         CH 0 VALUE { if( V(IN)>0.5 | V(OUT)>0.5,1,0)    }
+R_R2         RESET2 RESET  0.1  
+E_ABM3         OUT 0 VALUE { if( V(MEAS)<0.5 & V(CH)>0.5,1,0)    }
+R_R1         MEAS CH  {T} 
+C_C2         0 RESET2  1.4427n  
+C_C1         0 MEAS  1.4427n  
+E_ABM2         RESET 0 VALUE { if(V(CH)<0.5,1,0)    }
+.MODEL         S1 VSWITCH Roff=1e9 Ron=1.0 Voff=0.25V Von=0.75V
+.ENDS ONE_SHOT
+*$
+.SUBCKT ONE_SHOT_1 IN OUT
++ PARAMs:  T=100
+S_S1         MEAS 0 RESET2 0 S1
+E_ABM1         CH 0 VALUE { if( V(IN)<0.5 | V(OUT)>0.5,1,0)    }
+R_R2         RESET2 RESET  0.1  
+E_ABM3         OUT 0 VALUE { if( V(MEAS)<0.5 & V(CH)>0.5,1,0)    }
+R_R1         MEAS CH  {T} 
+C_C2         0 RESET2  1.4427n  
+C_C1         0 MEAS  1.4427n  
+E_ABM2         RESET 0 VALUE { if(V(CH)<0.5,1,0)    }
+.MODEL         S1 VSWITCH Roff=1e9 Ron=1.0 Voff=0.25V Von=0.75V
+.ENDS ONE_SHOT_1
+*$
+.SUBCKT AND3 A B C OUT  
+EOUT OUT 0 VALUE { IF( V(A)>0.5 & V(B)>0.5 & V(C)>0.5,1,0) }
+.ends AND3
+*$
+.SUBCKT DELAY IN OUT
++ PARAMs:  T=100
+S_S1         MEAS 0 RESET2 0 S1
+E_ABM1         CH 0 VALUE { if( V(IN)>0.5,1,0)    }
+E_ABM3         OUT 0 VALUE { if( V(MEAS)>0.5 & V(CH)>0.5,1,0)    }
+R_R1         MEAS CH  {T} 
+C_C1         0 MEAS  1.4427n  
+E_ABM2         RESET 0 VALUE { if(V(CH)<0.5,1,0)    }
+R_R2         RESET2 RESET  0.1  
+C_C2         0 RESET2  1.4427n  
+.MODEL         S1 VSWITCH Roff=1e9 Ron=1.0 Voff=0.25V Von=0.75V
+.ENDS DELAY
+*$
+.SUBCKT XOR A B OUT  
+EOUT OUT 0 VALUE { IF( (V(A)>0.5 & V(B)<0.5) | (V(A)<0.5 & V(B)>0.5),1,0) }
+.ends XOR
+*$
+.SUBCKT OR3 A B C OUT  
+EOUT OUT 0 VALUE { IF( V(A)>0.5 | V(B)>0.5 | V(C)>0.5,1,0) }
+.ends OR3
+*$
+.SUBCKT AND4 A B C D OUT  
+EOUT OUT 0 VALUE { IF( V(A)>0.5 & V(B)>0.5 & V(C)>0.5 & V(D)>0.5,1,0) }
+.ends AND4
+*$
+.SUBCKT CESR IN OUT
++ PARAMs:  C=100u ESR=0.01 X=2 IC=0
+C	IN 1  {C*X} IC={IC}
+RESR	1 OUT {ESR/X}
+.ENDS CESR
+*$
+.SUBCKT OPTO A K C E PARAMS: CTR=1 F=10E3 IC_ILED=0.001
+DLED         A   1 D1 
+VLED         K   1 0
+FLED         3   0 VLED 1
+RF           3   0 1
+CF           3   0 {1/6.28/F} IC={IC_ILED}
+GOUT         C   E 3 0 {CTR}   
+ROUT         C   E 1E6
+GCLAMP E C1 TABLE { V(E, C1) } ( (-1,-1n)(0,0)(1m,1) (2m,10) (3m,1000) )
+VOFF   C C1  0.01
+.model D1 D Is=1e-10 Cjo=.01pF Rs=100m  N=1
+.ends OPTO
+*$
+.SUBCKT XFOR_1P1S P1A P1B S1A S1B PARAMS: NP1=10 NS1=1 RP1=0.001 RS1=0.001 
++ LLEAK=100E-9 LM=0.01 RCORE=100e3 
+R_R3         P1B 2  {RCORE}  
+L_L1         P1A 1  {LLEAK}  
+R_R1         1 2  {RP1}  
+L_L2         P1B 2  {LM} IC=0 
+E_E1         3 S1B 2 P1B {NS1/NP1}
+R_R2         3 4  {RS1}  
+F_F1         2 P1B VF_F1 {NS1/NP1}
+VF_F1         4 S1A 0V
+.ends XFOR_1P1S
+*$
+.SUBCKT XFOR_CS P1A P1B S1A S1B PARAMS: N=100 
+F_F1         S1A S1B VF_F1 {1/N}
+VF_F1        P1B P1A 0V
+.ends XFOR_CS
+*$
+.MODEL BAS21 D
++ IS=8.2452E-9 N=2.0152 RS=.88353 IKF=.38229
++ CJO=3.3825E-12 M=.23375 VJ=.3905
++ ISR=8.4218E-9 NR=3.0599 BV=300 IBV=100.00E-6
++ TT=36.135E-9
+*$
+.SUBCKT BAT54S 1 3
+R1 1 3 3.6E+07 
+D1 1 3 BAT54S
+.MODEL BAT54S D
++ IS=24.291E-9 N=1.0267 RS=1.0700 IKF=3.5113
++ CJO=15.008E-12 M=.53855 VJ=.61864
++ ISR=131.86E-9 NR=3.3642 BV=30 IBV=10.000E-6
++ TT=3.6135E-9
+.ENDS BAT54S
+*$
+.SUBCKT HAT2165   10 20 30
+*     TERMINALS:  D  G  S
+M1   1  2  3  3  DMOS L=1U W=1U
+RD  10  1  615u
+RS  40  3  1.08m
+RG  20  2  2.73 ; 0.273
+CGS  2  3  4.80n
+EGD 12  0  2  1  1
+VFB 14  0  0
+FFB  2  1  VFB  1
+CGD 13 14  2.68n
+R1  13  0  1.00
+D1  12 13  DLIM
+DDG 15 14  DCGD
+R2  12 15  1.00
+D2  15  0  DLIM
+DSD  3 10  DSUB
+LS  30 40  1.00n
+.MODEL DMOS NMOS(LEVEL=3 VMAX=62.5k THETA=80.0m
++ ETA=545u VTO=1.90 KP=705
+.MODEL DCGD D (CJO=2.68n VJ=0.600 M=0.680
+.MODEL DSUB D (IS=228n N=1.50 RS=1.09m BV=30.0
++ CJO=2.45n VJ=0.800 M=0.420 TT=40.0n
+.MODEL DLIM D (IS=100U)
+.ENDS HAT2165
+*$
+.SUBCKT IRF6216   10 20 30
+*     TERMINALS:  D  G  S
+M1   1  2  3  3  DMOS L=1U W=1U
+RD  10  1  70.2m
+RS  40  3  4.75m
+RG  20  2  7.50
+CGS  2  3  1.23n
+EGD 12  0  1  2  1
+VFB 14  0  0
+FFB  1  2  VFB  1
+CGD 13 14  680p
+R1  13  0  1.00
+D1  12 13  DLIM
+DDG 15 14  DCGD
+R2  12 15  1.00
+D2  15  0  DLIM
+DSD  10 3  DSUB
+LS  30 40  1.00n
+.MODEL DMOS PMOS(LEVEL=3 VMAX=312k THETA=45.0m
++ ETA=15.0m VTO=-4.82671 KP=2.60668
+.MODEL DCGD D (CJO=680p VJ=0.600 M=0.680
+.MODEL DSUB D (IS=8.30n N=1.50 RS=30.0m BV=150
++ CJO=718p VJ=0.800 M=0.420 TT=80.0n
+.MODEL DLIM D (IS=100U)
+.ENDS IRF6216
+*$
+.MODEL PN2222A NPN
++ IS=25.705E-15 BF=489.12 VAF=59.605 IKF=3.9902 ISE=4.8475E-6
++ NE=1.9980 BR=1.4511 IKR=2.0643 ISC=6.1231E-9 NC=1.2254
++ RB=4.3263 CJE=23.713E-12 MJE=.33333 CJC=14.575E-12 MJC=.33333
++ TF=581.10E-12 VTF=20.343 ITF=78.240 TR=99n
+*$
+.SUBCKT Si7846DP   10 20 30
+*     TERMINALS:  D  G  S
+M1   1  2  3  3  DMOS L=1U W=1U
+RD  10  1  18.5m
+RS  40  3  2.02m
+RG  20  2  3.75
+CGS  2  3  1.65n
+EGD 12  0  2  1  1
+VFB 14  0  0
+FFB  2  1  VFB  1
+CGD 13 14  1.45n
+R1  13  0  1.00
+D1  12 13  DLIM
+DDG 15 14  DCGD
+R2  12 15  1.00
+D2  15  0  DLIM
+DSD  3 10  DSUB
+LS  30 40  1.00n
+.MODEL DMOS NMOS(LEVEL=3 VMAX=312k THETA=72.0m
++ ETA=7.50m VTO=2.50 KP=67.7
+.MODEL DCGD D (CJO=1.45n VJ=0.600 M=0.680
+.MODEL DSUB D (IS=16.6n N=1.50 RS=15.0m BV=150
++ CJO=556p VJ=0.800 M=0.420 TT=40.0n
+.MODEL DLIM D (IS=100U)
+.ENDS Si7846DP
+*$
+.MODEL BZX84C5V1 D
++ IS=3.2E-18 N=0.85 RS=.52 IKF=11.9m CJO=232p
++ M=0.333 VJ=.75 ISR=150p BV=5.4 IBV=10m TT=50n
+*$
+.SUBCKT TLV431 A K Fdbk 
+* For Transient Simulations
+G_G4         K A TABLE { V(STAGE2, A) } 
++ ( (-10,0)(0,0)(15m,15m)(10,16m) )
+R_R1         A STAGE1  1  
+R_R2         A STAGE2  1  
+C_C2         A STAGE1  159e-6  
+C_C3         A STAGE2  80n  
+G_G1         A STAGE1 Fdbk N60677 3
+X_D1          A STAGE1 DC_1mV_1A_1V_1nA
+G_G3         A STAGE2 STAGE1 A 1
+X_D2          STAGE1 N60651 DC_1mV_1A_1V_1nA
+X_D3          A K DC_1mV_1A_1V_1nA
+V_V1         N60651 A 15m
+V_V2         N60677 A 1.24
+.ENDs TLV431
+*$
+.subckt DC_1mV_1A_1V_1nA A C
+G1 A C TABLE { V(A, C) } ( (-1,-1n)(0,0)(1m,1) (2m,10) (3m,1000) )
+.ends DC_1mV_1A_1V_1nA 
+*$
+.SUBCKT MMBT2907 C B E 
+Q1 C B E QN2907A 
+.MODEL QN2907A PNP (AF=1 BF=154 BR=4 CJC=20.8P
++ CJE=15.6P CJS=0 EG=1.11 FC=0.5 IKF=.14 IKR=.21
++ IS=381F ISC=0 ISE=15.3P ITF=0 KF=0 MJC=.33 MJE=.33
++ MJS=0 NC=2 NE=2 NF=1 NR=1 PTF=0 RB=2.21 RBM=RB RC=.221
++ RE=.552 TF=636P TNOM=27 TR=63.7N VAF=139 VAR=20 VJC=.75
++ VJE=.75 VJS=.75 XCJC=1 XTB=1.5 XTF=0 XTI=3)
+.ENDS MMBT2907
+*$
+

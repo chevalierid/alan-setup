@@ -1,0 +1,346 @@
+* lme49724
+*****************************************************************************
+* (C) Copyright 2012 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: lme49724
+* Date: 4/30/2012
+* Model Type: All In One
+* Simulator: Pspice
+* Simulator Version: Pspice 16.0.0.p001
+* EVM Order Number: N/A
+* EVM Users Guide: N/A
+* Datasheet: SNAS438
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 : Release to Web
+* Version 1.1 : Fix EN pin threshold
+*
+*****************************************************************************
+* Notes: The following parameters are modeld: 
+*(VCC=15, VEE=-15V): Icc, PSRR, GBWP, Open loop gain, Closed 
+*loop gain, Slew rate, CMRR, Input voltage noise density, input 
+*bias current, input offset current, offset voltage, short 
+*circuit current and voltage swing.
+*****************************************************************************
+*$
+.SUBCKT LME49724 INP INN VCM VCC VEE EN OUTP OUTN
+.PARAM V_EE=-15
+E_TST		V_TST GND_FLOAT VEE GND_FLOAT 1
+X_U14         INP1 INP2 VNSE
+C_Cinn         GND_FLOAT INN1  200f  TC=0,0
+X_Uvcl1_Uvcl1         OUTP Uvcl1_N2136201 D_ideal
+X_Uvcl1_Uvcl2         Uvcl1_N213688 OUTP D_IDEAL
+V_Uvcl1_Vclo1         VCC_BUF Uvcl1_N2136201 1.89Vdc
+V_Uvcl1_Vclo2         Uvcl1_N213688 VEE_BUF 1.89Vdc
+C_Cr6         0 N14487713  1e-6  TC=0,0
+R_R5         GND_FLOAT N14583637  1G TC=0,0
+E_E1         VCC_BUF GND_FLOAT VCC GND_FLOAT 1
+X_U23         VCC VEE INP_CMRR N14690731 GND_FLOAT VCLAMP
++  PARAMS:  VMAX=1.5 VMIN=1.5
+R_R2         N14753339 GND_FLOAT  1G TC=0,0
+R_Rr1         0 GND_FLOAT  100E6 TC=0,0
+X_R1         N14487707 N14487713 RNOISELESS PARAMS: R=1e6
+E_E2         VEE_BUF GND_FLOAT VEE GND_FLOAT 1
+X_U29         N14554725 N14690731 CL_CLAMP2 CMV EN	VEE
++  GBW_SLEW_SE_EN PARAMS:  AOL=120 GBW=25MEG SRP=9MEG SRN=9MEG IT=1M VON=2.35
++  RSC=1M
+X_Ud10         N14662137 GND_FLOAT D_IDEAL
+X_Ud1         INP_CMRR VCC D_ideal
+X_R6         N14487713 N14487809 RNOISELESS PARAMS: R=1e6
+I_I3         INN3 VEE DC 90nAdc
+X_U11         VCC VEE VIMON1 GND_FLOAT Tran_Iout
+X_Ud11         N14662127 GND_FLOAT D_IDEAL
+X_U26         INN2 INN3 GND_FLOAT CMRR PARAMS:  CMRR=120
++  FCMRR=1.6K
+X_U24         VCC VEE INP_CMRR N14548982 GND_FLOAT VCLAMP
++  PARAMS:  VMAX=1.5 VMIN=1.5
+V_Vos4         N14662137 VEE 1Vdc
+I_I4         INP_CMRR VCC DC 90nAdc
+E_Er1         GND_FLOAT 0 N14487713 0 1
+X_U13         VCC VEE VIMON2 GND_FLOAT Tran_Iout
+X_U22         VCC VEE INN3 N14554725 GND_FLOAT VCLAMP PARAMS:
++  VMAX=1.5 VMIN=1.5
+V_Vos5         N14662127 VEE 1Vdc
+X_Ud2         INN3 VCC D_IDEAL
+X_U25         VCC VEE INN3 N14687690 GND_FLOAT VCLAMP PARAMS:
++  VMAX=1.5 VMIN=1.5
+X_Uvcl2_Uvcl1         OUTN Uvcl2_N2136201 D_ideal
+X_Uvcl2_Uvcl2         Uvcl2_N213688 OUTN D_IDEAL
+V_Uvcl2_Vclo1         VCC_BUF Uvcl2_N2136201 1.89Vdc
+V_Uvcl2_Vclo2         Uvcl2_N213688 VEE_BUF 1.89Vdc
+X_Ud3         VEE INP_CMRR D_IDEAL
+R_Uz1_Rm         Uz1_VZO_3 Uz1_VZO_4  23 TC=0,0
+X_Uz1_Rg1         GND_FLOAT Uz1_N55531 RNOISELESS PARAMS: R=10e6
+X_Uz1_Rg2         Uz1_VZO_2 Uz1_N55635 RNOISELESS PARAMS: R=1e6
+X_Uz1_Uamp1         CL_CLAMP1 Uz1_N55531 Uz1_VZO_1
++  GND_FLOAT VCVS_LIMIT PARAMS: GAIN=1e6 VPOS=6e4 VNEG=-6e4
+X_Uz1_H1    Uz1_VZO_4 OUTP VIMON1 GND_FLOAT Zout_Uz1_H1
+X_Uz1_Rf1         Uz1_N55531 Uz1_VZO_1 RNOISELESS PARAMS: R=10e6
+X_Uz1_Rf2         Uz1_N55635 Uz1_VZO_3 RNOISELESS PARAMS: R=1e6
+E_Uz1_E1         Uz1_VZO_2 GND_FLOAT Uz1_VZO_1 Uz1_VZO_4 -1
+R_Uz1_Rb         Uz1_N55469 Uz1_VZO_4  0.01 TC=0,0
+R_Uz1_Ra         Uz1_N55463 Uz1_VZO_4  0.01 TC=0,0
+X_Uz1_Uamp2         GND_FLOAT Uz1_N55635 Uz1_VZO_3
++  GND_FLOAT VCVS_LIMIT PARAMS: GAIN=1e6 VPOS=6e4 VNEG=-6e4
+X_Uz1_S1    N14753339 GND_FLOAT Uz1_N55463 Uz1_VZO_3
++  Zout_Uz1_S1
+X_Uz1_S2    N14753339 GND_FLOAT Uz1_N55469 Uz1_VZO_3
++  Zout_Uz1_S2
+E_Er2         N14487707 0 VCC 0 1
+R_Rinp         INP INP1  1 TC=0,0
+R_Uz2_Rm         Uz2_VZO_3 Uz2_VZO_4  23 TC=0,0
+X_Uz2_Rg1         GND_FLOAT Uz2_N55531 RNOISELESS PARAMS: R=10e6
+X_Uz2_Rg2         Uz2_VZO_2 Uz2_N55635 RNOISELESS PARAMS: R=1e6
+X_Uz2_Uamp1         CL_CLAMP2 Uz2_N55531 Uz2_VZO_1
++  GND_FLOAT VCVS_LIMIT PARAMS: GAIN=1e6 VPOS=6e4 VNEG=-6e4
+X_Uz2_H1    Uz2_VZO_4 OUTN VIMON2 GND_FLOAT Zout_Uz2_H1
+X_Uz2_Rf1         Uz2_N55531 Uz2_VZO_1 RNOISELESS PARAMS: R=10e6
+X_Uz2_Rf2         Uz2_N55635 Uz2_VZO_3 RNOISELESS PARAMS: R=1e6
+E_Uz2_E1         Uz2_VZO_2 GND_FLOAT Uz2_VZO_1 Uz2_VZO_4 -1
+R_Uz2_Rb         Uz2_N55469 Uz2_VZO_4  0.01 TC=0,0
+R_Uz2_Ra         Uz2_N55463 Uz2_VZO_4  0.01 TC=0,0
+X_Uz2_Uamp2         GND_FLOAT Uz2_N55635 Uz2_VZO_3
++  GND_FLOAT VCVS_LIMIT PARAMS: GAIN=1e6 VPOS=6e4 VNEG=-6e4
+X_Uz2_S1    N14758558 GND_FLOAT Uz2_N55463 Uz2_VZO_3
++  Zout_Uz2_S1
+X_Uz2_S2    N14758558 GND_FLOAT Uz2_N55469 Uz2_VZO_3
++  Zout_Uz2_S2
+X_U30         VCC VEE EN IQ_EN PARAMS:  VON=2.35 IQQ=10e-3 IOFF=0.1e-3
+X_Ud4         VEE INN3 D_IDEAL
+X_U27         VCC VEE INN1 INN2 GND_FLOAT PSRR PARAMS:
++  PSRR=135 FPSRR=1k
+R_R3         GND_FLOAT N14583609  1G TC=0,0
+R_Rinn         INN INN1  1 TC=0,0
+E_Er3         N14487809 0 VEE 0 1
+R_ucm_R6         ucm_N3182226 OUTN  10k TC=0,0
+R_ucm_R7         OUTP ucm_N3182226  10k TC=0,0
+V_ucm_Vos_cm         ucm_N3182226 ucm_NET2 1.6uVdc
+R_ucm_R8         VEE CMV  1e9 TC=0,0
+R_ucm_Rfilt         VCM ucm_NET1  100 TC=0,0
+C_ucm_Cfilt         VEE ucm_NET1  5p  TC=0,0
+E_ucm_E3         CMV VEE ucm_NET1 ucm_NET2 1e6
+X_U28         N14548982 N14687690 CL_CLAMP1 CMV EN	VEE
++  GBW_SLEW_SE_EN PARAMS:  AOL=120 GBW=25MEG SRP=9MEG SRN=9MEG IT=1M VON=2.35
++  RSC=1M
+R_R4         N14758558 GND_FLOAT  1G TC=0,0
+R_Ucl2_Rcl2         N14583637 Ucl2_N216439  1 TC=0,0
+C_Ucl2_Ccl2         GND_FLOAT Ucl2_N216439  1p  TC=0,0
+E_Ucl2_E1         Ucl2_N216415 GND_FLOAT Ucl2_N216359
++  VIMON2 100
+X_Ucl2_Ucl1         Ucl2_N216547 Ucl2_N216415 D_IDEAL
+E_Ucl2_E2         Ucl2_N216439 GND_FLOAT Ucl2_N216353
++  VIMON2 100
+X_Ucl2_Ucl2         Ucl2_N216439 Ucl2_N216547 D_IDEAL
+V_Ucl2_Vclp         Ucl2_N216359 GND_FLOAT 40Vdc
+R_Ucl2_Rcl3         Ucl2_N216547 CL_CLAMP2  0.01 TC=0,0
+V_Ucl2_Vcln         Ucl2_N216353 GND_FLOAT -40Vdc
+R_Ucl2_Rcl1         Ucl2_N216415 N14583637  1 TC=0,0
+C_Ucl2_Ccl1         Ucl2_N216415 GND_FLOAT  1p  TC=0,0
+V_Vos         INP2 INP_CMRR 0.1mVdc
+R_Ucl1_Rcl2         N14583609 Ucl1_N216439  1 TC=0,0
+C_Ucl1_Ccl2         GND_FLOAT Ucl1_N216439  1p  TC=0,0
+E_Ucl1_E1         Ucl1_N216415 GND_FLOAT Ucl1_N216359
++  VIMON1 100
+X_Ucl1_Ucl1         Ucl1_N216547 Ucl1_N216415 D_IDEAL
+E_Ucl1_E2         Ucl1_N216439 GND_FLOAT Ucl1_N216353
++  VIMON1 100
+X_Ucl1_Ucl2         Ucl1_N216439 Ucl1_N216547 D_IDEAL
+V_Ucl1_Vclp         Ucl1_N216359 GND_FLOAT 40Vdc
+R_Ucl1_Rcl3         Ucl1_N216547 CL_CLAMP1  0.01 TC=0,0
+V_Ucl1_Vcln         Ucl1_N216353 GND_FLOAT -40Vdc
+R_Ucl1_Rcl1         Ucl1_N216415 N14583609  1 TC=0,0
+C_Ucl1_Ccl1         Ucl1_N216415 GND_FLOAT  1p  TC=0,0
+C_Cinp         GND_FLOAT INP1  200f  TC=0,0
+.ENDS
+*$
+* For main subckt
+***********************************************
+.subckt Zout_Uz1_H1 1 2 3 4
+H_Uz1_H1         3 4 VH_Uz1_H1 1e3
+VH_Uz1_H1         1 2 0V
+.ends Zout_Uz1_H1
+*$
+.subckt Zout_Uz1_S1 1 2 3 4
+S_Uz1_S1         3 4 1 2 _Uz1_S1
+RS_Uz1_S1         1 2 1G
+.MODEL         _Uz1_S1 VSWITCH Roff=10e6 Ron=1.0 Voff=-0.1V Von=0.1V
+.ends Zout_Uz1_S1
+*$
+.subckt Zout_Uz1_S2 1 2 3 4
+S_Uz1_S2         3 4 1 2 _Uz1_S2
+RS_Uz1_S2         1 2 1G
+.MODEL         _Uz1_S2 VSWITCH Roff=10e6 Ron=1.0 Voff=0.1V Von=-0.1V
+.ends Zout_Uz1_S2
+*$
+.subckt Zout_Uz2_H1 1 2 3 4
+H_Uz2_H1         3 4 VH_Uz2_H1 1e3
+VH_Uz2_H1         1 2 0V
+.ends Zout_Uz2_H1
+*$
+.subckt Zout_Uz2_S1 1 2 3 4
+S_Uz2_S1         3 4 1 2 _Uz2_S1
+RS_Uz2_S1         1 2 1G
+.MODEL         _Uz2_S1 VSWITCH Roff=10e6 Ron=1.0 Voff=-0.1V Von=0.1V
+.ends Zout_Uz2_S1
+*$
+.subckt Zout_Uz2_S2 1 2 3 4
+S_Uz2_S2         3 4 1 2 _Uz2_S2
+RS_Uz2_S2         1 2 1G
+.MODEL         _Uz2_S2 VSWITCH Roff=10e6 Ron=1.0 Voff=0.1V Von=-0.1V
+.ends Zout_Uz2_S2
+*$
+.SUBCKT VCLAMP   VDD  VSS  VI  VO  GNDF PARAMS: VMAX = 0.1 VMIN = 0.1
+ECLAMP  VO GNDF VALUE = {LIMIT(V(VI,GNDF),V(VDD,GNDF) - VMAX, V(VSS,GNDF) + VMIN)}
+.ENDS
+*$
+.subckt rnoiseless a b PARAMS: R=1k
+ERES a 3 VALUE = { I(VSENSE) * R }
+Rdummy 30 3 1
+VSENSE 30 b DC 0V
+.ends
+*$
+.SUBCKT GBW_SLEW_SE_EN   VIP  VIM  VO  GNDF  EN	VEE
++ PARAMS: AOL = 100  GBW = 1MEG  SRP = 1MEG  SRN = 1MEG IT = 1M
++ VON = 0.5 RSC = 1M
+.PARAM PI = 3.141592
+.PARAM IP = {IF(SRP <= SRN,IT,IT*(SRP/SRN))}
+.PARAM IN = {IF(SRN <= SRP,-IT,-IT*(SRN/SRP))}
+.PARAM CC = {IF(SRP <= SRN,IT/SRP,IT/SRN)}
+.PARAM FP = {GBW/PWR(10,AOL/20)}
+.PARAM RC = {1/(2*PI*CC*FP)}
+.PARAM GC = {PWR(10,AOL/20)/RC}
+*G1          GNDF VO VALUE = {IF(V(EN) >= VON,LIMIT(GC*V(VIP,VIM),IP,IN),0)}
+G1          GNDF VO VALUE = {IF(V(EN,VEE) >= VON,LIMIT(GC*V(VIP,VIM),IP,IN),0)}
+C1          VO GNDF {CC}
+*GR1         VO GNDF VALUE =  {IF(V(EN) >= VON,V(VO,GNDF)/RC,V(VO,GNDF)/RSC)}
+GR1         VO GNDF VALUE =  {IF(V(EN,VEE) >= VON,V(VO,GNDF)/RC,V(VO,GNDF)/RSC)}
+GR11        VO GNDF VALUE =  {V(VO,GNDF)/(RC*1000)}
+.ENDS
+*$
+********************************************
+*                                          *
+********************************************
+.SUBCKT CMRR   VI  VO  GNDF PARAMS: CMRR = 130 FCMRR = 1.6K
+.PARAM PI = 3.141592
+.PARAM RCMRR = 1
+.PARAM GCMRR = {PWR(10,-CMRR/20)/RCMRR}
+.PARAM LCMRR = {RCMRR/(2*PI*FCMRR)}
+G1  GNDF 1 VI GNDF {GCMRR}
+R1  1 2 {RCMRR}
+L1  2 GNDF {LCMRR}
+E1  VI VO 1 GNDF 1
+.ENDS
+*$
+********************************************
+*                                          *
+********************************************
+*       Voltage-Controlled Voltage Source with Limits
+.subckt VCVS_Limit VCP VCN VOUTP VOUTN PARAMS: Gain = -1
++ Vpos = 20m Vneg = -20m
+E1 VOUTP VOUTN VALUE={LIMIT(Gain*V(VCP,VCN),Vpos,Vneg)}
+.ends VCVS_Limit
+*$
+.SUBCKT IQ_EN  VDD VSS EN
++ PARAMS: VON = 1 IQQ = 1M  IOFF = 1P
+*G1 VDD VSS VALUE = {IF(V(EN) >= VON,IQQ,IOFF)}
+G1 VDD VSS VALUE = {IF(V(EN,VSS) >= VON,IQQ,IOFF)}
+.ENDS
+*$
+.SUBCKT PSRR   VDD  VSS  VI  VO  GNDF PARAMS: PSRR = 130 FPSRR = 1.6
+.PARAM PI = 3.141592
+.PARAM RPSRR = 1
+.PARAM GPSRR = {PWR(10,-PSRR/20)/RPSRR}
+.PARAM LPSRR = {RPSRR/(2*PI*FPSRR)}
+G1  GNDF 1 VDD VSS {GPSRR}
+R1  1 2 {RPSRR}
+L1  2 GNDF {LPSRR}
+E1  VO VI 1 GNDF 1
+C2  VDD VSS 10P
+.ENDS
+*$
+********************************************
+*                                          *
+********************************************
+.subckt d_ideal a c
+*.PARAM
+d1 a c dnom
+.model dnom d
++ tt=1e-011
++ cjo=1e-018
++ is=1e-015
++ rs=0.001
++ n=0.001
+.ends d_ideal
+*$
+********************************************
+*                                          *
+********************************************
+.subckt tran_iout vcc vee vimon agnd
+*.PARAM
+sw4 net11 agnd vimon net19 sm1
+sw1 net11 agnd vimon net10 sm2
+r61 vimon net11 10
+r59 net19 agnd  10e3
+r58 net10 agnd  10e3
+g8  vcc   agnd net19 agnd 1e-3
+g7  vee   agnd net10 agnd 1e-3
+c15 net11 agnd 10e-12
+.model sm1 vswitch
++ ron=0.001
++ roff=1e+006
++ von=0.1
++ voff=-0.1
+.model sm2 vswitch
++ ron=0.001
++ roff=1e+006
++ von=-0.1
++ voff=0.1
+.ends tran_iout
+*$
+********************************************
+*                                          *
+********************************************
+.subckt vnse 1 2
+.param nlf=4
+.param flw=2
+.param nvr=2
+.param glf={pwr(flw,0.25)*nlf/1164}
+.param rnv={1.184*pwr(nvr,2)}
+i2 0 8 10e-3
+d1 7 0 dvn
+d2 8 0 dvn
+e1 3 6 7 8 {glf}
+r1 3 0 1e9
+r2 3 0 1e9
+r3 3 6 1e9
+e2 6 4 5 0 10
+r4 5 0 {rnv}
+r5 5 0 {rnv}
+r6 3 4 1e9
+r7 4 0 1e9
+e3 1 2 3 4 1
+c1 1 0 1e-15
+c2 2 0 1e-15
+c3 1 2 1e-15
+.model dvn d
++ tt=1e-011
++ cjo=1e-018
++ is=1e-015
++ rs=0.001
++ n=0.001
+.ends vnse
+*$

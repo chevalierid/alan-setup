@@ -1,0 +1,61 @@
+*$
+*TPS51220A
+***************************************************************************
+* (C) Copyright 2010 Texas Instruments Incorporated. All rights reserved.  
+***************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.    
+** TI and its licensors and suppliers make no warranties, either expressed 
+** or implied, with respect to this model, including the warranties of     
+** merchantability or fitness for a particular purpose. The model is       
+** provided solely on an "as is" basis. The entire risk as to its quality  
+** and performance is with the customer.                                    
+***************************************************************************
+* 
+* Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: TPS51220A
+* Date: 05/27/2010
+* Model Type: AVERAGE
+* Simulator: PSpice
+* Simulator Version: 16.0.0.p001
+* EVM Order Number: TPS51220A EVM - 476
+* EVM Users Guide: SLUU381 – September 2009
+* Datasheet: SLUS897D – DECEMBER 2008 – REVISED FEBRUARY 2010
+*
+* Model Version: Final 1.00
+*
+***************************************************************************
+*
+* Updates: 
+* Final 1.00 - 05/27/2010
+* Release to Web.
+*
+***************************************************************************
+.SUBCKT TPS51220A_AVG VINAC CURRENT_LOOP PARAMS: Co=150u Resr=18m Lx=2.5u
++ Fsw=400k VIN=12 VOUT=5 DCR=22m Cs=100n Ro=1 Ron_t=10.5m
++ Ron_b=5m Cc=100p Rc=6.1k R1=120k R2=30k Rs1=3.16k Rs2=1.87k 
+.PARAM  w={2*3.142*fsw} ro1=50meg rs={rs1*rs2/(rs1+rs2)} td={80n +
++  toff/2} k={(m2-m)/(m1-m)}
++  rsns={lx/(cs*rs)} io={vout/ro} m={-0.06*fsw} m1=
++ {0.1*rsns*(vin-vout)/(0.06*lx)} m2={-0.1*rsns*vout/(0.06*lx)} 
++  toff={(1-(vout+ io*(dcr+ron_b))/(vin - io*(dcr+ron_t)))/fsw} a=
++ {-fsw*log(abs(k))} 
+E_LAPLACE1         N24886 0 LAPLACE {V(VINAC)} {({(EXP(-s*Td)) * (Ro +
++  s*Ro*Resr*Co)/(1+s*(Ro+Resr)*Co)*Ro1*Rc*500u/1.6667})/({Rsns}*{ (Ro1+Rc + s *
++  (Cc +1p)* Rc*Ro1) })}
+E_LAPLACE4         N06263 0 LAPLACE {V(N24886)} {({R2})/({(R1*R2*1p*s +
++  R1+R2)})}
+E_LAPLACE3         N25025 0 LAPLACE {V(VINAC)} {({(EXP(-s*Td))*(Ro +
++  s*Ro*Resr*Co)/(1+s*(Ro+Resr)*Co)* ((a*a + w*w +a*s))*Ro1*Rc*500u/1.6667})/(
++ {(Rsns )* ((a +s)*(a+s) + w*w)}*{ (Ro1+Rc + s * (Cc +1p)* Rc*Ro1) })}
+E_LAPLACE5         N18329 0 LAPLACE {V(N24960)} {({R2})/({(R1*R2*1p*s +
++  R1+R2)})}
+E_LAPLACE2         N24960 0 LAPLACE {V(VINAC)} {({(EXP(-s*Td)) * (Ro +
++  s*Ro*Resr*Co)/(1+s*(Ro+Resr)*Co)*a*Ro1*Rc*500u/1.6667})/({ (Rsns)* (s+ a)}*
++ {(Ro1+Rc + s * (Cc +1p)* Rc*Ro1) })}
+E_ABM4         CURRENT_LOOP 0 VALUE { {if( k==0, -V(N06263),  
++ if(k>0,-V(N18329),  
++ if(k<0,-V(N06297),1)) )}  }
+E_LAPLACE6         N06297 0 LAPLACE {V(N25025)} {({R2})/({(R1*R2*1p*s +
++  R1+R2)})}
+.ENDS
+*$

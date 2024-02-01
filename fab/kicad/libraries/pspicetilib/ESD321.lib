@@ -1,0 +1,58 @@
+*$
+* ESD321
+*****************************************************************************
+* (C) Copyright 2022 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Texas Instruments Inc.
+* Part: ESD321
+* Date: 24JAN2022
+* Model Type: TRANSIENT
+* Simulator: PSPICE 
+* Simulator Version: 17.4.0 (Nov. 2018)
+* EVM Order Number: N/A
+* EVM User's N/A
+* Datasheet: SLVSEN8   
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+*$
+.SUBCKT ESD321 IO1 GND
+Lpar1 IO1 IO1_L 0.443n
+Rpar1 IO1_L IO1_R 0.061
+Cpar1 IO1 IO1_R 0.0199p
+DZ GND_INT IO1_R DbreakZ
+Lpar_GND GND_INT GND_L 0.443n
+Rpar_GND GND_L GND 0.061
+Cpar_GND GND_INT GND 0.0199p
+.MODEL DbreakZ D
++ IS = 0.1n
++ BV = 5
++ VJ = 0.8
++ RS = 0.13
++ IBV = 1m
++ CJO = 0.9p
++ TT = 10p
++ M = 0.4
+.ENDS ESD321
+*$

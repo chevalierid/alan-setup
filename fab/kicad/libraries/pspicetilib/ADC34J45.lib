@@ -1,0 +1,113 @@
+* ADC34J45
+*****************************************************************************
+* (C) Copyright 2012 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: ADC34J45
+* Date: 09/20/14
+* Model Type: All In One
+* Simulator: Cadence Allegro 
+* Simulator Version:  16.2.0.p001
+* EVM Order Number: N/A 
+* EVM Users Guide: N/A
+* Datasheet: SBAS664A – MAY 2014 – REVISED AUGUST 2014
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 : Release to Web 
+*
+*****************************************************************************
+* Notes: 
+* This is a transient model of the ADC34J45 analog inputs.
+* 
+*****************************************************************************
+
+.SUBCKT ADC34J45 INP INM VCM CLKP CLKM GRND
+C_Cpad7         N01014 N2P  420fF  TC=0,0 
+R_R10         N39688 CLK  5k TC=0,0 
+R_RSW8         N1N N2N  10 
+C_Ceq1         N3N N4N  3.75pF  
+R_R1         GRND VCM  10k 
+V_VCM        VCM GRND 0.95V
+R_R5         GRND N27998  100 
+L_L1         INP N1P  2nH  
+C_Cpad3         N00984 N2P  3pF  
+E_E1         N38383 GRND N28479 N28732 1
+C_C3         GRND N28863  2p  
+L_L2         INM N1N  2nH  
+L_L4         CLKM N28115  2nH  
+C_Cpad2         N2N N01851  3pF  
+X_S1    CLK GRND N3P N2P ADC34J45_SCH_S1 
+C_C5         N28732 GRND  2p  
+C_Cpad5         N2N GRND  1.734pF  
+R_Resr         GRND N00956  200 
+C_C1         N27998 N27883  1p  
+X_S2    CLK GRND N2N N3N ADC34J45_SCH_S2 
+C_Cpad4         GRND N2P  1.734pF  
+R_Resr1         N01665 GRND  200 
+C_Cpad8         GRND N3P  600fF  
+R_R8         N28863 N28479  5k 
+V_V2         N39688 GRND 5Vdc
+R_Resr9         GRND N1P  5k 
+X_S3    CLK GRND N4N N4P ADC34J45_SCH_S3 
+R_R2         N4N 0  1e9 
+C_Cpad6         N2N N02581  420fF  
+V_V1         N28863 GRND 0.95Vdc
+R_Resr8         N1N GRND  5k 
+C_Ceq         N3P N4P  3.75pF  
+R_R6         GRND N28234  100 
+R_Resr3         GRND N00984  60 
+C_Cpad9         N3N GRND  600fF  
+R_Resr2         N01851 GRND  60 
+R_R4         N28479 N27883  20 
+C_C4         GRND N28479  2p  
+R_Resr5         GRND N01014  47 
+C_C2         N28234 N28115  1p  
+L_L3         CLKP N27883  2nH  
+R_Resr4         N02581 GRND  47 
+X_S4    N38383 GRND CLK GRND ADC34J45_SCH_S4 
+R_Resr6         N01046 N2P  10k 
+R_R9         N28732 N28863  5k 
+R_R3         N4P 0  1e9 
+C_Cpad         N00956 N1P  1pF  
+R_Resr7         N2N N01046  10k 
+C_Cpad1         N1N N01665  1pF  
+R_RSW1         N1P N2P  10 
+R_R7         N28115 N28732  20 
+.ENDS
+
+.subckt ADC34J45_SCH_S1 1 2 3 4  
+S_S1         3 4 1 2 _S1
+RS_S1         1 2 1G
+.MODEL         _S1 VSWITCH Roff=1e6 Ron=4.6 Voff=0.0V Von=1.0V
+.ends ADC34J45_SCH_S1
+
+.subckt ADC34J45_SCH_S2 1 2 3 4  
+S_S2         3 4 1 2 _S2
+RS_S2         1 2 1G
+.MODEL         _S2 VSWITCH Roff=1e6 Ron=4.6 Voff=0.0V Von=1.0V
+.ends ADC34J45_SCH_S2
+
+.subckt ADC34J45_SCH_S3 1 2 3 4  
+S_S3         3 4 1 2 _S3
+RS_S3         1 2 1G
+.MODEL         _S3 VSWITCH Roff=1e6 Ron=17.0 Voff=0.0V Von=1.0V
+.ends ADC34J45_SCH_S3
+
+.subckt ADC34J45_SCH_S4 1 2 3 4  
+S_S4         3 4 1 2 _S4
+RS_S4         1 2 1G
+.MODEL         _S4 VSWITCH Roff=1e6 Ron=1.0 Voff=0.0V Von=1.0V
+.ends ADC34J45_SCH_S4

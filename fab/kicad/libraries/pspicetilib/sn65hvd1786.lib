@@ -1,0 +1,165 @@
+* SN65HVD1786
+*****************************************************************************
+* (C) Copyright 2012 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: SN65HVD1786
+* Date: 02/24/17
+* Model Type: All In One
+* Simulator: Pspice
+* Simulator Version: Pspice 16.2.0.p001
+* EVM Order Number: N/A 
+* EVM Users Guide: N/A
+* Datasheet: SLLS8721 - January 2008 - Revised August 2015
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 : Release to Web
+*  
+*
+*****************************************************************************
+* Notes: 
+* 1. This is an idealized model
+* 2. It will provide the basic functions of the driver and receiver.
+* 3. It may not conform to some of the specs in the published datasheet
+* 
+*****************************************************************************
+*$
+.SUBCKT SN65HVD1786 A B D R REZ DE VCC GND 
+X_U5         VCC GND VIMON_A IQ 
+X_H1    N21588 A VIMON_A GND DEV_2_SCH_H1 
+E_U1_E1         U1_N04413 GND D GND 1
+X_U1_U1         U1_DRV_SUBCKT_Y U1_DRV_SUBCKT_Z U1_DIN DE VCC GND DRIVER 
+X_U1_S2    DE GND U1_DRV_SUBCKT_Z N21252 DRIVER_SCH_U1_S2 
+C_U1_C1         GND U1_DIN  4p  TC=0,0 
+R_U1_R1         U1_N04413 U1_DIN  1k TC=0,0 
+X_U1_S1    DE GND U1_DRV_SUBCKT_Y N21588 DRIVER_SCH_U1_S1 
+C_U1_C2         GND D  6p  TC=0,0 
+X_U2_S1    REZ GND U2_OUT_COMP_WHYST N21616 RX_SCH_U2_S1 
+R_U2_R6         U2_INP U2_OUT_COMP_WHYST  66.67k TC=0,0 
+E_U2_E4         U2_IN_DEL U2_N30920 A B 1
+C_U2_C1         0 U2_OUT_DEL  200p  TC=0,0 
+R_U2_R4         B GND  17k TC=0,0 
+R_U2_R3         A GND  17k TC=0,0
+X_U2_U2         U2_OUT_COMP_WHYST U2_INP U2_N30752 VCC 0 COMPARATOR 
+R_U2_R7         REZ GND  5e6 TC=0,0 
+V_U2_V6         U2_N30752 GND 2.49556650246305Vdc
+E_U2_E5         U2_IN_COMP_WHYST GND U2_OUT_DEL GND 1
+R_U2_R5         U2_IN_COMP_WHYST U2_INP  1k TC=0,0 
+R_U2_R8         U2_IN_DEL U2_OUT_DEL  100 TC=0,0 
+V_U2_V7         U2_N30920 GND 2.5Vdc
+X_H2    B N21252 VIMON_B GND DEV_2_SCH_H2 
+X_U3         VCC GND VIMON_B IQ 
+X_U4         VCC GND VIMON_R IQ 
+*C_C2         B GND  46p  TC=0,0 
+*C_C1         GND A  46p  TC=0,0 
+*C_C2         B GND  2p  TC=0,0 
+*C_C1         GND A  2p  TC=0,0 
+C_COUT_DIFF   A B 23p
+X_U6         REZ DE VCC GND IQ_DR_RX_EN_DIS 
+X_H3    N21616 R VIMON_R GND DEV_2_SCH_H3 
+.ENDS
+*$
+.subckt DEV_2_SCH_H1 1 2 3 4  
+H_H1         3 4 VH_H1 1
+VH_H1         1 2 0V
+.ends DEV_2_SCH_H1
+*$
+.subckt DRIVER_SCH_U1_S2 1 2 3 4  
+S_U1_S2         3 4 1 2 _U1_S2
+RS_U1_S2         1 2 1G
+.MODEL         _U1_S2 VSWITCH Roff=1e6 Ron=1 Voff=2.25V Von=2.75V
+.ends DRIVER_SCH_U1_S2
+*$
+.subckt DRIVER_SCH_U1_S1 1 2 3 4  
+S_U1_S1         3 4 1 2 _U1_S1
+RS_U1_S1         1 2 1G
+.MODEL         _U1_S1 VSWITCH Roff=1e6 Ron=1 Voff=2.25V Von=2.75V
+.ends DRIVER_SCH_U1_S1
+*$
+.subckt RX_SCH_U2_S1 1 2 3 4  
+S_U2_S1         3 4 1 2 _U2_S1
+RS_U2_S1         1 2 1G
+.MODEL         _U2_S1 VSWITCH Roff=10e6 Ron=3 Voff=2.75V Von=2.25V
+.ends RX_SCH_U2_S1
+*$
+.subckt DEV_2_SCH_H2 1 2 3 4  
+H_H2         3 4 VH_H2 1
+VH_H2         1 2 0V
+.ends DEV_2_SCH_H2
+*$
+.subckt DEV_2_SCH_H3 1 2 3 4  
+H_H3         3 4 VH_H3 1
+VH_H3         1 2 0V
+.ends DEV_2_SCH_H3
+*$
+.SUBCKT IQ VCC VEE VIMON 
+EGNDF GNDF VEE VALUE = {0.5*V(VCC,VEE)}
+GOUTP VCC GNDF VALUE = {IF(V(VIMON,VEE) > 0, V(VIMON,VEE),0)}
+GOUTN GNDF VEE VALUE = {IF(V(VIMON,VEE) <= 0, V(VIMON,VEE),0)}
+.ENDS
+*$
+.SUBCKT DRIVER Y Z D DE VCC GND
+.PARAM VHRP0 = -0.5
+.PARAM VHRN0 = 0
+.PARAM ROUT = 10k
+RIN D NMID 2.5e6
+EMID NMID GND VALUE = {0.5*V(VCC,GND)}
+* TX enable
+EDE NDE GND VALUE = {0.5*(1 + SGN(V(DE,GND) - V(NMID,GND)))}
+* Convert input voltage to digital HI/LOW
+EINLIM NINLIM GND VALUE = {0.5*(1 + SGN(V(D,GND) - V(NMID,GND)))}
+EINLIMZ NINLIMZ GND VALUE = {0.5*(1 + SGN(V(NMID,GND) - V(D,GND)))}
+* Output nodes voltage limits
+EUL NUL GND VALUE = {V(VCC,GND) + VHRP0}
+ELL NLL GND VALUE = {VHRN0}
+*************************
+EOUTY YINT GND VALUE = {MIN(MAX(V(VCC,GND)*V(NINLIM,GND),V(NLL,GND)),V(NUL,GND))}
+EOUTZ ZINT GND VALUE = {MIN(MAX(V(VCC,GND)*V(NINLIMZ,GND),V(NLL,GND)),V(NUL,GND))}
+***
+RYINT Y YINT 30
+RZINT Z ZINT 30
+*************************
+.ENDS
+*$
+.SUBCKT COMPARATOR OUT INP INN VCC VEE 
+.PARAM VHR_VCC = -0.8
+.PARAM VHR_VEE = 0.1
+emid NMID 0 VALUE = {(V(VCC) + V(VEE))/2}
+*
+EOL NVOH VEE VALUE = {V(VCC,VEE) + VHR_VCC}
+EOH NVOL VEE VALUE = {V(VEE) + VHR_VEE}
+*
+eout OUT VEE VALUE = {IF(V(INP,VEE) >= V(INN,VEE),V(NVOH,VEE),V(NVOL,VEE))}
+*
+.ends
+*$
+.SUBCKT IQ_DR_RX_EN_DIS REZ DE VCC GND
+.PARAM IQ_DR_RX_EN = 0.004
+.PARAM IQ_DR_EN_RX_DIS = 0.003
+.PARAM IQ_DR_DIS_RX_EN = 0.002
+.PARAM IQ_DR_DIS_RX_DIS = 0.5u
+EMID NMID GND VALUE = {0.5*V(VCC,GND)}
+EDE NDE GND VALUE = {0.5*(1+SGN(V(DE,GND)-V(NMID,GND)))}
+EREZ NREZ GND VALUE = {0.5*(1+SGN(V(REZ,GND)-V(NMID,GND)))}
+GIQ VCC GND VALUE = {
++   IQ_DR_RX_EN*V(NDE,GND)*(1-V(NREZ,GND))
++ + IQ_DR_EN_RX_DIS*V(NDE,GND)*V(NREZ,GND)
++ + IQ_DR_DIS_RX_EN*(1 - V(NDE,GND))*(1-V(NREZ,GND))
++ + IQ_DR_DIS_RX_DIS*(1 - V(NDE,GND))*V(NREZ,GND)
++ }
+.ENDS
+*$
+

@@ -1,0 +1,122 @@
+* ISO6731
+*****************************************************************************
+* (C) Copyright 2019 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+* Released by: Texas Instruments Inc.
+* Part: ISO6731/ISO6731-Q1
+* Date: 6/4/2021
+* Model Type: TRANSIENT
+* Simulator: PSpice 
+* Simulator Version: 17.4-2021(x64) 
+* Datasheet: SLASEY9A – DECEMBER 2019 – REVISED MARCH 2021
+* 
+* Model Version: 1.00
+*
+*****************************************************************************
+******************************************************
+* MACRO-MODEL SIMULATED PARAMETERS:
+******************************************************
+*POWER SUPPLIES UVLO+/- 
+*INPUT VIH/VIL
+*INPUT CAPACITANCE
+*OUTPUT RISE/FALL TIME
+*OUTPUT HIGH IMPEDANCE WHEN DISABLED
+*PROPAGATION DELAY
+*HIGH VOLTAGE PERFORMANCE IS NOT MODELED
+*********************************************************
+.SUBCKT ISO6731 VCC1 EN1 INA INB OUTC GND1 VCC2 EN2 OUTA OUTB INC GND2
+XU1 VCC1 GND1 1 2 VCC1_INT POWER
+XU2 VCC2 GND2 3 4 VCC2_INT POWER
+XU3 INA DEL_INA 5 6 VCC1_INT GND1 7 INPUT
+XU4 DEL_INA DEL_OUTA 8 DELAY
+XU5 EN2 DEL_OUTA VCC2_INT GND2 OUTA 9 10 OUTPUT
+XU6 INB DEL_INB 11 12 VCC1_INT GND1 13 INPUT
+XU7 DEL_INB DEL_OUTB 14 DELAY
+XU8 EN2 DEL_OUTB VCC2_INT GND2 OUTB 15 16 OUTPUT
+XU9 INC DEL_INC 17 18 VCC2_INT GND2 19 INPUT
+XU10 DEL_INC DEL_OUTC 20 DELAY
+XU11 EN1 DEL_OUTC VCC1_INT GND1 OUTC 21 22 OUTPUT
+.ENDS
+
+.SUBCKT INPUT IN OUT INB_INT INT VCC VSS THRES
+E_ABM21         OUT 0 VALUE { IF(V(INT) > 0.51 , 5 , 0)    }
+E_E20         INB_INT 0 N16766925 VSS 1
+R_R10         N16766925 IN  985 TC=0,0
+E_ABM3         INT 0 VALUE { if ( V(INB_INT) > V(THRES), 1, 0 )    }
+D_U1         IN VCC Dbreak
+D_U2         VSS IN Dbreak
+R_R11         VCC N16766925  1.5MEG TC=0,0
+E_ABM22         THRES 0 VALUE { if ( V(INT) < 0.5, (V(VCC)-V(VSS))*0.7, (V(VCC)-V(VSS))*0.3 )}
+C_C1         VSS N16766925  2.8p  TC=0,0
+
+.ENDS
+
+.SUBCKT POWER VCC VSS VCC_INT2 HYST VCC_OUT
+E_ABM1         VCC_INT2 0 VALUE { if ( V(VCC_INT) > V(HYST), 1 , 0 )    }
+V_V1         N16769409 0 1.53
+E_E1         HYST N16769409 VCC_INT2 0 -0.13
+E_E21         VCC_INT 0 VCC VSS 1
+E_ABM2         VCC_OUT 0 VALUE { if ( V(VCC_INT2) > 0.5,  V(VCC) , 0 )    }
+.ENDS
+
+.SUBCKT DELAY IN_DEL OUT_DEL IN_OK
+R_R5         0 IN_OK  1K TC=0,0
+E_E8         OUT_DEL 0 IN_OK 0 1
+T_T2         IN_DEL 0 IN_OK 0 Z0=1K TD=9.5n
+.ENDS
+
+.SUBCKT OUTPUT EN INPUT VCC VSS OUT TOPA BOTA
+E_ABM6         DRVB 0 VALUE { IF(V(N16774625) > (V(VCC)-V(VSS))/2+V(VSS), V(INPUT),-10)}
+R_R45         N16771405 VCC  50 TC=0,0
+R_R51         N16771631 OUT  50 TC=0,0
+X_S2    BOTA 0 N16771631 VSS SCHEMATIC3_S2
+X_S1    TOPA 0 N16771405 OUT SCHEMATIC3_S1
+E_ABM7         TOPA 0 VALUE { if ( V(DRVB) >2.5, 1 , 0 )    }
+E_ABM8         N16777893 0 VALUE { if ( V(DRVB) <2.45 & V(DRVB) >-5 , 1, 0 )}
+D_U1         OUT VCC Dbreak
+D_U4         VSS EN Dbreak
+D_U2         VSS OUT Dbreak
+R_R11         VCC N16774625  2MEG TC=0,0
+D_U3         EN VCC Dbreak
+R_R10         N16774625 EN  1970 TC=0,0
+C_C1         VSS OUT  7.58331305896909E-12  TC=0,0
+R_R52         N16776225 N16776248  5MEG TC=0,0
+C_C2         N16776248 VSS  1f  TC=0,0
+E_ABM9         HIGHI 0 VALUE { if ( V(DRVB) < -5, 1, 0 )    }
+X_S3    HIGHI 0 N16771631 N16776225 SCHEMATIC3_S3
+R_R54         N16777893 BOTA  1 TC=0,0
+C_C3         0 BOTA  8.68588963806504E-11  TC=0,0
+.ENDS
+
+.subckt SCHEMATIC3_S2 1 2 3 4
+S_S2         3 4 1 2 _S2
+RS_S2         1 2 1G
+.MODEL         _S2 VSWITCH Roff=5e6 Ron=0.01 Voff=0.8V Von=1.0V
+.ends SCHEMATIC3_S2
+
+.subckt SCHEMATIC3_S1 1 2 3 4
+S_S1         3 4 1 2 _S1
+RS_S1         1 2 1G
+.MODEL         _S1 VSWITCH Roff=5e6 Ron=0.01 Voff=0.0V Von=1.0V
+.ends SCHEMATIC3_S1
+
+.subckt SCHEMATIC3_S3 1 2 3 4
+S_S3         3 4 1 2 _S3
+RS_S3         1 2 1G
+.MODEL         _S3 VSWITCH Roff=5e6 Ron=0.01 Voff=0.0V Von=1.0V
+.ends SCHEMATIC3_S3
+
+

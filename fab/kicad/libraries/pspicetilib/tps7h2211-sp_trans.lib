@@ -1,0 +1,257 @@
+* PSpice Model Editor - Version 17.4.0
+
+*$
+* TPS7H2211-SP
+*****************************************************************************
+* (C) Copyright 2021 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Texas Instruments Inc.
+* Part: TPS7H2211-SP
+* Date: 30JUL2021
+* Model Type: TRANSIENT 
+* Simulator: PSPICE
+* Simulator Version: 17.4.0.s012
+* EVM Order Number: TPS7H2211EVM-CVAL
+* EVM Users Guide: SLVUC17
+* Datasheet: SLVSEW6
+* Model Version: v1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* v1.00
+* Release to Web.
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+*
+* 1. Thermal shutdown not modeled
+*
+*****************************************************************************
+
+.SUBCKT TPS7H2211-SP_TRANS VIN_1 VIN_2 VIN_3 VIN_4 EN OVP PAD GND VOUT_1 VOUT_2 VOUT_3 VOUT_4 SS
+
+R_R8         VIN_3 VIN  1m TC=0,0 
+R_U3_Rleakage         VIN U3_N17102690  30k TC=0,0 
+X_U3_S2    FASTTRIP 0 GATE_CTRL VIN MOS_U3_S2 
+M_U3_M3         U3_N17102676 GATE_CTRL VIN VIN Mbreakp           
+E_U3_ABM17         U3_N17103445 0 VALUE { IF( V(U3_I_SENSE)>8.5, 1,0)    }
+M_U3_M4         U3_N17102676 GATE_CTRL U3_N17102690 U3_N17102690 Mbreakp       
++     
+X_U3_H1    U3_N17102690 U3_N17156107 U3_I_SENSE 0 MOS_U3_H1 
+D_U3_D7         U3_N17103374 U3_N17103378 D_D1 
+R_U3_Rmetal         U3_N17156107 U3_N17156104  2m TC=0,0 
+X_U3_U18         U3_N17103378 0 FASTTRIP OR2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+C_U3_C54         U3_N17103378 0  1n IC=0 TC=0,0 
+R_U3_Rpackage         U3_N17156104 U3_N17156166  32m TC=0,0 
+R_U3_Rextra         U3_N17158146 VOUT  15.75m TC=0,0 
+E_U3_ABM16         U3_N17103374 0 VALUE { IF(V(U3_N17103448)>0.5, 1, 0)    }
+C_U3_C53         U3_N17103448 0  1n IC=0 TC=0,0 
+R_U3_R89         U3_N17103445 U3_N17103448  800 TC=0,0 
+R_U3_Roff_cur         0 VIN  2.4k TC=0,0 
+R_U3_R9         U3_N17103374 U3_N17103378  {60u/(0.7*1n)} TC=0,0 
+R_U3_Rlead         U3_N17156166 U3_N17158146  2m TC=0,0 
+R_R4         VOUT_1 VOUT  1m TC=0,0 
+R_R3         VIN_2 VIN  1m TC=0,0 
+R_R7         VOUT_4 VOUT  1m TC=0,0 
+R_R2         VIN_1 VIN  1m TC=0,0 
+R_R9         VIN_4 VIN  1m TC=0,0 
+D_U2_D9         U2_N16779417 U2_N16779103 D_D2 
+D_U2_D8         U2_N16793898 GATE_CTRL D_D2 
+M_U2_M4         GATE_CTRL U2_N16779440 0 0 N2           
+E_U2_ABM1         U2_VMAX 0 VALUE { IF(V(VOUT)>V(VIN), V(VOUT), V(VIN))    }
+X_U2_S6    SWEN 0 U2_N16793898 U2_VIN_BUFFER dV_by_dT_U2_S6 
+I_U2_Idvdt1         U2_N16779417 U2_N16785762 DC 1mA  
+I_U2_Idvdt         U2_VIN_BUFFER U2_N16774494 DC 65uA  
+M_U2_M2         SS U2_N16774494 0 0 Mbreakn           
+X_U2_S3    SWEN 0 U2_VIN_BUFFER SS dV_by_dT_U2_S3 
+M_U2_M3         U2_N16779103 SS GATE_CTRL GATE_CTRL N1           
+D_U2_D10         U2_N167976751 GATE_CTRL D_D2 
+X_U2_S4    UVLOB 0 U2_N16785762 U2_N16779440 dV_by_dT_U2_S4 
+M_U2_M1         U2_N16774494 U2_N16774494 0 0 Mbreakn           
+X_U2_S7    U2_RCP_INVERSE 0 U2_N167976751 U2_VMAX dV_by_dT_U2_S7 
+E_U2_ABM2         U2_RCP_INVERSE 0 VALUE { IF(V(REVERSE)>0.5, 0, 1)    }
+M_U2_M6         U2_N16779440 U2_N16779440 0 0 N2           
+X_U2_S5    UVLOB 0 U2_N16779417 U2_N16785762 dV_by_dT_U2_S5 
+E_U2_E1         U2_N16779417 0 U2_VIN_BUFFER 0 1
+E_U2_E2         U2_VIN_BUFFER 0 VIN 0 1
+R_R5         VOUT_2 VOUT  1m TC=0,0 
+E_U1_E6         U1_VIN_VOUT 0 VOUT VIN 1
+R_U1_R3         0 EN  3.5G TC=0,0 
+X_U1_U8         U1_ENABLE UVLOB U1_OVP_N U1_OVP_N U1_SWEN_NO_DELAY
++  AND4_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=500E-3
+E_U1_E2         U1_EN_INT 0 EN GND 1
+X_U1_U6         U1_N16801144 U1_N16812165 BUF_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+C_U1_C1         0 U1_N16801144  1n  TC=0,0 
+E_U1_ABM7         U1_RCP_TH 0 VALUE { IF ( V(REVERSE) < 0.5, 0.363, 0.249)    }
+E_U1_E4         U1_N16801351 0 OVP GND 1
+E_U1_ABM2         U1_UVLO_TH 0 VALUE { IF ( V(UVLOB) < 0.5, 3.4, 2.9)    }
+E_U1_ABM1         U1_EN_TH 0 VALUE { IF ( V(U1_ENABLE) < 0.5, 0.63, 0.52)    }
+E_U1_GAIN1         U1_N16801137 0 VALUE {1 * V(U1_SWEN_NO_DELAY)}
+X_U1_U3         U1_VIN_INT U1_UVLO_TH UVLOB COMP_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+E_U1_ABM3         U1_OVP_TH 0 VALUE { IF ( V(U1_OVP_OUT) < 0.5, 1.15, 1.14)   
++  }
+D_U1_D6         U1_N16801137 U1_N16801248 D_D1 
+X_U1_U10         U1_VIN_VOUT U1_RCP_TH REVERSE COMP_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=0.5
+D_U1_D5         U1_N16801141 U1_N16801137 D_D1 
+R_U1_R1         U1_N16801248 U1_N16801144  10k TC=0,0 
+X_U1_U1         U1_EN_INT U1_EN_TH U1_ENABLE COMP_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+R_U1_R2         U1_N16801141 U1_N16801144  15k TC=0,0 
+X_U1_U7         U1_N16801351 U1_OVP_TH U1_OVP_OUT COMP_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=0.5
+E_U1_E3         U1_VIN_INT 0 VIN GND 1
+R_U1_R4         0 OVP  4.67G TC=0,0 
+X_U1_U9         U1_N16812165 U1_N16812165 U1_N16812165 U1_OVP_N SWEN
++  AND4_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=500E-3
+X_U1_U5         U1_OVP_OUT U1_OVP_N INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+R_R6         VOUT_3 VOUT  1m TC=0,0 
+.ENDS TPS7H2211-SP_TRANS 
+
+
+.subckt MOS_U3_S2 1 2 3 4  
+S_U3_S2         3 4 1 2 _U3_S2
+RS_U3_S2         1 2 1G
+.MODEL         _U3_S2 VSWITCH Roff=1E9 Ron=1u Voff=0.2 Von=0.8
+.ends MOS_U3_S2
+
+.subckt MOS_U3_H1 1 2 3 4  
+H_U3_H1         3 4 VH_U3_H1 1
+VH_U3_H1         1 2 0V
+.ends MOS_U3_H1
+
+.subckt dV_by_dT_U2_S6 1 2 3 4  
+S_U2_S6         3 4 1 2 _U2_S6
+RS_U2_S6         1 2 1G
+.MODEL         _U2_S6 VSWITCH Roff=1u Ron=1E9 Voff=0.2 Von=0.8
+.ends dV_by_dT_U2_S6
+
+.subckt dV_by_dT_U2_S3 1 2 3 4  
+S_U2_S3         3 4 1 2 _U2_S3
+RS_U2_S3         1 2 1G
+.MODEL         _U2_S3 VSWITCH Roff=1u Ron=1E9 Voff=0.2 Von=0.8
+.ends dV_by_dT_U2_S3
+
+.subckt dV_by_dT_U2_S4 1 2 3 4  
+S_U2_S4         3 4 1 2 _U2_S4
+RS_U2_S4         1 2 1G
+.MODEL         _U2_S4 VSWITCH Roff=1E9 Ron=1u Voff=0.2 Von=0.8
+.ends dV_by_dT_U2_S4
+
+.subckt dV_by_dT_U2_S7 1 2 3 4  
+S_U2_S7         3 4 1 2 _U2_S7
+RS_U2_S7         1 2 1G
+.MODEL         _U2_S7 VSWITCH Roff=1u Ron=1E9 Voff=0.2 Von=0.8
+.ends dV_by_dT_U2_S7
+
+.subckt dV_by_dT_U2_S5 1 2 3 4  
+S_U2_S5         3 4 1 2 _U2_S5
+RS_U2_S5         1 2 1G
+.MODEL         _U2_S5 VSWITCH Roff=1u Ron=1E9 Voff=0.2 Von=0.8
+.ends dV_by_dT_U2_S5
+
+.SUBCKT OR2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  |  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS OR2_BASIC_GEN
+
+.SUBCKT AND4_BASIC_GEN A B C D Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH} &
++ V(C) > {VTHRESH} &
++ V(D) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS AND4_BASIC_GEN
+
+.SUBCKT BUF_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS BUF_BASIC_GEN
+
+.SUBCKT COMP_BASIC_GEN INP INM Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5	
+E_ABM Yint 0 VALUE {IF (V(INP) > 
++ V(INM), {VDD},{VSS})}
+R1 Yint Y 1
+C1 Y 0 1n
+.ENDS COMP_BASIC_GEN
+
+.SUBCKT INV_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS INV_BASIC_GEN
+
+
+** Wrapper definitions for AA legacy support **
+
+
+.model Mbreakp pmos
+
++ vto=-0.66
++ kp=4.2e-05
++ w=1.24667e+06
++ l=1.2
+
+
+.model D_D1 d
+
++ is=1e-15
++ tt=1e-11
++ rs=0.05
++ n=0.1
+
+
+.model D_D2 d
+
++ is=1e-13
++ rs=0
++ n=0.1
++ vj=0.001
++ bv=100
++ ibv=1e-06
+
+
+.model N2 nmos
+
++ vto=0.6
++ kp=0.01
+
+
+.model Mbreakn nmos
+
++ vto=0.6
++ kp=0.002
+
+
+.model N1 nmos
+
++ vto=0.1
++ kp=0.2
+
+

@@ -1,0 +1,202 @@
+
+* INA194
+*****************************************************************************
+* (C) Copyright 2011 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: INA194
+* Date: 08JUL2011
+* Model Type: ALL IN ONE
+* Simulator: PSPICE
+* Simulator Version: 16.0.0.p001
+* EVM Order Number: N/A
+* EVM Users Guide: N/A
+* Datasheet: SBOS307F –MAY 2004–REVISED FEBRUARY 2010
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+* 
+* Updates:
+*
+* Version 1.0 : 
+* Release to Web
+*
+*****************************************************************************
+* BEGIN MODEL INA194
+*
+* BEGIN MODEL FEATURES
+*
+* GAIN, BANDWITH, AND RISETIME
+* CMRR VS FREQUENCY
+* PSRR VS FREQUENCY
+* VOLTAGE NOISE
+* OUTPUT CURRENT LIMIT
+* CURRENT LIMIT VS SUPPLY VOLT
+* OUTPUT CURRENT THRU RAILS
+* QUIESCENT CURRENT
+* QUIESCENT CURRENT VS VOUT
+* LOW INPUT BIAS CURRENT
+* INPUT COMMON MODE VOLTAGE RANGE
+* OUTPUT VOLTAGE SWING VS IO
+* OUTPUT IMPEDANCE
+* SETTLING TO ONE PERCENT
+* MODEL TEMP RANGE -40 TO 125 C
+* NOTE THAT NOT ALL MODEL PARAMETERS
+* TRACK THE DATASHEET VERSUS TEMP
+* END MODEL FEATURES
+*
+* PINOUT ORDER OUT GND VIN+ VIN- V+
+* PINOUT ORDER  1   2   3    4    5
+*****************************************************************************
+.SUBCKT INA194 1 2 3 4 5
+Q21 6 7 2 QNL
+R77 8 9 2
+R78 10 9 2
+R79 7 11 100
+R80 12 13 100
+R81 13 5 30
+R82 2 11 20
+R83 14 15 500
+R84 16 17 30
+R85 2 18 20
+D21 19 5 DD
+D22 2 19 DD
+E26 17 2 5 2 1
+E28 20 2 17 2 1
+R86 20 21 1E6
+R89 2 21 100
+C29 20 21 500E-12
+E33 22 23 21 2 -0.07
+E34 24 2 17 2 0.5E-6
+D27 25 17 DD
+D28 26 14 DD
+M24 27 28 11 11 NOUT L=3U W=20U
+M25 29 30 13 13 POUT L=3U W=200U
+M26 31 31 16 16 POUT L=3U W=200U
+M27 32 33 8 8 HVP L=3U W=600U
+M28 34 35 10 10 HVP L=3U W=600U
+M29 36 36 18 18 NOUT L=3U W=20U
+R94 37 30 100
+R95 38 28 100
+G14 14 24 39 24 0.2E-3
+R96 24 14 7.23E6
+C32 15 40 110E-12
+R97 2 32 2.05E3
+R98 2 34 2.05E3
+C33 32 34 10P
+C36 19 2 1E-12
+D29 28 6 DD
+D30 41 30 DD
+Q22 41 12 17 QPL
+V27 22 33 -0.3M
+M30 42 33 43 43 HVN L=3U W=600U
+R99 44 43 2
+M31 45 35 46 46 HVN L=3U W=600U
+R100 44 46 2
+R101 42 17 2.05E3
+R102 45 17 2.05E3
+C37 42 45 10P
+M32 47 48 49 49 PIN L=6U W=500U
+M33 9 50 17 17 PIN L=6U W=500U
+V29 17 48 1.9
+M34 44 47 2 2 NIN L=6U W=500U
+M35 47 47 2 2 NIN L=6U W=500U
+G15 14 24 51 24 0.2E-3
+I28 31 36 80E-6
+M36 50 50 17 17 PIN L=6U W=500U
+I29 50 2 400E-6
+R103 19 29 40
+R104 27 19 50
+J5 17 22 17 JNC
+J6 17 35 17 JNC
+J7 35 2 35 JNC
+J8 22 2 22 JNC
+E37 52 24 45 42 1
+R105 52 51 10E3
+C39 51 24 22E-12
+E38 53 24 34 32 1
+R106 53 39 10E3
+C40 39 24 22E-12
+G16 54 24 14 24 -1E-3
+G17 24 55 14 24 1E-3
+G18 24 56 36 2 1M
+G19 57 24 17 31 1E-3
+D33 57 54 DD
+D34 55 56 DD
+R107 54 57 100E6
+R108 56 55 100E6
+R109 57 17 1E3
+R110 2 56 1E3
+E39 17 37 17 57 1
+E40 38 2 56 2 1
+R111 55 24 1E6
+R112 56 24 1E6
+R113 24 57 1E6
+R114 24 54 1E6
+R115 2 5 1E6
+G20 5 2 58 2 -290E-6
+I32 2 59 1E-3
+D35 59 2 DD
+V31 59 58 0.71
+R116 2 58 1E6
+I33 5 2 230E-6
+R117 49 9 6.5E3
+R123 2 60 83.333E3
+R124 35 19 40E3
+C44 60 2 6E-12
+E41 23 2 60 2 1
+R127 2 35 20E3
+C45 35 19 6E-12
+R129 61 62 5E3
+R130 63 64 5E3
+G23 62 60 62 64 0.1E-3
+G24 64 60 62 64 0.1E-3
+R131 65 66 1E3
+R132 66 67 1E3
+E43 67 2 4 2 1
+E44 65 2 3 2 1
+M38 60 68 2 2 NCN L=6U W=20U
+M39 60 66 2 2 NCP L=6U W=20U
+E45 68 2 66 2 -1
+E46 61 3 69 2 1
+E47 63 4 69 2 -1
+R133 2 69 21.5E3
+C46 69 2 1E-12
+G26 60 2 70 2 0.2E-6
+R135 68 70 1E4
+R136 2 70 10
+C47 68 70 50E-9
+E48 26 2 17 2 -0.4
+E49 40 2 19 2 1
+V34 25 14 -3
+R137 19 1 1.35
+R138 2 19 20E3
+ R139 2 1 1E6    
+.MODEL DD D
+.MODEL QNL NPN
+.MODEL QPL PNP
+.MODEL JNC NJF IS=1E-18
+.MODEL POUT PMOS KP=200U VTO=-0.7
+.MODEL NOUT NMOS KP=200U VTO=0.7
+.MODEL PIN PMOS KP=200U VTO=-0.7
+.MODEL NIN NMOS KP=200U VTO=0.7
+.MODEL HVP PMOS KP=200U VTO=-0.7
+.MODEL HVN NMOS KP=200U VTO=0.7
+.MODEL NCN NMOS KP=200U VTO=16.5
+.MODEL NCP NMOS KP=200U VTO=36.5
+.ENDS
+* END MODEL INA194

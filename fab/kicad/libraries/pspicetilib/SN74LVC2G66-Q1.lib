@@ -1,0 +1,92 @@
+* SN74LVC2G66-Q1
+*****************************************************************************
+* (C) Copyright 2012 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: SN74LVC2G66-Q1
+* Date: 05/30/2019
+* Model Type: All In One
+* Simulator: Pspice
+* Simulator Version: Pspice 16.2.0.p001
+* EVM Order Number: N/A 
+* EVM Users Guide: N/A
+* Datasheet: SCES829A - JUNE 2011 - Revised JULY 2012
+*
+* Model Version: 1.1
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 : Release to Web
+* Version 1.1 : Update Notes with comments on feed-through specs
+*
+*****************************************************************************
+* Notes: 
+* 1. The model conforms to the data sheet for input and output capacitance,
+*    for ON and OFF states ON resistance and quiescent current for 5V operation.
+* 2. The enable and disable times are longer than portrayed in the data sheet, 
+*    The AC BW is lower than the reported in the data sheet for a 600 ohm load.
+*    The feed-thru for a 50ohm/5pF load is less than reported in the data sheet.
+*    The feed-thru for a 600ohm/50pF load is more than reported in the data sheet.
+*****************************************************************************
+*$
+.SUBCKT SN74LVC2G66-Q1 1B 1A 1C VDD GND
+I_I1         VDD GND DC 1uAdc  
+C_C1         GND 1C  3.5p
+C_U1_C3         GND 1B  6p
+C_U1_C2         GND 1A  6p
+X_U1_S1    2 GND 1A 1B ONE_CHANNEL_0_U1_S1 
+R_U1_R5         GND U1_N74342  10e6
+R_U1_R4         VDD GND  1e9 TC=0,0 
+X_U1_SW4    2 GND U1_N40909 1A ONE_CHANNEL_0_U1_SW4 
+C_U1_C6         1A 1B  10p
+X_U1_S2    2 GND 1A U1_N74342 ONE_CHANNEL_0_U1_S2 
+C_U1_C1         GND U1_N40909  2p
+*C_U1_C5         1A 2  0.15p
+C_U1_C5         1A 2  1p
+X_U7         1C VDD 1 VI_HL_0 
+X_U999         1 2 DELAY_LINE 
+R_R2         GND VDD  10e6
+R_R3         GND 1C  5e6
+.ENDS
+*$
+.subckt ONE_CHANNEL_0_U1_S1 1 2 3 4  
+S_U1_S1         3 4 1 2 _U1_S1
+RS_U1_S1         1 2 1G
+.MODEL         _U1_S1 VSWITCH Roff=50e6 Ron=6.0 Voff=0.0V Von=1.0V
+.ends ONE_CHANNEL_0_U1_S1
+*$
+.subckt ONE_CHANNEL_0_U1_SW4 1 2 3 4  
+S_U1_SW4         3 4 1 2 _U1_SW4
+RS_U1_SW4         1 2 1G
+.MODEL         _U1_SW4 VSWITCH Roff=1e9 Ron=1.0u Voff=0.0V Von=1.0V
+.ends ONE_CHANNEL_0_U1_SW4
+*$
+.subckt ONE_CHANNEL_0_U1_S2 1 2 3 4  
+S_U1_S2         3 4 1 2 _U1_S2
+RS_U1_S2         1 2 1G
+.MODEL         _U1_S2 VSWITCH Roff=1e9 Ron=55e6 Voff=0.0V Von=1.0V
+.ends ONE_CHANNEL_0_U1_S2
+*$
+.SUBCKT DELAY_LINE VI VO 
+E1 VIX 0 VI 0 1 
+T1 VIX 0 VOX 0 Z0 = 75 TD = 5.9nS
+RL VOX 0 75
+E2 VO 0 VOX 0 1
+.ENDS DELAY_LINE
+*$
+.SUBCKT VI_HL_0  VIN VDD VOUT 
+E_OUT  VOUT 0 VALUE = {IF ( V(VIN) > V(VDD)*0.7, V(VDD),
++ IF ( V(VIN) < V(VDD)*0.3, 0 , V(Vin) ))} 
+.ENDS  
+*$
+

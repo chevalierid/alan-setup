@@ -1,0 +1,209 @@
+***********************************************************************
+**  v1.7.5 PSpice Models Library - TI NexFET Power N/P Channel FET's
+*  (C) Copyright 2010 Texas Instruments Incorporated. All rights reserved.
+***********************************************************************
+***********************************************************************
+* Notice:
+* The data and models provided herein are intended to be used by 
+* customers as an aid in designing electrical circuits using 
+* semiconductor devices manufactured &/or sold by Texas Instruments.
+* The models and associated information contained herein are not to
+* be construed as a guarantee of electrical performance and/or device 
+* specification.  Therefore, Texas Instruments does not assume any 
+* liability arising out of the use of said data or models, nor from
+* the devices or products manufactured therefrom.  Texas Instruments
+* does not convey any license under its patent rights nor the rights
+* of others.  Texas Instruments reserves the right to change models 
+* without prior notice.  
+*
+* TI is a registered trademark of Texas Instruments Inc.
+*************************************************************************
+********************************************************************************
+*
+* Released by: Analog e-Lab Design Center, Texas Instruments Inc.
+* Part: CSD86330Q3D
+* Date: 04/21/2011
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Datasheet: SLPS264A - October 2010 - Revised December 2010
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00 - 04/21/2011
+* Release to Web
+*
+*
+*****************************************************************************
+*$
+**********************************************************************
+**********************************************************************
+*                                                                    *
+* CSD86330Q3D -  P-Spice Model, for use with OrCAD PSpice Simulator  *
+*                                                                    *
+* Model Status:  Model extracted from measurements of typical device *
+*                                                                    *
+* Assembly:      Q3 Power Block                                      *
+*                                                                    *
+**********************************************************************
+* Characteristics:
+*   Technology:  TI NexFETLV 25/10 n-channel Source Down 
+*
+* nFET SUBCKT Definition:  1=D  2=G  3=S
+* SUBCKT Definition:  1=2=Vin 3=TG 4=TGR 5=BG 6=7=8=VSW 9=PGND
+**********************************************************************
+.SUBCKT csd86330q3d  1 2 3 4 5 6 7 8 9
+*
+XnfetHS  18  17  19  n36307
+XnfetLS  19  16  15  n36306
+RGls      5  10      10e-3
+RGhs      3  11      14e-3
+RDhs      1  12      1.1e-3
+RDhs2     2  12      1.1e-3
+RGlr      4  13      10e-3
+Rpsn      8  14      0.95e-3
+Rpsn2     7  14      0.95e-3
+Rpsn3     6  14      0.95e-3
+RSls      9  15      0.001e-3
+LGls     10  16      0.61e-9
+LGhs     11  17      0.99e-9
+LDhs     12  18      0.45e-9
+RLDhs    12  18      1
+LGlr     13  19      0.61e-9
+Lpsn     14  19      0.35e-9
+.ENDS csd86330q3d
+**********************************************************************
+**********************************************************************
+*                                                                    *
+*   n36306   -  PSpice Model                                         *
+*                                                                    *
+*   n36306 is the LS silicon die model for use with 86330q3d         *
+*                                                                    *
+**********************************************************************
+**********************************************************************
+* SUBCKT Definition:  1=D  2=G  3=S
+**********************************************************************
+.SUBCKT n36306  1 2 3
+* PARAMETER (local) DEFINITIONS SECTION
+.PARAM  pWidth  1.64239
+.PARAM  pLen    0.56u
+.PARAM  perim   {2.1*pWidth}
+.PARAM  ptrc1   2.6e-3		; temp co of ext Rd / Rs
+.PARAM  ptrc2   1.7e-6
+****** MODEL SUBCIRCUIT BEGINS HERE     ******************************
+M1   10 11 12 12  NMOS	W={pWidth} L={pLen} PS={perim} PD={perim}
+DBD   3  1	 DBD
+CBD0  3  1   148e-12
+RBD0  3  1   9e9
+CGD0  2 13	 2E-12
+RGD  13  1   2e6
+CGS0  2  3	 4e-12
+M2   12 11 12 20  PMOSd W={pWidth} L=0.118u PS={perim} PD={perim}
+RDx  20 12   1e14
+CDx  20 12   2p
+DDx  20 10   DD
+RGG   2 11	 1.23
+RSB  12  9	 RTEMP 0.40e-3
+RSS   9  3 	 RTEMP 1.49e-3
+RDD   1 10 	 RTEMP 0.75e-3
+******************************************************************* 
+.MODEL  NMOS   NMOS (    LEVEL  = 7             Version = 3.2  
++ TNOM   = 27            LINT   = 0.095e-6      CAPMOD = 2
++ TOX    = 1.75e-8       NCH    = 2.085e17      NSUB   = 1.5e16
++ AGS    = 0.0           PVAG   = 0.0           U0     = 620
++ A0     = 1.00          A1     = 0.0           A2     = 1.0
++ UA     = 3.4e-9        UB     = 1.1e-18       VBM    = -10
++ UA1    = 1.0e-9        UB1    = -1.5e-18      UTE    = -1.50
++ KT1    = -0.61         KT2    = 0.022         KT1L   = 1.0e-15
++ DVT0   = 2.2           DVT1   = 0.53	      DVT2   = -0.033
++ ETA0   = 0.020         ETAB   = -0.07         XJ     = 4e-7
++ PDIBLC1= 0.05          PDIBLC2= 0.005         NLX    = 1.75e-7
++ PSCBE1 = 7.0e8         PSCBE2 = 2e-7          PCLM   = 1.6
++ VOFF   = -0.150        NFACTOR= 1.40          JS     = 0
++ DROUT  = 0.9           DSUB   = 1.3           DELTA  = 0.045
++ CJ     = 1e-18         CJSW   = 1e-18         CF     = 0
++ CGSO   = 271e-12       CGDO   = 0.1e-12       CGBO   = 1e-18  )
+******************************************************************* 
+.MODEL  PMOSd   PMOS (   LEVEL  = 1
++ TNOM   = 27            VTO    = -0.90         IS     = 1e-14
++ TOX    = 1.75e-8       NSUB   = 6.0e18	  
++ CJ     = 1e-18         CJSW   = 1e-18
++ CGSO   = 1e-18         CGDO   = 1e-18         CGBO   = 1e-18  )
+******************************************************************* 
+.MODEL DBD D (CJO=1.39e-9 VJ=0.70 M=0.35 TNOM=27 FC=0.5 TT=1e-09 
++ XTI=2.4 BV=26 IS=2.7e-12 N=1.01 RS=2.1e-3 TRS1=3.5e-3
++ ISR=1e-11 NR=2.0)
+.MODEL DD  D (CJO=7.6e-10 VJ=0.40 M=0.90 IS=1e-13 TNOM=27)
+*******************************************************************
+.MODEL RTEMP RES (TC1={ptrc1} TC2={ptrc2})
+*******************************************************************
+.ENDS n36306
+*$
+**********************************************************************
+**********************************************************************
+*                                                                    *
+*   n36307   -  PSpice Model                                         *
+*                                                                    *
+*   n36307 is the HS die silicon model for use with 86330q3d         *
+*                                                                    *
+**********************************************************************
+**********************************************************************
+* SUBCKT Definition:  1=D  2=G  3=S
+**********************************************************************
+.SUBCKT n36307  1 2 3
+* PARAMETER (local) DEFINITIONS SECTION
+.PARAM  pWidth  0.84674
+.PARAM  pLen    0.56u
+.PARAM  perim   {2.1*pWidth}
+.PARAM  ptrc1   2.3e-3		; temp co of ext Rd / Rs
+.PARAM  ptrc2   1.0e-6
+****** MODEL SUBCIRCUIT BEGINS HERE     ******************************
+M1   10 11 12 12  NMOS	W={pWidth} L={pLen}  PS={perim} PD={perim}
+DBD   3  1	 DBD
+CBD0  3  1   94e-12
+RBD0  3  1   9e9
+CGD0  2 13	 5E-12
+RGD  13  1   2e6
+CGS0  2  3	 6e-12
+M2   12 11 12 20  PMOSd W={pWidth} L=0.136u PS={perim} PD={perim}
+CDx  20 12   2p
+DDx  20 10   DD
+* Note:  gate oxide capacitance included in NMOS below
+RGG   2 11	 1.46
+RSB  12  9	 RTEMP 1.00e-3
+RSS   9  3 	 RTEMP 2.15e-3
+RDD   1 10 	 RTEMP 1.97e-3
+******************************************************************* 
+.MODEL  NMOS   NMOS (    LEVEL  = 7             Version = 3.2  
++ TNOM   = 27            LINT   = 0.075e-6      CAPMOD = 2
++ TOX    = 1.75e-8       NCH    = 2.525e17      NSUB   = 2.5e16
++ AGS    = 0.0           PVAG   = 0.00          U0     = 620
++ A0     = 1.15          A1     = 0.0           A2     = 1.2
++ UA     = 1.00e-9       UB     = 1.3e-18       VBM    = -10
++ UA1    = 1.20e-9       UB1    = -2.0e-18      UTE    = -1.50
++ KT1    = -0.62         KT2    = 0.022         KT1L   = 1.0e-13
++ DVT0   = 2.2           DVT1   = 0.53	      DVT2   = -0.033
++ ETA0   = 0.020         ETAB   = -0.07         XJ     = 4e-7
++ PDIBLC1= 0.05          PDIBLC2= 0.006         NLX    = 1.75e-7
++ PSCBE1 = 6.5e8         PSCBE2 = 1e-7          PCLM   = 1.6
++ VOFF   = -0.200        NFACTOR= 1.75          JS     = 0
++ DROUT  = 0.9           DSUB   = 1.3           DELTA  = 0.045
++ CJ     = 1e-18         CJSW   = 1e-18         CF     = 0
++ CGSO   = 204e-12       CGDO   = 0.1e-12       CGBO   = 1e-18  )
+******************************************************************* 
+.MODEL  PMOSd   PMOS (   LEVEL  = 1
++ TNOM   = 27            VTO    = -0.7          IS     = 5e-15
++ TOX    = 1.75e-8       NSUB   = 2.9e18
++ CJ     = 1e-18         CJSW   = 1e-18 
++ CGSO   = 1e-18         CGDO   = 1e-18         CGBO   = 1e-18  )
+******************************************************************* 
+.MODEL DBD D (CJO=6.8e-10 VJ=0.65 M=0.35 TNOM=27 FC=0.5 TT=1e-09 
++ XTI=3.4 BV=26 IS=7.5e-13 N=1.02 RS=2.8e-3 TRS1=2.5e-3
++ ISR=1e-11 NR=2.0)
+.MODEL DD  D (CJO=3.1e-10 VJ=0.43 M=0.90 IS=1e-13 TNOM=27)
+*******************************************************************
+.MODEL RTEMP RES (TC1={ptrc1} TC2={ptrc2})
+*******************************************************************
+.ENDS n36307
+*

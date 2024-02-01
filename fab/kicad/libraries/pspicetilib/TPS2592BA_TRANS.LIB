@@ -1,0 +1,199 @@
+*$
+* TPS2592BA
+*****************************************************************************
+* (C) Copyright 2013 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: TPS2592BA
+* Date: 29MAY2013
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: TPS2592XXEVM-531 
+* EVM Users Guide: SLVU923
+* Datasheet: SLVSC11
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+****************************************************************************
+.SUBCKT TPS2592BA_TRANS BFET dVdT EN_UVLO GND ILIM OUT_0 OUT_1 OUT_2 VIN_0 VIN_1
++  VIN_2  
+I_U2_Idvdt         U2_N14543841 DVDT DC 220n  
+C_U2_C1         0 DVDT  70P  TC=0,0 
+X_U2_S1    U2_SWEN_N 0 DVDT 0 dV_by_dT_U2_S1 
+E_U2_E1         DVDT_INT 0 DVDT 0 4.85
+V_U2_V1         U2_N14543841 0 5.5
+D_U2_D1         DVDT U2_N14543841 D_D1 
+X_U2_U2         EN_UVLO_FLAG U2_SWEN_N INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+R_R4         OUT_1 OUT_0  1m TC=0,0 
+R_R3         VIN_2 VIN_0  1m TC=0,0 
+X_U1_U5         U1_ENABLE U1_UVLO U1_N14544619 AND2_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=500E-3
+R_U1_R1         U1_N14544619 U1_N14544765  317.46 TC=0,0 
+D_U1_D5         U1_N14565973 U1_N14544619 D_D1 
+R_U1_R2         U1_N14565973 U1_N14544765  0.5772 TC=0,0 
+X_U1_U3         U1_VIN_INT U1_UVLO_TH U1_UVLO COMP_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=0.5
+X_U1_U2         U1_ENABLE U1_ENABLE_N INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+C_U1_C1         0 U1_N14544765  1u  TC=0,0 
+X_U1_U4         U1_UVLO U1_UVLO_N INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+E_U1_E2         U1_EN_INT 0 EN_UVLO GND 1
+E_U1_E3         U1_VIN_INT 0 VIN_0 GND 1
+X_U1_U1         U1_EN_INT U1_EN_TH U1_ENABLE COMP_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+X_U1_U6         U1_N14544765 EN_UVLO_FLAG BUF_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+E_U1_ABM1         U1_EN_TH 0 VALUE { IF ( V(U1_ENABLE) < 0.5, 1.4, 1.35)    }
+E_U1_ABM2         U1_UVLO_TH 0 VALUE { IF ( V(U1_UVLO) < 0.5, 4.3, 4.068)    }
+R_R5         OUT_2 OUT_0  1m TC=0,0 
+X_U3_U2         U3_TSD U3_TSD_N INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+X_U3_U4         U3_N16832449 U3_FASTTRIP ONE_SHOT PARAMS:  T=100  
+M_U3_M1         U3_MOS_VDD U3_N14543981 U3_N14543897 U3_N14543897 NMOS01       
+E_U3_ABM3         U3_N16832449 0 VALUE { IF(
++  V(U3_I_SENSE)>V(ILIM_VALUE)*1.5,1,0)    }
+G_U3_ABM2I5         U3_N14543981 U3_N16819078 VALUE {
++  IF(V(U3_FASTTRIP)-V(0)>0.5, V(U3_I_SENSE)*10,0)    }
+D_U3_D3         U3_N14543981 U3_VGS_DC D_D1 
+D_U3_D2         U3_N16819078 U3_N14543981 D_D1 
+C_U3_Cgs         U3_N14543897 U3_N14543981  150p  TC=0,0 
+E_U3_ABM1         U3_MOS_VDD 0 VALUE { Min( V(VIN_0)  
++  , V(DVDT_INT) )   }
+R_U3_R2         U3_N16800330 U3_ILIM_VALUE_ACTUAL  100 TC=0,0 
+E_U3_ABM4         U3_N16775733 0 VALUE { LIMIT((V(U3_MOS_VDD)-V(OUT_0)-3.5),
++  0,1)    }
+V_U3_VOVP         U3_N16815061 0 6.1
+E_U3_E1         U3_N16819078 0 U3_N14543897 0 1
+G_U3_ABM2I4         U3_N14543981 U3_N16819078 VALUE {
++  LIMIT((V(U3_I_SENSE)-V(U3_ILIM_VALUE_ACTUAL))*1m, 0,100u)    }
+D_U3_D1         U3_N14543897 U3_MOS_VDD D_D1 
+G_U3_ABM2I3         U3_N14543981 U3_N16819078 VALUE { IF(V(U3_TSD)-V(0)>0.5,
++  6u,0)    }
+G_U3_ABM2I2         U3_N14543981 U3_N16819078 VALUE {
++  LIMIT((V(OUT_0)-V(U3_N16815061))*10, 0,1)    }
+E_U3_ABM5         U3_N16800330 0 VALUE { ((1 - V(U3_N16775733)) * V(ILIM_VALUE)
++  ) + ((V(U3_N16775733)) *( -0.0115*V(ILIM_VALUE)*V(ILIM_VALUE)  
++ + 0.9993*V(ILIM_VALUE) + 0.0141))  }
+C_U3_C1         0 U3_ILIM_VALUE_ACTUAL  1n  TC=0,0 
+X_U3_H1    U3_N14543897 OUT_0 U3_I_SENSE 0 MOS_U3_H1 
+G_U3_ABM2I1         U3_VGS_DC U3_N14543981 VALUE { IF(V(EN_UVLO_FLAG)-V(0)>0.5,
++  2.7u,0)    }
+C_U3_U1_C1         0 U3_U1_N1  1u  TC=0,0 
+D_U3_U1_D1         U3_U1_N1 U3_U1_N2 D_D1 
+E_U3_U1_ABM2         U3_U1_N2 0 VALUE { IF(V(U3_U1_N14544030) > 2, 1, 0)    }
+E_U3_U1_ABM1         U3_U1_N14544030 0 VALUE { ( V(U3_MOS_VDD)  
++ - V(OUT_0) ) * V(U3_I_SENSE)   }
+R_U3_U1_R1         U3_U1_N2 U3_U1_N1  14.43k TC=0,0 
+X_U3_U1_U3         U3_U1_N16674712 U3_TSD ONE_SHOT PARAMS:  T=1000000  
+X_U3_U1_U2         U3_U1_N1 U3_U1_N16674712 BUF_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+C_U3_Cgd         U3_N14543981 U3_MOS_VDD  150p  TC=0,0 
+V_U3_V5         U3_VGS_DC U3_N16819078 5
+I_U4_Idvdt         U4_N14545275 ILIM DC 10u  
+E_U4_ABM1         ILIM_VALUE 0 VALUE {
++  -4.138e-2*V(ILIM)*V(ILIM)+3.00346*V(ILIM)+0.787927    }
+R_U4_Rilim_int         0 ILIM  1e9 TC=0,0 
+V_U4_V1         U4_N14545275 0 6
+D_U4_D1         ILIM U4_N14545275 D_D1 
+R_R2         VIN_1 VIN_0  1m TC=0,0 
+I_U5_I1         U5_N16776222 BFET DC 2.5u  
+E_U5_ABM1  U5_N16776139 0 VALUE { IF(V(EN_UVLO_FLAG)>0.9, V(VIN_0), 0)  }
+E_U5_E1         U5_N16776222 U5_N16776116 U5_N16776139 0 1
+X_U5_U1         EN_UVLO_FLAG U5_SWEN_N INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+V_U5_V1         U5_N16776116 0 6.4
+X_U5_S1    U5_SWEN_N 0 BFET 0 BFET_U5_S1 
+D_U5_D1         BFET U5_N16776222 D_D1 
+.ENDS TPS2592BA_TRANS
+*$
+.subckt dV_by_dT_U2_S1 1 2 3 4  
+S_U2_S1         3 4 1 2 _U2_S1
+RS_U2_S1         1 2 1G
+.MODEL         _U2_S1 VSWITCH Roff=1e9 Ron=80 Voff=0.0V Von=1.0V
+.ends dV_by_dT_U2_S1
+*$
+.subckt MOS_U3_H1 1 2 3 4  
+H_U3_H1         3 4 VH_U3_H1 1
+VH_U3_H1         1 2 0V
+.ends MOS_U3_H1
+*$
+.subckt BFET_U5_S1 1 2 3 4  
+S_U5_S1         3 4 1 2 _U5_S1
+RS_U5_S1         1 2 1G
+.MODEL         _U5_S1 VSWITCH Roff=1e9 Ron=26 Voff=0.0V Von=1.0V
+.ends BFET_U5_S1
+*$
+.SUBCKT INV_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS INV_BASIC_GEN
+*$
+.SUBCKT AND2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS AND2_BASIC_GEN
+*$
+.SUBCKT COMP_BASIC_GEN INP INM Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5	
+E_ABM Yint 0 VALUE {IF (V(INP) > 
++ V(INM), {VDD},{VSS})}
+R1 Yint Y 1
+C1 Y 0 1n
+.ENDS COMP_BASIC_GEN
+*$
+.SUBCKT BUF_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS BUF_BASIC_GEN
+*$
+.SUBCKT ONE_SHOT IN OUT
++ PARAMs:  T=100
+S_S1         MEAS 0 RESET2 0 S1
+E_ABM1         CH 0 VALUE { if( V(IN)>0.5 | V(OUT)>0.5,1,0)    }
+R_R2         RESET2 RESET  0.1  
+E_ABM3         OUT 0 VALUE { if( V(MEAS)<0.5 & V(CH)>0.5,1,0)    }
+R_R1         MEAS CH  {T} 
+C_C2         0 RESET2  1.4427n  
+C_C1         0 MEAS  1.4427n  
+E_ABM2         RESET 0 VALUE { if(V(CH)<0.5,1,0)    }
+.MODEL         S1 VSWITCH Roff=1e9 Ron=1.0 Voff=0.25V Von=0.75V
+.ENDS ONE_SHOT
+*$
+.model D_D1 d
++ is=1e-015
++ tt=1e-011
+*+ rs=0.05
++ n=0.001
+.model NMOS01 NMOS
++ VTO     = 0.5
++ KP      = 7.937
++ LAMBDA  = 0.001
+*$

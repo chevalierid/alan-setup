@@ -1,0 +1,718 @@
+*$
+*TPS40057
+*****************************************************************************
+* (C) Copyright 2019 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Texas Instruments Inc.
+* Part: TPS40057
+* Date: 09SEP2019
+* Model Type: TRANSIENT 
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: TPS40055EVM002           
+* EVM Users Guide: SLUU190 − April 2004
+* Datasheet: SLUS593I –DECEMBER 2003–REVISED DECEMBER 2014
+* Topologies Supported: Buck
+* Model Version: Final 1.10
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.10
+* The ramp height is changed to 2V from 1V as per DS.
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+* 1. The following features have been not been modeled
+*      a. Temperature Effects
+*      b. Operating Quiescent Current
+*      c. Thermal Shutdown Characteristics
+*
+*****************************************************************************
+.SUBCKT TPS40057_TRANS BP5 BP10 BOOST COMP HDRV ILIM KFF LDRV PGND RT SGND SS_SD SW
++  SYNC VFB VIN PAD
+E_ABM22         N16962255 0 VALUE { {IF (( V(VIN)  
++ - V(SW) ) >0.7,1,0)}   }
+R_R192         0 N16957901  1k  
+C_C81         0 N16957680  1n  
+R_R207         N16959352 $G_ZEROOFF  5  
+X_subckt1_S2    $G_WINDOWH 0 BOOST HDRV TPS40057_TRANS_subckt1_S2 
+D_D2         BP10 BOOST D_D1 
+C_C13         0 N16961025  1n  
+X_U141         0 ZWINDOW $G_ZEROOFF ZSET AND2  PARAMs: T=5
+C_C9         N16957871 N16963030  70p  
+X_U146         N16957614 N16959219 $G_OCTRIP $G_MRESET N16963282 CounterUD
++  PARAMs: PW=0.1 T=1
+R_R6         0 N16958239  100k  
+E_E44         $G_RAMP N19113876 RAMPRAW 0 1
+D_D6         UP-DOWN N169618390 D_D1 
+G_ABMI4         BP5 SS_SD VALUE { 2.35E-6    }
+D_D26         0 N16958242 D_D1 
+D_D28         N16959897 RT D_D1 
+C_C119         0 $G_ZEROOFF  1n  
+D_D30         KFF N16957759 D_D1 
+R_R137         N16958720 CLOCK3  50k  
+X_subckt1_S6    N16959121 0 N16957644 WINDOW TPS40057_TRANS_subckt1_S6 
+V_V18         $G_2500MVBIAS 0 2.5Vdc
+X_subckt1_S19    $G_SS-ENABLE 0 N16963353 N16958630 TPS40057_TRANS_subckt1_S19 
+X_U79         0 RAMPRAW N19076514 N16959096 Comparator  PARAMs: T=1
+V_V50         N19113876 0 0Vdc
+X_U145         0 N16963193 $G_UVLO Inverter  PARAMs: T=5
+R_R208         N16962596 COUNTER  100Meg  
+R_R133         N16957812 CLOCK  50k  
+V_V19         N169618390 0 5Vdc
+V_V21         N16959461 0 -1mV
+X_U88         0 RAMPRAW N16957421 N16959296 Comparator  PARAMs: T=2
+C_C77         N16962205 N16958242  250p  
+R_R53         0 N16959749  10k  
+E_E43         N16959902 0 VALUE { {IF ( V(N16958215) > 3Vbias |  V(N16961465) >
++  3Vbias, 5, 0 ) } }
+X_subckt1_S4    $G_WINDOWL 0 BP10 LDRV TPS40057_TRANS_subckt1_S4 
+R_R147         0 $G_SHUTDOWN  1k  
+D_D24         N16957555 N16959563 D_D1 
+R_R114         N16963285 N16957537  1  
+D_D7         N16957644 N16958310 D_D1 
+R_R183         0 N16957855  100k  
+C_C34         N16958215 $G_SS-ENABLE  300p  
+X_U85         0 N16957812 $G_3VBIAS N16958699 Comparator  PARAMs: T=2
+R_R188         0 N16959776  100k  
+X_U165          0 N16959096 N16959824 Schmitt PARAMs: T=5
+R_R40         N16958310 N16957644  50  
+X_U105         N16957855 $G_MRESET 0 $G_UVLODBP OneShot  PARAMs: PW=0.1 T=2
+X_U95         CLOCK CLOCKRESET 0 $G_RWINDOW FFRSx  PARAMs: T=2
+D_D23         SS_SD BP5 D_D1 
+X_U150         N16957565 ZWINDOW Delay  PARAMs: DLY=130 T=2
+R_R170         N169623760 N16957759  1  
+E_E5         N16961010 0 VALUE { { LIMIT ( (V(N16957533) - V(BP5) ) * 100, 0,
++  7)} }
+X_subckt1_S14    $G_UVLODBP 0 UP-DOWN 0 TPS40057_TRANS_subckt1_S14 
+X_U104         N16958250 N16958450 $G_MRESET N16962685 OneShot  PARAMs: PW=0.1
++  T=2
+X_U131         ZSET $G_WINDOWH 0 LDRVZERODISABLE FFRSx  PARAMs: T=10
+X_U89         0 N16958720 $G_3VBIAS N16958376 Comparator  PARAMs: T=2
+R_R17         VIN N16957533  10K  
+X_U120         $G_PWM $G_MRESET SSRUNBAR N16959963 FFRSx  PARAMs: T=2
+X_U91         N16959960 FFRESET $G_OC-RESET N16959657 FFLOP2 
+C_C11         0 N16961008  1.443n  
+R_R146         0 $G_UVLODBP  1k  
+V_V15         $G_3VBIAS 0 3Vdc
+X_U103         0 N16958929 $G_OCTRIP N16962685 AND2  PARAMs: T=2
+X_U87         N16959902 N16960559 N16957727 N16958239 FFLOP2 
+V_VSENSE1         N169623760 N169623761 DC 0 AC 0 0
+R_R189         0 N16958250  100k  
+V_V12         N16959221 0 0.85Vdc
+R_R113         0 SGND  1m  
+R_R16         VIN N16961683  10K  
+X_U77         0 N16957537 $G_1VBIAS N16958234 Comparator  PARAMs: T=1
+X_subckt1_S18    N16959392 0 $G_SSVREF N16959461 TPS40057_TRANS_subckt1_S18 
+V_VSENSE         N16962432 N16959897 DC 0 AC 0 0
+X_U82         0 N16958244 $G_3VBIAS OCCPULSE Comparator  PARAMs: T=2
+R_R24         N16961010 N16961025  1  
+G_G2         0 N16957537 N16957669 0 5
+X_U119         0 N16960891 N16961590 N16957400 OR2  PARAMs: T=5
+X_U42         0 N16959749 $G_WINDOWL Buffer  PARAMs: T=5
+D_D31         0 UP-DOWN D_D1 
+I_I1         N16959563 0 DC 1.2uA  
+V_V10         N16958212 0 3.45Vdc
+E_LIMIT2         SSOUT 0 VALUE {LIMIT(V(N16958065),-1mV,0.7)}
+V_V44         N16962596 0 6.0Vdc
+X_U163         0 $G_UVLO $G_UVLODBP N16963458 AND2  PARAMs: T=25000
+V_V20         N16961494 0 10mV
+D_D25         $G_ZCD N16959455 D_D1 
+G_ABMI5         N16959563 N16957555 VALUE { 10uA    }
+E_E4         N16960976 0 VALUE { { LIMIT ( (V(N16961683) - V(BP10) ) * 100, 0,
++  10.1)} }
+X_U55         0 CLOCK1 $G_UVLODBP CLOCKGENRESET ORI2  PARAMs: T=2
+C_C2         0 N16957520  1.0p  
+R_R115         0 PGND  1m  
+R_R178         0 BP5  10k  
+C_C20         N16958244 N16958737  140.5p  
+X_U149         N16958310 N16961634 Delay  PARAMs: DLY=20 T=2
+C_C114         0 UP-DOWN  1n  
+V_V4         N169609690 0 4.9Vdc
+X_subckt1_S13    N16961025 BP5 VIN BP5 TPS40057_TRANS_subckt1_S13 
+X_U86         0 SS_SD $G_700MVBIAS COMPOUT_T Comparator  PARAMs: T=2
+X_U123         $G_ZCD N16960108 Delay  PARAMs: DLY=135 T=2
+C_C1         0 N16957537  1u  
+X_subckt1_S7    N16958206 0 N16957703 N16959749 TPS40057_TRANS_subckt1_S7 
+V_V36         N169623761 0 3.5Vdc
+R_R155         0 N16957871  1k  
+V_V34         N16957488 0 994mVdc
+E_ABM30         N16959352 0 VALUE { {IF ( ( V(SW)  
++ - V(0) )  > 5mV, 5, 0)}   }
+X_U147         0 OCCPULSE N16957622 N16959219 AND2  PARAMs: T=1
+X_U116         PWMCONTROL N16957901 N16957752 N16960900 FFLOP2 
+X_U107         0 $G_SSVREF 0 $G_SS-VALID Comparator  PARAMs: T=5
+R_R185         0 N16958929  1k  
+R_R112         0 SGND  1m  
+X_U162         $G_RWINDOW $G_OCTRIP $G_OC-RESET MODOUT $G_SHUTDOWN $G_SS-VALID
++  $G_SHUTDOWN $G_PWM ANDI7  PARAMs: T=5
+R_R5         N169600201 N16960559  1K  
+C_C15         0 N16957644  1000p  
+V_V49         N19076514 0 2Vdc
+C_C7         0 RAMPRAW  12.5p  
+R_R62         0 N16959657  100k  
+D_D22         N16962432 $G_2500MVBIAS D_D1 
+X_U53         $G_5VDC $G_SHUTDOWN SS_SD 0 SWHYSTE PARAMS:  RON=1 ROFF=1MEG
++  VT=167.5mV VH=42.5mV
+V_V46         N169600201 0 -1.2Vdc
+D_D8         N16957703 N16957700 D_D1 
+V_V42         N16960947 0 2.5Vdc
+E_ABM24         N16961465 0 VALUE { {IF ( ( V(N16957807)>0.5V) &  
++ (V(LDRV)  <5),5,0)}   }
+C_C125         0 $G_SSVREF  14n  
+X_U113         0 UP-DOWN N16960947 PWMCONTROL Comparator  PARAMs: T=5
+X_U41         0 WINDOW $G_ZCD Buffer  PARAMs: T=2
+X_U56         $G_5VDC $G_UVLODBP BP10 0 SWHYSTE PARAMS:  RON=1 ROFF=1MEG
++  VT=7.27 VH=0.23
+X_U160         0 COMP $G_RAMP MODOUT PWM PARAMs: T=1 LL=40m UL=3.5
+V_V47         N16957555 0 -42.86mVdc
+X_subckt1_S22    N16958062 0 COMP 0 TPS40057_TRANS_subckt1_S22 
+E_ABM25         N16958163 0 VALUE { {IF ( ( V(N16958442)>0.5V) &  
++ (V(N16960309)  >2.5),1,0)}   }
+X_U161         0 SSOUT N16961494 N16959400 Comparator  PARAMs: T=5
+R_R184         0 N16957858  1k  
+X_U100         0 N16958310 N16957700 Inverter  PARAMs: T=2
+R_R117         N16957520 CLOCK1  75k  
+X_U7         0 SYNC N16963030 Inverter  PARAMs: T=5
+D_D1         N16961683 N16958636 D_D1 
+R_R22         N16960976 N16961008  1  
+X_U118         0 N16957752 TRIP80 N16961590 AND2  PARAMs: T=5
+X_U13         0 N16957871 N16957669 Buffer  PARAMs: T=5
+X_U81         0 N16958242 $G_3VBIAS FFRESET Comparator  PARAMs: T=2
+X_U80         0 N16957488 RAMP1 N16962205 Comparator  PARAMs: T=2
+R_R191         0 UP-DOWN  10MEG  
+X_U112         0 $G_RWINDOW CLOCKGENRESET N16958440 OR2  PARAMs: T=2
+E_E34         N16958442 0 VALUE { {IF ( V(N16962255) > 250mV |  V(N16959005) >
++  250mV, 1, 0 ) } }
+V_V16         $G_5VDC 0 5Vdc
+E_ABM29         N16959121 0 VALUE { {IF ( ( V($G_SS-ENABLE) > 3Vbias) &  
++ ( V(N16957727) > 3Vbias), 1V, 0V ) }   }
+X_U110         0 $G_SS-VALID $G_OCTRIP N16958062 ANDI2  PARAMs: T=5
+C_C26         0 N16959455  21p  
+C_C18         0 N16958720  1.0p  
+D_D21         0 N16957871 D_D1 
+D_D16         0 N16958244 D_D1 
+G_ABMI3         $G_2500MVBIAS N16962432 VALUE { 2E-4    }
+C_C110         $G_OCTRIP N16957858  100p  
+X_U108         N16959776 $G_SS-RESET $G_MRESET N16961503 OneShot  PARAMs: PW=1
++  T=2
+E_ABM26         N16959005 0 VALUE { {IF (( V(VIN)  
++ - V(SW) ) <-0.5,1,0)}   }
+X_U101         0 $G_SSVREF N16962119 $G_VREFVALID Comparator  PARAMs: T=5
+R_R130         N16958215 0  1k  
+X_U93         N16958234 CLOCKRESET 0 CLOCK1 FFRSx  PARAMs: T=2
+G_G1         0 N16963285 N16957680 0 0.2106
+C_C115         $G_SS-ENABLE N16957901  1n  
+C_C16         0 N16957703  1200p  
+X_U133         0 N16959963 LDRVZERODISABLE N16960309 ANDI2  PARAMs: T=5
+X_U164          0 N16963458 SS-CONTROL Schmitt PARAMs: T=10
+X_U94         N16959824 N16958699 0 CLOCK FFRSx  PARAMs: T=5
+X_U117         0 CLOCK1 N16960900 N16960891 AND2  PARAMs: T=5
+X_U78         0 N16957520 $G_3VBIAS CLOCKRESET Comparator  PARAMs: T=2
+V_V3         N16958636 0 9.7Vdc
+X_U46         0 N16959749 N16958307 Inverter  PARAMs: T=5
+E_ABM27         $G_FETOC 0 VALUE { {IF(( V(SW)  
++ - V(N16959563) )<0,5,0)}   }
+X_U98         N16959296 N16958376 0 CLOCK3 FFRSx  PARAMs: T=5
+X_U106         0 N16958450 N16957858 N16961503 OR2  PARAMs: T=5
+X_subckt1_S5    N16958307 0 LDRV 0 TPS40057_TRANS_subckt1_S5 
+C_C111         COMPOUT_T N16958929  100p  
+D_D19         N16957533 N169609690 D_D1 
+V_V24         $G_700MVBIAS 0 0.7Vdc
+G_ABM2I1         N16957614 0 VALUE { (V(N16958450) + V(0)) *0.01979    }
+R_R41         N16957700 N16957703  50  
+D_D5         SS_SD N16958212 D_D1 
+G_G4         UP-DOWN 0 CLOCK1 0 0.01
+R_R140         0 WINDOW  10k  
+R_R210         N16957614 0  100Meg  
+V_V11         N16962119 0 699mVdc
+X_U148         0 $G_OC-RESET N16963282 Inverter  PARAMs: T=1
+X_U166         0 $G_SS-ENABLE N16959400 N16959392 AND2  PARAMs: T=5
+X_U136         0 $G_OCTRIP N16957622 Inverter  PARAMs: T=5
+X_U102         0 N16961634 N16957565 Inverter  PARAMs: T=2
+E_ABM23         N16957807 0 VALUE { {IF ( ( V(SW)  
++ - V(0) ) <0.15,1,0)}   }
+X_subckt1_S8    N16961008 BP10 VIN BP10 TPS40057_TRANS_subckt1_S8 
+R_R218         SSOUT $G_SSVREF  10  
+D_D9         SS_SD N16963353 D_D1 
+R_R71         0 N16958244  1000  
+R_R88         $G_ZCD N16959455  1k  
+V_V13         N16958630 0 -.05Vdc
+V_V17         $G_1VBIAS 0 1Vdc
+X_U97         CLOCK3 CLOCKRESET 0 TRIP80 FFRSx  PARAMs: T=2
+E_GLIMIT1         RAMP1 0 VALUE {LIMIT(V(N16957537)*1.07,0,1.00)}
+R_R118         0 PGND  1m  
+E_ABM1         N16959934 0 VALUE { (I(V_VSENSE)*94964)+0    }
+X_subckt1_S3    N17573209 0 HDRV SW TPS40057_TRANS_subckt1_S3 
+E_ABM2         N16957674 0 VALUE { (I(V_VSENSE1))    }
+V_V48         ILIM N16959563 20mV
+C_C8         0 N16957812  1.0p  
+X_U121         0 $G_SS-ENABLE SSRUNBAR Inverter  PARAMs: T=5
+X_U84         $G_SSVREF VFB COMP OP_AMP PARAMS:  HLIMIT=3.5 RIN=1MEG BW=5MEG
++  DC_GAIN=80 ROUT=100 LLIMIT=-0.1V SRP=1   SRM=1 
+X_U43         0 N16959455 $G_WINDOWH Buffer  PARAMs: T=2
+C_C17         0 VFB  20p  
+X_subckt1_S1    CLOCKGENRESET 0 N16957537 0 TPS40057_TRANS_subckt1_S1 
+E_DIFF1         N16958065 0 VALUE {V(SS_SD,N16959221)}
+R_R149         0 $G_UVLODBP  1k  
+C_C25         LDRV N16960559  30p  
+E_ABM31         N16958206 0 VALUE { {IF ( ( V($G_SS-ENABLE) > 3Vbias) &  
++ ( V(N16958163) > 700mVbias), 1V, 0V ) }   }
+X_U83         0 RAMP1 N16957488 N16958737 Comparator  PARAMs: T=2
+E_PWR1         N16957545 0 VALUE {PWR(V(N16959934),0.97)}
+X_U124         0 $G_FETOC N16960108 $G_WINDOWH N16959960 AND3  PARAMs: T=2
+V_V43         N16957421 0 1.8Vdc
+X_U45         0 $G_WINDOWH N17573209 Inverter  PARAMs: T=2
+R_R135         0 SYNC  1Meg  
+R_R158         N16957545 N16957680  1k  
+G_G9         0 RAMPRAW N16957674 0 0.1
+X_subckt1_S20    SS-CONTROL 0 SS_SD 0 TPS40057_TRANS_subckt1_S20 
+X_U144         COUNTER OCCPULSE N16963193 $G_MRESET PWMCONTROL CounterUD
++  PARAMs: PW=0.1 T=1
+X_U127         $G_PWM N16958310 DelayF  PARAMs: DLY=20 T=1
+X_subckt1_S10    N16958440 0 RAMPRAW 0 TPS40057_TRANS_subckt1_S10 
+G_G3         0 UP-DOWN Trip80 0 0.02
+R_R56         0 N16958242  333  
+X_U109         0 $G_UVLO $G_SS-RESET $G_SS-ENABLE ANDI2  PARAMs: T=5
+.IC         V(BP5 )=0
+.IC         V(RAMPRAW )=0
+.IC         V(UP-DOWN )=0
+.IC         V(BP10 )=0
+.IC         V(N16957537 )=0
+.ENDS TPS40057_TRANS
+*$
+.subckt TPS40057_TRANS_subckt1_S2 1 2 3 4  
+S_S2         3 4 1 2 _S2
+RS_S2         1 2 1G
+.MODEL         _S2 VSWITCH Roff=1e6 Ron=10 Voff=2.4V Von=2.5V
+.ends TPS40057_TRANS_subckt1_S2
+*$
+.subckt TPS40057_TRANS_subckt1_S6 1 2 3 4  
+S_S6         3 4 1 2 _S6
+RS_S6         1 2 1G
+.MODEL         _S6 VSWITCH Roff=1e6 Ron=1.5 Voff=0.0V Von=1.0V
+.ends TPS40057_TRANS_subckt1_S6
+*$
+.subckt TPS40057_TRANS_subckt1_S19 1 2 3 4  
+S_S19         3 4 1 2 _S19
+RS_S19         1 2 1G
+.MODEL         _S19 VSWITCH Roff=1e9 Ron=1 Voff=4V Von=0.1V
+.ends TPS40057_TRANS_subckt1_S19
+*$
+.subckt TPS40057_TRANS_subckt1_S4 1 2 3 4  
+S_S4         3 4 1 2 _S4
+RS_S4         1 2 1G
+.MODEL         _S4 VSWITCH Roff=1e6 Ron=10 Voff=2.4V Von=2.5V
+.ends TPS40057_TRANS_subckt1_S4
+*$
+.subckt TPS40057_TRANS_subckt1_S14 1 2 3 4  
+S_S14         3 4 1 2 _S14
+RS_S14         1 2 1G
+.MODEL         _S14 VSWITCH Roff=1e7 Ron=10m Voff=4V Von=1V
+.ends TPS40057_TRANS_subckt1_S14
+*$
+.subckt TPS40057_TRANS_subckt1_S18 1 2 3 4  
+S_S18         3 4 1 2 _S18
+RS_S18         1 2 1G
+.MODEL         _S18 VSWITCH Roff=10Meg Ron=10m Voff=5V Von=0V
+.ends TPS40057_TRANS_subckt1_S18
+*$
+.subckt TPS40057_TRANS_subckt1_S13 1 2 3 4  
+S_S13         3 4 1 2 _S13
+RS_S13         1 2 1G
+.MODEL         _S13 VSWITCH Roff=10e6 Ron=100 Voff=1.0V Von=1.90V
+.ends TPS40057_TRANS_subckt1_S13
+*$
+.subckt TPS40057_TRANS_subckt1_S7 1 2 3 4  
+S_S7         3 4 1 2 _S7
+RS_S7         1 2 1G
+.MODEL         _S7 VSWITCH Roff=1e6 Ron=1.5 Voff=0.0V Von=1.0V
+.ends TPS40057_TRANS_subckt1_S7
+*$
+.subckt TPS40057_TRANS_subckt1_S22 1 2 3 4  
+S_S22         3 4 1 2 _S22
+RS_S22         1 2 1G
+.MODEL         _S22 VSWITCH Roff=10e8 Ron=10m Voff=4.9V Von=0.1V
+.ends TPS40057_TRANS_subckt1_S22
+*$
+.subckt TPS40057_TRANS_subckt1_S5 1 2 3 4  
+S_S5         3 4 1 2 _S5
+RS_S5         1 2 1G
+.MODEL         _S5 VSWITCH Roff=1e6 Ron=5 Voff=1V Von=4.0V
+.ends TPS40057_TRANS_subckt1_S5
+*$
+.subckt TPS40057_TRANS_subckt1_S8 1 2 3 4  
+S_S8         3 4 1 2 _S8
+RS_S8         1 2 1G
+.MODEL         _S8 VSWITCH Roff=10e6 Ron=10.8 Voff=0.0V Von=0.1V
+.ends TPS40057_TRANS_subckt1_S8
+*$
+.subckt TPS40057_TRANS_subckt1_S3 1 2 3 4  
+S_S3         3 4 1 2 _S3
+RS_S3         1 2 1G
+.MODEL         _S3 VSWITCH Roff=1e6 Ron=7.5 Voff=1.0V Von=4.0V
+.ends TPS40057_TRANS_subckt1_S3
+*$
+.subckt TPS40057_TRANS_subckt1_S1 1 2 3 4  
+S_S1         3 4 1 2 _S1
+RS_S1         1 2 1G
+.MODEL         _S1 VSWITCH Roff=1e6 Ron=0.10m Voff=0.1V Von=4.0V
+.ends TPS40057_TRANS_subckt1_S1
+*$
+.subckt TPS40057_TRANS_subckt1_S20 1 2 3 4  
+S_S20         3 4 1 2 _S20
+RS_S20         1 2 1G
+.MODEL         _S20 VSWITCH Roff=1e9 Ron=10 Voff=4V Von=3V
+.ends TPS40057_TRANS_subckt1_S20
+*$
+.subckt TPS40057_TRANS_subckt1_S10 1 2 3 4  
+S_S10         3 4 1 2 _S10
+RS_S10         1 2 1G
+.MODEL         _S10 VSWITCH Roff=1e6 Ron=0.10m Voff=0.1V Von=4.0V
+.ends TPS40057_TRANS_subckt1_S10
+*$
+.MODEL BAS16 D  ( IS=4.62n RS=0.680 BV=100 IBV=500n
++ CJO=1.72p  M=0.333 N=2.24 TT=7.20u )
+*$
+.SUBCKT POWERMOS G D S PARAMS: RDSON=65m Ciss=925p Crss=50p Coss=160p VSP=2.2 RG=1.5
+C_C1         S Da  {Coss} IC=0
+R_R1         Da D  10
+C_C2         Ga D  {Crss}  IC=0
+R_R2         G Ga {RG}
+C_C3         Ga S  {Ciss} IC=0
+D_D1         S Db Dbreak
+R_R3         Db D 1m
+S_switchM         D S Ga S _switchM
+RS_switchM         Ga S 100Meg
+.MODEL         _switchM VSWITCH Roff=100e6 Ron={RDSON} Voff=1.1 Von={VSP}
+.model Dbreak D Is=1e-14 Cjo=.1pF Rs=.1
+.ends POWERMOS
+*$
+.SUBCKT PWM GND IN+ IN- OUT  
++PARAMs: T=5 LL=0 UL=1
+R_R3         N14182638 N14182698  {T*1}  
+C_C2         GND N14182698  1443pF  
+E_E2         N14182638 GND VALUE { {LIMIT (V(IN+, GND)*1,{LL},{UL})} }
+E_E1         N14182074 GND VALUE { {IF (V(N14182698) > V(IN-), 5, 0)} }
+R_R1         N14182074 OUT  {T*1}  
+C_C1         GND OUT  1443pF  
+R_R2         0 GND  10MEG  
+.ENDS
+*$
+.SUBCKT Schmitt GND IN OUT 
++PARAMs: T=5 
+E_E23         N10115638 GND VALUE { {IF (V(N10115957) > V(N10115666), 5, 0)} }
+R_R1         N10115638 OUT  {T*1}  
+C_C1         GND OUT  1443pF  
+V_V1         N10115666 GND 2.5Vdc
+R_R2         0 GND  10MEG  
+R_R4         IN N10115957  100k  
+R_R5         N10115957 OUT  300k  
+R_R3         GND N10115666  10MEG  
+.ENDS
+*$
+.SUBCKT ANDI7 IN1 IN2 IN3 IN4 IN5 IN6 IN7 OUT  PARAMs: T=5
+E_E1 11 0 VALUE { IF ( V(IN1)<2.5 & V(IN2)<2.5 & V(IN3)<2.5 & V(IN4)>2.5 & 
++ V(IN5)>2.5 & V(IN6)>2.5 & V(IN7)>2.5,5,0)}
+R_R1 11 OUT {T*1}
+C_C1 OUT 0 1443p
+.ends ANDI7
+*$
+.subckt OneShot_S1 1 2 3 4  
+S_S1         3 4 1 2 _S1
+RS_S1         1 2 1G
+.MODEL         _S1 VSWITCH Roff=1e8 Ron=0.1 Voff=2.5V Von=0.1V
+.ends OneShot_S1
+*$
+.SUBCKT OneShot P Q R S  PARAMs: PW=1 T=2
+C_C4         0 RESET  1443pF  
+V_V1         3VBIAS 0 2.5Vdc
+R_R7         Q N12686  1k  
+R_R8         Q N12704  2k  
+R_R1         N00256 QNOT  {T*1}  
+E_ABM3         N00256 0 VALUE { { IF ( (V(RESET)<2.5) & (V(Q)>2.5), 0, 5V ) }  
++   }
+R_R9         N13132 P  3Meg  
+C_C5         0 N12704  1.443p  
+R_R2         N00281 Q  {T*1}  
+E_E2         N14182046 0 VALUE { {IF (V(N13132) > V(N13182), 5, 0)} }
+R_R10         N12686 N13132  1Meg  
+C_C6         0 N12686  {PW*1.443n}  
+R_R11         N14182046 P  {T*1}  
+C_C1         0 QNOT  1443p  
+E_ABM4         N00281 0 VALUE { { IF ( (V(SET)<0.8) & (V(Qnot)>0.8), 0, 5V ) } 
++    }
+X_S1    N12704 0 N12686 0 OneShot_S1 
+C_C7         0 P  1443pF  
+C_C2         0 Q  1443p  
+V_V4         N13182 0 1.875Vdc
+C_C3         S SET  0.2p  
+E_E1         N02499 0 VALUE { {IF ( V(R) > 3Vbias |  V(P) > 3Vbias, 5, 0 ) } }
+R_R3         0 SET  100k  
+R_R4         N02499 RESET  {T*1}  
+.IC         V(Q )=0
+.IC         V(QNOT )=5
+.ENDS
+*$
+.SUBCKT Inverter GND IN1 OUT  PARAMs: T=5
+R_R3         GND N10113691  10Meg  
+E_E23         N10113286 GND VALUE { {IF (V(IN1) > V(N10113691), 0, 5)} }
+R_R1         N10113286 OUT  {T*1}  
+C_C1         GND OUT  1443pF  
+V_V1         N10113691 GND 2.5Vdc
+R_R2         0 GND  10MEG  
+.ENDS
+*$
+.SUBCKT FFRSx 6 8 3  2 PARAMs: T=2
+E_BQB 10 0 VALUE = { IF ( (V(8)<2.5) & (V(3)<2.5) & (V(2)>2.5), 0, 5V ) }
+E_BQ  20 0 VALUE = { IF ( (V(6)<2.5) & (V(1)>2.5), 0, 5V ) }
+RD1   10 1 {T*1}
+CD1   1 0 1443p IC=5
+RD2   20 2 {T*1}
+CD2   2 0 1443p IC=0
+.ENDS
+*$
+.SUBCKT AND2 GND IN1 IN2 OUT  PARAMs: T=5
+E_E1         N01207 GND VALUE { {IF ( V(IN1) > 3Vbias &  V(IN2) > 3Vbias, 5, 0
++  ) } }
+R_R1         N01207 OUT  {T*1}  
+C_C1         GND OUT  1443pF  
+V_V1         3VBIAS GND 2.5Vdc
+R_R2         0 GND  10MEG  
+.ENDS
+*$
+.SUBCKT AND3 GND IN1 IN2 IN3 OUT  PARAMs: T=5
+E_E1         N00412 GND VALUE { {IF ( V(IN1) > 3Vbias &  V(IN2) > 3Vbias, 5, 0
++  ) } }
+E_E2         N00705 GND VALUE { {IF ( V(N00412) > 3Vbias &  V(IN3) > 3Vbias, 5,
++  0 ) } }
+R_R2         0 GND  10MEG  
+R_R1         N00705 OUT  {T*1}  
+C_C1         GND OUT  1443pF  
+V_V1         3VBIAS GND 2.5Vdc
+.ENDS
+*$
+.SUBCKT ANDI2 GND IN1 IN2 OUT  PARAMs: T=5
+E_E1         N02602 GND VALUE { {IF ( V(IN1) > 3Vbias &  V(IN2) < 3Vbias, 5, 0
++  ) } }
+R_R1         N02602 OUT  {T*1}  
+C_C1         GND OUT  1443pF  
+V_V1         3VBIAS GND 2.5Vdc
+R_R2         0 GND  10MEG  
+.ENDS
+*$
+.SUBCKT Buffer GND IN1 OUT  PARAMs: T=5
+R_R1         N10112716 OUT  {T*1}  
+R_R3         GND N10113912  10MEG  
+C_C1         GND OUT  1443pF  
+V_V1         N10113912 GND 2.5Vdc
+R_R2         0 GND  10MEG  
+E_E23         N10112716 GND VALUE { {IF (V(IN1) > V(N10113912), 5, 0)} }
+.ENDS
+*$
+.SUBCKT Comparator GND IN1 IN2 OUT  PARAMs: T=5
+E_E1         N01856 GND VALUE { {IF (V(IN1) > V(IN2), 5, 0)} }
+R_R1         N01856 OUT  {T*1}  
+C_C1         GND OUT  1443pF  
+R_R2         0 GND  10MEG  
+.ENDS
+*$
+.SUBCKT OR2 GND IN1 IN2 OUT  PARAMs: T=5
+E_E1         N01856 GND VALUE { {IF ( V(IN1) > 3Vbias |  V(IN2) > 3Vbias, 5, 0
++  ) } }
+R_R1         N01856 OUT  {T*1}  
+C_C1         GND OUT  1443pF  
+V_V1         3VBIAS GND 2.5Vdc
+R_R2         0 GND  10MEG  
+.ENDS
+*$
+.SUBCKT ORI2 GND IN1 IN2 OUT  PARAMs: T=5
+R_R2         0 GND  10MEG  
+E_E1         N02188 GND VALUE { {IF ( V(IN1) > 3Vbias |  V(IN2) < 3Vbias, 5, 0
++  ) } }
+R_R1         N02188 OUT  {T*1}  
+C_C1         GND OUT  1443pF  
+V_V1         3VBIAS GND 2.5Vdc
+.ENDS
+*$
+.SUBCKT SWhyste NodeMinus NodePlus Plus Minus PARAMS: VT=3.8 VH=.2 RON=1 ROFF=10meg
+S5 NodePlus NodeMinus 8 0 smoothSW
+EBcrtl 8 0 Value = { IF ( V(plus)-V(minus) > V(ref), 1, 0 ) }
+EBref ref1 0 Value = { IF ( V(8) > 0.5, {VT-VH}, {VT+VH} ) }
+Rdel ref1 ref 100
+Cdel ref 0 100p  IC={VT+VH}
+Rconv1 8 0 10Meg
+Rconv2 plus 0 10Meg
+Rconv3 minus 0 10Meg
+.model smoothSW VSWITCH (RON={RON} ROFF={ROFF} VON=1 VOFF=0)
+.ends
+*$
+.SUBCKT FFLOP2 6 8 2 1
+E_BQB 10 0 VALUE = { IF ( (V(8)<2.5) & (V(2)>2.5), 0, 5V ) }
+E_BQ  20 0 VALUE = { IF ( (V(6)<2.5) & (V(1)>2.5), 0, 5V ) }
+RD1   10 1 100
+CD1   1 0 20P IC=5
+RD2   20 2 100
+CD2   2 0 20P IC=0
+.ENDS
+*$
+.SUBCKT OP_Amp P M OUT 
++ PARAMs:  Hlimit=5 Rin=10Meg BW=18Meg DC_Gain=100 Rout=100 Llimit=0 SRP=1 SRM=1
+R_Rin         P M  {Rin}
+E_E1          5 0 M P {-Gain}
+E_LIMIT2      6 0 VALUE {LIMIT(V(5), {-Abs(SRM)*Ca*1Meg+V(1)/Ra},
++                 {SRP*Ca*1Meg+V(1)/Ra})}
+G_G2          1 0 6 0 -1
+R_Ra          0 1  {Ra} 
+C_Ca          0 1  {Ca}   
+E_LIMIT1      2 0 VALUE {LIMIT(V(1),{Llimit},{Hlimit})}
+V_VL          3 0 {Llimit+200m}
+V_VH          4 0 {Hlimit-200m}
+D_D1          3 1 Dideal 
+D_D2          1 4 Dideal 
+R_Rout        OUT 2  {Rout}
+.model Dideal D Is=1e-10 Cjo=.01pF Rs=1m  N=1
+.PARAM  Ra=1k   Ca={exp(DC_gain*log(10)/20)/(2*3.14159*BW*Ra)} 
++ Gain={exp(DC_gain*log(10)/20)/Ra} 
+.ENDS OP_Amp
+*$
+.MODEL D_D1 D( N=0.001 )
+*$
+.SUBCKT Delay IN OUT PARAMs: DLY=100 T=2 
+C_C2         0 OUT  1443pF  
+E_E23         N10115640 0 VALUE { {IF (V(IN) > V(N10115652), 5, 0)} }
+X_S1    N14189528 0 N10115911 0 Delay_S1 
+V_V1         N10115652 0 2.5Vdc
+R_R6         0 N10115652  10MEG  
+R_R7         N10115640 N10115911  1k  
+E_E24         N10116045 0 VALUE { {IF (V(N10115911) > V(N10115652), 5, 0)} }
+R_R8         N10115640 N14189528  1k  
+C_C5         0 N14189528  1.443p  
+R_R4         N10116045 OUT  {T*1}  
+C_C6         0 N10115911  {DLY*1.443p}  
+.ENDS
+*$
+.PARAM  dly=100
+.subckt Delay_S1 1 2 3 4  
+S_S1         3 4 1 2 _S1
+RS_S1         1 2 1G
+.MODEL         _S1 VSWITCH Roff=1e8 Ron=0.1 Voff=2V Von=1V
+.ends Delay_S1
+*$
+.SUBCKT DelayF IN OUT  PARAMs: DLY=100 T=2 
+V_V1         N14198423 0 2.5Vdc
+C_C5         0 N14198229  1.443p  
+C_C6         0 N14198219  {DLY*1.443p}  
+X_S1    N14198229 0 N14198219 0 DelayF_S1 
+E_E24         N14198641 0 VALUE { {IF (V(N14198219) > V(N14198423), 0, 5)} }
+R_R4         N14198641 OUT  {T*1}  
+C_C2         0 OUT  1443pF  
+R_R6         0 N14198423  10MEG  
+R_R7         N14198351 N14198219  1k  
+E_E23         N14198351 0 VALUE { {IF (V(IN) > V(N14198423), 0, 5)} }
+R_R8         N14198351 N14198229  1k  
+.ENDS
+*$
+.subckt DelayF_S1 1 2 3 4  
+S_S1         3 4 1 2 _S1
+RS_S1         1 2 1G
+.MODEL         _S1 VSWITCH Roff=1e8 Ron=0.1 Voff=2V Von=1V
+.ends DelayF_S1
+*$
+.SUBCKT ANDI5 IN1 IN2 IN3 IN4 IN5 OUT  PARAMs: T=5
+E_E1 11 0 VALUE { IF ( V(IN1)<2.5 & V(IN2)<2.5 & V(IN3)<2.5 & V(IN4)>2.5 & V(IN5)>2.5,5,0)}
+R_R1 11 OUT {T*1}
+C_C1 OUT 0 1443p
+.ends ANDI5
+*$
+.SUBCKT CounterUD Cap IN Out Reset U-D  PARAMs: PW=0.1 T=1  
+V_V2         3VBIAS 0 2.5Vdc
+C_C1         0 N13390  1.443p  
+V_V10         N14217760 0 85mVdc
+R_R11         N14201928 LOWER  {T*1}  
+C_C2         0 N13362  {PW*1.443n}  
+G_ABM2I2         CAP 0 VALUE { (V(N14549) - V(0)) *0.01979    }
+C_C9         0 LOWER  1443pF  
+V_V9         N10115945 0 6.5Vdc
+X_S1    N13390 0 N13362 0 CounterUD_S1 
+E_E4         N14201496 0 VALUE { {IF (V(CAP) > V(N10115945), 5, 0)} }
+C_C112         UPPER N14190804  100p  
+R_R9         N14201496 UPPER  {T*1}  
+C_C3         IN N13602  0.2pF  
+C_C8         0 UPPER  1443pF  
+E_E3         N14182074 0 VALUE { {IF (V(N13340) > V(N13496), 5, 0)} }
+R_R5         0 N13602  100k  
+C_C113         LOWER N14190822  100p  
+X_U1         N13602 RESET N13328 N13376 FFRSx  PARAMs: T=1
+R_R7         N14182074 N13328  {T*1}  
+V_V12         N10116075 0 250mVdc
+D_D3         CAP N10115925 D_D1 
+C_C7         0 N13328  1443pF  
+E_E23         N10115028 0 VALUE { {IF (V(U-D) > V(3VBIAS), 0, 5)} }
+G_ABM2I1         0 CAP VALUE { (V(N14076) - V(0)) *0.01979    }
+R_R10         N10115028 N14098  {T*1}  
+C_C10         0 CAP  10n  
+R_R1         N13340 N13328  3Meg  
+R_R186         0 N14190804  1k  
+V_V8         N10115925 0 6.915Vdc
+C_C6         0 N14098  1443pF  
+D_D2         N14217760 CAP D_D1 
+E_E2         N14513 0 VALUE { {IF ( V(N13376) > 3Vbias &  V(U-D) > 3Vbias, 5, 0
++  ) } }
+R_R188         RESET 0  1Meg  
+R_R2         N13362 N13340  1Meg  
+E_E1         N14040 0 VALUE { {IF ( V(N13376) > 3Vbias &  V(N14098) > 3Vbias,
++  5, 0 ) } }
+R_R187         0 N14190822  1k  
+R_R8         N14513 N14549  {T*1}  
+R_R6         N14040 N14076  {T*1}  
+R_R3         N13376 N13362  1k  
+C_C5         0 N14549  1443pF  
+X_U107         N14190804 N14190822 RESET OUT FFRSx  PARAMs: T=2
+C_C4         0 N14076  1443pF  
+V_V1         N13496 0 1.875Vdc
+R_R4         N13376 N13390  2k  
+E_E5         N14201928 0 VALUE { {IF (V(N10116075) > V(CAP), 5, 0)} }
+.IC         V(CAP )=0
+.ENDS
+*$
+.subckt CounterUD_S1 1 2 3 4  
+S_S1         3 4 1 2 _S1
+RS_S1         1 2 1G
+.MODEL         _S1 VSWITCH Roff=1e8 Ron=0.1 Voff=2.5V Von=0.1V
+.ends CounterUD_S1
+*$
+.SUBCKT PosCap330uF 1 2  
+R_R1         2 N00126  10m  
+C_C1         N00126 1  330uF  
+.ENDS
+*$
+.SUBCKT X5R1uF 1 2  
+R_R1         2 N00126  10m  
+C_C1         N00126 1  1uF   
+.ENDS
+*$
+.SUBCKT TDK7_22uH 1 2  
+R_R19         N2387916 2  34m  
+L_L3         1 N2387916  22uH IC=0
+.ENDS
+*$

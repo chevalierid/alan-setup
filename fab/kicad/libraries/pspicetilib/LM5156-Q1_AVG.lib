@@ -1,0 +1,104 @@
+*$
+* LM5156-Q1
+*****************************************************************************
+* (C) Copyright 2021 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Texas Instruments Inc.
+* Part: LM5156-Q1
+* Date: 28JUN2021
+* Model Type: AVERAGE
+* Simulator: PSPICE
+* Simulator Version: 17.2
+* EVM Order Number: LM5156EVM-BST
+* EVM Users Guide: SNVU696–February 2020
+* Datasheet: SNVSBI7B –January 2020–REVISED January 2021
+* Topologies supported: Boost
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+* 
+* 1. Since this is an average model used for AC analysis, 
+*    only the pins affecting AC analysis are modeled.
+* 2. The model takes the inductance (L), Current sense Resistors(R4, R5 & R6)
+*    and Mosfet ON resistance (Ron) as parameters.
+*    Pass appropriate values to these parameters based
+*    on the application circuit. 
+* 3. The operating quiescent current and thermal properties 
+*    have not been modeled.
+* 4. The dithering feature is not modeled.
+*
+*****************************************************************************
+.SUBCKT LM5156-Q1_AVG GND COMP cs FB DITHOFF RT S SW Vin VOUT PARAMS: L=6.8u R4=1u R5=100 R6=0.008 Ron=5.7m 
+D_D11         COMP N16846415 D_D1 
+R_R1         COMP_BUFF_DIVIDED N16887645  300k  
+V_V5         N16846415 GND 2.5
+D_D10         N16846449 COMP D_D1 
+C_C7         N00275 FB  1f  
+R_R4         GND COMP_BUFF_DIVIDED  50k  
+E_ABM7         FS 0 VALUE { 2.21e10/((0.5/V(IRT)) +955)    }
+V_V3         N16846449 GND 1.1
+E_E1         N16887645 0 COMP 0 1
+R_R2         COMP GND  5MEG TC=0,0 
+X_H1    N16933535 RT IRT GND LM5156-Q1_AVG_H1 
+V_V8         N16778503 GND 3
+V_V1         N00275 GND 1
+C_C6         GND COMP  2p  
+R_R3         FB N00275  100MEG TC=0,0 
+V_V9         N16933535 0 0.5
+G_G1         N16778503 COMP FB N00275 -2m
+E_ABM80         NUM 0 VALUE { V(IC_INT)-V(IS)    }
+E_ABM8         IS 0 VALUE { V(CS)/{MAX(v(d), 0.02)}    }
+E_ABM82         IND_SLOPE 0 VALUE { V(VIN) *{R6}/{L}    }
+E_ABM70         IC_INT 0 VALUE { V(COMP_BUFF_DIVIDED) -0.17    }
+E_ABM83         DENOM 0 VALUE { V(IND_SLOPE)/2/V(Fs)+40m+30u*({R4}+{R5}+{R6})  
++   }
+E_ABM10         D 0 VALUE { (V(NUM)/V(DENOM))    }
+X_U2         SW S VOUT D CCMDCM PARAMS: RON={Ron}
+.ENDS LM5156-Q1_AVG
+*$
+.subckt LM5156-Q1_AVG_H1 1 2 3 4  
+H_H1         3 4 VH_H1 1
+VH_H1         1 2 0V
+.ends LM5156-Q1_AVG_H1
+*$
+.model D_D1 d
++ is=1e-015
++ rs=0.005
++ n=0.01
+*$
+.subckt CCMDCM 1 2 3 5 PARAMS: Ron={Ron}
+Eron 1 001 value={I(Et)*(({Ron}/V(u)))}
+Et 001 2 value={((1-v(u))*(v(3,1))/v(u))+((1-v(u))*500m/v(u))}
+Gd 1 3 value={(1-v(u))*I(Et)/v(u)}
+Eu u 0 table {MAX(v(5), 0.02)} (0 0) (1 1)
+.ends
+*$
+.subckt SW_AVG_CCM D S K A Dc PARAMS: Ron=5m Vf=0.5
+Et D S value={((1-v(u))*(v(K,A)+Ron*I(Et))/v(u))+(1-v(u))*Vf}
+Gd A K value={(1-v(u))*I(Et)/v(u)}
+Eu u 0 value={LIMIT(v(Dc),0.01,1)}
+.ends
+*$

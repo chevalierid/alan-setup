@@ -1,0 +1,67 @@
+*$
+*TPS51219AVG
+***************************************************************************
+* (C) Copyright 2011 Texas Instruments Incorporated. All rights reserved.  
+***************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.    
+** TI and its licensors and suppliers make no warranties, either expressed 
+** or implied, with respect to this model, including the warranties of     
+** merchantability or fitness for a particular purpose. The model is       
+** provided solely on an "as is" basis. The entire risk as to its quality  
+** and performance is with the customer.                                    
+***************************************************************************
+* 
+* Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: TPS51916
+* Date: 18AUG011
+* Model Type: AVERAGE
+* Simulator: PSpice
+* Simulator Version: 16.0.0.p001
+* EVM Order Number: TPS51219EVM
+* EVM Users Guide: REV1.3 - MAR2011
+* Datasheet: SLUSAB9  NOVEMBER 2010
+*
+* Model Version: Final 1.00
+*
+***************************************************************************
+*
+* Updates: 
+* Final 1.00 
+* Release to Web.
+*
+***************************************************************************
+.SUBCKT TPS51219AVG_DCAP VINAC VDDQgain PARAMS: cc=330u vin=9 fsw=400k
++ iout=18 vout=1.5 resrc=5m lx=.45u ron_t=8.5m dcr=2.3m ron_b=2m 
+E_LAPLACE1   VDDQGAIN 0 LAPLACE {V(VINAC)} {(-{EXP(-s*Td)})/(
++ {Resrc*Cc*s})}
+.PARAM  td={100n + 0.5*ton} 
++  ton={d/fsw}
++ d={(vout + (iout*(dcr+ron_b)))/(vin - (iout*(dcr+ron_t)))} 
+.ENDS
+*$
+.SUBCKT TPS51219AVG_DCAP2 VSNS SW MODE COMP VDDQ GND
+I_I1         GND MODE DC 15u  
+R_R37         N14892833 IAVG  1.58e6 TC=0,0 
+C_C22         VDDQ IAVG  9.87p  
+R_R31         SW IINFO  2.7e6 TC=0,0 
+C_C10         COMP GND  1p  
+C_C24         VDDQ N148924641  3.22p  
+X_S17    N14892448 GND IINFO N148924641 TPS51219AVG_DCAP2_S17 
+V_V2         N14885355 GND 0
+C_C5         VDDQ IINFO  8.06p IC=0 TC=0,0 
+E_ABM69         N14892448 0 VALUE { if(V(MODE)< 0.35 & V(MODE) > 0.16 , 0,1)   
++  }
+E_E8         VORAMP COMP IINFO IAVG 0.25
+G_ABM2I5         GND COMP VALUE { {LIMIT((V(VSNS) - V(GND))*130u, -10u,10u)}   
++  }
+E_E11         SW GND VORAMP N14885355 1e6
+C_C21         VDDQ N14892833  3.89p  
+R_R5         GND COMP  10Meg  
+R_R36         IINFO N14892833  1.58e6 TC=0,0 
+.ENDS
+*$
+.subckt TPS51219AVG_DCAP2_S17 1 2 3 4  
+S_S17         3 4 1 2 _S17
+RS_S17         1 2 1G
+.MODEL         _S17 VSWITCH Roff=1e11 Ron=1m Voff=0.25V Von=0.75V
+.ends TPS51219AVG_DCAP2_S17

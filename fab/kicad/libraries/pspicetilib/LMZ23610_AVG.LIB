@@ -1,0 +1,87 @@
+*$
+*  LMZ23610
+*****************************************************************************
+*  (C) Copyright 2012 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid For customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: LMZ23610
+* Date: 11OCT2012
+* Model Type: AVERAGE
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: LMZ23610EVM
+* EVM Users Guide: SNVA460A - June 7, 2011
+* Datasheet:SNVS707C - May 3, 2011
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+.SUBCKT LMZ23610_AVG VIN FB VOUT PARAMS: L=2.2u F={F} RFBT={RFBT} RFBB=
++ {RFBB} VIN={Vin}
+.param vout = { 0.796*(1+({RFBT}/{RFBB}))} 
+.param gain = 40
+.param rs = 0.001
+.param Ri = {{rs}*{gain}}
+.param D = {{vout}/{Vin}}
+.param c1 = {1/(3.142*{F})**2}
+.param c2 = {-1*({D})/({F})}
+.param c3 = 1
+*.param L =2.2u
+Rdcr 21 VOUT 10m
+L1 Vsw 21 {L}
+*Beff VIN vin_in V=(1-0.99)*V(VIN)
+EBeff VIN vin_in VALUE = {(1-0.99)*V(VIN)}
+Gm1 Gnd 23 Ref FB 500u
+GB4 Gnd Vswx VALUE = {IF(V(Iv)>0 ,V(ILs) ,V(IL))}
+Cc3 4 Gnd 60p
+*Baverage IL Gnd V={L}*{F}*(V(Ip)^2-V(Iv)^2)/2*(1/V(Vsw) + 1/V(Von))
+EBaverage IL Gnd VALUE={{L}*{F}*(V(Ip)^2-V(Iv)^2)/2*(1/V(Vsw) + 1/V(Von))}
+Vin VIN 0 DC={Vin}
+*XAHs IL ILs S_XFER
+ES_XFER ILS 0 LAPLACE {V(IL)} {(1/({C1}*s*s+{C2}*S+{C3}))}
+*.MODEL -A2 s_xfer( in_offset=0 gain=1 num_coeff=[1]
+*+ den_coeff=[{c1} {c2} {c3}] out_ic=0 denorm_freq=1)
+Rc4 23 4 2Meg
+V3 Vc 23
+EBrampx Vc Vr VALUE={V(vin_in)*(1/(3.5Meg*15p*{F}))*V(D)}
+C7 Vc 0 500p
+EBpeakx Ipx Gnd VALUE= {V(Vr)/{Ri}}
+EBvalley Iv Gnd VALUE={V(Ivx)}
+EBduty D Gnd VALUE={IF(V(Dx) < 0 , 0 , v(Dx))}
+EBdutyx Dx Gnd VALUE={IF(({L}*{F}*(V(Ip)-V(Iv))/V(Von)) > 0.99 , 0.99 , ({L}*{F}*(V(Ip)-V(Iv))/V(Von)))}
+EBpeak Ip Gnd VALUE={IF(V(Ipx) > 0 , V(Ipx) , 0)}
+EBvalleyx Ivx Gnd VALUE={(V(Ip)-V(Vsw)*(1-V(Vsw)/V(vin_in))/({L}*{F}))}
+Xbuff1 4 18 GAIN PARAMS: K=1 
+R9 Vc 18 10k
+V2 Ref Gnd DC=0.796
+Vgnd Gnd 0 DC=0
+GBin vin_in Gnd VALUE={V(Vsw)*I(VIL1)/(V(vin_in))}
+VIL1 Vswx Vsw DC=0
+D1x Vswx vin_in _D1_mod 
+.MODEL _D1_mod d AF=1 BV=50 CJO=5.37397e-11 EG=0.849639
++ FC=0.5 IBV=0.000002 IS=9.82502e-09 KF=0 M=0.515449
++ N=1.57715 RS=0.0304421 TT=0 VJ=1.24876 XTI=0.5
+EBon Von Gnd VALUE={V(vin_in,Vsw)}
+.ENDS LMZ23610_AVG
+*$
+.SUBCKT GAIN  1  2 PARAMS:K=1
+*Connections: In Out
+*Parameters: K Gain
+E1 2 0 1 0 {K}
+.ENDS GAIN
+*$

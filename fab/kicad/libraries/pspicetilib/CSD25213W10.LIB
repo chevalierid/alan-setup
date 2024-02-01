@@ -1,0 +1,117 @@
+*$
+* CSD25213W10
+***********************************************************************
+*  (C) Copyright 2016, 2017 Texas Instruments Incorporated. All rights reserved.
+***********************************************************************
+***********************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose. The model is
+** provided solely on an "as is" basis. The entire risk as to its quality
+** and performance is with the customer
+********************************************************************************
+*
+********************************************************************************
+*
+* Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: CSD25213W10
+* Date: 02/01/2017
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: 
+* EVM Users Guide: 
+* Datasheet: SLPS443 -JUNE 2013
+* Model Version: Final 1.1
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.10
+*< Made these changes to the model >
+*       1. Drain and Source pins were swapped in symbol while attaching .LIB to .OLB
+*          and is been resolved.
+*
+* Final 1.00
+* Release to Web
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+*
+*****************************************************************************
+**********************************************************************
+**********************************************************************
+**********************************************************************
+*                                                                    *
+*  CSD25213W10  -  P-Channel 20/08 CSP 1x1 mm^2                      *
+*  from CSD68813W10, 3/17/2016, tr                                 *
+*                                                                    *
+**********************************************************************
+.SUBCKT CSD25213W10  1 2 3
+.param width 0.3858
+.param length 0.4u
+.param ptrc1 {1.50e-3*1}
+.param ptrc2 {0.50e-5*1}
+M1   10 11 12 12  PMOS W={width} L={length} PD={2*width} PS={2*width}
+M2   12 11 12 20  NMOSd W={width} L=0.03u PD={2*width} PS={2*width}
+DDx  10 20    DDx
+DBD   7  8	  DBD
+RBD   7  8	  1e9
+CBD   7  8	  15e-12
+CGD   2  1	  1e-12
+DGD  11 13	  DD
+DDG  10 13	  DD
+DESD	14	3	ZENERD
+CGS   2  3	  105.0E-12
+RGG1	11	14	30
+RGG   2 14	  5000
+RDP   1  7	  2.5e-3
+RDD   7 10	  RTEMP 1.00e-6
+RSB  12  9	  RTEMP 2.4e-3
+RSS   9  8	  16.32e-3
+Rsub  8  3	  1.0e-6
+******************************************************************* 
+.MODEL  PMOS   PMOS (
++ LEVEL   = 7		Version = 3.2           	TNOM  = 27
++ LINT    = 0.025e-6       
++ TOX     = 1.00E-8     NCH     = 1.3e17		NSUB  = 5.2e15
++ A0      = 1.00        A1      = 0.0          	A2      = 1.0
++ UA      = 0.00E-09    UB      = 0.0E-18     	VBM     = -3
++ UA1     = 0.00e-9     UB1     = -0.00e-19    	UTE     = -1.50
++ KT1     = -0.58   	KT2     = .022         	KT1L    = 0.00
++ Dvt0    = 2.2         Dvt1    = 0.53         	Dvt2    = -0.032
++ PCLM    = 2.5
++ PDIBLC1 = 0.4         PDIBLC2 = 0.0086		U0 = 45
++ VOFF    = -0.175      NFACTOR = 2.0         	NLX     = 1.74e-7
++ ETA0    = 0.08        ETAB    = -0.07        	DROUT   = 0.56
++ PSCBE1  = 4.24e8      PSCBE2  = 1.0e-5       	B0      = 0.0
++ DELTA   = 0.01        AGS     = 0.0          	JS      = 0
++ CJ      = 1e-18       CJSW    = 1e-18        	CF      = 0
++ CGSO    = 5e-15       CGDO    = 1e-12 		CGBO= 0  )
+*******************************************************************
+.MODEL DBD D (
++ CJO=375E-12	VJ=0.75	M=0.39	FC=0.5	TT=3e-9
++ TNOM=27		RS=13.50e-3 	TRS1=1e-3 	IS=2.00e-13 N=1.0
++ XTI=3.50 		BV=21)
+*******************************************************************
+.MODEL DD D (
++ CJO=54e-12	VJ=0.4	M=0.9	FC=0.5	TT=1e-9
++ TNOM=27		IS=1.00e-12 N=1.0  RS = 0.1 )
+*******************************************************************
+.MODEL ZENERD D (
++ CJO=25E-15	VJ=0.7	M=0.45	RS=1e-3	TRS1=-2e-3
++ FC=0.5		TT=3E-9	IS=1.00e-9 N=1.02	XTI=3.5
++ BV=6.08)
+.MODEL RTEMP RES (TC1={ptrc1} TC2={ptrc2})
+*******************************************************************
+.MODEL  NMOSd   NMOS (   LEVEL  = 1
++ TNOM   = 27            VTO    = 0.50          IS     = 1.0e-14
++ TOX    = 1.0e-8        NSUB   = 2.0e17        GAMMA  = 7
++ CJ     = 1e-18         CJSW   = 1e-18
++ CGSO   = 1e-18         CGDO   = 1e-18         CGBO   = 1e-18  )
+.MODEL DDx D (CJO=20e-12 VJ=0.40 M=0.50 IS=1e-12 RS=1.0 TNOM=27)
+.ENDS CSD25213W10
+*$

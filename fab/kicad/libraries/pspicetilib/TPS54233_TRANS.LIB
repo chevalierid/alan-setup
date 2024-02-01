@@ -1,0 +1,299 @@
+*$
+* TPS54233
+*****************************************************************************
+* (C) Copyright 2022 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Texas Instruments Inc.
+* Part: TPS54233
+* Date: 9JUN2022
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 17.4-2019 S024
+* EVM Order Number: TPS54233EVM-373
+* EVM Users Guide: SLVU264A – NOVEMBER 2008 – REVISED OCTOBER 2021
+* Datasheet: SLUS859C –OCTOBER 2008–REVISED JANUARY 2015
+* Topologies Supported: Buck
+*
+* Model Version: Final 1.10
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.10
+* Added B230A diode model
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+* A. Features have been modelled
+*	1. 	Output sequencing
+*	2. 	UVLO Protection
+*   3.  Shutdown sequencing
+*	4. 	BOOT functionality
+*	5. 	Low-side FET Zero-Crossing
+*	6. 	Current Sense and Positive Overcurrent Protection(OCP)
+*	7. 	Over Voltage Protection(OVP)
+*	8.  EN off Discharge
+*	9.  ECO Mode
+*
+* B. Features have not been modelled
+*	1. Operating Quiescent Current
+*   2. Shutdown Current 
+*   3. Temperature dependent characteristics
+*
+* C. Application Notes
+*   1. Ground Pins have been tied to 0V internally and hence model does not support Inverting 
+*      topologies.
+*
+*****************************************************************************
+.SUBCKT TPS54233_TRANS BOOT VIN EN SS VSENSE COMP GND PH
+X_U8_U1         EN VIN d_d 
+E_U8_ABM1         U8_N14704 0 VALUE { IF(V(EN)<1.25,0,5)    }
+G_U8_G1         VIN EN U8_N14704 GND 600n
+E_U8_ABM2         SD 0 VALUE { IF(V(EN)<1.25,5,0)    }
+I_U8_I1         VIN EN DC 1u  
+R_U8_R1         GND U8_N14704  10k  
+E_U5_ABM1         ENREGS 0 VALUE { if(V(2P5)<2.48,0,5)    }
+E_U5_ABM5         N31646 0 VALUE { if(V(SD)>2,0,if(V(VIN)<0.8,V(VIN),0.8))    }
+E_U5_ABM4         2P5 0 VALUE { if(V(SD)>2,0,if(V(VIN)<2.5,V(VIN),2.5))    }
+X_U9_S1    U9_N19630 GND SS GND SOFT_START_U9_S1 
+E_U9_ABM1         VREF_GM 0 VALUE { IF (V(N31646) >V(SS) ,V(SS),V(N31646))    }
+E_U9_ABM2         U9_N19630 0 VALUE { IF (V(SD) >2 | V(OC) >3.5,5,0)    }
+X_U9_D1         SS 2P5 d_d 
+I_U9_I1         2P5 SS DC 2udc  
+C_U3_C2         OC U3_N03360  1u  
+E_U3_ABM2         ECO 0 VALUE { if (V(COMP)>0.513, 5,
++  if(V(U3_N03360)<0.100,0,5))    }
+G_U3_G1         GND U3_N00409 VREF_GM VSENSE 92u
+R_U3_R3         GND U3_N03360  10k  
+C_U3_C1         GND COMP  5.4p  
+R_U3_R1         GND COMP  8.696Meg  
+G_U3_ABMI1         COMP GND VALUE { if(I(V_U3_V1)>0,
++  -1*min(I(V_U3_V1),0.000007),-1*max(I(V_U3_V1),-0.000007))    }
+V_U3_V1         U3_N00409 GND DC 0Vdc AC 0Vac 
+X_U3_U1         U3_N01964 COMP d_d2 
+X_U3_U2         COMP U3_N02173 d_d 
+R_U3_R2         VREF_GM VSENSE  10Meg  
+V_U3_V3         U3_N01964 GND 0.5Vdc
+V_U3_V2         U3_N02173 GND 1.6Vdc
+G_U1_ABMII1         U1_N00466 GND VALUE {
++  if(V(VSENSE)<0.2,-0.0075,if(V(VSENSE)<0.4,-0.0152,if(V(VSENSE)<0.6,-0.030,-0.060)))
++     }
+C_U1_C1         GND U1_N00466  8.7n  
+E_U1_ABM2         U1_N00859 0 VALUE { if(V(U1_N00466)<1,0,(V(U1_N00466)-1))   
++  }
+V_U1_V1         U1_IN2 GND  
++PULSE 0 5 0 20n 20n 24.8u 26.6u
+X_U1_S1    U1_N05307 GND U1_N00466 GND SLOPECOMP_U1_S1 
+V_U1_V2         U1_IN3 GND  
++PULSE 0 5 0 20n 20n 12.4u 13.3u
+E_U1_ABM1         CLK 0 VALUE { if(V(SD)>3,0,if
++  (V(VSENSE)<0.2,V(U1_IN2),if(V(VSENSE)<0.4,V(U1_IN3),if(V(VSENSE)<0.6,V(U1_IN4),V(U1_IN5)))))
++     }
+G_U1_G1         2P5 N31294 U1_N00859 GND 1e-6
+V_U1_V3         U1_IN4 GND  
++PULSE 0 5 0 20n 20n 6.2u 6.67u
+X_U1_U_inv         CLK U1_N05307 INV_BASIC
+V_U1_V4         U1_IN5 GND  
++PULSE 0 5 0 20n 20n 3.1u 3.3u
+V_U2_V4         N31318 GND DC 0Vdc AC 0Vac 
+V_U2_V3         U2_N01530 GND DC 0Vdc AC 0Vac 
+V_U2_V1         N31294 GND DC 0Vdc AC 0Vac 
+E_U2_ABM1         U2_N02780 0 VALUE { if((I(V_U2_V4)-I(V_U2_V5))>0,0,5)    }
+G_U2_ABMI1         U2_N01763 GND VALUE { (((V(COMP)-0.5)/35e3)-I(V_U2_V1))*
++  (-10)    }
+V_U2_V2          U2_N01763 GND DC 0Vdc AC 0Vac 
+X_U2_F1    U2_N00392 GND 2P5 U2_N02091 MODULATOR2_U2_F1 
+V_U2_V5          U2_N02091 GND DC 0Vdc AC 0Vac 
+G_U2_ABMI2         U2_N00392 GND VALUE { min(-I(V_U2_V3),I(V_U2_V2))    }
+I_U2_I1         GND U2_N01530 DC -138.09uAdc  
+X_U2_U1         U2_N02780 N31330 BUF_DELAY_BASIC PARAMS: DELAY=30N
+X_U6_S1    U6_N00154 GND BOOT VIN BOOT_UVLO_U6_S1 
+E_U6_ABM1         U6_N00154 0 VALUE { if(V(BOOT)-V(PH)>6,0,5)    }
+E_U6_ABM2         N36745 0 VALUE { if(V(BOOT)-V(PH)>2.1,5,0)    }
+X_U10         N31330 ECO N36745 N31368 AND3_BASIC
+G_U4_ABMI1         VIN N31318 VALUE { IF (V(U4_IN1)>0.120,I(V_U4_V1),0)    }
+X_U4_S2    U4_N01674 GND U4_N01108 PH POWERSTAGE_U4_S2 
+V_U4_V2         U4_N04959 GND 5Vdc
+X_U4_H1    U4_N00618 U4_N00836 OC GND POWERSTAGE_U4_H1 
+V_U4_V1         U4_N00718 GND DC 0Vdc AC 0Vac 
+X_U4_S3    U4_N01108 PH U4_N00836 PH POWERSTAGE_U4_S3 
+X_U4_U_dff         U4_N01674 U4_QN CLK U4_N04959 N31368 U4_N04959 dff_basic
++  PARAMS:
+X_U4_S1    U4_N01674 GND BOOT U4_N01108 POWERSTAGE_U4_S1 
+D_U4_D1         PH U4_N00836 B230A 
+R_U4_R1         U4_N01674 U4_IN1  10k  
+C_U4_C1         GND U4_IN1  20p  
+X_U4_F3    VIN U4_N00618 VIN U4_N00718 POWERSTAGE_U4_F3
+.ENDS TPS54233_TRANS
+*$
+.subckt SOFT_START_U9_S1 1 2 3 4  
+S_U9_S1         3 4 1 2 _U9_S1
+RS_U9_S1         1 2 1G
+.MODEL         _U9_S1 VSWITCH Roff=1e9 Ron=2e3 Voff=1.0V Von=3.0V
+.ends SOFT_START_U9_S1
+*$
+.subckt SLOPECOMP_U1_S1 1 2 3 4  
+S_U1_S1         3 4 1 2 _U1_S1
+RS_U1_S1         1 2 1G
+.MODEL         _U1_S1 VSWITCH Roff=1e6 Ron=1.0 Voff=1.0V Von=3.0V
+.ends SLOPECOMP_U1_S1
+*$
+.subckt MODULATOR2_U2_F1 1 2 3 4  
+F_U2_F1         3 4 VF_U2_F1 -25e3
+VF_U2_F1         1 2 0V
+.ends MODULATOR2_U2_F1
+*$
+.subckt BOOT_UVLO_U6_S1 1 2 3 4  
+S_U6_S1         3 4 1 2 _U6_S1
+RS_U6_S1         1 2 1G
+.MODEL         _U6_S1 VSWITCH Roff=1e9 Ron=10 Voff=0.0V Von=1.0V
+.ends BOOT_UVLO_U6_S1
+*$
+.subckt POWERSTAGE_U4_S2 1 2 3 4  
+S_U4_S2         3 4 1 2 _U4_S2
+RS_U4_S2         1 2 1G
+.MODEL         _U4_S2 VSWITCH Roff=9.7 Ron=1e9 Voff=1.0V Von=3.0V
+.ends POWERSTAGE_U4_S2
+*$
+.subckt POWERSTAGE_U4_H1 1 2 3 4  
+H_U4_H1         3 4 VH_U4_H1 1
+VH_U4_H1         1 2 0V
+.ends POWERSTAGE_U4_H1
+*$
+.subckt POWERSTAGE_U4_S3 1 2 3 4  
+S_U4_S3         3 4 1 2 _U4_S3
+RS_U4_S3         1 2 1G
+.MODEL         _U4_S3 VSWITCH Roff=1e9 Ron=80m Voff=0.5V Von=2.0V
+.ends POWERSTAGE_U4_S3
+*$
+.subckt POWERSTAGE_U4_S1 1 2 3 4  
+S_U4_S1         3 4 1 2 _U4_S1
+RS_U4_S1         1 2 1G
+.MODEL         _U4_S1 VSWITCH Roff=1e9 Ron=12 Voff=1.0V Von=3.0V
+.ends POWERSTAGE_U4_S1
+*$
+.subckt POWERSTAGE_U4_F3 1 2 3 4  
+F_U4_F3         3 4 VF_U4_F3 1
+VF_U4_F3         1 2 0V
+.ends POWERSTAGE_U4_F3
+*$
+.subckt d_d      1    2
+d1 1 2  dd
+.model dd d
++ is=1e-015
++ n=0.16
++ cjo=1e-012
++ tt=1e-011
+.ends d_d
+*$
+.subckt d_d2      1    2
+d1 1 2  dd
+.model dd d
++ is=1e-015
++ n=0.0001
++ cjo=1e-012
++ tt=1e-011
+.ends d_d2
+*$
+.subckt dff_basic q qb clk d r s
+x1 clk clkdel inv_delay_basic params: delay = 15n
+x2 clk clkdel clkint and2_basic 
+gq 0 qint value = {if(v(s) < 2.5,5,if(v(r)<2.5,-5, if(v(clkint)>2.5, 
++ if(v(d)>2.5,5,-5),0)))}
+cqint qint 0 1n
+rqint qint 0 1000meg
+d_d10 qint my5 d_d1
+v1 my5 0 5
+d_d11 0 qint d_d1 
+eq qqq 0 qint 0 1
+x3 qqq qqqd1 buf_delay_basic params: delay = 15n
+rqq qqqd1 q 1
+eqb qbr 0 value = {if( v(q) > 2.5, 0,5)}
+rqb qbr qb 1 
+cdummy1 q 0 1nf 
+cdummy2 qb 0 1nf 
+.ic v(qint) = 0
+.model d_d1 d
++ is=1e-015
++ tt=1e-011
++ rs=0.05
++ n=0.1
+.ends dff_basic
+*$
+.SUBCKT INV_BASIC A  Y 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > 2.5 , 
++ 0,5)}}
+RINT YINT Y 1
+CINT Y 0 15n
+.ENDS INV_BASIC
+*$
+.SUBCKT AND3_BASIC A B C Y 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > 2.5  &  
++ V(B) > 2.5 &
++ V(C) > 2.5,5,0)}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS AND3_BASIC
+*$
+.SUBCKT BUF_DELAY_BASIC A  Y PARAMS: DELAY = 30n
+E_ABMGATE1    YINT1 0 VALUE {{IF(V(A) > 2.5 , 
++ 5,0)}}
+RINT YINT1 YINT2 1
+CINT YINT2 0 {DELAY*1.3}
+E_ABMGATE2    YINT3 0 VALUE {{IF(V(YINT2) > 2.5 , 
++ 5,0)}}
+RINT2 YINT3 Y 1
+CINT2 Y 0 1n
+.ENDS BUF_DELAY_BASIC
+*$
+.SUBCKT CESR IN OUT
++ PARAMs:  C=100u ESR=0.01 X=2 IC=0
+C	IN 1  {C*X} IC={IC}
+RESR	1 OUT {ESR/X}
+.ENDS CESR
+*$
+.SUBCKT LDCR IN OUT
++ PARAMs:  L=1u DCR=0.01 IC=0
+L	IN 1  {L} IC={IC}
+RDCR	1 OUT {DCR}
+.ENDS LDCR
+*$
+.SUBCKT INV_DELAY_BASIC A  Y PARAMS: DELAY = 10n 
+E_ABMGATE1    YINT1 0 VALUE {{IF(V(A) > 2.5 , 
++ 5,0)}}
+RINT YINT1 YINT2 1
+CINT YINT2 0 {DELAY*1.3}
+E_ABMGATE2    YINT3 0 VALUE {{IF(V(YINT2) > 2.5 , 
++ 0,5)}}
+RINT2 YINT3 Y 1
+CINT2 Y 0 1n
+.ENDS INV_DELAY_BASIC
+*$
+.SUBCKT AND2_BASIC A B Y 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > 2.5  &  
++ V(B) > 2.5,5,0)}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS AND2_BASIC
+*$
+.MODEL B230A D  ( IS=7.98u RS=13.4m BV=30.0 IBV=500u
++ CJO=370p  M=0.333 N=1.13 TT=1.44n )
+*$

@@ -1,0 +1,93 @@
+* OPA347
+*****************************************************************************
+* (C) Copyright 2011 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: OPA347
+* Date: 01JUL2011
+* Model Type: ALL IN ONE
+* Simulator: PSPICE
+* Simulator Version: 16.0.0.p001
+* EVM Order Number: N/A
+* EVM Users Guide: N/A
+* Datasheet: SBOS167D – NOVEMBER 2000– REVISED JULY 2007
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+* 
+* Updates:
+*
+* Version 1.0 : 
+* Release to Web
+*
+*****************************************************************************
+*
+* THIS MODEL IS APPLICABLE TO OPA347,OPA2347 & OPA4347
+*
+*****************************************************************************
+* connections:   non-inverting input
+*                | inverting input
+*                | | positive power supply
+*                | | | negative power supply
+*                | | | | output
+*                | | | | |
+.subckt OPA347   1 2 3 4 5
+*
+  c1   11 12 1.1651E-12
+  c2    6  7 7.5000E-12
+  css  10 99 1.0000E-30
+  dc    5 53 dy
+  de   54  5 dy
+  dlp  90 91 dx
+  dln  92 90 dx
+  dp    4  3 dx
+  egnd 99  0 poly(2) (3,0) (4,0) 0 .5 .5
+  fb    7 99 poly(5) vb vc ve vlp vln 0 1.1318E9 -1E3 1E3 1E9 -1E9
+  ga    6  0 11 12 10.0E-7
+  gcm   0  6 10 99 4.4738E-10
+  Vdp 30 3 DC 1.0
+  iss   33 4 dc 1.2750E-6
+  m1    33 33 30 30 pix l=4u w=10u
+  m2    10 33 30 30 pix l=4u w=10u
+  hlim 90  0 vlim 1K
+  m3    11 2 10 30 pix l=1u w=300u
+  m4    12 1 10 30 pix l=1u w=300u
+  r2    6  9 100.00E3
+  rd1   4 11 70.736E3
+  rd2   4 12 70.736E3
+  ro1   8  5 50
+  ro2   7 99 25
+  rp    3  4 250.00E3
+  rss  10 99 156.86E6
+  vb    9  0 dc 0
+  vc    3 53 dc .79464
+  ve   54  4 dc .79464
+  vlim  7  8 dc 0
+  vlp  91  0 dc 16
+  vln   0 92 dc 16
+.model dx D(Is=800.00E-18)
+.model dy D(Is=800.00E-18 Rs=1m Cjo=10p)
+.model nix nmos(vto=0.75 kp=205.5u rd=1 rs=1 rg=1 rb=1 cgso=4e-9
++cgdo=4e-9 cgbo=16.667e-9 cbs=2.34e-13 cbd=2.34e-13)
+.model nox nmos(vto=0.75 kp=195u rd=.5 rs=.5 rg=1 rb=1 cgso=66.667e-12
++cgdo=66.667e-12 cgbo=125e-9 cbs=2.34e-13 cbd=2.34e-13)
+.model pix pmos(vto=-0.75 kp=205.5u rd=1 rs=1 rg=1 rb=1 cgso=4e-9
++cgdo=4e-9 cgbo=16.667e-9 cbs=2.34e-13 cbd=2.34e-13)
+.model pox pmos(vto=-0.75 kp=195u rd=.5 rs=.5 rg=1 rb=1 cgso=66.667e-12
++cgdo=66.667e-12 cgbo=125e-9 cbs=2.34e-13 cbd=2.34e-13)
+.ends
+*$

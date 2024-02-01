@@ -1,0 +1,138 @@
+* CIP: NDA is required as of 08/29/2019
+*$
+*  SM74611 Model
+*****************************************************************************
+*  (C) Copyright 2012 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warrenties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+** Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: SM74611
+* Date: 12/20/2012
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.0.0.p001
+* EVM Order Number: 
+* EVM Users Guide: 
+* Datasheet: SNVS903 - DECEMBER 2012
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+* 
+* 1. In the reference design, the current source represents the current
+*     through the PV cell.
+* 2. The RADJ and CADJ are values that will vary teh duty cycle of the
+*     diode so that the simulation shows the variation.
+* 3. The defauly values RADJ=10k and CADJ=1 are the nominal values
+*     of the device. The additional placements in the reference design
+*     show values that would be observed in the lab (+/- 10% on CADJ
+*     and +/- 5% on RADJ.
+* 4. The average forward voltage and duty cycle are temperature
+*     dependent. The temperature effects have been modeled.
+*
+*****************************************************************************
+* PSpice Model Editor - Version 16.5.0
+*$
+.SUBCKT SM74611 Anode Cathode PARAMS: CADJ=1 RADJ=10k
+* source SM74611_ABM
+C_C4         GATE GATE  1n IC=0 
+*R_R10         0 CATHODE  100k  
+R_R7         GATE GATE  1k  
+C_C1         CATHODE ANODE  100n IC=0 
+D_D5         ANODE CATHODE SBP_Body_Diode 
+*I_I7         ANODE CATHODE DC 0Adc AC 0Aac
+*+PULSE 5 -5 1m 1m 1m 0.8 2
+E_E8         N79586 0 VALUE { if (V(VCAP, 0)<0.001, -.5, 5) }
+C_C12         VSTATE 0  10u IC=.1 
+E_E7         N735180 0 VALUE { if (V(VCAP, 0)>0.999, 1.5, -5) }
+E_E3         GATE 0 VALUE { if (V(VSTATE, 0)>0.5, 1, 1e6) }
+C_C15         0 N73338  100n IC=-1 
+R_R17         0 VSTATE  1000k  
+C_C14         0 N79584  100n IC=0 
+G_ABMI1         N82136 0 VALUE { if ( (V(VCAP)>.00001), 
++  (1/((0.0091*Temp*Temp-4.1659*Temp+498.78)*1E-3)), 0)    }
+C_C11         VCAP 0  { CADJ } IC=0 
+R_R24         GATE N73338  1k  
+R_R19         N79584 N79586  100  
+R_R16         0 VCAP  { RADJ }  
+R_R18         VCAP N82136  .01  
+D_D6         N801131 VSTATE SBP_Body_Diode 
+C_C16         0 N801131  100n IC=0 
+D_D7         VSTATE N79584 SBP_Body_Diode 
+G_ABMI2         0 N73278 VALUE { if(
++  (V(ANODE)>0.25)&(V(VSTATE)<0.5),(1/((0.0001*Temp*Temp+0.0049*Temp+1.7001)*1E-3)),
++  0)    }
+R_R25         VCAP N73278  .01  
+R_R26         N801131 N735180  100  
+E_E4         N83944 CATHODE VALUE {
++  I(V_V2)*((2E-5*Temp*Temp+0.0113*Temp+2.508)*1E-3*V(GATE)) }
+V_V2         ANODE N83944 DC 0 AC 0 0
+.PARAM  current=8
+.ENDS SM74611
+*$
+*BeginSpec
+*IF: (.4337,100.00E-6) (.495,1.0000E-3) (.5563,10.000E-3) (.6184,.1) (.663,.5) (.683,1) (.7341,5) (.7615,10) (.7793,15)
+*IF: (.7937,20) (.7931,25) (.8022,30) (.818,40) (.8439,60) (.8648,80) (.8891,100)
+*JC:
+*RL: (27,344.00E-9) (28,0) (30,389.00E-9)
+*RB: Vz=30 Iz=390.00E-9 Zz=1
+*RR: Trr=0 Ifwd=10.000E-3 Irev=10.000E-3 Rl=100
+*EndSpec
+*BeginTrace
+*IF: 1,0,.4,1,1,3,0,0,-1 (27)
+*JC: 0,1,.1,10,1,3,0,0,-1 (27)
+*RL: 0,0,1,100,1,3,0,0,-1 (27)
+*RB: 0,1,100.00E-6,1,1,3,0,0,-1 (27)
+*RR: 0,0,-5.0000E-9,20.000E-9,1,3,0,0,-1 (27)
+*EndTrace
+*BeginParam
+*IS=17.653E-12 (10.000E-21,.1,0)
+*N=1.0704 (.2,5,0)
+*RS=353.93E-6 (1.0000E-6,100,0)
+*IKF=27.502 (0,1.0000E3,0)
+*XTI=3 (-100,100,0)
+*EG=1.1100 (.1,5.5100,0)
+*CJO=1.0000E-12 (10.000E-21,1.0000E-3,0)
+*M=.3333 (.1,10,0)
+*VJ=.75 (.3905,10,0)
+*FC=.5 (1.0000E-3,10,0)
+*ISR=72.397E-9 (10.000E-21,.1,0)
+*NR=4.9950 (.5,5,0)
+*BV=30.441 (.1,1.0000E6,0)
+*IBV=10 (1.0000E-9,10,0)
+*TT=5.0000E-9 (100.00E-18,1.0000E-3,0)
+*EndParam
+*DEVICE=SBP_Body_Diode,D
+* SBP_Body_Diode D model
+* updated using Model Editor release 9.2 on 09/06/12 at 10:00
+* The Model Editor is a PSpice product.
+.MODEL SBP_Body_Diode D
++ IS=17.653E-12
++ N=1.0704
++ RS=353.93E-6
++ IKF=27.502
++ CJO=1.0000E-12
++ M=.3333
++ VJ=.75
++ ISR=72.397E-9
++ NR=4.9950
++ BV=30.441
++ IBV=10
++ TT=5.0000E-9
+*$

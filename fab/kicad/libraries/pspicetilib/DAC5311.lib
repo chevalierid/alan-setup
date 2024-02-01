@@ -1,0 +1,449 @@
+* DAC5311 (PSpice format)
+*****************************************************************************
+* (C) Copyright 2014 Texas Instruments Incorporated. All rights reserved.     
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.      
+** TI and its licensors and suppliers make no warranties, either expressed   
+** or implied, with respect to this model, including the warranties of       
+** merchantability or fitness for a particular purpose. The model is        
+** provided solely on an "as is" basis. The entire risk as to its quality   
+** and performance is with the customer                                    
+*****************************************************************************	
+* Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: DAC5311 
+* 2.0V to 5.5V, 80uA, 8 Bit, Low-Power, Single-Channel, Digital-to-Analog Converter in SC70 Package
+* Date: 2014-01-15
+* Model Type: PSpice
+* Simulator:  PSpice
+* Simulator Version: PSpice 16.3.0 onwards
+* Datasheet: SBAS439B,SBAS442B–AUGUST 2008–REVISED MAY 2013
+*
+*****************************************************************************
+* version 1.4:
+*
+*****************************************************************************	
+*$
+.SUBCKT DAC5311 D0 D1 D2 D3 D4 D5 D6 D7 AVDD GND OUT
++ PARAMS: Offs=0.05m Offs_ED=3u Gerr=0.05 Gerr_Tc=0.5
+* Offs:    Offset error ±0.05 ±4 mV
+* Offs_ED: Offset error drift 3 µV/°C
+* Gerr:    Gain error 0.05 ±0.15 % of FSR
+* Gerr_Tc: Gain temperature coefficient AVDD=+5V: ±0.5,  AVDD=+2.0V: ±1.5 ppm of  FSR/°C
+*+ PORI PORO 
+XOpamp      Inp Neg OUT AVDD GND PORI POROi Opamp_0	   
++ PARAMS: Offs={Offs} Offs_ED={Offs_ED}
+R2          PORI GND 1MEG 
+R1          GND PORO 1 
+GPOCS1      GND PORO POROi GND  3
+XU3         OUT GND Neg GAINSET_0
++ PARAMS: GERR={Gerr} GERR_TC={Gerr_Tc} 
+XD11        OUT AVDD D_D2_0
+XD1         GND OUT D_D2_0
+XD2A D0 D1 D2 D3 D4 D5 D6 D7 Inp AVDD GND
++ Res_String_5311
+.ENDS
+*******************************************************************************
+*$
+.SUBCKT Res_String_5311  D0 D1 D2 D3 D4 D5 D6 D7
++ RSOUT AVDD GND
+XRSTR       AOUT GND AVDD GND RSOUT RSTRING
+XCONT D0 D1 D2 D3 D4 D5 D6 D7 AOUT AVDD GND 
++ CONTROL_5311 
+.ENDS
+*******************************************************************************
+*$
+.SUBCKT CONTROL_5311   D0 D1 D2 D3 D4 D5 D6 D7 AOUT AVDD GND
+.PARAM VH=0.3
+.PARAM VTH=0.0
+.PARAM VLTH=0.5
+.PARAM GSWC=4
+.PARAM N=8
+.PARAM Res={2**N}
+.PARAM Nr=16
+.PARAM Resr={2**Nr}
+.PARAM B1={1/Resr}
+.PARAM B2={1/Res}
+.PARAM INLa1={-B1}
+.PARAM INLa2={B1}
+.PARAM INLa3={0.25*B1}
+*.PARAM DLE=0.01
+.PARAM DLE=0.0025
+.FUNC SG(X) {IF(X >= VLTH, 1, -1)}
+.FUNC L0(X,VDD,LV) {IF(X >= VLTH*VDD, 1, 0)}
+.FUNC LH(X,VDD,LV) {IF(X >= (VLTH-SG(LV)*VH)*VDD, 1, 0)}
+.PARAM K1= 8
+.PARAM K2= 32
+.FUNC INL(X) {INLa1*sin(2*pi*X)+INLa2*sin(K1*pi*X)+INLa3*sin(K2*pi*X)} 
+.PARAM M1= {0.0667*B2}
+.PARAM M2= {(1-M1)*B2}
+.FUNC DLEF(I0,I1,I2,I3) { IF (I1 < 0.5, IF (I0 < 0.5, DLE*(M2 - M1*(I2*4 + I3*8)), 
++                                                     -DLE*(M1*(1 + I2*4 + I3*8)) ), 
++                                        IF (I0 < 0.5, -DLE*(M2 - M1*(2 + I2*4 + I3*8)), 
++                                                       DLE*(M1*(3 + I2*4 + I3*8)) ) ) }  
+RD0  D0 GND 50MEG
+CD0  D0 GND 1.5P
+RD1  D1 GND 50MEG
+CD1  D1 GND 1.5P
+RD2  D2 GND 50MEG
+CD2  D2 GND 1.5P
+RD3  D3 GND 50MEG
+CD3  D3 GND 1.5P
+RD4  D4 GND 50MEG
+CD4  D4 GND 1.5P
+RD5  D5 GND 50MEG
+CD5  D5 GND 1.5P
+RD6  D6 GND 50MEG
+CD6  D6 GND 1.5P
+RD7  D7 GND 50MEG
+CD7  D7 GND 1.5P
+
+GD0  0 LD0 VALUE = {L0(V(D0,GND), V(AVDD,GND), V(LD0))}
+RDD0  LD0 0 1
+CDD0  LD0 0 10N
+GD1  0 LD1 VALUE = {L0(V(D1,GND), V(AVDD,GND), V(LD1))}
+RDD1  LD1 0 1
+CDD1  LD1 0 10N
+GD2  0 LD2 VALUE = {L0(V(D2,GND), V(AVDD,GND), V(LD2))}
+RDD2  LD2 0 1
+CDD2  LD2 0 10N
+GD3  0 LD3 VALUE = {L0(V(D3,GND), V(AVDD,GND), V(LD3))}
+RDD3  LD3 0 1
+CDD3  LD3 0 10N
+GD4  0 LD4 VALUE = {L0(V(D4,GND), V(AVDD,GND), V(LD4))}
+RDD4  LD4 0 1
+CDD4  LD4 0 10N
+GD5  0 LD5 VALUE = {L0(V(D5,GND), V(AVDD,GND), V(LD5))}
+RDD5  LD5 0 1
+CDD5  LD5 0 10N
+GD6  0 LD6 VALUE = {L0(V(D6,GND), V(AVDD,GND), V(LD6))}
+RDD6  LD6 0 1
+CDD6  LD6 0 10N
+GD7  0 LD7 VALUE = {L0(V(D7,GND), V(AVDD,GND), V(LD7))}
+RDD7  LD7 0 1
+CDD7  LD7 0 10N
+G1 GND AOUTi VALUE = { (V(LD0)*1 + V(LD1)*2 + V(LD2)*4 + V(LD3)*8 + V(LD4)*16 + V(LD5)*32 + V(LD6)*64 + V(LD7)*128)/Res }
+RG1 AOUTI GND 1
+G2 GND AOUT VALUE = {V(AOUTi,GND) + INL(V(AOUTi,GND))+ DLEF(V(LD0),V(LD1),V(LD2),V(LD3))}
+RG2 AOUT GND 1
+.ENDS
+*$
+*****************************************************************************************
+*MODEL SUBCIRCUITs:
+*****************************************************************************************
+.SUBCKT RSTRING C GND X Y Z 
+.PARAM RSTR=1310720
+.PARAM RMIN={RSTR*1E-11}
+G1  X Z VALUE = {(1/( LIMIT(1-V(C,GND),0,1)*RSTR + RSTR))*V(X,Z)}
+G2  Z Y VALUE = {1/( LIMIT(V(C,GND),0,1)*RSTR + RMIN)*V(Z,Y)}
+*R1  X Z 1000G 
+*R2  Z Y 1000G 
+.ENDS
+*$
+.SUBCKT Opamp_0 INP INN OUT AVDD GND PORI POROi
++ PARAMS: Offs=0.05m Offs_ED=3u
+* Offset error ±0.05 ±4 mV
+* Offset error drift 3 µV/°C
+VPSref      34 GND 5
+VS2         0 36 600M
+VS1         35 0 600M
+XOUTA       INN Bias AVDD POROi GND Vt0p Vt0 VnR Plus OUT Vn Output_0
+Rn2         VnR 0 1.206581545MEG 
+XBiasOut    AVDD GND Bias Vt0p Vt0 VOCM PORI POROi Bias_0
+Rn1         VnR 0 1.206581545MEG 
+Gpsn        INP Plus POLY(4) Veps 0 Vn 0 VnR 0 Vos 0 0 0 6M 400M 500M 
+R2          INP Plus 1 
+R11ops      33 0 999 
+L1ops       33 0 158.9957881488U
+R1ops       Veps 33 1 
+G1ops       0 Veps 34 AVDD  500N
+XD10        35 Vn D_DNOISE_0
+XD9         Vn 36 D_DNOISE_0
+XU3         0 Vos VOST_0
++ PARAMS: Offs={Offs} Offs_ED={Offs_ED} 
+.ENDS
+*$
+.SUBCKT Output_0 Neg Bias VDD2 POR GND2 Vt0p Vt0 VnR Plus OUT Vn
+VOLo        GND2 VLo 173.5236254158M
+VOHi        VHi GND2 173.5236254158M
+GVnn        GND2 43 POLY(2) Vn 0 VnR 0 0 357U 10.71M 
+RO2         44 OUT 12 
+RO1         43 GND2 28 
+XD5         VGP Vt0p2 D_LIM1_0
+XD3         Vt02 VGN D_LIM1_0
+GVCCS2      GND2 Vt02 VDD2 Vt0p 1.2
+GVCCS1      Vt0p2 VDD2 VDD2 Vt0p 1.2
+R5          Vt02 GND2 1 
+R4          VDD2 Vt0p2 1 
+GVnp        OUT 44 POLY(2) Vn 0 VnR 0 0 833U 25M 
+R1          VV GND2 5.572372MEG TC=5.0092M,-15.1437U
+Gdn1        Vt0 VGN VALUE = {(V(POR,0)*LIMIT(25.132741U*V(VV,GND2),-1.54U,1.54U))}
+Lf2         47 48 100U
+Rf2         47 OUT 5K 
+Co21        Plus Neg 500F 
+G23         VV GND2 VALUE = {(V(POR,0)*LIMIT(31.415927U*V(Plus,Neg),-3.5U,3.5U))}
+RG23l       0 0 3.5U 
+RG23        0 0 31.4159265359U 
+R3          VDD2 49 1 
+GVMP2       49 VDD2 VALUE = {(1.290+(150M*(V(VDD2,GND2)-2.0)))*V(Vt0,GND2)}
+R2          50 GND2 1 
+GVMN2       GND2 50 VALUE = {(2.70+375M*(V(VDD2,GND2)-2.0))*V(Vt0,GND2)}
+C1          VV GND2 1F 
+RGdn1ll     0 0 2.8U 
+RGdn1lh     0 0 2.8U 
+RGdn1       0 0 25.1327412287U 
+Gdn2        Vt0p VGP VALUE = {(V(POR,0)*LIMIT(25.132741U*V(VV,GND2),-1.54U,1.54U))}
+Rf1         51 OUT 541.799859132 
+Cf4         VGP 51 2P 
+Cf5         51 VGN 2P 
+XT3         44 VGP VDD2 VDD2 Q_PMOS_OUT_L1_0
++ PARAMS: M=8 W=10U L=1U 
+XT1         OUT VGN 43 GND2 Q_NMOS_OUT_L1_0
++ PARAMS: M=8 W=10U L=1U 
+XD6         49 VGP D_LIM1_0
+XD4         VGN 50 D_LIM1_0
+XD2         VV VHi D_LIM1_0
+XD1         VLo VV D_LIM1_0
+C33         VV 48 5P 
+Ro23        GND2 Plus 1T 
+Ro22        Neg GND2 1T 
+Ro21        Neg Plus 1G 
+Rdn2        VGP Vt0p 3.1728726441MEG 
+Rdn1        VGN Vt0 3.1728726441MEG 
+Co23        GND2 Plus 500F 
+Co22        Neg GND2 500F 
+.ENDS
+*$
+.SUBCKT Bias_0 VDD2 GND2 Bias Vt0p Vt0 VOCM PORI POROi
+VS2         54 53 900M
+VCIb1       52 55 ; Current Arrow
+GVMP1       Vt0p VDD2 VALUE = {V(POROi,GND2)*V(VDD2,52)}
+GVMN1       GND2 Vt0 VALUE = {V(POROi,GND2)*V(53,GND2)}
+C1          POROi GND2 45N 
+R5          POROi GND2 100K 
+GPORO       GND2 POROi VALUE = {10.0E+0*(LIMIT(I(VCIB1),4.5U,5.5U)-4.5U)}
+XT4         VT1 Vt0 GND2 GND2 Q_NMOS_OUT_L1_0
++ PARAMS: M=5 W=10.8U L=1U 
+R6          54 53 1MEG 
+R4          Vt0 GND2 1 
+R1          VDD2 Vt0p 1 
+XD1         54 55 D_LIM1_0
+XT3         53 53 GND2 GND2 Q_NMOS_OUT_L1_0
++ PARAMS: M=2 W=10U L=1U 
+XT2         52 52 VDD2 VDD2 Q_PMOS_OUT_L1_0
++ PARAMS: M=2 W=10U L=1U 
+GIb2        GND2 Bias VALUE = {IF(V(PORI,GND2)<1.4,(10M*V(VDD2,GND2)+942M),0)}
+Rb3         Bias GND2 1 TC=1.685482M
+R3          53 GND2 10MEG 
+R2          VDD2 52 10MEG 
+Rsp1        VDD2 VT1 709.2585520214 
+GIb1        55 53 Bias GND2  10U
+Rpsrr1      55 53 10MEG 
+.ENDS
+*$
+.SUBCKT GAINSET_0  1 2 3 PARAMS: GERR=0.05 GERR_TC=0.5
+* GAIN ERROR 0.05 ±0.15 % OF FSR
+* GAIN TEMPERATURE COEFFICIENT AVDD=+5V: ±0.5,  AVDD=+2.0V: ±1.5 PPM OF  FSR/°C
+.PARAM RG = 150K
+.PARAM G_ERR = {(GERR)*0.01}
+.PARAM G_TC = {GERR_TC*1E-6}
+.PARAM RG_TC = {1*G_TC}
+.PARAM RG1 = {(1-G_ERR)*RG}
+.PARAM RG2 = {(1+G_ERR)*RG}
+R1 1 3 RMOD1 {RG1}
+R2 3 2 RMOD2 {RG2}
+.MODEL RMOD1 RES (TC1={-RG_TC} TC2=0 TCE=0)
+.MODEL RMOD2 RES (TC1={RG_TC} TC2=0 TCE=0)
+.ENDS
+*$
+.SUBCKT D_D2_0       1    2
+D1 1 2  D2
+.MODEL D2 D( IS=1P N=1.0 XTI=0 RS=10 )
+.ENDS
+*$
+.SUBCKT D_DNOISE_0       1    2
+D1 1 2  DD
+.MODEL DD D( IS=0.9E-18 N=1.0 AF=1 KF=20.0506E-15)
+.ENDS D_DNOISE_0 
+*$
+.SUBCKT VOST_0    1 2 PARAMS: OFFS=0.05M OFFS_ED=3U 
+* OFFSET ERROR ±0.05 ±4 MV
+* OFFSET ERROR DRIFT 3 µV/°C
+.PARAM I0 = 1M
+.PARAM DVOS_DT = { OFFS_ED }
+.PARAM VOFFS = {OFFS + 2*DVOS_DT}
+.PARAM R0 = {VOFFS/I0}
+.PARAM TC1= {DVOS_DT/R0/I0}
+R2 1 2 RMOD2 {R0}
+I2 1 2 {I0}
+.MODEL RMOD2 RES (TC1={TC1} TC2=0 TCE=0)
+.ENDS
+*$
+.SUBCKT DZZ_15_80V_0  C1 C2 
+D1 A1A2 C1 DZ_15V
+D2 A1A2 C2 DZ_80V
+.MODEL D2 D( IS=1P N=1.0 XTI=0 RS=10 )
+.ENDS
+*$
+.SUBCKT SW1_0  SP SM CP CM
+R_SW1         Cp Cm 1G
+S_SW1  Sp Sm Cp Cm SW1
+.MODEL  SW1 VSWITCH RON=10 ROFF=1E12 VON=0.6V VOFF=0.4V  
+.ENDS 
+*$
+.SUBCKT SW2_0  SP SM CP CM
+R_SW1         Cp Cm 1G
+S_SW1  Sp Sm Cp Cm SW2
+.MODEL  SW2 VSWITCH RON=100m ROFF=1E12 VON=0.6V VOFF=0.4V 
+.ENDS 
+*$
+.SUBCKT D_LIM1_0   1 2
+D1 1 2  D_LIM1
+.MODEL D_LIM1 D( IS=10F N=1.0 RS=100 XTI=0 AF=0 KF=0 EG=0.48)
+.MODEL D1 D( IS=1P N=1.0 RS=0 XTI=3 AF=0 KF=0 )
+.ENDS
+*$
+.SUBCKT D_DB7_0      1    2
+D1 1 2  DD
+.MODEL DD D( IS=10F N=1.25 RS=1 XTI=0  )
+.MODEL D1 D( IS=1P N=1.0 RS=0 XTI=3 AF=0 KF=0 )
+.ENDS
+*$
+.SUBCKT D_DB4_0       1    2
+D1 1 2  DD
+.MODEL DD D( IS=10F N=1.0 RS=20K XTI=0 )
+.MODEL D1 D( IS=1P N=1.0 RS=0 XTI=3 AF=0 KF=0 )
+.ENDS
+*$
+.SUBCKT D_DB3_0       1    2
+D1 1 2  DD
+.MODEL DD D( IS=10F N=2.0 RS=1 XTI=0 EG=2.22)
+.MODEL D1 D( IS=1P N=1.0 RS=0 XTI=3 AF=0 KF=0 )
+.ENDS 
+*$
+.SUBCKT D_DB2_0       1    2
+D1 1 2  DD
+.MODEL DD D( IS=10F N=2.0 RS=1K XTI=0 EG=2.22)
+.MODEL D1 D( IS=1P N=1.0 RS=0 XTI=3 AF=0 KF=0 )
+.ENDS 
+*$
+.SUBCKT D_DB1_0       1    2
+D1 1 2  DD
+.MODEL DD D( IS=1P N=0.5 RS=20K XTI=0 EG=0.555)
+.MODEL D1 D( IS=1P N=1.0 RS=0 XTI=3 AF=0 KF=0 )
+.ENDS 
+*$
+.SUBCKT D_LIM2_0   1 2
+D1 1 2  D_LIM2
+.MODEL D_LIM2 D( IS=10F N=0.5 RS=1 XTI=0 AF=0 KF=0 EG=0.555 )
+.MODEL D1 D( IS=1P N=1.0 RS=0 XTI=3 AF=0 KF=0 )
+.ENDS
+*$
+.SUBCKT D_D10      1    2
+D1 1 2  DD
+Cd 1 2 10f
+.MODEL DD D( IS=1F N=2.0 RS=1 XTI=0 EG=2.22 )
+.MODEL D1 D( IS=1P N=1.0 RS=0 XTI=3 AF=0 KF=0 )
+.ENDS 
+*$
+.SUBCKT D_D4_0       1    2
+D1 1 2  DD
+.MODEL DD D( IS=10F N=2.5 RS=1 )
+.MODEL D1 D( IS=1P N=1.0 RS=0 XTI=3 AF=0 KF=0 )
+.ENDS D_D4_0 
+*$
+.SUBCKT D_ZB1_0        1    2
+D1 1 2  D_4_9V
+CD 1 2 1P
+.MODEL D_4_9V D( IS=1F N=3.0 BV=4.9 IBV=1.0U RS=0 )
+.MODEL D1 D( IS=1P N=1.0 RS=0 XTI=3 AF=0 KF=0 )
+.ENDS 
+*$
+.SUBCKT D_Zr_2V      1    2
+D1 1 2  D_2V
+*C1 1 2 1P
+.MODEL D_2V D( IS=1P N=0.2 BV=2.0 IBV=1.0m RS=1 XTI=0 EG=0.222 )
+.MODEL D1 D( IS=1P N=1.0 RS=0 XTI=3 AF=0 KF=0 )
+.MODEL D_2V D( IS=10F N=1.0 BV=2.0 IBV=10.0U RS=10 XTI=0 EG=1.11 )
+.ENDS 
+*$
+.SUBCKT D_DNoise      1    2
+D1 1 2  DD
+.MODEL DD D( IS=0.9e-18 N=1.0 )
+.MODEL D1 D( IS=1P N=1.0 RS=0 XTI=3 AF=0 KF=0 )
+.ENDS D_D
+*$
+.SUBCKT Q_PMOS_OUT_L1_0   D G S B PARAMS:  M = 1 W = 100U L = 10U 
+M1 D G S B Q_PMOS_OUT_L1 W = {W} L = {L} M = {M} AD={W*LS} AS={W*LS} PD={W + 2*LS} PS={W + 2*LS} 
++ NRD={LS/W} NRS={LS/W}
+.MODEL Q_PMOS_OUT_L1 PMOS LEVEL=1 L=10U W=100U KP={KPP} VTO={-VTOHP} LAMBDA={LAMBDA}
++ CJ={CJP} CJSW={CJSWP} CGSO={CGSOP} CGDO={CGDOP} RSH={RSH} PB={PBP} LD= {LDP} RDS={RDS} PHI={PHI}  AF=0 KF=0
+.ENDS
+*$
+.SUBCKT Q_PMOS_OUT_0   D G S B PARAMS:  M = 1 W = 100U L = 10U
+M1 D G S B Q_PMOS_OUT W = {W} L = {L} M = {M} AD={W*LS} AS={W*LS} PD={W + 2*LS} PS={W + 2*LS} 
++ NRD={LS/W} NRS={LS/W}
+.MODEL Q_PMOS_OUT PMOS LEVEL=3 L=10U W=100U KP={KPP} VTO={-VTOHP} THETA={THETA}
++ CJ={CJP} CJSW={CJSWP} CGSO={CGSOP} CGDO={CGDOP} RSH={RSH} PB={PBP} LD= {LDP} RDS={RDS} TOX={TOX} XJ={XJP}
++ GAMMA={GAMMA} KAPPA={KAPPA} ETA={ETA} PHI={PHI}  AF=0 KF=0
+.ENDS
+*$
+.SUBCKT Q_NMOS_OUT_0   D G S B PARAMS:  M = 1 W = 100U L = 10U
+M1 D G S B Q_NMOS_OUT  W = {W} L = {L} M = {M} AD={W*LS} AS={W*LS} PD={W + 2*LS} PS={W + 2*LS} 
++ NRD={LS/W} NRS={LS/W}
+.MODEL Q_NMOS_OUT NMOS LEVEL=3 L=10U W=100U KP={KPN} VTO={VTOHN} THETA={THETA}
++ CJ={CJN} CJSW={CJSWN} CGSO={CGSON} CGDO={CGDON} RSH={RSH} PB={PBN} LD= {LDN} RDS={RDS} TOX={TOX} XJ={XJN}
++ GAMMA={GAMMA} KAPPA={KAPPA} ETA={ETA} PHI={PHI}  AF=0 KF=0
+.ENDS
+*$
+.SUBCKT Q_NMOS_OUT_L1_0   D G S B PARAMS:  M = 1 W = 100U L = 10U
+M1 D G S B Q_NMOS_OUT_L1  W = {W} L = {L} M = {M} AD={W*LS} AS={W*LS} PD={W + 2*LS} PS={W + 2*LS} 
++ NRD={LS/W} NRS={LS/W}
+.MODEL Q_NMOS_OUT_L1 NMOS LEVEL=1 L=10U W=100U KP={KPN} VTO={VTOHN} LAMBDA={LAMBDA}
++ CJ={CJN} CJSW={CJSWN} CGSO={CGSON} CGDO={CGDON} RSH={RSH} PB={PBN} LD= {LDN} RDS={RDS} PHI={PHI}  AF=0 KF=0
+.ENDS
+
+**********************************************************************************************************
+*PARAMETERS: 0.4UM CMOS
+.PARAM LS = 1.0U
+.PARAM VTOHP = 0.70
+.PARAM VTOHN = 0.70
+.PARAM LAMBDA = 100M
+.PARAM GAMMA = 0.0
+.PARAM KAPPA = 1.0
+.PARAM THETA = 0.1
+.PARAM ETA = 0.05
+.PARAM PHI = 0.6
+.PARAM EPSSIO2 = {3.9*8.854214871E-12}
+.PARAM TOX = 80E-10
+.PARAM COX = {EPSSIO2/TOX}
+.PARAM KPN = {UON*COX * 1E-4}
+.PARAM KPP = {UOP*COX * 1E-4}
+.PARAM LDN = 0.09U
+.PARAM LDP = 0.09U
+.PARAM RSW = 1810
+.PARAM RSN = 1.41
+.PARAM RSH = 4.0
+.PARAM RDS = 1.8MEG
+.PARAM VBMUL = 1E6
+.PARAM RPAR = 1T
+.PARAM CBDJ = 1.0 
+.PARAM CBDS = 1.0
+.PARAM CGBF = 1.0
+.PARAM PBP = 0.7
+.PARAM PBN = 0.7
+.PARAM UON = 900
+.PARAM UOP = 900
+.PARAM CJN = {200U}
+.PARAM CJP = {400U} 
+.PARAM CJSWN = {1.2N}
+.PARAM CJSWP = {2.4N}
+.PARAM XJN = 0.15U
+.PARAM CGSON = {0.6*XJN*COX} 
+.PARAM CGDON = {CGSON}
+.PARAM CGBON = {CGBF*CGDON}
+.PARAM XJP = 0.18U
+.PARAM CGSOP = {0.6*XJP*COX} 
+.PARAM CGDOP = {CGSOP}
+.PARAM CGBOP = {CGBF*CGDOP}
+*$
+

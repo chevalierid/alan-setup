@@ -1,0 +1,180 @@
+* LOG114
+*****************************************************************************
+* (C) Copyright 2011 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: LOG114
+* Date: 13JUN2011
+* Model Type: ALL IN ONE
+* Simulator: PSPICE
+* Simulator Version: 16.0.0.p001
+* EVM Order Number: N/A
+* EVM Users Guide: N/A
+* Datasheet: SBOS301A - MAY 2004 - REVISED MARCH 2007
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 : 
+* Release to Web
+*
+*****************************************************************************
+.SUBCKT LOG114 1 3 4 5 6 7 8 9 10 11 12 13 14 15 16
+IS1         0 6  2.3M
+INoname     8 6  4.75M
+XClamp3      109 15 8 6   LOG114_Output_Clamp_Macro_0
+XClamp2      108 12 8 6   LOG114_Output_Clamp_Macro_1
+XClamp1      107 9 8 6   LOG114_Output_Clamp_Macro_2
+XVREF1       8 1 16   LOG114_Vref_Macro_0
+XA51         13 14 109   LOG114_Opamp_A5_Macro_0
+XA41         10 11 108   LOG114_Opamp_A4_Macro_0
+XA31         106 105 107   LOG114_Opamp_A3_Macro_0
+XA21         5 3 103   LOG114_Opamp_A2_Macro_0
+XA11         5 4 102   LOG114_Opamp_A1_Macro_0
+R7          8 6  4K TC=-0.00625
+R6          106 7  1.271K
+R5          105 107  1.271K
+R4          103 106  200 TC=0.00311
+R3          102 105  200 TC=0.00311
+C1          5 3  5P 
+C5          4 5  5P 
+R2          104 103  8
+R1          101 102  8
+QLOG2       3 3 104  Q__NPN_N_1 
+QLOG1       4 4 101  Q__NPN_N_2 
+
+.MODEL Q__NPN_N_1 NPN( IS= 1.50000000000000E-0017 NF=991M NR=991M RE=305M RC=1 
++      RB=10 NC=1.5 BR=5 IKF=0 IKR=0 
++      CJC=0 CJE=500F VJC=900M VJE=10M VJS=900M 
++      MJC=50M MJE=50M MJS=50M TF=15P TR=0 
++      )
+.MODEL Q__NPN_N_2 NPN( IS= 1.50000000000000E-0017 NF=991M NR=991M RE=305M RC=1 
++      RB=10 NC=1.5 BR=5 IKF=0 IKR=0 
++      CJC=0 CJE=500F VJC=900M VJE=10M VJS=900M 
++      MJC=50M MJE=50M MJS=50M TF=15P TR=0 
++      )
+.ENDS
+
+.SUBCKT LOG114_Output_Clamp_Macro_0 Vin Vout Vpos Vneg
+VNoname     25 Vneg  0.7
+VNoname_2   Vpos 26  0.7
+D2          Vout 26  D_1N1183_1 
+D1          25 Vout  D_1N1183_2 
+RNoname     Vin Vout  1
+.MODEL D_1N1183_1 D( IS=36N N=1.6 BV=50 IBV=5M RS=2M 
++      CJO=460P VJ=550M M=440M TT=434.7N )
+.MODEL D_1N1183_2 D( IS=36N N=1.6 BV=50 IBV=5M RS=2M 
++      CJO=460P VJ=550M M=440M TT=434.7N )
+.ENDS
+
+
+.SUBCKT LOG114_Output_Clamp_Macro_1 Vin Vout Vpos Vneg
+VNoname     27 Vneg  0.7
+VNoname_2   Vpos 28  0.7
+D2          Vout 28  D_1N1183_1 
+D1          27 Vout  D_1N1183_2 
+RNoname     Vin Vout  1
+.MODEL D_1N1183_1 D( IS=36N N=1.6 BV=50 IBV=5M RS=2M 
++      CJO=460P VJ=550M M=440M TT=434.7N )
+.MODEL D_1N1183_2 D( IS=36N N=1.6 BV=50 IBV=5M RS=2M 
++      CJO=460P VJ=550M M=440M TT=434.7N )
+.ENDS
+
+
+.SUBCKT LOG114_Output_Clamp_Macro_2 Vin Vout Vpos Vneg
+VNoname     29 Vneg  0.8
+VNoname_2   Vpos 30  0.8
+D2          Vout 30  D_1N1183_1 
+D1          29 Vout  D_1N1183_2 
+RNoname     Vin Vout  1
+.MODEL D_1N1183_1 D( IS=36N N=1.6 BV=50 IBV=5M RS=2M 
++      CJO=460P VJ=550M M=440M TT=434.7N )
+.MODEL D_1N1183_2 D( IS=36N N=1.6 BV=50 IBV=5M RS=2M 
++      CJO=460P VJ=550M M=440M TT=434.7N )
+.ENDS
+
+
+.SUBCKT LOG114_Vref_Macro_0 Vin Gnd Vout
+INoname     Vin Gnd  2M
+INoname_2   0 32  1M
+XU1          Vin 31   IDEAL_COMPARATOR_0
+EVCV2       33 34 32 0  1
+RNoname     32 0  1K TC=0.0000625
+EVCV1       Vout 33 31 0  1
+R2          34 Gnd  500M
+R1          Vin 34  6.665K
+.ENDS
+
+
+.SUBCKT LOG114_Opamp_A5_Macro_0 Vinp Vinn Vout
+R4          35 Vout  25
+C2          Vout 0  150P 
+C1          36 35  82P 
+EVCVS3      35 0 36 0  -10K
+R5          36 0  1K
+GVCCS1      36 0 Vinn Vinp  -10M
+.ENDS
+
+
+.SUBCKT LOG114_Opamp_A4_Macro_0 Vinp Vinn Vout
+C2          Vout 0  150P 
+R2          37 Vout  25
+C1          38 37  82P 
+EVCV1       37 0 38 0  -10K
+R1          38 0  1K
+GVCCS1      38 0 Vinn Vinp  -10M
+.ENDS
+
+
+.SUBCKT LOG114_Opamp_A3_Macro_0 Vinp Vinn Vout
+C4          Vout 0  10P 
+R4          39 Vout  50
+C3          40 39  35P 
+EVCV2       39 0 40 0  -1K
+R3          40 0  1K
+GVCCS2      40 0 Vinn Vinp  -10M
+.ENDS
+
+
+.SUBCKT LOG114_Opamp_A2_Macro_0 Vinp Vinn Vout
+C2          Vout 0  10P 
+R2          41 Vout  50
+C1          42 41  35P 
+EVCV1       41 0 42 0  -10K
+R1          42 0  1K
+GVCCS1      42 0 Vinn Vinp  -10M
+.ENDS
+
+
+.SUBCKT LOG114_Opamp_A1_Macro_0 Vinp Vinn Vout
+C2          Vout 0  10P 
+R2          43 Vout  50
+C1          44 43  35P 
+EVCV1       43 0 44 0  -10K
+R1          44 0  1K
+GVCCS1      44 0 Vinn Vinp  -10M
+.ENDS
+
+
+.SUBCKT IDEAL_COMPARATOR_0  VIN VOUT
+R_R2         VIN N03410  100K  
+R_R3         N03386 VOUT  100  
+E_E1         N03386 0 VALUE { LIMIT(1000000000*V(N03410,N03635),1.5V,0V) }
+V_V3         N03635 0 4.8VDC
+.ENDS

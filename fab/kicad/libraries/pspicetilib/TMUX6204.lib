@@ -1,0 +1,2218 @@
+.SUBCKT TMUX6204 VSS NC S1 S2 NC D1 NC NC S4 S3 VDD GND NC A1 A0 EN 
+*Supply currents
+X_U1    VSS GND I_VSS
+X_U2    VDD GND I_VDD
+*I/O diodes
+X_U3    VSS S1 ESD_diode
+X_U4    S1 VDD ESD_diode
+X_U5    VSS S2 ESD_diode
+X_U6    S2 VDD ESD_diode
+X_U7    VSS S3 ESD_diode
+X_U8    S3 VDD ESD_diode
+X_U9    VSS S4 ESD_diode
+X_U10    S4 VDD ESD_diode
+X_U11    VSS D1 ESD_diode
+X_U12    D1 VDD ESD_diode
+*Comparators (VIH/VIL)
+X_U13    VDD_L VDD VDD_NL GND COMPARATOR_VDD
+X_U14    EN_L EN EN_NL GND COMPARATOR_EN
+X_U15    A0_L A0 A0_NL GND COMPARATOR_A0
+X_U16    A1_L A1 A1_NL GND COMPARATOR_A1
+*Input delays
+X_U17    VDD_NL VDD GND VDD_L Delay_VDD
+R1    VDD_L  GND    50
+X_U18    EN_NL VDD GND EN_L Delay_EN
+R2    EN_L  GND    50
+X_U19    A1_NL VDD GND A1_L Delay_A1
+R3    A1_L  GND    50
+X_U20    A0_NL VDD GND A0_L Delay_A0
+R4    A0_L  GND    50
+*LOGIC
+X_U21    VDD_L EN_L A1_L A0_L SW_D1_L SW_S1_L SW_S2_L SW_S3_L SW_S4_L SW_S1D1_L SW_S2D1_L SW_S3D1_L SW_S4D1_L GND LOGIC
+*Output delays
+X_U22    SW_D1_L VDD GND SW_D1 Delay_SW_D1
+X_U23    SW_S1_L VDD GND SW_S1 Delay_SW_S1
+X_U24    SW_S2_L VDD GND SW_S2 Delay_SW_S2
+X_U25    SW_S3_L VDD GND SW_S3 Delay_SW_S3
+X_U26    SW_S4_L VDD GND SW_S4 Delay_SW_S4
+X_U27    SW_S1D1_L VDD GND SW_S1D1 Delay_SW_S1D1
+X_U28    SW_S2D1_L VDD GND SW_S2D1 Delay_SW_S2D1
+X_U29    SW_S3D1_L VDD GND SW_S3D1 Delay_SW_S3D1
+X_U30    SW_S4D1_L VDD GND SW_S4D1 Delay_SW_S4D1
+*Switch I/O (COFF, CON, ION, IOFF, BW)
+X_U31    D1 VSS VDD SW_D1 GND D1_IO
+X_U32    S1 VSS VDD SW_S1 GND S1_IO
+X_U33    S2 VSS VDD SW_S2 GND S2_IO
+X_U34    S3 VSS VDD SW_S3 GND S3_IO
+X_U35    S4 VSS VDD SW_S4 GND S4_IO
+*Switch blocks (Ron, OISO)
+X_U36    S1 D1 VSS VDD GND SW_S1D1 SWITCH_S1
+X_U37    S2 D1 VSS VDD GND SW_S2D1 SWITCH_S2
+X_U38    S3 D1 VSS VDD GND SW_S3D1 SWITCH_S3
+X_U39    S4 D1 VSS VDD GND SW_S4D1 SWITCH_S4
+*switch to switch capacitance (XTALK)
+C1 S1 S2 3.369296978448309e-14
+C2 S1 S4 3.369296978448309e-14
+C3 S1 S3 3.369296978448309e-14
+C4 S2 S4 3.369296978448309e-14
+C5 S2 S3 3.369296978448309e-14
+C6 S4 S3 3.369296978448309e-14
+*Charge injection blocks (Qc)
+X_U40    S1 VSS VDD D1 SW_S1D1 GND GND QC_S1
+X_U41    S2 VSS VDD D1 SW_S2D1 GND GND QC_S2
+X_U42    S3 VSS VDD D1 SW_S3D1 GND GND QC_S3
+X_U43    S4 VSS VDD D1 SW_S4D1 GND GND QC_S4
+.ENDS TMUX6204 
+*$
+*These circuits add a series diode that simulates an ESD diode from IN (-) to OUT (+)
+*This diode will not cause a failure when IN > OUT but may show a large increase in current consumption 
+*$
+.SUBCKT ESD_Diode IN OUT
+*
+.MODEL DCLAMP D(IS=1E-15 IBV=1E-13 ISR = 1E-15)
+D1 IN OUT DCLAMP
+*
+.ENDS
+*$
+*These circuits add a parallel current source/sink to simulate supply current consumption, based on the table
+*
+.SUBCKT I_VSS VSS GND
+*
+EI_VSS NVSS GND TABLE {V(VSS,GND)} = 
++ (-15,-6e-06)
++ (-5,-5e-06)
++ (0,0.0)
+*
+GVSS VSS GND VALUE = {(V(NVSS)+1p)}
+*
+.ENDS
+.SUBCKT I_VDD VDD GND
+*
+EI_VDD NVDD GND TABLE {V(VDD,GND)} = 
++ (0,0.0)
++ (5,2.8e-05)
++ (12,3e-05)
++ (15,3.5e-05)
++ (36,5e-05)
+*
+GVDD VDD GND VALUE = {(V(NVDD)+1p)}
+*
+.ENDS
+*
+*These circuits compare the current state and the input voltage to find the new state
+*if the current state is on (1) then we will change states if VIN goes below VIL (1 to 0)
+*if the current state is on (0) then we will change states if VIN goes above VIH (0 to 1)
+.SUBCKT COMPARATOR_VDD  STATE VIN NEWSTATE GND
+EVIH VIH GND TABLE {V(VIN,GND)} = 
++ (0,0)
++ (4.2989999999999995,0)
++ (4.3,1)
+EVIL VIL GND TABLE {V(VIN,GND)} = 
++ (0,0)
++ (4.399,0)
++ (4.4,1)
+EOUT NEWSTATE GND VALUE = { IF (V(STATE, GND)>0.63, V(VIH,GND), V(VIL,GND) ) }
+.ENDS
+*$
+.SUBCKT COMPARATOR_EN  STATE VIN NEWSTATE GND
+EVIH VIH GND TABLE {V(VIN,GND)} = 
++ (0,0)
++ (0.799,0)
++ (0.8,1)
+EVIL VIL GND TABLE {V(VIN,GND)} = 
++ (0,0)
++ (1.2990000000000002,0)
++ (1.3,1)
+EOUT NEWSTATE GND VALUE = { IF (V(STATE, GND)>0.63, V(VIH,GND), V(VIL,GND) ) }
+.ENDS
+*$
+.SUBCKT COMPARATOR_A0  STATE VIN NEWSTATE GND
+EVIH VIH GND TABLE {V(VIN,GND)} = 
++ (0,0)
++ (0.799,0)
++ (0.8,1)
+EVIL VIL GND TABLE {V(VIN,GND)} = 
++ (0,0)
++ (1.2990000000000002,0)
++ (1.3,1)
+EOUT NEWSTATE GND VALUE = { IF (V(STATE, GND)>0.63, V(VIH,GND), V(VIL,GND) ) }
+.ENDS
+*$
+.SUBCKT COMPARATOR_A1  STATE VIN NEWSTATE GND
+EVIH VIH GND TABLE {V(VIN,GND)} = 
++ (0,0)
++ (0.799,0)
++ (0.8,1)
+EVIL VIL GND TABLE {V(VIN,GND)} = 
++ (0,0)
++ (1.2990000000000002,0)
++ (1.3,1)
+EOUT NEWSTATE GND VALUE = { IF (V(STATE, GND)>0.63, V(VIH,GND), V(VIL,GND) ) }
+.ENDS
+*$
+*These circuits handle all the logic for the device
+*this does NOT handle timing delays or VIH VIL, all signals here are 1/0 logic
+*VDD EN A1 A0    SW_D1 SW_S1 SW_S2 SW_S3 SW_S4 SW_S1D1 SW_S2D1 SW_S3D1 SW_S4D1 
+*1   1  0  0     1     1     0     0     0     1       0       0       0       
+*1   1  0  1     1     0     1     0     0     0       1       0       0       
+*1   1  1  0     1     0     0     1     0     0       0       1       0       
+*1   1  1  1     1     0     0     0     1     0       0       0       1       
+*$
+.SUBCKT LOGIC  LVDD LEN LA1 LA0 SW_D1 SW_S1 SW_S2 SW_S3 SW_S4 SW_S1D1 SW_S2D1 SW_S3D1 SW_S4D1 GND
+*
+*convert analog RC to 1/0 digital
+ELVDD_DIG LVDD_DIG GND VALUE = {IF (V(LVDD,GND)>0.63,1, 0) }
+ELEN_DIG LEN_DIG GND VALUE = {IF (V(LEN,GND)>0.63,1, 0) }
+ELA1_DIG LA1_DIG GND VALUE = {IF (V(LA1,GND)>0.63,1, 0) }
+ELA0_DIG LA0_DIG GND VALUE = {IF (V(LA0,GND)>0.63,1, 0) }
+*Create an inverse of all inputs in case they need to be used
+ELVDD_DIGN LVDD_DIGN GND VALUE = { 1 - V(LVDD_DIG, GND)}
+ELEN_DIGN LEN_DIGN GND VALUE = { 1 - V(LEN_DIG, GND)}
+ELA1_DIGN LA1_DIGN GND VALUE = { 1 - V(LA1_DIG, GND)}
+ELA0_DIGN LA0_DIGN GND VALUE = { 1 - V(LA0_DIG, GND)}
+*
+*Determine output states and rectify outputs
+ELSW_D1 LSW_D1 GND VALUE = { V(LVDD_DIG,GND) * V(LEN_DIG,GND) * V(LA1_DIGN,GND) * V(LA0_DIGN,GND) + V(LVDD_DIG,GND) * V(LEN_DIG,GND) * V(LA1_DIGN,GND) * V(LA0_DIG,GND) + V(LVDD_DIG,GND) * V(LEN_DIG,GND) * V(LA1_DIG,GND) 
++ * V(LA0_DIGN,GND) + V(LVDD_DIG,GND) * V(LEN_DIG,GND) * V(LA1_DIG,GND) * V(LA0_DIG,GND) }
+ESW_D1 SW_D1 GND VALUE = { IF (V(LSW_D1, GND)>0.5,1,0) }
+ELSW_S1 LSW_S1 GND VALUE = { V(LVDD_DIG,GND) * V(LEN_DIG,GND) * V(LA1_DIGN,GND) * V(LA0_DIGN,GND) }
+ESW_S1 SW_S1 GND VALUE = { IF (V(LSW_S1, GND)>0.5,1,0) }
+ELSW_S2 LSW_S2 GND VALUE = { V(LVDD_DIG,GND) * V(LEN_DIG,GND) * V(LA1_DIGN,GND) * V(LA0_DIG,GND) }
+ESW_S2 SW_S2 GND VALUE = { IF (V(LSW_S2, GND)>0.5,1,0) }
+ELSW_S3 LSW_S3 GND VALUE = { V(LVDD_DIG,GND) * V(LEN_DIG,GND) * V(LA1_DIG,GND) * V(LA0_DIGN,GND) }
+ESW_S3 SW_S3 GND VALUE = { IF (V(LSW_S3, GND)>0.5,1,0) }
+ELSW_S4 LSW_S4 GND VALUE = { V(LVDD_DIG,GND) * V(LEN_DIG,GND) * V(LA1_DIG,GND) * V(LA0_DIG,GND) }
+ESW_S4 SW_S4 GND VALUE = { IF (V(LSW_S4, GND)>0.5,1,0) }
+ELSW_S1D1 LSW_S1D1 GND VALUE = { V(LVDD_DIG,GND) * V(LEN_DIG,GND) * V(LA1_DIGN,GND) * V(LA0_DIGN,GND) }
+ESW_S1D1 SW_S1D1 GND VALUE = { IF (V(LSW_S1D1, GND)>0.5,1,0) }
+ELSW_S2D1 LSW_S2D1 GND VALUE = { V(LVDD_DIG,GND) * V(LEN_DIG,GND) * V(LA1_DIGN,GND) * V(LA0_DIG,GND) }
+ESW_S2D1 SW_S2D1 GND VALUE = { IF (V(LSW_S2D1, GND)>0.5,1,0) }
+ELSW_S3D1 LSW_S3D1 GND VALUE = { V(LVDD_DIG,GND) * V(LEN_DIG,GND) * V(LA1_DIG,GND) * V(LA0_DIGN,GND) }
+ESW_S3D1 SW_S3D1 GND VALUE = { IF (V(LSW_S3D1, GND)>0.5,1,0) }
+ELSW_S4D1 LSW_S4D1 GND VALUE = { V(LVDD_DIG,GND) * V(LEN_DIG,GND) * V(LA1_DIG,GND) * V(LA0_DIG,GND) }
+ESW_S4D1 SW_S4D1 GND VALUE = { IF (V(LSW_S4D1, GND)>0.5,1,0) }
+*
+.ENDS
+*$
+*These circuits add a RC delay in series to the In and OUT signal
+*split delays depending on if IN is going high to low or low to high
+*if IN is going high to low, the R needs to be adjusted by /0.46471 to convert the 0.37% time to 0.63%
+*TON_TOFF_SUPPLY
+.SUBCKT Delay_VDD  IN VDD GND OUT
+*
+C1 OUT_ONDLY GND 1e-09
+ERON NRON GND TABLE {V(VDD,GND)} =
++ (5,170000.0)
++ (12,170000.0)
++ (15,170000.0)
++ (36,160000.0)
+R1 OUT_ONDLY IN 10e9
+GRON OUT_ONDLY IN VALUE = {V(OUT_ONDLY,IN)/V(NRON)}
+*
+EOUT_ONREC OUT_ONREC GND VALUE = { V(OUT_ONDLY, GND)}
+*
+S_ON OUT_ONREC OUT IN GND  SWON
+.MODEL SWON VSWITCH Roff=1e9 Ron=0.001 Voff=0.37V Von=0.63V
+*
+C2 OUT_OFFDLY GND 1e-09
+EROFF NROFF GND TABLE {V(VDD,GND)} =
++ (5,365822.3259)
++ (12,365822.3259)
++ (15,365822.3259)
++ (36,344303.3655)
+R2 OUT_OFFDLY IN 10e9
+GROFF OUT_OFFDLY IN VALUE = {V(OUT_OFFDLY,IN)/V(NROFF)}
+*
+EOUT_OFFREC OUT_OFFREC GND VALUE = { V(OUT_OFFDLY, GND)}
+*
+S_OFF OUT_OFFREC OUT IN GND  SWOFF
+.MODEL SWOFF VSWITCH Roff=1e9 Ron=0.001 Voff=0.63V Von=0.37V
+*
+.ENDS
+*
+*TON_TOFF_EN
+.SUBCKT Delay_EN  IN VDD GND OUT
+*
+C1 OUT_ONDLY GND 1e-09
+ERON NRON GND TABLE {V(VDD,GND)} =
++ (5,200.0)
++ (12,170.0)
++ (15,100.0)
++ (36,110.0)
+R1 OUT_ONDLY IN 10e9
+GRON OUT_ONDLY IN VALUE = {V(OUT_ONDLY,IN)/V(NRON)}
+*
+EOUT_ONREC OUT_ONREC GND VALUE = { V(OUT_ONDLY, GND)}
+*
+S_ON OUT_ONREC OUT IN GND  SWON
+.MODEL SWON VSWITCH Roff=1e9 Ron=0.001 Voff=0.37V Von=0.63V
+*
+C2 OUT_OFFDLY GND 1e-09
+EROFF NROFF GND TABLE {V(VDD,GND)} =
++ (5,365.8223)
++ (12,161.3922)
++ (15,172.1517)
++ (36,215.1896)
+R2 OUT_OFFDLY IN 10e9
+GROFF OUT_OFFDLY IN VALUE = {V(OUT_OFFDLY,IN)/V(NROFF)}
+*
+EOUT_OFFREC OUT_OFFREC GND VALUE = { V(OUT_OFFDLY, GND)}
+*
+S_OFF OUT_OFFREC OUT IN GND  SWOFF
+.MODEL SWOFF VSWITCH Roff=1e9 Ron=0.001 Voff=0.63V Von=0.37V
+*
+.ENDS
+*
+*TTRAN
+.SUBCKT Delay_A0  IN VDD GND OUT
+*
+C1 OUT_ONDLY GND 1e-09
+ERON NRON GND TABLE {V(VDD,GND)} =
++ (5,270.0)
++ (12,170.0)
++ (15,120.0)
++ (36,100.0)
+R1 OUT_ONDLY IN 10e9
+GRON OUT_ONDLY IN VALUE = {V(OUT_ONDLY,IN)/V(NRON)}
+*
+EOUT_ONREC OUT_ONREC GND VALUE = { V(OUT_ONDLY, GND)}
+*
+S_ON OUT_ONREC OUT IN GND  SWON
+.MODEL SWON VSWITCH Roff=1e9 Ron=0.001 Voff=0.37V Von=0.63V
+*
+C2 OUT_OFFDLY GND 1e-09
+EROFF NROFF GND TABLE {V(VDD,GND)} =
++ (5,581.0119)
++ (12,365.8223)
++ (15,258.2275)
++ (36,215.1896)
+R2 OUT_OFFDLY IN 10e9
+GROFF OUT_OFFDLY IN VALUE = {V(OUT_OFFDLY,IN)/V(NROFF)}
+*
+EOUT_OFFREC OUT_OFFREC GND VALUE = { V(OUT_OFFDLY, GND)}
+*
+S_OFF OUT_OFFREC OUT IN GND  SWOFF
+.MODEL SWOFF VSWITCH Roff=1e9 Ron=0.001 Voff=0.63V Von=0.37V
+*
+.ENDS
+*
+*TTRAN
+.SUBCKT Delay_A1  IN VDD GND OUT
+*
+C1 OUT_ONDLY GND 1e-09
+ERON NRON GND TABLE {V(VDD,GND)} =
++ (5,270.0)
++ (12,170.0)
++ (15,120.0)
++ (36,100.0)
+R1 OUT_ONDLY IN 10e9
+GRON OUT_ONDLY IN VALUE = {V(OUT_ONDLY,IN)/V(NRON)}
+*
+EOUT_ONREC OUT_ONREC GND VALUE = { V(OUT_ONDLY, GND)}
+*
+S_ON OUT_ONREC OUT IN GND  SWON
+.MODEL SWON VSWITCH Roff=1e9 Ron=0.001 Voff=0.37V Von=0.63V
+*
+C2 OUT_OFFDLY GND 1e-09
+EROFF NROFF GND TABLE {V(VDD,GND)} =
++ (5,581.0119)
++ (12,365.8223)
++ (15,258.2275)
++ (36,215.1896)
+R2 OUT_OFFDLY IN 10e9
+GROFF OUT_OFFDLY IN VALUE = {V(OUT_OFFDLY,IN)/V(NROFF)}
+*
+EOUT_OFFREC OUT_OFFREC GND VALUE = { V(OUT_OFFDLY, GND)}
+*
+S_OFF OUT_OFFREC OUT IN GND  SWOFF
+.MODEL SWOFF VSWITCH Roff=1e9 Ron=0.001 Voff=0.63V Von=0.37V
+*
+.ENDS
+*
+*TBBM
+.SUBCKT Delay_SW_S1  IN VDD GND OUT
+*
+C1 OUT_ONDLY GND 1e-09
+ERON NRON GND TABLE {V(VDD,GND)} =
++ (5,32.0)
++ (12,30.0)
++ (15,27.0)
++ (36,30.0)
+R1 OUT_ONDLY IN 10e9
+GRON OUT_ONDLY IN VALUE = {V(OUT_ONDLY,IN)/V(NRON)}
+*
+EOUT_ONREC OUT_ONREC GND VALUE = { V(OUT_ONDLY, GND)}
+*
+S_ON OUT_ONREC OUT IN GND  SWON
+.MODEL SWON VSWITCH Roff=1e9 Ron=0.001 Voff=0.37V Von=0.63V
+*
+C2 OUT_OFFDLY GND 1e-09
+EROFF NROFF GND TABLE {V(VDD,GND)} =
++ (5,2.1519)
++ (12,2.1519)
++ (15,2.1519)
++ (36,2.1519)
+R2 OUT_OFFDLY IN 10e9
+GROFF OUT_OFFDLY IN VALUE = {V(OUT_OFFDLY,IN)/V(NROFF)}
+*
+EOUT_OFFREC OUT_OFFREC GND VALUE = { V(OUT_OFFDLY, GND)}
+*
+S_OFF OUT_OFFREC OUT IN GND  SWOFF
+.MODEL SWOFF VSWITCH Roff=1e9 Ron=0.001 Voff=0.63V Von=0.37V
+*
+.ENDS
+*
+*TBBM
+.SUBCKT Delay_SW_S2  IN VDD GND OUT
+*
+C1 OUT_ONDLY GND 1e-09
+ERON NRON GND TABLE {V(VDD,GND)} =
++ (5,32.0)
++ (12,30.0)
++ (15,27.0)
++ (36,30.0)
+R1 OUT_ONDLY IN 10e9
+GRON OUT_ONDLY IN VALUE = {V(OUT_ONDLY,IN)/V(NRON)}
+*
+EOUT_ONREC OUT_ONREC GND VALUE = { V(OUT_ONDLY, GND)}
+*
+S_ON OUT_ONREC OUT IN GND  SWON
+.MODEL SWON VSWITCH Roff=1e9 Ron=0.001 Voff=0.37V Von=0.63V
+*
+C2 OUT_OFFDLY GND 1e-09
+EROFF NROFF GND TABLE {V(VDD,GND)} =
++ (5,2.1519)
++ (12,2.1519)
++ (15,2.1519)
++ (36,2.1519)
+R2 OUT_OFFDLY IN 10e9
+GROFF OUT_OFFDLY IN VALUE = {V(OUT_OFFDLY,IN)/V(NROFF)}
+*
+EOUT_OFFREC OUT_OFFREC GND VALUE = { V(OUT_OFFDLY, GND)}
+*
+S_OFF OUT_OFFREC OUT IN GND  SWOFF
+.MODEL SWOFF VSWITCH Roff=1e9 Ron=0.001 Voff=0.63V Von=0.37V
+*
+.ENDS
+*
+*TBBM
+.SUBCKT Delay_SW_S3  IN VDD GND OUT
+*
+C1 OUT_ONDLY GND 1e-09
+ERON NRON GND TABLE {V(VDD,GND)} =
++ (5,32.0)
++ (12,30.0)
++ (15,27.0)
++ (36,30.0)
+R1 OUT_ONDLY IN 10e9
+GRON OUT_ONDLY IN VALUE = {V(OUT_ONDLY,IN)/V(NRON)}
+*
+EOUT_ONREC OUT_ONREC GND VALUE = { V(OUT_ONDLY, GND)}
+*
+S_ON OUT_ONREC OUT IN GND  SWON
+.MODEL SWON VSWITCH Roff=1e9 Ron=0.001 Voff=0.37V Von=0.63V
+*
+C2 OUT_OFFDLY GND 1e-09
+EROFF NROFF GND TABLE {V(VDD,GND)} =
++ (5,2.1519)
++ (12,2.1519)
++ (15,2.1519)
++ (36,2.1519)
+R2 OUT_OFFDLY IN 10e9
+GROFF OUT_OFFDLY IN VALUE = {V(OUT_OFFDLY,IN)/V(NROFF)}
+*
+EOUT_OFFREC OUT_OFFREC GND VALUE = { V(OUT_OFFDLY, GND)}
+*
+S_OFF OUT_OFFREC OUT IN GND  SWOFF
+.MODEL SWOFF VSWITCH Roff=1e9 Ron=0.001 Voff=0.63V Von=0.37V
+*
+.ENDS
+*
+*TBBM
+.SUBCKT Delay_SW_S4  IN VDD GND OUT
+*
+C1 OUT_ONDLY GND 1e-09
+ERON NRON GND TABLE {V(VDD,GND)} =
++ (5,32.0)
++ (12,30.0)
++ (15,27.0)
++ (36,30.0)
+R1 OUT_ONDLY IN 10e9
+GRON OUT_ONDLY IN VALUE = {V(OUT_ONDLY,IN)/V(NRON)}
+*
+EOUT_ONREC OUT_ONREC GND VALUE = { V(OUT_ONDLY, GND)}
+*
+S_ON OUT_ONREC OUT IN GND  SWON
+.MODEL SWON VSWITCH Roff=1e9 Ron=0.001 Voff=0.37V Von=0.63V
+*
+C2 OUT_OFFDLY GND 1e-09
+EROFF NROFF GND TABLE {V(VDD,GND)} =
++ (5,2.1519)
++ (12,2.1519)
++ (15,2.1519)
++ (36,2.1519)
+R2 OUT_OFFDLY IN 10e9
+GROFF OUT_OFFDLY IN VALUE = {V(OUT_OFFDLY,IN)/V(NROFF)}
+*
+EOUT_OFFREC OUT_OFFREC GND VALUE = { V(OUT_OFFDLY, GND)}
+*
+S_OFF OUT_OFFREC OUT IN GND  SWOFF
+.MODEL SWOFF VSWITCH Roff=1e9 Ron=0.001 Voff=0.63V Von=0.37V
+*
+.ENDS
+*
+*BUFFER
+.SUBCKT Delay_SW_D1  IN VDD GND OUT
+*
+C1 OUT_ONDLY GND 1e-09
+ERON NRON GND TABLE {V(VDD,GND)} =
++ (5,1.0)
++ (12,1.0)
++ (15,1.0)
++ (36,1.0)
+R1 OUT_ONDLY IN 10e9
+GRON OUT_ONDLY IN VALUE = {V(OUT_ONDLY,IN)/V(NRON)}
+*
+EOUT_ONREC OUT_ONREC GND VALUE = { V(OUT_ONDLY, GND)}
+*
+S_ON OUT_ONREC OUT IN GND  SWON
+.MODEL SWON VSWITCH Roff=1e9 Ron=0.001 Voff=0.37V Von=0.63V
+*
+C2 OUT_OFFDLY GND 1e-09
+EROFF NROFF GND TABLE {V(VDD,GND)} =
++ (5,2.1519)
++ (12,2.1519)
++ (15,2.1519)
++ (36,2.1519)
+R2 OUT_OFFDLY IN 10e9
+GROFF OUT_OFFDLY IN VALUE = {V(OUT_OFFDLY,IN)/V(NROFF)}
+*
+EOUT_OFFREC OUT_OFFREC GND VALUE = { V(OUT_OFFDLY, GND)}
+*
+S_OFF OUT_OFFREC OUT IN GND  SWOFF
+.MODEL SWOFF VSWITCH Roff=1e9 Ron=0.001 Voff=0.63V Von=0.37V
+*
+.ENDS
+*
+*TBBM
+.SUBCKT Delay_SW_S1D1  IN VDD GND OUT
+*
+C1 OUT_ONDLY GND 1e-09
+ERON NRON GND TABLE {V(VDD,GND)} =
++ (5,32.0)
++ (12,30.0)
++ (15,27.0)
++ (36,30.0)
+R1 OUT_ONDLY IN 10e9
+GRON OUT_ONDLY IN VALUE = {V(OUT_ONDLY,IN)/V(NRON)}
+*
+EOUT_ONREC OUT_ONREC GND VALUE = { V(OUT_ONDLY, GND)}
+*
+S_ON OUT_ONREC OUT IN GND  SWON
+.MODEL SWON VSWITCH Roff=1e9 Ron=0.001 Voff=0.37V Von=0.63V
+*
+C2 OUT_OFFDLY GND 1e-09
+EROFF NROFF GND TABLE {V(VDD,GND)} =
++ (5,2.1519)
++ (12,2.1519)
++ (15,2.1519)
++ (36,2.1519)
+R2 OUT_OFFDLY IN 10e9
+GROFF OUT_OFFDLY IN VALUE = {V(OUT_OFFDLY,IN)/V(NROFF)}
+*
+EOUT_OFFREC OUT_OFFREC GND VALUE = { V(OUT_OFFDLY, GND)}
+*
+S_OFF OUT_OFFREC OUT IN GND  SWOFF
+.MODEL SWOFF VSWITCH Roff=1e9 Ron=0.001 Voff=0.63V Von=0.37V
+*
+.ENDS
+*
+*TBBM
+.SUBCKT Delay_SW_S2D1  IN VDD GND OUT
+*
+C1 OUT_ONDLY GND 1e-09
+ERON NRON GND TABLE {V(VDD,GND)} =
++ (5,32.0)
++ (12,30.0)
++ (15,27.0)
++ (36,30.0)
+R1 OUT_ONDLY IN 10e9
+GRON OUT_ONDLY IN VALUE = {V(OUT_ONDLY,IN)/V(NRON)}
+*
+EOUT_ONREC OUT_ONREC GND VALUE = { V(OUT_ONDLY, GND)}
+*
+S_ON OUT_ONREC OUT IN GND  SWON
+.MODEL SWON VSWITCH Roff=1e9 Ron=0.001 Voff=0.37V Von=0.63V
+*
+C2 OUT_OFFDLY GND 1e-09
+EROFF NROFF GND TABLE {V(VDD,GND)} =
++ (5,2.1519)
++ (12,2.1519)
++ (15,2.1519)
++ (36,2.1519)
+R2 OUT_OFFDLY IN 10e9
+GROFF OUT_OFFDLY IN VALUE = {V(OUT_OFFDLY,IN)/V(NROFF)}
+*
+EOUT_OFFREC OUT_OFFREC GND VALUE = { V(OUT_OFFDLY, GND)}
+*
+S_OFF OUT_OFFREC OUT IN GND  SWOFF
+.MODEL SWOFF VSWITCH Roff=1e9 Ron=0.001 Voff=0.63V Von=0.37V
+*
+.ENDS
+*
+*TBBM
+.SUBCKT Delay_SW_S3D1  IN VDD GND OUT
+*
+C1 OUT_ONDLY GND 1e-09
+ERON NRON GND TABLE {V(VDD,GND)} =
++ (5,32.0)
++ (12,30.0)
++ (15,27.0)
++ (36,30.0)
+R1 OUT_ONDLY IN 10e9
+GRON OUT_ONDLY IN VALUE = {V(OUT_ONDLY,IN)/V(NRON)}
+*
+EOUT_ONREC OUT_ONREC GND VALUE = { V(OUT_ONDLY, GND)}
+*
+S_ON OUT_ONREC OUT IN GND  SWON
+.MODEL SWON VSWITCH Roff=1e9 Ron=0.001 Voff=0.37V Von=0.63V
+*
+C2 OUT_OFFDLY GND 1e-09
+EROFF NROFF GND TABLE {V(VDD,GND)} =
++ (5,2.1519)
++ (12,2.1519)
++ (15,2.1519)
++ (36,2.1519)
+R2 OUT_OFFDLY IN 10e9
+GROFF OUT_OFFDLY IN VALUE = {V(OUT_OFFDLY,IN)/V(NROFF)}
+*
+EOUT_OFFREC OUT_OFFREC GND VALUE = { V(OUT_OFFDLY, GND)}
+*
+S_OFF OUT_OFFREC OUT IN GND  SWOFF
+.MODEL SWOFF VSWITCH Roff=1e9 Ron=0.001 Voff=0.63V Von=0.37V
+*
+.ENDS
+*
+*TBBM
+.SUBCKT Delay_SW_S4D1  IN VDD GND OUT
+*
+C1 OUT_ONDLY GND 1e-09
+ERON NRON GND TABLE {V(VDD,GND)} =
++ (5,32.0)
++ (12,30.0)
++ (15,27.0)
++ (36,30.0)
+R1 OUT_ONDLY IN 10e9
+GRON OUT_ONDLY IN VALUE = {V(OUT_ONDLY,IN)/V(NRON)}
+*
+EOUT_ONREC OUT_ONREC GND VALUE = { V(OUT_ONDLY, GND)}
+*
+S_ON OUT_ONREC OUT IN GND  SWON
+.MODEL SWON VSWITCH Roff=1e9 Ron=0.001 Voff=0.37V Von=0.63V
+*
+C2 OUT_OFFDLY GND 1e-09
+EROFF NROFF GND TABLE {V(VDD,GND)} =
++ (5,2.1519)
++ (12,2.1519)
++ (15,2.1519)
++ (36,2.1519)
+R2 OUT_OFFDLY IN 10e9
+GROFF OUT_OFFDLY IN VALUE = {V(OUT_OFFDLY,IN)/V(NROFF)}
+*
+EOUT_OFFREC OUT_OFFREC GND VALUE = { V(OUT_OFFDLY, GND)}
+*
+S_OFF OUT_OFFREC OUT IN GND  SWOFF
+.MODEL SWOFF VSWITCH Roff=1e9 Ron=0.001 Voff=0.63V Von=0.37V
+*
+.ENDS
+*
+.SUBCKT SWITCH_S1 SX DX VSS VDD GND SWx
+*
+.PARAM Ron_offset = 0.13
+*
+*Cap S to D
+**see documentation for CTHRU calculation based on OISO
+CTHRU SX DX 5.032933918669138e-12
+*
+*ONOFF switches
+S_ON DX DX_SWON SWx GND  SWON
+.MODEL SWON VSWITCH Roff=1e9 Ron=0.001 Voff=0.37V Von=0.63V
+*
+*Ron tables
+ERON_P5p0m5p0 NRON_P5p0m5p0 GND TABLE {V(SX,GND)} = 
++ (-5.0,4.0)
++ (-4.0,4.1)
++ (-3.0,4.25)
++ (-2.0,3.8)
++ (-1.0,3.45)
++ (0.0,3.43)
++ (1.0,3.45)
++ (2.0,3.6)
++ (3.0,3.75)
++ (4.0,4.75)
++ (5.0,4.5)
+ERON_P10p0m10p0 NRON_P10p0m10p0 GND TABLE {V(SX,GND)} = 
++ (-10.0,2.8)
++ (-9.0,2.9)
++ (-8.0,2.75)
++ (-7.0,2.6)
++ (-6.0,2.45)
++ (-5.0,2.4)
++ (-4.0,2.35)
++ (-3.0,2.28)
++ (-2.0,2.25)
++ (-1.0,2.24)
++ (0.0,2.2)
++ (1.0,2.24)
++ (2.0,2.25)
++ (3.0,2.28)
++ (4.0,2.35)
++ (5.0,2.4)
++ (6.0,2.42)
++ (7.0,2.5)
++ (8.0,2.65)
++ (9.0,3.2)
++ (10.0,3.1)
+ERON_P12p0m12p0 NRON_P12p0m12p0 GND TABLE {V(SX,GND)} = 
++ (-12.0,2.62)
++ (-11.0,2.68)
++ (-10.0,2.5)
++ (-9.0,2.43)
++ (-8.0,2.38)
++ (-7.0,2.3)
++ (-6.0,2.25)
++ (-5.0,2.18)
++ (-4.0,2.16)
++ (-3.0,2.14)
++ (-2.0,2.13)
++ (-1.0,2.12)
++ (0.0,2.1)
++ (1.0,2.12)
++ (2.0,2.13)
++ (3.0,2.14)
++ (4.0,2.16)
++ (5.0,2.18)
++ (6.0,2.2)
++ (7.0,2.25)
++ (8.0,2.35)
++ (9.0,2.4)
++ (10.0,2.5)
++ (11.0,2.88)
++ (12.0,2.78)
+ERON_P13p5m13p5 NRON_P13p5m13p5 GND TABLE {V(SX,GND)} = 
++ (-13.5,2.51)
++ (-13.0,2.54)
++ (-12.0,2.46)
++ (-11.0,2.34)
++ (-10.0,2.25)
++ (-9.0,2.23)
++ (-8.0,2.18)
++ (-7.0,2.13)
++ (-6.0,2.06)
++ (-5.0,2.0)
++ (-4.0,1.98)
++ (-3.0,1.97)
++ (-2.0,1.96)
++ (-1.0,1.95)
++ (0.0,1.94)
++ (1.0,1.95)
++ (2.0,1.96)
++ (3.0,1.97)
++ (4.0,1.98)
++ (5.0,2.0)
++ (6.0,2.01)
++ (7.0,2.04)
++ (8.0,2.09)
++ (9.0,2.15)
++ (10.0,2.2)
++ (11.0,2.3)
++ (12.0,2.38)
++ (13.0,2.7)
++ (13.5,2.64)
+ERON_P15p0m15p0 NRON_P15p0m15p0 GND TABLE {V(SX,GND)} = 
++ (-15.0,2.4)
++ (-14.0,2.45)
++ (-13.0,2.4)
++ (-12.0,2.25)
++ (-11.0,2.15)
++ (-10.0,2.05)
++ (-9.0,2.03)
++ (-8.0,1.97)
++ (-7.0,1.88)
++ (-6.0,1.84)
++ (-5.0,1.82)
++ (-4.0,1.8)
++ (-3.0,1.78)
++ (-2.0,1.77)
++ (-1.0,1.76)
++ (0.0,1.75)
++ (1.0,1.76)
++ (2.0,1.77)
++ (3.0,1.78)
++ (4.0,1.79)
++ (5.0,1.8)
++ (6.0,1.83)
++ (7.0,1.85)
++ (8.0,1.9)
++ (9.0,1.98)
++ (10.0,2.01)
++ (11.0,2.1)
++ (12.0,2.15)
++ (13.0,2.38)
++ (14.0,2.6)
++ (15.0,2.53)
+ERON_P5p0m0p0 NRON_P5p0m0p0 GND TABLE {V(SX,GND)} = 
++ (0.0,6.0)
++ (0.25,6.15)
++ (0.5,6.3)
++ (0.75,6.5)
++ (1.0,6.8)
++ (1.25,7.25)
++ (1.5,7.0)
++ (1.75,6.9)
++ (2.0,6.75)
++ (2.25,6.7)
++ (2.5,6.68)
++ (2.75,6.75)
++ (3.0,6.95)
++ (3.25,7.25)
++ (3.5,7.75)
++ (3.75,8.5)
++ (4.0,9.1)
++ (4.25,9.0)
++ (4.5,8.5)
++ (4.75,8.0)
++ (5.0,7.75)
+ERON_P8p0m0p0 NRON_P8p0m0p0 GND TABLE {V(SX,GND)} = 
++ (0.0,4.5)
++ (0.5,4.6)
++ (1.0,4.75)
++ (1.5,4.75)
++ (2.0,4.5)
++ (2.5,4.35)
++ (3.0,4.25)
++ (3.5,4.15)
++ (4.0,4.14)
++ (4.5,4.15)
++ (5.0,4.25)
++ (5.5,4.4)
++ (6.0,4.5)
++ (6.5,5.0)
++ (7.0,5.7)
++ (7.5,5.5)
++ (8.0,5.25)
+ERON_P10p8m0p0 NRON_P10p8m0p0 GND TABLE {V(SX,GND)} = 
++ (0.0,3.75)
++ (0.5,3.88)
++ (1.0,4.0)
++ (1.5,4.08)
++ (2.0,3.75)
++ (2.5,3.6)
++ (3.0,3.5)
++ (3.5,3.4)
++ (4.0,3.35)
++ (4.5,3.33)
++ (5.0,3.3)
++ (5.5,3.28)
++ (6.0,3.25)
++ (6.5,3.28)
++ (7.0,3.35)
++ (7.5,3.42)
++ (8.0,3.5)
++ (8.5,3.6)
++ (9.0,3.75)
++ (9.5,4.25)
++ (10.0,4.5)
++ (10.5,4.38)
++ (10.8,4.33)
+ERON_P12p0m0p0 NRON_P12p0m0p0 GND TABLE {V(SX,GND)} = 
++ (0.0,3.6)
++ (1.0,3.8)
++ (2.0,3.5)
++ (3.0,3.35)
++ (4.0,3.15)
++ (5.0,3.1)
++ (6.0,3.05)
++ (7.0,3.1)
++ (8.0,3.15)
++ (9.0,3.25)
++ (10.0,3.5)
++ (11.0,4.25)
++ (12.0,4.0)
+ERON_P15p0m0p0 NRON_P15p0m0p0 GND TABLE {V(SX,GND)} = 
++ (0.0,3.25)
++ (1.0,3.4)
++ (2.0,3.15)
++ (3.0,2.95)
++ (4.0,2.8)
++ (5.0,2.75)
++ (6.0,2.68)
++ (7.0,2.66)
++ (8.0,2.65)
++ (9.0,2.68)
++ (10.0,2.7)
++ (11.0,2.75)
++ (12.0,2.9)
++ (13.0,3.15)
++ (14.0,3.6)
++ (15.0,3.5)
+ERON_P18p0m0p0 NRON_P18p0m0p0 GND TABLE {V(SX,GND)} = 
++ (0.0,3.0)
++ (1.0,3.1)
++ (2.0,2.8)
++ (3.0,2.6)
++ (4.0,2.55)
++ (5.0,2.5)
++ (6.0,2.45)
++ (7.0,2.4)
++ (8.0,2.39)
++ (9.0,2.38)
++ (10.0,2.37)
++ (11.0,2.38)
++ (12.0,2.39)
++ (13.0,2.5)
++ (14.0,2.6)
++ (15.0,2.7)
++ (16.0,2.75)
++ (17.0,3.25)
++ (18.0,3.2)
+ERON_P24p0m0p0 NRON_P24p0m0p0 GND TABLE {V(SX,GND)} = 
++ (0.0,2.65)
++ (1.0,2.7)
++ (2.0,2.63)
++ (3.0,2.5)
++ (4.0,2.3)
++ (5.0,2.25)
++ (6.0,2.2)
++ (7.0,2.15)
++ (8.0,2.1)
++ (9.0,2.09)
++ (10.0,2.08)
++ (11.0,2.07)
++ (12.0,2.06)
++ (13.0,2.07)
++ (14.0,2.08)
++ (15.0,2.09)
++ (16.0,2.12)
++ (17.0,2.15)
++ (18.0,2.2)
++ (19.0,2.21)
++ (20.0,2.25)
++ (21.0,2.3)
++ (22.0,2.4)
++ (23.0,2.8)
++ (24.0,2.74)
+ERON_P36p0m0p0 NRON_P36p0m0p0 GND TABLE {V(SX,GND)} = 
++ (0.0,2.25)
++ (1.0,2.3)
++ (2.0,2.2)
++ (3.0,2.0)
++ (4.0,1.95)
++ (5.0,1.93)
++ (6.0,1.9)
++ (7.0,1.85)
++ (8.0,1.8)
++ (9.0,1.77)
++ (10.0,1.75)
++ (11.0,1.74)
++ (12.0,1.73)
++ (13.0,1.72)
++ (14.0,1.71)
++ (15.0,1.7)
++ (16.0,1.7)
++ (17.0,1.69)
++ (18.0,1.7)
++ (19.0,1.7)
++ (20.0,1.72)
++ (21.0,1.73)
++ (22.0,1.75)
++ (23.0,1.76)
++ (24.0,1.78)
++ (25.0,1.79)
++ (26.0,1.8)
++ (27.0,1.8)
++ (28.0,1.81)
++ (29.0,1.83)
++ (30.0,1.85)
++ (31.0,1.86)
++ (32.0,1.89)
++ (33.0,2.0)
++ (34.0,2.3)
++ (35.0,2.4)
++ (36.0,2.37)
+*
+*RON modeled as a current depending on S to D voltage
+GRON SX DX_SWON VALUE = {V(SX,DX_SWON)/(
++ IF (V(SWx,GND) < 0.63, 50e15,
++ IF (V(VSS,GND) >= 0 ,
++ IF (V(VDD,GND) <= 5.0, V(NRON_P5p0m0p0) - Ron_offset,
++ IF (V(VDD,GND) <= 8.0, V(NRON_P8p0m0p0) - Ron_offset,
++ IF (V(VDD,GND) <= 10.8, V(NRON_P10p8m0p0) - Ron_offset,
++ IF (V(VDD,GND) <= 12.0, V(NRON_P12p0m0p0) - Ron_offset,
++ IF (V(VDD,GND) <= 15.0, V(NRON_P15p0m0p0) - Ron_offset,
++ IF (V(VDD,GND) <= 18.0, V(NRON_P18p0m0p0) - Ron_offset,
++ IF (V(VDD,GND) <= 24.0, V(NRON_P24p0m0p0) - Ron_offset,
++ IF (V(VDD,GND) <= 36.0, V(NRON_P36p0m0p0) - Ron_offset,
++ 50e15 )))))))),
++ IF (V(VDD,GND) <= 5.0, V(NRON_P5p0m5p0) - Ron_offset,
++ IF (V(VDD,GND) <= 10.0, V(NRON_P10p0m10p0) - Ron_offset,
++ IF (V(VDD,GND) <= 12.0, V(NRON_P12p0m12p0) - Ron_offset,
++ IF (V(VDD,GND) <= 13.5, V(NRON_P13p5m13p5) - Ron_offset,
++ IF (V(VDD,GND) <= 15.0, V(NRON_P15p0m15p0) - Ron_offset,
++ 50e15 )))))
+
++ ))) }
+*
+.ENDS
+*$
+.SUBCKT SWITCH_S2 SX DX VSS VDD GND SWx
+*
+.PARAM Ron_offset = 0.13
+*
+*Cap S to D
+**see documentation for CTHRU calculation based on OISO
+CTHRU SX DX 5.032933918669138e-12
+*
+*ONOFF switches
+S_ON DX DX_SWON SWx GND  SWON
+.MODEL SWON VSWITCH Roff=1e9 Ron=0.001 Voff=0.37V Von=0.63V
+*
+*Ron tables
+ERON_P5p0m5p0 NRON_P5p0m5p0 GND TABLE {V(SX,GND)} = 
++ (-5.0,4.0)
++ (-4.0,4.1)
++ (-3.0,4.25)
++ (-2.0,3.8)
++ (-1.0,3.45)
++ (0.0,3.43)
++ (1.0,3.45)
++ (2.0,3.6)
++ (3.0,3.75)
++ (4.0,4.75)
++ (5.0,4.5)
+ERON_P10p0m10p0 NRON_P10p0m10p0 GND TABLE {V(SX,GND)} = 
++ (-10.0,2.8)
++ (-9.0,2.9)
++ (-8.0,2.75)
++ (-7.0,2.6)
++ (-6.0,2.45)
++ (-5.0,2.4)
++ (-4.0,2.35)
++ (-3.0,2.28)
++ (-2.0,2.25)
++ (-1.0,2.24)
++ (0.0,2.2)
++ (1.0,2.24)
++ (2.0,2.25)
++ (3.0,2.28)
++ (4.0,2.35)
++ (5.0,2.4)
++ (6.0,2.42)
++ (7.0,2.5)
++ (8.0,2.65)
++ (9.0,3.2)
++ (10.0,3.1)
+ERON_P12p0m12p0 NRON_P12p0m12p0 GND TABLE {V(SX,GND)} = 
++ (-12.0,2.62)
++ (-11.0,2.68)
++ (-10.0,2.5)
++ (-9.0,2.43)
++ (-8.0,2.38)
++ (-7.0,2.3)
++ (-6.0,2.25)
++ (-5.0,2.18)
++ (-4.0,2.16)
++ (-3.0,2.14)
++ (-2.0,2.13)
++ (-1.0,2.12)
++ (0.0,2.1)
++ (1.0,2.12)
++ (2.0,2.13)
++ (3.0,2.14)
++ (4.0,2.16)
++ (5.0,2.18)
++ (6.0,2.2)
++ (7.0,2.25)
++ (8.0,2.35)
++ (9.0,2.4)
++ (10.0,2.5)
++ (11.0,2.88)
++ (12.0,2.78)
+ERON_P13p5m13p5 NRON_P13p5m13p5 GND TABLE {V(SX,GND)} = 
++ (-13.5,2.51)
++ (-13.0,2.54)
++ (-12.0,2.46)
++ (-11.0,2.34)
++ (-10.0,2.25)
++ (-9.0,2.23)
++ (-8.0,2.18)
++ (-7.0,2.13)
++ (-6.0,2.06)
++ (-5.0,2.0)
++ (-4.0,1.98)
++ (-3.0,1.97)
++ (-2.0,1.96)
++ (-1.0,1.95)
++ (0.0,1.94)
++ (1.0,1.95)
++ (2.0,1.96)
++ (3.0,1.97)
++ (4.0,1.98)
++ (5.0,2.0)
++ (6.0,2.01)
++ (7.0,2.04)
++ (8.0,2.09)
++ (9.0,2.15)
++ (10.0,2.2)
++ (11.0,2.3)
++ (12.0,2.38)
++ (13.0,2.7)
++ (13.5,2.64)
+ERON_P15p0m15p0 NRON_P15p0m15p0 GND TABLE {V(SX,GND)} = 
++ (-15.0,2.4)
++ (-14.0,2.45)
++ (-13.0,2.4)
++ (-12.0,2.25)
++ (-11.0,2.15)
++ (-10.0,2.05)
++ (-9.0,2.03)
++ (-8.0,1.97)
++ (-7.0,1.88)
++ (-6.0,1.84)
++ (-5.0,1.82)
++ (-4.0,1.8)
++ (-3.0,1.78)
++ (-2.0,1.77)
++ (-1.0,1.76)
++ (0.0,1.75)
++ (1.0,1.76)
++ (2.0,1.77)
++ (3.0,1.78)
++ (4.0,1.79)
++ (5.0,1.8)
++ (6.0,1.83)
++ (7.0,1.85)
++ (8.0,1.9)
++ (9.0,1.98)
++ (10.0,2.01)
++ (11.0,2.1)
++ (12.0,2.15)
++ (13.0,2.38)
++ (14.0,2.6)
++ (15.0,2.53)
+ERON_P5p0m0p0 NRON_P5p0m0p0 GND TABLE {V(SX,GND)} = 
++ (0.0,6.0)
++ (0.25,6.15)
++ (0.5,6.3)
++ (0.75,6.5)
++ (1.0,6.8)
++ (1.25,7.25)
++ (1.5,7.0)
++ (1.75,6.9)
++ (2.0,6.75)
++ (2.25,6.7)
++ (2.5,6.68)
++ (2.75,6.75)
++ (3.0,6.95)
++ (3.25,7.25)
++ (3.5,7.75)
++ (3.75,8.5)
++ (4.0,9.1)
++ (4.25,9.0)
++ (4.5,8.5)
++ (4.75,8.0)
++ (5.0,7.75)
+ERON_P8p0m0p0 NRON_P8p0m0p0 GND TABLE {V(SX,GND)} = 
++ (0.0,4.5)
++ (0.5,4.6)
++ (1.0,4.75)
++ (1.5,4.75)
++ (2.0,4.5)
++ (2.5,4.35)
++ (3.0,4.25)
++ (3.5,4.15)
++ (4.0,4.14)
++ (4.5,4.15)
++ (5.0,4.25)
++ (5.5,4.4)
++ (6.0,4.5)
++ (6.5,5.0)
++ (7.0,5.7)
++ (7.5,5.5)
++ (8.0,5.25)
+ERON_P10p8m0p0 NRON_P10p8m0p0 GND TABLE {V(SX,GND)} = 
++ (0.0,3.75)
++ (0.5,3.88)
++ (1.0,4.0)
++ (1.5,4.08)
++ (2.0,3.75)
++ (2.5,3.6)
++ (3.0,3.5)
++ (3.5,3.4)
++ (4.0,3.35)
++ (4.5,3.33)
++ (5.0,3.3)
++ (5.5,3.28)
++ (6.0,3.25)
++ (6.5,3.28)
++ (7.0,3.35)
++ (7.5,3.42)
++ (8.0,3.5)
++ (8.5,3.6)
++ (9.0,3.75)
++ (9.5,4.25)
++ (10.0,4.5)
++ (10.5,4.38)
++ (10.8,4.33)
+ERON_P12p0m0p0 NRON_P12p0m0p0 GND TABLE {V(SX,GND)} = 
++ (0.0,3.6)
++ (1.0,3.8)
++ (2.0,3.5)
++ (3.0,3.35)
++ (4.0,3.15)
++ (5.0,3.1)
++ (6.0,3.05)
++ (7.0,3.1)
++ (8.0,3.15)
++ (9.0,3.25)
++ (10.0,3.5)
++ (11.0,4.25)
++ (12.0,4.0)
+ERON_P15p0m0p0 NRON_P15p0m0p0 GND TABLE {V(SX,GND)} = 
++ (0.0,3.25)
++ (1.0,3.4)
++ (2.0,3.15)
++ (3.0,2.95)
++ (4.0,2.8)
++ (5.0,2.75)
++ (6.0,2.68)
++ (7.0,2.66)
++ (8.0,2.65)
++ (9.0,2.68)
++ (10.0,2.7)
++ (11.0,2.75)
++ (12.0,2.9)
++ (13.0,3.15)
++ (14.0,3.6)
++ (15.0,3.5)
+ERON_P18p0m0p0 NRON_P18p0m0p0 GND TABLE {V(SX,GND)} = 
++ (0.0,3.0)
++ (1.0,3.1)
++ (2.0,2.8)
++ (3.0,2.6)
++ (4.0,2.55)
++ (5.0,2.5)
++ (6.0,2.45)
++ (7.0,2.4)
++ (8.0,2.39)
++ (9.0,2.38)
++ (10.0,2.37)
++ (11.0,2.38)
++ (12.0,2.39)
++ (13.0,2.5)
++ (14.0,2.6)
++ (15.0,2.7)
++ (16.0,2.75)
++ (17.0,3.25)
++ (18.0,3.2)
+ERON_P24p0m0p0 NRON_P24p0m0p0 GND TABLE {V(SX,GND)} = 
++ (0.0,2.65)
++ (1.0,2.7)
++ (2.0,2.63)
++ (3.0,2.5)
++ (4.0,2.3)
++ (5.0,2.25)
++ (6.0,2.2)
++ (7.0,2.15)
++ (8.0,2.1)
++ (9.0,2.09)
++ (10.0,2.08)
++ (11.0,2.07)
++ (12.0,2.06)
++ (13.0,2.07)
++ (14.0,2.08)
++ (15.0,2.09)
++ (16.0,2.12)
++ (17.0,2.15)
++ (18.0,2.2)
++ (19.0,2.21)
++ (20.0,2.25)
++ (21.0,2.3)
++ (22.0,2.4)
++ (23.0,2.8)
++ (24.0,2.74)
+ERON_P36p0m0p0 NRON_P36p0m0p0 GND TABLE {V(SX,GND)} = 
++ (0.0,2.25)
++ (1.0,2.3)
++ (2.0,2.2)
++ (3.0,2.0)
++ (4.0,1.95)
++ (5.0,1.93)
++ (6.0,1.9)
++ (7.0,1.85)
++ (8.0,1.8)
++ (9.0,1.77)
++ (10.0,1.75)
++ (11.0,1.74)
++ (12.0,1.73)
++ (13.0,1.72)
++ (14.0,1.71)
++ (15.0,1.7)
++ (16.0,1.7)
++ (17.0,1.69)
++ (18.0,1.7)
++ (19.0,1.7)
++ (20.0,1.72)
++ (21.0,1.73)
++ (22.0,1.75)
++ (23.0,1.76)
++ (24.0,1.78)
++ (25.0,1.79)
++ (26.0,1.8)
++ (27.0,1.8)
++ (28.0,1.81)
++ (29.0,1.83)
++ (30.0,1.85)
++ (31.0,1.86)
++ (32.0,1.89)
++ (33.0,2.0)
++ (34.0,2.3)
++ (35.0,2.4)
++ (36.0,2.37)
+*
+*RON modeled as a current depending on S to D voltage
+GRON SX DX_SWON VALUE = {V(SX,DX_SWON)/(
++ IF (V(SWx,GND) < 0.63, 50e15,
++ IF (V(VSS,GND) >= 0 ,
++ IF (V(VDD,GND) <= 5.0, V(NRON_P5p0m0p0) - Ron_offset,
++ IF (V(VDD,GND) <= 8.0, V(NRON_P8p0m0p0) - Ron_offset,
++ IF (V(VDD,GND) <= 10.8, V(NRON_P10p8m0p0) - Ron_offset,
++ IF (V(VDD,GND) <= 12.0, V(NRON_P12p0m0p0) - Ron_offset,
++ IF (V(VDD,GND) <= 15.0, V(NRON_P15p0m0p0) - Ron_offset,
++ IF (V(VDD,GND) <= 18.0, V(NRON_P18p0m0p0) - Ron_offset,
++ IF (V(VDD,GND) <= 24.0, V(NRON_P24p0m0p0) - Ron_offset,
++ IF (V(VDD,GND) <= 36.0, V(NRON_P36p0m0p0) - Ron_offset,
++ 50e15 )))))))),
++ IF (V(VDD,GND) <= 5.0, V(NRON_P5p0m5p0) - Ron_offset,
++ IF (V(VDD,GND) <= 10.0, V(NRON_P10p0m10p0) - Ron_offset,
++ IF (V(VDD,GND) <= 12.0, V(NRON_P12p0m12p0) - Ron_offset,
++ IF (V(VDD,GND) <= 13.5, V(NRON_P13p5m13p5) - Ron_offset,
++ IF (V(VDD,GND) <= 15.0, V(NRON_P15p0m15p0) - Ron_offset,
++ 50e15 )))))
+
++ ))) }
+*
+.ENDS
+*$
+.SUBCKT SWITCH_S3 SX DX VSS VDD GND SWx
+*
+.PARAM Ron_offset = 0.13
+*
+*Cap S to D
+**see documentation for CTHRU calculation based on OISO
+CTHRU SX DX 5.032933918669138e-12
+*
+*ONOFF switches
+S_ON DX DX_SWON SWx GND  SWON
+.MODEL SWON VSWITCH Roff=1e9 Ron=0.001 Voff=0.37V Von=0.63V
+*
+*Ron tables
+ERON_P5p0m5p0 NRON_P5p0m5p0 GND TABLE {V(SX,GND)} = 
++ (-5.0,4.0)
++ (-4.0,4.1)
++ (-3.0,4.25)
++ (-2.0,3.8)
++ (-1.0,3.45)
++ (0.0,3.43)
++ (1.0,3.45)
++ (2.0,3.6)
++ (3.0,3.75)
++ (4.0,4.75)
++ (5.0,4.5)
+ERON_P10p0m10p0 NRON_P10p0m10p0 GND TABLE {V(SX,GND)} = 
++ (-10.0,2.8)
++ (-9.0,2.9)
++ (-8.0,2.75)
++ (-7.0,2.6)
++ (-6.0,2.45)
++ (-5.0,2.4)
++ (-4.0,2.35)
++ (-3.0,2.28)
++ (-2.0,2.25)
++ (-1.0,2.24)
++ (0.0,2.2)
++ (1.0,2.24)
++ (2.0,2.25)
++ (3.0,2.28)
++ (4.0,2.35)
++ (5.0,2.4)
++ (6.0,2.42)
++ (7.0,2.5)
++ (8.0,2.65)
++ (9.0,3.2)
++ (10.0,3.1)
+ERON_P12p0m12p0 NRON_P12p0m12p0 GND TABLE {V(SX,GND)} = 
++ (-12.0,2.62)
++ (-11.0,2.68)
++ (-10.0,2.5)
++ (-9.0,2.43)
++ (-8.0,2.38)
++ (-7.0,2.3)
++ (-6.0,2.25)
++ (-5.0,2.18)
++ (-4.0,2.16)
++ (-3.0,2.14)
++ (-2.0,2.13)
++ (-1.0,2.12)
++ (0.0,2.1)
++ (1.0,2.12)
++ (2.0,2.13)
++ (3.0,2.14)
++ (4.0,2.16)
++ (5.0,2.18)
++ (6.0,2.2)
++ (7.0,2.25)
++ (8.0,2.35)
++ (9.0,2.4)
++ (10.0,2.5)
++ (11.0,2.88)
++ (12.0,2.78)
+ERON_P13p5m13p5 NRON_P13p5m13p5 GND TABLE {V(SX,GND)} = 
++ (-13.5,2.51)
++ (-13.0,2.54)
++ (-12.0,2.46)
++ (-11.0,2.34)
++ (-10.0,2.25)
++ (-9.0,2.23)
++ (-8.0,2.18)
++ (-7.0,2.13)
++ (-6.0,2.06)
++ (-5.0,2.0)
++ (-4.0,1.98)
++ (-3.0,1.97)
++ (-2.0,1.96)
++ (-1.0,1.95)
++ (0.0,1.94)
++ (1.0,1.95)
++ (2.0,1.96)
++ (3.0,1.97)
++ (4.0,1.98)
++ (5.0,2.0)
++ (6.0,2.01)
++ (7.0,2.04)
++ (8.0,2.09)
++ (9.0,2.15)
++ (10.0,2.2)
++ (11.0,2.3)
++ (12.0,2.38)
++ (13.0,2.7)
++ (13.5,2.64)
+ERON_P15p0m15p0 NRON_P15p0m15p0 GND TABLE {V(SX,GND)} = 
++ (-15.0,2.4)
++ (-14.0,2.45)
++ (-13.0,2.4)
++ (-12.0,2.25)
++ (-11.0,2.15)
++ (-10.0,2.05)
++ (-9.0,2.03)
++ (-8.0,1.97)
++ (-7.0,1.88)
++ (-6.0,1.84)
++ (-5.0,1.82)
++ (-4.0,1.8)
++ (-3.0,1.78)
++ (-2.0,1.77)
++ (-1.0,1.76)
++ (0.0,1.75)
++ (1.0,1.76)
++ (2.0,1.77)
++ (3.0,1.78)
++ (4.0,1.79)
++ (5.0,1.8)
++ (6.0,1.83)
++ (7.0,1.85)
++ (8.0,1.9)
++ (9.0,1.98)
++ (10.0,2.01)
++ (11.0,2.1)
++ (12.0,2.15)
++ (13.0,2.38)
++ (14.0,2.6)
++ (15.0,2.53)
+ERON_P5p0m0p0 NRON_P5p0m0p0 GND TABLE {V(SX,GND)} = 
++ (0.0,6.0)
++ (0.25,6.15)
++ (0.5,6.3)
++ (0.75,6.5)
++ (1.0,6.8)
++ (1.25,7.25)
++ (1.5,7.0)
++ (1.75,6.9)
++ (2.0,6.75)
++ (2.25,6.7)
++ (2.5,6.68)
++ (2.75,6.75)
++ (3.0,6.95)
++ (3.25,7.25)
++ (3.5,7.75)
++ (3.75,8.5)
++ (4.0,9.1)
++ (4.25,9.0)
++ (4.5,8.5)
++ (4.75,8.0)
++ (5.0,7.75)
+ERON_P8p0m0p0 NRON_P8p0m0p0 GND TABLE {V(SX,GND)} = 
++ (0.0,4.5)
++ (0.5,4.6)
++ (1.0,4.75)
++ (1.5,4.75)
++ (2.0,4.5)
++ (2.5,4.35)
++ (3.0,4.25)
++ (3.5,4.15)
++ (4.0,4.14)
++ (4.5,4.15)
++ (5.0,4.25)
++ (5.5,4.4)
++ (6.0,4.5)
++ (6.5,5.0)
++ (7.0,5.7)
++ (7.5,5.5)
++ (8.0,5.25)
+ERON_P10p8m0p0 NRON_P10p8m0p0 GND TABLE {V(SX,GND)} = 
++ (0.0,3.75)
++ (0.5,3.88)
++ (1.0,4.0)
++ (1.5,4.08)
++ (2.0,3.75)
++ (2.5,3.6)
++ (3.0,3.5)
++ (3.5,3.4)
++ (4.0,3.35)
++ (4.5,3.33)
++ (5.0,3.3)
++ (5.5,3.28)
++ (6.0,3.25)
++ (6.5,3.28)
++ (7.0,3.35)
++ (7.5,3.42)
++ (8.0,3.5)
++ (8.5,3.6)
++ (9.0,3.75)
++ (9.5,4.25)
++ (10.0,4.5)
++ (10.5,4.38)
++ (10.8,4.33)
+ERON_P12p0m0p0 NRON_P12p0m0p0 GND TABLE {V(SX,GND)} = 
++ (0.0,3.6)
++ (1.0,3.8)
++ (2.0,3.5)
++ (3.0,3.35)
++ (4.0,3.15)
++ (5.0,3.1)
++ (6.0,3.05)
++ (7.0,3.1)
++ (8.0,3.15)
++ (9.0,3.25)
++ (10.0,3.5)
++ (11.0,4.25)
++ (12.0,4.0)
+ERON_P15p0m0p0 NRON_P15p0m0p0 GND TABLE {V(SX,GND)} = 
++ (0.0,3.25)
++ (1.0,3.4)
++ (2.0,3.15)
++ (3.0,2.95)
++ (4.0,2.8)
++ (5.0,2.75)
++ (6.0,2.68)
++ (7.0,2.66)
++ (8.0,2.65)
++ (9.0,2.68)
++ (10.0,2.7)
++ (11.0,2.75)
++ (12.0,2.9)
++ (13.0,3.15)
++ (14.0,3.6)
++ (15.0,3.5)
+ERON_P18p0m0p0 NRON_P18p0m0p0 GND TABLE {V(SX,GND)} = 
++ (0.0,3.0)
++ (1.0,3.1)
++ (2.0,2.8)
++ (3.0,2.6)
++ (4.0,2.55)
++ (5.0,2.5)
++ (6.0,2.45)
++ (7.0,2.4)
++ (8.0,2.39)
++ (9.0,2.38)
++ (10.0,2.37)
++ (11.0,2.38)
++ (12.0,2.39)
++ (13.0,2.5)
++ (14.0,2.6)
++ (15.0,2.7)
++ (16.0,2.75)
++ (17.0,3.25)
++ (18.0,3.2)
+ERON_P24p0m0p0 NRON_P24p0m0p0 GND TABLE {V(SX,GND)} = 
++ (0.0,2.65)
++ (1.0,2.7)
++ (2.0,2.63)
++ (3.0,2.5)
++ (4.0,2.3)
++ (5.0,2.25)
++ (6.0,2.2)
++ (7.0,2.15)
++ (8.0,2.1)
++ (9.0,2.09)
++ (10.0,2.08)
++ (11.0,2.07)
++ (12.0,2.06)
++ (13.0,2.07)
++ (14.0,2.08)
++ (15.0,2.09)
++ (16.0,2.12)
++ (17.0,2.15)
++ (18.0,2.2)
++ (19.0,2.21)
++ (20.0,2.25)
++ (21.0,2.3)
++ (22.0,2.4)
++ (23.0,2.8)
++ (24.0,2.74)
+ERON_P36p0m0p0 NRON_P36p0m0p0 GND TABLE {V(SX,GND)} = 
++ (0.0,2.25)
++ (1.0,2.3)
++ (2.0,2.2)
++ (3.0,2.0)
++ (4.0,1.95)
++ (5.0,1.93)
++ (6.0,1.9)
++ (7.0,1.85)
++ (8.0,1.8)
++ (9.0,1.77)
++ (10.0,1.75)
++ (11.0,1.74)
++ (12.0,1.73)
++ (13.0,1.72)
++ (14.0,1.71)
++ (15.0,1.7)
++ (16.0,1.7)
++ (17.0,1.69)
++ (18.0,1.7)
++ (19.0,1.7)
++ (20.0,1.72)
++ (21.0,1.73)
++ (22.0,1.75)
++ (23.0,1.76)
++ (24.0,1.78)
++ (25.0,1.79)
++ (26.0,1.8)
++ (27.0,1.8)
++ (28.0,1.81)
++ (29.0,1.83)
++ (30.0,1.85)
++ (31.0,1.86)
++ (32.0,1.89)
++ (33.0,2.0)
++ (34.0,2.3)
++ (35.0,2.4)
++ (36.0,2.37)
+*
+*RON modeled as a current depending on S to D voltage
+GRON SX DX_SWON VALUE = {V(SX,DX_SWON)/(
++ IF (V(SWx,GND) < 0.63, 50e15,
++ IF (V(VSS,GND) >= 0 ,
++ IF (V(VDD,GND) <= 5.0, V(NRON_P5p0m0p0) - Ron_offset,
++ IF (V(VDD,GND) <= 8.0, V(NRON_P8p0m0p0) - Ron_offset,
++ IF (V(VDD,GND) <= 10.8, V(NRON_P10p8m0p0) - Ron_offset,
++ IF (V(VDD,GND) <= 12.0, V(NRON_P12p0m0p0) - Ron_offset,
++ IF (V(VDD,GND) <= 15.0, V(NRON_P15p0m0p0) - Ron_offset,
++ IF (V(VDD,GND) <= 18.0, V(NRON_P18p0m0p0) - Ron_offset,
++ IF (V(VDD,GND) <= 24.0, V(NRON_P24p0m0p0) - Ron_offset,
++ IF (V(VDD,GND) <= 36.0, V(NRON_P36p0m0p0) - Ron_offset,
++ 50e15 )))))))),
++ IF (V(VDD,GND) <= 5.0, V(NRON_P5p0m5p0) - Ron_offset,
++ IF (V(VDD,GND) <= 10.0, V(NRON_P10p0m10p0) - Ron_offset,
++ IF (V(VDD,GND) <= 12.0, V(NRON_P12p0m12p0) - Ron_offset,
++ IF (V(VDD,GND) <= 13.5, V(NRON_P13p5m13p5) - Ron_offset,
++ IF (V(VDD,GND) <= 15.0, V(NRON_P15p0m15p0) - Ron_offset,
++ 50e15 )))))
+
++ ))) }
+*
+.ENDS
+*$
+.SUBCKT SWITCH_S4 SX DX VSS VDD GND SWx
+*
+.PARAM Ron_offset = 0.13
+*
+*Cap S to D
+**see documentation for CTHRU calculation based on OISO
+CTHRU SX DX 5.032933918669138e-12
+*
+*ONOFF switches
+S_ON DX DX_SWON SWx GND  SWON
+.MODEL SWON VSWITCH Roff=1e9 Ron=0.001 Voff=0.37V Von=0.63V
+*
+*Ron tables
+ERON_P5p0m5p0 NRON_P5p0m5p0 GND TABLE {V(SX,GND)} = 
++ (-5.0,4.0)
++ (-4.0,4.1)
++ (-3.0,4.25)
++ (-2.0,3.8)
++ (-1.0,3.45)
++ (0.0,3.43)
++ (1.0,3.45)
++ (2.0,3.6)
++ (3.0,3.75)
++ (4.0,4.75)
++ (5.0,4.5)
+ERON_P10p0m10p0 NRON_P10p0m10p0 GND TABLE {V(SX,GND)} = 
++ (-10.0,2.8)
++ (-9.0,2.9)
++ (-8.0,2.75)
++ (-7.0,2.6)
++ (-6.0,2.45)
++ (-5.0,2.4)
++ (-4.0,2.35)
++ (-3.0,2.28)
++ (-2.0,2.25)
++ (-1.0,2.24)
++ (0.0,2.2)
++ (1.0,2.24)
++ (2.0,2.25)
++ (3.0,2.28)
++ (4.0,2.35)
++ (5.0,2.4)
++ (6.0,2.42)
++ (7.0,2.5)
++ (8.0,2.65)
++ (9.0,3.2)
++ (10.0,3.1)
+ERON_P12p0m12p0 NRON_P12p0m12p0 GND TABLE {V(SX,GND)} = 
++ (-12.0,2.62)
++ (-11.0,2.68)
++ (-10.0,2.5)
++ (-9.0,2.43)
++ (-8.0,2.38)
++ (-7.0,2.3)
++ (-6.0,2.25)
++ (-5.0,2.18)
++ (-4.0,2.16)
++ (-3.0,2.14)
++ (-2.0,2.13)
++ (-1.0,2.12)
++ (0.0,2.1)
++ (1.0,2.12)
++ (2.0,2.13)
++ (3.0,2.14)
++ (4.0,2.16)
++ (5.0,2.18)
++ (6.0,2.2)
++ (7.0,2.25)
++ (8.0,2.35)
++ (9.0,2.4)
++ (10.0,2.5)
++ (11.0,2.88)
++ (12.0,2.78)
+ERON_P13p5m13p5 NRON_P13p5m13p5 GND TABLE {V(SX,GND)} = 
++ (-13.5,2.51)
++ (-13.0,2.54)
++ (-12.0,2.46)
++ (-11.0,2.34)
++ (-10.0,2.25)
++ (-9.0,2.23)
++ (-8.0,2.18)
++ (-7.0,2.13)
++ (-6.0,2.06)
++ (-5.0,2.0)
++ (-4.0,1.98)
++ (-3.0,1.97)
++ (-2.0,1.96)
++ (-1.0,1.95)
++ (0.0,1.94)
++ (1.0,1.95)
++ (2.0,1.96)
++ (3.0,1.97)
++ (4.0,1.98)
++ (5.0,2.0)
++ (6.0,2.01)
++ (7.0,2.04)
++ (8.0,2.09)
++ (9.0,2.15)
++ (10.0,2.2)
++ (11.0,2.3)
++ (12.0,2.38)
++ (13.0,2.7)
++ (13.5,2.64)
+ERON_P15p0m15p0 NRON_P15p0m15p0 GND TABLE {V(SX,GND)} = 
++ (-15.0,2.4)
++ (-14.0,2.45)
++ (-13.0,2.4)
++ (-12.0,2.25)
++ (-11.0,2.15)
++ (-10.0,2.05)
++ (-9.0,2.03)
++ (-8.0,1.97)
++ (-7.0,1.88)
++ (-6.0,1.84)
++ (-5.0,1.82)
++ (-4.0,1.8)
++ (-3.0,1.78)
++ (-2.0,1.77)
++ (-1.0,1.76)
++ (0.0,1.75)
++ (1.0,1.76)
++ (2.0,1.77)
++ (3.0,1.78)
++ (4.0,1.79)
++ (5.0,1.8)
++ (6.0,1.83)
++ (7.0,1.85)
++ (8.0,1.9)
++ (9.0,1.98)
++ (10.0,2.01)
++ (11.0,2.1)
++ (12.0,2.15)
++ (13.0,2.38)
++ (14.0,2.6)
++ (15.0,2.53)
+ERON_P5p0m0p0 NRON_P5p0m0p0 GND TABLE {V(SX,GND)} = 
++ (0.0,6.0)
++ (0.25,6.15)
++ (0.5,6.3)
++ (0.75,6.5)
++ (1.0,6.8)
++ (1.25,7.25)
++ (1.5,7.0)
++ (1.75,6.9)
++ (2.0,6.75)
++ (2.25,6.7)
++ (2.5,6.68)
++ (2.75,6.75)
++ (3.0,6.95)
++ (3.25,7.25)
++ (3.5,7.75)
++ (3.75,8.5)
++ (4.0,9.1)
++ (4.25,9.0)
++ (4.5,8.5)
++ (4.75,8.0)
++ (5.0,7.75)
+ERON_P8p0m0p0 NRON_P8p0m0p0 GND TABLE {V(SX,GND)} = 
++ (0.0,4.5)
++ (0.5,4.6)
++ (1.0,4.75)
++ (1.5,4.75)
++ (2.0,4.5)
++ (2.5,4.35)
++ (3.0,4.25)
++ (3.5,4.15)
++ (4.0,4.14)
++ (4.5,4.15)
++ (5.0,4.25)
++ (5.5,4.4)
++ (6.0,4.5)
++ (6.5,5.0)
++ (7.0,5.7)
++ (7.5,5.5)
++ (8.0,5.25)
+ERON_P10p8m0p0 NRON_P10p8m0p0 GND TABLE {V(SX,GND)} = 
++ (0.0,3.75)
++ (0.5,3.88)
++ (1.0,4.0)
++ (1.5,4.08)
++ (2.0,3.75)
++ (2.5,3.6)
++ (3.0,3.5)
++ (3.5,3.4)
++ (4.0,3.35)
++ (4.5,3.33)
++ (5.0,3.3)
++ (5.5,3.28)
++ (6.0,3.25)
++ (6.5,3.28)
++ (7.0,3.35)
++ (7.5,3.42)
++ (8.0,3.5)
++ (8.5,3.6)
++ (9.0,3.75)
++ (9.5,4.25)
++ (10.0,4.5)
++ (10.5,4.38)
++ (10.8,4.33)
+ERON_P12p0m0p0 NRON_P12p0m0p0 GND TABLE {V(SX,GND)} = 
++ (0.0,3.6)
++ (1.0,3.8)
++ (2.0,3.5)
++ (3.0,3.35)
++ (4.0,3.15)
++ (5.0,3.1)
++ (6.0,3.05)
++ (7.0,3.1)
++ (8.0,3.15)
++ (9.0,3.25)
++ (10.0,3.5)
++ (11.0,4.25)
++ (12.0,4.0)
+ERON_P15p0m0p0 NRON_P15p0m0p0 GND TABLE {V(SX,GND)} = 
++ (0.0,3.25)
++ (1.0,3.4)
++ (2.0,3.15)
++ (3.0,2.95)
++ (4.0,2.8)
++ (5.0,2.75)
++ (6.0,2.68)
++ (7.0,2.66)
++ (8.0,2.65)
++ (9.0,2.68)
++ (10.0,2.7)
++ (11.0,2.75)
++ (12.0,2.9)
++ (13.0,3.15)
++ (14.0,3.6)
++ (15.0,3.5)
+ERON_P18p0m0p0 NRON_P18p0m0p0 GND TABLE {V(SX,GND)} = 
++ (0.0,3.0)
++ (1.0,3.1)
++ (2.0,2.8)
++ (3.0,2.6)
++ (4.0,2.55)
++ (5.0,2.5)
++ (6.0,2.45)
++ (7.0,2.4)
++ (8.0,2.39)
++ (9.0,2.38)
++ (10.0,2.37)
++ (11.0,2.38)
++ (12.0,2.39)
++ (13.0,2.5)
++ (14.0,2.6)
++ (15.0,2.7)
++ (16.0,2.75)
++ (17.0,3.25)
++ (18.0,3.2)
+ERON_P24p0m0p0 NRON_P24p0m0p0 GND TABLE {V(SX,GND)} = 
++ (0.0,2.65)
++ (1.0,2.7)
++ (2.0,2.63)
++ (3.0,2.5)
++ (4.0,2.3)
++ (5.0,2.25)
++ (6.0,2.2)
++ (7.0,2.15)
++ (8.0,2.1)
++ (9.0,2.09)
++ (10.0,2.08)
++ (11.0,2.07)
++ (12.0,2.06)
++ (13.0,2.07)
++ (14.0,2.08)
++ (15.0,2.09)
++ (16.0,2.12)
++ (17.0,2.15)
++ (18.0,2.2)
++ (19.0,2.21)
++ (20.0,2.25)
++ (21.0,2.3)
++ (22.0,2.4)
++ (23.0,2.8)
++ (24.0,2.74)
+ERON_P36p0m0p0 NRON_P36p0m0p0 GND TABLE {V(SX,GND)} = 
++ (0.0,2.25)
++ (1.0,2.3)
++ (2.0,2.2)
++ (3.0,2.0)
++ (4.0,1.95)
++ (5.0,1.93)
++ (6.0,1.9)
++ (7.0,1.85)
++ (8.0,1.8)
++ (9.0,1.77)
++ (10.0,1.75)
++ (11.0,1.74)
++ (12.0,1.73)
++ (13.0,1.72)
++ (14.0,1.71)
++ (15.0,1.7)
++ (16.0,1.7)
++ (17.0,1.69)
++ (18.0,1.7)
++ (19.0,1.7)
++ (20.0,1.72)
++ (21.0,1.73)
++ (22.0,1.75)
++ (23.0,1.76)
++ (24.0,1.78)
++ (25.0,1.79)
++ (26.0,1.8)
++ (27.0,1.8)
++ (28.0,1.81)
++ (29.0,1.83)
++ (30.0,1.85)
++ (31.0,1.86)
++ (32.0,1.89)
++ (33.0,2.0)
++ (34.0,2.3)
++ (35.0,2.4)
++ (36.0,2.37)
+*
+*RON modeled as a current depending on S to D voltage
+GRON SX DX_SWON VALUE = {V(SX,DX_SWON)/(
++ IF (V(SWx,GND) < 0.63, 50e15,
++ IF (V(VSS,GND) >= 0 ,
++ IF (V(VDD,GND) <= 5.0, V(NRON_P5p0m0p0) - Ron_offset,
++ IF (V(VDD,GND) <= 8.0, V(NRON_P8p0m0p0) - Ron_offset,
++ IF (V(VDD,GND) <= 10.8, V(NRON_P10p8m0p0) - Ron_offset,
++ IF (V(VDD,GND) <= 12.0, V(NRON_P12p0m0p0) - Ron_offset,
++ IF (V(VDD,GND) <= 15.0, V(NRON_P15p0m0p0) - Ron_offset,
++ IF (V(VDD,GND) <= 18.0, V(NRON_P18p0m0p0) - Ron_offset,
++ IF (V(VDD,GND) <= 24.0, V(NRON_P24p0m0p0) - Ron_offset,
++ IF (V(VDD,GND) <= 36.0, V(NRON_P36p0m0p0) - Ron_offset,
++ 50e15 )))))))),
++ IF (V(VDD,GND) <= 5.0, V(NRON_P5p0m5p0) - Ron_offset,
++ IF (V(VDD,GND) <= 10.0, V(NRON_P10p0m10p0) - Ron_offset,
++ IF (V(VDD,GND) <= 12.0, V(NRON_P12p0m12p0) - Ron_offset,
++ IF (V(VDD,GND) <= 13.5, V(NRON_P13p5m13p5) - Ron_offset,
++ IF (V(VDD,GND) <= 15.0, V(NRON_P15p0m15p0) - Ron_offset,
++ 50e15 )))))
+
++ ))) }
+*
+.ENDS
+*$
+.SUBCKT QC_S1 SX VSS VDD DX SWx GND LO
+*
+*C1 and C2 can be increased to increase the range of the Qc and EQC_V is a ratio (0% to 100%) 
+*
+C1 SX QC_mid 4.0pF
+C2 DX QC_mid 4.0pF
+EQC_VSW QC_VSW GND TABLE {V(SWx, GND)} = 
++(0,0)
++(0.37,0)
++(0.63, 1)
++(1, 1)
+EQC_VS QC_VS GND TABLE {V(SX, GND)} = 
++ (0,200)
++ (6,75)
++ (22,175)
+*
+EQC_mid QC_mid LO_1 VALUE = { V(VDD, GND) * V(QC_VSW, GND) * V(QC_VS, GND)/100 }
+RQC_mid LO_1 LO 50
+*
+.ENDS
+*$
+.SUBCKT QC_S2 SX VSS VDD DX SWx GND LO
+*
+*C1 and C2 can be increased to increase the range of the Qc and EQC_V is a ratio (0% to 100%) 
+*
+C1 SX QC_mid 4.0pF
+C2 DX QC_mid 4.0pF
+EQC_VSW QC_VSW GND TABLE {V(SWx, GND)} = 
++(0,0)
++(0.37,0)
++(0.63, 1)
++(1, 1)
+EQC_VS QC_VS GND TABLE {V(SX, GND)} = 
++ (0,200)
++ (6,75)
++ (22,175)
+*
+EQC_mid QC_mid LO_1 VALUE = { V(VDD, GND) * V(QC_VSW, GND) * V(QC_VS, GND)/100 }
+RQC_mid LO_1 LO 50
+*
+.ENDS
+*$
+.SUBCKT QC_S3 SX VSS VDD DX SWx GND LO
+*
+*C1 and C2 can be increased to increase the range of the Qc and EQC_V is a ratio (0% to 100%) 
+*
+C1 SX QC_mid 4.0pF
+C2 DX QC_mid 4.0pF
+EQC_VSW QC_VSW GND TABLE {V(SWx, GND)} = 
++(0,0)
++(0.37,0)
++(0.63, 1)
++(1, 1)
+EQC_VS QC_VS GND TABLE {V(SX, GND)} = 
++ (0,200)
++ (6,75)
++ (22,175)
+*
+EQC_mid QC_mid LO_1 VALUE = { V(VDD, GND) * V(QC_VSW, GND) * V(QC_VS, GND)/100 }
+RQC_mid LO_1 LO 50
+*
+.ENDS
+*$
+.SUBCKT QC_S4 SX VSS VDD DX SWx GND LO
+*
+*C1 and C2 can be increased to increase the range of the Qc and EQC_V is a ratio (0% to 100%) 
+*
+C1 SX QC_mid 4.0pF
+C2 DX QC_mid 4.0pF
+EQC_VSW QC_VSW GND TABLE {V(SWx, GND)} = 
++(0,0)
++(0.37,0)
++(0.63, 1)
++(1, 1)
+EQC_VS QC_VS GND TABLE {V(SX, GND)} = 
++ (0,200)
++ (6,75)
++ (22,175)
+*
+EQC_mid QC_mid LO_1 VALUE = { V(VDD, GND) * V(QC_VSW, GND) * V(QC_VS, GND)/100 }
+RQC_mid LO_1 LO 50
+*
+.ENDS
+*$
+.SUBCKT D1_IO IN VSS VDD SWx GND
+*
+*static cap to gnd (COFF)
+**see documentation for COFF calculation based on OISO
+COFF IN GND 143.83457135553897p
+*
+*Cap IN to GND additional cap when ON
+**see documentation for CON calculation based on BW
+CON_2 IN_CAPON GND 14.358850499327898p
+S_ON IN IN_CAPON SWx GND  SWON
+.MODEL SWON VSWITCH Roff=1e9 Ron=0.001 Voff=0.37V Von=0.63V
+*
+* Leakage table IOFF
+EIOFF NIOFF GND TABLE {V(VDD,VSS)} = 
++ (5,5e-10)
++ (12,5e-11)
++ (15,2e-10)
++ (36,2e-10)
+*
+* Leakage table ION
+EION NION GND TABLE {V(VDD,VSS)} = 
++ (5,1.5e-10)
++ (12,3e-11)
++ (15,1.5e-10)
++ (36,1.5e-10)
+*
+GLEAK IN GND VALUE = { IF (V(SWx, GND)>0.63,V(NION),V(NIOFF)) }
+*
+.ENDS
+*$
+.SUBCKT S1_IO IN VSS VDD SWx GND
+*
+*static cap to gnd (COFF)
+**see documentation for COFF calculation based on OISO
+COFF IN GND 30.83229420219293p
+*
+*Cap IN to GND additional cap when ON
+**see documentation for CON calculation based on BW
+CON_2 IN_CAPON GND 84.35885049932789p
+S_ON IN IN_CAPON SWx GND  SWON
+.MODEL SWON VSWITCH Roff=1e9 Ron=0.001 Voff=0.37V Von=0.63V
+*
+* Leakage table IOFF
+EIOFF NIOFF GND TABLE {V(VDD,VSS)} = 
++ (5,1e-10)
++ (12,1e-11)
++ (15,5e-11)
++ (36,5e-11)
+*
+* Leakage table ION
+EION NION GND TABLE {V(VDD,VSS)} = 
++ (5,1.5e-10)
++ (12,3e-11)
++ (15,1.5e-10)
++ (36,1.5e-10)
+*
+GLEAK IN GND VALUE = { IF (V(SWx, GND)>0.63,V(NION),V(NIOFF)) }
+*
+.ENDS
+*$
+.SUBCKT S2_IO IN VSS VDD SWx GND
+*
+*static cap to gnd (COFF)
+**see documentation for COFF calculation based on OISO
+COFF IN GND 30.83229420219293p
+*
+*Cap IN to GND additional cap when ON
+**see documentation for CON calculation based on BW
+CON_2 IN_CAPON GND 84.35885049932789p
+S_ON IN IN_CAPON SWx GND  SWON
+.MODEL SWON VSWITCH Roff=1e9 Ron=0.001 Voff=0.37V Von=0.63V
+*
+* Leakage table IOFF
+EIOFF NIOFF GND TABLE {V(VDD,VSS)} = 
++ (5,1e-10)
++ (12,1e-11)
++ (15,5e-11)
++ (36,5e-11)
+*
+* Leakage table ION
+EION NION GND TABLE {V(VDD,VSS)} = 
++ (5,1.5e-10)
++ (12,3e-11)
++ (15,1.5e-10)
++ (36,1.5e-10)
+*
+GLEAK IN GND VALUE = { IF (V(SWx, GND)>0.63,V(NION),V(NIOFF)) }
+*
+.ENDS
+*$
+.SUBCKT S3_IO IN VSS VDD SWx GND
+*
+*static cap to gnd (COFF)
+**see documentation for COFF calculation based on OISO
+COFF IN GND 30.83229420219293p
+*
+*Cap IN to GND additional cap when ON
+**see documentation for CON calculation based on BW
+CON_2 IN_CAPON GND 84.35885049932789p
+S_ON IN IN_CAPON SWx GND  SWON
+.MODEL SWON VSWITCH Roff=1e9 Ron=0.001 Voff=0.37V Von=0.63V
+*
+* Leakage table IOFF
+EIOFF NIOFF GND TABLE {V(VDD,VSS)} = 
++ (5,1e-10)
++ (12,1e-11)
++ (15,5e-11)
++ (36,5e-11)
+*
+* Leakage table ION
+EION NION GND TABLE {V(VDD,VSS)} = 
++ (5,1.5e-10)
++ (12,3e-11)
++ (15,1.5e-10)
++ (36,1.5e-10)
+*
+GLEAK IN GND VALUE = { IF (V(SWx, GND)>0.63,V(NION),V(NIOFF)) }
+*
+.ENDS
+*$
+.SUBCKT S4_IO IN VSS VDD SWx GND
+*
+*static cap to gnd (COFF)
+**see documentation for COFF calculation based on OISO
+COFF IN GND 30.83229420219293p
+*
+*Cap IN to GND additional cap when ON
+**see documentation for CON calculation based on BW
+CON_2 IN_CAPON GND 84.35885049932789p
+S_ON IN IN_CAPON SWx GND  SWON
+.MODEL SWON VSWITCH Roff=1e9 Ron=0.001 Voff=0.37V Von=0.63V
+*
+* Leakage table IOFF
+EIOFF NIOFF GND TABLE {V(VDD,VSS)} = 
++ (5,1e-10)
++ (12,1e-11)
++ (15,5e-11)
++ (36,5e-11)
+*
+* Leakage table ION
+EION NION GND TABLE {V(VDD,VSS)} = 
++ (5,1.5e-10)
++ (12,3e-11)
++ (15,1.5e-10)
++ (36,1.5e-10)
+*
+GLEAK IN GND VALUE = { IF (V(SWx, GND)>0.63,V(NION),V(NIOFF)) }
+*
+.ENDS
+*$

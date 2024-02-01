@@ -1,0 +1,120 @@
+***********************************************************************
+**  v1.7.5 PSpice Models Library - TI NexFET Power N/P Channel FET's
+*  (C) Copyright 2012 Texas Instruments Incorporated. All rights reserved.
+***********************************************************************
+***********************************************************************
+* Notice:
+* The data and models provided herein are intended to be used by 
+* customers as an aid in designing electrical circuits using 
+* semiconductor devices manufactured &/or sold by Texas Instruments.
+* The models and associated information contained herein are not to
+* be construed as a guarantee of electrical performance and/or device 
+* specification.  Therefore, Texas Instruments does not assume any 
+* liability arising out of the use of said data or models, nor from
+* the devices or products manufactured therefrom.  Texas Instruments
+* does not convey any license under its patent rights nor the rights
+* of others.  Texas Instruments reserves the right to change models 
+* without prior notice.  
+*
+* TI is a registered trademark of Texas Instruments Inc.
+*************************************************************************
+********************************************************************************
+*
+* Released by: Webench Design Center, Texas Instruments Inc.
+* Part: CSD175553Q5A
+* Date: 06/25/12
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Datasheet: SLPS373 - MAY 2012
+*
+*****************************************************************************
+*$
+**********************************************************************
+**********************************************************************
+*                                                                    *
+* CSD17553Q5A   -  PSpice Model for use with OrCAD                   *
+*                                                                    *
+**********************************************************************
+**********************************************************************
+* SUBCKT Definition:  1=D  2=G  3=S
+**********************************************************************
+.SUBCKT csd17553q5a  1 2 3
+* PARAMETER (local) DEFINITIONS SECTION
+ .PARAM  ptrc1    9.75e-3  
+ .PARAM  ptrc2    25.0e-6
+ .PARAM  pwidthP  3.9199333333
+ .PARAM  pwidth   {pwidthP*1e6}
+ .PARAM  perimP   {2.1*pwidthP}
+ .PARAM  perim    {perimP*1e6}
+****** MODEL SUBCIRCUIT BEGINS HERE     ******************************
+M1   10 11 12 12  NMOS	W={pwidthP} L=0.5u  PS={perimP} PD={perimP}
+DBD   8  7	 DBD
+CBD0  8  7   3e-12
+RBD0  8  7   1e10
+*CGD0  5  7	 100E-12
+CGS0  5  8	 0.5e-12
+M2   12 11 12 20  PMOSd W={pwidthP} L=0.1u PS={perimP} PD={perimP}
+DDx  20  10  DDx
+DDG1  10	101	DD1
+DDG2  5	101	DD1
+*DDG3  102	103	DD1
+*DDG4  103	104	DD1
+*DDG5  104	105	DD1
+*DDG6  105	106	DD1
+*DDG7  106	107	DD1
+*DDG8  5	107	DD1
+* Note:  gate oxide capacitance included in NMOS below
+CGS   5 13	 377E-12
+RGS  13  8	 35
+LGG   2  5	 2.1e-9
+RGG   5 11	 1.8
+RSB  12  9	 RTEMP 0.05e-3
+RSS   9  8 	 RTEMP 0.15e-3
+RSP   8  6 	 0.45e-3
+LSS   6  3	 0.47e-9
+RSL   6  3   0.5
+RDD   7 10 	 RTEMP 0.90e-3
+RDP   4  7	 0.90e-3
+LDD   1  4	 0.05e-9
+******************************************************************* 
+.MODEL  NMOS   NMOS (
+* CONTROL PARAMETERS
++ LEVEL  = 7             VERSION = 3.2         CAPMOD = 2
+* DC PARAMETERS
++ NLX    = 1.74E-7       VBM    = -5           DVT0   = 2.2
++ DVT1   = 0.53          DVT2   = -0.032       U0     = 650
++ UA     = 1.4e-9        UB     = 2.4e-18      A0     = 1.10
++ AGS    = 0.0           A1     = 0.0          A2     = 1.0
++ LINT   = 0.055e-6      VOFF   = -0.24        NFACTOR= 1.7
++ ETA0   = 0.005         ETAB   = -0.07        DSUB   = 1.4
++ PCLM   = 1.30          PDIBLC1= 0.02         PDIBLC2= 0.004
++ DROUT  = 0.90          PSCBE1 = 3.0e8        PSCBE2 = 1e-6
++ PVAG   = 0.1           DELTA  = 0.0220       JS     = 0
+* AC AND CAPACITANCE PARAMETERS
++ CGSO   = 212.50e-12		CGDO   = 1e-18        CGBO   = 1e-18
++ CJ     = 1e-18         CJSW   = 1e-18        CF     = 0
+* TEMPERATURE PARAMETERS
++ TNOM   = 25            UTE    = -1.5         KT1    = -0.85
++ KT1L   = 1.0e-15       KT2    = 0.022        UA1    = 1.75e-9
++ UB1    = -0.8e-18      
+* PROCESS PARAMETERS
++ TOX    = 3.00e-8       XJ     = 3e-7          NCH    = 1.35e17
++ NSUB   = 1.0e16)
+******************************************************************* 
+.MODEL  PMOSd   PMOS (   LEVEL  = 1
++ TNOM   = 25            VTO    = -1.0          IS     = 6.0e-14
++ TOX    = 3.0e-8        NSUB   = 2.0e17		GAMMA  = 15
++ CJ     = 1e-18         CJSW   = 1e-18
++ CGSO   = 1e-18         CGDO   = 1e-18         CGBO   = 0  )
+*******************************************************************
+.MODEL DBD D (CJO=3500e-12 VJ=1.0 M=0.625 TNOM=25
++ FC=0.5 TT=2e-09 XTI=3.3 BV=31
++ IS=9.0e-12 N=1.045 RS=0.50e-3 TRS1=4.0e-3)
+.MODEL DD1  D (CJO=0.90e-09 VJ=0.8 M=0.9 IS=1e-13 RS=0.1 TNOM=25)
+.MODEL DD2  D (CJO=4.00e-10 VJ=0.90 M=0.9 IS=1e-13 RS=0.1 TNOM=25)
+.MODEL DDx D (CJO=0.0001e-09 VJ=0.9 M=0.9 IS=1e-13 RS=1.0 TNOM=25)
+*******************************************************************
+.MODEL RTEMP RES (TC1={ptrc1} TC2={ptrc2})
+*******************************************************************
+.ENDS csd17553q5a  
+*$

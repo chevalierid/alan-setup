@@ -1,0 +1,104 @@
+***********************************************************************
+*  (C) Copyright 2014 Texas Instruments Incorporated. All rights reserved.
+***********************************************************************
+***********************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose. The model is
+** provided solely on an "as is" basis. The entire risk as to its quality
+** and performance is with the customer
+********************************************************************************
+*
+* Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: CSD25310Q2
+* Date: 1/24/2014
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.2
+* EVM Order Number: 
+* EVM Users Guide: 
+* Datasheet: SLPS459 - JANUARY 2014
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+*
+*****************************************************************************
+*$
+**********************************************************************
+**********************************************************************
+*                                                                    *
+*  CSD25310Q2  -  P-Channel 20/06                 *
+*                                                                    *
+**********************************************************************
+**********************************************************************
+*   PSpice Model CSD25310Q2  - case NOM typical
+**********************************************************************
+* SUBCKT Definition:  1=D  2=G  3=S
+*******************************************************************
+.SUBCKT CSD25310Q2  1 2 3
+ .PARAM  pWidth 0.69194509803921568627450980392157
+ .PARAM  perim  6.00
+M1  10 11 12 12 PMOS W={pWidth} L=0.45u PD={perim} PS={perim}
+DBD	1	3	DBD
+DGD 11 13	DD
+DDG 10 13	DD
+cgd	11	10	CAPGD	{2.26e-11}
+cgs	12	11	CAPGS	{5.02e-12}
+*CGSR  5  99 200E-9
+*RGSRG	99	8	4000
+LGG  2  5	0.87e-9
+RGG  5 11	1.6
+RSB 12  9	RTEMP 1.4E-3
+RSS  9  8   RTEMP 0.6e-3
+RSX  8  6	0.25E-6
+LSS  6  3	0.08E-9
+RDD  7 10   RTEMP 2.80e-3
+RDX  4  7	9.20E-3
+LDD  1  4	0.43E-9
+******************************************************************* 
+.MODEL  PMOS   PMOS (    LEVEL   = 7            Version = 3.2
++ TNOM    = 27           CAPMOD  = 2             LINT   = 0.02e-6
++ TOX     = 1.20E-8      NCH     = 1.5425e17      NSUB   = 5.0e15
++ A0      = 1.0          A1      = 0.0           A2     = 1.0
++ UA      = 2.00E-09     UB      = 2.0E-19       VBM    = -5
++ UA1     = 0.00e-9      UB1     = -0.0e-18      UTE    = -1.50
++ KT1     = -0.5875      KT2     = 0.02          KT1L   = 1e-14
++ Dvt0    = 2.3          Dvt1    = 0.55          Dvt2   = -0.03
++ PDIBLC1 = 0.05         PDIBLC2 = 0.015         B0     = 0.02
++ VOFF    = -0.06        NFACTOR = 2.10          NLX    = 1.70e-7
++ ETA0    = 0.03         ETAB    = -0.05         XJ     = 6.0e-7
++ PSCBE1  = 8.0e8        PSCBE2  = 3.0e-4	 U0= 500	
++ DELTA   = 1.0         DSUB    = 1.0           DROUT  = 0.7
++ CJ      = 1e-18        CJSW    = 1e-18         CF     = 0
++ CGSO    = 87.5e-12       CGDO    = 1e-18        CGBO   = 0 )
+******************************************************************* 
+.MODEL  NMOSd   NMOS (  LEVEL  = 7         Version = 3.2
++ TNOM = 27              CAPMOD = 2
++ JS     = 0             VBM    = -10
++ TOX    = 2e-8          NCH    = 1.6e17        NSUB   = 1e16
++ CJ     = 1e-18         CJSW   = 1e-18         CF     = 0
++ CGSO   = 0             CGDO   = 0             CGBO   = 0 )
+*******************************************************************
+.MODEL DBD D (CJO=675E-12 VJ=0.85 M=0.37 RS=4.0e-3 TRS1=5e-3 
++ TRS2=1e-7 FC=0.5 TT=3E-9 IS=2.5e-12 N=1.05 XTI=3.5 BV=22.0)
+*******************************************************************
+.MODEL DD D (CJO=1.25e-10 VJ=0.90 M=0.90 FC=0.5 IS=1E-14 RS=0.1)
+.MODEL CAPGD CAP (VC1=-0.1234513274 VC2=3.942477849e-3)
+
+.MODEL CAPGS CAP (VC1=-0.3187250996 VC2=0.0128087649)
+
+******************************************************************* 
+.MODEL RTEMP RES (TC1=8.00E-3  TC2=-3.2E-09)
+******************************************************************* 
+.ENDS CSD25310Q2
+*$

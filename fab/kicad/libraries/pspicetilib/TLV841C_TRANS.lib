@@ -1,0 +1,189 @@
+*$$
+*****************************************************************************
+* (C) Copyright 2019 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose. The model is
+** provided solely on an "as is" basis. The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: TLV841C
+* Date: 26APRIL2021
+* Model Type: Transient
+* Simulator: PSpice
+* Simulator Version: 16.2.0.s003
+* EVM Order Number: 
+* EVM User's Guide: 
+* Datasheet: SLVSFO5A –APRIL 2020
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+*
+* 1. The following features have been modelled
+*      a. VDD THRESHOLD RESPONSE
+*      b. CT RESET TIME DELAY
+*      
+*      
+*      
+* 2. Temperature effects are not modeled.
+* 3. The model is immune to transients on VDD as long as the duration of the VDD voltage transient is less than the RESET time delay.
+* 4. VPOR has been modeled.
+* 5. Slew rates of 1V/us or greater were used to validate model functionality. 
+* 
+*****************************************************************************
+* source TLV841C
+.subckt TLV841C_TRANS RESET_B VDD CT GND PARAMS: VSEL=0 VTH=3
+X_S3    DRIVE_SIG 0 RESET_B_DL 0 TLV841C_S3 
+X_U35         N17913044 VDD POR_OK COMP_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+V_V7         N17912998 0 1.0V
+X_U10         VDD N17964205 N17913113 SENSE_OK COMPHYS_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=0.5
+X_U36         SENSE_OV VDD_STARTUP MR_OK SENSE_CT AND3_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=500E-3
+C_C12         0 TIMER_RAMP  1n  
+V_V22         N17913044 0 0.8
+D_U1_D13         CT U1_N00642 D_D1 
+V_U1_V12         U1_N00568 0 1.23Vdc
+X_U1_U8         CT U1_N00568 CT_OK COMP_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+C_U1_C1         CT 0  63.6p  
+X_U1_U18         SENSE_CT U1_SENSE_BAR INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+G_U1_ABMI2         0 CT VALUE { IF(V(SENSE_CT)>0.5,1.98727u,0)    }
+X_U1_S4    U1_SENSE_BAR 0 CT 0 CTDELAY_U1_S4 
+V_U1_V11         U1_N00642 0 1.23Vdc
+X_S6    OUT1 0 TIMER_RAMP 0 TLV841C_S6 
+X_U62         POR_OK CT_VDD_OK DRIVE_SIG OR2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+G_G1         VDD 0 TABLE { V(N17913693, 0) } 
++ (
++  (0,0)(0.7,0.16u)(1,0.1625u)(1.5,0.175u)(2,0.125u)(3,0.13u)(3.5,0.135u)(4,0.145u)(5,0.15u)(6,0.16u)
++  )
+D_D10         VDD_STARTUP VDD_VALID D_D1 
+X_U65         VDD_STARTUP VDD_OK BUF_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+V_V2         N17970138 0 276m
+E_ABM14         HYST_S 0 VALUE { VITP-VITN    }
+E_ABM2         N17949922 0 VALUE { ((V(OUT1)*-V(HYST_S)) + VITN+V(HYST_S))    }
+E_ABM13         SENSE_OV 0 VALUE { IF(V(OVDRIVE_VCC_NEG)>0.5 ,1,V(SENSE_OK_A)) 
++    }
+C_C2         0 MR_OUT  1n  TC=0,0 
+X_U26         TIMER_RAMP OVDRIVE_VCC_NEG INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+D_D13         N17970138 N17983447 D_D1 
+E_E4         N17913693 0 VDD 0 1
+R_R8         VDD MRB  100k TC=0,0 
+R_R2         N17913159 MR_OUT  700 TC=0,0 
+D_D12         N17913159 MR_OUT D_D1 
+X_U66         MR_OUT MR_OK BUF_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+X_U34         SENSE_OV VDD_OK MR_OK N17912752 AND3_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=500E-3
+X_U11         VDD N17913235 N17913201 VDD_VALID COMPHYS_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=0.5
+X_U50         N17912752 CT_OK CT_VDD_OK AND2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+V_V24         N17913201 0 1m
+X_U8         MRB N17913064 N17913111 N17913159 COMPHYS_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=0.5
+R_R1         VDD_VALID VDD_STARTUP  271 TC=0,0 
+C_C3         0 SENSE_OK_A  1u  TC=0,0 
+V_V25         N17913235 0 0.7
+D_D11         SENSE_OK SENSE_OK_A D_D1 
+C_C1         0 VDD_STARTUP  1u  TC=0,0 
+D_D14         TIMER_RAMP N17912998 D_D1 
+R_R7         0 GND  1m TC=0,0 
+G_ABMI1         N17912998 TIMER_RAMP VALUE { IF(V(OUT1) < 0.5, 50u, 0)    }
+R_R3         SENSE_OK SENSE_OK_A  60 TC=0,0 
+X_U6         VDD N17949922 OUT1 COMP_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+X_S7    N17964498 0 VDD1 RESET_B_PP TLV841C_S7 
+X_S8    DRIVE_SIG 0 RESET_B_PP 0 TLV841C_S8 
+E_ABM16         N17913113 0 VALUE { (V(N17964205)-VITN)    }
+X_S10    POR_OK 0 RESET_B_DL N17983447 TLV841C_S10 
+C_C13         0 N17978456  1u  TC=0,0 
+V_V26         N17966860 0 {VSEL}
+X_U67         DRIVE_SIG N17964498 INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+E_E5         N17980687 0 TABLE { V(VDD, 0) } 
++ ( (1.6,1.12) (2,1.4) (3,2.1) (3.3,2.31) (4,2.8) (5,3.5) (5.5, 3.85) (6,4.2) 
++  )
+R_R10         N17978194 N17978456  30 TC=0,0 
+V_V27         N17971052 0 {VTH}
+X_U71         N17978184 VDD N17978194 COMP_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+E_ABM18         N17977665 0 VALUE { ((V(N17977704)*0.95))    }
+R_R9         RESET_B_DL VDD1  100k TC=0,0 
+X_U69         N17977538 N17978456 N17977449 AND2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+V_V29         N17978180 0 {VITN}
+E_ABM21         N17913111 0 VALUE { (V(VDD)*0.4)    }
+X_U68         RESET_B_DL RESET_B_PP N17966860 RESET_B 2to1MUX PARAMS:
++  VTHRESH=0.5
+E_ABM22         VDD1 0 VALUE { (V(VDD)*1)    }
+V_V28         N17977704 0 {VITN}
+E_ABM17         N17964205 0 VALUE { (V(N17971052)*1.05)    }
+E_ABM20         N17913064 0 VALUE { (V(VDD)*0.7)    }
+D_D15         N17970138 RESET_B_DL Dbreak 
+X_U70         N17977665 VDD N17977538 COMP_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+R_R11         N17980687 0  100k TC=0,0 
+X_S9    N17977449 0 0 0 TLV841C_S9 
+E_ABM19         N17978184 0 VALUE { ((V(N17978180)*0.95))    }
+.PARAM  vitp={vth*1.05} vitn={vth}
+.ENDS TLV841C_TRANS
+*$
+
+.subckt TLV841C_S3 1 2 3 4  
+S_S3         3 4 1 2 _S3
+RS_S3         1 2 1G
+.MODEL         _S3 VSWITCH Roff=1E9 Ron=35 Voff=0.8V Von=0.1V
+.ends TLV841C_S3
+
+.subckt CTDELAY_U1_S4 1 2 3 4  
+S_U1_S4         3 4 1 2 _U1_S4
+RS_U1_S4         1 2 1G
+.MODEL         _U1_S4 VSWITCH Roff=2.3E8 Ron=1 Voff=0.1V Von=0.5V
+.ends CTDELAY_U1_S4
+
+.subckt TLV841C_S6 1 2 3 4  
+S_S6         3 4 1 2 _S6
+RS_S6         1 2 1G
+.MODEL         _S6 VSWITCH Roff=100e6 Ron=1 Voff=0.2 Von=0.8
+.ends TLV841C_S6
+
+.subckt TLV841C_S7 1 2 3 4  
+S_S7         3 4 1 2 _S7
+RS_S7         1 2 1G
+.MODEL         _S7 VSWITCH Roff=1E9 Ron=35 Voff=0.8V Von=0.1V
+.ends TLV841C_S7
+
+.subckt TLV841C_S8 1 2 3 4  
+S_S8         3 4 1 2 _S8
+RS_S8         1 2 1G
+.MODEL         _S8 VSWITCH Roff=1E9 Ron=35 Voff=0.8V Von=0.1V
+.ends TLV841C_S8
+
+.subckt TLV841C_S10 1 2 3 4  
+S_S10         3 4 1 2 _S10
+RS_S10         1 2 1G
+.MODEL         _S10 VSWITCH Roff=1E9 Ron=1 Voff=0.8V Von=0.1V
+.ends TLV841C_S10
+
+.subckt TLV841C_S9 1 2 3 4  
+S_S9         3 4 1 2 _S9
+RS_S9         1 2 1G
+.MODEL         _S9 VSWITCH Roff=1E9 Ron=24 Voff=0.8V Von=0.1V
+.ends TLV841C_S9

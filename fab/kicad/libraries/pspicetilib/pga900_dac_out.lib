@@ -1,0 +1,188 @@
+﻿* PGA900 DAC Output Buffer Model
+*****************************************************************************
+* (C) Copyright 2012 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: PGA900
+* Date: 04/15/2015
+* Model Type: All In One
+* Simulator: PSPICE
+* Simulator Version: PSPIVE v16.2.0
+* EVM Order Number: N/A 
+* EVM Users Guide: N/A
+* Datasheet: SLDS209 - March 2105
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 : Release to Web
+*
+*****************************************************************************
+* Notes: 
+*
+* 
+*****************************************************************************
+*$
+.SUBCKT PGA900_DAC_OUT VDAC COMP Vddp VOUT DACCAP FBN FBP GND 
++ PARAMS: V_S0 = 1 V_S1 = 0 V_S2 = 0 V_S3 = 0 V_S4 = 0 V_S5 = 0
+V_V0         S0 GND {V_S0}
+V_V1         S1 GND {V_S1}
+V_V2         S2 GND {V_S2}
+V_V3         S3 GND {V_S3}
+V_V4         S4 GND {V_S4}
+V_V5         S5 GND {V_S5}
+R_RG2         N05946 N05392  15k TC=0,0 
+*V_V3         S3 GND 0Vdc
+X_S0    S0 GND COMP N05278 DEV_SCH_S0 
+*V_V4         S4 GND 0Vdc
+R_RG3         N06964 N05946  7.5k TC=0,0 
+R_R4         N04506 INP  40k TC=0,0 
+R_U1_R6         U1_Z0_1 VOUT  487.17e6 TC=0,0 
+E_U1_E1         U1_Z0_Z1_IN U1_GNDF U1_Z0_IN VOUT 99
+E_U1_E5         U1_P1_IN U1_GNDF U1_GBW_OUT U1_GNDF 1
+**
+R_U1_E5         U1_GBW_OUT U1_GNDF 1e6
+**
+R_U1_R7         U1_GNDF VOUT  48.72e6 TC=0,0 
+R_U1_R12         U1_Z1 U1_P2  100 TC=0,0 
+*E_U1_E2         U1_Z0_1 U1_GNDF U1_Z0_Z2_OUT U1_GNDF 100
+E_U1_E2         U1_Z0_1 U1_GNDF U1_Z0_Z2_OUT U1_GNDF 491.8685
+C_U1_C2         U1_GNDF U1_N121096  1.11n  TC=0,0 
+E_U1_E6         U1_Z1 U1_GNDF U1_P1_OUT U1_N79470 1e9
+C_U1_C4         U1_GNDF U1_P1_OUT  138.4p  TC=0,0 
+C_U1_C3         U1_Z0_Z2_IN U1_Z0_Z2_OUT  20.72p  TC=0,0 
+*E_U1_E3         U1_Z0_P1_IN U1_GNDF U1_Z0_Z1_OUT U1_GNDF 1.19e6
+E_U1_E3         U1_Z0_P1_IN U1_GNDF U1_Z0_Z1_OUT U1_GNDF 491.8685
+C_U1_C1         U1_Z0_Z1_IN U1_Z0_Z1_OUT  7.66e-3  TC=0,0 
+E_U1_E7         U1_P3_IN U1_GNDF U1_P2 U1_GNDF 1
+C_U1_C5         U1_GNDF U1_N79470  728.4p  TC=0,0 
+X_U1_U9         U1_VICM INP COMP GND VICM 
+V_U1_V1         U1_SHDN U1_GNDF 1Vdc
+R_U1_R1         U1_Z0_Z1_IN U1_Z0_Z1_OUT  1e6 TC=0,0 
+X_U1_U2         VDDP GND U1_GNDF GND_FLOAT 
+C_U1_C6         U1_GNDF U1_P2  66.3p  TC=0,0 
+*E_U1_E4         U1_Z0_Z2_IN U1_GNDF U1_Z0_P1_OUT U1_GNDF 1
+E_U1_E4         U1_Z0_Z2_IN U1_GNDF U1_Z0_P1_OUT U1_GNDF 491.8685
+E_U1_E8         U1_P4_IN U1_GNDF U1_P3_OUT U1_GNDF 1
+R_U1_R24         U1_INN2 U1_GBW_INN  1 TC=0,0 
+E_U1_E9         U1_N78940 U1_GNDF U1_P4_OUT U1_GNDF 1
+X_U1_U3         U1_GBW_INP U1_GBW_INN U1_GBW_OUT U1_SHDN U1_GNDF GBW_SLEW 
+V_U1_V2         U1_INN2 COMP 0mVdc
+R_U1_R8         U1_GNDF U1_Z0_Z1_OUT  839.39e-3 TC=0,0 
+R_U1_R2         U1_Z0_P1_IN U1_Z0_P1_OUT  289.89k TC=0,0 
+C_U1_C7         U1_GNDF U1_P3_OUT  66.3p  TC=0,0 
+R_U1_R23         INP U1_GBW_INP  1 TC=0,0 
+R_U1_R3         U1_N121096 U1_Z0_P1_OUT  1k TC=0,0 
+R_U1_R9         U1_P1_IN U1_P1_OUT  10k TC=0,0 
+R_U1_R22         U1_Z0_IN U1_N78940  1 TC=0,0 
+R_U1_R4         U1_Z0_Z2_IN U1_Z0_Z2_OUT  1k TC=0,0 
+R_U1_R14         U1_P4_IN U1_P4_OUT  100 TC=0,0 
+R_U1_R10         U1_N79470 U1_Z1  1k TC=0,0 
+R_U1_R5         U1_GNDF U1_Z0_Z2_OUT  10.1 TC=0,0 
+R_U1_R16         U1_GNDF U1_N78940  1k TC=0,0 
+R_U1_R11         U1_P3_IN U1_P3_OUT  100 TC=0,0 
+C_U1_C8         U1_GNDF U1_P4_OUT  66.3p  TC=0,0 
+X_S1    S1 GND COMP N05392 DEV_SCH_S1 
+*V_V5         S5 GND 0Vdc
+R_RF         N05278 FBN  75k TC=0,0 
+R_RG4         GND N06964  15k TC=0,0 
+X_S2    S2 GND COMP N05946 DEV_SCH_S2 
+R_R5         FBP COMP  40 TC=0,0 
+*V_V0         S0 GND 1Vdc
+X_S3    S3 GND COMP N06964 DEV_SCH_S3 
+X_S4    S4 GND INP DACCAP DEV_SCH_S4 
+R_R1         VDAC INP  40k TC=0,0 
+R_RG1         N05392 N05278  37.5k TC=0,0 
+*V_V1         S1 GND 0Vdc
+X_S5    S5 GND N04506 FBP DEV_SCH_S5 
+*V_V2         S2 GND 0Vdc
+.ENDS
+*$
+**
+.subckt DEV_SCH_S0 1 2 3 4  
+S_S0         3 4 1 2 _S0
+RS_S0         1 2 1G
+.MODEL         _S0 VSWITCH Roff=1e8 Ron=1.0 Voff=0.0V Von=1.0V
+.ends DEV_SCH_S0
+*$
+**
+.subckt DEV_SCH_S1 1 2 3 4  
+S_S1         3 4 1 2 _S1
+RS_S1         1 2 1G
+.MODEL         _S1 VSWITCH Roff=1e8 Ron=1.0 Voff=0.0V Von=1.0V
+.ends DEV_SCH_S1
+*$
+**
+.subckt DEV_SCH_S2 1 2 3 4  
+S_S2         3 4 1 2 _S2
+RS_S2         1 2 1G
+.MODEL         _S2 VSWITCH Roff=1e8 Ron=1.0 Voff=0.0V Von=1.0V
+.ends DEV_SCH_S2
+*$
+**
+.subckt DEV_SCH_S3 1 2 3 4  
+S_S3         3 4 1 2 _S3
+RS_S3         1 2 1G
+.MODEL         _S3 VSWITCH Roff=1e8 Ron=1.0 Voff=0.0V Von=1.0V
+.ends DEV_SCH_S3
+*$
+**
+.subckt DEV_SCH_S4 1 2 3 4  
+S_S4         3 4 1 2 _S4
+RS_S4         1 2 1G
+.MODEL         _S4 VSWITCH Roff=1e8 Ron=1.0 Voff=0.0V Von=1.0V
+.ends DEV_SCH_S4
+*$
+**
+.subckt DEV_SCH_S5 1 2 3 4  
+S_S5         3 4 1 2 _S5
+RS_S5         1 2 1G
+.MODEL         _S5 VSWITCH Roff=1e8 Ron=1.0 Voff=0.0V Von=1.0V
+.ends DEV_SCH_S5
+*$
+**
+.SUBCKT VICM OUT INP INN GNDF
+EOUT OUT GNDF VALUE = {0.5*(V(INP,GNDF) + V(INN,GNDF))}
+.ENDS
+*$
+.SUBCKT GND_FLOAT  VDD VSS GNDF 
+EGNDF  GNDF 0 VALUE = {(V(VDD)+V(VSS))*0.5}
+.ENDS
+*$
+.SUBCKT GBW_SLEW  VIP  VIM  VO  SHDN GNDF 
+.PARAM Aol = 196  
+.PARAM GBW = 3.25e6 
+.PARAM SRP = 1.25e6
+.PARAM SRN = 1.35e6 
+.PARAM IT = 0.001
+.PARAM PI = 3.141592
+.PARAM IP = {IT*MAX(1,SRP/SRN)}
+.PARAM IN = {IT*MIN(-1,-SRN/SRP)}
+.PARAM CC = {IT*MAX(1/SRP,1/SRN)}
+.PARAM FP = {GBW/PWR(10,AOL/20)}
+.PARAM RC = {1/(2*PI*CC*FP)}
+.PARAM GC = {PWR(10,AOL/20)/RC}
+* Loading the VO pin with an external resistor will change the AOL.
+*********
+G1p GNDF OUTG1p VALUE = {MAX(MIN(GC*V(SHDN,GNDF)*V(VIP,VIM),IP),IN)}
+G1n OUTG1n GNDF VALUE = {MAX(MIN(GC*V(SHDN,GNDF)*V(VIP,VIM),IP),IN)}
+RG1p OUTG1p GNDF {0.5*RC}
+*** Include initial conditions of capacitors ****
+Cg1dp OUTG1p GNDF {2*CC} IC=0
+RG1n OUTG1n GNDF {0.5*RC}
+Cg1dn OUTG1n GNDF {2*CC} IC=0
+G1OUT GNDF VO VALUE = {V(SHDN,GNDF)*V(OUTG1p,OUTG1n)}
+ROUT VO GNDF 1
+.ENDS
+*$

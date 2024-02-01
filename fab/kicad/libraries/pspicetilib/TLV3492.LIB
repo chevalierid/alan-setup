@@ -1,0 +1,205 @@
+* TLV3492
+*****************************************************************************
+* (C) Copyright 2011 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: TLV3492
+* Date: 13JUN2011
+* Model Type: ALL IN ONE
+* Simulator: PSPICE
+* Simulator Version: 16.0.0.p001
+* EVM Order Number: N/A
+* EVM Users Guide: N/A
+* Datasheet: SBOS262D – DECEMBER 2002 – REVISED APRIL 2005
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+* 
+* Updates:
+*
+* Version 1.0 : 
+* Release to Web
+*
+*****************************************************************************
+*
+* THIS MODEL IS APPLICABLE FOR TLV3491,TLV3492 & TLV3494
+*
+* BEGIN NOTES
+* FOR ACCURATE INPUT BIAS
+* CURRENTS, USE GMIN=1E-13
+* MODEL TEMPERATURE RANGE IS
+* -40 C TO +125 C, NOT ALL
+* PARAMETERS TRACK THOSE OF
+* THE REAL PART VS TEMPERATURE
+* END NOTES
+* BEGIN FEATURES
+* OFFSET CHANGE AT TRANSITION
+* WHEN CMV NEAR POSITIVE RAIL
+* INPUT BIAS CURRENT
+* INPUT CAPACITANCE
+* INPUT COMMON MODE VOLTAGE RANGE
+* INPUT CLAMPS TO RAILS
+* CMRR WITH FREQUENCY EFFECTS
+* PSRR WITH FREQUENCY EFFECTS
+* OUTPUT TRANSISTION TIME
+* QUIESCENT CURRENT
+* QUIESCENT CURRENT VS VOLTAGE
+* QUIESCENT CURRENT VS TEMPERATURE
+* RAIL TO RAIL OUTPUT STAGE
+* HIGH CLOAD EFFECTS
+* OUTPUT CURRENT THROUGH SUPPLIES
+* OUTPUT CURRENT LIMITING
+* OUTPUT CLAMPS TO RAILS
+* OUTPUT SWING VS OUTPUT CURRENT
+* END FEATURES
+* BEGIN MODEL TLV3492
+* PINOUT IS FOR SOT23-5 PACKAGE
+* PINOUT ORDER +IN -IN +V -V OUT
+* PINOUT        3   4   5  2  1
+*****************************************************************************
+.SUBCKT TLV3492 3 4 5 2 1
+R81 6 5 0.5
+R82 2 7 0.5
+R84 8 9 2.47E3
+R85 10 11 0.5
+R86 12 13 0.5
+D21 1 5 DD
+D22 2 1 DD
+E25 12 0 2 0 1
+E26 11 0 5 0 1
+R96 20 17 100
+R97 21 15 100
+C32 9 1 8E-15
+C36 1 0 0.1E-12
+I28 18 19 0.5E-6
+R5 1 16 17
+R6 14 1 27
+G16 22 23 8 23 -1E-3
+G17 23 24 8 23 1E-3
+G18 23 25 19 12 1E-3
+G19 26 23 11 18 1E-3
+D31 26 22 DD
+D32 24 25 DD
+M24 14 15 7 7 NOUT L=3U W=6000U
+M25 16 17 6 6 POUT L=3U W=6000U
+M26 18 18 10 10 POUT L=3U W=6000U
+M29 19 19 13 13 NOUT L=3U W=6000U
+R10 22 26 100E6
+R11 25 24 100E6
+R12 26 11 1E3
+R13 12 25 1E3
+E39 11 20 11 26 1
+E40 21 12 25 12 1
+R14 24 23 1E6
+R15 25 23 1E6
+R16 23 26 1E6
+R17 23 22 1E6
+R18 2 5 200E6
+G20 5 2 27 0 -0.6E-6
+D33 28 0 DD
+V33 28 27 0.6
+R19 0 27 1E6
+I31 5 2 0.73E-6
+I34 0 28 0.2E-6
+E44 23 12 11 12 0.5
+R20 29 30 1.2E6
+D34 31 29 DD
+D35 29 32 DD
+V45 32 33 0.3
+V46 34 31 0.3
+C42 8 23 0.02E-12
+R21 29 8 1.1E6
+E45 34 23 35 0 1
+E46 33 23 35 0 -1
+D36 36 0 DD
+I35 0 36 1.5E-6
+V47 36 35 0.487
+R22 0 35 1E9
+D37 37 38 DD
+D38 39 37 DD
+G21 37 23 40 41 -0.2E-3
+R23 23 37 3.5E6
+C43 37 23 9E-12
+M30 30 37 38 38 POUT L=3U W=30U
+M31 30 37 39 39 NOUT L=3U W=30U
+G22 37 23 42 43 -0.2E-3
+R24 44 45 2
+R25 46 45 2
+E47 47 0 11 0 1
+E48 48 0 12 0 1
+E49 49 0 50 0 1
+R26 47 51 1E6
+R27 48 52 1E6
+R28 49 53 1E6
+R29 0 51 100
+R30 0 52 100
+R31 0 53 100
+E50 54 3 53 0 -0.95
+R32 55 50 1E3
+R33 50 56 1E3
+C44 47 51 5E-12
+C45 48 52 5E-12
+C46 49 53 2E-12
+E51 57 54 52 0 0.25
+E52 58 57 51 0 0.25
+M32 41 59 44 44 PIN L=3U W=20U
+M33 40 4 46 46 PIN L=3U W=20U
+R34 12 41 25E3
+R35 12 40 25E3
+C47 41 40 8E-12
+C48 58 0 2E-12
+C49 4 0 2E-12
+V48 58 59 0
+M34 43 60 61 61 NIN L=3U W=20U
+R36 62 61 2
+M35 42 4 63 63 NIN L=3U W=20U
+R37 62 63 2
+R38 43 11 25E3
+R39 42 11 25E3
+C50 43 42 8E-12
+V49 59 60 1E-3
+M36 64 65 66 66 POUT L=6U W=500U
+M37 67 68 11 11 PIN L=6U W=500U
+V50 11 65 1.25
+M38 62 64 12 12 NIN L=6U W=500U
+M39 64 64 12 12 NIN L=6U W=500U
+E53 56 0 58 0 1
+E54 55 0 4 0 1
+M40 68 68 11 11 PIN L=6U W=500U
+I36 68 12 1E-6
+V51 67 45 0
+J6 69 58 69 JC
+J7 69 4 69 JC
+J8 4 70 4 JC
+J9 58 70 58 JC
+C51 58 4 4E-12
+I37 58 0 1E-12
+I38 4 0 1E-12
+R140 66 67 1E3
+V53 11 69 0.1
+V54 70 12 0.1
+V55 38 23 2.5
+V56 39 23 -2.5
+.MODEL DD D
+.MODEL JC NJF IS=1E-18
+.MODEL PIN PMOS KP=200U VTO=-0.7
+.MODEL NIN NMOS KP=200U VTO=0.7
+.MODEL POUT PMOS KP=200U VTO=-0.7 LAMBDA=0.01
+.MODEL NOUT NMOS KP=200U VTO=0.7 LAMBDA=0.01
+.ENDS
+* END MODEL TLV3492
+

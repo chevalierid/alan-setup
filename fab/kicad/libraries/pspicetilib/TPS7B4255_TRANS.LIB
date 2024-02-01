@@ -1,0 +1,109 @@
+***
+*$
+*  TPS7B4255 Model
+*****************************************************************************
+*  (C) Copyright 2013 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warrenties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+** Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: TPS7B4255
+* Date: 12/15/2022
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.2
+* EVM Order Number: TPS7B4255EVM-062
+* EVM Users Guide: SLVUCA5 - June 2022
+* Datasheet: SBVS392 - June 2022
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+* 
+* 1. Input and quiescent current of the part have not been modeled.
+* 2. Temperature effects have not been modeled.
+* 3. Noise has not been modeled.
+*
+*****************************************************************************
+
+
+.SUBCKT TPS7B4255 ADJ_EN GND VIN VOUT
+X1  VOUT GND VIN VIN ADJ_EN VOUT  LDO_BASIC 
++ PARAMS: 
++ rinp = 1.000e+7 
++ rout = 1.330e-1 
++ psrr = 5.623e-6 
++ pole = 2.000e+5 
++ zero = 2.000e+7 
++ venb = 8.000e-1 
++ ehys = 1.000e-1 
++ uvlo = 3.650e+0 
++ uhys = 6.500e-1 
++ vref = 1.200e+0 
++ drop = 5.500e-1 
++ ilim = 1.000e-1 
++ ttrn = 1.000e-4 
+.ENDS TPS7B4255 
+
+*$
+.SUBCKT ldo_basic out vgnd vin bias enb fbk 
++ PARAMS: 
++ rinp = 1e07 
++ rout = 0.1
++ psrr = 5e-4
++ pole = 100
++ zero = 10e3
++ venb = 1.0
++ ehys = 0.1
++ uvlo = 2.0
++ uhys = 0.1
++ vref = 1.20
++ drop = 0.25
++ ilim = 0.10
++ ttrn = 1e-4
+R00 vin vxx  { rinp } 
+C00 vin vxx  { 1/(6.28*rinp*pole) } 
+EX1 vx1   0 VALUE {IF((V(enb, vgnd) + V(egd)*ehys > venb)
++ &(V(enb, vgnd) > 1.5)&(V(enb, vgnd) < 18) , 1, 0)}
+RX1 vx1 egd 10
+CX1 egd   0 1n
+EX2 vx2   0 VALUE {IF((V(bias, vgnd) + V(vgd)*uhys > uvlo)&(V(bias, vgnd) + 1 > V(enb, vgnd)), 1, 0)}
+RX2 vx2 vgd 10
+CX2 vgd   0 1n
+EX3 vx3   0 VALUE {IF((V(enb, vgnd) > V(bias, vgnd)) & (V(bias, vgnd) > (V(enb, vgnd) - 1)), { drop }, 0)}
+RX3 vx3 vdrop 10
+CX3 vdrop   0 1n
+E01 v01 vgnd VALUE { 
++ IF(V(egd)>0.51&V(vgd)>0.51, V(enb, vgnd), 0) }
+R01 v01 ref {3.333e5*SQRT(ttrn)}
+C01 ref vgnd {1e-6*SQRT(ttrn)}
+E02 v02   0  VALUE {
++ V(ref)*(ABS(V(out)) + 1E-6)/(ABS(V(fbk)) + 1E-6) }
+R02 v02 des 10
+C02 des   0 1n
+E03 drv   0 VALUE {
++ MIN(V(des), MAX(V(enb)-V(vdrop), 0))}
+R03 drv vxx { psrr*rinp } 
+C03 drv vxx { 1/(6.28*psrr*rinp*zero) } 
+E04 vyy   0  VALUE { 
++ MIN(V(vxx), V(vzz) + ilim*rout) }
+R04 vyy vzz { rout }
+F04 vin vyy V04 1
+V04 vzz out 0V
+.ENDS ldo_basic
+

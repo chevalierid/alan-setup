@@ -1,0 +1,41 @@
+* source TPS51125_AVG
+*$
+*TPS51125
+***************************************************************************
+* (C) Copyright 2010 Texas Instruments Incorporated. All rights reserved.  
+***************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.    
+** TI and its licensors and suppliers make no warranties, either expressed 
+** or implied, with respect to this model, including the warranties of     
+** merchantability or fitness for a particular purpose. The model is       
+** provided solely on an "as is" basis. The entire risk as to its quality  
+** and performance is with the customer.                                    
+***************************************************************************
+* 
+* Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: TPS51125
+* Date: 15JUN2011
+* Model Type: AVERAGE
+* Simulator: PSpice
+* Simulator Version: 16.0.0.p001
+* EVM Order Number: TPS511125EVM - HPA312A
+* EVM Users Guide: SLUU311 - APRIL 2008
+* Datasheet: SLUS786C- REVISED MARCH 2009
+*
+* Model Version: Final 2.00
+*
+***************************************************************************
+*
+* Updates: 
+* Final 2.00 - changed the phase equations 
+* Release to Web.
+*
+***************************************************************************
+.SUBCKT TPS51125AVG OUTPUT VINAC PARAMS: CC=330u Resrc=25m Lx=3.3u
++ fSW=250k VIN=12 VOUT=5 
+E_LAPLACE1         OUTPUT 0 LAPLACE {V(VINAC)} {({-a * EXP(-s*Td)})/(
++ {Resrc*(a+s)*Cc*s})}
+.PARAM  td={100n + 0.5*vout/(vin*fsw)} m={fsw*0.02} m1=
++ {-2/lx*resrc} a={-fsw * log((m/(m-m1)))} 
+.ENDS 
+*$

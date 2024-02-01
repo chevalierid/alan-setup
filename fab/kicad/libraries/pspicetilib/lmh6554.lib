@@ -1,0 +1,157 @@
+* BEGIN MODEL LMH6554
+*
+* Rev A, 09/2009
+* Rev B, 3/22/2010 - removed 4 resistors that had only 1 connection (r25-r28)in the LMH6554 subcircuit
+*
+*
+*//////////////////////////////////////////////////////////////////////
+* (C) National Semiconductor, Corporation.
+* Models developed and under copyright by:
+* National Semiconductor, Corporation.  
+*/////////////////////////////////////////////////////////////////////
+* Legal Notice:  
+* The model may be copied, and distributed without any modifications;
+* however, reselling or licensing the material is illegal.
+* We reserve the right to make changes to the model without prior notice. 
+* Pspice Models are provided "AS IS, WITH NO WARRANTY OF ANY KIND" 
+*////////////////////////////////////////////////////////////////////
+*
+*  Model features include: (typical values)
+*     closed loop frequency response vs gain
+*     output current and voltage limiting
+*     input bias current error (common mode)
+*     input bias current error (differential mode)
+*     input common mode voltage offset
+*     slew rate and step response
+*     vnoise, referred to the input
+*     inoise, referred to the input
+*     output balance error vs frequency
+*     common mode frequency response
+*     harmonic distortion
+*     Isupply temco
+*     Isupply dependence on supply voltage 
+*
+*  This model does not capture the enable/disable function
+*
+*************************************************************
+** Top Level Circuit Description
+*************************************************************
+** Pin Desciptions
+*                Positive Supply Voltage Pins
+*                |   Negative Supply Voltage Pins
+*                |   |   Positive Input Terminal
+*                |   |   |   Negative Input Terminal
+*                |   |   |   |   Positive Output Terminal
+*                |   |   |   |   |   Negative Output Terminal
+*                |   |   |   |   |   |   
+*                |   |   |   |   |   | 
+*                |   |   |   |   |   |   Output Common Mode Reference Input
+*                |   |   |   |   |   |   |   Enable/Disable Control Input
+*                |   |   |   |   |   |   |   |
+.subckt lmh6554 vcc vee vip vim vop vom vcm ven
+c2 vip vim 1.8e-12
+q3 a0118 a0118 a0130 0 PNP 1
+q4 a0187 a0118 a0146 0 PNP 4
+q0 a211 a0144 a0125 0 PNP 1
+q1 a0144 a0144 a0128 0 PNP 1
+q5 a127 a0118 a0143 0 PNP 4
+q2 a131 a0144 a0122 0 PNP 1
+xoutbufp vcc vee a215 a0145 vop a127 output_stage
+xoutbufm vcc vee a217 a0157 vom a0187 output_stage
+g1 vcc a124 vcc vee 20e-6
+g0 a0158 a0212 a124 0 10e-3
+d6 a137 a159 DIODEideal 1
+d5 a139 a162 DIODEideal 1
+d1 vim a186 DIODEnoisy 1
+d3 a131 vim DIODEnoisy 1
+d0 vip a214 DIODEnoisy 1
+d4 a211 vip DIODEnoisy 1
+c0 a215 0 300e-15
+c1 a217 0 300e-15
+q26 a0171 a0171 a0233 0 NPN 1
+q9 a159 vcm a165 0 NPN 1
+q30 a165 a0171 a0264 0 NPN 1
+q28 a186 a0171 a0229 0 NPN 1
+q33 a0157 a0180 a0267 0 NPN 4
+q32 a0145 a0180 a0269 0 NPN 4
+q29 a0180 a0180 a0124 0 NPN 1
+q10 a162 a164 a188 0 NPN 1
+q31 a188 a0171 a0262 0 NPN 1
+q27 a214 a0171 a0231 0 NPN 1
+v3 a0212 a0171 0
+v2 a0144 a0158 0
+v1 a279 a188 0
+v0 a214 a186 0
+i9 vip vim 1e-6
+i5 vcc a164 7e-6
+i0 vcc a124 1e-3
+f27 vcc a0180 v3 1
+f26 a0118 vee v2 1
+g4 vcc a211 a0185 0 1
+g5 vcc a131 a0274 0 1
+g6 a214 vee 0 a0178 1
+g7 a186 vee 0 a0127 1
+f2 0 a215 v0 1
+f3 0 a217 v0 -1
+f1 0 a217 v1 2
+f0 0 a215 v1 2
+r68 vcc a0125 250
+r78 a0262 vee 250
+r73 vcc a0130 250
+r77 a0264 vee 250
+r72 a0229 vee 250
+r80 a0267 vee 62.5
+r69 vcc a0122 250
+r7 a0127 0 455e-6
+rtm 0 a217 128e3
+r24 vcc ven 1e6
+r71 a0231 vee 250
+r31 vcc a137 250
+rtp a215 0 128e3
+r32 vcc a139 250
+r67 vcc a0128 250
+r75 vcc a0146 62.5
+r15 vop a164 2.5e3
+r16 a164 vom 2.5e3
+r33 a165 a279 250
+r5 a0274 0 455e-6
+rtc a124 0 100
+r76 vcc a0143 62.5
+r79 a0269 vee 62.5
+r70 a0233 vee 250
+r74 a0124 vee 250
+r4 a0185 0 455e-6
+r6 a0178 0 455e-6
+
+.ends lmh6554
+** End of top level circuit definition
+
+****************************************************************************
+** sub-circuit descriptions
+****************************************************************************
+
+.subckt output_stage vcc vee in nbias out pbias
+e0 a030 0 in 0 1
+q14 nbias nbias a030 PNP 2
+q0 vee nbias out PNP 8
+q12 pbias pbias a030 NPN 2
+q1 vcc pbias out NPN 8
+.ends output_stage
+** End of subcircuit definition.
+
+*************************************************************
+** Model Parameters
+*************************************************************
+
+.model DIODEideal d(tnom=25.0 is=1e-18)
+.model DIODEnoisy d(tnom=25.0 is=1e-18 af=2.0 kf=80e-12)
+.model NPN npn(tnom=25.0             is=14e-18               bf=250
++              vaf=200.0             rb=50.00                re=3.000
++              rc=7.000              cje=100e-15             cjc=40e-15
++              cjs=10e-15)
+
+.model PNP pnp(tnom=25.0             is=18e-18               bf=150
++              vaf=100.00            rb=35                   re=1.500
++              rc=3.500              cje=80e-15              cjc=50e-15
++              cjs=10e-15)
+.end

@@ -1,0 +1,133 @@
+*$
+* INA322
+*****************************************************************************
+* (C) Copyright 2023 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Online Design Tools, Texas Instruments Inc.
+* Part: INA322
+* Date: 03JAN2023
+* Model Type: ALL IN ONE
+* EVM Order Number: N/A 
+* EVM Users Guide:  N/A 
+* Datasheet: SBOS174B - DECEMBER 2000 - REVISED FEBRUARY 2006
+*
+* Model Version: Final 1.1
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.1
+* 1. Updated PSpice symbol.
+*
+* Final 1.0  
+* Release to Web
+*
+*****************************************************************************
+ Connections: non-inverting input
+*              |   inverting input
+*		       |   |   positive power supply
+*              |   |   |  negative power supply
+*              |   |   |  |  output
+*              |   |   |  |  |   reference
+*              |   |   |  |  |   |   gainset
+*              |   |   |  |  |   |   |
+*              |   |   |  |  |   |   |
+.SUBCKT INA322 IN+ IN- V+ V- OUT REF RG   
+*****************************************************************************
+R2         A1OUT A2NEG  40K 
+R1         A2NEG A2OUT  160K  
+R4         A1NEG A1OUT  40K  
+R3         REF A1NEG  160K  
+XA1        IN- A1NEG V+ V- A1OUT OPAMP12
+XA2        IN+ A2NEG V+ V- A2OUT OPAMP12
+XA3        A2OUT RG V+ V- OUT OPAMP3
+.ENDS INA322
+*****************************************************************************
+.SUBCKT OPAMP12   1 2 3 4 5
+*****************************************************************************
+c1   11 12 785.88E-15
+c2    6  7 1.500E-12
+css  10 99 1.000E-30
+dc    5 53 dy
+de   54  5 dy
+dlp  90 91 dx
+dln  92 90 dx
+dp    4  3 dx
+egnd 99  0 poly(2) (3,0) (4,0) 0 .5 .5
+fb    7 99 poly(5) vb vc ve vlp vln 0 6.3662E9 -1E3 1E3 6E9 -6E9
+ga    6  0 11 12 6.2832E-6
+gcm   0  6 10 99 6.2832E-12
+iss   3 10 dc 300.00E-9
+hlim 90  0 vlim 1K
+m1   11  2 10 3 mp l=2E-6 w=20E-6 m=1
+m2   12  1 10 3 mp l=2E-6 w=20E-6 m=1
+r2    6  9 100.00E3
+rd1   4 11 159.15E3
+rd2   4 12 159.15E3
+ro1   8  5 50
+ro2   7 99 25
+rp    3  4 357.14E3
+rss  10 99 666.67E6
+vb    9  0 dc 0
+vc    3 53 dc .8047
+ve   54  4 dc .8047
+vlim  7  8 dc 0
+vlp  91  0 dc 12
+vln   0 92 dc 12
+.MODEL mp pmos(vto=-0.75 kp=205.5u rd=1 rs=1 rg=1 rb=1 cgso=4e-9
++cgdo=4e-9 cgbo=16.667e-9 cbs=2.34e-13 cbd=2.34e-13)
+.MODEL dx D(Is=800.00E-18)
+.MODEL dy D(Is=800.00E-18 Rs=1m Cjo=10p)
+.ENDS OPAMP12
+*****************************************************************************
+.SUBCKT OPAMP3   1 2 3 4 5
+*****************************************************************************
+c1   11 12 385.88E-15
+c2    6  7 2.00E-12
+css  10 99 1.000E-30
+dc    5 53 dy
+de   54  5 dy
+dlp  90 91 dx
+dln  92 90 dx
+dp    4  3 dx
+egnd 99  0 poly(2) (3,0) (4,0) 0 .5 .5
+fb    7 99 poly(5) vb vc ve vlp vln 0 6.3662E9 -1E3 1E3 6E9 -6E9
+ga    6  0 11 12 6.2832E-6
+gcm   0  6 10 99 6.2832E-12
+iss   3 10 dc 450.00E-9
+hlim 90  0 vlim 1K
+m1   11  2 10 3 mp l=1E-6 w=10E-6 m=1
+m2   12  1 10 3 mp l=1E-6 w=10E-6 m=1
+r2    6  9 100.00E3
+rd1   4 11 159.15E3
+rd2   4 12 159.15E3
+ro1   8  5 50
+ro2   7 99 25
+rp    3  4 357.14E3
+rss  10 99 666.67E6
+vb    9  0 dc 0
+vc    3 53 dc .8047
+ve   54  4 dc .8047
+vlim  7  8 dc 0
+vlp  91  0 dc 12
+vln   0 92 dc 12
+.MODEL mp pmos(vto=-0.75 kp=205.5u rd=1 rs=1 rg=1 rb=1 cgso=4e-9
++cgdo=4e-9 cgbo=16.667e-9 cbs=2.34e-13 cbd=2.34e-13)
+.MODEL dx D(Is=800.00E-18)
+.MODEL dy D(Is=800.00E-18 Rs=1m Cjo=10p)
+.ENDS OPAMP3
+*

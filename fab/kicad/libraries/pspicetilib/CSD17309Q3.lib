@@ -1,0 +1,119 @@
+**$UNENCRYPTED_LIB
+**$INTERFACE
+*$
+*****************************************************************************
+* (C) Copyright 2017 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose. The model is
+** provided solely on an "as is" basis. The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: CSD17309Q3  
+* Date: 01JUN2017
+* Model Type: 
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.s003
+* EVM Order Number:
+* EVM Users Guide: 
+* Datasheet: SLPS689 �MAY 2017
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web* PSpice Model Editor - Version 16.6.0
+*$
+**********************************************************************
+**********************************************************************
+*                                                                    *
+* CSD17309Q3   -  PSpice Model for use with OrCAD/Allegro            *
+*                                                                    *
+**********************************************************************
+* Characteristics:
+*   Technology:  n-channel 30/10
+*
+**********************************************************************
+* Model History
+*
+*   Initial model.     gd 07/28/2017
+*   
+* SUBCKT Definition:  1=D  2=G  3=S
+**********************************************************************
+.SUBCKT csd17309q3  1 2 3
+.PARAM  ptrc1	1.7e-3  
+.PARAM  ptrc2	6.0e-6
+.PARAM  pAA		3.555116
+.PARAM  pwidth	{pAA/2.75}
+.PARAM  perim	{2.1*pwidth}
+.PARAM  perimp	{1.01*pwidth}
+.PARAM  pRgate	0.36
+M1   10 11 12 12  NMOS	W={pwidth} L=0.52u  PD={perim} PS={perim}
+M2   12 11 12 20  PMOSd W={pwidth} L=0.057u PS={perimp} PD={perimp}
+DDx  20 10	 DD   {pwidth}
+DBD   8  7	 DBD	{pwidth}
+RDB   8  7   8e10
+CGD0  5  7	 1e-12
+CGS0  5  8   2e-12
+CDS0 10 12	 {1.50e-12 * pwidth}
+DGD  14 10	 DD	{pwidth}
+DDG  14  5	 DD	{pwidth}
+RDC  14  5   1e10
+LGG   2  5	 1.4e-9
+RGG   5 11	 {1.15 + pRgate}
+RSB  12  9	 RTEMP 0.01e-3
+RSS   9  8 	 RTEMP 0.95e-3
+RSP   8  6 	 RTEMP 0.50e-3
+LSS   6  3	 0.45E-9
+RDP   4  7	 RTEMP 0.43e-3
+RDD   7 10 	 RTEMP 1.60e-3
+LDD   1  4	 0.15E-9
+*******************************************************************
+.MODEL  NMOS   NMOS (    LEVEL  = 7             Version = 3.2
++ TNOM   = 27            LINT   = 0.055e-6      CAPMOD = 2
++ TOX    = 1.75e-8       NCH    = 2.290e17      NSUB   = 1.0e16
++ AGS    = 0.01          PVAG   = 0.2           PARAMCHK=1  
++ U0     = 600		 VSAT   = 5.5e4
++ A0     = 1.0           A1     = 0.0           A2     = 1.0
++ UA     = 5.0e-10       UB     = 3.5e-19       VBM    = -10.0
++ UA1    = 1.2e-09       UB1    = 5.0e-19       UTE    = -1.50
++ KT1    = -0.68		 KT2    = 0.022         KT1L   = 1.0e-12
++ DVT0   = 2.50          DVT1   = 0.550	      DVT2   = -0.033
++ ETA0   = 0.05          ETAB   = -0.07         XJ     = 4e-7
++ PDIBLC1= 0.080         PDIBLC2= 0.015         NLX    = 1.743e-7
++ PSCBE1 = 6.0e8         PSCBE2 = 1e-7          PCLM   = 1.0
++ VOFF   = -0.22         NFACTOR= 1.25          JS     = 0
++ DROUT  = 1.5           DSUB   = 1.5           DELTA  = 0.01
++ CJ     = 1e-18         CJSW   = 1e-18         CF     = 0
++ CGSO   = 245e-12	 CGDO   = 20e-12        CGBO   = 0   )
+*******************************************************************
+.MODEL  PMOSd   PMOS  (  LEVEL  = 7			Version= 3.2
++ TNOM   = 27            CAPMOD = 0
++ TOX    = 1.75e-8       NCH    = 1.0e16        VTH0   = -1
++ NOFF   = 2.0           VOFFCV = 0.5
++ K1     = 2.00          K2     = -7e-2
++ U0     = 200		 VSAT   = 5.5e4		b0=-1.2e-5
++ A0     = 1.0           A1     = 0.1           A2     = 1.0
++ KT1    = -0.70		 KT2    = 0.022         KT1L   = 1.0e-11
++ VOFF   = -0.25         NFACTOR= 1.30          JS     = 0
++ CJ     = 1e-18         CJSW   = 1e-18         CF     = 0
++ CGSO   = 0             CGDO   = 0             CGBO   = 0   )
+*******************************************************************
+.MODEL DBD D (CJO=2130e-12 VJ=0.98 M=0.56 FC=0.5 TT=3e-09 TNOM=27
++  IS=5.0e-12 N=1.05 RS=5.0e-4 TRS1=5.0e-5 TRS2=-1.0e-6 XTI=1.8 
++  BV=30.8 TBV1=8.8e-4 TBV2=-2.0e-7 NR=2.2 ISR=2.5e-10 )
+*******************************************************************
+.MODEL DD  D (CJO=268e-12 VJ=0.40 M=1.01 IS=1e-18 RS=1 TNOM=27 
++  FC=0.90)
+*******************************************************************
+.MODEL RTEMP RES (TC1={ptrc1} TC2={ptrc2})
+*******************************************************************
+.ENDS csd17309q3
+*
+*$

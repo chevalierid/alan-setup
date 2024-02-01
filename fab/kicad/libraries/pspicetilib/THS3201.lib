@@ -1,0 +1,142 @@
+*
+*$
+.subckt ths3201 inp inn out vcc vee
+*
+.MODEL D_break D
++ RS=1.0000E-1
++ CJO=1.0000E-13
++ IS=100e-15
+
+.MODEL pnp_is PNP
++ IS=10.000E-18
++ BF=124.36
++ VAF=100
++ IKF=.99789
++ ISE=10.000E-18
++ NE=1.3695
++ VAR=100
++ IKR=10.000E-3
++ ISC=10.000E-18
++ NK=1.8752
++ RE=1
++ RB=80
++ RC=10
++ CJE=12.000E-15
++ VJE=.9
++ MJE=.6
++ CJC=10.000E-15
++ MJC=.93
++ TF=8.0237E-12
++ XTF=12.990
++ VTF=12.704
++ ITF=.88449
++ TR=10.000E-9
++ KF=7e-14
++ AF=0.54
+.MODEL npn_is NPN
++ IS=10.000E-18
++ BF=205.81
++ VAF=100
++ IKF=.99979
++ ISE=19.329E-18
++ NE=1.6102
++ VAR=100
++ IKR=20.000E-3
++ ISC=10.000E-18
++ NK=1.8762
++ RE=1
++ RB=100
++ RC=10
++ CJE=16.000E-15
++ VJE=1
++ MJE=.4
++ CJC=1.6000E-15
++ TF=5.5979E-12
++ XTF=97.940
++ VTF=28.359
++ ITF=2.2510
++ TR=10.000E-9
++ AF=0.54
++ KF=10.5e-14
+.MODEL my_d D
++ IS=10.000E-18
++ RS=1.0000E-3
++ CJO=1.0000E-12
++ M=.3333
++ VJ=.75
++ ISR=100.00E-12
++ BV=100
++ IBV=100.00E-6
++ TT=5.0000E-9
+
+* source THS3202
+Q_Q1         VCC INP1 N00790 NPN_IS 32
+R_R7         N03087 VCC  10  
+D_D2         N031571 N025972 MY_D 64
+E_E4         N16469 N16504 0 N16382 1
+Q_Q2         VEE INP1 N00761 PNP_IS 64
+R_R8         VEE N03033  10  
+V_V9         N19555 VEE 1.3Vdc
+**V_V2         HIZ N02762 -4.3Vdc
+Q_Q5         N01212 N01212 A1 PNP_IS 32
+L_L3         N03266 OUT  1p  
+V_V8         N19322 VCC -1.3Vdc
+R_R21         0 N16008  123  
+R_R9         N03266 N031180  8.5  
+*R_R11         0 OUT  100  
+C_C1         eref HIZ 430f
+*430f
+*X_U66        eref HIZ var_cap PARAMS: k1=1p   
+R_R1         A1 A  200  
+R_R13         0 N09161  10  
+C_C6         0 N16008  1p  
+Q_Q7         N01642 N01642 B1 NPN_IS 32
+C_C3         N09161 INN  930f  
+C_C33         OUT 0  2p
+R_R10         N031571 N03266  8.5  
+G_G1         INN_int 0 N15578 0 4m
+R_R3         B B1  200  
+C_C2         0 OUT  1p  
+R_R2         eref HIZ  300k  
+Q_Q3         N01212 N00761 INN_int NPN_IS 32
+V_V7         INP N26257 -17mVdc
+X_U6         B VEE HIZ VEE VCC VEE CSWIL PARAMS:  IL=15m
+R_R22         N16382 0  1.4k  
+R_R20         0 N15578  1k  
+Q_Q4         N01642 N00790 INN_int PNP_IS 64
+C_C7         N16382 0  700p  
+I_I1         VCC N00761 DC 325uAdc  
+E_E1         N03087 N025673 N02649 eref -1
+L_L4         INN INN_int  1.15n  
+I_I2         N00790 VEE DC 325uAdc  
+L_L7         N25506 N16504  0.2n  
+D_D7         N19555 HIZ D_BREAK 
+E_E2         N025972 N03033 N02762 eref 1
+R_R28         N26257 N25506  -49.8u  
+**V_V1         HIZ N02649 4.3Vdc
+D_D1         N025673 N031180 MY_D 64
+C_C5         0 N15578  1f  
+X_U5         VCC A VCC HIZ VCC VEE CSWIL PARAMS:  IL=15m
+C_C8         0 N16504  10f  
+D_D6         HIZ N19322 D_BREAK 
+E_E3         INP1 N16469 N16008 0 1
+E_E101       avg vee vcc vee 0.5
+E_E102       eref 0 avg 0 1
+E_E103       diff 0 vcc vee 0.5
+E_E104       lshift 0 diff ddrop 1
+V_V102       ddrop 0 0.7
+E_E105       HIZ N02649 lshift 0 1
+E_E106       HIZ N02762 lshift 0 -1
+
+.ENDs ths3201
+*$
+
+.SUBCKT cswil 1 2 3 4 5 6  
++ PARAMS: 
++ IL = 800u ;
+v1  1 2 0 
+Gout 3 4 value={limit(V(5,6)/12.4,0.88,-0.88)*limit(I(v1),IL,-IL)} ;
+.ENDS cswil
+
+
+*$

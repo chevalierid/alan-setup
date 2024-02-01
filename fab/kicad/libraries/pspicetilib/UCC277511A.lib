@@ -1,0 +1,198 @@
+* source UCC27511A
+* PSpice Model Editor - Version 16.2.0
+*$
+*****************************************************************************
+* (C) Copyright 2018 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose. The model is
+** provided solely on an "as is" basis. The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: UCC27511A
+* Date: 12JAN2018 
+* Model Type: Transient
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: LM5114BSDEVAL/NOPB  
+* EVM Users Guide: SNVA625A
+* Datasheet: SLUSD95
+*
+* Model Version: Final 1.00
+*****************************************************************************
+.subckt UCC27511A INM INP VDD GND OUTH OUTL
+V_U1_U_range_V7         U1_U_range_N16694250 GND 0.1
+V_U1_U_range_V10         U1_U_range_N16694604 GND 20
+V_U1_U_range_V11         U1_U_range_N16694520 GND 0.1
+X_U1_U_range_U15         U1_U_range_N16694452 INM U1_U_range_N16694360
++  U1_U_range_N16694448 COMPHYS_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+X_U1_U_range_U17         INM U1_U_range_N16694700 U1_U_range_N16694616
++  U1_U_range_N16694750 COMPHYS_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+V_U1_U_range_V8         U1_U_range_N16694452 GND -5
+V_U1_U_range_V12         U1_U_range_N16694700 GND 20
+V_U1_U_range_V9         U1_U_range_N16694360 GND 0.1
+V_U1_U_range_V13         U1_U_range_N16694616 GND 0.1
+X_U1_U_range_U3         U1_U_range_N16694338 U1_U_range_N16694448
++  U1_U_range_N16694512 OR2_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=500E-3
+X_U1_U_range_U4         U1_U_range_N16694754 U1_U_range_N16694750
++  U1_U_range_N16694814 OR2_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=500E-3
+X_U1_U_range_U14         U1_U_range_N16694346 INP U1_U_range_N16694250
++  U1_U_range_N16694338 COMPHYS_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+X_U1_U_range_U16         INP U1_U_range_N16694604 U1_U_range_N16694520
++  U1_U_range_N16694754 COMPHYS_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+V_U1_U_range_V6         U1_U_range_N16694346 GND -5
+X_U1_U_range_U5         U1_U_range_N16694512 U1_U_range_N16694814
++  U1_OUT_OF_RANGE OR2_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=500E-3
+R_U1_U1_R5         U1_U1_N16684429 U1_U1_N16684461  20  
+E_U1_U1_E1         U1_U1_N16684643 OUTH VALUE { IF(V(U1_U1_N16687249, 0) > 0.5,
++  5, -5) }
+X_U1_U1_U5         U1_U1_N16687927 U1_U1_N16684421 U1_U1_N16684637
++  AND2_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=500E-3
+C_U1_U1_C2         U1_U1_N16684489 U1_U1_N16684461  5p  
+M_U1_U1_M1         U1_U1_N16684683 U1_U1_N16684679 OUTH OUTH NMOS01           
+X_U1_U1_U1         U1_N16684910 U1_U1_N16684421 BUF_DELAY_BASIC_GEN PARAMS:
++  VDD=1 VSS=0 VTHRESH=0.5 DELAY=9n
+R_U1_U1_R6         U1_U1_N16684489 GND  0.02  
+X_U1_U1_U7         U1_U1_N16687858 U1_U1_N16687927 INV_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=500E-3
+C_U1_U1_C5         OUTL GND  10p  
+C_U1_U1_C1         U1_U1_N16684679 U1_U1_N16684683  5p  
+C_U1_U1_C3         OUTH U1_U1_N16684679  10p  
+E_U1_U1_E2         OUTL U1_U1_N16684429 VALUE { IF(V(U1_U1_N16684637, 0) > 0.5,
++  -5, 5) }
+R_U1_U1_R4         VDD U1_U1_N16684683  0.02  
+X_U1_U1_U2         U1_OUT_OF_RANGE U1_U1_N16687858 BUF_DELAY_BASIC_GEN PARAMS:
++  VDD=1 VSS=0 VTHRESH=0.5 DELAY=9n
+C_U1_U1_C6         OUTL U1_U1_N16684461  10p  
+X_U1_U1_U4         U1_U1_N16684421 U1_U1_N16687858 U1_U1_N16687249
++  OR2_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=500E-3
+M_U1_U1_M2         U1_U1_N16684489 U1_U1_N16684461 OUTL OUTL PMOS02           
+R_U1_U1_R3         U1_U1_N16684643 U1_U1_N16684679  20  
+C_U1_U1_C4         VDD OUTH  10p  
+X_U1_ULogic_U16         U1_ULogic_N16681316 U1_ULogic_N16676841 INV_BASIC_GEN
++  PARAMS: VDD=1 VSS=0 VTHRESH=500E-3
+V_U1_ULogic_V3         U1_ULogic_N16676785 GND 2.2
+V_U1_ULogic_V4         U1_ULogic_N16676791 GND 1
+X_U1_ULogic_U14         VDD U1_ULogic_N16676933 U1_ULogic_N16676939
++  U1_ULogic_N16677085 COMPHYS_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+X_U1_ULogic_U15         U1_ULogic_N16677085 U1_ULogic_N16676841
++  U1_ULogic_N16679531 U1_N16684910 AND3_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+V_U1_ULogic_V6         U1_ULogic_N16676933 GND 4.2
+R_U1_ULogic_R1         INM VDD  200k  
+R_U1_ULogic_R2         GND INP  230k  
+V_U1_ULogic_V7         U1_ULogic_N16676939 GND 0.3
+V_U1_ULogic_V1         U1_ULogic_N16676631 GND 2.2
+X_U1_ULogic_U10         INM U1_ULogic_N16676631 U1_ULogic_N16676657
++  U1_ULogic_N16681316 COMPHYS_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+V_U1_ULogic_V2         U1_ULogic_N16676657 GND 1
+X_U1_ULogic_U5         INP U1_ULogic_N16676785 U1_ULogic_N16676791
++  U1_ULogic_N16679531 COMPHYS_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+.ends UCC27511A
+****************************************************************
+** Wrapper definitions for AA legacy support **
+*$
+.model NMOS01 nmos
++ vto=2
++ kp=0.889
++ lambda=0.001
+*$
+.model PMOS02 pmos
++ vto=-2
++ kp=1.778
++ lambda=0.001
+*$
+.SUBCKT D_IDEAL A C PARAMS: RS = 1 VTH = 0.7
+G1 A C VALUE { MAX(0, ( V(A) - V(C) - { VTH }) / { RS } ) }
+R1 A C 1G
+.ENDS D_IDEAL
+*$
+.model DIODE01 D
++ IS = 1E-15
++ N = 1
++ TT = 1E-11
++ RS = 0.5
++ CJO = 1E-10
++ XTI = 0.0
+*$
+.SUBCKT Z_IDEAL A C PARAMS: RS = 1 VTH = 6.4
+G1 A C VALUE { MIN(0, ( V(A) - V(C) + { VTH } ) / { RS } ) }
+R1 A C 1G
+.ENDS Z_IDEAL
+*$
+.SUBCKT DELAY INP OUT PARAMS: RINP = 1k DELAY = 10n
+R1 INP 101 {RINP}
+C1 101 102 { 1.4427 * DELAY / RINP }
+E1 102 0 OUT 0 0.5
+E2 OUT 0 VALUE {IF(V(101) > 0.5, 1, 0)}
+.ENDS DELAY
+*$
+.SUBCKT COMPHYS_BASIC_GEN INP INM HYS OUT PARAMS: VDD=1 VSS=0 VTHRESH=0.5	
+EIN INP1 INM1 INP INM 1 
+EHYS INP1 INP2 VALUE { IF( V(1) > {VTHRESH},-V(HYS),0) }
+EOUT OUT 0 VALUE { IF( V(INP2)>V(INM1), {VDD} ,{VSS}) }
+R1 OUT 1 1
+C1 1 0 5.0n
+RINP1 INP1 0 1K
+.ENDS COMPHYS_BASIC_GEN
+*$
+.SUBCKT AND3_BASIC_GEN A B C Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH} &
++ V(C) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS AND3_BASIC_GEN
+*$
+.SUBCKT BUF_DELAY_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 DELAY = 10n 
+E_ABMGATE1    YINT1 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT1 YINT2 1
+CINT YINT2 0 {DELAY*1.3}
+E_ABMGATE2    YINT3 0 VALUE {{IF(V(YINT2) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT2 YINT3 Y 1
+CINT2 Y 0 1n
+.ENDS BUF_DELAY_BASIC_GEN
+*$
+.SUBCKT COMP_INV VOUT VINP VINN PARAMS: VHYS = 0.05
+E1 YINT 0 
++ VALUE {IF(V(VINP) + (1 - V(VOUT))*VHYS > V(VINN), 0, 1)}
+R1 YINT VOUT 1
+C1 VOUT 0 1n
+.ENDS COMP_INV
+*$
+.SUBCKT AND3 A B C Y
+E1 YINT 0 VALUE {
++ IF(V(A) > 0.5 &
++ V(B) > 0.5 &
++ V(C) > 0.5, 1, 0)}
+R1 YINT Y 1
+C1 Y 0 1n
+.ENDS AND3
+*$
+.SUBCKT INV_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS INV_BASIC_GEN
+*$
+.SUBCKT OR2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  |  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS OR2_BASIC_GEN
+*$
+.SUBCKT AND2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS AND2_BASIC_GEN
+*$

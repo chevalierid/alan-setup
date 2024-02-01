@@ -1,0 +1,121 @@
+
+* THS4631
+*****************************************************************************
+* (C) Copyright 2011 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: THS4631
+* Date: 08JUL2011
+* Model Type: ALL IN ONE
+* Simulator: PSPICE
+* Simulator Version: 16.0.0.p001
+* EVM Order Number: N/A
+* EVM Users Guide: N/A
+* Datasheet: SLOS451A – DECEMBER 2004 – REVISED MARCH 2005
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+* 
+* Updates:
+*
+* Version 1.0 : 
+* Release to Web
+*
+*****************************************************************************
+*
+* THIS MODEL SIMULATES TYPICAL VALUES FOR THE FOLLOWING:
+* SETTLING TIME, OUTPUT VOLTAGE LIMIT, INPUT VOLTAGE NOISE, INPUT BIAS CURRENT,
+* TYPICAL VALUES FOR INPUT OFFSET VOLTAGE AND OFFSET BIAS CURRENT,
+* CURRENT DRAW FROM POWER SUPPLY, OUTPUT IMPEDANCE AND LOADING EFFECTS
+* BANDWIDTH IS HIGH IN GAINS OF +1V/V AND +2V/V AND LOW AT HIGHER GAINS 
+* SLEW RATE IS CORRECT AT 2VSTEP BUT DOES NOT INCREASE WITH STEP SIZE AS ACTUAL DEVICE DOES
+* THIS MODEL WILL NOT PROVIDE ACCURATE SIMULATION OF: 
+* CMRR AND PSRR, INPUT CURRENT NOISE, DISTORTION, INPUT OFFSET, OPEN LOOP GAIN
+*
+*****************************************************************************
+.SUBCKT THS4631     IN+ IN- Vcc+ Vcc- OUT
+*
+* INPUT *
+J1          06 IN+ 33 NFET 13
+J2          07 INM  34 NFET 13
+R1         17 06  10  
+R2         17 07  10  
+Cin+	IN+ 0	2p
+Cin-	IN- 0	2p
+IQ+	IN+ 0 -47p
+IQ-	IN-  0 -23p
+RQ	Vcc+ Vcc- 8k
+VIO	IN- INM 200u
+
+* SECOND STAGE *
+Q3         08 Vref 33 PNP 0.5
+Q6         10 08 09 NPN 0.25
+Q4         10 Vref 34 PNP 0.5
+Q5         08 09 11 NPN 1
+Q7         09 09 12 NPN 1
+Cc         0 10   2p  
+R3         Vcc- 11  333  
+R4         Vcc- 12  333
+
+* HIGH FREQUENCY SHAPING *
+Lhf         18 19  9n  
+Rhf         13 19  25  
+Chf         0  13  14p  
+Ehf         18 0 10 0 1
+
+* OUTPUT *
+Q8         13 13 35 PNP 1
+Q9         13 13 14 NPN 1
+Q10         Vcc+ 35 15 NPN 12
+Q11         Vcc- 14 16 PNP 14
+*R5         OUT 15  10  
+*R7         16 OUT  10
+R5         20 15  5  
+R7         16 20  5
+
+* COMPLEX OUTPUT IMPEDANCE *
+R8         32 20  5
+R9         31 20  5 
+L1         31 OUT  5n  
+C1         32 OUT  15p  
+
+* BIAS SOURCES *
+I1         Vcc+ 33  DC 1.3e-3 
+I2         Vcc+ 34  DC 1.3e-3 
+I3         Vcc- 35  DC 1.2e-3 
+I4         17 Vcc-  DC 1.3e-3 
+I5         14 Vcc-  DC 1.2e-3 
+V1         Vcc+ Vref DC 2 
+
+* MODELS *
+.MODEL NFET NJF VTO=-2 BETA=100E-6 LAMBDA=1.0000E-8 IS=100.00E-16 ALPHA=1.0000E-6 VK=1
++ RD=1 RS=1 CGD=0 CGS=0 KF=4.0000E-17 BETATCE=-.5 VTOTC=-2.5000E-3
+
+.MODEL NPN NPN AF=1 BF=100 BR=1 CJC=0 CJE=0 CJS=0 EG=1.11 FC=0.5 GAMMA=1E-11
++IKF=1E9 IKR=1E9 IRB=1E9 IS=1E-16 ISC=0 ISE=0 ISS=0 ITF=0 KF=0 MJC=0.33
++MJE=0.33 NC= 2 NE=1.5 NF=1 NK=0.5 NR=1 PTF=0 QCO=0 RB=0 RBM=0 RC=0 RCO=0 RE=0
++TF=0 TR=0 VAF=1E9 VAR=1E9 VJC=0.75 VJE=0.75 VO=10 VTF=1E9 
++XCJC=1 XCJC2=1 XTB=0 XTF=0 XTI=3
+
+.MODEL PNP PNP AF=1 BF=100 BR=1 CJC=0 CJE=0 CJS=0 EG=1.11 FC=0.5 GAMMA=1E-11
++IKF=1E9 IKR=1E9 IRB=1E9 IS=1E-16 ISC=0 ISE=0 ISS=0 ITF=0 KF=0 MJC=0.33
++MJE=0.33 NC= 2 NE=1.5 NF=1 NK=0.5 NR=1 PTF=0 QCO=0 RB=0 RBM=0 RC=0 RCO=0 RE=0
++TF=0 TR=0 VAF=1E9 VAR=1E9 VJC=0.75 VJE=0.75 VO=10 VTF=1E9 
++XCJC=1 XCJC2=1 XTB=0 XTF=0 XTI=3
+
+.ENDS THS4631
+*$

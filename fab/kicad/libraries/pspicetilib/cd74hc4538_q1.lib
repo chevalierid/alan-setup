@@ -1,0 +1,184 @@
+* CD74HC4538-Q1
+*****************************************************************************
+* (C) Copyright 2012 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: CD74HC4538-Q1
+* Date: 7/12/17
+* Model Type: All In One
+* Simulator: Pspice
+* Simulator Version: Pspice 16.2.0.p001
+* EVM Order Number: N/A 
+* EVM Users Guide: N/A
+* Datasheet: SCLS595A – November 2004 - Revised April 2008
+*
+* Model Version: Preliminary
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 0.1 : Release to web
+* *
+*****************************************************************************
+* Notes: 
+* 1. Values of external resistor (Rx) and capacitor (Cx), and the K-factor must
+*    be entered in the PARAMS field of the .SUBCKT line for this model to 
+*    give the correct pulse duration.
+*
+* 2. This model is for modelling pulse duration at 25C with a 5V supply
+*
+* 3. This model DOES NOT track device behavior over temperature. 
+*
+* 4. Holding input A = HI or Bz = LOW will not guarantee Q = LOW
+*
+*    This model may not conform to the following specs in the device data sheet:
+* 5. Operation in the non-retriggerable mode.
+* 6. Input pulse widths or setup times.
+* 7. Fanout 
+******************************************************************************$
+*$
+.SUBCKT CD74HC4538-Q1 A Bz Rz RxCx Cx Q Qz VCC GND PARAMS: K=0.75 Rx=1e5 Cx=10n
+E_E2         VMID GND VCC GND 0.5
+X_S2    NEG_EDGE_TRUE GND RXCX GND DEV_SCH_S2 
+X_U4         Rz RESET VCC GND INV 
+R_R2         N42887 Q  1k TC=0,0 
+X_S1    POS_EDGE_TRUE GND RXCX GND DEV_SCH_S1 
+E_E3         VREF GND VCC GND 0.625
+E_U1_E1         U1_DEL_IN GND B_S GND 1
+R_U1_R1         U1_DEL_IN U1_DEL_OUT  1k TC=0,0 
+C_U1_C1         0 U1_DEL_OUT  10p  TC=0,0 
+X_U1_U1         U1_DEL_OUT B_S U1_XOR_OUT VCC GND XOR 
+X_U1_U2         VCC U1_XOR_OUT U1_N04709 NEG_EDGE_TRUE VCC GND AND_3 
+X_U1_U3         B_S U1_N04709 VCC GND INV 
+R_R1         GND CX  1u TC=0,0 
+X_U2_U1         U2_DEL_OUT A_S U2_XOR_OUT VCC GND XOR 
+X_U2_U2         VCC U2_XOR_OUT A_S POS_EDGE_TRUE VCC GND AND_3 
+C_U2_C1         GND U2_RC_OUT  {K*Rx*Cx/1e5}  TC=0,0 
+R_U2_R1         U2_RC_IN U2_RC_OUT  1k TC=0,0 
+E_U2_E1         U2_RC_IN GND A_S GND 1
+X_U2_U3         U2_DEL_OUT U2_RC_OUT VCC GND SCHMITT 
+X_U6         A_S A VCC GND SCHMITT 
+X_U3         N42887 VREF RXCX VCC GND VCC GND RESET VMID COMP_IDEAL_WLIMITS 
+X_U5         N42887 N56872 VCC GND INV 
+C_C1         RXCX CX  {(K-1)*Cx}  TC=0,0 
+X_U7         B_S Bz VCC GND SCHMITT 
+R_R3         N56872 Qz  1k TC=0,0 
+R_R4         GND VCC  625k TC=0,0 
+.ENDS
+*$
+****
+****
+****
+.subckt DEV_SCH_S2 1 2 3 4  
+S_S2         3 4 1 2 _S2
+RS_S2         1 2 1G
+.MODEL         _S2 VSWITCH Roff=1e8 Ron=1u Voff=0.25V Von=1.0V
+.ends DEV_SCH_S2
+*$
+****
+****
+****
+.subckt DEV_SCH_S1 1 2 3 4  
+S_S1         3 4 1 2 _S1
+RS_S1         1 2 1G
+.MODEL         _S1 VSWITCH Roff=1e8 Ron=1u Voff=0.25V Von=1.0V
+.ends DEV_SCH_S1
+*$
+****
+****
+****
+.SUBCKT INV A Y VCC GND
+ET NT GND VALUE = {0.5*V(VCC,GND)}
+RQ VCC GND 10e6
+EA NO GND VALUE = {V(VCC,GND)*(0.5*(SGN(V(NT,GND) - V(A,GND)) + 1))}
+RO1 NO NO1 50
+RO2 NO1 Y 50
+CO NO1 GND 0.1f
+.ENDS
+*$
+****
+****
+****
+.SUBCKT XOR A B  Y VCC GND
+ET NT GND VALUE = {0.5*V(VCC,GND)}
+RQ VCC GND 10e6
+EA NA GND VALUE = {0.5*(SGN(V(A,GND) - V(NT,GND)) + 1)}
+EB NB GND VALUE = {0.5*(SGN(V(B,GND) - V(NT,GND)) + 1)}
+EO NO GND VALUE = {V(VCC,GND)*(V(NA)*(1-V(NB,GND)) + (1-V(NA,GND))*V(NB,GND))}
+RO1 NO NO1 50
+RO2 NO1 Y 50
+CO NO1 GND 0.1f
+.ENDS
+*$
+****
+****
+****
+.SUBCKT AND_3 A B C Y VCC GND
+ET NT GND VALUE = {0.5*V(VCC,GND)}
+EA NA GND VALUE = {0.5*(SGN(V(A,GND) - V(NT,GND)) + 1)}
+EB NB GND VALUE = {0.5*(SGN(V(B,GND) - V(NT,GND)) + 1)}
+EC NC GND VALUE = {0.5*(SGN(V(C,GND) - V(NT,GND)) + 1)}
+EO NO GND VALUE = {V(VCC,GND)*V(NA,GND)*V(NB,GND)*V(NC,GND)}
+RO1 NO NO1 50
+RO2 NO1 Y 50
+CO NO1 GND 0.1f
+.ENDS
+*$
+****
+****
+****
+.SUBCKT SCHMITT OUT IN VCC GND
+**
+.PARAM VCC_HR = -0.05
+.PARAM VEE_HR = 0.05
+**
+EIH NIH 0 VALUE = {0.7*V(VCC,GND)}
+EIL NIL 0 VALUE = {0.3*V(VCC,GND)}
+EOH NOH 0 VALUE = {V(VCC,GND)+VCC_HR}
+EOL NOL 0 VALUE = {V(GND)+VEE_HR}
+EB  NB  0 VALUE = {(V(NIH)-V(NIL))/(V(NOH)-V(NOL)+V(NIH)-V(NIL))}
+*EREF NREF 0 VALUE = {0.5*(1-V(NB))*(V(NIH)+V(NIL))}
+EREF NREF 0 VALUE = {0.5*V(VCC,GND)}
+ETRPP NRTPP 0 VALUE = {-V(NOL)*(V(NB)/(1-V(NB)))+V(NREF)/(1-V(NB))}
+ETRPN NRTPN 0 VALUE = {-V(NOH)*(V(NB)/(1-V(NB)))+V(NREF)/(1-V(NB))}
+**
+EFB NFB 0 VALUE = {V(IN,GND)*(1-V(NB))+V(OUT,GND)*V(NB)}
+*EFB NFB 0 VALUE = {MAX(MIN(1e6*(V(NFB)-V(NREF)),V(NOH)),V(NOL))}
+**
+E1 N1 GND VALUE = {SGN(V(NFB)-V(NREF))}
+EOUT OUT GND VALUE = {0.5*(1+V(N1))*V(NOH) + 0.5*(1-V(N1))*V(NOL)}
+**
+.ENDS
+*$
+****
+****
+****
+.SUBCKT COMP_IDEAL_WLIMITS VOUT VINP VINN VCC VEE VSHDN VSET VRESET GNDF
+.PARAM VHR_VCC = -0.05
+.PARAM VHR_VEE = 0.05
+**
+*E1 N1 0 VALUE = {SGN(V(VINP,VINN)) + 1 – ABS(SGN(V(VINP,VINN)))}
+E1 N1 0 VALUE = {SGN(V(VINP,VINN)) - 1 + ABS(SGN(V(VINP,VINN)))}
+E2 N2 0 VALUE = {0.5*(1+V(N1))*(V(VCC,GNDF)+VHR_VCC)
++ +0.5*(1-V(N1))*(V(VEE,GNDF)+VHR_VEE)}
+**
+EACT NACT 0 VALUE = {0.5*(SGN(V(VSHDN,GNDF)) + ABS(SGN(V(VSHDN,GNDF))))}
+ESET	NSET	0 VALUE = {0.5*(SGN(V(VSET,GNDF)) + ABS(SGN(V(VSET,GNDF))))}
+ERESET NRESET 0 VALUE = {0.5*(SGN(V(VRESET,GNDF)) + ABS(SGN(V(VRESET,GNDF))))}
+**
+E3 VOUT GNDF VALUE = {V(NACT)*(1-V(NSET))*(1-V(NRESET))*V(N2)
++ + (V(NSET))*(V(VCC,GNDF)+VHR_VCC)
++ + (1-V(NSET))*(V(NRESET))*(V(VEE,GNDF)+VHR_VEE)}
+**
+.ENDS
+*$
+

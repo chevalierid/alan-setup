@@ -1,0 +1,98 @@
+* PSpice Model Editor - Version 16.6.0
+
+*$
+* TMP6131LPGM
+*****************************************************************************
+* (C) Copyright 2021 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Texas Instruments Inc.
+* Part: TMP6131LPGM
+* Date: 10MAY2021
+* Model Type: NA
+* Simulator: PSPICE
+* Simulator Version: 16.6-S084
+* EVM Order Number: NA
+* EVM Users Guide: NA
+* Datasheet: SBOS921E –DEC 2018–REVISED FEB 2020
+* Topologies Supported: NA
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+* 
+* A. The following features have been modeled
+*	1. 	Linear resistance change across temperature
+*	2. 	10-kOhm nominal resistance at 25°C (R25)
+*	3. 	Resistance vs. Ambient Temperature Using Multiple Bias Currents
+*	4. 	Resistance vs. Ambient Temperature Using Multiple Bias Voltages
+*	5. 	Supply Dependence Resistance vs. Bias Current
+*	6. 	Supply Dependence vs. Bias Voltage
+*
+* B. Features have not been modelled
+*	1. TCR vs. Sense Currents (ISNS) and Sense Voltages(VSNS) and thermal 
+*      characteristics of the part have not been modeled.
+*
+*****************************************************************************
+.SUBCKT TMP6131LPGM_MODEL 1 2  
+E_E1         N00825 1 VALUE {
++  ((2.814749767E+15*(V(N00865)*V(N00865)*V(N00865)*V(N00865)*V(N00865)*V(N00865))-
++  2.283465749E+12*(V(N00865)*V(N00865)*V(N00865)*V(N00865)*V(N00865))+
++  7.615329528E+15*(V(N00865)*V(N00865)*V(N00865)*V(N00865)) -
++  5.967170118E+12*(V(N00865)*V(N00865)*V(N00865)) +
++  1.121068512E+09*(V(N00865)*V(N00865)) + 8.111909498E+05*V(N00865) +
++  8.382930859E+03) +
++  (-8.796093022E+12*(V(N00865)*V(N00865)*V(N00865)*V(N00865)*V(N00865)*V(N00865))+
++  1.314878468E+10*(V(N00865)*V(N00865)*V(N00865)*V(N00865)*V(N00865))-
++  3.875620156E+14*(V(N00865)*V(N00865)*V(N00865)*V(N00865)) +
++  3.005390020E+11*(V(N00865)*V(N00865)*V(N00865)) -
++  7.924379707E+07*(V(N00865)*V(N00865)) + 1.795520851E+04*V(N00865) +
++  5.183709542E+01)*{temp} +
++  (-3.435973837E+10*(V(N00865)*V(N00865)*V(N00865)*V(N00865)*V(N00865)*V(N00865))+
++  7.652826415E+07*(V(N00865)*V(N00865)*V(N00865)*V(N00865)*V(N00865))-
++  2.342680045E+12*(V(N00865)*V(N00865)*V(N00865)*V(N00865)) +
++  1.881560011E+09*(V(N00865)*V(N00865)*V(N00865)) -
++  5.208709922E+05*(V(N00865)*V(N00865)) + 1.080419987E+02*V(N00865) +
++  1.327181570E-01)*{temp*temp} +
++  (4.680843264E+09*(V(N00865)*V(N00865)*V(N00865)*V(N00865)*V(N00865)*V(N00865))-
++  5.661833298E+06*(V(N00865)*V(N00865)*V(N00865)*V(N00865)*V(N00865))+
++  1.533260026E+11*(V(N00865)*V(N00865)*V(N00865)*V(N00865)) -
++  1.160760006E+08*(V(N00865)*V(N00865)*V(N00865)) +
++  2.755220007E+04*(V(N00865)*V(N00865)) - 2.346790005E+00*V(N00865) +
++  2.989460001E-04)*{temp*temp*temp} +
++  (-3.324313600E+07*(V(N00865)*V(N00865)*V(N00865)*V(N00865)*V(N00865)*V(N00865))+
++  4.086929408E+04*(V(N00865)*V(N00865)*V(N00865)*V(N00865)*V(N00865))-
++  1.097090019E+09*(V(N00865)*V(N00865)*V(N00865)*V(N00865)) +
++  8.340020042E+05*(V(N00865)*V(N00865)*V(N00865)) -
++  1.999650004E+02*(V(N00865)*V(N00865)) + 1.878230002E-02*V(N00865) -
++  9.727760002E-07)*{temp*temp*temp*temp}+({temp}*0.57)+(
++ {temp}*(-1.55e-6)/V(N00865)))*V(N00865) }
+X_H1    2 N00825 N00865 0 TMP6131LPGM_MODEL_H1 
+.ENDS TMP6131LPGM_MODEL
+*$
+.subckt TMP6131LPGM_MODEL_H1 1 2 3 4  
+H_H1         3 4 VH_H1 1
+VH_H1         1 2 0V
+.ends TMP6131LPGM_MODEL_H1
+*$

@@ -1,0 +1,187 @@
+**$UNENCRYPTED_LIB
+**$INTERFACE
+*$
+* SN74LV157A
+*****************************************************************************
+* (C) Copyright 2016 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: SN74LV157A
+* Date: 02-08-2017
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: NA
+* EVM Users Guide: NA
+* Datasheet: SCLS397F  APRIL 1998  REVISED APRIL 2005
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+*
+* 1. The following features have been modeled
+*	   a. Quadruple 2-line to 1-line data selectors/multiplexers basic functionality
+*      b. Timing Parameters - TPD_AorB, TPD_Gbar, TPD_AbarB captured across VCC and capacitive loads
+*      c. Supply and Pin Leakage Currents
+*	   d. Model is tested for VCC=2.5V,3.3V,5V and CL=15pF & 50pF
+*
+*****************************************************************************
+.SUBCKT SN74LV157A 1A 1B 1Y 2A 2B 2Y 3A 3B 3Y 4A 4B 4Y Abar_B Gbar GND VCC 
++  
+X_d1 DELAY_A_OR_B DELAY_ABAR_B DELAY_GBAR VCC_INT SUPPLY_vs_TPD  
+X_sw1 DELAY_A_OR_B 1A_INT 1B_INT 1Y SEL_A SEL_B VCC_INT SWITCH_UNIT_WD_TPD  
+X_sw4 DELAY_A_OR_B 4A_INT 4B_INT 4Y SEL_A SEL_B VCC_INT SWITCH_UNIT_WD_TPD  
+E_E1         VCC_INT 0 VCC 0 1
+X_Logic1 ABAR_B_INT DELAY_ABAR_B DELAY_GBAR GBAR_INT SEL_A SEL_B VCC_INT
++  CONTROL_LOGIC_WD_TPD  
+X_sw2 DELAY_A_OR_B 2A_INT 2B_INT 2Y SEL_A SEL_B VCC_INT SWITCH_UNIT_WD_TPD  
+X_sw3 DELAY_A_OR_B 3A_INT 3B_INT 3Y SEL_A SEL_B VCC_INT SWITCH_UNIT_WD_TPD  
+X_Leakage1 1A 1A_INT 1B 1B_INT 2A 2A_INT 2B 2B_INT 3A 3A_INT 3B 3B_INT 4A
++  4A_INT 4B 4B_INT ABAR_B ABAR_B_INT GBAR GBAR_INT PIN_LEAKAGE_CURRENTS  
+G_ABMI1         VCC GND VALUE { if(V(GBAR_INT)>(V(VCC_INT)/2),5u,20u)    }
+.ENDS
+ 
+.SUBCKT PIN_LEAKAGE_CURRENTS 1A 1A_int 1B 1B_int 2A 2A_int 2B 2B_int 3A 3A_int
++  3B 3B_int 4A 4A_int 4B 4B_int Abar_B Abar_B_int Gbar Gbar_int  
+E_E6         1B_INT 0 1B 0 1
+E_E11         4A_INT 0 4A 0 1
+G_ABMI8         2B 0 VALUE { 1u    }
+G_ABMI2         GBAR 0 VALUE { 1u    }
+E_E3         ABAR_B_INT 0 ABAR_B 0 1
+E_E9         3A_INT 0 3A 0 1
+G_ABMI6         1B 0 VALUE { 1u    }
+G_ABMI11         4A 0 VALUE { 1u    }
+E_E12         4B_INT 0 4B 0 1
+E_E7         2A_INT 0 2A 0 1
+G_ABMI9         3A 0 VALUE { 1u    }
+G_ABMI3         ABAR_B 0 VALUE { 1u    }
+E_E10         3B_INT 0 3B 0 1
+E_E5         1A_INT 0 1A 0 1
+G_ABMI7         2A 0 VALUE { 1u    }
+G_ABMI12         4B 0 VALUE { 1u    }
+E_E8         2B_INT 0 2B 0 1
+E_E2         GBAR_INT 0 GBAR 0 1
+G_ABMI5         1A 0 VALUE { 1u    }
+G_ABMI10         3B 0 VALUE { 1u    }
+.ENDS
+ 
+.SUBCKT CONTROL_LOGIC_WD_TPD Abar_B Delay_Abar_B Delay_Gbar Gbar Sel_A Sel_B
++  VCC  
+X_l1 N25355 N25349 SEL_A SEL_B VCC CONTROL_LOGIC  
+C_C1         0 N25349  0.693p  TC=0,0 
+X_U1         N25355 ABAR_B DELAY_ABAR_B VOLTAGE_CONTROLLED_RES
+C_C5         0 N25355  0.693p  TC=0,0 
+X_U2         GBAR N25349 DELAY_GBAR VOLTAGE_CONTROLLED_RES
+.ENDS
+ 
+.SUBCKT CONTROL_LOGIC Abar_B Gbar Sel_A Sel_B VCC  
+X_U5         N02529 ABAR_B SEL_B VCC AND2_SAN PARAMS: VSS=0 DELAY=1p
+X_U4         N02520 N02529 SEL_A VCC AND2_SAN PARAMS: VSS=0 DELAY=1p
+X_U1         ABAR_B N02520 VCC INV_SAN PARAMS: VSS=0 DELAY=1p
+X_U2         GBAR N02529 VCC INV_SAN PARAMS: VSS=0 DELAY=1p
+.ENDS
+ 
+.SUBCKT SWITCH_UNIT_WD_TPD Delay_AorB_Y INA INB OUT_Y Sel_A Sel_B VCC  
+C_C4         0 OUT_Y  40p  TC=0,0 
+X_U2         N30262 OUT_Y VARR_RES VOLTAGE_CONTROLLED_RES
+X_s1 N17755 N17818 N30262 SEL_A SEL_B VCC SWITCH_UNIT  
+X_d1 DELAY_AORB_Y INA N17755 Delay_AorB_to_Y  
+E_TABLE2         VARR_RES 0 TABLE {V(VCC)} 2V         75pV  
++ 2.5V       75.4pV  
++ 3.3V       55pV  
++ 5V          39pV  
++ 5.5V       39pV
+X_d2 DELAY_AORB_Y INB N17818 Delay_AorB_to_Y  
+.ENDS
+ 
+.SUBCKT Delay_AorB_to_Y Delay_A_or_B INPUT INPUT_WD_TPD  
+C_C3         0 INPUT_WD_TPD  0.693p  TC=0,0 
+X_U2         INPUT INPUT_WD_TPD DELAY_A_OR_B VOLTAGE_CONTROLLED_RES
+.ENDS
+ 
+.SUBCKT SWITCH_UNIT INA INB OUTY SELA SELB VCC  
+X_U4         INA SELA N01815 VCC AND2_SAN PARAMS: VSS=0 DELAY=1p
+X_U5         SELB INB N01821 VCC AND2_SAN PARAMS: VSS=0 DELAY=1p
+X_U6         N01815 N01821 OUTY VCC OR2_SAN PARAMS: VSS=0 DELAY=1p
+.ENDS
+ 
+.SUBCKT SUPPLY_vs_TPD Tpd_A_or_B Tpd_Abar_B Tpd_Gbar VCC  
+E_TABLE3         TPD_GBAR 0 TABLE {V(VCC)} 2V           9.6nV  
++ 2.5V           9.6nV  
++ 3.3V           7nV  
++ 5V           5.03nV  
++ 5.5V           5.03nV
+E_TABLE2         TPD_ABAR_B 0 TABLE {V(VCC)} 2V           10.6nV  
++ 2.5V           10.6nV  
++ 3.3V           7.6nV  
++ 5V           5.4nV  
++ 5.5V           5.4nV
+E_TABLE1         TPD_A_OR_B 0 TABLE {V(VCC)} 2V           8.66nV  
++ 2.5V           8.66nV  
++ 3.3V           6.8nV  
++ 5V           4.8nV  
++ 5.5V           4.8V
+.ENDS
+*$
+.SUBCKT AND2_SAN IN1 IN2 OUT VCC PARAMS: VSS=0 DELAY = 1p 
+E_vth VTH 0 VALUE={V(VCC)/2}
+E1 OUT1 0 VALUE={if(V(IN1)>V(VTH)&V(IN2)>V(VTH),V(VCC),{VSS})}
+R1 OUT1 OUT2 {{DELAY}*1E12}
+C1 OUT2 0 1.443p
+E2 OUT 0 VALUE={IF(V(OUT2)>V(VTH),V(VCC),{VSS})}
+.ENDS AND2_SAN
+*$
+.SUBCKT OR2_SAN IN1 IN2 OUT VCC PARAMS: VSS=0 DELAY=1N
+E_vth VTH 0 VALUE={V(VCC)/2}
+E1 OUT1 0 VALUE={if(V(IN1)<V(VTH)&V(IN2)<V(VTH),{VSS},V(VCC))}
+R5 OUT1 OUT {{DELAY}*1E9}
+C5 OUT 0 1.443n
+.ENDS OR2_SAN
+*$
+.SUBCKT INV_SAN IN OUT VCC PARAMS: VSS=0 DELAY=1p
+E_vth VTH 0 VALUE={V(VCC)/2}
+E1 OUT1 0 VALUE={IF(V(IN)>V(VTH),{VSS},V(VCC))}
+R1 OUT1 OUT2 {{DELAY}*1E12}
+C1 OUT2 0 1.443p
+E2 OUT 0 VALUE={IF(V(OUT2)>V(VTH),V(VCC),{VSS})}
+.ENDS INV_SAN
+*$
+.subckt Voltage_Controlled_Res VC+ VC- V_delay
+*              
+*.param Vi = V(Vimon)*1E-3
+*.param Ipos = 4000
+*.param Ineg = -4000
+ERES VC+ int Value = {I(vsense)*(V(V_delay))*1e12}
+Vsense int VC- DC 0
+.ends Voltage_Controlled_Res
+*$
+.subckt Controlled_Res VC+ VC- Res_Val
+*              
+*.param Vi = V(Vimon)*1E-3
+*.param Ipos = 4000
+*.param Ineg = -4000
+ERES VC+ int Value = {I(vsense)*(V(Res_Val))}
+Vsense int VC- DC 0
+.ends Controlled_Res

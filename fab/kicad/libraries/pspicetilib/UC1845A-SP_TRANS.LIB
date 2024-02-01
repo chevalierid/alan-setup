@@ -1,0 +1,307 @@
+*$
+* UC1845A-SP
+*****************************************************************************
+* (C) Copyright 2018 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Texas Instruments Inc.
+* Part: UC1845A-SP
+* Date: 22OCT2018
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: NA
+* EVM Users Guide: NA
+* Datasheet: SLUSC14 –MAY 2015
+* Topologies Supported: Flyback, Buck
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+* 1. The following features have been modeled
+*      a. Switching frequency variation w.r.t. RT_CT pin connection
+*	   b. Current through following pins have not been modeled
+*      	  RT_CT, COMP, OUTPUT, VC, VREF
+*      c. Duty dycle limitation modeled at 48% as pr DS
+* 2. Temperature effects, operating currrent, shutdown current are not modeled. 
+* 3. Current through following pins have not been modeled
+*      a. VCC, VFB, ISENSE
+*****************************************************************************
+.SUBCKT UC1845A-SP_TRANS COMP ISENSE VFB GROUND OUTPUT PWR_GND VREF RT_CT VC VCC
++ NC_0 NC_1 NC_2 NC_3 NC_4 NC_5 NC_6 NC_7 NC_8 NC_9  
+D_U1_D64         COMP U1_N16714588 D_D1 
+E_U1_E1         U1_N00165 GROUND REF_EA VFB 31622.77
+V_U1_V2         U1_N16714588 GROUND 10
+R_U1_R1         U1_N00165 COMP  10k TC=0,0 
+C_U1_C1         COMP GROUND  53.07n  TC=0,0 
+D_U1_D65         GROUND COMP D_D1 
+R_U2_R3         U2_N16728372 U2_RC_CHG  10 TC=0,0 
+V_U2_V2         U2_N00256 0 2.16
+D_U2_D64         U2_N16728372 U2_RC_CHG D_D1 
+X_U2_U5         U2_N16788177 U2_N16790049 CLK_O COMP_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=0.5
+X_U2_U8         U2_N16798906 MAX_DUTY one_shot PARAMS:  T=20
+V_U2_V3         U2_N16790049 0 2.5
+C_U2_C1         U2_RC_CHG GROUND  1.443n  TC=0,0 
+E_U2_ABM1         U2_N16798906 0 VALUE { IF(V(U2_N16788177)>1.1,1,0)    }
+R_U2_R2         RT_CT U2_N16715325  35 TC=0,0 
+X_U2_U3         CLK_O CLK_O_OUT one_shot PARAMS:  T=20
+R_U2_R4         U2_N16792377 CLK_O  5 TC=0,0 
+X_U2_U6         U2_N16792377 U2_N16791836 one_shot PARAMS:  T=50
+X_U2_S1    U2_CLK_ON_LTCH GROUND U2_N16715325 GROUND OSCILLATOR_U2_S1 
+X_U2_U2         U2_N00308 CLK one_shot PARAMS:  T=30
+G_U2_ABMII1         GROUND U2_N16788177 VALUE { IF(V(CLK)>0.5,0.5,0)    }
+C_U2_C2         U2_N16788177 GROUND  10n  TC=0,0 
+X_U2_U7         CLK U2_RC_CHG U2_CLK_ON_LTCH N16716082 srlatchrhp_basic_gen
++  PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+X_U2_U1         RT_CT U2_N00256 U2_N00308 COMP_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+C_U2_C3         U2_N16792377 GROUND  1.443n  TC=0,0 
+X_U2_S2    U2_N16791836 GROUND U2_N16788177 GROUND OSCILLATOR_U2_S2 
+V_U2_V4         U2_N16727532 0 30m
+X_U2_U4         U2_N16727532 RT_CT U2_N16728372 COMP_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=0.5
+E_U3_ABM1         VREF 0 VALUE { IF (V(VCC_OK)>0.5,5,0)    }
+X_U3_U1         VCC U3_N00322 U3_N00432 VCC_OK COMPHYS_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=0.5
+E_U3_E1         REF_EA GROUND VREF GROUND 0.5
+V_U3_V2         U3_N00322 GROUND 8.5
+V_U3_V3         U3_N00432 GROUND 0.6
+D_U4_D64         U4_N00048 U4_N16712666 D_D1 
+X_U4_U4         U4_N16713373 U4_N16787933 U4_PWM N16785294 srlatchrhp_basic_gen
++  PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+X_U4_U3         U4_PWM U4_N16723990 INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+X_U4_S1    U4_PWM GROUND VC OUTPUT PWM_U4_S1 
+R_U4_R1         U4_N00052 U4_N00048  23.6k TC=0,0 
+X_U4_S2    U4_N16723990 GROUND OUTPUT PWR_GND PWM_U4_S2 
+X_U4_U6         U4_N00188 MAX_DUTY U4_N16787933 OR2_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=500E-3
+R_U4_R2         U4_N00048 GROUND  11.8k TC=0,0 
+V_U4_V2         U4_N16712666 GROUND 1
+E_U4_ABM3         U4_N16713373 0 VALUE { IF (V(VCC_OK)>0.5,V(CLK_O_OUT),0)    }
+V_U4_V3         COMP U4_N00052 1.11
+X_U4_U5         ISENSE U4_N00048 U4_N00188 COMP_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5 
+.ENDS UC1845A-SP_TRANS
+*$
+.subckt OSCILLATOR_U2_S1 1 2 3 4  
+S_U2_S1         3 4 1 2 _U2_S1
+RS_U2_S1         1 2 1G
+.MODEL         _U2_S1 VSWITCH Roff=1e9 Ron=1m Voff=0.2 Von=0.8
+.ends OSCILLATOR_U2_S1
+*$
+.subckt OSCILLATOR_U2_S2 1 2 3 4  
+S_U2_S2         3 4 1 2 _U2_S2
+RS_U2_S2         1 2 1G
+.MODEL         _U2_S2 VSWITCH Roff=1e9 Ron=1m Voff=0.2 Von=0.8
+.ends OSCILLATOR_U2_S2
+*$
+.subckt PWM_U4_S1 1 2 3 4  
+S_U4_S1         3 4 1 2 _U4_S1
+RS_U4_S1         1 2 1G
+.MODEL         _U4_S1 VSWITCH Roff=1e9 Ron=10m Voff=0.2 Von=0.8
+.ends PWM_U4_S1
+*$
+.subckt PWM_U4_S2 1 2 3 4  
+S_U4_S2         3 4 1 2 _U4_S2
+RS_U4_S2         1 2 1G
+.MODEL         _U4_S2 VSWITCH Roff=1e9 Ron=10m Voff=0.2 Von=0.8
+.ends PWM_U4_S2
+*$
+.model D_D1 d
++ is=1e-015
++ tt=1e-011
++ rs=0.005
++ n=0.001
+*$
+.subckt one_shot in out params:  t=100
+s_s1         meas 0 reset2 0 s1
+e_abm1         ch 0 value { if( v(in)>0.5 | v(out)>0.5,1,0)    }
+r_r2         reset2 reset  0.1  
+e_abm3         out 0 value { if( v(meas)<0.5 & v(ch)>0.5,1,0)    }
+r_r1         meas ch  {t} 
+c_c2         0 reset2  1.4427n  
+c_c1         0 meas  1.4427n  
+e_abm2         reset 0 value { if(v(ch)<0.5,1,0)    }
+.model s1 vswitch
++ roff=1e+009
++ ron=1
++ voff=0.25
++ von=0.75
+.ends one_shot
+*$
+.subckt srlatchrhp_basic_gen s r q qb params: vdd=1 vss=0 vthresh=0.5 
+gq 0 qint value = {if(v(r) > {vthresh},-5,if(v(s)>{vthresh},5, 0))}
+cqint qint 0 1n
+rqint qint 0 5000meg
+d_d10 qint my5 d_d1
+v1 my5 0 {vdd}
+d_d11 myvss qint d_d1
+v2 myvss 0 {vss} 
+eq qqq 0 qint 0 1
+x3 qqq qqqd1 buf_basic_gen params: vdd={vdd} vss={vss} vthresh={vthresh}
+rqq qqqd1 q 1
+eqb qbr 0 value = {if( v(q) > {vthresh}, {vss},{vdd})}
+rqb qbr qb 1 
+cdummy1 q 0 1n 
+cdummy2 qb 0 1n
+.ic v(qint) {vss}
+.model d_d1 d
++ is=1e-015
++ tt=1e-011
++ rs=0.05
++ n=0.01
+.ends srlatchrhp_basic_gen
+*$
+.SUBCKT TRANSFORMER 1 2 3 4 56 78  
+L_L4         56 78  1.89u  
+Kn_K1         L_L2 L_L3 
++ L_L4    1
+L_L2         2 3  21.0u  
+L_L3         1 4  10.3u  
+.ENDS TRANSFORMER
+*$
+.model D_Dideal D
++ is=1e-015
++ tt=1e-011
++ rs=0.005
++ n=0.001
+*$
+.model D_SMBJ5366B_TP D
++ is=1e-015
++ tt=1e-011
++ rs=0.05
++ n=0.01
++ BV=39
+*$
+.model D_SS26FL D
++ is=1e-015
++ tt=1e-011
++ rs=0.05
++ n=0.01
++ BV=60
+*$
+.MODEL My_BJT NPN
++ IS=4.9215E-15
++ BF=610.50
++ VAF=100
++ IKF=46.300E-3
++ ISE=93.804E-15
++ NE=1.3935
++ BR=.17513
++ VAR=100
++ IKR=3.5229
++ ISC=1.7196E-12
++ NC=1.9673
++ NK=.65641
++ RB=5.9788
++ CJE=2.0000E-12
++ CJC=2.0000E-12
++ TF=649.43E-6
++ XTF=19.088
++ VTF=7.6518
++ ITF=14.425
++ TR=10.000E-9
+*$
+.MODEL DI_MMBT4403  PNP (IS=26.9f NF=1.00 BF=274 VAF=114 
++ IKF=0.304 ISE=23.2p NE=2.00 BR=4.00 NR=1.00 
++ VAR=20.0 IKR=0.750 RE=0.263 RB=1.05 RC=0.105 
++ XTB=1.5 CJE=36.2p VJE=1.10 MJE=0.500 CJC=24.6p VJC=0.300 
++ MJC=0.300 TF=500p TR=82.4n EG=1.12 )
+*$
+.SUBCKT SUM80090E D G S 
+M1 3 GX S S NMOS W= 9973548u L= 0.30u 
+M2 S GX S D PMOS W= 9973548u L= 0.29u 
+R1 D 3 6.683e-03 TC=6.8051e-03,2.245e-05
+CGS GX S 2.300e-09 
+CGD GX D 1.000e-13 
+RG G GY 1m 
+RTCV 100 S 1e6 TC=5.047e-04,-3.696e-06
+ETCV GX GY 100 200 1 
+ITCV S 100 1u 
+VTCV 200 S 1 
+DBD S D DBD 9973548u 
+.MODEL NMOS NMOS ( LEVEL = 3 TOX = 7e-8 
++ RS = 0 KP = 5.203e-06 NSUB = 2.110e+17 
++ KAPPA = 4.019e-02 NFS = 6.320e+11 
++ LD = 0 IS = 0 TPG = 1    )
+.MODEL PMOS PMOS ( LEVEL = 3 TOX = 7e-8 
++NSUB = 2.279e+15 IS = 0 TPG = -1    )
+.MODEL DBD D ( 
++FC = 0.1 TT = 1.267e-07 T_measured = 25 BV = 151
++RS = 2.166e-02 N = 1.103e+00 IS = 2.297e-12 
++EG = 1.062e+00 XTI = 3.117e+00 TRS1 = 1.671e-03
++CJO = 8.272e-10 VJ = 5.213e+00 M = 1.000e+00 ) 
+.ENDS SUM80090E
+*$
+.SUBCKT CESR IN OUT
++ PARAMS:  C=100u ESR=0.01 X=1 IC=0
+C	IN 1  {C*X} IC={IC}
+RESR	1 OUT {ESR/X}
+.ENDS CESR
+*$
+.SUBCKT LDCR IN OUT
++ PARAMS:  L=1u DCR=0.01 IC=0
+L	IN 1  {L} IC={IC}
+RDCR	1 OUT {DCR}
+.ENDS LDCR
+*$
+.SUBCKT COMPHYS_BASIC_GEN INP INM HYS OUT PARAMS: VDD=1 VSS=0 VTHRESH=0.5	
+EIN INP1 INM1 INP INM 1 
+EHYS INP1 INP2 VALUE { IF( V(1) > {VTHRESH},-V(HYS),0) }
+EOUT OUT 0 VALUE { IF( V(INP2)>V(INM1), {VDD} ,{VSS}) }
+R1 OUT 1 1
+C1 1 0 5n
+RINP1 INP1 0 1K
+.ENDS COMPHYS_BASIC_GEN
+*$
+.SUBCKT COMP_BASIC_GEN INP INM Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5	
+E_ABM Yint 0 VALUE {IF (V(INP) > 
++ V(INM), {VDD},{VSS})}
+R1 Yint Y 1
+C1 Y 0 1n
+.ENDS COMP_BASIC_GEN
+*$
+.SUBCKT INV_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS INV_BASIC_GEN
+*$
+.SUBCKT BUF_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS BUF_BASIC_GEN
+*$
+.SUBCKT OR2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  |  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS OR2_BASIC_GEN
+*$

@@ -1,0 +1,279 @@
+*$
+* LMR70503
+*****************************************************************************
+* (C) Copyright 2013 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: LMR70503
+* Date: 20JUNE2013
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: AN-2264 LMR70503
+* EVM Users Guide: SNVU155A – Revised April 2013
+* Datasheet: SNVS850A – REVISED APRIL 2013
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+.SUBCKT LMR70503_TRANS VIN EN GND VREF FB VOUT SW
+X_A6_minon S1tt S1tin ONE_SHOT Params: t=70 
+ES1t S1t 0 value={if((V(S1tin))>0.5,5,0)}
+X13  S1 36  S1tt AND2_BASIC_GEN	 
+C1 FB GND 1p IC=0
+X17  S2 45  S2tt AND2_BASIC_GEN 
+X18 R1t 45 INV_DELAY_BASIC_GEN 
+X_A6_minon19x S2tt S2tin ONE_SHOT Params: t=70 
+ES2t S2t 0 value={if(V(S2tin)>0.5,5,0)}
+X15 24 GND FBHYS COMPHYS_BASIC_GEN PARAMS:VDD=1 VTHRESH=100u 
++hyst=0.0001 VSS=-1
+E3 24 0 FB GND 1
+E_BDriver 9 GND value = { IF((V(PWMen)>1.5) ,0 ,V(VIN))}
+M1 SW 8 PS PS POWERMOS L=1u W=16670u 
+.MODEL POWERMOS PMOS AF=1 KP=20u IS=1E-14 CJ=0 RD=0 RS=0 VTO=0
+Rgate 9 8 3
+Rsense PS VIN 50m
+X5 41 57 UTD  PARAMS:  K=1 TD=150u 
+X7 52 32 49 R1tt AND3_BASIC_GEN
+X1 S2tt S1tt 12 10 NOR3_BASIC_GEN
+X2 10 R1tt R2 R3 12 NOR4_BASIC_GEN
+V2_Vref VREF GND DC=1.19
+E_B4_FBcomp S1 0 value ={IF((V(FBHYS)>0)&(V(SDbar) >1.5 ),3.3 ,0)}
+E_B5_ilimit ilimit 0 value = { IF((V(FB,GND) >0 ),320e-3 , 
++IF(( V(FB, GND) > -7.75e-3),320e-3 + V(FB,GND)*41.2 , 0.7e-3))}
+E2_cs 35 0 VIN PS 20
+E1 Qt 0 12 0 1
+E_B2 Qt1 0 value = { IF((V(Qt)>1.5) ,1 ,0)}
+E_B3 PWM 0 value = { IF((V(Qdelayt) > 0.5 ), 5  ,  0)}
+E_B6_ilimitcomp R1 0 value = { IF( V(isense) > V(ilimit), 5 , 0)}
+V3 R2 0 DC=0
+X_A3 50 28in ONE_SHOT Params: t=100 
+E28 28 0 value={if(V(28in)>0.5,5,0)}
+I1 0 vramp DC=100u
+C3 vramp 0 100p IC=0
+E_B7 30 0 value = { IF((V(vramp)>1.9 ) ,5 ,0)}
+X_A4 30 S2in ONE_SHOT Params: t=100 
+ES2 S2 0 value={if(V(S2in)>0.5,5,0)}
+S1 vramp 0 28 0 _S1_mod  
+.MODEL _S1_mod vswitch VT=0.5 VH=0.1 RON=100 ROFF=10Meg
+V4 R3 0 DC=0
+X20 S2t 49 INV_DELAY_BASIC_GEN 
+C5 12 0 10p IC=3.3
+C4 10 0 10p IC=0
+X4 Qt1 Qdelayt UTD  PARAMS:  K=1 TD=140n 
+X21 Qt SDbar 50 AND2_BASIC_GEN 
+R2 35 isense 1k
+D2 0 vramp _DLIMIT 
+.MODEL _DLIMIT D
+D3 vramp 16 _DLIMIT 
+X_A5_minoff R1in Tminoff R1tin Ctrl_one_shot
+ER1 R1in 0 VALUE= {if(V(R1) >2.5,1,0)}
+ER1t R1t 0 value={if((V(R1tin))>0.5,5,0)}
+V7 16 0 DC=2.5
+S2 GND VOUT SDbar 0 _S2_mod  
+.MODEL _S2_mod vswitch VT=1.5 VH=0.2 RON=100k ROFF=30
+X8 S1t 32 INV_DELAY_BASIC_GEN 
+X9 EN GND 41 COMPHYS_BASIC_GEN PARAMS:VDD=5 VTHRESH=0.93 
++hyst=0.16 VSS=0
+X10 VIN GND 39 COMPHYS_BASIC_GEN PARAMS:VDD=5 VTHRESH=2.55 
++hyst=0.1 VSS=0
+X11 46 39  SDbar AND2_BASIC_GEN 
+X12 SDbar PWM PWMen AND2_BASIC_GEN 
+X16 57 41 46 AND2_BASIC_GEN 
+C6 PWMen 0 10p
+X14 R1t 36 INV_DELAY_BASIC_GEN 
+C7 SDbar 0 10p IC=0
+C8 isense 0 10p IC=0
+E_E37 Toffvout 0 TABLE { V(VOUT) }
++((-5,250) (-3.3,330) (-2.5,400)(-1.5,540) (-0.9,720)
++ (-0.45,1000) (0,1200))
+E_B10 Tminoff 0 value = {V(Toffvout) +  (V(VIN) - 2.8)*60}
+X24 R1 55 52 OR2_BASIC_GEN
+E_E17 VGSDummy 0 TABLE { V(VIN) } 
++ ( (0,2.5) (2.5,2.5) (2.8,2.8) (5.5,3.6) (6,3.6) )
+E_E27 VDSDummy 0 TABLE { V(FB) } 
++( (-1,4) (-40e-3,4) (-30e-3,3.2)  (-20e-3,2) (-12e-3,0.65) 
++(-5e-3,0) (0,0))
+M2 58 VGSDummy 0 0 _DUMMYLOAD L=1u W=50u 
+.MODEL _DUMMYLOAD NMOS (  VTO=0 KP=2E-5 GAMMA=0 PHI=600M LAMBDA=0 
++      RD=0 RS=0 RG=0 RB=0 RDS=0 
++      CBD=0 CBS=0 IS=1E-14 N=1 PB=800M 
++      CGSO=0 CGDO=0 CGBO=0 RSH=0 CJ=0 
++      MJ=500M CJSW=0 MJSW=500M JS=0 TOX=1e-7 
++      LD=0 UO=600 FC=500M TPG=1 
++      NSS=0 TNOM=27 KF=0 AF=1 L=1U 
++      W=50U )
+E_B8 55 0 value = { IF(V(ilimit) < 1e-3, 5 , 0)}
+G1 GND VOUT 58 VDSDummy -1
+R1 VDSDummy 58 1
+.ends LMR70503_TRANS
+*$
+.SUBCKT UTD 1 2  PARAMS: K=1 TD=1
+RIN 1 0 1E15
+E1 3 0 1 0 {K}
+T1 3 0 2 0 Z0=1 TD={TD}
+R1 2 0 1
+.ENDS UTD
+*$
+.SUBCKT AND2_BASIC_GEN A B Y PARAMS: VDD=5 VSS=0.3 VTHRESH=1.5 
+E_ABMGATE    YINT 0 VALUE ={IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH},{VDD},{VSS})}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS AND2_BASIC_GEN
+*$
+.SUBCKT INV_DELAY_BASIC_GEN A  Y PARAMS: VDD=5 VSS=0.3 VTHRESH=1.5 
++DELAY = 1n 
+E_ABMGATE1    YINT1 0 VALUE ={IF(V(A) > {VTHRESH} , 
++ {VSS},{VDD})}
+RINT2 YINT1 Y 1
+CINT2 Y 0 1n
+.ENDS INV_DELAY_BASIC_GEN
+*$
+.SUBCKT OR2_BASIC_GEN A B Y PARAMS: VDD=5 VSS=0.3 VTHRESH=1.5 
+E_ABMGATE    YINT 0 VALUE ={IF(V(A) > {VTHRESH}  |  
++ V(B) > {VTHRESH},{VDD},{VSS})}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS OR2_BASIC_GEN
+*$
+.SUBCKT AND3_BASIC_GEN A B C Y PARAMS: VDD=5 VSS=0.3 VTHRESH=1.5 
+E_ABMGATE    YINT 0 VALUE ={IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH} &
++ V(C) > {VTHRESH},{VDD},{VSS})}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS AND3_BASIC_GEN
+*$
+.SUBCKT NOR3_BASIC_GEN A B C Y PARAMS: VDD=5 VSS=0.3 VTHRESH=1.5 
+E_ABMGATE    YINT 0 VALUE ={IF(V(A) > {VTHRESH}  |  
++ V(B) > {VTHRESH} |
++ V(C) > {VTHRESH},{VSS},{VDD})}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS NOR3_BASIC_GEN
+*$
+.SUBCKT NOR4_BASIC_GEN A B C D Y PARAMS: VDD=5 VSS=0.3 VTHRESH=1.5 
+E_ABMGATE    YINT 0 VALUE ={IF(V(A) > {VTHRESH}  |  
++ V(B) > {VTHRESH} |
++ V(C) > {VTHRESH} |
++ V(D) > {VTHRESH},{VSS},{VDD})}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS NOR4_BASIC_GEN
+*$
+.SUBCKT COMPHYS_BASIC_GEN INP INM OUT PARAMS: VDD=1 VSS=-1 
++VTHRESH=100u HYST=100u
+EIN INP1 INM1 INP INM 1 
+EHYS INP1 INP2 VALUE ={ IF( V(1) > 0.1,{VTHRESH-HYST},{VTHRESH})}
+EOUT OUT 0 VALUE ={ IF( V(INP2)>V(INM1), {VDD} ,{VSS}) }
+R1 OUT 1 1
+C1 1 0 5n
+RINP1 INP1 0 1K
+.ENDS COMPHYS_BASIC_GEN
+*$
+.subckt one_shot in out params:  t=100
+s_s1    meas 0 reset2 0 s1
+e_abm1  ch 0 value={ if( v(in)>0.5 | v(out)>0.5,1,0)}
+r_r2    reset2 reset  0.1  
+e_abm3  out 0 value={ if( v(meas)<0.5 & v(ch)>0.5,1,0)}
+r_r1    meas ch  {t} 
+c_c2    0 reset2  1.4427n  
+c_c1    0 meas  1.4427n  
+e_abm2  reset 0 value={ if(v(ch)<0.5,1,0)}
+.model s1 vswitch roff=1e+009 ron=1 voff=0.25 von=0.75
+.ends one_shot
+*$
+.SUBCKT Ctrl_one_shot IN Ctrl_input  OUT  
+X_U586  IN VIN_ONE ONE_SHOT PARAMS:  t=200
+X_U584  VIN_ONE RESET OUT RESET_OUT SRLATCHRHP_BASIC_GEN 
++PARAMS: VDD=5 VSS=0 VTHRESH=0.5
+E_ABM21 RESET 0 VALUE = { if(V(T_RAMP)>V(CTRL_INPUT_N) ,5,0)}
+X_S1   RESET_OUT 0 T_RAMP 0 Ctrl_one_shot_S1 
+R_R5   0 OUT  1G TC=0,0 
+E_ABM23 CTRL_INPUT_N 0 VALUE ={(V(CTRL_INPUT1)*1E06)}
+C_C2   0 T_RAMP  1n  TC=0,0 
+I_I1   0 T_RAMP DC 1m     
+E_A22 Ctrl_input1 0 TABLE { V(Ctrl_input)} = ((-100,250n) (0,250n) 
++(250,250n) (330,330n) (400,400n) (540,540n) (720,720n) (850,850n) 
++(1000,1000n ) (1500,1500n) (2000,1500n) )
+.ENDS Ctrl_one_shot
+*$
+.SUBCKT SRLATCHRHP_BASIC_GEN S R Q QB PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+GQ 0 Qint VALUE = {IF(V(R) > {VTHRESH},-5,IF(V(S)>{VTHRESH},5, 0))}
+CQint Qint 0 1n
+RQint Qint 0 1000MEG
+D_D10 Qint MY5 D_D1
+V1 MY5 0 {VDD}
+D_D11 MYVSS Qint D_D1
+V2 MYVSS 0 {VSS} 
+EQ Qqq 0 Qint 0 1
+X3 Qqq Qqqd1 BUF_BASIC_GEN PARAMS:VDD={VDD} VSS={VSS} VTHRESH={VTHRESH}
+RQq Qqqd1 Q 1
+EQb Qbr 0 VALUE = {IF( V(Q) > {VTHRESH}, {VSS},{VDD})}
+RQb Qbr QB 1 
+Cdummy1 Q 0 1n 
+Cdummy2 QB 0 1n
+.IC V(Qint) {VSS}
+.ENDS SRLATCHRHP_BASIC_GEN
+*$
+.SUBCKT BUF_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS BUF_BASIC_GEN
+*$
+.MODEL D_D1 D( IS=1e-15 Rs=0.005 N=.1  )
+*$
+.subckt Ctrl_one_shot_S1 1 2 3 4  
+S_S1   3 4 1 2 _S1
+RS_S1  1 2 1G
+.MODEL _S1 VSWITCH Roff=1e9 Ron=1.0m Voff=0.5V Von=1.5V
+.ends Ctrl_one_shot_S1
+*$
+.SUBCKT CESR IN OUT
++ PARAMs:  C=100u ESR=0.01 IC=0
+C	IN 1  {C} IC={IC}
+RESR	1 OUT {ESR}
+.ENDS CESR
+*$
+.SUBCKT LDCR IN OUT
++ PARAMs:  L=1u DCR=0.01 IC=0
+L	IN 1  {L} IC={IC}
+RDCR	1 OUT {DCR}
+.ENDS LDCR
+*$
+.MODEL D1N6650 D BV=22 CJO=3.874e-11 EG=0.69 IS=1.028e-5
++ M=.4641 N=0.9172 RS=0.3489 VJ=0.3188 XTI=2
+*$
+.END
+*$
+
+
+
+
+
+
+
+

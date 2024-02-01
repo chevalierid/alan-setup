@@ -1,0 +1,107 @@
+*$
+* TPS65263-1
+*****************************************************************************
+* (C) Copyright 2014 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: TPS65263-1
+* Date: 10FEB2014
+* Model Type: AVERAGE
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: 
+* EVM Users Guide: 
+* Datasheet: 
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+* 
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+.SUBCKT TPS65263-1_AVG COMP1 COMP2 COMP3 FB1 FB2 FB3 GND LX1 LX2 LX3 PVIN1 PVIN2
++  PVIN3 PARAMS: FS=500k L1=4.7U L2=4.7U L3=4.7U 
+G_G2         GND COMP1 N14423628 FB1 300u
+G_G4         GND COMP3 N14427258 FB3 300u
+X_U3         PVIN2 LX2 GND COMP2 N14424032 CCM PARAMS:  L={L2} FS={FS} RI=
++ {1/7.4} SE=0 ACS=1
+R_R19         GND COMP1  13.3Meg TC=0,0 
+R_R20         GND COMP2  13.3Meg TC=0,0 
+X_U5         PVIN1 LX1 GND COMP1 N14423734 CCM PARAMS:  L={L1} FS={FS} RI=
++ {1/7.4} SE=0 ACS=1
+R_R22         GND 0  1m TC=0,0 
+G_G3         GND COMP2 N14423884 FB2 300u
+V_V30         N14427258 GND 0.6
+V_V28         N14423628 GND 0.6
+V_V29         N14423884 GND 0.6
+X_U4         PVIN3 LX3 GND COMP3 N14427320 CCM PARAMS:  L={L2} FS={FS} RI=
++ {1/7.4} SE=0 ACS=1
+R_R21         GND COMP3  13.3Meg TC=0,0 
+.ENDS TPS65263-1_AVG
+*$
+.SUBCKT CCM a c p vc dc params: L=4.7u Fs=500k Ri={1/7.4} Acs=1 SE=0
+Esa Sa 0 value={V(SL)*{Fs}*{Ri}}
+Eslope SL 0 value={if(V(dc)> 0.1,1.6,0)}
+Edc dcx 0 value = { v(cx,p)/(v(a,p)+1u) }
+Xdc dcx dc limit params: clampH=0.99 clampL=48m
+Ed2 d2X 0 value = {(1 - V(dc))} 
+Xd2 d2X dc d2 limit2
+GIap a p value =  {V(dc)*I(VM)}
+GIpc p cx value = { V(vc)/({Acs}*{Ri}) }
+GImju cx p value = {V(Sa)*V(dc)/({Acs}*{Ri}*{Fs})+(v(cx,p))/({L}*{Fs})*((1-(V(dc))/2)) }
+Emode mode 0 Value = { IF ((2*{L}*{Fs}*I(VM)/(V(dc)*V(a,cx)+1u))
++ < 1, {4/({L}*(6.28*{Fs})^2)}, {4/({L}*(6.28*{Fs})^2)}) } ;
+VM cx c
+.ENDS
+*$
+.subckt limit d dc params: clampH=0.99 clampL=48m
+Gd 0 dcx VALUE = { V(d)*100u }
+Rdc dcx 0 10k
+V1 clpn 0 {clampL}
+V2 clpp 0 {clampH}
+D1 clpn dcx dclamp
+D2 dcx clpp dclamp
+Edc dc 0 value={ V(dcx) }
+.model dclamp d n=0.01 rs=100m
+.ENDS
+*$
+.subckt limit2 d2nc d d2c
+Gd 0 d2cx d2nc 0 100u
+Rdc d2cx 0 10k
+V1 clpn 0 7m
+E2 clpp 0 Value = { 1-V(d) }
+D1 clpn d2cx dclamp
+D2 d2cx clpp dclamp
+Edc d2c 0 value={ V(d2cx) }
+.model dclamp d n=0.01 rs=100m
+.ENDS
+*$
+.SUBCKT LDCR IN OUT
++ PARAMs:  L=1u DCR=0.01 
+L             IN 1  {L} 
+RDCR	1 OUT {DCR}
+.ENDS LDCR
+*$
+.SUBCKT CESR IN OUT
++ PARAMs:  C=100u ESR=0.01
+C	IN 1  {C} 
+RESR	1 OUT {ESR}
+.ENDS CESR
+*$

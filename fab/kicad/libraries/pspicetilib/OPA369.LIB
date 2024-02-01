@@ -1,0 +1,237 @@
+* OPA369
+*****************************************************************************
+* (C) Copyright 2011 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: OPA369
+* Date: 13JUN2011
+* Model Type: ALL IN ONE
+* Simulator: PSPICE
+* Simulator Version: 16.0.0.P001
+* EVM Order Number: N/A
+* EVM Users Guide: N/A
+* Datasheet: SBOS414B–AUGUST 2007–REVISED DECEMBER 2008
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 : 
+* Release to Web
+*
+*****************************************************************************
+
+** This Model is also applicable to OPA2369
+*
+*
+*     This macromodel has been optimized to model the AC, DC, noise, and transient response performance within 
+*     the device data sheet specified limits. Correct operation of this macromodel has been verified on
+*     MicroSim P-Spice ver. 8.0, DesignSoft TINA, and on PENZAR Development TopSPICE ver. 6.82d. For help
+*     with other analog simulation software, please consult your software supplier. 
+*
+*  
+* BEGIN MODEL OPA369
+* MODEL FEATURES INCLUDE OUTPUT SWING, OUTPUT
+* CURRENT THROUGH THE SUPPLY RAILS, RAIL-TO-RAIL
+* OUTPUT STAGE, OUTPUT CURRENT LIMIT, OPEN LOOP
+* GAIN AND PHASE WITH RL AND CL EFFECTS, SLEW
+* RATE, OVERLOAD RECOVERY TIME, COMMON MODE
+* REJECTION WITH FREQUENCY EFFECTS, OUTPUT
+* IMPEDANCE, POWER SUPPLY REJECTION WITH
+* FREQUENCY EFFECTS, INPUT VOLTAGE NOISE WITH
+* 1/F, INPUT CURRENT NOISE, INPUT BIAS CURRENT
+* WITH TEMPERATURE EFFECTS, INPUT IMPEDANCE,
+* INPUT COMMON MODE RANGE, INPUT OFFSET VOLTAGE
+* WITH TEMPERATURE EFFECTS, AND QUIESCENT
+* CURRENT VS TEMPERATURE.
+* NOTE - BECAUSE INPUT BIAS CURRENT IS VERY LOW,
+* FOR ACCURATE INPUT BIAS CURRENT SET THE SPICE
+* ANALYSIS OPTION GMIN FROM THE DEFAULT OF 1E-12
+* TO AROUND 3E-13 TO 5E-14, WITH THE SMALLEST
+* NUMBER AT WHICH YOUR SIMULATOR WILL CONVERGE
+* BEING BEST
+* PINOUT ORDER +IN -IN +V -V OUT
+* PINOUT ORDER  1   3   5  2  4
+.SUBCKT OPA369 1 3 5 2 4
+Q20 6 7 8 QNL
+R3 9 10 2
+R4 11 10 2
+R10 7 12 100
+R11 13 14 100
+R12 14 5 20
+R13 2 12 20
+R17 15 16 20
+R18 8 17 20
+D5 4 5 DD
+D6 2 4 DD
+D7 18 0 DIN
+D8 19 0 DIN
+I8 0 18 0.1E-3
+I9 0 19 0.1E-3
+E2 8 0 2 0 1
+E3 16 0 5 0 1
+D9 20 0 DVN
+D10 21 0 DVN
+I10 0 20 0.2E-6
+I11 0 21 0.2E-6
+E4 22 3 20 21 0.45
+G2 23 3 18 19 4.75E-7
+E5 24 0 16 0 1
+E6 25 0 8 0 1
+E7 26 0 27 0 1
+R30 24 28 1E6
+R31 25 29 1E6
+R32 26 30 1E6
+R33 0 28 100
+R34 0 29 100
+R35 0 30 100
+E10 31 1 30 0 -0.015
+R36 32 27 1E3
+R37 27 33 1E3
+C6 24 28 0.2P
+C7 25 29 0.2P
+C8 26 30 2P
+E11 34 31 29 0 -0.07
+E12 35 34 28 0 0.07
+E14 36 8 16 8 0.5
+D11 37 16 DD
+D12 8 37 DD
+M1 38 39 12 12 NTX L=3U W=150U
+M2 40 41 14 14 PTX L=3U W=150U
+M3 42 42 15 15 PTX L=3U W=150U
+M4 43 44 9 9 HVP L=3U W=3U
+M5 45 46 11 11 HVP L=3U W=3U
+M8 47 47 17 17 NTX L=3U W=150U
+R43 48 41 100
+R44 49 39 100
+G3 37 36 50 36 2E-6
+R45 36 37 3E11
+R46 8 43 2E5
+R47 8 45 2E5
+C13 43 45 0.2E-12
+C14 23 0 6E-12
+C15 22 0 6E-12
+C16 4 0 3E-12
+D13 39 6 DD
+D14 51 41 DD
+Q15 51 13 16 QPL
+V18 23 52 903E-6
+M19 53 54 16 16 PIN L=6U W=500U
+I14 42 47 1.6E-7
+E17 33 0 23 0 1
+E18 32 0 3 0 1
+M23 54 54 16 16 PIN L=6U W=500U
+V21 53 10 -0.8
+R59 4 40 5
+R60 38 4 5
+J1 16 23 16 JC
+J2 16 22 16 JC
+J3 22 55 22 JC
+J4 23 55 23 JC
+C21 23 22 0.1E-12
+E20 56 36 45 43 1
+R62 56 50 1E4
+C23 50 36 1E-12
+G7 57 36 58 36 -1E-3
+G8 36 59 58 36 1E-3
+G9 36 60 47 8 1E-3
+G10 61 36 16 42 1E-3
+D17 61 57 DD
+D18 59 60 DD
+R66 57 61 1E11
+R67 60 59 1E11
+R68 61 16 1E3
+R69 8 60 1E3
+E23 16 48 16 61 1
+E24 49 8 60 8 1
+R70 59 36 1E11
+R71 60 36 1E11
+R72 36 61 1E11
+R73 36 57 1E11
+C27 41 40 70E-15
+C28 38 39 70E-15
+R74 2 5 1E9
+G12 5 2 62 0 -4.27E-6
+I20 0 63 1E-3
+D20 63 0 DD
+V24 63 62 0.71
+R75 0 62 1E6
+I21 5 2 450E-9
+E25 64 0 4 0 1
+G13 58 36 37 36 -2E-6
+R77 36 58 1E9
+C29 37 65 24E-12
+C30 58 66 65E-12
+R78 66 64 5E3
+R79 65 64 1E6
+R80 37 64 2E12
+R81 58 64 2E12
+D21 58 16 DD
+D22 8 58 DD
+V52 67 0 1
+I63 0 68 1E-3
+D23 68 0 DD
+R107 0 68 10E6
+V81 68 69 1.798
+R108 0 69 20E6
+E52 70 0 69 0 -0.875
+R109 0 70 10E6
+R110 71 70 10E6
+M22 71 72 0 0 NEN L=2U W=1000U
+V41 73 0 1
+R111 73 72 1E6
+M24 72 67 0 0 NEN L=2U W=100U
+R112 0 69 20E6
+G14 54 8 71 0 0.3E-6
+D24 74 75 DL
+V42 75 0 30
+R113 0 74 1E8
+G51 3 0 74 0 1E-10
+I64 3 0 0.1E-12
+G52 23 0 74 0 1E-10
+I65 23 0 0.1E-12
+R314 46 22 2E5
+R315 52 44 2E5
+V43 55 8 0.43
+E54 23 35 71 0 1.125E-3
+R117 1 31 1E9
+R119 34 35 1E9
+R118 31 34 1E9
+R120 35 23 1E9
+R121 3 22 1E9
+.MODEL DD D
+.MODEL QNL NPN
+.MODEL QPL PNP
+.MODEL JC NJF IS=1E-18
+.MODEL DVN D KF=1.05E-16 IS=1E-16
+.MODEL DIN D
+.MODEL PIN PMOS KP=200U VTO=-0.7
+.MODEL NIN NMOS KP=200U VTO=0.7
+.MODEL HVP PMOS KP=200U VTO=-0.7
+.MODEL NEN NMOS KP=200U VTO=0.5 IS=1E-18
+.MODEL DL D IS=0.95E-9 N=1.9 XTI=1.5
+.MODEL NTX NMOS (LEVEL=3 PHI=0.7 TOX=2E-8 XJ=5E-7
++ TPG=1 VTO=0.7 DELTA=0.5 LD=1E-7 KP=2E-4 UO=650
++ THETA=0.1 GAMMA=0.5 NSUB=1E17 NFS=6E11 FC=0.5
++ VMAX=1E5 ETA=3E-6 KAPPA=10 PB=1 IS=1E-18)
+.MODEL PTX PMOS (LEVEL=3 PHI=0.7 TOX=2E-8 XJ=5E-7
++ TPG=-1 VTO=-0.7 DELTA=0.5 LD=1E-7 KP=2E-4 UO=650
++ THETA=0.1 GAMMA=0.5 NSUB=1E17 NFS=6E11 FC=0.5
++ VMAX=1E5 ETA=3E-6 KAPPA=10 PB=1 IS=1E-18)
+.ENDS
+* END MODEL OPA369

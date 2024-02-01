@@ -1,0 +1,132 @@
+* PSpice Model Editor - Version 9.2
+
+*$
+.subckt THS3062 inp inn out vcc vee
+
+* The Model Editor is a PSpice product.
+.MODEL bi_pnp PNP
++ IS=10.000E-18
++ BF=111.69
++ NF=1.2000
++ VAF=100
++ IKF=10.010E-3
++ ISE=10.000E-18
++ NE=1.6080
++ VAR=100
++ IKR=10.000E-3
++ NK=.6913
++ RE=1
++ RB=60
++ RC=100
++ CJE=30.000E-15
++ VJE=.95
++ MJE=.13
++ CJC=30.000E-15
++ VJC=.95
++ MJC=.43
++ TF=51.578E-12
++ XTF=10.335
++ VTF=13.317
++ ITF=84.100E-3
++ TR=10.000E-9
+* The Model Editor is a PSpice product.
+.MODEL bi_npn NPN
++ IS=10.000E-18
++ BF=141.50
++ VAF=100
++ IKF=10.010E-3
++ ISE=10.000E-18
++ NE=1.5718
++ VAR=50
++ IKR=10.000E-3
++ ISC=10.000E-18
++ NK=.31808
++ RE=1
++ RB=20
++ RC=100
++ CJE=20.000E-15
++ VJE=1
++ MJE=.2
++ CJC=20.000E-15
++ TF=48.439E-12
++ XTF=32.698
++ VTF=15.759
++ ITF=.12507
++ TR=10.000E-9
+
+.MODEL D_break D
++ RS=1.0000E-1
++ CJO=1.0000E-13
++ IS=100e-15
+* source THS3062
+Q_Q17         N01060 N01060 N013920 BI_NPN 36
+C_C6         0 N33650  1f
+D_D6         N29798 LLL D_BREAK 2
+X_F1    VCC N01300 VCC LLL SCHEMATIC1_F1
+I_I1         VCC N00889 DC 300uAdc
+Q_Q23         N01029 N01029 N01331 BI_PNP 12
+*V_V11         0 N32350 0.65Vdc
+E_E1         VCC N02648 N02361 eref -1
+D_D3         N02648 N02743 D_BREAK 8
+C_C2         0 OUT  0.7p
+*V_V9         N31589 0 0.65Vdc
+G_G3         0 IN 0 N36779 1
+X_F2    N01429 VEE LLL VEE SCHEMATIC1_F2
+V_V6         IN INN 0.152Vdc
+*E_E4         N02418 INT N32350 VEE 1
+D_D4         N028591 N02628 D_BREAK 8
+E_E2         N02628 VEE N02418 eref 1
+E_E6         INPP N33923 N33650 0 1
+V_V7         N29734 VCC -0.3Vdc
+R_R1         N01331 N01300  250
+C_C5         eref INT  400f
+*E_E3         INT N02361 VCC N31589 1
+I_I2         N00923 VEE DC 300uAdc
+R_R26         N36779 0  2500k
+R_R3         eref LLL  900k
+C_C8         N36779 0  0.6n
+V_V8         N29798 VEE 0.3Vdc
+C_C1         eref LLL  1.1p
+Q_Q15         VCC INPP N00923 BI_NPN 4
+R_R5         N02855 N02743  15
+L_L1         N02855 OUT  1n
+G_G2         IN 0 N35716 0 1
+C_C3         0 INN  630f
+R_R23         N33565 0  120k
+R_R2         N01429 N013920  250
+Q_Q16         N01029 N00889 IN BI_NPN 4
+G_G1         INT eref LLL eref -1m
+D_D5         LLL N29734 D_BREAK 2
+R_R24         0 N33650  300
+Q_Q22         VEE INPP N00889 BI_PNP 4
+E_E5         N33923 INP 0 N33565 1
+R_R7         N028591 N02855  15
+R_R11         eref INT  1k
+Q_Q21         N01060 N00923 IN BI_PNP 4
+R_R25         0 N35716  50k
+C_C4         N33565 0  25n
+C_C7         0 N35716  2f
+E_E101       avg vee vcc vee 0.5
+E_E102       eref 0 avg 0 1
+E_E103       diff 0 vcc vee 0.5
+E_E104       lshift 0 diff ddrop 1
+V_V102       ddrop 0 0.65
+E_E105       INT N02361 lshift 0 1
+E_E106       INT N02418 lshift 0 -1
+
+.ends THS3062
+*$
+
+.subckt SCHEMATIC1_F1 1 2 3 4
+F_F1         3 4 VF_F1 1
+VF_F1         1 2 0V
+.ends SCHEMATIC1_F1
+*$
+
+.subckt SCHEMATIC1_F2 1 2 3 4
+F_F2         3 4 VF_F2 1
+VF_F2         1 2 0V
+.ends SCHEMATIC1_F2
+
+
+*$

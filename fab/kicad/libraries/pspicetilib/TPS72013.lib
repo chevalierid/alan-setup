@@ -1,0 +1,71 @@
+***
+*$
+*  TPS72013 Model
+*****************************************************************************
+*  (C) Copyright 2012 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warrenties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+** Released by: WEBENCH® Design Center, Texas Instruments Inc.
+* Part: TPS72013
+* Date: 09/19/2012
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.0.0.p001
+* Datasheet: SBVS100D - REVISED AUGUST 2009
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+* source TPS72013
+.SUBCKT TPS72013 OUT EN BIAS GND IN PWPD
+R1  IN VXX  1.000e+7  
+C1  IN VXX  7.962e-13  
+R2  DRV VXX  1.000e+3  
+C2  DRV VXX  1.592e-10  
+R3  OUT FBK  4.000e+5  
+R4  FBK GND  9.000e+5  
+R5  VYY VZZ  1.500e-2  
+E1  REF1   0  VALUE { IF(V(BIAS_GOOD) > 0.51 & V(EN_GOOD) > 0.51, 9.000e-1, 0) }
+RREF REF1 REF 10
+CREF REF 0 1n
+E2  DES1   0  VALUE { V(REF)*V(OUT)/(V(FBK) + 1E-6) }
+RDES DES1 DES 10
+CDES DES 0 1n
+E3  VYY1   0  VALUE { MIN(V(VXX), V(VZZ) + 7.875e-3) }
+RVYY VYY1 VYY 10
+CVYY VYY 0 1n
+E4  DRV1   0  VALUE { MIN(V(DES), MAX(V(IN) - 1.100e-1, 0))}
+RDRV DRV1 DRV 10
+CDRV DRV 0 1n
+F1  IN VYY  V1 1
+V1  VZZ OUT  0V
+RPWPD PWPD 0 1.0e+6
+VENAB ENAB_VAL 0 1.1
+VTHRESH THRESH 0 2.45
+X1_COMP_HYS EN_GOOD EN ENAB_VAL COMP_HYS_BASIC PARAMS: VHYS=0.7 TD=0.0 TT=2E-9
+X2_COMP_HYS BIAS_GOOD BIAS THRESH COMP_HYS_BASIC PARAMS: VHYS=0.15 TD=0.0 TT=2E-9
+.ENDS TPS72013
+
+.SUBCKT comp_hys_basic out inp inn 
++ PARAMS: 
++ vhys = 0.05 
++ td   = 0.00
++ tt   = 2e-9
+E1 n1   0 VALUE {IF(V(inp) + V(out)*vhys > V(inn), 1, 0)}
+R1 n1 out 10
+C1 out  0 { (td + 0.5*tt) / 6.93 }
+.ENDS comp_hys_basic

@@ -1,0 +1,114 @@
+* PSpice Model Editor - Version 16.2.0
+*$
+* CSD17382F4
+***********************************************************************
+*  (C) Copyright 2020 Texas Instruments Incorporated. All rights reserved.
+* TI Information - Selective Disclosure to Poly
+***********************************************************************
+***********************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose. The model is
+** provided solely on an "as is" basis. The entire risk as to its quality
+** and performance is with the customer
+********************************************************************************
+*
+********************************************************************************
+*
+* Released by: Texas Instruments Inc.
+* Part: CSD17382F4
+* Date: 02/13/2020
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.2
+* EVM Order Number: 
+* EVM Users Guide: 
+* Datasheet: SLPS562A – APRIL 2016 – REVISED DECEMBER 2016
+* Model Version: Final 1.00
+*
+*****************************************************************************
+
+**********************************************************************
+**********************************************************************
+*                                                                    *
+* CSD17382F4   -  PSpice Model for use with OrCAD                    *
+*                                                                    *
+**********************************************************************
+**********************************************************************
+* Characteristics:
+*   Technology:   NCH 12/10
+*
+**********************************************************************
+* Model History:
+*   tr, 4/7/2016
+*    
+**********************************************************************
+* SUBCKT Definition:  1=D  2=G  3=S
+.SUBCKT CSD17382F4  1 2 3
+* PARAMETER (local) DEFINITIONS SECTION
+ .param	 AAN13383	0.66
+ .param	 AAN83325	1.58
+ .PARAM  ptrc1    	2.75e-3  
+ .PARAM  ptrc2    	-01.00e-6
+ .PARAM  pwidthP  	{AAN13383/0.8*2}
+ .PARAM  pwidth   	{pwidthP*1e6}
+ .PARAM  perimP   	{2.1*pwidthP}
+ .PARAM  perim    	{perimP*1e6}
+****** MODEL SUBCIRCUIT BEGINS HERE     ******************************
+M1	11	5	6	6	NMOS	W={pwidthP} L=0.5u  PS={perimP} PD={perimP}
+RGG		2	22	110
+RGG2	22	5	110
+*cgs0	5	22	1.60e-12	ic=0
+DDG1  	1	101	DD	{AAN13383/AAN83325}
+DDG2  	5	101	DD	{AAN13383/AAN83325}
+DBD		3	1	DBD	{AAN13383/AAN83325}
+CBD0  	1  	3   3e-12
+RBD0  	1  	3   1e10
+RSP   	6	3	0.15e-3
+RDD		1	11	RTEMP 54.00e-3
+DESD1	2	30	DDZ
+DESD2	3	30	DDZ
+******************************************************************* 
+.MODEL  NMOS   NMOS (
+* CONTROL PARAMETERS
++ LEVEL  = 7             VERSION = 3.2         CAPMOD = 2
+* DC PARAMETERS
++ NLX    = 1.74E-7       VBM    = -5           DVT0   = 2.2
++ DVT1   = 0.53          DVT2   = -0.032       U0     = 400
++ UA     = 8.0e-9        UB     = 0.0e-19      A0     = 0.9
++ AGS    = 0.0           A1     = 0.0          A2     = 0.9
++ LINT   = 0.055e-6      VOFF   = -0.30        NFACTOR= 1.7
++ ETA0   = 0.005         ETAB   = -0.07        DSUB   = 1.4
++ PCLM   = 3.00          PDIBLC1= 0.02         PDIBLC2= 0.004
++ DROUT  = 0.90          PSCBE1 = 3.0e8        PSCBE2 = 1e-6
++ PVAG   = 0.1           DELTA  = 0.0220       JS     = 0
+* AC AND CAPACITANCE PARAMETERS
++ CGSO   = 1.00e-18		CGDO   = 1e-18        CGBO   = 1e-18
++ CJ     = 1e-18        CJSW   = 1e-18        CF     = 0
+* TEMPERATURE PARAMETERS
++ TNOM   = 25            UTE    = -1.5         KT1    = -0.70
++ KT1L   = 1.0e-15       KT2    = 0.022        UA1    = -01.00e-9
++ UB1    = 5.0e-17      
+* PROCESS PARAMETERS
++ TOX    = 2.50e-8       XJ     = 3e-7          NCH    = 1.250e17
++ NSUB   = 1.0e16)
+******************************************************************* 
+.MODEL  PMOSd   PMOS (   LEVEL  = 1
++ TNOM   = 25            VTO    = -1.0          IS     = 6.0e-14
++ TOX    = 3.0e-8        NSUB   = 2.0e17		GAMMA  = 15
++ CJ     = 1e-18         CJSW   = 1e-18
++ CGSO   = 1e-18         CGDO   = 1e-18         CGBO   = 0  )
+*******************************************************************
+.MODEL DBD D (CJO=2.50e-10 VJ=0.5 M=0.5 TNOM=25
++ FC=0.5 TT=2e-09 XTI=-1.0 BV=31.00
++ IS=3.0e-11 N=1.07 RS=1.625e-2 TRS1=4.0e-3)
+*******************************************************************
+.MODEL DD  D (CJO=5.00e-010 VJ=0.40 M=0.70 IS=1e-13 RS=0.1 TNOM=25)
+*******************************************************************
+.MODEL DDZ D (CJO=1e-18 VJ=0.9 M=0.9 IS=1e-13 RS=1.0e+1 TNOM=25 bv=12.1)
+*******************************************************************
+.MODEL RTEMP RES (TC1={ptrc1} TC2={ptrc2})
+*******************************************************************
+.ENDS CSD17382F4  
+*$

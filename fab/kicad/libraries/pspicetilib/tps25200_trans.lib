@@ -1,0 +1,880 @@
+* PSpice Model Editor - Version 16.2.0
+*$
+* TPS25200
+*****************************************************************************
+* (C) Copyright 2014 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose. The model is
+** provided solely on an "as is" basis. The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: TPS25200
+* Date: 20MAR2014 
+* Model Type: Transient
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number:TPS25200EVM-618 
+* EVM Users Guide:SLVUA53
+* Datasheet:SLVSCJ0–MARCH 2014
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web
+*
+*****************************************************************************
+.SUBCKT TPS25200_TRANS PWPD EN IN FAULT_B ILIM OUT GND
+X_U1_U31         U1_N16745718 U1_ENOK U1_N16745750 AND2_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=500E-3
+X_U1_U823         U1_N16745438 U1_ILIM_DET U1_POS AND2_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=500E-3
+X_U1_U22         U1_COMP_OUT POWEROK U1_ILIM_DET AND2_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=500E-3
+X_U1_U49         IN U1_N16744252 U1_N16745620 U1_VCCOK COMPHYS_BASIC_GEN
++  PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+V_U1_V9         U1_N16744228 0 1.44Vdc
+D_U1_D11         0 EN D_D1 
+X_U1_U46         U1_N16745714 U1_N16745718 INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+X_U1_U27         U1_VCCOK U1_ENOK U1_N16805533 AND2_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=500E-3
+V_U1_V2         U1_N16747823 0 6.4Vdc
+X_U1_S3    U1_N16813521 0 FAULT_B 0 HK_U1_S3 
+X_U1_U32         U1_ENOK U1_N16745714 U1_N16745762 AND2_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=500E-3
+X_U1_U48         EN U1_N16744228 U1_N16745820 U1_N16744876 COMPHYS_BASIC_GEN
++  PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+X_U1_U50         ISENSE U1_N16745216 U1_COMP_OUT COMP_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=0.5
+C_U1_C3         U1_9MS 0  1u  
+V_U1_V46         U1_N16745498 0 2.75
+X_U1_U37         U1_POS U1_NEG U1_CHANGE OR2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+X_U1_U52         IN U1_N16751007 U1_N16751139 U1_OVPOK COMPHYS_BASIC_GEN
++  PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+X_U1_S4    U1_SET0 0 U1_9MS 0 HK_U1_S4 
+X_U1_U826         U1_N16744876 U1_N16744318 U1_ENOK XNOR2_BASIC_GEN PARAMS:
++  VDD=1 VSS=0 VTHRESH=500E-3
+X_U1_U824         U1_N16745494 U1_N16745560 INV_DELAY_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=0.5 DELAY=10u
+V_U1_V12         U1_N16751007 0 7.6Vdc
+X_U1_U38         OVP U1_N16813310 U1_N16813521 OR2_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=500E-3
+R_U1_R5         U1_ILIM_DET U1_9MS  12.96k  
+X_U1_H1    ILIM U1_N16745264 ILIM_INT 0 HK_U1_H1 
+X_U1_U825         U1_N16745560 U1_N16745494 U1_NEG AND2_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=500E-3
+X_U1_S5    U1_SET1 0 U1_N16745084 U1_9MS HK_U1_S5 
+V_U1_V15         U1_N16751139 0 70mVdc
+G_U1_ABM2I2         IN GND VALUE { IF(V(U1_N16745750) > 0.5, 134u,  
++ IF(V(U1_N16745762) > 0.5, 140u, 0.1u))   }
+V_U1_V16         U1_N16744318 0 1
+V_U1_V11         U1_N16744252 0 2.35Vdc
+X_U1_U33         U1_N16788644 U1_N16805533 POWEROK AND2_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=500E-3
+X_U1_U25         U1_9MS U1_BUF_OUT BUF_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+V_U1_V45         U1_N16745264 0 0.4
+V_U1_V1         U1_N16745084 0 1Vdc
+X_U1_U47         OVP U1_N16788644 INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+X_U1_U43         U1_BUF_OUT U1_N16744612 INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+X_U1_U44         U1_ILIM_DET U1_N16745494 INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+X_U1_U28         POWEROK U1_BUF_OUT U1_N16813310 AND2_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=500E-3
+X_U1_U29         U1_OVPOK U1_ENOK OVP AND2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+X_U1_U51         ILIM_INT U1_N16745498 U1_N16745714 COMP_BASIC_GEN PARAMS:
++  VDD=1 VSS=0 VTHRESH=0.5
+V_U1_V13         U1_N16745620 0 30mVdc
+V_U1_V14         U1_N16745820 0 330mVdc
+X_U1_U21         U1_CHANGE U1_BUF_OUT U1_SET1 AND2_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=500E-3
+D_U1_D10         EN U1_N16747823 D_D1 
+X_U1_U822         U1_ILIM_DET U1_N16745438 INV_DELAY_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=0.5 DELAY=10u
+X_U1_U24         U1_N16744612 U1_CHANGE U1_SET0 AND2_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=500E-3
+E_U1_ABM1         U1_N16745216 0 VALUE { V(ILIM_INT) * 0.98    }
+G_U2_ABMII2         U2_GATE1 0 VALUE {
++  LIMIT((0.25u)*PWRS(V(U2_N17127877),2)+(2u)*V(U2_N17127877),0,1m)    }
+R_U2_R8         POWEROK U2_TON  1.55k  
+D_U2_D13         GND OUT D_D1 
+D_U2_D9         U2_N012211 OUT D_D1 
+X_U2_U28         U2_N17328954 U2_OVC BUF_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+R_U2_R7         OUT 0  2.15e6  
+V_U2_VGND         U2_N17308590 0 0Vdc
+X_U2_U647         IN U2_GATE2 U2_IN1 NMOSIDEAL_PS PARAMS: K=5.48 VTH=1
+C_U2_C9         0 U2_IN1  1u IC=0 
+R_U2_R6         IN U2_N16749103  1e9  
+C_U2_C6         U2_TOFF 0  0.1u  
+V_U2_V4         U2_IN2 U2_N17308590 5.4Vdc
+X_U2_U654         U2_GATE2 0 U2_N17226877 0 VCCS_CLIP_PS PARAMS: GM=1m IOMAX=5u
++  IOMIN=0
+C_U2_C4         0 U2_GATE1  15p IC=0 
+X_U2_U655         U2_OVCC U2_IN2 U2_IN1 SWITCH_PS PARAMS: VTH=500E-3 RON=0.001
++  ROFF=1e9 TDELAY=0 TRISE=1E-6 TFALL=1E-6 INITVAL=0
+R_U2_R9         POWEROK U2_TOFF  50  
+V_U2_V1         0 U2_N012211 0.7Vdc
+X_U2_U658         U2_N17135208 U2_N01625 INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+X_U2_U653         U2_N16757122 U2_N16749103 0 SWITCH_PS PARAMS: VTH=500E-3
++  RON=1k ROFF=1e9 TDELAY=0 TRISE=1E-6 TFALL=1E-6 INITVAL=0
+X_U2_U52         IN U2_N17243392 U2_N17243461 U2_N17328954 COMPHYS_BASIC_GEN
++  PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+D_U2_D12         U2_GATE2 U2_N16926027 D_D1 
+X_U2_U657         U2_OVC U2_N16969035 INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+X_U2_U826         POWEROK U2_N16762241 U2_N16757122 AND2_BASIC_GEN PARAMS:
++  VDD=1 VSS=0 VTHRESH=500E-3
+V_U2_V12         U2_N17243392 0 5.4Vdc
+X_U2_U651         U2_GATE1 0 POWEROK 0 VCCS_CLIP_PS PARAMS: GM=-1m IOMAX=0
++  IOMIN=-30n
+D_U2_D14         0 U2_GATE2 D_D1 
+V_U2_V15         U2_N17243461 0 10mVdc
+X_U2_U656         OVP U2_N16762241 INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+X_U2_U646         U2_N17122654 U2_GATE1 OUT NMOSIDEAL_PS PARAMS: K=5.48 VTH=1
+V_U2_V3         U2_N16926027 0 12Vdc
+D_U2_D10         U2_GATE1 U2_N01125 D_D1 
+X_U2_H1    U2_IN1 U2_N17122654 ISENSE 0 GATE_DRIVE_U2_H1 
+X_U2_U27         U2_OVC U2_N17226877 BUF_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+X_U2_U652         U2_GATE1 0 OVP 0 VCCS_CLIP_PS PARAMS: GM=1m IOMAX=150u
++  IOMIN=0
+X_U2_U29         U2_N17280168 U2_OVCC BUF_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+X_U2_U650         U2_GATE1 0 U2_N01625 0 VCCS_CLIP_PS PARAMS: GM=1m IOMAX=2500n
++  IOMIN=0
+C_U2_C7         0 U2_GATE2  0.2p IC=0 
+X_U2_S4    U2_N16749103 GND OUT GND GATE_DRIVE_U2_S4 
+X_U2_U665         U2_GATE2 0 U2_N16969035 0 VCCS_CLIP_PS PARAMS: GM=-1m IOMAX=0
++  IOMIN=-2.5u
+D_U2_D11         0 U2_GATE1 D_D1 
+C_U2_C8         GND OUT  0.1p IC=0 
+V_U2_V2         U2_N01125 0 12Vdc
+C_U2_C11         U2_N17280168 0  0.5u  
+C_U2_C5         U2_TON 0  2.1u  
+R_U2_R12         U2_OVC U2_N17280168  0.1  
+X_U2_U649         U2_N17127877 0 ISENSE ILIM_INT VCVSCLIP_PS PARAMS: GAIN=1
++  VOMAX=20 VOMIN=0
+X_U2_U825         U2_TON U2_TOFF U2_N17135208 AND2_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=500E-3
+.ENDS TPS25200_TRANS
+
+.subckt HK_U1_S3 1 2 3 4  
+S_U1_S3         3 4 1 2 _U1_S3
+RS_U1_S3         1 2 1G
+.MODEL         _U1_S3 VSWITCH Roff=1G Ron=60 Voff=0.25V Von=0.75V
+.ends HK_U1_S3
+
+.subckt HK_U1_S4 1 2 3 4  
+S_U1_S4         3 4 1 2 _U1_S4
+RS_U1_S4         1 2 1G
+.MODEL         _U1_S4 VSWITCH Roff=1G Ron=1.0 Voff=0.25V Von=0.75V
+.ends HK_U1_S4
+
+.subckt HK_U1_H1 1 2 3 4  
+H_U1_H1         3 4 VH_U1_H1 -242.3k
+VH_U1_H1         1 2 0V
+.ends HK_U1_H1
+
+.subckt HK_U1_S5 1 2 3 4  
+S_U1_S5         3 4 1 2 _U1_S5
+RS_U1_S5         1 2 1G
+.MODEL         _U1_S5 VSWITCH Roff=1G Ron=1.0 Voff=0.25V Von=0.75V
+.ends HK_U1_S5
+
+.subckt GATE_DRIVE_U2_H1 1 2 3 4  
+H_U2_H1         3 4 VH_U2_H1 1
+VH_U2_H1         1 2 0V
+.ends GATE_DRIVE_U2_H1
+
+.subckt GATE_DRIVE_U2_S4 1 2 3 4  
+S_U2_S4         3 4 1 2 _U2_S4
+RS_U2_S4         1 2 1G
+.MODEL         _U2_S4 VSWITCH Roff=1e9 Ron=500 Voff=0.25V Von=1
+.ends GATE_DRIVE_U2_S4
+** END OF FALTTEN MODEL **
+.SUBCKT AND2_PS Y A B PARAMS: vhi=1 vlo=0 vthresh=500e-3 tplh=1e-9 tphl=1e-9 tr=1e-9 tf=1e-9
+RA A 0 1e11
+CA A 0 0.01pF
+RB B 0 1e11
+CB B 0 0.01pF
+VS VSUP 0 DC 1
+***** boolean ************
+EAND2 Ypp 0 VALUE={IF(V(A) > {vthresh} & V(B) > {vthresh}, 1, 0)}
+ROUTpp Ypp 0 1e11
+***** add delay lines ****
+XNSW1 OUTp Ypp 0 NSW_PS PARAMS: RONval={(tplh+1e-15)/(1e-12*0.693)} VTHval=0.5
+XPSW1 OUTp Ypp VSUP PSW_PS PARAMS: RONval={(tphl+1e-15)/(1e-12*0.693)} VTHval=0.5
+CDEL1 OUTp 0 1pF
+ETHRESH Yp 0 VALUE={IF(V(OUTp) > 0.5, 1, 0)}
+ROUTp Yp 0 1e11
+** add rise and fall *****
+XNSW2 OUTr Yp 0 NSW_PS PARAMS: RONval={(tf+1e-15)/(1e-12*2.3)} VTHval=0.5
+XPSW2 OUTr Yp VSUP PSW_PS PARAMS: RONval={(tr+1e-15)/(1e-12*2.3)} VTHval=0.5
+CDEL2 OUTr 0 1pF
+**************************
+EOUT OUTf 0 VALUE={V(OUTr)*({vhi} - {vlo})+{vlo}}
+RDR OUTf Y  1000
+RO Y 0 1e11
+.ENDS AND2_PS
+*$
+*****AND2 with supply
+.SUBCKT AND2WS_PS Y A B VDD VSS PARAMS: tplh=1e-9 tphl=1e-9 tr=1e-9 tf=1e-9 relthr=0.5
+RA A 0 1e11
+CA A 0 0.01pF
+RB B 0 1e11
+CB B 0 0.01pF
+VS VSUP 0 DC 1
+Etemp vthresh 0 VALUE = {(V(VDD) - V(VSS)) *{relthr}}
+***** boolean ************
+EAND2 Ypp 0 VALUE={IF(V(A,VSS) > V(vthresh) & V(B,VSS) > V(vthresh), 1, 0)}
+ROUTpp Ypp 0 1e11
+***** add delay lines ****
+XNSW1 OUTp Ypp 0 NSW_PS PARAMS: RONval={(tplh+1e-15)/(1e-12*0.693)} VTHval=0.5
+XPSW1 OUTp Ypp VSUP PSW_PS PARAMS: RONval={(tphl+1e-15)/(1e-12*0.693)} VTHval=0.5
+CDEL1 OUTp 0 1pF
+ETHRESH Yp 0 VALUE={IF(V(OUTp) > 0.5, 1, 0)}
+ROUTp Yp 0 1e11
+** add rise and fall *****
+XNSW2 OUTr Yp 0 NSW_PS PARAMS: RONval={(tf+1e-15)/(1e-12*2.3)} VTHval=0.5
+XPSW2 OUTr Yp VSUP PSW_PS PARAMS: RONval={(tr+1e-15)/(1e-12*2.3)} VTHval=0.5
+CDEL2 OUTr 0 1pF
+**************************
+EOUT OUTf 0 VALUE={(V(OUTr)*(V(VDD) - V(VSS)))}
+RDR OUTf Y  1000
+RO Y 0 1e11
+.ENDS AND2WS_PS
+*$
+
+**** INVERTER *********************************************************************************************
+.SUBCKT INV_PS Y A PARAMS: vhi=1 vlo=0 vthresh=500e-3 tplh=1e-9 tphl=1e-9 tr=1e-9 tf=1e-9
+RA A 0 1e11
+CA A 0 0.01pF
+VS VSUP 0 DC 1
+***** boolean ************
+EINV1 Ypp 0 VALUE={IF(V(A) > ({vthresh}), 0, 1)}
+ROUTpp Ypp 0 1e11
+***** add delay lines ****
+XNSW1 OUTp Ypp 0 NSW_PS PARAMS: RONval={(tplh+1e-15)/(1e-12*0.693)} VTHval=0.5
+XPSW1 OUTp Ypp VSUP PSW_PS PARAMS: RONval={(tphl+1e-15)/(1e-12*0.693)} VTHval=0.5
+CDEL1 OUTp 0 1pF
+ETHRESH Yp 0 VALUE={IF(V(OUTp) > 0.5, 1, 0)}
+ROUTp Yp 0 1e11
+** add rise and fall *****
+XNSW2 OUTr Yp 0 NSW_PS PARAMS: RONval={(tf+1e-15)/(1e-12*2.3)} VTHval=0.5
+XPSW2 OUTr Yp VSUP PSW_PS PARAMS: RONval={(tr+1e-15)/(1e-12*2.3)} VTHval=0.5
+CDEL2 OUTr 0 1pF
+**************************
+EOUT OUTf 0 VALUE={V(OUTr)*({vhi} - {vlo})+{vlo}}
+RDR OUTf Y  1000
+RO Y 0 1e11
+.ENDS INV_PS
+*$
+**** INVERTER *********************************************************************************************
+.SUBCKT INVWS_PS Y A VDD VSS PARAMS: tplh=1e-9 tphl=1e-9 tr=1e-9 tf=1e-9 relthr=0.5
+RA A 0 1e11
+CA A 0 0.01pF
+VS VSUP 0 DC 1
+Etemp vthresh 0 VALUE = {(V(VDD) - V(VSS)) *{relthr}}
+***** boolean ************
+EINV1 Ypp 0 VALUE={IF(V(A,VSS) > V(vthresh), 0, 1)}
+ROUTpp Ypp 0 1e11
+***** add delay lines ****
+XNSW1 OUTp Ypp 0 NSW_PS PARAMS: RONval={(tplh+1e-15)/(1e-12*0.693)} VTHval=0.5
+XPSW1 OUTp Ypp VSUP PSW_PS PARAMS: RONval={(tphl+1e-15)/(1e-12*0.693)} VTHval=0.5
+CDEL1 OUTp 0 1pF
+ETHRESH Yp 0 VALUE={IF(V(OUTp) > 0.5, 1, 0)}
+ROUTp Yp 0 1e11
+** add rise and fall *****
+XNSW2 OUTr Yp 0 NSW_PS PARAMS: RONval={(tf+1e-15)/(1e-12*2.3)} VTHval=0.5
+XPSW2 OUTr Yp VSUP PSW_PS PARAMS: RONval={(tr+1e-15)/(1e-12*2.3)} VTHval=0.5
+CDEL2 OUTr 0 1pF
+**************************
+EOUT OUTf 0 VALUE={V(OUTr)*(V(VDD) - V(VSS))}
+RDR OUTf Y  1000
+RO Y 0 1e11
+.ENDS INVWS_PS
+*$
+
+**** OR2 *********************************************************************************************
+.SUBCKT OR2_PS Y A B PARAMS: vhi=1 vlo=0 vthresh=500e-3 tplh=1e-9 tphl=1e-9 tr=1e-9 tf=1e-9
+RA A 0 1e11
+CA A 0 0.01pF
+RB B 0 1e11
+CB B 0 0.01pF
+VS VSUP 0 DC 1
+***** boolean ************
+EOR2 Ypp 0 VALUE={IF(V(A) > {vthresh} | V(B) > {vthresh}, 1, 0)}
+ROUTpp Ypp 0 1e11
+***** add delay lines ****
+XNSW1 OUTp Ypp 0 NSW_PS PARAMS: RONval={(tplh+1e-15)/(1e-12*0.693)} VTHval=0.5
+XPSW1 OUTp Ypp VSUP PSW_PS PARAMS: RONval={(tphl+1e-15)/(1e-12*0.693)} VTHval=0.5
+CDEL1 OUTp 0 1pF
+ETHRESH Yp 0 VALUE={IF(V(OUTp) > 0.5, 1, 0)}
+ROUTp Yp 0 1e11
+** add rise and fall *****
+XNSW2 OUTr Yp 0 NSW_PS PARAMS: RONval={(tf+1e-15)/(1e-12*2.3)} VTHval=0.5
+XPSW2 OUTr Yp VSUP PSW_PS PARAMS: RONval={(tr+1e-15)/(1e-12*2.3)} VTHval=0.5
+CDEL2 OUTr 0 1pF
+**************************
+EOUT OUTf 0 VALUE={V(OUTr)*({vhi} - {vlo})+{vlo}}
+RDR OUTf Y  1000
+RO Y 0 1e11
+.ENDS OR2_PS
+*$
+**** OR2 WITH SUPPLY VDD VSS *****************************************************************************
+.SUBCKT OR2WS_PS Y A B VDD VSS PARAMS: tplh=1e-9 tphl=1e-9 tr=1e-9 tf=1e-9 relthr=0.5
+RA A 0 1e11
+CA A 0 0.01pF
+RB B 0 1e11
+CB B 0 0.01pF
+VS VSUP 0 DC 1
+Etemp vthresh 0 VALUE = {(V(VDD) - V(VSS)) *{relthr}}
+***** boolean ************
+ENOR2 Ypp 0 VALUE={IF(V(A,VSS) > V(vthresh) | V(B,VSS) > V(vthresh), 1, 0)}
+ROUTpp Ypp 0 1e11
+***** add delay lines ****
+XNSW1 OUTp Ypp 0 NSW_PS PARAMS: RONval={(tplh+1e-15)/(1e-12*0.693)} VTHval=0.5
+XPSW1 OUTp Ypp VSUP PSW_PS PARAMS: RONval={(tphl+1e-15)/(1e-12*0.693)} VTHval=0.5
+CDEL1 OUTp 0 1pF
+ETHRESH Yp 0 VALUE={IF(V(OUTp) > 0.5, 1, 0)}
+ROUTp Yp 0 1e11
+** add rise and fall *****
+XNSW2 OUTr Yp 0 NSW_PS PARAMS: RONval={(tf+1e-15)/(1e-12*2.3)} VTHval=0.5
+XPSW2 OUTr Yp VSUP PSW_PS PARAMS: RONval={(tr+1e-15)/(1e-12*2.3)} VTHval=0.5
+CDEL2 OUTr 0 1pF
+**************************
+EOUT OUTf 0 VALUE={V(OUTr)*(V(VDD) - V(VSS))}
+RDR OUTf Y  1000
+RO Y 0 1e11
+.ENDS OR2WS_PS
+*$
+.SUBCKT MONONEG_PS in Q Qn PARAMS: PW=1u 
+****buffer*********
+*Rin in 0 1e11
+*Cin in 0 0.01pF
+*VS VSUP 0 DC 1
+***** boolean ************
+*EBUF1 Y1 0 VALUE={IF(V(in) > 0.5, 1, 0)}
+*ROUTpp1 Y1 0 1e11
+***** add delay lines ****
+*XNSW1 Y2 Y1  0 NSW_PS PARAMS: RONval={(PW+1e-15)/(1e-12*0.693)} VTHval=0.5
+*XPSW1 Y2 Y1 VSUP PSW_PS PARAMS: RONval={(PW+1e-15)/(1e-12*0.693)} VTHval=0.5
+*CDEL1 Y2 0 1pF
+*ETHRESH Y3 0 VALUE={IF(V(Y2) > 0.5, 1, 0)}
+*ROUTp Y3 0 1e11
+** add rise and fall *****
+*XNSW2 Y4 Y3 0 NSW_PS PARAMS: RONval=(1e-12/1e-12*2.3) VTHval=0.5
+*XPSW2 Y4 Y3 VSUP PSW_PS PARAMS: RONval=(1e-12/1e-12*2.3) VTHval=0.5
+*CDEL2 Y4 0 1pF
+*************XOR2***********
+*EXOR2 P 0 VALUE={IF(V(in) > 0.5 ^ V(Y4) > 0.5 , 1, 0)}
+*ROUTpp2 P 0 1e11
+***********AND************
+*EAND2 Y5 0 VALUE={IF(V(Y4) > 0.5 & V(P) > 0.5 , 0, 1)}
+*ROUTpp3 Y5 0 1e11
+** add rise and fall *****
+*XNSW3 Q Y5 0 NSW_PS PARAMS: RONval=(1e-9/1e-12*2.3) VTHval=0.5
+*XPSW3 Q Y5 VSUP PSW_PS PARAMS: RONval=(1e-9/1e-12*2.3) VTHval=0.5
+*CDEL3 Q 0 1pF IC=0
+***********end of AND2********************
+** add rise and fall + inversion *****
+*XNSW4 Qn Q 0 NSW_PS PARAMS: RONval=(1e-12/1e-12*2.3) VTHval=0.5
+*XPSW4 Qn Q VSUP PSW_PS PARAMS: RONval=(1e-12/1e-12*2.3) VTHval=0.5
+*CDEL4 Qn 0 1pF 
+*************another take on delay**************
+VS VSUP 0 DC 1
+GIN VSUP YA VALUE={IF(V(IN)<0.5, V(VSUP)/1000K, 0)}
+GDIS YA 0 VALUE={IF(V(IN)<0.5,0, V(YA)/1m)}
+CIN YA 0 1n IC=0
+RIN YA 0 1e11
+EABM1 YTD 0 VALUE={IF(V(YA)> {PW*1000}, 0, 1)}
+RYTD YTD 0 1e11
+EXOR P 0 VALUE={IF(V(YTD) > 0.5 ^ V(IN) > .5, 1, 0)}
+ROUTpp2 P 0 1e11
+EAND1 Q1 0 VALUE={ IF(V(P)>0.5 & V(YTD)>0.5, 1, 0)}
+Ro1 Q1 Q 1m
+Co1 Q 0 1p IC=0
+ROUT2 Q 0 1e11
+EAND2 Qn1 0 VALUE={ IF(V(Q)>0.5, 0, 1)}
+Ro2 Qn1 Qn 1m
+Co2 Qn 0 1p
+ROUT4 Qn 0 1e11
+.ENDS MONONEG_PS
+*$
+**** SPM_Mono_POS  ***************************************************************************************
+* FUNCTION: SHORT TIME PULSE GENERATOR AT NEG INPUT EDGE
+* INPUTS/OUTPUTS: ONE DIGITAL INPUT: A, TWO DIG OUTPUT PINS: Q Qn
+* DESCRIPTION: CREATE A PW PULSE WIDTH AT -VE EDGE OF INPUT, PULSE WIDTH OF INPUT NEEDS TO BE GREATER THAN PW PARAMETER VALUE
+**********************
+.SUBCKT MONOPOS_PS in Q Qn PARAMS: PW=1u 
+****buffer*********
+*RA in 0 1e11
+*CA in 0 0.01pF
+*VS VSUP 0 DC 1
+**** boolean ************
+*EBUF1 Y1 0 VALUE={IF(V(in) > .5 , 1, 0)}
+*ROUTpp1 Y1 0 1e11
+**** add delay lines ****
+*XNSW1 Y2 Y1  0 NSW_PS PARAMS: RONval={(PW+1e-15)/(1e-12*0.693)} VTHval=0.5
+*XPSW1 Y2 Y1 VSUP PSW_PS PARAMS: RONval={(PW+1e-15)/(1e-12*0.693)} VTHval=0.5
+*CDEL1 Y2 0 1pF
+*ETHRESH Y3 0 VALUE={IF(V(Y2) > 0.5, 0, 1)}
+*ROUTp Y3 0 1e11
+* ************add rise and fall *****
+**XNSW2 Y4 Y3 0 NSW_PS PARAMS: RONval=(1e-12/1e-12*2.3) VTHval=0.5
+**XPSW2 Y4 Y3 VSUP PSW_PS PARAMS: RONval=(1e-12/1e-12*2.3) VTHval=0.5
+**CDEL2 Y4 0 1pF
+************XOR2***********
+*EXOR2 P 0 VALUE={IF(V(in) > 0.5 ^ V(Y3) > .5, 1, 0)}
+*ROUTpp2 P 0 1e11
+**********AND************
+*EAND2 Y5 0 VALUE={IF(V(in) > 0.5 & V(P) > 0.5 , 0, 1)}
+*ROUTpp3 Y5 0 1e11
+* add rise and fall *****
+*XNSW3 Q Y5 0 NSW_PS PARAMS: RONval=(1e-9/1e-12*2.3) VTHval=0.5
+*XPSW3 Q Y5 VSUP PSW_PS PARAMS: RONval=(1e-9/1e-12*2.3) VTHval=0.5
+*ROUTq Q 0 1e11
+***********end of AND2********************
+* add rise and fall + inversion *****
+*XNSW4 Qn Q 0 NSW_PS PARAMS: RONval=(1e-9/1e-12*2.3) VTHval=0.5
+*XPSW4 Qn Q VSUP PSW_PS PARAMS: RONval=(1e-9/1e-12*2.3) VTHval=0.5
+*ROUTqn Qn 0 1e11
+*******************************new take on delay*************
+VS VSUP 0 DC 1
+GIN VSUP YA VALUE={IF(V(IN)>0.5, V(VSUP)/1000K, 0)}
+GDIS YA 0 VALUE={IF(V(IN)>0.5,0, V(YA)/1m)}
+CIN YA 0 1n IC=0
+RIN YA 0 1e11
+EABM1 YTD 0 VALUE={IF(V(YA)> {PW*1000}, 1, 0)}
+RYTD YTD 0 1e11
+EXOR P 0 VALUE={IF(V(YTD) > 0.5 ^ V(IN) > .5, 1, 0)}
+ROUTpp2 P 0 1e11
+EAND1 Q1 0 VALUE={ IF(V(P)>0.5 & V(IN)>0.5, 1, 0)}
+Ro1 Q1 Q 1m
+Co1 Q 0 1p
+ROUT2 Q 0 1e11
+EAND2 Qn1 0 VALUE={ IF(V(Q)>0.5, 0, 1)}
+Ro2 Qn1 Qn 1m
+Co2 Qn 0 1p
+ROUT4 Qn 0 1e11
+.ENDS MONOPOS_PS
+*$
+**** BUFFER *********************************************************************************************
+.SUBCKT BUFFER_PS A Y PARAMS: vhi=1 vlo=0 vthresh=500e-3 tplh=1e-9 tphl=1e-9 tr=1e-9 tf=1e-9
+RA A 0 1e11
+CA A 0 0.01pF
+VS VSUP 0 DC 1
+***** boolean ************
+EBUF1 Ypp 0 VALUE={IF(V(A) > ({vthresh}), 1, 0)}
+ROUTpp Ypp 0 1e11
+***** add delay lines ****
+XNSW1 OUTp Ypp 0 NSW_PS PARAMS: RONval={(tplh+1e-15)/(1e-12*0.693)} VTHval=0.5
+XPSW1 OUTp Ypp VSUP PSW_PS PARAMS: RONval={(tphl+1e-15)/(1e-12*0.693)} VTHval=0.5
+CDEL1 OUTp 0 1pF
+ETHRESH Yp 0 VALUE={IF(V(OUTp) > 0.5, 1, 0)}
+ROUTp Yp 0 1e11
+** add rise and fall *****
+XNSW2 OUTr Yp 0 NSW_PS PARAMS: RONval={(tf+1e-15)/(1e-12*2.3)} VTHval=0.5
+XPSW2 OUTr Yp VSUP PSW_PS PARAMS: RONval={(tr+1e-15)/(1e-12*2.3)} VTHval=0.5
+CDEL2 OUTr 0 1pF
+**************************
+EOUT OUTf 0 VALUE={V(OUTr)*({vhi} - {vlo})+{vlo}}
+RDR OUTf Y  1000
+RO Y 0 1e11
+.ENDS BUFFER_PS
+*$
+.SUBCKT BUFFEREN_PS A EN Y PARAMS: vhi=1 vlo=0 vthresh=500e-3 tplh=1e-9 tphl=1e-9 tt=2e-9
+RA A 0 1e11
+CA A 0 0.01pF
+VS VSUP 0 DC 1
+***** boolean ************
+EBUF1 Ypp 0 VALUE={IF(V(A) > ({vthresh}), 1, 0)}
+ROUTpp Ypp 0 1e11
+***** add delay lines ****
+XNSW1 OUTp Ypp 0 NSW_PS PARAMS: RONval={(tplh+1e-15)/(1e-12*0.693)} VTHval=0.5
+XPSW1 OUTp Ypp VSUP PSW_PS PARAMS: RONval={(tphl+1e-15)/(1e-12*0.693)} VTHval=0.5
+CDEL1 OUTp 0 1pF
+ETHRESH Yp 0 VALUE={IF(V(OUTp) > 0.5, 1, 0)}
+ROUTp Yp 0 1e11
+** add rise and fall *****
+XNSW2 OUTr Yp 0 NSW_PS PARAMS: RONval={(tt+1e-15)/(1e-12*2.3)} VTHval=0.5
+XPSW2 OUTr Yp VSUP PSW_PS PARAMS: RONval={(tt+1e-15)/(1e-12*2.3)} VTHval=0.5
+CDEL2 OUTr 0 1pF
+**************************
+***EOUT OUTf 0 VALUE={V(OUTr)*({vhi} - {vlo})+{vlo}}
+RDR OUTf Y  1
+RO Y 0 1e11
+S_SPMOS         VDDSUP OUTf PMC 0 _S1
+S_SNMOS         OUTf VSSSUP NMC 0 _S2
+RS_SPMOS         VDDSUP OUTf 1G
+RS_SNMOS         OUTf VSSSUP 1G
+Vpos   VDDSUP 0 {vhi}
+Vneg   VSSSUP 0 {vlo}
+X4 EN ENtemp1 BUFFER_PS PARAMS: vhi=1 vlo=0 vthresh={vthresh} tphl={tphl} tplh={tplh} tr=1e-9 tf=1e-9
+X1  PMC OUTr ENtemp1 AND2_PS PARAMS: vhi=1 vlo=0 vthresh=0.5 tplh=1e-9 tphl=1e-9 tr=1e-9 tf=1e-9
+X2  NMC OUTrinv ENtemp1 AND2_PS PARAMS: vhi=1 vlo=0 vthresh=0.5 tplh=1e-9 tphl=1e-9 tr=1e-9 tf=1e-9
+X3 OUTrinv OUTr INV_PS PARAMS: vhi=1 vlo=0 vthresh=0.5 tplh=1e-9 tphl=1e-9 tr=1e-9 tf=1e-9
+.MODEL         _S1 VSWITCH Roff=1000e6 Ron=1000 Voff=0.4V Von=0.5V
+.MODEL         _S2 VSWITCH Roff=1000e6 Ron=1000 Voff=0.4V Von=0.5V
+.ENDS BUFFEREN_PS
+*$
+**** Buffer with supply *********************************************************************************************
+.SUBCKT BUFFERWS_PS Y A VDD VSS PARAMS: tplh=1e-9 tphl=1e-9 tr=1e-9 tf=1e-9 relthr=0.5
+RA A 0 1e11
+CA A 0 0.01pF
+VS VSUP 0 DC 1
+Etemp vthresh 0 VALUE = {(V(VDD) - V(VSS)) *{relthr}}
+***** boolean ************
+EINV1 Ypp 0 VALUE={IF(V(A,VSS) > V(vthresh), 1, 0)}
+ROUTpp Ypp 0 1e11
+***** add delay lines ****
+XNSW1 OUTp Ypp 0 NSW_PS PARAMS: RONval={(tplh+1e-15)/(1e-12*0.693)} VTHval=0.5
+XPSW1 OUTp Ypp VSUP PSW_PS PARAMS: RONval={(tphl+1e-15)/(1e-12*0.693)} VTHval=0.5
+CDEL1 OUTp 0 1pF
+ETHRESH Yp 0 VALUE={IF(V(OUTp) > 0.5, 1, 0)}
+ROUTp Yp 0 1e11
+** add rise and fall *****
+XNSW2 OUTr Yp 0 NSW_PS PARAMS: RONval={(tf+1e-15)/(1e-12*2.3)} VTHval=0.5
+XPSW2 OUTr Yp VSUP PSW_PS PARAMS: RONval={(tr+1e-15)/(1e-12*2.3)} VTHval=0.5
+CDEL2 OUTr 0 1pF
+**************************
+EOUT OUTf 0 VALUE={V(OUTr)*(V(VDD) - V(VSS))}
+RDR OUTf Y  1000
+RO Y 0 1e11
+.ENDS BUFFERWS_PS
+*$
+**** CAP BLOCK ******************************************************************************************
+**Description: Capacitor Subckt
+**Subckt macro for translation of Verilog Capacitor
+**No additional modeling is incorporated
+**The parameter c is the capacitance
+**Status Verified and Approved - cjs 01/26/2009
+.SUBCKT CAP_PS A B PARAMS: c=1000 ic=0
+C1 A B {c} ic={ic}
+.ENDS CAP_PS
+*$
+**** CCCS BLOCK ******************************************************************************************
+**Description: Current Controlled Current Source
+**Current flowing into the CTRLP terminal will be treated positive and flowing out will be treated negative
+**The output current will be positive or negative depending on the direction of the input current
+**The parameter 'gain' is the gain (Iout/Iin)
+**Status Verified and Approved
+.SUBCKT CCCS_PS OUTP OUTN CTRLP CTRLN PARAMS: gain=1
+ROUTP OUTP 0 1e11
+ROUTN OUTN 0 1e11
+RCTRLP CTRLP 0 1e11
+RCTRLN CTRLN 0 1e11
+VFLOW CTRLP CTRLN DC 0
+F1 OUTP OUTN VFLOW {gain}
+.ENDS CCCS_PS
+*$
+**** IDEAL COMPARATOR ********************************************************************************
+.SUBCKT COMPIDEAL_PS Y NEG POS PARAMS: td=1e-9 tt=1e-9
+*
+RP POS 0 1e11
+CP POS 0 0.01pF
+RN NEG 0 1e11
+CN NEG 0 0.01pF
+VS VSUP 0 DC 1
+**** Comparator ****
+ECOUT Ypp 0 VALUE={IF (V(POS) > V(NEG), 1, 0)}
+RYPP Ypp 0 1e11
+***** Add delay lines ****
+XNSW1 OUTp Ypp 0 NSW_PS PARAMS: RONval={(td+1e-15)/(1e-12*0.693)} VTHval=0.5
+XPSW1 OUTp Ypp VSUP PSW_PS PARAMS: RONval={(td+1e-15)/(1e-12*0.693)} VTHval=0.5
+CDEL1 OUTp 0 1pF
+ETHRESH Yp 0 VALUE={IF(V(OUTp) > 0.5, 1, 0)} 
+ROUTp Yp 0 1e11
+** Add rise and fall *****
+XNSW2 OUTr Yp 0 NSW_PS PARAMS: RONval={(tt+1e-15)/(1e-12*2.3)} VTHval=0.5
+XPSW2 OUTr Yp VSUP PSW_PS PARAMS: RONval={(tt+1e-15)/(1e-12*2.3)} VTHval=0.5
+CDEL2 OUTr 0 1pF
+**************************
+EOUT OUTf 0 VALUE={V(OUTr)}
+RDR OUTf Y 1000
+RO Y 0 1e11
+.ENDS COMPIDEAL_PS
+*$
+.SUBCKT IDC_PS OUT GRND PARAMS: i_dc=1
+ROUT OUT 0 1e11
+I1 OUT GRND DC {i_dc}
+.ENDS IDC_PS
+*$
+**** NMOS IDEAL *****************************************************************************************
+.SUBCKT NMOSIDEAL_PS D G S PARAMS: k=1 vth=0
+RDDUM D 0 1e11
+RSDUM S 0 1e11
+RGDUM G 0 1e11
+EON Yp 0 VALUE={IF(V(G,S) > {vth}, 1, 0)}
+GOUT D S VALUE={IF(V(D,S) >= (V(G,S)-{vth}), V(Yp)*({k}/2)*(V(G,S)-{vth})**2, V(Yp)*({k})*(V(G,S)-{vth}-V(D,S)/2)*V(D,S))}
+.ENDS NMOSIDEAL_PS
+*$
+**** XNOR2 *********************************************************************************************
+.SUBCKT XNOR2_PS Y A B PARAMS: vhi=1 vlo=0 vthresh=500e-3 tplh=1e-9 tphl=1e-9 tr=1e-9 tf=1e-9
+RA A 0 1e11
+CA A 0 0.01pF
+RB B 0 1e11
+CB B 0 0.01pF
+VS VSUP 0 DC 1
+***** boolean ************
+ENXOR2 Ypp 0 VALUE={IF(V(A) > {vthresh} ^ V(B) > {vthresh}, 0, 1)}
+ROUTpp Ypp 0 1e11
+***** add delay lines ****
+XNSW1 OUTp Ypp 0 NSW_PS PARAMS: RONval={(tplh+1e-15)/(1e-12*0.693)} VTHval=0.5
+XPSW1 OUTp Ypp VSUP PSW_PS PARAMS: RONval={(tphl+1e-15)/(1e-12*0.693)} VTHval=0.5
+CDEL1 OUTp 0 1pF
+ETHRESH Yp 0 VALUE={IF(V(OUTp) > 0.5, 1, 0)}
+ROUTp Yp 0 1e11
+** add rise and fall *****
+XNSW2 OUTr Yp 0 NSW_PS PARAMS: RONval={(tf+1e-15)/(1e-12*2.3)} VTHval=0.5
+XPSW2 OUTr Yp VSUP PSW_PS PARAMS: RONval={(tr+1e-15)/(1e-12*2.3)} VTHval=0.5
+CDEL2 OUTr 0 1pF
+**************************
+EOUT OUTf 0 VALUE={V(OUTr)*({vhi} - {vlo})+{vlo}}
+RDR OUTf Y  1000
+RO Y 0 1e11
+.ENDS XNOR2_PS
+*$
+**** SWITCH***************** ********************************************************************************
+.SUBCKT SWITCH_PS A SWD SWC PARAMS: vth=500e-3 ron=1e3 roff=1e6 tdelay=1e-9 trise=1e-9 tfall=1e-9 initval=0
+*
+VS VSUP 0 DC 1
+***** boolean ************
+EBUF1 Ypp 0 VALUE={IF(V(A) > ({vth}), {1-initval}, {initval})}
+ROUTpp Ypp 0 1e11
+***** add delay lines ****
+XNSW1 OUTp Ypp 0 NSW_PS PARAMS: RONval={(tdelay+1e-15)/(1e-12*0.693)} VTHval=0.5
+XPSW1 OUTp Ypp VSUP PSW_PS PARAMS: RONval={(tdelay+1e-15)/(1e-12*0.693)} VTHval=0.5
+CDEL1 OUTp 0 1pF
+ETHRESH Yp 0 VALUE={IF(V(OUTp) > 0.5, 1, 0)}
+ROUTp Yp 0 1e11
+** Add rise and fall *****
+XNSW2 OUTr Yp 0 NSW_PS PARAMS: RONval={(trise+1e-15)/(1e-12*2.3)} VTHval=0.5
+XPSW2 OUTr Yp VSUP PSW_PS PARAMS: RONval={(tfall+1e-15)/(1e-12*2.3)} VTHval=0.5
+CDEL2 OUTr 0 1pF
+***Switch ************
+EOUT VG1 SWC VALUE={V(OUTr)}
+XNSW3 SWD VG1 SWC NSW_PS PARAMS: RONval={ron} VTHval=0.5
+.ENDS SWITCH_PS
+**** SPM_timer NOT DONE YET ***************************************************************************************
+**** SPM_var2d NOT DONE YET ***************************************************************************************
+*$
+**** VAR2ELEC *****************************************************************************************
+**Basically single ended to differential converter with a gain 
+.SUBCKT VAR2ELEC_PS IN OUTP OUTN PARAMS: gain=1
+*
+RIN IN 0 1e11
+ROUTP OUTP 0 1e11
+ROUTN OUTN 0 1e11
+E1 OUTP OUTN VALUE={gain*V(IN)}
+RO OUTP 0 1e11
+.ENDS VAR2ELEC_PS
+**** SPM_var2i NOT DONE YET ***************************************************************************************
+*$
+**** VCCS BLOCK ******************************************************************************************
+.SUBCKT VCCS_PS OUTP OUTN CTRLP CTRLN PARAMS: gm=1
+ROUTP OUTP 0 1e11
+ROUTN OUTN 0 1e11
+RCTRLP CTRLP 0 1e11
+RCTRLN CTRLN 0 1e11
+G1 OUTP OUTN CTRLP CTRLN {gm}
+.ENDS VCCS_PS
+*$
+.SUBCKT CCCS_MOS_PS IOUT_P IOUT_N IIN_P IIN_N PARAMS: GAIN=1 VMAX=5 VTH=1
+RCTRLP IIN_P 0 1e11
+RCTRLN IIN_N 0 1e11
+V1 IIN_P IIN_N 0
+GOUT IOUT_P IOUT_N VALUE={IF(V(IOUT_P, IOUT_N)< {VTH}, I(V1)*{GAIN}*V(IOUT_P,IOUT_N)/{VTH}, I(V1)*
++ {GAIN})}
+DCLAMP IOUT_P INT1  DD
+V2 INT1 IOUT_N {VMAX} 
+ROUTP IOUT_P 0 1e11
+ROUTN IOUT_N 0 1e11
+.MODEL DD D( IS=1F N=0.01 TT = 10p )
+.ENDS CCCS_MOS_PS
+*$
+**** SPM_vccs_clip mos **********************************************************************************
+.SUBCKT VCCS_MOS_PS IOUT_P IOUT_N VIN_P VIN_N PARAMS: GM=1 VTH=1
+RCTRLP VIN_P 0 1e11
+RCTRLN VIN_N 0 1e11
+GOUT IOUT_P IOUT_N VALUE={IF(V(IOUT_P, IOUT_N)>{VTH}, V(VIN_P,VIN_N)*{GM}, V(IOUT_P, IOUT_N)*
++ V(VIN_P,VIN_N)*{GM}/{VTH})}
+ROUTP IOUT_P 0 1e11
+ROUTN IOUT_N 0 1e11
+.ends VCCS_MOS_PS
+*$
+**** SPM_vccs_clip **********************************************************************************
+.SUBCKT VCCS_CLIP_PS IOUT_P IOUT_N VIN_P VIN_N PARAMS: GM=1 IOMAX=1 IOMIN=-1
+RCTRLP VIN_P 0 1e11
+RCTRLN VIN_N 0 1e11
+GOUT IOUT_P IOUT_N VALUE={LIMIT({GM}*V(VIN_P,VIN_N), {IOMIN},{IOMAX})}
+ROUTP IOUT_P 0 1e11
+ROUTN IOUT_N 0 1e11
+.ends VCCS_CLIP_PS
+*$
+**** VCVS BLOCK ******************************************************************************************
+.SUBCKT VCVS_PS OUTP OUTN CTRLP CTRLN PARAMS: GAIN=1
+ROUTP OUTP 0 1e11
+ROUTN OUTN 0 1e11
+RCTRLP CTRLP 0 1e11
+RCTRLN CTRLN 0 1e11
+E1 OUTP OUTN CTRLP CTRLN {GAIN}
+.ENDS VCVS_PS
+*$
+****** CLIPPED VOLTAGE CONTROL VOLTAGE SOURCE ********************
+*Status: verified
+.SUBCKT VCVSCLIP_PS YP YN POS NEG PARAMS: gain=1 vomax=1 vomin=-1
+RP POS 0 1e11
+CP POS 0 0.01pF
+RN NEG 0 1e11
+CN NEG 0 0.01pF
+ROUTN YN 0 1e11
+COUTN YN 0 0.01pF
+***** boolean ************
+EVCLP YP YN VALUE={LIMIT((V(POS)-V(NEG))*{gain},{vomin},{vomax})}
+**************************
+RO YP 0 1e11
+.ENDS VCVSCLIP_PS
+*$
+******************started**********
+.SUBCKT COMP_BASIC_GEN INP INM Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5	
+E_ABM Yint 0 VALUE {IF (V(INP) > 
++ V(INM), {VDD},{VSS})}
+R1 Yint Y 1
+C1 Y 0 1n
+.ENDS COMP_BASIC_GEN
+*$
+.SUBCKT COMPHYS_BASIC_GEN INP INM HYS OUT PARAMS: VDD=1 VSS=0 VTHRESH=0.5	
+EIN INP1 INM1 INP INM 1 
+EHYS INP1 INP2 VALUE { IF( V(1) > {VTHRESH},-V(HYS),0) }
+EOUT OUT 0 VALUE { IF( V(INP2)>V(INM1), {VDD} ,{VSS}) }
+R1 OUT 1 1
+C1 1 0 5n
+RINP1 INP1 0 1K
+.ENDS COMPHYS_BASIC_GEN
+*$
+.SUBCKT COMPHYS2_BASIC_GEN INP INM HYS OUT PARAMS: VDD=1 VSS=0 VTHRESH=0.5	
++ T=10
+EIN INP1 INM1 INP INM 1 
+EHYS INM2 INM1 VALUE { IF( V(1) > {VTHRESH},-V(HYS)/2,V(HYS)/2) }
+EOUT OUT 0 VALUE { IF( V(INP1)>V(INM2), {VDD} ,{VSS}) }
+R1 OUT 1 1
+C1 1 0 {T*1e-9}
+RINP1 INP1 0 10K
+RINM2 INM2 0 10K
+.ENDS COMPHYS2_BASIC_GEN
+*$
+.SUBCKT AND2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS AND2_BASIC_GEN
+*$
+
+.SUBCKT INV_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS INV_BASIC_GEN
+*$
+.SUBCKT XOR2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE  YINT 0 VALUE {{IF(V(A) > {VTHRESH}  ^  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS XOR2_BASIC_GEN
+*$
+.SUBCKT XNOR2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE  YINT 0 VALUE {{IF(V(A) > {VTHRESH}  ^  
++ V(B) > {VTHRESH},{VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS XNOR2_BASIC_GEN
+*$
+.SUBCKT OR2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  |  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS OR2_BASIC_GEN
+*$
+.SUBCKT INV_DELAY_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 DELAY = 10n 
+E_ABMGATE1    YINT1 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT1 YINT2 1
+CINT YINT2 0 {DELAY*1.3}
+E_ABMGATE2    YINT3 0 VALUE {{IF(V(YINT2) > {VTHRESH} , 
++ {VSS},{VDD})}}
+RINT2 YINT3 Y 1
+CINT2 Y 0 1n
+.ENDS INV_DELAY_BASIC_GEN
+*$
+.SUBCKT BUF_DELAY_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 DELAY = 10n 
+E_ABMGATE1    YINT1 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT1 YINT2 1
+CINT YINT2 0 {DELAY*1.3}
+E_ABMGATE2    YINT3 0 VALUE {{IF(V(YINT2) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT2 YINT3 Y 1
+CINT2 Y 0 1n
+.ENDS BUF_DELAY_BASIC_GEN
+*$
+.SUBCKT BUF_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS BUF_BASIC_GEN
+*$
+.MODEL D_D1 D( IS=1e-15 TT=10p Rs=0.05 N=.1  )
+*$
+.SUBCKT CESR IN OUT
++ PARAMs:  C=100u ESR=0.01 X=2 IC=0
+C	IN 1  {C*X} IC={IC}
+RESR	1 OUT {ESR/X}
+.ENDS CESR
+*$
+.SUBCKT NSW_PS D G S PARAMS: RONval=10k VTHval=0.7 VCHARval=0.01 CGval=0.01pF CDval=0.01pF CSval=0.01pf
+RDDUM D 0 1e11
+RSDUM S 0 1e11
+RGDUM G 0 1e11
+CG G D {CGval}
+CD D S {CDval}
+CS G S {CSval}
+***EEXP F1 0 VALUE={LIMIT(((V(G,S)-VTHval)/VCHARval),-80,80)} 
+Etest test 0 VALUE={IF(V(D) > V(S), V(G,S), V(G,D))}
+GOUT D S VALUE={V(D,S)/(RONval*(1+EXP(-LIMIT(((V(test)-VTHval)/VCHARval),-80,80))))}
+.ENDS NSW_PS
+**** HBRIDGE BLOCK ******************************************************************************************
+*$
+.SUBCKT PSW_PS D G S PARAMS: RONval=10k VTHval=0.7 VCHARval=0.01 CGval=0.01pF CDval=0.01pF 
+RDDUM D 0 1e11
+RSDUM S 0 1e11
+RGDUM G 0 1e11
+CG G D {CGval}
+CD D S {CDval}
+***EEXP F1 0 VALUE={LIMIT(((V(S,G)-VTHval)/VCHARval),-80,80)} 
+Etest test 0 VALUE={IF(V(S) > V(D), V(S,G), V(D,G))}
+GOUT S D VALUE={V(S,D)/(RONval*(1+EXP(-LIMIT(((V(test)-VTHval)/VCHARval),-80,80))))}
+.ENDS PSW_PS
+
+

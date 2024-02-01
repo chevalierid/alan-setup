@@ -1,0 +1,397 @@
+*$
+* ISO5852S
+*****************************************************************************
+* (C) Copyright 2021 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Texas Instruments Inc.
+* Part: ISO5852S
+* Date: 09JUN2021
+* Model Type:  TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 17.4-2019 S016
+* EVM Order Number: ISO5852SEVM
+* EVM Users Guide: SLLU207A–August 2014–Revised September 2015
+* Datasheet: SLLSEQ0B – AUGUST 2015–REVISED JANUARY 2017
+* Topologies Supported: NA
+*
+* Model Version: Final 1.10
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.10
+* Soft turn off current has been changed to 130mA.
+* STO on time has been made dependent on load capacitance value.
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+* A. Features have been modelled
+*	 1. Soft-turn off current
+*	 2. STO on time
+*	 3. Input and Output UVLO
+*	 4. Output Short circuit clamp
+*
+* B. Features have not been modelled
+*    1. Operating Quiescent Current
+*    2. Shutdown Current 
+*    3. Temperature dependent characteristics
+*
+*****************************************************************************
+.SUBCKT ISO5852S_TRANS CLAMP DESAT FAULT_N GND1_0 GND1_1 GND2 IN+ IN- OUTH OUTL
++  RDY RST_N VCC1 VCC2 VEE2_0 VEE2_1  
+X_U298         FX1 FX3 BUF_BASIC_GEN PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+R_R183         DRV N18851783  400  
+E_E154         N18852733 N18852722 UVLO2 0 {-1/5}
+E_E152         N18852312 GND1 N18851385 0 1
+E_E151         CLMP_COMP_OUT 0 VALUE { if ( V(CLAMP, VEE2_IND) < 2.1 , 5 , 0 )
++  }
+V_V62         N18851771 VEE2_IND 15m
+X_U323         N18851431 RDY N18851341 AND2_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+R_R163         N18853390 N18853667  1  
+R_R191         GND1_1 GND1  1u  
+C_C121         0 N18853604  1n  
+T_T6         N18851687 0 N18853149 0 Z0=50 TD=46n  
+E_ABM80         OUTH1 0 VALUE { (V(OUTH) * 100)/100    }
+X_U314         DRV N188507980 INV_BASIC_GEN PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+E_ABM76         N18851685 0 VALUE { IF(  V(N18851428) > V(VCC1BY2) , 5 , 0 )   
++  }
+X_U333         STO_ON_TIME N18851708 INV_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+V_V57         N18854375 OUTH1 5.1
+E_ABM72         N18853627 0 VALUE { IF(V(N18853667) > (V(N18853724)-0.5), 0 ,
++  5)    }
+R_R162         0 N18853149  50  
+R_R179         N18850603 N18850788  40  
+E_E137         N18851462 0 DESAT GND2_IND 1
+E_E135         VCC2_INT 0 VCC2 GND2_IND 1
+X_U324         DESAT N188512890 d_d1
+X_M46         CLAMP N18853870 N18851771 lowmos
+X_U301         N18852043 N18852601 d_d1
+R_R177         N18850805 N18850820  10G  
+E_E139         N18853724 0 VALUE { V(VCC2, VEE2_IND) }
+X_S26    N18852312 GND1 RDY GND1 ISO5852S_TRANS_S26 
+X_U338         DESAT VCC2 d_d1
+E_E155         VCC1_INT 0 VCC1 GND1 1
+X_U325         FLT_LATCH_IN N18851341 FAULT DSAT srlatchrhp_basic_gen PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+R_R158         FAULT_N VCC1  50k  
+X_U299         N18851783 DRV d_d1
+R_R168         N18851630 FX1  1731.234049  
+C_C136         0 N18850788  1.443n  
+X_U294         FLTCHK N18853371 INV_BASIC_GEN PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+R_R192         VEE2_0 VEE2  1u  
+X_U327         DRV N18854035 FLTCHK AND2_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+R_R187         IN- VCC1  50k  
+X_U310         N18851369 N18854375 d_d1
+X_M45         N18851032 N18850596 VEE2_IND lowmos
+R_R193         VEE2_1 VEE2  1u  
+C_C134         OUTH N18850805  1n   
+C_C142         0 N18851783  1n   
+C_C125         0 STO_EN  1n   
+E_E136         N18853249 0 N18853149 0 1
+E_E138         N18853522 N18853516 UVLO1 0 {-0.24/5}
+V_V58         N18850820 OUTH1 5.1
+X_U307         N18851512 RESET N18852302 AND2_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+C_C140         0 N18851248  1n  
+X_U295         DRV N188506431 INV_BASIC_GEN PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+X_U326         N18851630 FX1 d_d1
+R_R185         RDY VCC1  50k  
+V_V56         N18853516 0 2.25
+X_U289         FAULT UVLO1 N18853036 AND2_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+R_R165         N18851749 UVLO1  1  
+L_L16         VCC2 VCC2_IND  1n  
+X_U311         CLMP_COMP_OUT PGOOD N18853814 AND2_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+R_R180         DRV N18851084  1  
+X_U315         N18850805 N18850820 d_d1
+R_R190         GND1_0 GND1  1u  
+E_E153         N18851713 0 IN- GND1 1
+X_U296         OUTH VCC2_IND d_d1
+X_U334         CLAMP VCC2_IND d_d1
+V_V55         N18852070 GND2_IND 9
+E_ABM69         N18851749 0 VALUE { if ( V(VCC1_INT) > V(N18853522), 5 , 0 )   
++  }
+C_C122         0 N18853667  1n  
+E_E143         N18853870 N18851771 VALUE { IF(V(N18850983, 0) > 2.5, 5.115, 0)
++  }
+R_R188         N18852120 UVLO2  1  
+C_C137         0 N18851084  1.5n  
+X_U342         N18852526 N18851004 FALL_CHCK AND2_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+X_U335         N18853814 DRV N18850603 QB srlatchrhp_basic_gen PARAMS: VDD=5
++  VSS=0 VTHRESH=2.5
+E_E140         N18853390 0 VALUE { V(OUTH, VEE2_IND) }
+C_C141         N18852043 0  30n  
+X_U340         N18852315 N18852331 FLT_LATCH_IN AND2_BASIC_GEN PARAMS: VDD=5
++  VSS=0 VTHRESH=2.5
+E_E144         N18851681 N18851632 N18851248 0 -999m
+R_R159         N18852853 VCC2_IND  12  
+G_ABMII13         N18850693 N18850596 VALUE { if ( v(FALL_CHCK) > 2.5,82m, 0)  
++   }
+R_R166         N18854065 STO_EN  1m  
+X_U297         PGOOD N18852830 N18852828 AND2_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+R_R174         N188506431 N18850621  1  
+X_U336         0 N18852043 d_d1
+G_ABMII11         N18854375 N18851369 VALUE { if ( v(N18851250) > 2.5,150m, 0) 
++    }
+C_C144         0 UVLO2  1n   
+X_U343         STO_ON_TIME N18852526 INV_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+G_ABMII12         N18852601 N18852043 VALUE { IF(V(N18852189)>2.5, 1, -1 )    }
+R_R186         FX3 N18852331  14.43  
+C_C120         0 N18853079  1n   
+X_U319         VEE2_IND OUTL d_d1
+X_S23    N18850621 0 N18851369 OUTH ISO5852S_TRANS_S23 
+R_R178         N188507980 N18850880  1  
+X_U337         N18854332 N18852045 INV_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+V_V61         N18852601 0 1
+X_M44         N18852853 N18851369 OUTH highmos
+X_U303         STO_EN N18854035 BUF_BASIC_GEN PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+X_U320         RDY_CNTRL PGOOD N18851385 AND2_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+X_U341         FX3 N18852315 INV_BASIC_GEN PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+C_C132         0 N18850621  1.5n  
+E_ABM79         DRV 0 VALUE { IF(V(N18852828) > 2.5, V(N18853249), 0)    }
+X_S24    N18850880 0 N18850805 OUTH ISO5852S_TRANS_S24 
+C_C123         0 N18853781  1n   
+R_R182         GND1 IN+  50k  
+R_R160         N18851032 OUTL  0.65  
+E_E149         N18851880 N18851587 N18852070 GND2_IND 1
+X_U321         N18850788 N18850983 BUF_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+E_E142         N18851630 0 FLTCHK 0 1
+X_U329         N18851192 N18851861 INV_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+R_R175         N18850596 N18850693  10G  
+X_U344         DRV N18851004 INV_BASIC_GEN PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+C_C124         0 UVLO1  1n   
+G_ABMII10         N18850820 N18850805 VALUE { if ( v(N18850938) > 2.5,150m, 0) 
++    }
+E_E145         N18851428 0 IN+ GND1 1
+C_C126         VEE2_IND N18850596  1n   
+X_S25    N18851084 0 N18850596 VEE2_IND ISO5852S_TRANS_S25 
+E_ABM71         N18853480 0 VALUE { if( V(N18852043) > v(N18851681), 1 , 0)   
++  }
+R_R167         DSTCMP_OUT N18853781  330  
+R_R161         N18853081 N18853079  1150.156033  
+X_U346         STO_ON_TIME N18852614 INV_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+X_U312         N18850715 N18850711 BUF_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+C_C135         0 N18850880  1.5n  
+E_ABM77         RESET 0 VALUE { IF(  V(N18851903) > V(VCC1BY2) , 5 , 0 )    }
+E_E148         N18853886 GND2_IND VALUE { if (V(N18851783, 0) > 3.15, 0, 5.1) }
+X_U339         N18852302 DSAT N18852007 AND2_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+R_R169         N18853480 N18851248  1  
+X_U322         FLTCHK N18851192 d_d1
+V_V59         N18850693 VEE2_IND 5.113
+X_M43         VCC2_IND N18850805 OUTH highmos
+E_ABM73         N18854065 0 VALUE { if (V(N18853781) >3.15 , 5, 0)    }
+C_C143         0 N18852331  1.5n  
+E_ABM75         N18850717 0 VALUE { if(V(N18850711)>2.5, 5, 0)    }
+X_U290         N18853079 N18853103 N18851431 AND2_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+R_R189         N18853371 N18852830  2412.186108  
+X_U316         N18850596 N18850693 d_d1
+R_R172         N18851369 N18854375  10G  
+E_E146         VCC1BY2 0 VCC1_INT 0 0.5
+E_E150         N18851903 0 RST_N GND1 1
+X_U330         N18852007 N18851861 N18852189 AND2_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+X_U345         N18852614 DRV N18851250 AND2_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+R_R181         FLTCHK N18851192  3000  
+C_C127         0 FX1  1n   
+C_C130         OUTH N18851369  1n   
+R_R176         FLT_LATCH_IN N18850715  4.15k  
+X_U291         N18853081 N18853103 INV_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+E_E141         N18851587 0 DSTCMP_OUT 0 -20m
+X_U317         N18850717 RDY_CNTRL INV_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+X_U300         N18853365 N18853604 N18850938 AND2_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+V_V60         N18851632 0 1
+L_L17         VEE2 VEE2_IND  1n  
+X_M47         N188512890 N18853886 GND2_IND desat_pull_down
+C_C133         0 N18850715  1.443n IC=.000001  
+E_ABM78         N18852120 0 VALUE { if ( V(VCC2_INT) > V(N18852733), 5 , 0 )   
++  }
+X_S21    N18853036 0 FAULT_N GND1 ISO5852S_TRANS_S21 
+X_U292         RESET N18853081 INV_BASIC_GEN PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+X_U331         N18852045 N18851685 N18851512 AND2_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+L_L18         GND2 GND2_IND  1n  
+X_U313         FLT_LATCH_IN N18850715 d_d1
+E_E147         N18851687 0 N18851248 0 5
+E_ABM68         N18854332 0 VALUE { IF(  V(N18851713) > V(VCC1BY2) , 5 , 0 )   
++  }
+R_R164         N18853627 N18853604  1  
+V_V63         N18852722 0 12
+E_ABM67         DSTCMP_OUT 0 VALUE { if ( V(N18851462) > V(N18851880), 5 , 0 ) 
++    }
+I_I6         VCC2 DESAT DC 500u  
+X_U332         N18851708 DRV N18853365 AND2_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+C_C138         0 N18851192  1n   
+X_U318         N18850788 N18850603 d_d1
+C_C119         0 N18852830  1n   
+X_U293         UVLO1 UVLO2 PGOOD AND2_BASIC_GEN PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+G_ABMII14         OUTL VEE2_IND VALUE { if ( v(STO_ON_TIME) > 0.5,130m, 0)    }
+X_U576         FLTCHK N18978590 STO_ON_TIME N18978587 srlatchrhp_basic_gen
++  PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+E_ABM81         N18978590 0 VALUE { if ( (V(OUTL) - V(VEE2))<10m, 5, 0 )    }
+.ENDS ISO5852S_TRANS
+*$
+.subckt ISO5852S_TRANS_S26 1 2 3 4  
+S_S26         3 4 1 2 _S26
+RS_S26         1 2 1G
+.MODEL         _S26 VSWITCH Roff=1m Ron=1G Voff=1.2 Von=2.5
+.ends ISO5852S_TRANS_S26
+*$
+.subckt ISO5852S_TRANS_S23 1 2 3 4  
+S_S23         3 4 1 2 _S23
+RS_S23         1 2 1G
+.MODEL         _S23 VSWITCH Roff=1e8 Ron=1m Voff=1V Von=3V
+.ends ISO5852S_TRANS_S23
+*$
+.subckt ISO5852S_TRANS_S24 1 2 3 4  
+S_S24         3 4 1 2 _S24
+RS_S24         1 2 1G
+.MODEL         _S24 VSWITCH Roff=1e8 Ron=1m Voff=1V Von=3V
+.ends ISO5852S_TRANS_S24
+*$
+.subckt ISO5852S_TRANS_S25 1 2 3 4  
+S_S25         3 4 1 2 _S25
+RS_S25         1 2 1G
+.MODEL         _S25 VSWITCH Roff=1e8 Ron=1m Voff=1V Von=3V
+.ends ISO5852S_TRANS_S25
+*$
+.subckt ISO5852S_TRANS_S21 1 2 3 4  
+S_S21         3 4 1 2 _S21
+RS_S21         1 2 1G
+.MODEL         _S21 VSWITCH Roff=1G Ron=1m Voff=1.2 Von=2.5
+.ends ISO5852S_TRANS_S21
+*$
+.subckt d_d1 1 2
+d1 1 2 dd1
+.model dd1 d
++ is=1e-15
++ tt=1e-11
++ rs=0.05
++ n=0.001
+.ends d_d1
+*$
+.subckt lowmos d g s
+m1 d g s s _mod
+.model _mod nmos
++ kp=2e-09
++ w=2
++ l=1e-08
++ vto=0.1
++ n=2.5
+.ends lowmos
+*$
+.subckt srlatchrhp_basic_gen s r q qb params: vdd=1 vss=0 vthresh=0.5 
+gq 0 qint value = {if(v(r) > {vthresh},-5,if(v(s)>{vthresh},5, 0))}
+cqint qint 0 1n IC={VSS}
+rqint qint 0 1000meg
+d_d10 qint my5 d_d1
+v1 my5 0 {vdd}
+d_d11 myvss qint d_d1
+v2 myvss 0 {vss} 
+eq qqq 0 qint 0 1
+x3 qqq qqqd1 buf_basic_gen params: vdd={vdd} vss={vss} vthresh={vthresh}
+rqq qqqd1 q 1
+eqb qbr 0 value = {if( v(q) > {vthresh}, {vss},{vdd})}
+rqb qbr qb 1 
+cdummy1 q 0 1n 
+cdummy2 qb 0 1n
+.model d_d1 d
++ is=1e-15
++ tt=1e-11
++ rs=0.05
++ n=0.1
+.ends srlatchrhp_basic_gen
+*$
+.subckt highmos d g s
+m1 d g s s _mod
+.model _mod nmos
++ kp=2e-09
++ w=0.5
++ l=1e-08
++ vto=0.1
++ n=2.5
+.ends highmos
+*$
+.subckt desat_pull_down d g s
+m1 d g s s _mod
+.model _mod nmos
++ kp=2e-09
++ w=0.67
++ l=1e-06
++ vto=0.1
++ n=2.5
+.ends desat_pull_down
+*$
+.SUBCKT AND2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS AND2_BASIC_GEN
+*$
+.SUBCKT BUF_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS BUF_BASIC_GEN
+*$
+.SUBCKT INV_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS INV_BASIC_GEN
+*$
+.MODEL IGBT NIGBT
++ TAU=257.59E-9
++ KP=1.6467
++ AREA=8.0000E-6
++ AGD=3.2000E-6
++ WB=117.00E-6
++ VT=4.5775
++ MUN=3.2000E3
++ MUP=950
++ BVF=7.5320
++ KF=.5005
++ CGS=14.605E-9
++ COXD=13.357E-9
++ VTD=-5
+*$

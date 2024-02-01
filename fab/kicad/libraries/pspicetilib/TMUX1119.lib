@@ -1,0 +1,336 @@
+* TMUX1119
+*****************************************************************************
+* (C) Copyright 2018 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Texas Instruments Inc.
+* Part: TMUX1119
+* Date: 2/15/19
+* Model Type: ALL-IN-ONE
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: 
+* EVM Users Guide: 
+* Datasheet: SCDS401
+* Topologies Supported: 
+*
+* Model Version: Preliminary
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Updated model to support more specs
+* 
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+* 
+* 1. The following limited specs/feature set have been modeled
+*    This model reflects RON versus VS or VD for 1.2V < VDD < 5.0V
+*    This model reflects the published specs for 5V operation:
+*       a. CS_ON, CS_OFF
+*       b. CD_ON
+*       c. Bandwidth
+*       d. Isolation at 1MHZ and 10MHz
+*       e. Break-Before-Make Time.
+*       f. Switching Time Between Channels
+*       g. Source and Drain leakage        
+* 3. This model may not reflect other published specs and/or features.
+* 4. Temperature effects are not modeled. 
+* 5. If convergece errors are encountered, try making simulation paramaters:
+*    ITL1 = 500 & ITL2 = 200
+*
+*
+*****************************************************************************
+.SUBCKT TMUX1119 S1 S2 D SEL VDD GND
+R_R5         0 CNTRL5  1e6 TC=0,0 
+X_U1_S1    CNTRL1_DELAY GND S1 U1_N00735 SCH_PORT1_U1_S1_TMUX1119 
+R_U1_R2         U1_N00735 U1_N08799  23 TC=0,0 
+C_U1_C6         GND D  4p  TC=0,0 
+X_U1_S2    CNTRL1_DELAY GND U1_N00768 D SCH_PORT1_U1_S2_TMUX1119 
+R_U1_R1         GND U1_NISO  10e6 TC=0,0 
+R_U1_R3         U1_N06532 U1_N00768  23 TC=0,0 
+X_U1_U2         U1_N08799 U1_N06532 VDD GND RON_VCC_VD_TMUX1119 
+C_U1_C1         GND S1  2.75p  TC=0,0 
+L_U1_L1         U1_N00735 U1_N08799  14.25nH  
+C_U1_C2         GND U1_N00735  2p  TC=0,0 
+C_U1_C7         GND U1_N08799  2f  TC=0,0 
+C_U1_C5         U1_N13923 U1_NISO  7p  TC=0,0 
+X_U1_S3    CNTRL1_DELAY GND S1 U1_N12958 SCH_PORT1_U1_S3_TMUX1119 
+C_U1_C3         GND U1_N00768  2p  TC=0,0 
+C_U1_C4         U1_NISO U1_N12958  7p  TC=0,0 
+L_U1_L2         U1_N06532 U1_N00768  14.25nH  
+X_U1_S4    CNTRL1_DELAY GND D U1_N13923 SCH_PORT1_U1_S4_TMUX1119 
+C_U1_C8         GND U1_N06532  2f  TC=0,0 
+R_U10_R5         U10_N349504 U10_RC_IN  1 TC=0,0 
+D_U10_D3         U10_RC_OUT U10_N349504 Dideal 
+C_U10_C3         GND U10_RC_OUT  9n  TC=0,0 
+E_U10_E2         U10_RC_IN GND CNTRL1 GND 10
+R_U10_R4         U10_RC_IN U10_N345841  2 TC=0,0 
+V_U10_V1         U10_N345775 GND 5Vdc
+D_U10_D2         U10_N345841 U10_RC_OUT Dideal 
+X_U10_U9         U10_RC_OUT U10_N345775 CNTRL1_DELAY GND COMPARATOR_TMUX1119 
+X_U20         S2 GND VCC_MON ILEAK_OFF_TMUX1119 
+X_U2_S1    CNTRL2_DELAY GND S2 U2_N00735 SCH_PORT1_U2_S1_TMUX1119 
+R_U2_R2         U2_N00735 U2_N08799  23 TC=0,0 
+C_U2_C6         GND D  4p  TC=0,0 
+X_U2_S2    CNTRL2_DELAY GND U2_N00768 D SCH_PORT1_U2_S2_TMUX1119 
+R_U2_R1         GND U2_NISO  10e6 TC=0,0 
+R_U2_R3         U2_N06532 U2_N00768  23 TC=0,0 
+X_U2_U2         U2_N08799 U2_N06532 VDD GND RON_VCC_VD_TMUX1119 
+C_U2_C1         GND S2  2.75p  TC=0,0 
+L_U2_L1         U2_N00735 U2_N08799  14.25nH  
+C_U2_C2         GND U2_N00735  2p  TC=0,0 
+C_U2_C7         GND U2_N08799  2f  TC=0,0 
+C_U2_C5         U2_N13923 U2_NISO  7p  TC=0,0 
+X_U2_S3    CNTRL2_DELAY GND S2 U2_N12958 SCH_PORT1_U2_S3_TMUX1119 
+C_U2_C3         GND U2_N00768  2p  TC=0,0 
+C_U2_C4         U2_NISO U2_N12958  7p  TC=0,0 
+L_U2_L2         U2_N06532 U2_N00768  14.25nH  
+X_U2_S4    CNTRL2_DELAY GND D U2_N13923 SCH_PORT1_U2_S4_TMUX1119 
+C_U2_C8         GND U2_N06532  2f  TC=0,0 
+R_R4         0 CNTRL6  1e6 TC=0,0 
+R_R7         0 CNTRL3  1e6 TC=0,0 
+R_U11_R5         U11_N349504 U11_RC_IN  1 TC=0,0 
+D_U11_D3         U11_RC_OUT U11_N349504 Dideal 
+C_U11_C3         GND U11_RC_OUT  9n  TC=0,0 
+E_U11_E2         U11_RC_IN GND CNTRL2 GND 10
+R_U11_R4         U11_RC_IN U11_N345841  2 TC=0,0 
+V_U11_V1         U11_N345775 GND 5Vdc
+D_U11_D2         U11_N345841 U11_RC_OUT Dideal 
+X_U11_U9         U11_RC_OUT U11_N345775 CNTRL2_DELAY GND COMPARATOR_TMUX1119 
+R_R2         0 CNTRL8  1e6 TC=0,0 
+R_R1         0 EN_INT  1e6 TC=0,0 
+R_R3         0 CNTRL7  1e6 TC=0,0 
+X_U19         S1 GND VCC_MON ILEAK_OFF_TMUX1119 
+R_R6         0 CNTRL4  1e6 TC=0,0 
+X_U29         GND GND SEL VDD VDD GND EN_INT VCC_MON CNTRL1 CNTRL2 CNTRL3
++  CNTRL4 CNTRL5 CNTRL6 CNTRL7 CNTRL8 DIGITAL_TMUX1119 
+.MODEL Dideal D
+.ENDS
+*************
+**         **
+*************
+.subckt SCH_PORT1_U1_S1_TMUX1119 1 2 3 4  
+S_U1_S1         3 4 1 2 _U1_S1
+RS_U1_S1         1 2 1G
+.MODEL         _U1_S1 VSWITCH Roff=5e9 Ron=1m Voff=0.25V Von=0.75V
+.ends SCH_PORT1_U1_S1_TMUX1119
+*************
+**         **
+*************
+.subckt SCH_PORT1_U1_S2_TMUX1119 1 2 3 4  
+S_U1_S2         3 4 1 2 _U1_S2
+RS_U1_S2         1 2 1G
+.MODEL         _U1_S2 VSWITCH Roff=5e9 Ron=1m Voff=0.25V Von=0.75V
+.ends SCH_PORT1_U1_S2_TMUX1119
+*************
+**         **
+*************
+.subckt SCH_PORT1_U1_S3_TMUX1119 1 2 3 4  
+S_U1_S3         3 4 1 2 _U1_S3
+RS_U1_S3         1 2 1G
+.MODEL         _U1_S3 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends SCH_PORT1_U1_S3_TMUX1119
+*************
+**         **
+*************
+.subckt SCH_PORT1_U1_S4_TMUX1119 1 2 3 4  
+S_U1_S4         3 4 1 2 _U1_S4
+RS_U1_S4         1 2 1G
+.MODEL         _U1_S4 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends SCH_PORT1_U1_S4_TMUX1119
+*************
+**         **
+*************
+.subckt SCH_PORT1_U2_S1_TMUX1119 1 2 3 4  
+S_U2_S1         3 4 1 2 _U2_S1
+RS_U2_S1         1 2 1G
+.MODEL         _U2_S1 VSWITCH Roff=5e9 Ron=1m Voff=0.25V Von=0.75V
+.ends SCH_PORT1_U2_S1_TMUX1119
+*************
+**         **
+*************
+.subckt SCH_PORT1_U2_S2_TMUX1119 1 2 3 4  
+S_U2_S2         3 4 1 2 _U2_S2
+RS_U2_S2         1 2 1G
+.MODEL         _U2_S2 VSWITCH Roff=5e9 Ron=1m Voff=0.25V Von=0.75V
+.ends SCH_PORT1_U2_S2_TMUX1119
+*************
+**         **
+*************
+.subckt SCH_PORT1_U2_S3_TMUX1119 1 2 3 4  
+S_U2_S3         3 4 1 2 _U2_S3
+RS_U2_S3         1 2 1G
+.MODEL         _U2_S3 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends SCH_PORT1_U2_S3_TMUX1119
+*************
+**         **
+*************
+.subckt SCH_PORT1_U2_S4_TMUX1119 1 2 3 4  
+S_U2_S4         3 4 1 2 _U2_S4
+RS_U2_S4         1 2 1G
+.MODEL         _U2_S4 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends SCH_PORT1_U2_S4_TMUX1119
+*************
+**         **
+*************
+.SUBCKT RON_VCC_VD_TMUX1119 1 2 VCC GND
+* Functions below are valid only for 0V <= VCC <= 5V
+EV NVCC 0 VALUE = {V(VCC,GND)}
+*EIN NIN 0 VALUE = {V(1,GND)}
+********************************
+E1_1 NA2_1 0 TABLE {V(VCC,GND)} = 
++ (1.2, 42.3005397390134)
++ (1.8, 57.8002033895847)
++ (2.5, 8.496635954912536)
++ (3.3, 1.21890185523962)
++ (5.0, 0.0982697628988714)
+***
+E2_1 NA1_1 0 TABLE {V(VCC,GND)} = 
++ (1.2, 45.7002025290512)
++ (1.8, -22.9619444990021)
++ (2.5, -2.709280360118320)
++ (3.3, 0.366538369751295)
++ (5.0, 0.334075012262873)
+***
+E3_1 NA0_1 0 TABLE {V(VCC,GND)} = 
++ (1.2, 6.05538463555096)
++ (1.8, 7.55014634577868)
++ (2.5, 3.258145248231845)
++ (3.3, 2.2258522266275)
++ (5.0, 1.59270630931255)
+*********************************
+E1_2 NA2_2 0 TABLE {V(VCC,GND)} = 
++ (1.2, 0)
++ (1.8, 0)
++ (2.5, 0)
++ (3.3, 1.01001434656275)
++ (5.0, 0.313515990674095)
+***
+E2_2 NA1_2 0 TABLE {V(VCC,GND)} = 
++ (1.2, 0)
++ (1.8, 0)
++ (2.5, 0)
++ (3.3, -3.01061852785705)
++ (5.0, -1.33603519270412)
+***
+E3_2 NA0_2 0 TABLE {V(VCC,GND)} = 
++ (1.2, 71.8)
++ (1.8, 40)
++ (2.5, 11.44)
++ (3.3, 6.71137851675848)
++ (5.0, 3.52701455285872)
+***********************************
+E1_3 NA2_3 0 TABLE {V(VCC,GND)} = 
++ (1.2, 1814.33338866619)
++ (1.8, 140.185865720934)
++ (2.5, 8.090241639781409)
++ (3.3, 1.08257115897377)
++ (5.0, 0.131198754759804)
+***
+E2_3 NA1_3 0 TABLE {V(VCC,GND)} = 
++ (1.2, -4047.3787914191)
++ (1.8, -435.501145398796)
++ (2.5, -36.97051245497705)
++ (3.3, -7.39874940186072)
++ (5.0, -1.56761016639175)
+***
+E3_3 NA0_3 0 TABLE {V(VCC,GND)} = 
++ (1.2, 2263.40418487475)
++ (1.8, 340.692213160212)
++ (2.5, 45.36917654029237)
++ (3.3, 15.0821060821423)
++ (5.0, 6.4754818417246)
+***********************************
+* Max values for RON as functions of supply
+ERONMAX NRONMAX 0 TABLE {V(VCC,GND)} = 
++ (1.2, 71.8)
++ (1.8, 41.7)
++ (2.5, 11.44)
++ (3.3, 11.44)
++ (5.0, 11.44)
+* Min values for RON as functions of supply
+ERONMIN NRONMIN 0 TABLE {V(VCC,GND)} = 
++ (1.2, 8.22)
++ (1.8, 4.2)
++ (2.5, 2.9)
++ (3.3, 2.2)
++ (5.0, 1.6)
+**
+E11 N1 0 VALUE = {V(NA2_1)*PWR(V(1,GND),2) + V(NA1_1)*V(1,GND) + V(NA0_1)}
+E22 N2 0 VALUE = {V(NA2_2)*PWR(V(1,GND),2) + V(NA1_2)*V(1,GND) + V(NA0_2)}
+E33 N3 0 VALUE = {V(NA2_3)*PWR(V(1,GND),2) + V(NA1_3)*V(1,GND) + V(NA0_3)}
+E44 N44 0 VALUE = {ABS(MIN(MIN(V(N1),V(N2)),V(N3))) + 1u}
+E4 N4 0 VALUE = {MAX(MIN(V(N44),V(NRONMAX)),V(NRONMIN))}
+G1 1  2 VALUE = {V(1,2)/V(N4)}
+.ENDS
+*************
+**         **
+*************
+.SUBCKT COMPARATOR_TMUX1119  INP INN OUT GND
+.PARAM VHI = 1
+.PARAM VLOW = 0
+EOUT OUT GND VALUE = {VHI*0.5*(1+ (SGN(V(INP,INN)) - ABS(SGN(V(INP,INN))) + 1))}
+.ENDS
+*************
+**         **
+*************
+.SUBCKT ILEAK_OFF_TMUX1119 OUT GND EN
+.PARAM I_LEAK_OFF = 0.01n
+*G1 OUT GND VALUE = {(1 - V(EN,GND))*I_LEAK_OFF}
+G1 OUT GND VALUE = {V(EN,GND)*I_LEAK_OFF}
+.ENDS
+*************
+**         **
+*************
+.SUBCKT DIGITAL_TMUX1119 A2 A1 A0 EN VCC GND EN_INT VCC_MON CNTRL1 CNTRL2 CNTRL3 CNTRL4 CNTRL5 CNTRL6 CNTRL7 CNTRL8
+** Digital Threshold
+.PARAM	VTHR = 0.85
+.PARAM VCC_MAX = 5.6
+.PARAM VCC_MIN = 0.9
+**
+** Convert EN pin to '1' or '0'
+EEN NEN 0 VALUE = {0.5*(SGN(V(EN,GND)-VTHR) + ABS(SGN(V(EN,GND)-VTHR)))}
+**
+** Test for Min and Max power supplies
+E1 N1 0 VALUE = {0.5*(SGN(VCC_MAX - V(VCC,GND))+ ABS(SGN(VCC_MAX - V(VCC,GND))))}
+E2 N2 0 VALUE = {0.5*(SGN(V(VCC,GND) - VCC_MIN)+ ABS(SGN(V(VCC,GND) - VCC_MIN)))}
+***
+** Convert digital input voltages to '1' and '0'
+EA0 NA0 0 VALUE = {0.5*(SGN(V(A0,GND)-VTHR) + ABS(SGN(V(A0,GND)-VTHR)))}
+EA1 NA1 0 VALUE = {0.5*(SGN(V(A1,GND)-VTHR) + ABS(SGN(V(A1,GND)-VTHR)))}
+EA2 NA2 0 VALUE = {0.5*(SGN(V(A2,GND)-VTHR) + ABS(SGN(V(A2,GND)-VTHR)))}
+**
+ES1 CNTRL1 GND VALUE = {V(N1)*V(N2)*V(NEN)*(1-V(NA2))*(1-V(NA1))*(1-V(NA0))}
+ES2 CNTRL2 GND VALUE = {V(N1)*V(N2)*V(NEN)*(1-V(NA2))*(1-V(NA1))*(V(NA0))}
+ES3 CNTRL3 GND VALUE = {V(N1)*V(N2)*V(NEN)*(1-V(NA2))*(V(NA1))*(1-V(NA0))}
+ES4 CNTRL4 GND VALUE = {V(N1)*V(N2)*V(NEN)*(1-V(NA2))*(V(NA1))*(V(NA0))}
+ES5 CNTRL5 GND VALUE = {V(N1)*V(N2)*V(NEN)*(V(NA2))*(1-V(NA1))*(1-V(NA0))}
+ES6 CNTRL6 GND VALUE = {V(N1)*V(N2)*V(NEN)*(V(NA2))*(1-V(NA1))*(V(NA0))}
+ES7 CNTRL7 GND VALUE = {V(N1)*V(N2)*V(NEN)*(V(NA2))*(V(NA1))*(1-V(NA0))}
+ES8 CNTRL8 GND VALUE = {V(N1)*V(N2)*V(NEN)*(V(NA2))*(V(NA1))*(V(NA0))}
+**
+** Current Drain at 5V
+GVCC VCC GND VALUE = {V(N1)*V(N2)*0.003u}
+**
+EEN_INT EN_INT GND VALUE = {V(NEN)}
+**
+** TRUE if VCC__MIN < VCC < VCC_MAX
+*EENOUT EN_OUT GND VALUE = {V(N1)*V(N2)*V(NEN)}
+EVCCMON VCC_MON GND VALUE = {V(N1)*V(N2)}
+.ENDS

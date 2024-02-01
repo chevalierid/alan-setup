@@ -1,0 +1,78 @@
+
+*$
+*  UCC27614 Model
+*****************************************************************************
+*  (C) Copyright 2022 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warrenties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+* Released by: Texas Instruments Inc.
+* Part: UCC27614
+* Date: 7/19/2022
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 17.4
+*
+* Model Version: 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+* source UCC27614
+.SUBCKT UCC27614
++ OUT_0
++ OUT_1
++ IN
++ EN
++ VDD_0
++ VDD_1
++ GND_0
++ GND_1
+R_U1_U1A_R2         VDD_0 EN  200k
+R_U1_U1A_R1         U1_U1A_N01992 U1_N02206  1
+C_U1_U1A_C1         U1_N02206 0  1n
+R_U1_U1A_R3         IN GND_1  120k
+E_U1_U1A_ABM2         U1_U1A_N01992 0 VALUE { IF(V(VDD_0, GND_1) +
++  0.3*V(U1_N02206) > 4.1 &
++   V(IN, GND_1) + V(U1_N02206) > 2 &
++    V(EN, GND_1) + V(U1_N02206) > 2, 1, 0)  }
+R_U1_U1B_R4         U1_U1B_N14530808 U1_U1B_N14530818  1
+X_U1_U1B_D1         VDD_0 U1_U1B_N14530602 D_IDEAL PARAMS: RS=.1 VTH=0.7
+C_U1_U1B_C5         U1_U1B_N14530818 0  1n
+C_U1_U1B_C1         U1_U1B_N14530644 U1_U1B_N14530602  10pF
+E_U1_U1B_E1         U1_U1B_N14530832 OUT_0 VALUE { IF(V(U1_U1B_N14530818, 0) >
++  0.5, V(VDD_0, GND_0), V(GND_0, VDD_0)) }
+M_U1_U1B_M1         U1_U1B_N14530602 U1_U1B_N14530644 OUT_0 OUT_0 NMOS01
++ L=10u
++ W=10u
+X_U1_U1B_U1         U1_N02206 0 U1_U1B_N14530808 0 DELAY PARAMS:
++ DELAY=13ns TOL=10 IO_LEVEL=0 MNTYMXDLY=0
+C_U1_U1B_C3         OUT_0 U1_U1B_N14530644  10pF
+C_U1_U1B_C4         GND_0 OUT_0  4nF
+R_U1_U1B_R7         VDD_0 U1_U1B_N14530602  .3
+M_U1_U1B_M2         U1_U1B_N14531002 U1_U1B_N14530644 OUT_0 OUT_0 PMOS01
++
+C_U1_U1B_C2         U1_U1B_N14531002 U1_U1B_N14530644  5pF
+R_U1_U1B_R6         U1_U1B_N14531002 GND_0  .1
+R_U1_U1B_R3         U1_U1B_N14530644 U1_U1B_N14530832  50
+X_U1_U1B_D2         U1_U1B_N14531002 GND_0 D_IDEAL PARAMS: RS=.1 VTH=0.7
+R_U1_R2         VDD_1 VDD_0  1m TC=0,0
+R_U1_R1         OUT_0 OUT_1  1m TC=0,0
+R_U1_R3         VDD_1 VDD_0  1m TC=0,0
+.ENDS UCC27614

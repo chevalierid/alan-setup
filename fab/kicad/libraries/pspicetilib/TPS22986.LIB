@@ -1,0 +1,592 @@
+* PSpice Model Editor - Version 16.2.0
+*$
+*  TPS22986 Model
+*****************************************************************************
+*  (C) Copyright 2013 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warrenties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: TPS22986
+* Date: 01/28/2013
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.2
+* EVM Order Number: 
+* EVM Users Guide: SLVU837 - January 2013
+* Datasheet: SLVSBS5 - January 2013
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+.subckt TPS22986 CFG_OE CPO ENB GND OUTA OUTB RESETZ RXC RXH TXC TXH 
++ VDD1 VDD2
+XI25 GND VHLO OA OB NET076 NET80 UVLO NET014 NET015 
++ SUPPLY_SELECTION_SOFTSTART_P2
+XI3 CPO NET0111 PANCHO_C_PUMP_P2
+R6 0 OUTB  500e3
+R5 0 OUTA  500e3
+RXX01 TXH 0 1E12
+RXX02 OA  0 1E12
+RXX03 OB  0 1E12
+XA49 NET038 VDD1 VDD1 delay_enb_basic
++  PARAMS: tdr=1e-3 ttr=2e-9 tdf=5e-9 ttf=2e-9
+XA47 NET036 VDD2 VDD2 delay_enb_basic
++  PARAMS: tdr=1e-3 ttr=2e-9 tdf=5e-9 ttf=2e-9
+I41 NET0111 GND DC 200e-6
+V0 VHLO 0 DC 3.51
+V2 UVLO 0 DC 2.75
+XI24 CFG_OE ENB GND OUTA OA OUTB OB NET076 RXC RXH RESETZ NET80 TXC 
++ TXH VDD1 VDD2 PANCHO_STATE_MACHINE_P2
+XA46 VDD2 NET0111 diode_simple
++  PARAMS: vfwd=400e-3 vrev=25 rfwd=100e-3 rrev=10 gmin=1e-12 cjnc=1e-12
+XA45 VDD1 NET0111 diode_simple
++  PARAMS: vfwd=400e-3 vrev=25 rfwd=100e-3 rrev=10 gmin=1e-12 cjnc=1e-12
+XA44 GND NET014 diode_simple
++  PARAMS: vfwd=400e-3 vrev=25 rfwd=100e-3 rrev=10 gmin=1e-12 cjnc=1e-12
+XA43 GND NET015 diode_simple
++  PARAMS: vfwd=400e-3 vrev=25 rfwd=100e-3 rrev=10 gmin=1e-12 cjnc=1e-12
+XI52 VDD2 NET036 NET015 NMOS_SWITCH_10MOHM
+XI51 VDD1 NET038 NET014 NMOS_SWITCH_10MOHM
+.ends TPS22986 
+*$
+.subckt NMOS_SWITCH_10MOHM IN ON OUT
+XA0 IN NET8 OUT nmos_simple
++  PARAMS: vth=750e-3 von=3 ron=10e-3 roff=10e9 imax=2
+E0 NET8 OUT ON 0 3
+RXX01 NET8 0 1E12
+.ends NMOS_SWITCH_10MOHM 
+*$
+.subckt SUPPLY_SELECTION_SOFTSTART_P2 GND HVLO OUTA OUTB OUTB_OK RESETZ_DIG 
++ UVLO VDD1 VDD2
+V1 NET347 GND DC 50e-3
+V0 HI GND DC 3.3
+XA170 VDD1_FLOATZ VDD1_FLOAT inverter_basic
++  PARAMS: td=0 tt=2e-9
+XA158 VDD1_TOOHIGH OVER_RANGEZ inverter_basic
++  PARAMS: td=0 tt=2e-9
+XA171 VDD2_FLOATZ VDD2_FLOAT inverter_basic
++  PARAMS: td=0 tt=2e-9
+XA226 VDD2_OFF VDD2_ON inverter_basic
++  PARAMS: td=0 tt=2e-9
+XA161 VDD1_OFF VDD1_ON inverter_basic
++  PARAMS: td=0 tt=2e-9
+XI205 OUTB VDD1_MAIN_ON VDD1 NMOS_SWITCH_10MOHM
+XI212 NET0260 NET0381 OUTB NMOS_SWITCH_10MOHM
+XI219 NET0250 NET0346 OUTA NMOS_SWITCH_10MOHM
+XI206 OUTB VDD2_OUTB_MAIN VDD2 NMOS_SWITCH_10MOHM
+XI207 OUTA VDD2_OUTA_MAIN VDD2 NMOS_SWITCH_10MOHM
+XI208 NET0266 VDD1_ON OUTA NMOS_SWITCH_10MOHM
+XI213 NET0242 NET070 OUTB NMOS_SWITCH_10MOHM
+XI209 NET0258 VDD1_ON OUTB NMOS_SWITCH_10MOHM
+XI217 NET0256 NET0371 OUTB NMOS_SWITCH_10MOHM
+XI211 NET391 NET460 OUTA NMOS_SWITCH_10MOHM
+XI210 NET0244 OUTB_VDD2_OK OUTB NMOS_SWITCH_10MOHM
+XI215 NET0254 NET0356 OUTA NMOS_SWITCH_10MOHM
+XI218 NET0246 NET0336 OUTB NMOS_SWITCH_10MOHM
+XI214 NET0252 NET078 OUTA NMOS_SWITCH_10MOHM
+XI216 NET0248 NET0341 OUTA NMOS_SWITCH_10MOHM
+XI204 VDD1 VDD1_MAIN_ON OUTA NMOS_SWITCH_10MOHM
+R12 VDD1 NET391  5.9
+R0 VDD1 NET0258  12.7
+R21 GND VDD1  10e6
+R22 GND VDD2  10e6
+R14 VDD1 NET0260  5.9
+R16 VDD2 NET0254  5.9
+R5 VDD2 NET0244  12.7
+R19 VDD2 NET0246  1.6
+R15 VDD2 NET0242  5.9
+R20 VDD2 NET0250  1.6
+R8 VDD2 NET0252  12.7
+R18 VDD1 NET0256  1.6
+R17 VDD1 NET0248  1.6
+R3 VDD1 NET0266  12.7
+XA173 OUTB_OK VDD1_ON OUTB_VDD2_OK or2_basic
++  PARAMS: td=0 tt=2e-9
+XA172 RESETZ_DIG VDD1_ON VDD2_ON or2_basic
++  PARAMS: td=0 tt=2e-9
+XA169 VDD2_FLOAT NET347 VDD2 comp_hys_simple
++  PARAMS: vhys=40e-3 td=0 tt=2e-9
+XA157 UNDER_RANGEZ VDD1 UVLO comp_hys_simple
++  PARAMS: vhys=300e-3 td=0 tt=2e-9
+XA166 OVER_RANGE2 HVLO VDD2 comp_hys_simple
++  PARAMS: vhys=40e-3 td=0 tt=2e-9
+XA156 OVER_RANGEZ HVLO VDD1 comp_hys_simple
++  PARAMS: vhys=40e-3 td=0 tt=2e-9
+XA168 VDD1_FLOAT NET347 VDD1 comp_hys_simple
++  PARAMS: vhys=40e-3 td=0 tt=2e-9
+XA165 UNDER_RANGE2 VDD2 UVLO comp_hys_simple
++  PARAMS: vhys=300e-3 td=0 tt=2e-9
+XA159 VALID_VDD1P OVER_RANGEZ UNDER_RANGEZ and2_basic
++  PARAMS: td=0 tt=2e-9
+XA178 VDD2_OUTB_MAIN VDD1_TOOHIGH VDD2_OUTA_MAIN and2_basic
++  PARAMS: td=0 tt=2e-9
+XA191 NET078 VDD2_ON VDD1_OFF and2_basic
++  PARAMS: td=0 tt=2e-9
+XA182 NET460 VDD1_ON VDD1_ON_DELAY250U and2_basic
++  PARAMS: td=0 tt=2e-9
+XA167 VALID_VDD2 OVER_RANGE2 UNDER_RANGE2 and2_basic
++  PARAMS: td=0 tt=2e-9
+XA160 VDD1_ON VALID_VDD1 VDD1_FLOATZ and2_basic
++  PARAMS: td=0 tt=2e-9
+XA184 NET0371 VDD1_ON VDD1_ON_DELAY500U and2_basic
++  PARAMS: td=0 tt=2e-9
+XA174 VDD1_MAIN_ON VDD1_ON VDD1_ON_DELAY750U and2_basic
++  PARAMS: td=0 tt=2e-9
+XA183 NET0381 VDD1_ON VDD1_ON_DELAY250U and2_basic
++  PARAMS: td=0 tt=2e-9
+XA190 OUTB_VDD2_OK VDD2_ON VDD1_TOOHIGH and2_basic
++  PARAMS: td=0 tt=2e-9
+XA179 VDD2_ON VALID_VDD2 VDD2_FLOATZ and2_basic
++  PARAMS: td=0 tt=2e-9
+XA185 NET0341 VDD1_ON VDD1_ON_DELAY500U and2_basic
++  PARAMS: td=0 tt=2e-9
+XA162 VALID_VDD1 NET073 VALID_VDD1P NET041 VALID_VDD1P HI dff_simple
++  PARAMS: td=0 tt=2e-9 init=0
+XA186 NET070 VDD2_ON VDD1_TOOHIGH VDD2_ON_DELAY250U and3_basic
++  PARAMS: td=0 tt=2e-9
+XA180 VDD2_OUTA_MAIN VDD2_ON VDD1_OFF VDD2_ON_DELAY750U and3_basic
++  PARAMS: td=0 tt=2e-9
+XA189 NET0346 VDD2_ON VDD1_OFF VDD2_ON_DELAY500U and3_basic
++  PARAMS: td=0 tt=2e-9
+XA187 NET0336 VDD2_ON VDD1_TOOHIGH VDD2_ON_DELAY500U and3_basic
++  PARAMS: td=0 tt=2e-9
+XA188 NET0356 VDD2_ON VDD1_OFF VDD2_ON_DELAY250U and3_basic
++  PARAMS: td=0 tt=2e-9
+XA164 NET041 VALID_VDD1P delay_basic
++  PARAMS: tdr=5e-9 ttr=2e-9 tdf=5e-9 ttf=2e-9
+XA223 VDD2_ON_DELAY250U VDD2_ON delay_basic
++  PARAMS: tdr=250e-6 ttr=2e-9 tdf=250e-6 ttf=2e-9
+XA224 VDD2_ON_DELAY500U VDD2_ON_DELAY250U delay_basic
++  PARAMS: tdr=250e-6 ttr=2e-9 tdf=250e-6 ttf=2e-9
+XA225 VDD2_ON_DELAY750U VDD2_ON_DELAY500U delay_basic
++  PARAMS: tdr=250e-6 ttr=2e-9 tdf=250e-6 ttf=2e-9
+XA221 VDD1_ON_DELAY500U VDD1_ON_DELAY250U delay_basic
++  PARAMS: tdr=250e-6 ttr=2e-9 tdf=250e-6 ttf=2e-9
+XA222 VDD1_ON_DELAY750U VDD1_ON_DELAY500U delay_basic
++  PARAMS: tdr=250e-6 ttr=2e-9 tdf=250e-6 ttf=2e-9
+XA220 VDD1_ON_DELAY250U VDD1_ON delay_basic
++  PARAMS: tdr=250e-6 ttr=2e-9 tdf=250e-6 ttf=2e-9
+.ends SUPPLY_SELECTION_SOFTSTART_P2 
+*$
+.subckt PANCHO_C_PUMP_P2 CP VDD1
+XA20 0 CP diode_simple
++  PARAMS: vfwd=600e-3 vrev=12 rfwd=1 rrev=100 gmin=1e-12 cjnc=1e-12
+XA45 CP NET013 diode_simple
++  PARAMS: vfwd=600e-3 vrev=25 rfwd=1 rrev=100 gmin=1e-12 cjnc=1e-12
+XA10 NET011 NET06 VDD1 comp_hys_simple
++  PARAMS: vhys=10e-3 td=0 tt=2e-9
+E0 NET25 0 VDD1 0 3.6
+XI21 NET012 NET011 0 NMOS_SWITCH_10MOHM
+V1 NET06 0 DC 1.5
+V0 NET013 0 DC 10
+R0 NET012 CP  1e3
+R2 NET25 CP  100e3
+.ends PANCHO_C_PUMP_P2 
+*$
+.subckt PANCHO_TX_BLOCK_P2 OE OUTA RESETZ TXC TXH
+V2 NET050 0 DC 1.2
+XA8 NET027 TXC NET050 comp_hys_simple
++  PARAMS: vhys=10e-3 td=0 tt=2e-9
+XA12 NET014 NET016 NET079 0 gate_driver_basic
++  PARAMS: tdr=5e-9 ttr=2e-9 tdf=5e-9 ttf=2e-9 rsrc=1 isrc=1 rsnk=1 
++  isnk=1 gmin=100e-12
+XI13 NET048 NET032 NET014 NMOS_SWITCH_10MOHM
+R2 NET048 TXH  68
+R1 TXC 0  1e6
+XA10 NET016 NET027 RESETZ and2_basic
++  PARAMS: td=0 tt=2e-9
+XA14 NET032 OE RESETZ and2_basic
++  PARAMS: td=0 tt=2e-9
+E0 NET079 0 OUTA 0 1
+.ends PANCHO_TX_BLOCK_P2 
+*$
+.subckt PANCHO_RX_BLOCK_P2 OUTA RXC RXH
+XA10 NET017 RXH NET048 comp_hys_simple
++  PARAMS: vhys=10e-3 td=0 tt=2e-9
+XA45 NET012 OUTA diode_simple
++  PARAMS: vfwd=400e-3 vrev=25 rfwd=100e-3 rrev=10 gmin=1e-12 cjnc=1e-12
+V0 NET048 0 DC 1.2
+E6 NET019 0 OUTA 0 1
+R0 RXH 0  1e6
+R1 NET012 RXC  22
+XA20 NET012 NET017 NET019 0 gate_driver_basic
++  PARAMS: tdr=1e-9 ttr=10e-9 tdf=1e-9 ttf=10e-9 rsrc=1 isrc=1 rsnk=1 
++  isnk=1 gmin=100e-12
+.ends PANCHO_RX_BLOCK_P2 
+*$
+.subckt PANCHO_RETRIGGER_OUTB_P2 DATA ENB OUTB_OK OUTB_ON TO_RESETZ 
++ TO_SW_OUTB RESETZ_DIG
+XA63 ENBZ ENB inverter_basic
++  PARAMS: td=0 tt=2e-9
+XA68 NET031 ENB inverter_basic
++  PARAMS: td=0 tt=2e-9
+XA67 NET020 OUTB_ON inverter_basic
++  PARAMS: td=0 tt=2e-9
+XA69 NET017 NET023 inverter_basic
++  PARAMS: td=0 tt=2e-9
+XA66 NET082 NET043 inverter_basic
++  PARAMS: td=0 tt=2e-9
+XA65 NET043 DATA inverter_basic
++  PARAMS: td=0 tt=2e-9
+XA64 NET032 RESETZ_DIG inverter_basic
++  PARAMS: td=0 tt=2e-9
+XA82 NET029 NET067 NET030 RE_DSH_TRIGGER NET050 NET030 dff_simple
++  PARAMS: td=0 tt=2e-9 init=1
+XA72 NET050 RISING_EDGE_ENB_Z RISING_EDGE_ENB_Z and2_basic
++  PARAMS: td=0 tt=2e-9
+XA73 NET023 ENB NET051 and2_basic
++  PARAMS: td=0 tt=2e-9
+XA70 TURNON_EDGE RESETZ_DIG NET036 and2_basic
++  PARAMS: td=0 tt=2e-9
+XA71 F_EDGE_DATA NET043 NET040 and2_basic
++  PARAMS: td=0 tt=2e-9
+XA76 TO_RESETZ NET029 OUTB_OK and2_basic
++  PARAMS: td=0 tt=2e-9
+V1 NET030 0 PWL 0 0 1u 0 1.001u 1 100m 1
+XA80 NET051 NET031 delay_basic
++  PARAMS: tdr=1e-6 ttr=2e-9 tdf=1e-6 ttf=2e-9
+XA81 NET028 TO_RESETZ delay_basic
++  PARAMS: tdr=100e-6 ttr=2e-9 tdf=100e-6 ttf=2e-9
+XA78 NET036 NET032 delay_basic
++  PARAMS: tdr=500e-9 ttr=2e-9 tdf=500e-9 ttf=2e-9
+XA79 NET040 NET082 delay_basic
++  PARAMS: tdr=500e-9 ttr=2e-9 tdf=500e-9 ttf=2e-9
+XA77 TO_SW_OUTB TO_RESETZ NET028 or2_basic
++  PARAMS: td=0 tt=2e-9
+XA75 RISING_EDGE_ENB_Z NET020 NET017 or2_basic
++  PARAMS: td=0 tt=2e-9
+XA74 RE_DSH_TRIGGER F_EDGE_DATA F_EDGE_DATA or2_basic
++  PARAMS: td=0 tt=2e-9
+.ends PANCHO_RETRIGGER_OUTB_P2 
+*$
+.subckt PANCHO_MODE_P2 CFG_OE CR_MODE GND HI N_MODE OE VDD1_UNDELAYED 
++ VDD2_UNDELAYED
+XA8 NET16 VDD1_UNDELAYED NET059 comp_hys_simple
++  PARAMS: vhys=10e-3 td=0 tt=2e-9
+XA9 NET042 VDD2_UNDELAYED NET052 comp_hys_simple
++  PARAMS: vhys=10e-3 td=0 tt=2e-9
+XA16 OE_BUF CFG_OE NET025 comp_hys_simple
++  PARAMS: vhys=10e-3 td=0 tt=2e-9
+XI15 HI CHECK_MODE NET029 NMOS_SWITCH_10MOHM
+XA12 NET017 NET026 delay_basic
++  PARAMS: tdr=20e-6 ttr=2e-9 tdf=20e-6 ttf=2e-9
+XA13 CLK_MODE NET09 delay_basic
++  PARAMS: tdr=15e-6 ttr=2e-9 tdf=15e-6 ttf=2e-9
+XA14 NET035 CLK_MODE delay_basic
++  PARAMS: tdr=1e-6 ttr=2e-9 tdf=1e-6 ttf=2e-9
+R0 NET029 CFG_OE  20e3
+XA11 NET09 NET017 NET026 or2_basic
++  PARAMS: td=0 tt=2e-9
+XA10 NET026 NET16 NET042 or2_basic
++  PARAMS: td=0 tt=2e-9
+V2 NET052 GND DC 1.4
+V1 NET059 GND DC 1.4
+R8 GND CFG_OE  2e6
+V3 NET047 0 PWL 0 0 500n 0 501n 1 100m 1
+XA18 NET028 OE_BUF inverter_basic
++  PARAMS: td=0 tt=2e-9
+XA17 OE NET028 inverter_basic
++  PARAMS: td=0 tt=2e-9
+XA19 CR_MODE NET11 inverter_basic
++  PARAMS: td=0 tt=2e-9
+XA20 N_MODE CR_MODE inverter_basic
++  PARAMS: td=0 tt=2e-9
+XA23 NET033 NET035 inverter_basic
++  PARAMS: td=0 tt=2e-9
+XA22 CHECK_MODE NET033 NET09 and2_basic
++  PARAMS: td=0 tt=2e-9
+E0 NET025 GND HI GND 500e-3
+XA21 NET11 NET10 OE_BUF CLK_MODE NET047 HI dff_simple
++  PARAMS: td=0 tt=2e-9 init=0
+.ends PANCHO_MODE_P2 
+*$
+.subckt PANCHO_STATE_MACHINE_P2 CFG_OE ENB GND OUTA OUTAP OUTB 
++ OUTBP OUTB_OK 
++ RXC RXH RESETZ RESETZ_DIG TXC TXH VDD1_UNDELAYED VDD2_UNDELAYED
+RXX01 NET043 0 1E12
+RXX02 NET044 0 1E12
+RXX03 NET045 0 1E12
+RXX04 NET044 0 1E12
+RXX05 NET055 0 1E12
+RXX06 NET057 0 1E12
+RXX07 NET059 0 1E12
+XA164 NET051 NET078 HI NET050 RESETZ_DIG HI dff_simple
++  PARAMS: td=0 tt=2e-9 init=0
+XI107 OE OUTA RESETZ_INTERNAL TXC TXH PANCHO_TX_BLOCK_P2
+XI109 OUTA RXC RXH PANCHO_RX_BLOCK_P2
+XI8 RXH ENB OUTB_OK OUTB_FULLY_ON TRIG_OUT_RESET TRIG_OUT_OUTB 
++  RESETZ_DIG 
++  PANCHO_RETRIGGER_OUTB_P2
+XA139 RESETZ_DEL RESETZ_UNDEL RESETZ_UNDEL delay_enb_basic
++  PARAMS: tdr=5.8e-3 ttr=2e-9 tdf=5e-9 ttf=2e-9
+XA167 R2_DELAY RR2 RR2 delay_enb_basic
++  PARAMS: tdr=5.8e-3 ttr=2e-9 tdf=5e-9 ttf=2e-9
+V0 HI GND DC 3.3
+XA159 NET077 R2_AND_DELAY RR1 nor2_basic
++  PARAMS: td=0 tt=2e-9
+XA171 OUTB_ON_DELAY800U OUTB_ON_DELAY750U delay_basic
++  PARAMS: tdr=50e-6 ttr=2e-9 tdf=1e-9 ttf=2e-9
+XA168 OUTB_ON_DELAY250U OUTB_ON delay_basic
++  PARAMS: tdr=250e-6 ttr=2e-9 tdf=1e-9 ttf=2e-9
+XA172 ENB_DELAY ENB delay_basic
++  PARAMS: tdr=250e-6 ttr=2e-9 tdf=1e-9 ttf=2e-9
+XA170 OUTB_ON_DELAY750U OUTB_ON_DELAY500U delay_basic
++  PARAMS: tdr=250e-6 ttr=2e-9 tdf=1e-9 ttf=2e-9
+XA169 OUTB_ON_DELAY500U OUTB_ON_DELAY250U delay_basic
++  PARAMS: tdr=250e-6 ttr=2e-9 tdf=1e-9 ttf=2e-9
+XA173 G_CONTROL G1 delay_basic
++  PARAMS: tdr=200e-6 ttr=2e-9 tdf=200e-6 ttf=2e-9
+XA166 NET050 RESETZ_DIG delay_basic
++  PARAMS: tdr=4e-3 ttr=2e-9 tdf=4e-3 ttf=2e-9
+XA163 RESETZ_INTERNAL RESET_INTERNAL inverter_basic
++  PARAMS: td=0 tt=2e-9
+XA162 NET062 OUTB_OK inverter_basic
++  PARAMS: td=0 tt=2e-9
+XA158 NET0110 NORM_OUTB_ON CONTROL_OUTB_ON or2_basic
++  PARAMS: td=0 tt=2e-9
+XA160 RESET_INTERNAL NET077 NET062 or2_basic
++  PARAMS: td=0 tt=2e-9
+XI105 CFG_OE CR_MODE GND HI N_MODE OE VDD1_UNDELAYED  
++ VDD2_UNDELAYED PANCHO_MODE_P2
+XI140 OUTA CR_MODE NET045 NMOS_SWITCH_10MOHM
+XI141 OUTA N_MODE NET044 NMOS_SWITCH_10MOHM
+XI145 NET043 NET0146 OUTB NMOS_SWITCH_10MOHM
+XI161 NET042 RESET_INTERNAL GND NMOS_SWITCH_10MOHM
+XI144 NET055 NET0151 OUTB NMOS_SWITCH_10MOHM
+XI175 NET059 OUTB_ON OUTB NMOS_SWITCH_10MOHM
+XI143 NET057 NET0156 OUTB NMOS_SWITCH_10MOHM
+R1 OUTAP NET044  1
+R0 OUTAP NET045  1
+R5 OUTBP NET057  5.9
+R2 OUTBP NET043  125e-3
+R6 OUTBP NET055  1.6
+R3 NET042 RESETZ  50
+R4 OUTBP NET059  12.7
+XA157 OUTB_ON NET0110 OUTB_OK and2_basic
++  PARAMS: td=0 tt=2e-9
+XA146 OUTB_FULLY_ON OUTB_ON OUTB_ON_DELAY800U and2_basic
++  PARAMS: td=0 tt=2e-9
+XA155 R2_AND_DELAY R2_DELAY RR2 and2_basic
++  PARAMS: td=0 tt=2e-9
+XA149 NET0156 OUTB_ON OUTB_ON_DELAY250U and2_basic
++  PARAMS: td=0 tt=2e-9
+XA148 NET0151 OUTB_ON OUTB_ON_DELAY500U and2_basic
++  PARAMS: td=0 tt=2e-9
+XA147 G1 TRIG_OUT_OUTB RESETZ_DIG and2_basic
++  PARAMS: td=0 tt=2e-9
+XA153 NET0146 OUTB_ON OUTB_ON_DELAY750U and2_basic
++  PARAMS: td=0 tt=2e-9
+XA150 RESETZ_UNDEL TRIG_OUT_RESET CR_MODE RESETZ_DIG 
++  and3_basic
++  PARAMS: td=0 tt=2e-9
+XA152 CONTROL_OUTB_ON G_CONTROL G1 CR_MODE and3_basic
++  PARAMS: td=0 tt=2e-9
+XA156 RR1 CR_MODE RESETZ_DEL RESETZ_DEL and3_basic
++  PARAMS: td=0 tt=2e-9
+XA151 NORM_OUTB_ON N_MODE ENB ENB_DELAY and3_basic
++  PARAMS: td=0 tt=2e-9
+XA165 RR2 NET051 N_MODE ENB and3_basic
++  PARAMS: td=0 tt=2e-9
+.ends PANCHO_STATE_MACHINE_P2 
+*$
+.SUBCKT inverter_basic out inp PARAMS: 
++  td = 0 
++  tt = 2e-9
+E1 n1   0 VALUE { IF(V(inp) < 0.51, 1, 0) }
+R1 n1 out 10
+C1 out  0 { (td + 0.5*tt) / 6.93 }
+.ENDS inverter_basic 
+*$
+.SUBCKT nmos_simple d g s PARAMS: 
++  von  = 3.00 
++  vth  = 0.75 
++  ron  = 50 
++  roff = 1e10 
++  imax = 10e-3 
+E1 vx   0  VALUE { IF(V(g, s)<vth, -5, 
++  IF(V(g, s)>von, 0, 5*((V(g, s)-vth)/(von-vth)-1))) } 
+G1  d   s  VALUE 
++  { MIN(imax, V(d, s)*(1/roff+(pwr(2, V(vx))+6.25e-3*V(vx))/ron)) }
+.ENDS nmos_simple 
+*$
+.SUBCKT or2_basic out in1 in2 PARAMS: 
++  td = 0 
++  tt = 2e-9
+E1 n1 0 VALUE { IF(V(in1) > 0.51 | V(in2) > 0.51, 1, 0) }
+R1 n1 out 10
+C1 out  0 { (td + 0.5*tt) / 6.93 }
+.ENDS or2_basic 
+*$
+.SUBCKT comp_hys_simple out inp inn 
++ PARAMS: 
++ vhys = 0.05 
++ td   = 0.00
++ tt   = 2e-9
+E1 n1   0 VALUE {IF(V(inp) + V(out)*vhys > V(inn), 1, 0)}
+R1 n1 out 10
+C1 out  0 { (td + 0.5*tt) / 6.93 }
+.ENDS comp_hys_simple 
+*$
+.SUBCKT and2_basic out in1 in2 PARAMS: 
++  td = 0 
++  tt = 2e-9
+E1 n1   0 VALUE { IF(V(in1) > 0.51 & V(in2) > 0.51, 1, 0) }
+R1 n1 out 10
+C1 out  0 { (td + 0.5*tt) / 6.93 }
+.ENDS and2_basic 
+*$
+.SUBCKT dff_simple q1 q0 d clk rst0 set0 PARAMS: 
++  td = 0 
++  tt = 2e-9 
++  init = 0 
+E1 x1  0 VALUE { IF( V(rst0) < 0.51, 0, 
++  IF( V(set0) < 0.51, 1, IF( V(clk) < 0.51, 
++  IF( V(d) > 0.51, 1, 0 ),  IF( V(n1) > 0.6 - 0.2 * init, 1, 0 )))) }
+R1 x1 n1 1
+C1 n1  0 { (td + 0.5*tt) / 6.93 }
+E2 x2  0 VALUE { IF( V(rst0) < 0.51, 0, 
++  IF( V(set0) < 0.51, 1, IF( V(clk) > 0.51, 
++  IF( V(n1) > 0.51, 1, 0 ), IF( V(n2) > 0.6 - 0.2 * init, 1, 0 )))) }
+R2 x2 n2 1
+C2 n2  0 { (td + 0.5*tt) / 6.93 }
+E3 z1  0 VALUE { IF( V(n2) > 0.51, 1, 0 ) }
+R3 z1 q1 10
+C3 q1  0 { (td + 0.5*tt) / 6.93 }
+E4 z0  0 VALUE { IF( V(n2) > 0.51, 0, 1 ) }
+R4 z0 q0 10
+C4 q0  0 { (td + 0.5*tt) / 6.93 }
+.ENDS dff_simple 
+*$
+.SUBCKT and3_basic out in1 in2 in3 PARAMS: 
++  td = 0 
++  tt = 2e-9
+E1 n1   0 VALUE 
++  { IF(V(in1) > 0.51 & V(in2) > 0.51 & V(in3) > 0.51, 1, 0) }
+R1 n1 out 10
+C1 out  0 { (td + 0.5*tt) / 6.93 }
+.ENDS and3_basic 
+*$
+.SUBCKT delay_basic out inp PARAMS: 
++  tdr = 5e-9 
++  ttr = 2e-9 
++  tdf = 5e-9 
++  ttf = 2e-9 
+V1  n1   0  DC 1
+C1  n2  n5  1n
+R1  n2   0  100G
+G1  n1  n2  VALUE 
++  {(V(inp, 0)/MAX(0.1, 1.44e9*tdr))*MIN(1, MAX(0, V(n1, n2)))}
+G2  n2   0  VALUE 
++  {((1 - V(inp, 0))/MAX(0.1, 1.44e9*tdf))*MIN(1, MAX(0, V(n2, 0)))}
+E1  n3   0  VALUE { IF(V(n2) > 0.51, 1, 0) }
+E2  n5   0  n6   0 0.5
+R2  n3  n6  { max(0.1, 7.22e8*(ttr+ttf)) }
+C2  n6   0  0.1n
+G3  n1  n4  VALUE 
++ {(V(n6, 0)/MAX(0.1, 7.22e8*ttr))*MIN(1, MAX(0, V(n1, n4)))}
+G4  n4   0  VALUE 
++ {((1 - V(n6, 0))/MAX(0.1, 7.22e8*ttf))*MIN(1, MAX(0, V(n4, 0)))}
+C3  n4   0  1n
+R3  n4   0  100G
+E3 out   0  n4  0 1.0
+.ENDS delay_basic 
+*$
+.SUBCKT diode_simple A C PARAMS: 
++  vfwd = 0.7 
++  vrev = 6.4
++  rfwd = 1 
++  rrev = 1
++  gmin = 1E-12 
++  cjnc = 1e-12
+GF A C VALUE { (IF(V(A, C) < (vfwd - 0.05), 0, (IF(V(A, C) > (vfwd + 0.05),
++ V(A, C) - vfwd, 5*PWR(V(A, C) - (vfwd - 0.05), 2)))))/rfwd }
+GR C A VALUE { (IF(V(C, A) < (vrev - 0.05), 0, (IF(V(C, A) > (vrev + 0.05),
++ V(C, A) - vrev, 5*PWR(V(C, A) - (vrev - 0.05), 2)))))/rrev }
+R1 A C {1/gmin}
+C1 A C {cjnc}
+.ENDS diode_simple 
+*$
+.SUBCKT delay_enb_basic out inp enb PARAMS: 
++  tdr = 5e-9 
++  ttr = 2e-9 
++  tdf = 5e-9 
++  ttf = 2e-9 
+V1  n1   0  DC 1
+C1  n2  n5  1n
+R1  n2   0  100G
+G1  n1  n2  VALUE 
++ { (V(inp, 0)/MAX(0.1, 1.44e9*tdr))*MIN(1, MAX(0, V(n1, n2)))}
+G2  n2   0  VALUE 
++ {((1-V(inp, 0))/MAX(0.1, 1.44e9*tdf))*MIN(1, MAX(0, V(n2, 0)))}
+E1  n3   0  VALUE { IF(V(n2) > 0.51, 1, 0) }
+E2  n5   0  n6   0 0.5
+R2  n3  n6  { max(0.1, 7.22e8*(ttr+ttf)) }
+C2  n6   0  0.1n
+E3  n7   0  VALUE { IF(V(enb) > 0.51 & V(n3) > 0.51, 1, 0) }
+R3  n7  n8  { max(0.1, 7.22e8*(ttr+ttf)) }
+C3  n8   0  0.1n
+G3  n1  n4  VALUE 
++ { (V(n8)/MAX(0.1, 7.22e8*ttr))*MIN(1, MAX(0, V(n1, n4))) }
+G4  n4   0  VALUE 
++ { ((1 - V(n8))/MAX(0.1, 7.22e8*ttf))*MIN(1, MAX(0, V(n4,  0))) }
+C4  n4   0  1n
+R4  n4   0  100G
+E4 out   0  n4  0 1.0
+.ENDS delay_enb_basic 
+*$
+.SUBCKT gate_driver_basic out inp VDD VSS PARAMS: 
++  tdr  = 5e-9 
++  ttr  = 2e-9 
++  tdf  = 5e-9 
++  ttf  = 2e-9 
++  rsrc = 1e+00 
++  isrc = 1e+00 
++  rsnk = 1e+00 
++  isnk = 1e+00 
++  gmin = 1e-10 
+V1  n1   0  DC 1
+C1  n2  n5  1n
+R1  n2   0  100G
+G1  n1  n2  VALUE 
++ {(V(inp, 0)/MAX(0.1, 1.44e9*tdr))*MIN(1, MAX(0, V(n1, n2)))}
+G2  n2   0  VALUE 
++ {((1-V(inp, 0))/MAX(0.1, 1.44e9*tdf))*MIN(1, MAX(0, V(n2, 0)))}
+E1  n3   0  VALUE { IF(V(n2) > 0.51, 1, 0) }
+E2  n5   0  n6   0 0.5
+R2  n3  n6  { max(0.1, 7.22e8*(ttr+ttf)) }
+C2  n6   0  0.1n
+G3  n1  n4  VALUE 
++ {(V(n6, 0)/MAX(0.1, 7.22e8*ttr))*MIN(1, MAX(0, V(n1, n4)))}
+G4  n4   0  VALUE 
++ {((1-V(n6, 0))/MAX(0.1, 7.22e8*ttf))*MIN(1, MAX(0, V(n4, 0)))}
+C3  n4   0  1n
+R3  n4   0  100G
+E8  n8   0  VALUE { V(VSS) + V(n4)*(V(VDD)-V(VSS)) } 
+G8 VDD out  VALUE { MAX(0, MIN(V(n8, out)/rsrc, isrc)) }
+G9 out VSS  VALUE { MAX(0, MIN(V(out, n8)/rsnk, isnk)) }
+R8 VDD out  { 1/gmin }
+R9 out VSS  { 1/gmin }
+.ENDS gate_driver_basic 
+*$
+.SUBCKT nor2_basic out in1 in2 PARAMS: 
++  td = 0 
++  tt = 2e-9
+E1 n1 0 VALUE { IF(V(in1) > 0.51 | V(in2) > 0.51, 0, 1) }
+R1 n1 out 10
+C1 out  0 { (td + 0.5*tt) / 6.93 }
+.ENDS nor2_basic 
+*$

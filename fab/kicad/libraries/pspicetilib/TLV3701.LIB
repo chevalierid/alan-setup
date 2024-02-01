@@ -1,0 +1,194 @@
+* TLV3701
+*****************************************************************************
+* (C) Copyright 2011 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: TLV3701
+* Date: 13JUN2011
+* Model Type: ALL IN ONE
+* Simulator: PSPICE
+* Simulator Version: 16.0.0.p001
+* EVM Order Number: N/A
+* EVM Users Guide: N/A
+* Datasheet: SLCS137B – NOVEMBER 2000 – REVISED AUGUST 2001
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+* 
+* Updates:
+*
+* Version 1.0 : 
+* Release to Web
+*
+*****************************************************************************
+*
+* THIS MODEL IS APPLICABLE FOR TLV3701,TLV3702 & TLV3703
+*
+*****************************************************************************
+* BEGIN MODEL TLV3701
+* BEGIN NOTES
+* MODEL FEATURES INCLUDE OUTPUT SWING, OUTPUT
+* CURRENT THROUGH THE SUPPLY RAILS, TPD VS
+* DRIVE LEVEL, RISE AND FALL TIME VERSUS VCC,
+* COMMON MODE REJECTION, POWER SUPPLY REJECT-
+* ION, AVOL, INPUT CAPACITANCE, INPUT BIAS
+* CURRENT WITH TEMPERATURE EFFECTS, INPUT
+* COMMON MODE VOLTAGE RANGE, INPUT VOS, INPUT
+* VOS TEMPCO, INPUT CLAMP DIODES,OUTPUT CLAMP
+* DIODES, QUIESCENT CURRENT VS SUPPLY VOLTAGE,
+* AND QUIESCENT CURRENT VS TEMPERATURE. MODEL
+* TEMPERATURE RANGE IS -55 TO +125 DEG C.
+* NOTE THAT MODEL IS FUNCTIONAL OVER THIS
+* RANGE BUT NOT ALL PARAMETERS TRACK THOSE
+* OF THE REAL PART. NOTE THAT TRISE AND TFALL
+* ACCURACY IS BETTER IN VCC RANGE OF 2.5 TO
+* 5, AND WORSE IN 5.5 TO 15 V RANGE. NOTE
+* THAT THE MODEL HAS A SMALL INPUT HYSTERESIS
+* BUILT IN (70-80 UV) THAT IS NOT IN THE REAL
+* PART TO AID IN CONVERGENCE AND SIMULATION.
+* END NOTES
+* PINOUT ORDER +IN -IN +V -V OUT
+* PINOUT ORDER  3   4   5  2  1
+.SUBCKT TLV3701 3 4 5 2 1
+I36 9 15 350E-11
+R125 13 10 1E12
+R127 6 7 1E6
+C49 10 13 11E-15
+R313 9 12 1E12
+C111 3 0 2E-12
+C112 4 0 2E-12
+I37 3 0 2E-12
+I38 4 0 2E-12
+R315 10 16 1E5
+R316 13 16 1E5
+E50 9 0 2 0 1
+E51 17 0 5 0 1
+C120 12 9 2E-15
+E53 18 9 17 9 0.5
+R330 0 18 1E9
+R331 0 18 1E9
+R332 19 20 1E3
+C122 13 20 0.08E-12
+D52 21 22 DD
+D53 23 24 DD
+G21 20 18 10 13 -0.04E-3
+V56 21 19 1.5
+V57 19 24 1.5
+C123 6 1 3E-12
+C124 6 1 0.5E-12
+C125 5 6 1E-12
+C126 6 2 0.3E-12
+Q1 7 25 17 QP
+I39 25 17 1.06E-8
+E61 8 9 19 18 -5
+V63 22 18 2.5
+V64 18 23 2.5
+G23 17 25 26 27 5.3E-9
+M50 27 17 9 9 MSN L=1U W=10U
+M24 1 6 2 2 NOUT L=3U W=3U
+M25 1 6 5 5 POUT L=3U W=2.5U
+M38 7 8 9 9 MCNO L=1U W=1.4U
+M39 10 11 12 12 MCI L=3U W=0.01U
+M40 13 14 12 12 MCI L=3U W=0.01U
+R353 27 26 1E6
+V65 26 9 1
+V67 16 17 5
+Q2 28 15 9 QN
+V68 12 28 -3
+M52 29 30 17 17 MCNV
+M53 31 32 9 9 MCPV
+R357 29 33 1E6
+R358 34 31 1E6
+M54 35 36 9 9 MCNC
+M60 35 37 9 9 MCNC
+E65 36 9 33 29 5
+E66 37 9 31 34 5
+V70 9 34 3
+V71 33 17 3
+D54 38 0 DD
+I40 0 38 1E-3
+V75 38 39 0.65
+R360 0 39 1E6
+E67 40 32 39 0 0.5
+E68 3 30 39 0 -0.5
+E69 40 9 3 9 10
+M61 41 42 17 17 MCNV
+M62 43 44 9 9 MCPV
+R361 41 45 1E6
+R362 46 43 1E6
+M63 35 47 9 9 MCNC
+M64 35 48 9 9 MCNC
+E70 47 9 45 41 5
+E71 48 9 43 46 5
+V76 9 46 3
+V77 45 17 3
+D55 49 0 DD
+I41 0 49 1E-3
+V79 49 50 0.65
+R364 0 50 1E6
+E72 51 44 50 0 0.5
+E73 4 42 50 0 -0.5
+E74 51 9 4 9 10
+R365 35 6 1
+E76 14 52 53 0 1E-2
+E77 52 54 17 18 1.04E-3
+E78 54 55 9 18 1E-3
+E79 55 4 50 0 1.8E-3
+R368 0 53 1E3
+R369 53 56 1E5
+E80 57 0 14 18 1
+E81 58 0 3 18 1
+R370 56 57 1E3
+R371 56 58 1E3
+R372 52 14 1E9
+R373 54 52 1E9
+R374 55 54 1E9
+R375 4 55 1E9
+R376 7 8 1E10
+R377 63 10 1E10
+V148 10 63 5
+R378 18 20 1E9
+D57 59 60 DL
+V145 60 0 3
+R379 0 59 1E8
+G54 3 0 59 0 4.52E-10
+I67 3 0 -125E-12
+G55 4 0 59 0 4.52E-10
+I68 4 0 -125E-12
+G57 5 2 50 0 -870E-9
+I70 5 2 560E-9
+R380 2 5 1.35E9
+V147 3 11 -250E-6
+D58 1 5 DD
+D59 1 1 DD
+J2 4 9 4 JNC
+J3 3 9 3 JNC
+.MODEL DD D
+.MODEL JNC NJF IS=1E-18
+.MODEL QN NPN
+.MODEL QP PNP VAF=50
+.MODEL DL D IS=1E-11 N=1.397 XTI=1.5
+.MODEL MCNV NMOS KP=200U VTO=5
+.MODEL MCPV PMOS KP=200U VTO=-1
+.MODEL MCNC NMOS KP=200U VTO=0.7
+.MODEL MCI NMOS KP=200U VTO=0.7
+.MODEL MCNO NMOS KP=200U VTO=1 LAMBDA=0.01
+.MODEL MSN NMOS KP=200U VTO=7
+.MODEL POUT PMOS KP=200U VTO=-0.7 LAMBDA=0.01
+.MODEL NOUT NMOS KP=200U VTO=0.7 LAMBDA=0.01
+.ENDS
+* END MODEL TLV3701

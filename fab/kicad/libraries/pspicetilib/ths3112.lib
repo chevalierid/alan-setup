@@ -1,0 +1,313 @@
+*THS3112
+*****************************************************************************
+* (C) Copyright 2016 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: THS3112
+* Date: 09/05/2016 
+* Model Type: All In One
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: N/A 
+* EVM Users Guide:  N/A 
+* Datasheet: SLOS385C
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 : Release to Web
+*
+*****************************************************************************
+
+********************************************************************************
+*  
+* NOTES:
+*   1- This macromodel predicts well: DC, small-signal AC, noise,
+*      , and transient performance under a wide range
+*      of conditions.
+*   2- This macromodel does not predict well: distortion
+*      (harmonic, intermod, diff. gain & phase, ...),
+*      temperature effects, board parasitics, differences
+*      between package styles, and process changes
+*   3- Known Problems: - None
+*
+* |----------------------------------------------------------------------
+* |  This macro model is being supplied as an aid to       
+* |  circuit designs.  While it reflects reasonably close      
+* |  similarity to the actual device in terms of performance,
+* |  it is not suggested as a replacement for breadboarding.
+* |  Simulation should be used as a forerunner or a supplement
+* |  to traditional lab testing.                              
+* |                                                           
+* |  Neither this library nor any part may be copied without  
+* |  the express written consent of Texas Instruments Corp. 
+* |----------------------------------------------------------------------
+*
+* CONNECTIONS:
+*
+*                 NONINVERTING INPUT 
+*                 |   INVERTING INPUT 
+*                 |   |   POSITIVE POWER SUPPLY
+*                 |   |   |  NEGATIVE POWER SUPPLY
+*                 |   |   |   |    OUTPUT
+*                 |   |   |   |    |   
+*                 |   |   |   |    |     
+*                 |   |   |   |    |          
+*                 |   |   |   |    |           
+*                 |   |   |   |    |           
+*                 |   |   |   |    |          
+*                 |   |   |   |    |          
+.SUBCKT THS3112  In+ In- Vcc+ Vcc- Out
+
+Vref Ref 0 -2
+Vpd PD 0 0
+
+V_Shutdown_V2         Shutdown_N03031 Shutdown_VMID .375
+R_Shutdown_R2         Shutdown_THRSH Shutdown_VMID  294k TC=0,0 
+C_Shutdown_C1         Shutdown_VMID Shutdown_THRSH  2p  TC=0,0 
+R_Shutdown_R3         Shutdown_VMID Shutdown_THRSH  100G TC=0,0 
+X_Shutdown_F4         Shutdown_N03212 Shutdown_N08105 VCC+ N00664 Shutdown_Shutdown_F4 
+R_Shutdown_R5         Shutdown_VMID Shutdown_N04726  10k TC=0,0 
+X_Shutdown_F5         Shutdown_N08105 Shutdown_N08077 VCC+ Shutdown_N08119 Shutdown_Shutdown_F5 
+X_Shutdown_F1         Shutdown_N02520 Shutdown_N05552 VCC+ N00664 Shutdown_Shutdown_F1 
+X_Shutdown_F6         Shutdown_N08119 VCC- N02600 VCC- Shutdown_Shutdown_F6 
+E_Shutdown_E1         Shutdown_N00753 VCC- VCC+ VCC- .5
+R_Shutdown_R6         Shutdown_VMID Shutdown_N08077  10k TC=0,0 
+R_Shutdown_R4         Shutdown_N01393 Shutdown_THRSH  100 TC=0,0 
+X_Shutdown_F2         Shutdown_N05552 Shutdown_N04726 VCC+ Shutdown_N06179 Shutdown_Shutdown_F2 
+X_Shutdown_S1         Shutdown_THRSH 0 Shutdown_N02520 Shutdown_N02366 Shutdown_Shutdown_S1 
+V_Shutdown_V1         Shutdown_N02366 Shutdown_VMID .289
+X_Shutdown_F3         Shutdown_N06179 VCC- N02600 VCC- Shutdown_Shutdown_F3 
+E_Shutdown_E2         0 Shutdown_N01393 REF PD .5
+R_Shutdown_R1         Shutdown_N00753 Shutdown_VMID  10k TC=0,0 
+X_Shutdown_S2         Shutdown_THRSH 0 Shutdown_N03212 Shutdown_N03031 Shutdown_Shutdown_S2 
+Q_Amp_Q23             OUT Amp_N10326 Amp_N10322 NPN3 2
+Q_Amp_Q44             VCC+ In+ N02600 NPN_IN4 
+Q_Amp_Q40             Amp_N10326 Amp_N09152 OUT PNP3 2
+Q_Amp_Q34	      Amp_N01727 Amp_N01727 Amp_N01735 PNP3 .625
+Q_Amp_Q37             Amp_N09420 Amp_N01408 Amp_N01430 PNP3 1
+R_Amp_R15             Amp_N140830 VCC+  80k TC=0,0 
+Q_Amp_Q26             Amp_N07239 Amp_N02751 Amp_N02803 NPN3 .625
+R_Amp_R13             Amp_N11700 VCC+  72 TC=0,0 
+C_Amp_C2              VCC- Amp_N140830  5p  TC=0,0 
+R_Amp_R5              Amp_N02517 Amp_N02857  600 TC=0,0 
+R_Amp_R14             Amp_N11696 VCC+  1 TC=0,0 
+Q_Amp_Q27             Amp_N11692 Amp_N09420 OUT NPN3 2
+R_Amp_R6              Amp_N02517 Amp_N02803  600 TC=0,0 
+R_Amp_R7              VCC- Amp_N032380  50 TC=0,0 
+Q_Amp_Q43             Amp_N01727 N00664 In- NPN_IN4 
+Q_Amp_Q33             Amp_N01408 Amp_N01408 Amp_N01454 PNP3 1
+Q_Amp_Q36             Amp_N07239 Amp_N01727 Amp_N01731 PNP3 .625
+Q_Amp_Q25             VCC+ Amp_N07239 Amp_N09152 NPN3 .3
+R_Amp_R8              VCC- Amp_N032540  50 TC=0,0 
+R_Amp_R9              OUT OUT  25 TC=0,0 
+R_Amp_R1              Amp_N01454 VCC+  50 TC=0,0 
+Q_Amp_Q46             VCC- In+ N00664 PNP_IN4 
+Q_Amp_Q31             Amp_N02751 Amp_N02751 Amp_N02857 NPN3 .625
+Q_Amp_Q32             Amp_N11692 Amp_N11692 Amp_N11700 PNP3 1
+R_Amp_R2              Amp_N01430 VCC+  50 TC=0,0 
+R_Amp_R11             VCC- Amp_N10318  72 TC=0,0 
+Q_Amp_Q39             VCC- Amp_N07239 Amp_N09420 PNP3 .3
+Q_Amp_Q24             Amp_N09152 Amp_N02517 Amp_N032540 NPN3 1
+C_Amp_C1              0 Amp_N07239  .9p  TC=0,0 
+R_Amp_R12             VCC- Amp_N10322  1 TC=0,0 
+Q_Amp_Q30             Amp_N02517 Amp_N02517 Amp_N032380 NPN3 1
+Q_Amp_Q45             Amp_N02751 N02600 In- PNP_IN4 
+R_Amp_R3              Amp_N01735 Amp_N01408  600 TC=0,0 
+R_Amp_R10             OUT OUT  25 TC=0,0 
+Q_Amp_Q38             OUT Amp_N11692 Amp_N11696 PNP3 2
+Q_Amp_Q29             Amp_N10326 Amp_N10326 Amp_N10318 NPN3 1
+R_Amp_R4              Amp_N01731 Amp_N01408  600 TC=0,0 
+
+
+.model NPN3 npn
+
++ is=1.7e-016
++ bf=400
++ vaf=100
++ ikf=0.0389
++ ise=7.6e-018
++ ne=1.1349
++ br=1.1187
++ var=4.4684
++ ikr=8
++ isc=8e-015
++ nc=1.8
++ re=0.122
++ rb=10
++ rc=0
++ cje=1.202e-013
++ vje=1.0888
++ mje=0.38141
++ cjc=1.338e-013
++ vjc=0.5897
++ mjc=0.26584
++ fc=0.1
++ tf=1.213e-011
++ xtf=272.2
++ vtf=10
++ itf=0.147
++ tr=3e-009
++ xtb=1
++ xti=5
++ kf=0.75e-014
+
+
+.model NPN_IN4 npn
+
++ is=1.7e-016
++ bf=400
++ nf=1
++ vaf=100
++ ikf=0.0389
++ ise=7.6e-018
++ ne=1.13489
++ br=1.11868
++ nr=1
++ var=4.46837
++ ikr=8
++ isc=8e-015
++ nc=1.8
++ rb=10
++ re=0.122
++ rc=200
++ cje=1.202e-013
++ vje=1.0888
++ mje=0.381406
++ vjc=0.589703
++ mjc=0.265838
++ fc=0.1
++ cjc=1.338e-013
++ xtf=272.204
++ tf=1.213e-011
++ vtf=10
++ itf=0.147
++ tr=3e-009
++ xtb=1
++ xti=5
++ kf=0.75e-014
+
+
+.model PNP3 pnp
+
++ is=2.96e-016
++ bf=100
++ nf=1
++ vaf=100
++ ikf=0.021
++ ise=4.94e-016
++ ne=1.49168
++ br=0.491925
++ nr=1
++ var=2.35634
++ ikr=8
++ isc=8e-015
++ nc=1.8
++ rb=10
++ re=0.122
++ rc=200
++ cje=1.202e-013
++ vje=0.940007
++ mje=0.55
++ vjc=0.588526
++ mjc=0.55
++ fc=0.1
++ cjc=1.338e-013
++ xtf=141.135
++ tf=1.213e-011
++ vtf=6.82756
++ itf=0.267
++ tr=3e-009
++ xtb=1
++ xti=5
++ kf=0.75e-014
+
+
+.model PNP_IN4 pnp
+
++ is=2.96e-016
++ bf=100
++ nf=1
++ vaf=100
++ ikf=0.021
++ ise=4.94e-016
++ ne=1.49168
++ br=0.491925
++ nr=1
++ var=2.35634
++ ikr=8
++ isc=8e-015
++ nc=1.8
++ rb=10
++ re=0.122
++ rc=200
++ cje=1.202e-013
++ vje=0.940007
++ mje=0.55
++ vjc=0.588526
++ mjc=0.55
++ fc=0.1
++ cjc=1.338e-013
++ xtf=141.135
++ tf=1.213e-011
++ vtf=6.82756
++ itf=0.267
++ tr=3e-009
++ xtb=1
++ xti=5
++ kf=0.75e-014
+
+.ENDS THS3112
+
+.subckt Shutdown_Shutdown_F4 1 2 3 4  
+F_Shutdown_F4         3 4 VF_Shutdown_F4 .188
+VF_Shutdown_F4         1 2 0V
+.ends Shutdown_Shutdown_F4
+
+.subckt Shutdown_Shutdown_F5 1 2 3 4  
+F_Shutdown_F5         3 4 VF_Shutdown_F5 .21
+VF_Shutdown_F5         1 2 0V
+.ends Shutdown_Shutdown_F5
+
+.subckt Shutdown_Shutdown_F1 1 2 3 4  
+F_Shutdown_F1         3 4 VF_Shutdown_F1 1.7559
+VF_Shutdown_F1         1 2 0V
+.ends Shutdown_Shutdown_F1
+
+.subckt Shutdown_Shutdown_F6 1 2 3 4  
+F_Shutdown_F6         3 4 VF_Shutdown_F6 .375
+VF_Shutdown_F6         1 2 0V
+.ends Shutdown_Shutdown_F6
+
+.subckt Shutdown_Shutdown_F2 1 2 3 4  
+F_Shutdown_F2         3 4 VF_Shutdown_F2 1.1
+VF_Shutdown_F2         1 2 0V
+.ends Shutdown_Shutdown_F2
+
+.subckt Shutdown_Shutdown_S1 1 2 3 4  
+S_Shutdown_S1         3 4 1 2 _Shutdown_S1
+RS_Shutdown_S1         1 2 1G
+.MODEL         _Shutdown_S1 VSWITCH Roff=1.0 Ron=1e6 Voff=.4 Von=1
+.ends Shutdown_Shutdown_S1
+
+.subckt Shutdown_Shutdown_F3 1 2 3 4  
+F_Shutdown_F3         3 4 VF_Shutdown_F3 .95
+VF_Shutdown_F3         1 2 0V
+.ends Shutdown_Shutdown_F3
+
+.subckt Shutdown_Shutdown_S2 1 2 3 4  
+S_Shutdown_S2         3 4 1 2 _Shutdown_S2
+RS_Shutdown_S2         1 2 1G
+.MODEL         _Shutdown_S2 VSWITCH Roff=1e6 Ron=1.0 Voff=.9 Von=1
+.ends Shutdown_Shutdown_S2

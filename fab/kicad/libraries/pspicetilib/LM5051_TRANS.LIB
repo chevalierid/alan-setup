@@ -1,0 +1,270 @@
+*$
+* LM5051
+***********************************************************************
+* (C) Copyright 2015 Texas Instruments Incorporated. All rights reserved.
+***********************************************************************
+***********************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose. The model is
+** provided solely on an "as is" basis. The entire risk as to its quality
+** and performance is with the customer
+********************************************************************************
+**Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: LM5051
+* Date: 04/06/2015
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number:
+* EVM Users Guide: SNVA483B–October 2011–Revised May 2013
+* Datasheet: SNVS702C –OCTOBER 2011–REVISED JUNE 2012
+* Model Version: Final 1.10
+**
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.10
+*<Made these changes to the model>
+*       1. Iinn vs Vinn is modelled.
+*       2. Modified VCC and VSD regulation implementation to match bench results.
+*
+* Final 1.00
+* Release to Web
+*
+**********************************************************************
+.SUBCKT LM5051_TRANS LINE INN GATE FGD_N INP_VSS_0 INP_VSS_1 VCC OFF
+C_C19         N17075606 0  1n IC=0 TC=0,0 
+C_C10         COMPR_1 INP  1n IC=0 TC=0,0 
+C_C7         N16376900 INP  1n IC=0 TC=0,0 
+C_C11         N16468752 INP  1n IC=0 TC=0,0 
+X_U2         VCC N16254332 d_d1 PARAMS:
+G_G3         INN N16247905 TABLE { V(INN, INP) } 
++ ((-1,-0.4m)(-0.8,-0.2m))(-0.6,-0.03m)(-0.5,3.1u)
++ (-0.15,3.1u)(-0.001,3.1u)(90,0.04u)(110,0.05u) )
+E_E9         OFF_CTL INP VALUE { IF(V(OFF, INP)>=1.5, 1, (IF(V(COMPR_1,
++  INP)>0.5 & V(OFF, INP)>=1.48, 1, 0))) }
+X_U10         N16517214 N16249974 d_d1 PARAMS:
+R_R7         N16493129 N16376900  1.5 TC=0,0 
+R_R11         N16356338 N16468752  1.5 TC=0,0 
+X_U19         N17075762 N17076207 GATE_CHRG N17306974 srlatchrhp_basic_gen
++  PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+X_H6    N16254332 N16242945 N16493129 INP LM5051_TRANS_H6 
+E_E31         N17075891 0 VALUE { IF(V(INN, INP)<-45m, 1, 0) }
+X_U18         SET_INT RESET_INT Q_OUT N17261780 srlatchrhp_basic_gen PARAMS:
++  VDD=1 VSS=0 VTHRESH=0.5
+X_H7    LINE N16241344 N16370498 INP LM5051_TRANS_H7 
+X_U7         N17379618 N17449422 d_d1 PARAMS:
+X_S11    COMPR_2 INP FGD_N INP LM5051_TRANS_S11 
+E_E16         N16498840 INP TABLE { V(LINE, INP) } 
++ ( (20,4.5)(25,5.2)(30,8.5)(36,13) )
+R_R15         INP OFF  1087K TC=0,0 
+X_U3         N17075532 VCC d_d1 PARAMS:
+R_R25         COMPR_2 N16517214  3 TC=0,0 
+R_R6         N17449422 N17379618  50 TC=0,0 
+X_U15         N17075762 N17075891 d_d1 PARAMS:
+R_R18         VVCC N16623498  1.5 TC=0,0 
+C_C6         N17379618 0  1n IC=0 TC=0,0 
+R_R22         N17075891 N17075762  10 TC=0,0 
+E_E8         N16242945 INP VALUE { IF((V(I_LINE,INP))>=50u,
++  (IF((V(LINE,INP))>36, V(N16468752, INP), V(VLLES36,INP))), V(VVCC,INP))  }
+C_C18         N17075762 0  1n IC=0 TC=0,0 
+X_U9         N17076415 OFF_CTL d_d1 PARAMS:
+X_S10    G_DRV 0 VCC N17075532 LM5051_TRANS_S10 
+E_E32         N17411498 0 VALUE { IF(V(INN, INP)>-7m & V(3P5_CTL, INP)<0.4, 1,
++  0) }
+E_E38         N17076207 0 VALUE { IF(V(INN, INP)>-7m | V(Q_OUT)>0.5 |
++  V(3P5_CTL, INP)>0.2, 1, 0) }
+R_R36         N16241344 VCC  50k TC=0,0 
+X_U20         N17379648 N17379618 3P5_CTL_HIT N17379620 srlatchrhp_basic_gen
++  PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+C_C5         COMPR_2 INP  1n IC=0 TC=0,0 
+X_U17         N17411500 N17453583 d_d1 PARAMS:
+E_E20         N17255046 INP VALUE { V(N16370498, INP) }
+E_E22         N17379648 0 VALUE { IF(V(INN, INP)>5m, 1, 0) }
+C_C12         I_LINE INP  1n IC=0 TC=0,0 
+R_R5         N16249974 COMPR_2  50 TC=0,0 
+E_E18         N17076124 0 VALUE { IF(V(GATE_CHRG, 0)>0.5, 1, 0) }
+R_R26         N17453583 N17411500  10 TC=0,0 
+X_U12         INP N17075532 d_d PARAMS:
+R_R13         N17255046 I_LINE  1.5 TC=0,0 
+E_E17         G_DRV 0 VALUE { IF(V(N17075606, 0)>0.5 & V(Q_OUT)<0.5 &
++  V(3P5_CTL, INP)<0.2 & V(OFF_CTL, INP)<0.5, 1, 0) }
+E_E13         N16356338 INP TABLE { V(N16376900, INP) } 
++ ( (0.66m,13)(8.134m,13.5)(10m,14.5)(100m, 20) )
+C_C20         N17411500 0  1n IC=0 TC=0,0 
+R_R14         INP_VSS_1 INP  1m TC=0,0 
+C_C13         VVCC INP  1n IC=0 TC=0,0 
+G_G1         N17075532 INP VALUE { IF(V(GATE_DISCHRG)>0.5, 50u, (IF(V(Q_OUT,
++  0)>0.5 & V(3P5_CTL, INP)<0.2 & V(OFF_CTL, INP)<0.5, 5.5u, 0))) }
+E_E14         N16249974 INP VALUE { IF(V(INN, INP)<-260m, 1, (IF(V(COMPR_2,
++  INP)>0.5 & V(INN, INP)<-253.5m, 1, 0))) }
+C_C9         VLLES36 INP  1n IC=0 TC=0,0 
+E_E11         REV_CTL 0 VALUE { IF(V(INN, INP)>-12m & V(GATE,INP)>=0.6, 1, 0) }
+X_U6         SET_INT REV_CTL d_d1 PARAMS:
+R_R9         OFF_CTL COMPR_1  300 TC=0,0 
+R_R16         INP_VSS_0 INP  1m TC=0,0 
+E_E39         N17453583 0 VALUE { IF(V(INN, INP)>=5m | V(RESET_INT)>0.5, 1, 0)
++  }
+E_E23         N17449422 0 VALUE { IF(V(INN, INP)<4.9m, 1, 0) }
+R_R10         N16498840 VLLES36  1.5 TC=0,0 
+E_ABM5         N17222085 0 VALUE { IF(V(N17076124)>0.5 & V(N17075678)>0.5, 1,
++  0)    }
+E_E24         RESET_INT 0 VALUE { IF(V(INN, INP)<=-17m | V(GATE,INP)<=0.6 |
++  V(3P5_CTL, INP)>0.2, 1, 0) }
+C_C4         SET_INT 0  1n IC=0 TC=0,0 
+E_E15         N16623498 INP TABLE { V(N16376900, INP) } 
++ ( (0.025m,1)(0.22m,4)(0.44m,5)(0.487m,6)(0.51m,7)(0.55m,9)(0.57m,10)(0.59m,11)
++ (0.61m,12) (0.66m,13)(8.134m,13.5)(10m,14.5)(100m,20) )
+X_S13    COMPR_1 INP N17075532 INP LM5051_TRANS_S13 
+R_R4         REV_CTL SET_INT  10 TC=0,0 
+X_U16         N17075606 N17222085 d_d1 PARAMS:
+V_INN         N16247905 INP 0Vdc
+X_U21         N17411498 N17411500 GATE_DISCHRG N17411386 srlatchrhp_basic_gen
++  PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+E_E12         N17075678 0 VALUE { IF(V(OFF_CTL, INP)>0.5, 0, 1) }
+R_R12         INP INN  2.25E9 TC=0,0 
+R_R23         N17222085 N17075606  5K TC=0,0 
+E_E19         3P5_CTL INP VALUE { IF(V(3P5_CTL_HIT, 0)>0.5, 1, 0) }
+V_IG         N17075532 GATE 0Vdc
+X_S12    3P5_CTL INP N17075532 INP LM5051_TRANS_S12 
+R_R27         COMPR_1 N17076415  3 TC=0,0 
+.ENDS LM5051_TRANS
+*$
+.subckt LM5051_TRANS_H6 1 2 3 4  
+H_H6         3 4 VH_H6 1
+VH_H6         1 2 0V
+.ends LM5051_TRANS_H6
+*$
+.subckt LM5051_TRANS_H7 1 2 3 4  
+H_H7         3 4 VH_H7 1
+VH_H7         1 2 0V
+.ends LM5051_TRANS_H7
+*$
+.subckt LM5051_TRANS_S11 1 2 3 4  
+S_S11         3 4 1 2 _S11
+RS_S11         1 2 1G
+.MODEL         _S11 VSWITCH Roff=500meg Ron=302.5 Voff=0.2 Von=0.8
+.ends LM5051_TRANS_S11
+*$
+.subckt LM5051_TRANS_S10 1 2 3 4  
+S_S10         3 4 1 2 _S10
+RS_S10         1 2 1G
+.MODEL         _S10 VSWITCH Roff=1E7 Ron=15K Voff=0.2 Von=0.8
+.ends LM5051_TRANS_S10
+*$
+.subckt LM5051_TRANS_S13 1 2 3 4  
+S_S13         3 4 1 2 _S13
+RS_S13         1 2 1G
+.MODEL         _S13 VSWITCH Roff=1e9 Ron=0.95 Voff=0.4 Von=0.5
+.ends LM5051_TRANS_S13
+*$
+.subckt LM5051_TRANS_S12 1 2 3 4  
+S_S12         3 4 1 2 _S12
+RS_S12         1 2 1G
+.MODEL         _S12 VSWITCH Roff=1G Ron=0.75 Voff=0.2 Von=0.8
+.ends LM5051_TRANS_S12
+*$
+.SUBCKT LDCR IN OUT
++ PARAMs:  L=1u DCR=0.01 IC=0
+L	IN 1  {L} IC={IC}
+RDCR	1 OUT {DCR}
+.ENDS LDCR
+*$
+.SUBCKT CESR IN OUT
++ PARAMs:  C=100u ESR=0.01 X=2 IC=0
+C	IN 1  {C*X} IC={IC}
+RESR	1 OUT {ESR/X}
+*LESL 2 OUT {0.6n/X}
+.ENDS CESR
+*$
+.MODEL DD D( IS=1e-15 N=0.01 TT = 10p Rs=0.05)
+*$
+.SUBCKT D_D1 1 2
+D1 1 2 DD1
+.MODEL DD1 D( IS=1e-15 TT=10p Rs=0.005 N=.01  )
+.ENDS D_D1
+*$
+.subckt d_d 1 2
+d1 1 2 dd
+.model dd d
++ is=1e-015
++ n=0.01
++ tt=1e-011
+.ends d_d
+*$
+.SUBCKT POWERNMOS G D S PARAMS: RDSON=16m Ciss=1350p Crss=110p Coss=240p VSP=3 RG=25
+* This is a simple model for Power MOSFET.
+* The parameters modeled are 
+* - RDSon is modified to RDSON+25m, 
+* - Input Capacitance, 
+* - Reverse capacitance, 
+* - Output capacitance,
+* - Switching point voltage (Gate voltage where the FET starts switching), 
+* - Gate Resistance
+C_C1         S Da  {Coss} IC=0 
+R_R1         Da D  10
+C_C2         Ga D  {Crss}  IC=0
+R_R2         G Ga {RG}
+C_C3         Ga S  {Ciss} IC=0
+D_D1         S Db Dbreak 
+R_R3         Db D 1m
+S_switchM         D S Ga S _switchM
+RS_switchM         Ga S 100Meg
+.MODEL         _switchM VSWITCH Roff=100e6 Ron={RDSON+25m} Voff=1.1 Von={VSP}
+.model Dbreak D Is=1e-14 Cjo=.1pF Rs=0.1
+.ends POWERNMOS
+*$
+**Reset has higher priority in this latch
+.SUBCKT SRLATCHRHP_BASIC_GEN S R Q QB PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+GQ 0 Qint VALUE = {IF(V(R) > {VTHRESH},-5,IF(V(S)>{VTHRESH},5, 0))}
+CQint Qint 0 1n
+RQint Qint 0 1000MEG
+D_D10 Qint MY5 D_D1
+V1 MY5 0 {VDD}
+D_D11 MYVSS Qint D_D1
+V2 MYVSS 0 {VSS} 
+EQ Qqq 0 Qint 0 1
+X3 Qqq Qqqd1 BUF_BASIC_GEN PARAMS: VDD={VDD} VSS={VSS} VTHRESH={VTHRESH}
+RQq Qqqd1 Q 1
+*EQb Qbr 0 VALUE = {IF( V(Q) > {VTHRESH}, {VSS},{VDD})}
+*RQb Qbr QB 1 
+EQb QB 0 VALUE={1-V(Q)}
+Cdummy1 Q 0 1n 
+Cdummy2 QB 0 1n
+.IC V(Qint) {VSS}
+.MODEL D_D1 D( IS=1e-15 TT=10p Rs=0.005 N=.01  )
+.ENDS SRLATCHRHP_BASIC_GEN
+*$
+.SUBCKT BUF_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS BUF_BASIC_GEN
+*$
+.SUBCKT AND2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS AND2_BASIC_GEN
+*$
+.SUBCKT INV_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS INV_BASIC_GEN
+*$
+.SUBCKT COMPHYS_BASIC_GEN INP INM HYS OUT PARAMS: VDD=1 VSS=0 VTHRESH=0.5	
+EIN INP1 INM1 INP INM 1 
+EHYS INP1 INP2 VALUE { IF( V(1) > {VTHRESH},-V(HYS),0) }
+EOUT OUT 0 VALUE { IF( V(INP2)>V(INM1), {VDD} ,{VSS}) }
+R1 OUT 1 1
+C1 1 0 5n
+RINP1 INP1 0 1K
+.ENDS COMPHYS_BASIC_GEN
+*$

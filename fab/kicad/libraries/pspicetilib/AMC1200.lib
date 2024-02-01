@@ -1,0 +1,468 @@
+*****************************************************************************
+* (C) Copyright 2010 Texas Instruments Incorporated. All rights reserved.     
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.      
+** TI and its licensors and suppliers make no warranties, either expressed   
+** or implied, with respect to this model, including the warranties of       
+** merchantability or fitness for a particular purpose. The model is        
+** provided solely on an "as is" basis. The entire risk as to its quality   
+** and performance is with the customer                                    
+***************************************************************************** 
+* Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: AMC1200
+* Precision isolation amplifier
+* Date: 2011-03-28
+* Model Type: TINA
+* Simulator: PSPICE
+* Simulator Version: 16.6.0
+* Datasheet: Preview rev 3.0 ¨C Feb 2011
+*
+*****************************************************************************
+* version 1.0:
+*
+***************************************************************************** 
+* AMC1200 SUBCIRCUIT
+* Precision isolation amplifier 
+** source AMC1200
+.SUBCKT AMC1200  VINP VINN VOUTP VOUTN VDD1 GND1 GND2 VDD2
+XFilter     10 11 GND2 VDD2 VOUTN VOCM_9 VOUTP Filter_Block_0
+XD8         GND1 VINN D_D2_0
+XD7         VINN VDD1 D_D2_0
+XD6         GND1 VINP D_D2_0
+XD5         VINP VDD1 D_D2_0
+XD4         GND2 VOUTN D_D2_0
+XD3         VOUTN VDD2 D_D2_0
+XD2         GND2 VOUTP D_D2_0
+XD1         VOUTP VDD2 D_D2_0
+XGain       POut1 NOut VDD1 GND1 VDD2 GND2 10 11 VGAIN_0
+R3          GND2 GND1 100G 
+C1          GND2 GND1 1.2P  
+R2          11 VOCM_9 100MEG 
+R1          VOCM_9 10 100MEG 
+RIO         VDD2 VDD1 100G 
+CIO         VDD2 VDD1 1.2P  
+XInput      VINP VINN GND2 POut1 NOut VDD1 GND1 Input_circuit_0
+.ENDS
+
+.SUBCKT Filter_Block_0 INP INN GND2 VDD2 VOUTN VOCM VOUTP
+VPSref      30 GND2 5
+XOutputp VM_15 Neg_21 IGND_19 Bias IAVDD_20 VOUTP VDD2 Plus_22 GND2 Vt0p Vt0 
++ Output_0 
+R8          23 24 80K 
+R22ops      25 0 10 
+C2ops       Veps_14 25 5.3587522927N  
+XOutputn VM_15 Neg_26 IGND_19 Bias IAVDD_20 VOUTN VDD2 Plus_27 GND2 Vt0p Vt0 
++ Output_0 
+Epsp        VOCM Plus_22 Veps_14 0  -1
+Epsn        Plus_27 VOCM Veps_14 0  -1
+R2ops       Veps_14 0 990 
+R11ops      28 0 999 
+L1ops       28 0 158.9957881488U  
+R1ops       29 28 1 
+G2ops       0 Veps_14 29 0  1.0101010101M
+G1ops       0 29 30 VDD2  155.677568U
+C3          23 31 18P  
+R7          31 32 80K 
+C4          VOUTP Neg_21 6P  
+R6          Neg_21 31 20K 
+R5          VOUTP 31 200K 
+R4          32 INN 100K 
+C1          24 32 15P  
+C2          VOUTN Neg_26 6P  
+R3          Neg_26 23 20K 
+R2          VOUTN 23 200K 
+R1          24 INP 100K 
+XBias       IAVDD_20 VDD2 IGND_19 GND2 Bias VM_15 Vt0p Vt0 VOCM Bias_0
+.ENDS
+
+.SUBCKT Output_0 VM Neg IGND Bias IAVDD OUT VDD2 Plus GND2 Vt0p Vt0
+Vo21        IAVDD 40 992.8273698084M
+Vo22        42 IGND 992.8273698084M
+RO1         36 GND2 18
+XD6         37 VGP_38 D_LIM1_0
+XD5         VGP_38 VDD2 D_LIM1_0
+XD4         VGN_35 39 D_LIM1_0
+XD3         GND2 VGN_35 D_LIM1_0
+XD2         VV_34 40 D_LIM1_0
+C33         VV_34 VM 8P  
+XT7         OUT VGP_38 41 VDD2 Q_PMOS_OUT_L1_0
++ PARAMS: M=3 W=20U L=0.8U 
+XT2         OUT VGN_35 36 GND2 Q_NMOS_OUT_L1_0
++ PARAMS: M=3 W=20U L=0.8U 
+XD1         42 VV_34 D_LIM1_0
+EVMP2       VDD2 37 VALUE = {LIMIT(2*V(VDD2,Vt0p),0,V(VDD2,GND2))}
+EVMN2       39 GND2 VALUE = {LIMIT(2.0*V(Vt0,GND2),0,V(VDD2,GND2))}
+Ro23        VM Neg 100G 
+Ro22        Plus VM 100G 
+Ro21        Neg Plus 1G 
+Co21        Neg Plus 100F  
+RO2         VDD2 41 18 
+Rdn2        VGP_38 Vt0p 1.5814834978MEG 
+Gdn2        Vt0p VGP_38 VM VV_34  14.695U
+Rdn1        VGN_35 Vt0 1.5814834978MEG 
+Gdn1        Vt0 VGN_35 VM VV_34  14.695U
+Cf5         OUT VGN_35 2P 
+Cf4         VGP_38 OUT 2P
+Co23        VM Neg 100F  
+Co22        Plus VM 100F  
+R83         VV_34 VM 1 
+G23         VM VV_34 Plus Neg  1
+.ENDS
+
+
+.SUBCKT Bias_0 IAVDD VDD2 IGND GND2 Bias VM Vt0p Vt0 VOCM
+VS2         54 55 1.4
+GIb2        IGND Bias VALUE = {79.1M*V(VDD2,GND2)+596.4M}
+Rb3         Bias IGND 1 TC=1.87M,-3.77U
+R3          55 GND2 10MEG 
+R2          VDD2 56 10MEG 
+EVCVS1      VM IGND VALUE = {0.5*V(IAVDD,IGND)}
+EAVDD       IAVDD IGND VALUE = {5*V(Bias,IGND)}
+EGND        IGND 0 GND2 0  1
+XU1         VDD2 GND2 VOCM GND2 HYSTCOMP_0
++ PARAMS: VTHRES=4 VHYST=150M VOUTH=2.55 VOUTL=1.3 ROUT=1 TDEL=1N 
+EBMG        57 GND2 Vt0 GND2 1
+XT4         56 56 VDD2 VDD2 Q_PMOS_OUT_L1_1
++ PARAMS: M=1 W=10U L=4U 
+XT1         VT1 57 GND2 GND2 Q_NMOS_OUT_L1_1
++ PARAMS: M=29 W=21U L=0.8U 
+XT3         55 55 GND2 GND2 Q_NMOS_OUT_L1_2
++ PARAMS: M=1 W=10U L=4U 
+XD2         54 56 D_LIM1_0
+Rsp1        VDD2 VT1 709.2585520214 
+GIb1        56 55 Bias IGND  10U
+Rpsrr1      56 55 1G 
+EVMP1       Vt0p VDD2 56 VDD2  1
+EVMN1       Vt0 GND2 55 GND2  1
+.ENDS
+
+
+
+.SUBCKT Input_circuit_0 VINP VINN GND2 POut1 NOut1 VDD1 GND1
+ILn         VINN GND1 5N
+ILp         VINP GND1 5N
+VCMref      CMref GND1 2.5
+VPSref      79 GND1 5
+L2          65 0 7.9497894074U  
+R8          65 0 999 
+R7          Veps_59 65 1 
+G88ps       0 Veps_59 0 66  1
+Eios        71 Plus POLY(4) Vecm 0 Venoise 0 GND1 GND2 VOS 0 0 1 1 50.1187N 1 
+Rfb1        Plus NOut1 14.285714K 
+Rfb2        Neg 67 14.285714K 
+Rint1       69 71 14.285714K 
+Rint21      VINN VICM 14.2857142857K 
+Rint11      VINP VICM 14.2857142857K 
+Rint2       70 Neg 14.2857142857K 
+Eps         67 POut1 POLY(1) Veps_59 0 0 1 
+R6          74 0 999 
+L1          74 0 15.8995788149U  
+R5          66 74 1 
+C2          75 0 294.7313760961U  
+R4          75 0 9 
+R3          Vecm 75 1 
+R210        76 0 9 
+L4          76 0 7.9497894074U  
+R20         77 76 1 
+G88         0 Vecm 0 77  1
+G8ps        0 66 79 VDD1  70.7945784384U
+G8          0 77 CMref VICM  3.162278U
+EVCS4       VM_61 70 VICM VINN  1
+EVCS2       69 VM_61 VINP VICM  1
+XU5         0 VOS VOST_0
+R2          GND1 VINN 100G 
+R1          VINP GND1 100G 
+Enoise      POut 67 POLY(1) Venoise 0 0 5.5271 
+Rnoise2     Venoise 0 4.8263261801MEG 
+Rnoise1     Venoise 0 4.8263261801MEG 
+XBias       GND1 IGND_64 IAVDD_63 VM_61 VDD1 Bias_1
+C37         VINN GND1 3P  
+C38         VINP GND1 3P  
+C9          Neg POut 20P  
+C36         Plus NOut1 20P  
+XInput1     VM_61 Neg IGND_64 GND1 IAVDD_63 NOut1 VDD1 POut Plus Input1_0
+.ENDS
+
+.SUBCKT Bias_1 GND1 IGND IAVDD VM VDD1
+IS1         81 GND1 4.7884M
+EAVDD       IAVDD IGND VALUE = {LIMIT(10*V(81,GND1),5,0)}
+Rs4         81 GND1 1.2345679012K TC=-6M,20U
+XD1         GND1 81 D_D4_0
+XDZb1       81 VDD1 D_ZB1_0
+EVCVS1      VM IGND VALUE = {0.5*(V(IAVDD,IGND))}
+EGND        IGND 0 GND1 0  1
+.ENDS
+
+
+.SUBCKT Input1_0 VM Neg IGND GND1 IAVDD NOut VDD1 POut Plus
+VdrophO1    IAVDD 84 796.3440412293M
+VdroplO1    83 IGND 796.3440412293M
+XD1         83 VB D_LIM1_0
+XD4         VB 84 D_LIM1_0
+Ro15        VM Neg 100G 
+Ro12        Plus VM 100G 
+Ro11        Neg Plus 1G 
+Co11        Neg Plus 100F  
+Co13        IGND Neg 100F  
+Co12        Plus IGND 100F  
+Ro13        NOut VM 1 
+Go11        VM NOut VM VB  1
+Ro14        POut VM 1 
+Go12        VM POut VB VM  1
+Co19        VB VM 1.0610329539P  
+Ro19        VB VM 1000MEG 
+Go13        VM VB Plus Neg  500U
+.ENDS
+
+
+
+
+.SUBCKT D_D2_0       1    2
+D1 1 2  D2
+.ENDS
+*
+
+
+.SUBCKT VGAIN_0   INP INN VDD1 GND1 VDD2 GND2 OUTP OUTN 
+*GAIN ERROR THERMAL DRIFT
+*VS TEMPERATURE: TCGERR ¡À40 PPM/¡ãK
+.PARAM I0 = 1
+.PARAM TCGERR= {40E-6}
+*.PARAM R0 = {0.9*(1 + 150U)/I0}
+.PARAM R0 = {0.9*(1 + 200U)/I0}
+*.PARAM R0 = {1.0/I0}
+.PARAM TC1= {TCGERR/R0/I0}
+*R2 40 0 RMOD2 {R0}
+*I2 40 0 {I0}
+*E3 1 2 40 0 1
+*.PARAM CA={38.7746*0.9}
+*.PARAM BA={206.5114M*0.5}
+.PARAM CA={38.7746*1.0}
+.PARAM C0={57.0074*1.0}
+.PARAM MC={-854.6168M*1.0*(1 - 900U)}
+.PARAM BA={206.5114M*1.0}
+.PARAM B0={139.8751M*1.0}
+.PARAM MB={2.3796M*1.0*(1 + 0U)}
+*A0:=17.022M
+.PARAM A0={14.4495M*1.0}
+.PARAM MA={-2.1936M*1.0*0.0}
+.PARAM A0_={99.4003M*1.0}
+.PARAM MA_={-15.2922M*1.0*1.0}
+
+*D0:=-659.76M
+*.PARAM D0={-658.8844M*0.9}
+*.PARAM MD={88.2679M*0.9}
+.PARAM D0={-794.5178M*1.0}
+.PARAM MD={122.2254M*1.0*1.0}
+
+GVDD1 0 G1 TABLE {V(VDD1,GND1)} = (4.5 1.0003395) (4.7 1.0000215) (4.9 0.9999965) (5.1 1.0000035) (5.3 1.0000155) (5.5 1.0000445)
+RG1 G1 0 1.0
+*E1 OUTP OUTN VALUE = { V(G1)*V(INP,INN) }
+*E1 OUTP OUTN VALUE = {CA*TANH(BA*V(INP,INN) + A0 + MA*V(VDD2,GND2)) + D0 + MD*V(VDD2,GND2) }
+*G1 OUTP OUTN VALUE = {CA*TANH(BA*V(INP,INN) + A0 + MA*V(VDD2,GND2)) + D0 + MD*V(VDD2,GND2) }
+*G1 OUTN OUTP  VALUE = {(C0 + MC*V(VDD2,GND2))*TANH((B0 + MB*V(VDD2,GND2))*V(INP,INN) + A0 + MA*V(VDD2,GND2)) + D0 + MD*V(VDD2,GND2) }
+*G1 OUTN OUTP  VALUE = {(C0 + MC*V(VDD2,GND2))*TANH((B0 + MB*V(VDD2,GND2))*(V(INP,INN) + A0/B0 + MA/B0*V(VDD2,GND2))) + D0 + MD*V(VDD2,GND2) }
+G1 OUTN OUTP  VALUE = {(C0 + MC*V(VDD2,GND2))*TANH((B0 + MB*V(VDD2,GND2))*(V(INP,INN) + 
++ A0_ + MA_*V(VDD2,GND2))) + D0 + MD*V(VDD2,GND2) }
+ROUT OUTP OUTN  RMOD2 {R0}
+GA 0 A POLY(1) VDD2 GND2 14.4495M -2.1936M
+RA 0 A 1
+*GB 0 B POLY(1) VDD2 GND2 139.8751M 2.3796M
+GB 0 B POLY(2) VDD2 GND2 G1 0 139.8751M 0 0 0 2.3796M
+RB 0 B 1
+GC 0 C POLY(1) VDD2 GND2 57.0074 -854.6168M
+RC 0 C 1
+GD 0 D POLY(1) VDD2 GND2 -794.5178M 122.2254M
+RD 0 D 1
+*G1 OUTN OUTP  VALUE = {V(C)*TANH(V(B)*V(INP,INN) + V(A)) + V(D) }
+*G1 OUTN OUTP  VALUE = {V(C)*TANH(V(B)*V(G1)*V(INP,INN) + V(A)) + V(D) }
+*G1 OUTN OUTP  VALUE = {V(C)*TANH(V(B)*V(INP,INN) + V(A)) + V(D) }
+.MODEL RMOD2 RES (TC1={TC1} TC2=0 TCE=0)
+.ENDS
+
+*GC C 0 POLY(1) VDD2 GND2 {C0} {MC}
+
+.SUBCKT VOST_0   1 2
+*OFFSET VOLTAGE, VOS = 0MV ¡À10 ¡À2000 UV
+*VS TEMPERATURE DVOS/DT ¡À0.4 ¡À10.0 UV/¡ãC
+.PARAM I0 = 1M
+.PARAM DVOS_DT= {0.4U}
+*.PARAM VOFFS = {185.3U + 2*DVOS_DT}
+*.PARAM VOFFS = {198.3U + 3.37U + 2*DVOS_DT}
+.PARAM VOFFS = {200.57U + 2*DVOS_DT}
+.PARAM R0 = {VOFFS/I0}
+.PARAM TC1= {DVOS_DT/R0/I0}
+
+R2 40 0 RMOD2 {R0}
+I2 40 0 {I0}
+E3 1 2 40 0 1
+.MODEL RMOD2 RES (TC1={TC1} TC2=0 TCE=0)
+.ENDS
+
+
+
+
+.SUBCKT D_LIM1_0   1 2
+D1 1 2  D_LIM1
+.ENDS
+*$
+
+
+
+
+.SUBCKT Q_PMOS_OUT_L1_0   D G S B PARAMS:  M = 1 W = 100U L = 10U
+*_L1
+M1 D G S B Q_PMOS_OUT_L1 W = {W} L = {L} M = {M} AD={W*LS} AS={W*LS} PD={W + 2*LS} PS={W + 2*LS}
+*M1 D G S B Q_PMOS_OUT W = {W} L = {L} M = {M} AD={W*LS} AS={W*LS} PD={W + 2*LS} PS={W + 2*LS}
++ NRD={LS/W} NRS={LS/W}
+.ENDS
+*$
+
+
+
+
+.SUBCKT Q_NMOS_OUT_L1_0   D G S B PARAMS:  M = 1 W = 100U L = 10U
+M1 D G S B Q_NMOS_OUT_L1  W = {W} L = {L} M = {M} AD={W*LS} AS={W*LS} PD={W + 2*LS} PS={W + 2*LS}
+*M1 D G S B Q_NMOS_OUT  W = {W} L = {L} M = {M} AD={W*LS} AS={W*LS} PD={W + 2*LS} PS={W + 2*LS}
++ NRD={LS/W} NRS={LS/W}
+.ENDS
+*$
+
+
+
+.SUBCKT HYSTCOMP_0  INP INM OUT GND 
++ PARAMS: VTHRES=0 VHYST=1 VOUTH=5 VOUTL=0 ROUT=1 TDEL=1N
+*
+.PARAM RDEL = {IF ( (TDEL > 1E-15) & (ROUT < 1), 1, ROUT ) } 
+.PARAM VOUTM={(VOUTH+VOUTL)/2}
+.PARAM VTHH={VTHRES+VHYST}
+.PARAM VTHL={VTHRES-VHYST}
+.PARAM COUT={TDEL/(0.693*(RDEL+1U))}
+*
+ETHR THR GND VALUE= { IF ( V(OUT,GND) < {VOUTM}, {VTHH}, {VTHL}) }
+EOUT OUT GND VALUE= { IF ( V(INP,INM) > V(THR,GND), VOUTH + RDEL*I(EOUT) , VOUTL + RDEL*I(EOUT)  ) }
+COUT OUT GND {COUT}
+.ENDS
+
+
+
+
+
+.SUBCKT Q_PMOS_OUT_L1_1   D G S B PARAMS:  M = 1 W = 100U L = 10U
+M1 D G S B Q_PMOS_OUT_L1 W = {W} L = {L} M = {M} AD={W*LS} AS={W*LS} PD={W + 2*LS} PS={W + 2*LS}
++ NRD={LS/W} NRS={LS/W}
+.ENDS
+*$
+
+
+
+
+.SUBCKT Q_NMOS_OUT_L1_1   D G S B PARAMS:  M = 1 W = 100U L = 10U
+M1 D G S B Q_NMOS_OUT_L1  W = {W} L = {L} M = {M} AD={W*LS} AS={W*LS} PD={W + 2*LS} PS={W + 2*LS}
++ NRD={LS/W} NRS={LS/W}
+.ENDS
+*$
+
+
+
+
+
+.SUBCKT Q_NMOS_OUT_L1_2   D G S B PARAMS:  M = 1 W = 100U L = 10U
+*M1 D G S B Q_NMOS_OUT_L1  W = {W} L = {L} M = {M} AD={W*LS} AS={W*LS} PD={W + 2*LS} PS={W + 2*LS}
+M1 D G S B Q_NMOS_OUT_L1  W = {W} L = {L} M = {M} AD={W*LS} AS={W*LS} PD={W + 2*LS} PS={W + 2*LS}
++ NRD={LS/W} NRS={LS/W}
+.ENDS
+*$
+
+
+
+
+.SUBCKT D_D4_0       1    2
+D1 1 2  DD
+.MODEL DD D( IS=10F N=0.10 RS=1 XTI=0 EG=0.11)
+.ENDS D_D4_0
+
+
+
+.SUBCKT D_ZB1_0        1    2
+D1 1 2  D_4_9V
+CD 1 2 10P
+.MODEL D_4_9V D( IS=1F N=1.0 BV=4.0 IBV=1.0M RS=0 XTI=0)
+.ENDS
+
+*.LIB "I:\TINA\TI\MODELS\AMC1200\AMC1200.LIB"
+*Parameters: 0.4um CMOS
+.PARAM LS = 1.0U
+.PARAM VTOHP = 0.75
+.PARAM VTOHN = 0.75
+.PARAM LAMBDA = 10M
+.PARAM GAMMA = 0.00
+.PARAM KAPPA = 1.0
+.PARAM THETA = 0.23
+.PARAM ETA = 3
+*.PARAM KPN = 5.0E-05
+*.PARAM KPP = 2.0E-05
+.PARAM KPN = {UON*COX * 1e-4}
+.PARAM KPP = {UOP*COX * 1e-4}
+.PARAM LDN = 0.09U
+.PARAM LDP = 0.09U
+.PARAM RSW = 1810
+.PARAM RSN = 1.41
+.PARAM RDS = 10MEG
+.PARAM VBMUL = 1E6
+.PARAM RPAR = 1T
+.PARAM CBDJ = 1.0 
+.PARAM CBDS = 1.0
+.PARAM CGBF = 1.0
+.PARAM PBP = 0.7
+.PARAM PBN = 0.7
+.PARAM UON = 450
+.PARAM UOP = 450
+*.PARAM UOP = 150
+*
+.PARAM CJN = {200U}
+.PARAM CJP = {400U} 
+.PARAM CJSWN = {1.2N}
+.PARAM CJSWP = {2.4N}
+.PARAM XJN = 0.15U
+.PARAM CGSON = {0.6*XJN*COX} 
+.PARAM CGDON = {CGSON}
+.PARAM CGBON = {CGBF*CGDON}
+.PARAM XJP = 0.18U
+.PARAM CGSOP = {0.6*XJP*COX} 
+.PARAM CGDOP = {CGSOP}
+.PARAM CGBOP = {CGBF*CGDOP}
+.PARAM EPSSIO2 = {3.9*8.854214871E-12}
+.PARAM TOX = 80E-10
+.PARAM COX = {EPSSIO2/TOX}
+*$
+.MODEL Q_NMOS NMOS Level=1 L=2U W=10U KP={KPN} VTO={VTOHN}  AF=0 KF=0
+*$
+.MODEL Q_PMOS PMOS Level=1 L=2U W=10U KP={KPP} VTO={-VTOHP}  AF=0 KF=0
+*$
+.MODEL Q_NMOS_Out_L1 NMOS LEVEL=1 L=10U W=100U KP={KPN} VTO={VTOHN} LAMBDA={LAMBDA}
++ CJ={CJN} CJSW={CJSWN} CGSO={CGSON} CGDO={CGDON} RSH= 4 PB={PBN} LD= {LDN} RDS={RDS} 
+*$
+.MODEL Q_NMOS_Out NMOS LEVEL=3 L=10U W=100U KP={KPN} VTO={VTOHN} THETA={THETA}
++ CJ={CJN} CJSW={CJSWN} CGSO={CGSON} CGDO={CGDON} RSH= 4 PB={PBN} LD= {LDN} RDS={RDS} TOX={TOX} XJ={XJN}
++ GAMMA={GAMMA} KAPPA={KAPPA} ETA={ETA}
+*$
+.MODEL Q_PMOS_Out_L1 PMOS LEVEL=1 L=10U W=100U KP={KPP} VTO={-VTOHP} LAMBDA={LAMBDA}
++ CJ={CJP} CJSW={CJSWP} CGSO={CGSOP} CGDO={CGDOP} RSH=4 PB={PBP} LD= {LDP} RDS={RDS} 
+*$
+.MODEL Q_PMOS_Out PMOS LEVEL=3 L=10U W=100U KP={KPP} VTO={-VTOHP} THETA={THETA}
++ CJ={CJP} CJSW={CJSWP} CGSO={CGSOP} CGDO={CGDOP} RSH=4 PB={PBP} LD= {LDP} RDS={RDS} TOX={TOX} XJ={XJP}
++ GAMMA={GAMMA} KAPPA={KAPPA} ETA={ETA}
+*$
+.MODEL D_Lim1 D( IS=10F N=1.0 RS=1000 XTI=0 AF=0 KF=0 EG=1.11)
+*$
+.MODEL D_Lim2 D( IS=10f N=0.5 RS=1 XTI=0 AF=0 KF=0 EG=0.555 )
+*$
+.MODEL D_Lim3 D( IS=1E-18 N=1.0 RS=1 XTI=0 AF=0 KF=0)
+*$
+.MODEL D_Lim4 D( IS=10F N=1.0 RS=1m XTI=0 AF=0 KF=0)
+*$
+.MODEL D1 D( IS=1p N=1.0 RS=0 XTI=3 AF=0 KF=0 )
+*$
+.MODEL D2 D( IS=1p N=1.0 XTI=0 RS=10)
+*$

@@ -1,0 +1,187 @@
+* OPA2683
+*****************************************************************************
+* (C) Copyright 2011 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: OPA2683
+* Date: 15JUL2011
+* Model Type: ALL IN ONE
+* Simulator: PSPICE
+* Simulator Version: 16.0.0.p001
+* EVM Order Number: N/A
+* EVM Users Guide: N/A
+* Datasheet: SBOS244H – MAY 2002 – REVISED JULY 2009
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+* 
+* Updates:
+*
+* Version 1.0 : 
+* Release to Web
+*
+*****************************************************************************
+* CONNECTIONS:
+*              Non-Inverting Input
+*              | Inverting Input
+*              | |  Positive Supply
+*              | |  |   Negative Supply
+*              | |  |   |  Out
+*              | |  |   |  |  DisA
+*              | |  |   |  |  | 
+*              | |  |   |  |  |  
+*              | |  |   |  |  |  
+.SUBCKT OPA2683 + -  V+ V- Out DisA
+V_V1         L 0 2.486
+C_C8         0 DisA  1P  
+R_Rp2         2ndpole 0  1k  
+Q_Q1         12 13 13 PNP8 .25
+Q_Q8         31 26 32 NPN8 .25
+Q_Q2         16 16 + NPN8 .375
+R_R3a         2 32  10  
+V_V2         H 0 2.722
+Q_Q3         17 17 + PNP8 .375
+Q_Q9         33 28 32 PNP8 .25
+C_C4         0 V-  1P  
+C_C7         V+ 0  1P  
+G_G2         0 2ndpole Zo 0 .001
+R_Rz         0 Zo  725K  
+X_F5    30 31 V+ Zo OPA683_F5 
+X_F6    33 34 Zo V- OPA683_F6 
+C_C6         V- Out  1P  
+C_Cp2         0 2ndpole  224F  
+X_F3    19 20 25 26 OPA683_F3 
+X_F4    23 24 28 29 OPA683_F4 
+G_G1         11 0 POLY(1) 10 0 -2.468230611E-06 1.370624256E-06 0 0
+X_F1    13 14 15 16 OPA683_F1 
+X_F2    14 11 17 18 OPA683_F2 
+E_E2         36 0 POLY(1) V- V+ 1.60 .5 0 0
+E_E1         35 0 POLY(1) V+ V- -1.60 .5 0 0
+E_E3         37 38 POLY(2) 0 2ndpole  V+ V- -695M 1 0.5
+E_E4         40 41 POLY(2) 2ndpole 0  V+ V- -695M 1 0.5
+C_Cz         0 Zo  1.5968p  
+L_L1         32 -  96nH  
+I_I22         43 42 DC 40uA  
+G_G11         - 0 POLY(2) 44 0 45 0 0 1M 1M
+I_I24         45 44 DC 3.5uA  
+G_G10         + 0 POLY(2) 42 0 43 0 0 1M 1M
+D_D1         L 10 DX 1
+D_D2         10 H DX 1
+*Q_Q15         21 21 20 PNP8 .0625
+Q_Q4         21 16 2 NPN8 .375
+Q_Q5         22 17 2 PNP8 .375
+*Q_Q14         22 22 23 NPN8 .0625
+Q_Q6         26 27 28 NPN8 .25
+Q_Q7         28 27 26 PNP8 .25
+D_D3         2ndpole 35 dx 1
+D_D4         36 2ndpole dx 1
+D_D5         38 Out D1 4
+D_D6         Out 40 D1 4
+D_D7         42 0 DN1 .25
+D_D8         0 43 DN1 .25
+D_D9         44 0 DN3 .25
+D_D10         0 45 DN3 .25
+*V_V3         20 21 DC 3.05  
+*V_V4         22 23 DC 3.05 
+V_V3         20 21 DC 0.3  
+V_V4         22 23 DC 0.3 
+*R_R51         20 21 10
+*R_R52         22 23 10
+R_R1         DisA 10  5.625K  
+R_R2         12 V+  1160  
+R_R3         0 13  1436895674  
+R_R4         15 V+  3000  
+R_R5         V- 18  3000  
+R_R6         19 V+  1000  
+R_R7         V- 24  1000  
+R_R8         25 V+  1k  
+R_R9         V- 29  1k  
+R_R10         30 V+  1k  
+R_R11         V- 34  100  
+R_R12         37 V+  .1  
+R_R13         V- 41  .1  
+.MODEL DX D
++ IS=1.0000E-15  
+*
+.MODEL D1 D(EG=0.831 CJO=2.32E-16 RS=12.0 IS=3.85E-16
++N=1.033  XTI=2.0 VJ=0.75 M=0.33)
+*
+*MODEL DN1 IS FOR MACRO MODELS
+*CREATED BY REA SCHMID 9/23/01
+.model DN1 D( IS=.1F AF=1.0 KF=19.2E-17)
+*
+*MODEL DN3 USED FOR MACRO MODELS
+*CREATED BY REA SCHMID 9/23/01
+.MODEL DN3 D( IS=.1F AF=1.0 KF=11.0E-17) 
+*
+.MODEL PNP8 PNP
++ IS = 7.999E-18 BF = 1.418E+02 NF = 1.000E+00 VAF= 4.158E+01
++ IKF= 1.085E-01 ISE= 2.233E-15 NE = 1.505E+00 BR = 3.252E+01
++ NR = 1.050E+00 VAR= 1.093E+00 IKR= 5.000E-05 ISC= 6.621E-16
++ NC = 1.150E+00 RB = 6.246E+01 IRB= 0.000E+00 RBM= 2.240E+00
++ RE = 2.537E+00 RC = 1.260E+02 CJE= 9.502E-14 VJE= 7.320E-01
++ MJE= 4.930E-01 TF = 1.303E-11 XTF= 3.500E+01 VTF= 3.259E+00
++ ITF= 2.639E-01 PTF= 0.000E+00 CJC= 1.080E-13 VJC= 7.743E-01
++ MJC= 5.000E-01 XCJC=8.504E-02 TR = 1.500E-10 CJS= 1.290E-13
++ VJS= 9.058E-01 MJS= 4.931E-01 XTB= 1.732E+00 EG = 1.120E+00
++ XTI= 2.000E+00 KF = 3.500E-16 AF = 1.000E+00 FC = 8.500E-01
+*
+.MODEL NPN8 NPN
++ IS = 7.604E-18 BF = 1.570E+02 NF = 1.000E+00 VAF= 7.871E+01
++ IKF= 3.975E-02 ISE= 3.219E-14 NE = 2.000E+00 BR = 7.614E-01
++ NR = 1.000E+00 VAR= 1.452E+00 IKR= 8.172E-02 ISC= 7.618E-21
++ NC = 1.847E+00 RB = 1.060E+02 IRB= 0.000E+00 RBM= 2.400E+00
++ RE = 2.520E+00 RC = 1.270E+02 CJE= 1.120E-13 VJE= 7.591E-01
++ MJE= 5.406E-01 TF = 1.213E-11 XTF= 2.049E+00 VTF= 1.813E+00
++ ITF= 4.293E-02 PTF= 0.000E+00 CJC= 8.208E-14 VJC= 6.666E-01
++ MJC= 4.509E-01 XCJC=8.450E-02 TR = 4.000E-11 CJS= 1.160E-13
++ VJS= 5.286E-01 MJS= 4.389E-01 XTB= 1.022E+00 EG = 1.120E+00
++ XTI= 1.780E+00 KF = 3.500E-16 AF = 1.000E+00 FC = 8.273E-01
+*
+.ENDS    OPA2683
+*
+*
+.subckt OPA683_F5 1 2 3 4  
+F_F5         3 4 VF_F5 .9999
+VF_F5         1 2 0V
+.ends OPA683_F5
+*
+.subckt OPA683_F6 1 2 3 4  
+F_F6         3 4 VF_F6 1.0494
+VF_F6         1 2 0V
+.ends OPA683_F6
+*
+.subckt OPA683_F3 1 2 3 4  
+F_F3         3 4 VF_F3 1.0596
+VF_F3         1 2 0V
+.ends OPA683_F3
+*
+.subckt OPA683_F4 1 2 3 4  
+F_F4         3 4 VF_F4 .91972
+VF_F4         1 2 0V
+.ends OPA683_F4
+*
+.subckt OPA683_F1 1 2 3 4  
+F_F1         3 4 VF_F1 25.237
+VF_F1         1 2 0V
+.ends OPA683_F1
+*
+.subckt OPA683_F2 1 2 3 4  
+F_F2         3 4 VF_F2 25.601
+VF_F2         1 2 0V
+.ends OPA683_F2
+*

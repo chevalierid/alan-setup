@@ -1,0 +1,121 @@
+* PSpice Model Editor - Version 17.4.0
+* JFE150
+*****************************************************************************
+* (C) Copyright 2022 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Online Design Tools, Texas Instruments Inc.
+* Part: JFE150
+* Date: 28NOV2022
+* Model Type: Generic (suitable for all analysis types)
+* EVM Order Number: N/A 
+* EVM Users Guide:  N/A 
+* Datasheet: N/A
+* Created with Shichman and Hodges JFET SPICE modeling
+*
+* Model Version: Final 1.1
+*
+*****************************************************************************
+*
+* Updated Version: 1.1
+* Release to Web.
+*****************************************************************************
+* Model Usage Notes:
+*
+* Revision 1.1
+* 
+*     This version includes 2 extra symbols within the same OLB file:
+*     One for STRONG and other for WEAK corners.
+*
+*   Typical Corner --> JFE150
+*   Weak Corner    --> JFE150_WEAK
+*   Strong Corner  --> JFE150_STRONG
+*     Overall, there will be 3 model-symbols within one release.
+*
+* Revision 1.0
+* The following parameters are modeled: 
+*      Static, large and small signals, and noise parameters
+*
+*****************************************************************************
+*$
+.SUBCKT JFE150 D G S VCC VEE
+*****************************************************************************
+.model DJFE150 D Is=1e-12 Cjo=0.1pF Rs=180k BV=22
+.model NJFE150 NJF (BETA=31m BETATCE=.5 VTO=-975m VTOTC=2.5m LAMBDA=16.95m RD=3.5 RS=4.2 N=1 M=0.33 PB=0.705 IS=5.34f CGD=6.3p CGS=20.3p AF=1 KF=3.25e-18 FC=0.5)
+*
+J_J1         D G S NJFE150 
+D_D1         G D   DJFE150
+X_U1         D VCC VEE ESD_OUT_JFE150
+X_U2         G VCC VEE ESD_OUT_JFE150
+X_U3         S VCC VEE ESD_OUT_JFE150
+.ENDS JFE150
+*$
+*
+.SUBCKT ESD_OUT_JFE150 OUT VCC VEE
+.MODEL ESD_SW VSWITCH(RON=50 ROFF=1E12 VON=700E-3 VOFF=100E-3)
+S1 VCC OUT OUT VCC ESD_SW
+S2 OUT VEE VEE OUT ESD_SW
+.ENDS  ESD_OUT_JFE150
+*$
+*
+*
+*
+*****************************************************************************
+*$
+.SUBCKT JFE150_STRONG D G S VCC VEE
+*****************************************************************************
+.model DJFE150_STRONG D Is=1e-12 Cjo=0.1pF Rs=180k BV=22
+.model NJFE150_STRONG NJF (BETA=46m BETATCE=.5 VTO=-1.5 VTOTC=2.5m LAMBDA=16.95m RD=20 RS=15.7 N=1 M=0.33 PB=0.705 IS=5.34f CGD=6.3p CGS=20.3p AF=1 KF=3.25e-18 FC=0.5)
+*
+J_J1         D G S NJFE150_STRONG
+D_D1         G D   DJFE150_STRONG
+X_U1         D VCC VEE ESD_OUT_JFE150_S
+X_U2         G VCC VEE ESD_OUT_JFE150_S
+X_U3         S VCC VEE ESD_OUT_JFE150_S
+.ENDS JFE150_STRONG
+*$
+*
+.SUBCKT ESD_OUT_JFE150_S OUT VCC VEE
+.MODEL ESD_SW VSWITCH(RON=50 ROFF=1E12 VON=700E-3 VOFF=100E-3)
+S1 VCC OUT OUT VCC ESD_SW
+S2 OUT VEE VEE OUT ESD_SW
+.ENDS  ESD_OUT_JFE150_S
+*$
+*
+*
+*
+*****************************************************************************
+*$
+.SUBCKT JFE150_WEAK D G S VCC VEE
+*****************************************************************************
+.model DJFE150_WEAK D Is=1e-12 Cjo=0.1pF Rs=180k BV=22
+.model NJFE150_WEAK NJF (BETA=22.5m BETATCE=.5 VTO=-900m VTOTC=2.5m LAMBDA=16.95m RD=3.5 RS=4.2 N=1 M=0.33 PB=0.705 IS=5.34f CGD=6.3p CGS=20.3p AF=1 KF=3.25e-18 FC=0.5)
+*
+J_J1         D G S NJFE150_WEAK 
+D_D1         G D   DJFE150_WEAK 
+X_U1         D VCC VEE ESD_OUT_JFE150_WEAK 
+X_U2         G VCC VEE ESD_OUT_JFE150_WEAK 
+X_U3         S VCC VEE ESD_OUT_JFE150_WEAK 
+.ENDS JFE150_WEAK
+*$
+*
+.SUBCKT ESD_OUT_JFE150_WEAK OUT VCC VEE
+.MODEL ESD_SW VSWITCH(RON=50 ROFF=1E12 VON=700E-3 VOFF=100E-3)
+S1 VCC OUT OUT VCC ESD_SW
+S2 OUT VEE VEE OUT ESD_SW
+.ENDS  ESD_OUT_JFE150_WEAK
+*$
+*
+*

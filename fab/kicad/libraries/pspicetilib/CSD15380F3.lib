@@ -1,0 +1,108 @@
+* PSpice Model Editor - Version 16.2.0
+*$
+* CSD15380F3
+***********************************************************************
+*  (C) Copyright 2016 Texas Instruments Incorporated. All rights reserved.
+***********************************************************************
+***********************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose. The model is
+** provided solely on an "as is" basis. The entire risk as to its quality
+** and performance is with the customer
+********************************************************************************
+*
+********************************************************************************
+*
+* Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: CSD15380F3
+* Date: 05/10/2016
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.2
+* EVM Order Number: 
+* EVM Users Guide: 
+* Datasheet: SLPS579 �MAY 2016
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+*
+**********************************************************************
+**********************************************************************
+*                                                                    *
+*   CSD15380F3   -  PSpice Model -  STATUS:  PRELIMINARY             *
+*                                                                    *                                                                  *
+**********************************************************************
+* SUBCKT Definition:  1=D  2=G  3=S
+**********************************************************************
+.SUBCKT	CSD15380F3	1	2	3
+**********************************************************************
+.PARAM	pWidth	0.0047063		; m, total gate width
+.PARAM  pLen    0.4u
+.PARAM  perim   {2*pWidth}	; m, gate/drain perim (rough est)
+.PARAM  ptrc1   3.5e-3		; temp co of ext Rd / Rs
+.PARAM  ptrc2   8.0e-6
+**********************************************************************
+M1		10	11	12	12	NMOS	W={pWidth}	L={pLen}	PS={perim}	PD={perim}
+DBD		3	1			DBD
+CBD0	3  	1					3.5e-12
+RBD0  	3	1					9e9
+*CGD0	2	13					5E-12
+*RGD		13	1					2e6
+CGS0	11	12					6e-12
+DDG		10	14			DD
+DGD		11	14			DD
+RGG		2	11					9.0
+RSB		12	9			RTEMP	0.51e-0
+RSS		9	3			RTEMP 	0.51e-0
+RDD		1	10			RTEMP 	0.30e-3
+DESD	3	2			DZ
+**********************************************************************
+.MODEL  NMOS   NMOS (    LEVEL  = 7             Version = 3.2  
++ TNOM   = 27            LINT   = 0.058e-6      CAPMOD = 2
++ TOX    = 1.75e-8       NCH    = 2.30e17       NSUB   = 1.0e16
++ AGS    = 0.0           PVAG   = 0.0           U0     = 750
++ A0     = 1.0           A1     = 0.0           A2     = 0.75
++ UA     = 0.00e-9       UB     = 0.0e-18       VBM    = -10
++ UA1    = 0.0e-9        UB1    = -0.75e-17     UTE    = -1.50
++ KT1    = -0.6000       KT2    =-0.022         KT1L   = 1.0e-15
++ DVT0   = 2.1           DVT1   = 0.45	        DVT2   = -0.033
++ ETA0   = 0.020         ETAB   = -0.07         XJ     = 3e-7
++ PDIBLC1= 0.08          PDIBLC2= 0.006         NLX    = 1.75e-7
++ PSCBE1 = 2.5e8         PSCBE2 = 1e-7          PCLM   = 1.5
++ VOFF   = -0.30         NFACTOR= 1.41          JS     = 0
++ DROUT  = 0.9           DSUB   = 1.4           DELTA  = 0.022
++ CJ     = 1e-18         CJSW   = 1e-18         CF     = 0
++ CGSO   = 1e-18         CGDO   = 1e-18         CGBO   = 0  )
+**********************************************************************
+.MODEL	DBD		D	(
++ CJO=5.00e-12 			 VJ=1.0					M=0.33
++ TNOM=27 				 FC=0.5					TT=1e-09
++ XTI=-0.0				 BV=22 					IS=1.2e-14
++ N=1.010				 RS=0.25e-0				TRS1=4.2e-3
++ ISR=1e-11				 NR=2.0)
+**********************************************************************
+.MODEL 	DD		D	(
++ CJO=1.5e-12			 VJ=0.45 				M=0.75
++ IS=1e-13				 RS=1					TNOM=27)
+**********************************************************************
+.MODEL 	DZ		D	(
++ CJO=1.5e-18			 VJ=0.45 				M=0.75
++ IS=1e-13				 RS=1					TNOM=27
++ BV=11)
+**********************************************************************
+.MODEL 	RTEMP 	RES	(
++ TC1={ptrc1}			 TC2={ptrc2})
+**********************************************************************
+.ENDS CSD15380F3
+*$

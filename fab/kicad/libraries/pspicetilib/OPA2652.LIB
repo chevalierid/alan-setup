@@ -1,0 +1,151 @@
+
+
+
+
+
+* OPA2652
+*****************************************************************************
+* (C) Copyright 2011 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: OPA2652
+* Date: 22JUL2011
+* Model Type: ALL IN ONE
+* Simulator: PSPICE
+* Simulator Version: 16.0.0.p001
+* EVM Order Number: N/A
+* EVM Users Guide: N/A
+* Datasheet: SBOS125A-JUNE 2000-REVISED MAY 2006
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+* 
+* Updates:
+*
+* Version 1.0 : 
+* Release to Web
+*
+*****************************************************************************
+* NOTES:
+*   1- Uses a multiple pole-zero topology
+*   2- For better convergence during transient analysis set:
+*        .OPTIONS  ITL4=40
+*   3- This macromodel predicts room temperature performance
+*      (T = 27 deg C) for: DC, small-signal AC, noise, and
+*      transient simulations
+*   4- This macromodel does not predict: distortion
+*      (harmonic, intermod, diff. gain & phase, ...),
+*      temperature effects, board parasitics, differences
+*      between package styles, and process changes
+***************************************************************************** 
+* CONNECTIONS:
+*               Non-Inverting Input         
+*               | Inverting Input
+*               | | Positive Power Supply
+*               | | | Negative Power Supply
+*               | | | | Output
+*               | | | | |
+.SUBCKT OPA2652 3 2 8 4 1
+*
+* Package Parasitics
+C1 1 0 1P
+C2 2 0 1P
+C3 3 0 1P
+C4 4 0 1P
+C8 8 0 1P
+*
+* Input Stage
+V10  8 10 DC 1.40
+R10 10 11 371
+R11 10 12 371
+C10 11 12 31.2F    ;2nd POLE at 7GHz
+Q10 11  3 14 QN    ;C-B-E
+Q11 12 13 15 QN
+R12 14 16 300
+R13 15 16 300
+I12 16  4 DC 800U
+V12 17  4 DC 1.10
+D12 17 16 DX
+G10  3  0 POLY(2) 22 0 23 0    300N 1M 1M
+E11 13  2 POLY(2) 20 0 21 0    1.5M 1  1
+G11  2  0 POLY(2) 24 0 25 0      0  1M 1M
+*
+* Noise Sources
+I20 21 20 DC 10.9U
+D20 20  0 DN1
+D21  0 21 DN1
+I22 23 22 DC 1000U
+D22 22  0 DN2
+D23  0 23 DN2
+I24 25 24 DC 1000U
+D24 24  0 DN3
+D25  0 25 DN3
+*
+* Quiescent Current
+I26  8  4 DC 9.8M
+*
+* Second Stage
+G30  0 30 POLY(1) 12 11   0 2.70M 
+R30 30  0 10K
+V31 31  0 DC 4.92  ;SR = 335V/us
+V32  0 32 DC 4.92
+D31 30 31 DX
+D32 32 30 DX
+*
+* Third Stage
+G40  0 40 POLY(1) 30 0   0 1.00M
+R40 40  0 76.3K
+C40 40  0 14.7P    ;1st POLE at 142kHz
+E41 41  0 POLY(1) 8 4   -2.65 0.5
+E42 42  0 POLY(1) 4 8   +2.65 0.5
+D41 40 41 DX
+D42 42 40 DX
+*
+* Fourth Stage
+G50  0 50 POLY(1) 40 0   0 1.0U  
+L50 50 51 81.5U    ;163ps Delay
+C50 50 52 0.0815F
+L51 52  0 81.5U
+C52 51  0 0.0815F
+R53 51 52 1MEG
+*
+* Fifth Stage
+G60  0 60 POLY(1) 51 52   0 1.0U  
+L60 60 61 81.5U    ;163ps Delay
+C60 60 62 0.0815F
+L61 62  0 81.5U
+C62 61  0 0.0815F
+R63 61 62 1MEG
+*
+* Output Stage
+R70  8 70 10.0
+R71 74  4 18.0
+E70 70 71 POLY(2) 62 61 8 4   -691M 1 0.5
+E71 73 74 POLY(2) 61 62 8 4   -691M 1 0.5
+D70 71 72 DX
+D71 72 73 DX
+L70 72  1 2.0N
+*
+* Models
+.MODEL DN1 D(IS=1F AF=1.0 KF=1.2F)
+.MODEL DN2 D(IS=1F AF=1.0 KF=4.0F)
+.MODEL DN3 D(IS=1F AF=1.0 KF=4.0F)
+.MODEL DX  D(IS=1F)
+.MODEL QN  NPN(IS=1F BF=100 VAF=100)
+*
+.ENDS OPA2652
+*

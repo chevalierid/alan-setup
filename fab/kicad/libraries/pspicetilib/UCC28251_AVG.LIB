@@ -1,0 +1,122 @@
+
+*****************************************************************************
+* UCC28251
+*****************************************************************************
+* (C) Copyright 2013 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: UCC28251
+* Date: 11FEB2013
+* Model Type: Average
+* Simulator: PSpice
+* Simulator Version: 16.0.0.p001
+* EVM Order Number: UCC28250EVM-501
+* EVM Users Guide: SLUU429B - June 2010 - Revised December 2010
+* Datasheet: SLUSBD8 – FEBRUARY2013
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+***************************************************************************
+.SUBCKT UCC28251_AVG VIN VI VREF OUT DUTY FBCK GND  PARAMS: Fsw=150k Rcs=90.9k Ccs=470p
+E_E1    DUTY GND VALUE { LIMIT( (-2 * Fsw * Rcs * Ccs * LOG(1-( V(COMP)/V(VI) ))), 0 , 1) }
+R_R19         RAMP N13008  1m  
+V_Voffset         N20954 COMP 300m
+E_E2         N13008 GND VALUE { (1-exp(-V(DUTY)/(2*Rcs*Ccs*Fsw)))*V(VI) }
+X_U32         FBCK N20954 UTD_28251Avg PARAMS: K=1 TD=1U
+R_TEMP RAMP 0 1E9
+X_U2         VIN GND OUT DUTY GND PWM_28251AVG
+V_V4         VREF GND 3.3V
+.ENDS UCC28251_AVG
+*$
+.SUBCKT CESRL IN OUT
++ PARAMs:  C=100u ESR=0.01 X=2 ESL=1n IC=0
+C	IN 1  {C*X} 
+RESR	1 2 {ESR/X}
+LESL 2 OUT {ESL/X}
+.ENDS CESRL
+*$
+*$
+.SUBCKT UTD_28251Avg 1 2 PARAMS: K=1 TD=1u
+*In Out
+RIN 1 0 1E15
+E_E1 3 0 1 0 {K}
+T1 3 0 2 0 Z0=1 TD={TD}
+R1 2 0 1
+.ENDS
+*$
+.SUBCKT OPTO_28251Avg 1 2 3 4 5
+*An Cath Col Base Em
+VM 1 6 0
+D1 6 2 D_LED
+H_H1 7 0 VM .001
+R1 7 8 1K
+C1 8 0 100PF
+G_G1 3 4 8 0 .8
+Q1 3 4 5 QOPTO
+.MODEL D_LED D(N=3.36 RS=0.6 CJO=40PF IS=21.6E-9)
+.MODEL QOPTO NPN(IS=7.0E-12 NF=1.23 CJC=2PF
++ CJE=7PF TF=2.5NS TR=2.5NS BF=2000 BR=10
++ IKF=750MA VAF=40)
+.ENDS
+*$
+.SUBCKT TLV_28251Avg 7 6 11
+*            Cath An Ref
+V1 1 6 1.24
+R1 6 2 15.6
+C1 2 6 .2U
+R2 2 3 .1
+C2 3 4 1.3n
+R3 4 6 8
+G_G2 6 8 3 6 3.5
+D1 5 8 DCLAMP
+RZ 7 70 10
+CZ 70 6 8n
+D2 7 8 DCLAMP
+D4 6 8 DCLAMP
+V4 5 6 1.2
+G_G1 6 2 1 11 0.11
+VCLAMP 9 6 14.5
+D3  7 9 DCL2
+.MODEL DCLAMP D (IS=13.5N RS=25M N=1.59 
++ CJO=45P VJ=.75 M=.302 TT=50.4N BV=36V IBV=1MA)
+.MODEL DCL2 D RS=660K
+.ENDS
+*$
+.SUBCKT XFMR_28251Avg 1 2 3 4 PARAMS: RATIO=0.125
+* SINGLE WINDING TRANSFORMER 
+Rpar 1 2 1MEG
+E_Ea 5 4 VALUE = { V(1,2)*RATIO }
+G_Ga 1 2 VALUE = { I(VMa)*RATIO }
+Rser 6 3 1U
+VMa 5 6 
+RP2 5 0 100Meg
+RP3 6 0 100Meg
+.ENDS XFMR_28251Avg
+*$
+.SUBCKT PWM_28251Avg 1 2 3 4 5
+RP 1 2 1MEG
+E_E1 6 2 POLY(2) 1 2 4 5 0 0 0 0 1 
+G_G1 1 2 POLY(2) 6 3 4 5 0 0 0 0 1K
+RS 6 3 1M
+.ENDS
+*$
+

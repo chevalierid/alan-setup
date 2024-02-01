@@ -1,0 +1,123 @@
+* PSpice Model Editor - Version 16.0.0
+*$
+*TPS40211 AVERAGE MODEL (PSPICE Netlist Editor format)
+***************************************************************************
+** This product is designed as an aid for customers of Texas Instruments.
+** No warranties, either expressed or implied, with respect to this third
+** party software (if any) or with respect to its fitness for any        
+** particular purpose is claimed by Texas Instruments or the author. The 
+** software (if any) is provided soley on an "as is" basis. The entire   
+** risk as to its quality and performance is with the customer           
+***************************************************************************
+* This model was developed for Texas Instruments Incorporated by:
+*   AEi Systems, LLC
+*   5777 W. Century Blvd., Suite 876
+*   Los Angeles, California  90045
+*
+* This model is subject to change without notice. Neither Texas Instruments Incorporated 
+* nor AEi Systems is responsible for updating this model.
+* For more information regarding modeling services, model libraries and simulation 
+* products, please call AEi Systems at (310) 216-1144, or contact AEi Systems by email: 
+* info@AENG.com. Or visit AEi Systems on the web at http://www.AENG.com.
+********************************************************************************* 
+* Released by: Analog e-Lab Design Center, Texas Instruments Inc.
+* Part: TPS40211
+* Date: 09/19/2008
+* Model Type: AVERAGE
+* Simulator: PSpice
+* EVM Order Number: TPS40210EVM
+* EVM Users Guide: sluu308.pdf
+* Datasheet: slus772b, revised 2008
+*
+*****************************************************************************
+* Updates:
+*
+* Final 3.00
+* Release to Web.
+*****************************************************************************
+.SUBCKT TPS40211Avg SW FB GND IND VIN COMP 
++ PARAMS: L=10U NC=1 RB=0.058 F=611K EFF=.93 TS=75N
+V1          8 0  5
+VS4         9 GND  260m
+VS3         COMP 10  300m
+D2          8 SW  D_SSR8045
+XU4          9 FB COMP 0   TPS40211AMP_0
+XU3          11 0 10 0 VIN 12   TPSVBIAS_0
+XU1          IND 0 11 SW 12   BOOST_0
+.MODEL D_SSR8045  D IS=9.3983E-6 N=1.9085 RS=4.8543E-3
++ CJO=2.8578E-9 M=.3333 VJ=.75
++ ISR=175.46E-6 BV=200 IBV=12.938E-3 TT=1.4427E-12
+.ENDS TPS40211Avg
+*$
+.MODEL D_MBRS340T3  D (IS=182.183u RS=31.26m N=1.403 BV=200 IBV=0.1m
++CJO=492.728p M=0.464 TT=1n)
+*$
+.SUBCKT TPS40211AMP_0  20 8 3 21 PARAMS: ISINK= 1M, ISOURCE=150U, VHIGH=8, VLOW=100M, POLE=200, GAIN=5000
+*                  +  - OUT  GND
+RIN 20 8 8MEG
+CP1 11 21 {1/(6.28*(GAIN/100U)*POLE)}
+E1 5 21 11 21 1
+R9 5 2 5
+D14 2 13 DMOD
+IS 13 21 {ISINK/100} ; MA
+Q1 21 13 16 QPMOD
+ISRC 7 3 {ISOURCE}  ; UA
+D12 3 7 DMOD
+D15 21 11 DCLAMP
+G1 21 11 20 8 100U
+V1 7 21 {VHIGH-0.6V}
+V4 3 16 {VLOW-38MV}
+RP1 11 21 {GAIN/100U}
+.MODEL QPMOD PNP
+.MODEL DCLAMP D (RS=10 BV=10 IBV=0.01)
+.MODEL DMOD D (TT=1N CJO=10P)
+.ENDS 
+*$
+.SUBCKT TPSVBIAS_0  VPLUS VMINUS VINP VINM VIN DUTY
+E VPLUS VMINUS VALUE { V(VINP, VINM) - V(VIN)*V(DUTY)/20 }
+.ENDS 
+*$
+.SUBCKT BOOST_0  1   7   5  40    6 PARAMS: L=10U NC=1 RB=0.058 F=611K EFF=.93 TS=75N
+*               VIN RTN VC VOUT D
+*USED FOR VOLTAGE OR CURRENT MODE BUCK & BUCK-BOOST CONVERTERS.
+*PARAMS
+*{L} PRIMARY INDUCTANCE IN HENRIES
+*{NC} CURRENT TRANSFORMER TURNS RATIO
+*{F} SWITCHING FREQUENCY IN HZ
+*{EFF} EFFICIENCY
+*{RB} CURRENT TRANSFORMER BURDEN RESISTOR IN OHMS
+*{TS} PROPAGATION DELAY TIME IN THE CURRENT LOOP
+*
+*B1 IS INPUT CURRENT
+GB1 1 7 VALUE={ V(4)*I(VM1)/(EFF*V(1)) }
+*B2 IS PEAK INDUCTOR CURRENT
+EB2 2 7 VALUE={ IF ( V(5) > 0 , (V(5)*NC/(RB)) + (V(1)*TS/L) , 0 ) }
+*B3 IS MINIMUM INDUCTOR CURRENT
+EB3 3 7 VALUE={ IF ( V(2)-(1*V(4)/(L * F * (1+(1*V(4)/V(1))))) > 0 , V(2)-(1*V(4)/(L * F * (1+(1*V(4)/V(1))))) , 0 ) }
+*B4 IS OUTPUT CURRENT
+GB4 7 8 VALUE={ L * F * EFF * (V(2)*V(2)-V(3)*V(3))/(2*V(4)) }
+*B5 IS DUTY CYCLE
+EB5 6 7 VALUE={ IF ( L * F * (V(2)-V(3))/V(1) < 1 , L * F * (V(2)-V(3))/V(1) , 1 ) }
+VM1 8 4
+X9 4 7 40 1 XFMR PARAMS: RATIO=1
+.ENDS
+*$
+.SUBCKT XFMR 1 2 3 4 PARAMS: RATIO=1
+* SINGLE WINDING TRANSFORMER 
+RPAR 1 2 1MEG
+EA 5 4 VALUE = { V(1,2)*RATIO }
+GA 1 2 VALUE = { I(VMA)*RATIO }
+RSER 6 3 1U
+VMA 5 6 
+RP2 5 0 100MEG
+RP3 6 0 100MEG
+.ENDS XFMR
+*$
+.SUBCKT CAPRLC 1 2 Params: ESR=400m ESL=2N C=33u IC=24
+*Parameters: C Capacitance in Farads, ESR ESR in Ohms
+* ESL ESL in Henries, RLEAK Leakage resistance in Ohms
+C1 1 3 {C} IC = {IC}
+R1 3 4 {ESR}
+L1 4 2 {ESL} 
+.ENDS
+*$

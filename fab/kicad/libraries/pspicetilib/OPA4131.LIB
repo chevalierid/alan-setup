@@ -1,0 +1,126 @@
+
+* OPA4131
+*$
+*****************************************************************************
+* (C) Copyright 2011 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: OPA4131
+* Date: 01JUL2011
+* Model Type: ALL IN ONE
+* Simulator: PSPICE
+* Simulator Version: 16.0.0.p001
+* EVM Order Number: N/A 
+* EVM Users Guide: N/A
+* Datasheet: SBOS040A - NOVEMBER 1994 - REVISED DECEMBER 2002
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 : 
+* Release to Web
+*
+*****************************************************************************
+* THIS MODEL IS APPLICABLE TO OPA131 AND OPA2131 ALSO.
+*
+* CONNECTIONS:		 NON-INVERTING INPUT
+*	                 | INVERTING INPUT
+*       	         | | POSITIVE POWER SUPPLY
+*               	 | | | NEGATIVE POWER SUPPLY
+*	        	 | | | | OUTPUT
+*       	         | | | | |
+* PIN CONFIG FOR OPA4131:1 2 3 4 5
+*****************************************************************************
+.SUBCKT OPA4131  1 2 3 4 5  
+c1   11 12 4.197E-12
+c2    6  7 18.00E-12
+css  10 99 7.200E-12
+dc    5 53 dx
+de   54  5 dx
+dlp  90 91 dx
+dln  92 90 dx
+dp    4  3 dx
+egnd 99  0 poly(2) (3,0) (4,0) 0 .5 .5
+fb    7 99 poly(5) vb vc ve vlp vln 0 127.3E6 -130E6 130E6 130E6 -130E6
+ga    6  0 11 12 452.4E-6
+gcm   0  6 10 99 45.24E-9
+iss   3 10 dc 252.0E-6
+hlim 90  0 vlim 1K
+j1   11  2  10 jx
+j2   12  64 10 jx
+g11   2  4 Poly(4)  (10,2) (11,2) (4,2) (66,0) 0 1e-12 1e-12 1e-12 3e-6
+g12   1  4 Poly(4)  (10,1) (12,1) (4,1) (68,0) 0 1e-12 1e-12 1e-12 3e-6
+r2    6  9 100.0E3
+rd1   4 11 2.210E3
+rd2   4 12 2.210E3
+ro1   8  5 50
+ro2   7 99 25
+
+* rp    3  4 20.00E3
+
+rss  10 99 793.7E3
+vb    9  0 dc 0
+vc    3 53 dc 2.500
+ve   54  4 dc 2.500
+vlim  7  8 dc 0
+vlp  91  0 dc 20
+vln   0 92 dc 20
+
+* Output Supply Mirror
+FQ3    0    20    Poly(1) Vlim 0   1
+DQ1   20    21    DX
+DQ2   22    20    DX
+VQ1   21     0    0
+VQ2   22     0    0
+FQ1    3     0    Poly(1) VQ1   1.06E-3   1
+FQ2    0     4    Poly(1) VQ2   1.06E-3  -1
+
+* Quiescent Current
+RQ     3     4    160E3 
+
+* Diff Input Capacitance
+CDIF   1     2    1E-12
+
+* Common Mode Input Capacitance
+C1CM   1    99    1.5E-12
+C2CM   2    99    1.5E-12
+
+* Input Voltage Noise
+VN1   61     0  0.6
+VN2    0    62  0.6
+DN1   61    63  DY
+DN2   63    62  DY
+EN    64     1    63   0    1
+
+* Input Current Noise
+RN1    0    65  60.3865
+RN2   65    66  60.3865
+RN3   66     0  120.773
+RN4    0    67  60.3865
+RN5   67    68  60.3865
+RN6   68     0  120.773
+
+**************************
+.model dy D(Is=1.9E-16 RS=2000 AF=1 KF=2.258E-17)
+.model dx D(Is=800.0E-18)
+.model jx PJF(Is=2.500E-12 Beta=812.1E-6 Vto=-1)
+
+.ends OPA4131
+
+*$

@@ -1,0 +1,261 @@
+* PSpice Model Editor - Version 16.2.0
+*$
+* CSD86360Q5D
+***********************************************************************
+*  (C) Copyright 2015 Texas Instruments Incorporated. All rights reserved.
+***********************************************************************
+***********************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose. The model is
+** provided solely on an "as is" basis. The entire risk as to its quality
+** and performance is with the customer
+********************************************************************************
+*
+********************************************************************************
+*
+* Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: CSD86360Q5D
+* Date: 12/22/2015
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.2
+* EVM Order Number: 
+* EVM Users Guide: 
+* Datasheet: SLPS327A –SEPTEMBER 2012–REVISED MAY 2013
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+*
+*****************************************************************************
+*                                                                    *
+* csd86360q5d  -  PSPICE Model                                       *
+*   model verified in PSPICE Simulation Environment                  *
+*   version: 09/24/2014                                              *
+* Model Status:   model based on measured results                    *
+* QRR added                                                          *
+**********************************************************************
+* Subcircuit Instantiation Notes:
+*  nFET SUBCKT Definition:  1=D  2=G  3=S
+*  SUBCKT Definition:  1=2=Vin 3=TG 4=TGR 5=BG 6=7=8=VSW 9=PGND
+*  - see csd86360q5d  data sheet for further details
+**********************************************************************
+******************************************************************* 
+*******************************************************************
+.subckt CSD86360Q5D  1 2 3 4 5 6 7 8 9
+XnfetHS	net18	net17	net19	n36333
+XnfetLS	net19	net16	net15  n36309
+RGls	5	net10		22e-3
+RGhs	3	net11		26e-3
+RDhs	1	net12		0.9e-3
+RDhs2	2	net12		0.9e-3
+RGlr	4	net13		22e-3
+Rpsn	8	net14		0.60e-3
+Rpsn2	7	net14		0.60e-3
+Rpsn3	6	net14		0.60e-3
+RSls	9	net15		0.001e-3
+RLDhs	net12	net18		4e9
+LGls	net10	net16		1.54e-9
+LGhs	net11	net17		1.94e-9
+LDhs	net12	net18		0.50e-12
+LGlr	net13	net19		1.54e-9
+Lpsn	net14	net19		0.45e-9
+.ends CSD86360Q5D  
+*$
+**********************************************************************
+.MODEL  NMOS36333 NMOS	(
++ level=7		 Version = 3.2  
++ TNOM   = 27            LINT   = 0.058e-6      CAPMOD = 2
++ TOX    = 1.75e-8       NCH    = 2.605e17      NSUB   = 2.5e16
++ AGS    = 0.0           PVAG   = 0.30          U0     = 600
++ A0     = 1.10          A1     = 0.0           A2     = 1.0
++ UA     = 1.10e-9       UB     = 2.5e-18       VBM    = -10
++ UA1    = 2.45e-9       UB1    = -1.5e-18      UTE    = -1.50
++ KT1    = -0.80         KT2    =-0.022         KT1L   = 1.0e-15
++ DVT0   = 2.1           DVT1   = 0.48	        DVT2   = -0.033
++ ETA0   = 0.020         ETAB   = -0.07         XJ     = 3e-7
++ PDIBLC1= 0.05          PDIBLC2= 0.005         NLX    = 1.75e-7
++ PSCBE1 = 2.5e8         PSCBE2 = 1e-7          PCLM   = 1.50
++ VOFF   = -0.22         NFACTOR= 1.65          JS     = 0
++ DROUT  = 0.9           DSUB   = 1.4           DELTA  = 0.042
++ CJ     = 1e-18         CJSW   = 1e-18         CF     = 0
++ CGSO   = 175e-12       CGDO   = 1e-18       	CGBO   = 0
++ lmin=1e-9		 wmax=1e9)
+******************************************************************* 
+.MODEL  PMOS36333 PMOS	(
++ level  =1
++ TNOM   = 27            VTO    = -0.6
++ TOX    = 1.75e-8       NSUB   = 2e18	        JS     = 0
++ CJ     = 1e-18         CJSW   = 1e-18
++ CGSO   = 0             CGDO   = 0             CGBO   = 0
++ lmin=1e-9		 wmax=1e9)
+******************************************************************* 
+.MODEL DBDDCMOD36333 D (
++ CJO    = 1E-40         VJ     = 1.0         M      = 0.35
++ TNOM   = 27            FC     = 0.5         TT     = 0
++ XTI    =-0.00          BV     = 26          IS     = 1.0e-11
++ N      = 1.10          RS     = 5.00e-6     TRS1   = 4.2e-3
+*+ imelt  = 1e9           imax   = 1e9)
+.MODEL DBDCVMOD36333 D (
++ CJO    = 1.50e-9       VJ     = 1.0         M      = 0.25
++ TNOM   = 27            FC     = 0.5         TT     = 0
++ XTI    = -2.0          BV     = 26          IS     = 1E-40
++ N      = 1.10          RS     = 5.00e-6     TRS1   = 4.2e-3)
+*.MODEL DBD36333 D (
+*+ CJO    = 1.75e-9       VJ     = 1.0           M      = 0.32
+*+ TNOM   = 27            FC     = 0.5           TT     = 1e-09
+*+ XTI    = -1.0          BV     = 26            IS     = 3.0e-12
+*+ N      = 1.010         RS     = 2.0e-3        TRS1   = 4.3e-3
+*+ imelt  = 1e9           imax   = 1e9)
+.MODEL DD36333  D (
++ CJO    = 2.0e-10      VJ     = 0.30         	M      = 0.90
++ IS     = 1e-13         RS     = 1             TNOM   = 27)
+*******************************************************************
+.MODEL  NMOS36309	NMOS	(
++ level=7		 Version = 3.2
++ TNOM   = 27            LINT   = 0.058e-6      CAPMOD = 2
++ TOX    = 1.75e-8       NCH    = 2.070e17      NSUB   = 1.0e16
++ AGS    = 0.0           PVAG   = 0.0           U0     = 600
++ A0     = 1.0           A1     = 0.0           A2     = 0.75
++ UA     = 2.00e-9       UB     = 0.9e-18       VBM    = -10
++ UA1    = 0.1e-9        UB1    = -0.5e-18      UTE    = -1.50
++ KT1    = -0.65         KT2    =-0.022         KT1L   = 1.0e-15
++ DVT0   = 2.1           DVT1   = 0.45	      	DVT2   = -0.033
++ ETA0   = 0.020         ETAB   = -0.07         XJ     = 3e-7
++ PDIBLC1= 0.08          PDIBLC2= 0.006         NLX    = 1.75e-7
++ PSCBE1 = 2.5e8         PSCBE2 = 1e-7          PCLM   = 2.5
++ VOFF   = -0.21         NFACTOR= 1.41          JS     = 0
++ DROUT  = 0.9           DSUB   = 1.4           DELTA  = 0.022
++ CJ     = 1e-18         CJSW   = 1e-18         CF     = 0
++ CGSO   = 260.00e-12    CGDO   = 1e-18	       	CGBO   = 0
++ lmin=1e-9		 wmax=1e9)
+******************************************************************* 
+.MODEL  PMOS36309 PMOS	(
++ level  =1
++ TNOM   = 27            VTO    = -0.6
++ TOX    = 1.75e-8       NSUB   = 2e18	      JS     = 1e-21
++ CJ     = 1e-18         CJSW   = 1e-18         
++ CGSO   = 1e-21	 CGDO   = 1e-21       CGBO   = 1e-21
++ lmin=1e-9		 wmax=1e9)
+******************************************************************* 
+.MODEL DBDDCMOD36309 D (
++ CJO    = 1E-40         VJ     = 1.0         M      = 0.35
++ TNOM   = 27            FC     = 0.5         TT     = 0
++ XTI    =-4.00          BV     = 26          IS     = 3.0e-10
++ N      = 1.10          RS     = 5.00e-6     TRS1   = 4.2e-3)
+.MODEL DBDCVMOD36309 D (
++ CJO    = 4.00e-9       VJ     = 1.0         M      = 0.25
++ TNOM   = 27            FC     = 0.5         TT     = 0
++ XTI    = -2.0          BV     = 26          IS     = 1E-40
++ N      = 1.10          RS     = 5.00e-6     TRS1   = 4.2e-3)
+.MODEL DD36309  D (
++ CJO    = 8.50e-10     VJ     = 0.25        M      = 0.90
++ IS     = 1e-13         RS     = 1           TNOM   =27)
+
+**********************************************************************
+*                                                                    *
+*   n36309   -  PSPICE Model -  STATUS:  PRELIMINARY                *
+*                                                                    *
+*   n36309 is the LS silicon die model for use with 86350q5d         *
+*                                                                    *
+**********************************************************************
+**********************************************************************
+* SUBCKT Definition:  1=D  2=G  3=S
+**********************************************************************
+.subckt n36309   net01 net02 net03
+****** MODEL SUBCIRCUIT BEGINS HERE     ******************************
+*parameters	tau=3.3e-9
+*parameters	va=0.5
+*parameters	cq=1e-9
+M1	net10	net11	net12	net12	NMOS36309	w=4.7472928176795580110497237569061	l=0.50e-6
++ PS={2.1*4.7472928176795580110497237569061}	PD={2.1*4.7472928176795580110497237569061}	m=1
+M2	net12	net11	net12	net10	PMOS36309	w=4.7472928176795580110497237569061	l=0.01e-6	m=1
+*DDx  	net20	net10			DD36309
+*CDx  	net20	net12			2p
+*RDx	net20	net12			1e14
+DDG	net10	net44			DD36309
+RDG	net10	net44			1e6
+DGD	net02	net44			DD36309
+RGD	net02	net44			1e6
+
+RBD0  	net03  net01			9e9
+*RGD	net13	net01			2e6
+RGG	net02	net11			1.05
+RSB	net12	net09			0.06433075e-3	tc=2.25e-3,1.0e-5
+RSS   	net09	net03			0.06433075e-3	tc=2.25e-3,1.0e-5
+RDD	net01	net10			0.89330750e-3	tc=2.25e-3,1.0e-5
+CBD0	net03	net01			10e-12	ic=0
+*CGD0	net02	net13			5E-12
+CGS0	net02	net03			6e-12	ic=0
+
+RBD	net03	net93			1.00e-3	tc=0.0e-3,0
+DBDCV   net93	net01			DBDCVMOD36309
+DBDDC   net30	net01			DBDDCMOD36309
+VDBD	net30	net93			dc	0V
+FQS     net01  net93			VQS	1e9
+HQS0    net31  0			VDBD	3.3e-9
+HQS1    net31  net32			VQS	1.65
+VQS     net32	net33			dc	0V
+CQS     net33 	0			1e-9	ic=0
+CGD	net02	net01			56.1E-12	ic=0
+.ends n36309   
+*$
+**********************************************************************
+**********************************************************************
+*                                                                    *
+*   n36333   -  PSPICE Model -  STATUS:  PRELIMINARY                 *
+*                                                                    *
+*   n36333 is the HS die silicon model for use with 86350q5d         *
+*                                                                    *
+**********************************************************************
+**********************************************************************
+* SUBCKT Definition:  1=D  2=G  3=S
+**********************************************************************
+.subckt n36333  net01 net02 net03
+****** MODEL SUBCIRCUIT BEGINS HERE     ******************************
+*parameters	tau=3.3e-9
+*parameters	va=0.5
+*parameters	cq=1e-9
+M1	net10	net11	net12	net12	NMOS36333	w=2.070010	l=0.500e-6
++ PS={2.1*2.070010}	PD={2.1*2.070010}	m=1
+M2	net12	net11	net12	net10  PMOS36333	w=2.070010	l=0.025e-6		m=1
+*DDx	net20	net10			DD36333
+*CDx	net20	net12			2p
+DDG	net10	net44			DD36333
+DGD	net02	net44			DD36333
+RDG	net10	net44			2e6
+RGD	net02	net44			2e6
+*DBD	net93	net01			DBD36333
+*RBD	net03	net93			1.25e-3	tc1=4.3e-3
+RBD0	net03	net01			9e9
+*RGD	net13	net01			2e6
+RGG	net02	net11			1.38
+RSB	net12	net09			0.50e-3	tc=2.0e-3,1.2e-5
+RSS	net09	net03			0.58e-3	tc=2.0e-3,1.2e-5
+RDD	net01	net10			1.3145e-3	tc=2.0e-3,1.2e-5
+CGS0	net02	net03			6e-12	ic=0
+CBD0	net03	net01			10e-12	ic=0
+*CGD0	net02	net13			5E-12
+
+RBD	net03	net93			0.80e-3	tc=2.5e-3,0
+DBDCV   net93	net01			DBDCVMOD36333
+DBDDC   net30	net01			DBDDCMOD36333
+VDBD	net30	net93			dc	0V
+FQS     net01  net93			VQS	1e9
+HQS0    net31  0			VDBD	3.3e-9
+HQS1    net31  net32			VQS	1.65	
+VQS     net32	net33			dc	0V
+CQS     net33 	0			1e-9	ic=0
+CGD	net02	net01			48.5E-12	ic=0
+.ends n36333
+*$

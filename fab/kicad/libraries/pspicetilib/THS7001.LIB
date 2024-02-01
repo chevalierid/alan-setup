@@ -1,0 +1,392 @@
+* THS7001
+*****************************************************************************
+* (C) Copyright 2011 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: THS7001
+* Date: 21JUL2011
+* Model Type: ALL IN ONE
+* Simulator: PSPICE
+* Simulator Version: 16.0.0.p001
+* EVM Order Number: N/A
+* EVM Users Guide: N/A
+* Datasheet: SLOS214C - OCTOBER 1998 - REVISED MARCH 2007
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 : 
+* Release to Web
+*
+*****************************************************************************
+* Begin THS7001_PRE
+*
+* CONNECTIONS:      NON-INVERTING INPUT
+*                   | INVERTING INPUT
+*                   | | POSITIVE POWER SUPPLY
+*                   | | | NEGATIVE POWER SUPPLY
+*                   | | | | OUTPUT
+*                   | | | | | SHUTDOWN
+*                   | | | | | | DGND
+*                   | | | | | | |
+.SUBCKT THS7001_PRE 1 2 3 4 5 6 7
+*
+* Shutdown
+R_SHDN	6 SHDN 1m
+R_S76 	6 7 33e3
+S76         3000 7 SHDN 7 S_TRUE
+S77         3 3000 SHDN 7 S_SHDN_FALSE
+S78         4 4000 SHDN 7 S_SHDN_FALSE
+S79         33 7 SHDN 7 S_TRUE
+S80         34 7 SHDN 7 S_TRUE
+S84         4000 7 SHDN 7 S_TRUE
+S83         17 7 SHDN 7 S_TRUE
+S82         35 7 SHDN 7 S_TRUE
+S81         14 7 SHDN 7 S_TRUE
+S86         3001 Vref SHDN 7 S_FALSE
+
+* INPUT *
+Q1         33 1 106 NPN_IN 2
+Q2         34 2 107 NPN_IN 2
+R1         17 106  50  
+R2         17 107  50  
+
+* PROTECTION DIODES *
+D2         5 3 D1N 
+D1         4 5 D1N 
+D4         4 2 D1N 
+D6         4 1 D1N 
+D5         1 3 D1N 
+D8         22 1 D1N 
+D7         22 2 D1N 
+D3         2 3 D1N 
+
+* SECOND STAGE *
+Q3         08 Vref 33 PNP 1
+Q4         10 Vref 34 PNP 1
+Q5         08 09 11 NPN 2
+Q6         10 08 09 NPN 0.5
+Q7         09 09 12 NPN 2
+Cc         7 10  Ct 15p  
+R3         4000 11  333  
+R4         4000 12  333
+
+* HIGH FREQUENCY SHAPING *
+Lhf         18 19  9.4n  
+Rhf         13 19  25  
+Chf         7  13  30p  
+Ehf         18 7 10 7 1
+
+* OUTPUT *
+Q8         13 13 35 PNP 2
+Q9         13 13 14 NPN 2
+Q10         3000 35 15 NPN 14
+Q11         4000 14 16 PNP 14
+R5         20 15  10  
+R7         16 20  10
+
+* COMPLEX OUTPUT IMPEDANCE *
+R8         32 20  10
+R9         31 20  5 
+L1         31 5  7n  
+C1         32 5  10p  
+
+* BIAS SOURCES *
+G1         3000 33 3 4 10e-6 
+G2         3000 34 3 4 10e-6
+G3         7 35 3 4 10e-6
+G4         17 4000 3 4 10e-6
+G5         14 7 3 4 10e-6
+I1         3000 33  DC 1.1e-3 
+I2         3000 34  DC 1.1e-3 
+I3         7 35  DC 1.6e-3 
+I4         17 4000  DC 1.1e-3 
+I5         14 7  DC 1.8e-3 
+V1         3000 3001 DC 1.9 
+
+* MODELS *
+.MODEL NPN_IN NPN
++ IS=170E-18 BF=400 NF=1 VAF=100 IKF=0.0389 ISE=7.6E-18
++ NE=1.13489 BR=1.11868 NR=1 VAR=4.46837 IKR=8 ISC=8E-15
++ NC=1.8 RB=25 RE=0.1220 RC=20 CJE=120.2E-15 VJE=1.0888 MJE=0.381406
++ VJC=0.589703 MJC=0.265838 FC=0.1 CJC=133.8E-15 XTF=272.204 TF=12.13E-12
++ VTF=10 ITF=0.147 TR=3E-09 XTB=1 XTI=5 KF=3E-14
+
+.MODEL NPN NPN
++ IS=170E-18 BF=100 NF=1 VAF=100 IKF=0.0389 ISE=7.6E-18
++ NE=1.13489 BR=1.11868 NR=1 VAR=4.46837 IKR=8 ISC=8E-15
++ NC=1.8 RB=250 RE=0.1220 RC=200 CJE=120.2E-15 VJE=1.0888 MJE=0.381406
++ VJC=0.589703 MJC=0.265838 FC=0.1 CJC=133.8E-15 XTF=272.204 TF=12.13E-12
++ VTF=10 ITF=0.147 TR=3E-09 XTB=1 XTI=5
+
+.MODEL PNP PNP
++ IS=296E-18 BF=100 NF=1 VAF=100 IKF=0.021 ISE=494E-18
++ NE=1.49168 BR=0.491925 NR=1 VAR=2.35634 IKR=8 ISC=8E-15
++ NC=1.8 RB=250 RE=0.1220 RC=200 CJE=120.2E-15 VJE=0.940007 MJE=0.55
++ VJC=0.588526 MJC=0.55 FC=0.1 CJC=133.8E-15 XTF=141.135 TF=12.13E-12
++ VTF=6.82756 ITF=0.267 TR=3E-09 XTB=1 XTI=5
+
+.MODEL Ct CAP TC1=-0.0025
+
+.MODEL D1N D IS=10E-15 N=1.836 ISR=1.565e-9 IKF=.04417 BV=30 IBV=10E-6 RS=45
++ TT=11.54E-9 CJO=1.5E-12 VJ=.5 M=.3333
+
+.MODEL S_FALSE  VSWITCH Roff=1e9 Ron=1e-3 Voff=1 Von=0.8
+.MODEL S_TRUE VSWITCH Roff=1e9 Ron=1e-3 Voff=1.8 Von=2.0
+.MODEL S_SHDN_FALSE  VSWITCH Roff=23.1e3 Ron=1m Voff=1 Von=0.8
+
+.ENDS
+*End of THS7001_PRE
+
+* Begin THS7001_PGA
+*
+*****************************************************************************
+* CONNECTIONS:      REF INPUT
+*                   | INVERTING INPUT
+*                   | | POSITIVE POWER SUPPLY
+*                   | | | NEGATIVE POWER SUPPLY
+*                   | | | | OUTPUT
+*                   | | | | | SHUTDOWN  
+*                   | | | | | | G0
+*                   | | | | | | | G1
+*                   | | | | | | | | G2
+*                   | | | | | | | | | CLAMP HI
+*                   | | | | | | | | | |  CLAMP LO
+*                   | | | | | | | | | |  |  DGND
+*                   | | | | | | | | | |  |  |
+.SUBCKT THS7001_PGA 1 2 3 4 5 6 7 8 9 10 11 12
+*
+* GAIN LOGIC G0 - G2 (NODES 7 - 9)
+* (use 2xx - 9xx for node numbers)
+* CONNECT G0 - G2 TO NODES 7 - 9
+RG0        7 G0 1m
+RG1        8 G1 1m
+RG2        9 G2 1m
+* Voltage to drive switches
+VPOS       VHI 12 DC 5.2
+* -22 dB * output is G_22
+S1         G_22 201  G0 12 S_FALSE
+RS1        G0 VHI 5e6
+S2         201 202 G1 12 S_FALSE
+RS2        G1 VHI 5e6
+S3         202 VHI G2 12 S_FALSE
+RS3        G2 VHI 5e6
+* -16 dB * output is G_16
+S4         G_16 301 G0 12 S_TRUE
+S5         301 302 G1 12 S_FALSE
+S6         302 VHI G2 12 S_FALSE
+* -10 dB * output is G_10
+S7         G_10 401 G0 12 S_FALSE
+S8         401 402 G1 12 S_TRUE
+S9         402 VHI G2 12 S_FALSE
+* -4 dB * output is G_4
+S10         G_4 501 G0 12 S_TRUE
+S11         501 502 G1 12 S_TRUE
+S12         502 VHI G2 12 S_FALSE
+* +2 dB * output is G_2
+S13         G_2 601 G0 12 S_FALSE
+S14         601 602 G1 12 S_FALSE
+S15         602 VHI G2 12 S_TRUE
+* +8 dB * output is G_8
+S16         G_8 701 G0 12 S_TRUE
+S17         701 702 G1 12 S_FALSE
+S18         702 VHI G2 12 S_TRUE
+* +14 dB * output is G_14
+S19         G_14 801 G0 12 S_FALSE
+S20         801 802 G1 12 S_TRUE
+S21         802 VHI G2 12 S_TRUE
+* +20 dB * output is G_20
+S22         G_20 901 G0 12 S_TRUE
+S23         901 902 G1 12 S_TRUE
+S24         902 VHI G2 12 S_TRUE
+* Emitter degeneration resistors
+* -22 dB 
+S25         1001 1003 G_22 12 S_TRUE
+RS25        G_22 12 1k
+S26         1002 1004 G_22 12 S_TRUE
+R1_22         17 1003  1300 
+R2_22         17 1004  1300
+* -16 dB 
+S27         1001 1005 G_16 12 S_TRUE
+RS27        G_16 12 1k
+S28         1002 1006 G_16 12 S_TRUE
+R1_16         17 1005  1200 
+R2_16         17 1006  1200
+* -10 dB 
+S29         1001 1007 G_10 12 S_TRUE
+RS29        G_10 12 1k
+S30         1002 1008 G_10 12 S_TRUE
+R1_10         17 1007  1000 
+R2_10         17 1008  1000
+* -4 dB 
+S31         1001 1009 G_4 12 S_TRUE
+RS31        G_4 12 1k
+S32         1002 1010 G_4 12 S_TRUE
+R1_4         17 1009  700 
+R2_4         17 1010  700
+* +2 dB 
+S33         1001 1011 G_2 12 S_TRUE
+RS33        G_2 12 1k
+S34         1002 1012 G_2 12 S_TRUE
+R1_2         17 1011  500 
+R2_2         17 1012  500
+* +8 dB 
+S35         1001 1013 G_8 12 S_TRUE
+RS35        G_8 12 1k
+S36         1002 1014 G_8 12 S_TRUE
+R1_8         17 1013  300 
+R2_8         17 1014  300
+* +14 dB 
+S37         1001 1015 G_14 12 S_TRUE
+RS37        G_14 12 1k
+S38         1002 1016 G_14 12 S_TRUE
+R1_14         17 1015  160 
+R2_14         17 1016  160
+* +20 dB 
+S39         1001 1017 G_20 12 S_TRUE
+RS39        G_20 12 1k
+S40         1002 1018 G_20 12 S_TRUE
+R1_20         17 1017  100 
+R2_20         17 1018  100
+* Rf and Rg PGA gain setting resistors
+* -22 dB 
+RG_22       2 2004  17798 
+RF_22       5 2004  1432
+S41         2004 2000 G_22 12 S_TRUE
+* -16 dB 
+RG_16       2 2014  16595 
+RF_16       5 2014  2593
+S43         2014 2000 G_16 12 S_TRUE
+* -10 dB 
+RG_10       2 2024  14620 
+RF_10       5 2024  4569
+S45         2024 2000 G_10 12 S_TRUE
+* -4 dB 
+RG_4        2 2034  11810 
+RF_4        5 2034  7379
+S47         2034 2000 G_4 12 S_TRUE
+* +2 dB 
+RG_2        2 2044  8527 
+RF_2        5 2044  10661
+S49         2044 2000 G_2 12 S_TRUE
+* +8 dB 
+RG_8        2 2054  5483 
+RF_8        5 2054  13800
+S51         2054 2000 G_8 12 S_TRUE
+* +14 dB 
+RG_14       2 2064  3199 
+RF_14       5 2064  15990
+S53         2064 2000 G_14 12 S_TRUE
+* +20 dB 
+RG_20       2 2074  1746 
+RF_20       5 2074  17443
+S55         2074 2000 G_20 12 S_TRUE
+* Clamp hi and clamp lo
+D_hi         35 10 D1N 
+D_lo         11 14 D1N
+* Shutdown
+R_SHDN 6 SHDN 1m
+S76         3000 12 SHDN 12 S_TRUE
+R_S76  6 12 33e3
+S77         3 3000 SHDN 12 S_SHDN_FALSE
+S78         4 4000 SHDN 12 S_SHDN_FALSE
+S79         33 12 SHDN 12 S_TRUE
+S80         34 12 SHDN 12 S_TRUE
+S84         4000 12 SHDN 12 S_TRUE
+S83         17 12 SHDN 12 S_TRUE
+S82         35 12 SHDN 12 S_TRUE
+S81         14 12 SHDN 12 S_TRUE
+S86         3001 Vref SHDN 12 S_FALSE
+* Standard model starts here
+* INPUT *
+Q1         33 1 1001 NPN_IN 0.5
+Q2         34 2000 1002 NPN_IN 0.5
+* PROTECTION DIODES *
+D2         5 3 D1N 
+D1         4 5 D1N 
+D4         4 2 D1N 
+D6         4 1 D1N 
+D5         1 3 D1N 
+D8         22 1 D1N 
+D7         22 2 D1N 
+D3         2 3 D1N 
+* SECOND STAGE *
+Q3         108 Vref 33 PNP 0.75
+Q4         110 Vref 34 PNP 0.75
+Q5         108 109 111 NPN 2
+Q6         110 108 109 NPN 0.5
+Q7         109 109 112 NPN 2
+Cc         12 110  3p  
+R3         4000 111  1333 
+R4         4000 112  1333
+* HIGH FREQUENCY SHAPING *
+Lhf         18 19  28n  
+Rhf         13 19  25  
+Chf         12  13  90p  
+Ehf         18 12 110 12 1
+* OUTPUT *
+Q8         13 13 35 PNP 2
+Q9         13 13 14 NPN 2
+Q10         3000 35 15 NPN 8
+Q11         4000 14 16 PNP 10
+R5         20 15  10  
+R7         16 20  10
+* COMPLEX OUTPUT IMPEDANCE *
+R8         32 20  10
+R9         31 20  10 
+L1         31 5  7n  
+C1         32 5  10p  
+* BIAS SOURCES *
+G1         3000 33 3 4 10e-6 
+G2         3000 34 3 4 10e-6
+G3         12 35 3 4 10e-6
+G4         17 4000 3 4 10e-6
+G5         14 12 3000 4 10e-6
+I1         3000 33  DC 1e-3 
+I2         3000 34  DC 1e-3 
+I3         12 35  DC 1e-3 
+I4         17 4000  DC 1e-3 
+I5         14 12  DC 1e-3 
+V1         3000 3001 DC 1.9 
+* MODELS *
+.MODEL NPN_IN NPN
++ IS=170E-18 BF=400 NF=1 VAF=100 IKF=0.0389 ISE=7.6E-18
++ NE=1.13489 BR=1.11868 NR=1 VAR=4.46837 IKR=8 ISC=8E-15
++ NC=1.8 RB=25 RE=0.1220 RC=20 CJE=120.2E-15 VJE=1.0888 MJE=0.381406
++ VJC=0.589703 MJC=0.265838 FC=0.1 CJC=133.8E-15 XTF=272.204 TF=12.13E-12
++ VTF=10 ITF=0.147 TR=3E-09 XTB=1 XTI=5 KF=1E-15
+.MODEL NPN NPN
++ IS=170E-18 BF=100 NF=1 VAF=100 IKF=0.0389 ISE=7.6E-18
++ NE=1.13489 BR=1.11868 NR=1 VAR=4.46837 IKR=8 ISC=8E-15
++ NC=1.8 RB=250 RE=0.1220 RC=200 CJE=120.2E-15 VJE=1.0888 MJE=0.381406
++ VJC=0.589703 MJC=0.265838 FC=0.1 CJC=133.8E-15 XTF=272.204 TF=12.13E-12
++ VTF=10 ITF=0.147 TR=3E-09 XTB=1 XTI=5
+.MODEL PNP PNP
++ IS=296E-18 BF=100 NF=1 VAF=100 IKF=0.021 ISE=494E-18
++ NE=1.49168 BR=0.491925 NR=1 VAR=2.35634 IKR=8 ISC=8E-15
++ NC=1.8 RB=250 RE=0.1220 RC=200 CJE=120.2E-15 VJE=0.940007 MJE=0.55
++ VJC=0.588526 MJC=0.55 FC=0.1 CJC=133.8E-15 XTF=141.135 TF=12.13E-12
++ VTF=6.82756 ITF=0.267 TR=3E-09 XTB=1 XTI=5
+.MODEL D1N D IS=10E-15 N=1.836 ISR=1.565e-9 IKF=.04417 BV=30 IBV=10E-6 RS=45
++ TT=11.54E-9 CJO=1E-12 VJ=.5 M=.3333
+.MODEL S_FALSE  VSWITCH Roff=1e9 Ron=1e-3 Voff=1 Von=0.8
+.MODEL S_TRUE VSWITCH Roff=1e9 Ron=1e-3 Voff=1.8 Von=2.0
+.MODEL S_SHDN_FALSE  VSWITCH Roff=18.75e3 Ron=1m Voff=1 Von=0.8
+.ENDS
+*End of THS7001_PGA

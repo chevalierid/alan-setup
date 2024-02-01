@@ -1,0 +1,333 @@
+*$
+*TPS62562
+*****************************************************************************
+* (C) Copyright 2010 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.                                             
+** TI and its licensors and suppliers make no warranties, either expressed                                           
+** or implied, with respect to this model, including the warranties of                                                    
+** merchantability or fitness for a particular purpose. The model is                                                      
+** provided solely on an "as is" basis. The entire risk as to its quality                                                    
+** and performance is with the customer                                                                                          
+*****************************************************************************
+*
+** Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: TPS62562
+* Date: 02/15/2010
+* Model Type: Transient 
+* Simulator: PSpice 
+* Simulator Version: 16.0.0.p001
+* EVM Order Number: TPS62560EVM-330 
+* EVM Users Guide: SLVU236, April 2008 
+* Datasheet: SLVS815C, January 2008 - Revised December 2009
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+***************************************************************************
+.SUBCKT TPS62562_TRANS SW MODE FB EN VIN GND
+RFB_R1   FBint GND 180.608k
+RFB_R2   FB FBint 360.8k
+CFB_CFF FB FBint 15p
+R_U7_R3         VIN U7_N16769670  1m  
+R_U7_R4         U7_N16769542 GND  1m  
+D_U7_D_LS1         U7_N16769542 U7_N16769584 Dbreak 
+s_U7_Q_LS1         U7_N16769584,U7_N16769542,LS,0, mod_U7_Q_LS1 
+.model  mod_U7_Q_LS1 vswitch (ron=0.2)
+X_U7_H1    U7_N16769584 SW I_LO GND TPS62562_IC_H1 
+s_U7_Q_HS1         U7_N16769670,U7_N16769584,HS,0, mod_U7_Q_HS1 
+.model  mod_U7_Q_HS1 vswitch (ron=0.4)
+D_U7_D_HS1         U7_N16769584 U7_N16769670 Dbreak 
+X_U6_U20         U6_N16829960 U6_N16898198 OCP_MODE RSFF_RDOM_VAR PARAMS: 
++  T=0.001 
+X_U6_U17         U6_N16898198 U6_N16829960 OCP_GATE RSFF_RDOM_VAR PARAMS: 
++  T=0.001 
+V_U6_V5         U6_N16699495 0 1.1Vdc
+V_U6_V10         U6_N166976653 0 5mVdc
+X_U6_U19         EN_SS U6_UVLO ODB AND2
+X_U6_U5          VIN U6_N16902196 U6_N169021823 U6_UVLO COMP_HYS
+V_U6_V2         U6_N16902196 0 1.9Vdc
+X_U6_U18         CLK U6_N16890738 U6_N16829960 AND2
+V_U6_V3         U6_N169021823 0 0.1Vdc
+X_U6_U7          U6_N16705543 I_LO 0 U6_N16890738 COMP_HYS
+X_U6_U10          I_LO U6_N16699495 U6_N166976653 U6_N16898198 COMP_HYS
+V_U6_V4         U6_N16705543 0 0.9Vdc
+X_U1_S7    U1_N2151212 0 U1_N2153550 0 TPS62562_IC_S1 
+C_U1_C19         0 U1_N2174368  1pF  
+X_U1_U48         U1_N2178745 U1_N166837351 DELAY PARAMS:  T=200000
+R_U1_R29         U1_N166837351 U1_N2174368  1  
+C_U1_C23         0 EN_SS  1pF  
+X_U1_U51         U1_N2177380 VREF_GD U1_N16786693 AND2
+R_U1_R33         U1_N21949482 EN_SS  1  
+C_U1_C26         0 PFM_EN  1pF  
+R_U1_R36         U1_N16786693 PFM_EN  1  
+V_U1_V21         U1_N2153550 U1_N2151737 0.01Vdc
+C_U1_C21         0 VREF_SS  1pF  
+X_U1_U46          U1_N2194625 U1_N2184567 0 U1_N2151212 COMP_HYS
+R_U1_R31         U1_N2151737 VREF_SS  1  
+C_U1_C17         U1_N2151737 U1_N21474191  40nF  
+V_U1_V20         U1_N2184567 0 0.1Vdc
+R_U1_R26         U1_N21474191 0  0.1m  
+X_U1_U53          VREF_SS U1_N2202518 U1_N22021603 U1_N16785504 COMP_HYS
+C_U1_C20         0 U1_N2194625  1pF  
+R_U1_R30         U1_N21566802 U1_N2194625  1  
+D_U1_U47         U1_N2151737 0 DIODE 
+X_U1_U50         U1_N2174368 U1_N2178745 U1_N21949482 AND2
+G_U1_G1         0 U1_N2151737 U1_N2151212 0 100e-6
+V_U1_V22         U1_N22021603 0 2mVdc
+V_U1_V23         U1_N2202518 0 588mV
+C_U1_C25         0 U1_N16787280  1pF  
+C_U1_C22         0 U1_N2178745  1pF  
+X_U1_U44         U1_N16787280 U1_N2178745 U1_N21778712 AND2
+R_U1_R35         ODB U1_N16787280  1  
+R_U1_R32         EN U1_N2178745  1  
+X_U1_U45         U1_N2177380 U1_N2174368 U1_N21566802 AND2
+C_U1_C18         0 U1_N2177380  1pF  
+C_U1_C24         0 VREF_GD  1pF  
+R_U1_R28         U1_N21778712 U1_N2177380  1  
+R_U1_R34         VREF_GD U1_N16785504  1  
+X_U5_U17         U5_N106 U5_N110 DELAY PARAMS:  T=20  
+R_U5_R20         ODB U5_N16553895  1  
+X_U5_U21         U5_N16553895 U5_N108 INV
+X_U5_U18         U5_N107 U5_N111 U5_N105 AND2
+C_U5_C11         0 U5_N16553895  1n  
+X_U5_U16         U5_N106 U5_N110 U5_N104 AND2
+R_U5_R17         PULSE U5_N106  1  
+C_U5_C8         0 U5_N106  1n  
+R_U5_R21         U5_N100 HS  1  
+C_U5_C12         0 HS  1n  
+X_U5_U19         U5_N106 U5_N107 INV
+X_U5_U22         U5_N108 LS_ODB U5_N109 OR2
+X_U5_U20         U5_N107 U5_N111 DELAY PARAMS:  T=20  
+E_U5_ABM2         U5_N101 0 VALUE { IF(V(U5_N109)>0.5, 0, V(U5_N105))    }
+E_U5_ABM1         U5_N100 0 VALUE { IF(V(U5_N16553895)>0.5, V(U5_N104), 0)    }
+R_U5_R19         U5_N101 LS  1  
+C_U5_C9         0 LS  1n  
+X_U4_U40         MODE U4_MODE_INV INV
+C_U4_C14         0 U4_N16895416  15pF  
+X_U4_U44         U4_N104 PFM_EN U4_N16976278 AND2
+s_U4_S5         VIN,U4_N16895210,PFM,0, mod_U4_S5 
+.model  mod_U4_S5 vswitch (ron=1m)
+X_U4_U48         U4_N17126807 OCP_MODE U4_N16866999 OR2
+V_U4_V16         U4_N16565192 0 2mV
+X_U4_U35          0 I_LO U4_N167982113 U4_N104 COMP_HYS
+X_U4_U28         U4_N16919300 U4_S_I U4_N16855383 AND2
+R_U4_R24         U4_N16930800 U4_N16927902  300k  
+X_U4_U37          U4_N16914101 I_LO U4_N16914378 COMP
+X_U4_U31         U4_N16914378 U4_N17047772 U4_N16866417 RSFF_RDOM_VAR PARAMS: 
++  T=1 
+X_U4_U53         U4_N17094128 U4_N17093812 U4_N16785798 AND2
+X_U4_U30          FBint U4_N169163312 U4_N16918667 COMP
+C_U4_C12         0 I_LO_M  20nF  
+X_U4_U29         U4_N16866417 U4_N16855383 PFM RSFF_RDOM_VAR PARAMS:  T=1 
+V_U4_V15         U4_N166671953 0 2mV
+V_U4_V18         U4_N16914101 0 20mV
+X_U4_U52         VIN U4_N16976103 EN_SS VIN U4_N17096352 U4_N17058416
++  U4_N17055089 U4_N17056967 U4_N17093812 5BIT_UP_COUNTER_ASYCLR
+X_U4_U36          U4_N16565192 I_LO U4_S_I COMP
+E_U4_GAIN1         U4_N16930800 0 VALUE {0.2 * V(SW)}
+X_U4_U32          FBint U4_N110 U4_N166671953 U4_N101 COMP_HYS
+X_U4_U39         PFM U4_N168931330 INV
+X_U4_U46         U4_N16976278 U4_N16974606 U4_N16976103 OR2
+V_U4_V19         U4_N170827663 0 8mV
+X_U4_U42         PFM_SEL U4_S_I LS_ODB AND2
+X_U4_U51          U4_N17096352 U4_N17058416 U4_N17055089 U4_N17056967
++  U4_N17094128 AND4
+C_U4_C15         U4_N16927902 0  20pF  
+X_U4_U33         U4_N101 U4_N17126807 INV
+V_U4_V14         U4_N110 0 588mV
+V_U4_V13         U4_N169163312 0 617mV
+X_U4_U38          U4_N16895416 U4_N16927902 U4_N17047772 COMP
+R_U4_R22         U4_N16895210 U4_N16895416  320k
+V_U4_V12         U4_N169164680 0 606mV
+X_U4_U45          FBint U4_N169164680 U4_N170827663 U4_N16918546 COMP_HYS
+R_U4_R21         I_LO_M I_LO  50  
+X_U4_U50         U4_N16785798 CLK EN_SS VIN U4_N16974606 M_UN0001 D_FF_ASYCLR
+V_U4_V17         U4_N167982113 0 10mV
+X_U4_U41         U4_MODE_INV PFM_EN U4_PFM_MODE PFM_SEL AND3
+X_U4_U34         U4_N16866999 U4_N16785798 U4_PFM_MODE RSFF_RDOM_VAR PARAMS: 
++  T=1 
+X_U4_U47         U4_N16918546 U4_N17083043 INV
+X_U4_U27         U4_N16918667 U4_N17083043 U4_N16919300 RSFF_RDOM_VAR PARAMS: 
++  T=5 
+s_U4_S6         U4_N16895416,0,U4_N168931330,0, mod_U4_S6 
+.model  mod_U4_S6 vswitch (ron=1m)
+X_U2_U43          U2_3 U2_4 PWM COMP
+V_U2_U8_V1         U2_U8_N8 0 1.12Vdc
+R_U2_U8_R11         VIN U2_U8_N11  200  
+X_U2_U8_U1         U2_U8_N16722713 U2_U8_N167126541
++  INV
+R_U2_U8_R10         U2_U8_N2 VREF_SS  10k  
+E_U2_U8_E2         U2_U8_N6 0 U2_U8_N2
++  U2_U8_N1 1000
+R_U2_U8_R8         U2_VC U2_U8_N9  1k  
+E_U2_U8_LIMIT1         U2_U8_N7 0 VALUE 
++ {LIMIT(V(U2_U8_N6),0,10000)}
+R_U2_U8_R5         U2_U8_N1 U2_U8_N16775248  338  
+C_U2_U8_C3         U2_U8_N3 U2_U8_N16775248  426pF  
+s_U2_U8_S2        
++  U2_U8_N9,U2_U8_N7,U2_U8_N167126541,0,
++  mod_U2_U8_S2 
+.model  mod_U2_U8_S2 vswitch (ron=1m)
+X_U2_U8_U2         EN_SS U2_U8_N12 INV
+D_U2_U8_D2         U2_VC U2_U8_N11 DIODE 
+R_U2_U8_R7         U2_U8_N1 U2_U8_N3  10k  
+R_U2_U8_R9         0 U2_U8_N9  10k  
+s_U2_U8_S4         U2_U8_N11,0,U2_U8_N12,0,
++  mod_U2_U8_S4 
+.model  mod_U2_U8_S4 vswitch (ron=1m)
+s_U2_U8_S1         U2_U8_N8,U2_VC,PFM_SEL,0,
++  mod_U2_U8_S1 
+.model  mod_U2_U8_S1 vswitch (ron=1m)
+C_U2_U8_C2         U2_U8_N9 U2_U8_N1  5pF  
+C_U2_U8_C4         U2_U8_N9 U2_U8_N16698113  149pF  
+D_U2_U8_D1         U2_U8_N11 VIN DIODE 
+X_U2_U8_U3         PFM_SEL OCP_MODE U2_U8_N16722713 OR2
+V_U2_U8_V2         U2_U8_N18 0 1.5Vdc
+C_U2_U8_C5         U2_U8_N11 0  1uF  
+R_U2_U8_R6         U2_U8_N16698113 U2_U8_N1  29.6k  
+s_U2_U8_S5         U2_U8_N18,U2_VC,OCP_MODE,0,
++  mod_U2_U8_S5 
+.model  mod_U2_U8_S5 vswitch (ron=1m)
+R_U2_U8_R14         U2_U8_N6 0  100k  
+E_U2_U8_E1         U2_U8_N3 0 FBint U2_U8_N3 1000
+s_U2_U8_S3         U2_U8_N7,0,U2_U8_N16722713,0,
++  mod_U2_U8_S3 
+.model  mod_U2_U8_S3 vswitch (ron=1m)
+R_U2_U8_R13         U2_U8_N7 0  100k  
+X_U2_U44          U2_N16760553 U2_4 CLK COMP
+V_U2_V20         U2_N16760553 0 0.1Vdc
+E_U2_DIFF1         U2_2 0 VALUE {V(U2_VC,U2_5)}
+E_U2_GAIN2         U2_5 0 VALUE {1/7.2 * V(VIN)}
+E_U2_LIMIT3         U2_3 0 VALUE {LIMIT(V(U2_2),0,0.98)}
+V_U2_V19         U2_4 0  
++PULSE 0 1 0 {1/fs-0.2ns} 0.1ns 0.1ns {1/fs}
+X_U3_U1         PWM OCP_GATE U3_N00140 AND2
+E_U3_ABM3         U3_N001661 0 VALUE { IF(V(PFM_SEL)>0.5,
++  V(PFM), V(U3_N00140))
++     }
+C_U3_C16         0 PULSE  1n  
+R_U3_R25         U3_N001661 PULSE  1  
+.PARAM  v_rail=1 fs=2250khz
+.ENDS TPS62562_TRANS
+*$
+.subckt TPS62562_IC_S1 1 2 3 4  
+S_S1         3 4 1 2 S1
+RS_S1         1 2 1G
+.MODEL         S1 VSWITCH Roff=100e6 Ron=500 Voff=1.0V Von=0V
+.ends TPS62562_IC_S1
+*$
+.subckt TPS62562_IC_H1 1 2 3 4  
+H_H1         3 4 VH_H1 1
+VH_H1         1 2 0V
+.ends TPS62562_IC_H1
+*$
+.SUBCKT COMP INP INM OUT  
+EOUT OUT 0 VALUE { IF( V(INP)>V(INM),1,0) }
+.ENDS COMP
+*$
+.MODEL DIODE D(IS=8e-15 Rs=1m)
+*$
+.SUBCKT AND3 A B C OUT  
+EOUT OUT 0 VALUE { IF( V(A)>0.5 & V(B)>0.5 & V(C)>0.5,1,0) }
+.ENDS AND3
+*$
+.SUBCKT INV IN O  
+EOUT O 0 VALUE { IF( V(IN)<0.5,1,0) }
+.ENDS INV
+*$
+.SUBCKT NOR2 A B O  
+EOUT O 0 VALUE { IF( V(A)>0.5 | V(B)>0.5,0,1) }
+.ENDS NOR2
+*$
+.SUBCKT OR2 A B OUT  
+EOUT OUT 0 VALUE { IF( V(A)>0.5 | V(B)>0.5,1,0) }
+.ENDS OR2
+*$
+.SUBCKT COMP_HYS INP INM HYS OUT PARAMS: V_R = {V_RAIL}
+EIN INP1 INM1 INP INM 1 
+EHYS INP1 INP2 VALUE { IF( V(1)>0.5,-V(HYS)/2,V(HYS)/2) }
+EOUT OUT 0 VALUE { IF( V(INP2)>V(INM1), {V_R} ,0) }
+R1 OUT 1 1
+C1 1 0 5n
+RINP1 INP1 0 1K
+.ENDS COMP_HYS
+*$
+.SUBCKT AND2 A B OUT  
+EOUT OUT 0 VALUE { IF( V(A)>0.5 & V(B)>0.5,1,0) }
+.ENDS AND2
+*$
+.SUBCKT 5BIT_UP_COUNTER_ASYCLR UP CLK CLEAR PRESET Q0 Q1 Q2 Q3 Q4
+X_U1         UP CLK CLEAR PRESET Q0 1 T_FF_ASYCLR
+X_U2         UP 1 CLEAR PRESET Q1 2 T_FF_ASYCLR
+X_U3         UP 2 CLEAR PRESET Q2 3 T_FF_ASYCLR
+X_U4         UP 3 CLEAR PRESET Q3 4 T_FF_ASYCLR
+X_U5         UP 4 CLEAR PRESET Q4 5 T_FF_ASYCLR
+.ENDS 5BIT_UP_COUNTER_ASYCLR
+*$
+.SUBCKT T_FF_ASYCLR T CLK CLEAR PRESET Q QBAR
+R_R27         6 QBAR  1  
+X_U2         2 3 1 OR2
+X_U3         5 4 2 AND2
+C_C19         0 Q  1pF
+X_U4         T 6 3 AND2
+R_R28         5 Q  1  
+X_U5         T 4 INV
+X_U6         1 CLK CLEAR PRESET 5 6 D_FF_ASYCLR
+C_C18         0 QBAR  1pF
+.ENDS T_FF_ASYCLR
+*$
+.SUBCKT D_FF_ASYCLR D CLK CLEAR PRESET Q QBAR
+X_U2          Q 2 CLEAR 6 NAND3
+X_U5          1 CLK 4 2 NAND3
+X_U7          PRESET 1 QBAR 5 NAND3
+R_R1         5 Q  1  
+C_C1         0 Q  1pF  
+R_R2         6 QBAR  1  
+X_U6          2 D CLEAR 4 NAND3
+C_C2         0 QBAR  1pF  
+X_U4          3 CLK CLEAR 1 NAND3
+X_U3          PRESET 4 1 3 NAND3
+.ENDS D_FF_ASYCLR
+*$
+.SUBCKT AND4 A B C D OUT  
+EOUT OUT 0 VALUE { IF( V(A)>0.5 & V(B)>0.5 & V(C)>0.5 & V(D)>0.5,1,0) }
+.ENDS AND4
+*$
+.SUBCKT NAND A B OUT  
+EOUT OUT 0 VALUE { IF( V(A)>0.5 & V(B)>0.5,0,1) }
+.ENDS NAND
+*$
+.SUBCKT NAND3 A B C OUT  
+EOUT OUT 0 VALUE { IF( V(A)>0.5 & V(B)>0.5 & V(C)>0.5,0,1) }
+.ENDS NAND3
+*$
+.model Dbreak D Is=1e-14 Cjo=.1pF Rs=.1
+*$
+.SUBCKT RSFF_RDOM_VAR R S Q PARAMs:  T=10
+EABM1  1 0 VALUE { If( V(S)>0.5 | V(Q)>0.5, 1,0)    }
+EABM2  Q  0 VALUE { If( V(2)>0.5 & V(R)<0.5, 1,0)    }
+R1   1 2 1
+C1   2  0 {T*1e-9}
+.ENDS RSFF_RDOM_VAR
+*$
+.SUBCKT DELAY IN OUT
++ PARAMS:  T=100
+S_S1         MEAS 0 RESET2 0 S1
+E_ABM1         CH 0 VALUE { if( V(IN)>0.5,1,0)    }
+E_ABM3         OUT 0 VALUE { if( V(MEAS)>0.5 & V(CH)>0.5,1,0)    }
+R_R1         MEAS CH  {T} 
+C_C1         0 MEAS  1.4427n  
+E_ABM2         RESET 0 VALUE { if(V(CH)<0.5,1,0)    }
+R_R2         RESET2 RESET  0.1  
+C_C2         0 RESET2  1.4427n  
+.MODEL         S1 VSWITCH Roff=1e9 Ron=1.0 Voff=0.25V Von=0.75V
+.ENDS DELAY
+*$
+
+

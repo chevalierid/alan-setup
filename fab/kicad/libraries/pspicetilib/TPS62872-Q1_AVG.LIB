@@ -1,0 +1,149 @@
+*$
+* TPS62872-Q1
+*****************************************************************************
+* (C) Copyright 2021 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Texas Instruments Inc.
+* Part: TPS62872-Q1
+* Date: 19NOV2021
+* Model Type: AVERAGE
+* Simulator: PSPICE
+* Simulator Version: 17.4-2019 S020
+* EVM Order Number: NA
+* EVM Users Guide: NA
+* Datasheet: SLVSFJ3 – APRIL 2021
+* Topologies Supported: Buck
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+* A. Features modelled
+*	1. Average loop implementaion of DCS mode control.
+*   2. Only VIN, SW, VOSNS and SYNC_OUT pins are modelled.
+*
+* B. Features not modelled
+*   1. Temperature dependent characteristics.
+*	2. Operating Quiescent Current.
+*   3. Shutdown Current.
+*   4. EN, MODE_SYNC, SDA, SCL, FSEL, VSEL, PG and GOSNS pins are NOT modeled.
+*
+* C. Application Notes
+*   1. Following parameter is added in the model
+*      a. The parameter "VOUT" is used to pass the output value in the model.
+*      b. The parameter "FSW" is used to pass the switching frequency value in the model.
+*      c. The parameter "IOUT" is used to pass the load current value in the model.
+*   2. Ground Pins have been tied to 0V internally and hence model does not support Inverting 
+*      topologies.
+*
+*****************************************************************************
+.SUBCKT TPS62872-Q1_AVG COMP EN FSEL GND_0 GND_1 GOSNS MODE_SYNC PG SCL SDA SW SYNC_OUT
++  VIN_0 VIN_1 VOSNS VSEL PAD PARAMS: IOUT=12 VOUT=0.75 FSW=2.25MEG
+I_I1         GND_0 N16788216 DC 5.3u  
+E_ABM175         N03009 0 VALUE { (V(VOSNS_INT)*1m)/(Raux2*Caux)    }
+E_E1         VIN_0 N16782056 N16790682 0 1
+R_R308         GND_0 N16788216  100k   
+G_G5         N16788339 GND_0 N16788216 GND_0 10u
+X_F1    0 N16788339 0 COMP TPS62872-Q1_AVG_F1 
+R_R322         N03009 M_A  1   
+R_R323         N16780957 SW_INT  1   
+G_G3         VIN_0 N16788216 VIL GND_0 290n
+C_C176         GND_0 N16788216  800n  
+X_H3    N16786266 SW VIL 0 TPS62872-Q1_AVG_H3 
+E_E2         N16780957 GND_0 SW GND_0 1
+R_R312         N16790679 N16790682  1   
+R_R319         N02997 M_1  1   
+C_C188         0 M_A  1n  
+E_ABM184         N16790679 0 VALUE { V(SW_INT) *(1-V(D))/V(D)    }
+E_ABM172         N02997 0 VALUE { (V(V1)*1m) /(Raux*Caux)    }
+R_R321         N03005 M_2  1   
+C_C187         0 M_2  1n  
+G_G4         VCTRL GND_0 N16788216 GND_0 10u
+C_C181         0 N16790682  1n  
+X_H2    N16782056 N16786266 IET 0 TPS62872-Q1_AVG_H2 
+C_C189         0 SW_INT  1n  
+C_C185         0 M_1  1n  
+G_ABMII1         GND_0 N16786266 VALUE { V(IET)*(1-V(D))/V(D)    }
+E_ABM174         N03005 0 VALUE { (V(V2)*1m) /(Raux*Caux)    }
+G_G6         0 N16793382 N16780679 0 1.5m
+C_C179         VCTRL N16780777  1.6p    
+R_R309         VCTRL COMP  55k   
+R_R310         N16780777 COMP  10k   
+R_R324         GND_0 COMP  1G   
+R_R314         N16791066 D  1   
+E_ABM181         N16791066 0 VALUE { LIMIT(
++  (2*V(VCTRL)-2*V(VFB)-(1-V(D))*(1-V(D))*Tsw*V(m_2)*1k)/(2k*V(m_a)*Tsw+V(m_1)*1k*V(D)*Tsw),0.001,0.999)
++     }
+C_C182         0 D  1n  
+X_S1    MASTER 0 N16793382 COMP TPS62872-Q1_AVG_S1 
+R_R325         VOSNS_INT VFB  5MEG   
+C_C190         VFB VOSNS_INT  15.63p  
+E_ABM189         N16780679 0 VALUE { If(V(MASTER)>0.5,  
++ V(N16794081),  
++ V(0) )   }
+E_E3         N16794081 0 VREF VOSNS_INT 1
+E_ABM191         N16799328 0 VALUE { V(VIN_0)  
++ -V(VOSNS_INT)   }
+E_ABM192         N16799765 0 VALUE { V(VOSNS_INT)    }
+C_C192         0 V2  1n  
+C_C183         0 V1  1n  
+R_R330         SYNC_OUT N16793097  100Meg   
+R_R326         SW N16791475  800k   
+V_V19         N16793097 0 2
+C_C191         VFB N16791475  15.63p  
+R_R315         N16799328 V1  1   
+R_R331         N16799765 V2  1   
+V_V18         VOSNS VOSNS_INT 0
+E_ABM187         MASTER 0 VALUE { If(V(SYNC_OUT)>0.5,1,0)    }
+V_V20         VREF 0 {VOUT}
+.PARAM  caux=15.63p ron_hsd=5m tsw={1/fsw} ron_lsd=3m raux=0.8meg
++  raux2=1.355meg
+.ENDS TPS62872-Q1_AVG				 
+*$
+.subckt TPS62872-Q1_AVG_F1 1 2 3 4  
+F_F1         3 4 VF_F1 1
+VF_F1         1 2 0V
+.ends TPS62872-Q1_AVG_F1
+*$
+.subckt TPS62872-Q1_AVG_H3 1 2 3 4  
+H_H3         3 4 VH_H3 1
+VH_H3         1 2 0V
+.ends TPS62872-Q1_AVG_H3
+*$
+.subckt TPS62872-Q1_AVG_H2 1 2 3 4  
+H_H2         3 4 VH_H2 1
+VH_H2         1 2 0V
+.ends TPS62872-Q1_AVG_H2
+*$
+.subckt TPS62872-Q1_AVG_S1 1 2 3 4  
+S_S1         3 4 1 2 _S1
+RS_S1         1 2 1G
+.MODEL         _S1 VSWITCH Roff=10000e6 Ron=1m Voff=0.2 Von=0.8
+.ends TPS62872-Q1_AVG_S1
+*$
+.SUBCKT CESR IN OUT PARAMS:  C=100u ESR=0.01 X=2 IC=0
+C	IN 1  {C*X} IC={IC}
+RESR	1 OUT {ESR/X}
+.ENDS CESR
+*$

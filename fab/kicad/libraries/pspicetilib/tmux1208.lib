@@ -1,0 +1,615 @@
+* TMUX1208
+*****************************************************************************
+* (C) Copyright 2018 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Texas Instruments Inc.
+* Part: TMUX1208
+* Date: 27MAR2019
+* Model Type: ALL IN ONE
+* Simulator: TINA 
+* Simulator Version: 9.3.150.328 SF-TI
+* EVM Order Number: NA
+* EVM Users Guide: NA
+* Datasheet: SCDS389/Draft - July 2018
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Initial Release: 1.0
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+* This model supports the following specs for 5V operation:
+*  1. RON over the range of power supply and input voltage
+*  2. I_leakage for source, drain and channel
+*  3. VDD supply current
+*  4. Switching time between channels
+*  5. Break before make time
+*  6. Enable turn-on, turn-off time
+*  7. OFF Isolation
+*  8. Source & Drain OFF capacitance
+*  9. ON capacitance
+*
+*     Banwidth is larger than reported in the data sheet
+*     Crosstalk is larger than reported in the data sheet
+*
+*     If simulation problems are encountered, try the following values
+*     for the simulation parameters:
+*     ITL1 = 400
+*     ITL2 = 100
+*     ITL4 = 50
+*
+*****************************************************************************
+*
+*
+*$
+.SUBCKT TMUX1208 A2 A1 A0 EN S1 S2 S3 S4 S5 S6 S7 S8 D VDD GND
+R_U15_R5         U15_N349504 U15_RC_IN  1 TC=0,0 
+D_U15_D3         U15_RC_OUT U15_N349504 Dideal 
+C_U15_C3         GND U15_RC_OUT  9n  TC=0,0 
+E_U15_E2         U15_RC_IN GND CNTRL6 GND 10
+R_U15_R4         U15_RC_IN U15_N345841  2 TC=0,0 
+V_U15_V1         U15_N345775 GND 5Vdc
+D_U15_D2         U15_N345841 U15_RC_OUT Dideal 
+X_U15_U9         U15_RC_OUT U15_N345775 CNTRL6_DELAY GND COMPARATOR_TMUX1208 
+R_U1_R2         U1_N00735 U1_N06210  5 TC=0,0 
+X_U1_S1    CNTRL1_DELAY GND S1 U1_N00735 SCH_PORT1_U1_S1_TMUX1208  
+C_U1_C6         GND D  5.06p  TC=0,0 
+X_U1_S2    CNTRL1_DELAY GND U1_N00768 D SCH_PORT1_U1_S2_TMUX1208  
+R_U1_R1         GND U1_NISO  10e6 TC=0,0 
+R_U1_R3         U1_N06532 U1_N00768  5 TC=0,0 
+C_U1_C1         GND S1  4.7p  TC=0,0 
+L_U1_L1         U1_N00735 U1_N06210  20nH  
+X_U1_U1         U1_N06210 U1_N06532 VDD GND RON_VCC_VD_TMUX1208  
+C_U1_C2         GND U1_N00735  2p  TC=0,0 
+C_U1_C7         GND U1_N06210  2f  TC=0,0 
+C_U1_C5         U1_N13923 U1_NISO  10p  TC=0,0 
+X_U1_S3    CNTRL1_DELAY GND S1 U1_N12958 SCH_PORT1_U1_S3_TMUX1208  
+C_U1_C3         GND U1_N00768  2p  TC=0,0 
+C_U1_C4         U1_NISO U1_N12958  10p  TC=0,0 
+L_U1_L2         U1_N06532 U1_N00768  20nH  
+X_U1_S4    CNTRL1_DELAY GND D U1_N13923 SCH_PORT1_U1_S4_TMUX1208  
+C_U1_C8         GND U1_N06532  2f  TC=0,0 
+R_U14_R5         U14_N349504 U14_RC_IN  1 TC=0,0 
+D_U14_D3         U14_RC_OUT U14_N349504 Dideal 
+C_U14_C3         GND U14_RC_OUT  9n  TC=0,0 
+E_U14_E2         U14_RC_IN GND CNTRL5 GND 10
+R_U14_R4         U14_RC_IN U14_N345841  2 TC=0,0 
+V_U14_V1         U14_N345775 GND 5Vdc
+D_U14_D2         U14_N345841 U14_RC_OUT Dideal 
+X_U14_U9         U14_RC_OUT U14_N345775 CNTRL5_DELAY GND COMPARATOR_TMUX1208  
+X_U23         S5 GND VCC_MON ILEAK_OFF_TMUX1208  
+R_U6_R2         U6_N00735 U6_N06210  5 TC=0,0 
+X_U6_S1    CNTRL6_DELAY GND S6 U6_N00735 SCH_PORT1_U6_S1_TMUX1208 
+C_U6_C6         GND D  5.06p  TC=0,0 
+X_U6_S2    CNTRL6_DELAY GND U6_N00768 D SCH_PORT1_U6_S2_TMUX1208  
+R_U6_R1         GND U6_NISO  10e6 TC=0,0 
+R_U6_R3         U6_N06532 U6_N00768  5 TC=0,0 
+C_U6_C1         GND S6  4.7p  TC=0,0 
+L_U6_L1         U6_N00735 U6_N06210  20nH  
+X_U6_U1         U6_N06210 U6_N06532 VDD GND RON_VCC_VD_TMUX1208 
+C_U6_C2         GND U6_N00735  2p  TC=0,0 
+C_U6_C7         GND U6_N06210  2f  TC=0,0 
+C_U6_C5         U6_N13923 U6_NISO  10p  TC=0,0 
+X_U6_S3    CNTRL6_DELAY GND S6 U6_N12958 SCH_PORT1_U6_S3_TMUX1208 
+C_U6_C3         GND U6_N00768  2p  TC=0,0 
+C_U6_C4         U6_NISO U6_N12958  10p  TC=0,0 
+L_U6_L2         U6_N06532 U6_N00768  20nH  
+X_U6_S4    CNTRL6_DELAY GND D U6_N13923 SCH_PORT1_U6_S4_TMUX1208 
+C_U6_C8         GND U6_N06532  2f  TC=0,0 
+R_U10_R5         U10_N349504 U10_RC_IN  1 TC=0,0 
+D_U10_D3         U10_RC_OUT U10_N349504 Dideal 
+C_U10_C3         GND U10_RC_OUT  9n  TC=0,0 
+E_U10_E2         U10_RC_IN GND CNTRL1 GND 10
+R_U10_R4         U10_RC_IN U10_N345841  2 TC=0,0 
+V_U10_V1         U10_N345775 GND 5Vdc
+D_U10_D2         U10_N345841 U10_RC_OUT Dideal 
+X_U10_U9         U10_RC_OUT U10_N345775 CNTRL1_DELAY GND COMPARATOR_TMUX1208 
+R_U13_R5         U13_N349504 U13_RC_IN  1 TC=0,0 
+D_U13_D3         U13_RC_OUT U13_N349504 Dideal 
+C_U13_C3         GND U13_RC_OUT  9n  TC=0,0 
+E_U13_E2         U13_RC_IN GND CNTRL4 GND 10
+R_U13_R4         U13_RC_IN U13_N345841  2 TC=0,0 
+V_U13_V1         U13_N345775 GND 5Vdc
+D_U13_D2         U13_N345841 U13_RC_OUT Dideal 
+X_U13_U9         U13_RC_OUT U13_N345775 CNTRL4_DELAY GND COMPARATOR_TMUX1208 
+X_U20         S2 GND VCC_MON ILEAK_OFF_TMUX1208 
+R_U12_R5         U12_N349504 U12_RC_IN  1 TC=0,0 
+D_U12_D3         U12_RC_OUT U12_N349504 Dideal 
+C_U12_C3         GND U12_RC_OUT  9n  TC=0,0 
+E_U12_E2         U12_RC_IN GND CNTRL3 GND 10
+R_U12_R4         U12_RC_IN U12_N345841  2 TC=0,0 
+V_U12_V1         U12_N345775 GND 5Vdc
+D_U12_D2         U12_N345841 U12_RC_OUT Dideal 
+X_U12_U9         U12_RC_OUT U12_N345775 CNTRL3_DELAY GND COMPARATOR_TMUX1208 
+R_U2_R2         U2_N00735 U2_N06210  5 TC=0,0 
+X_U2_S1    CNTRL2_DELAY GND S2 U2_N00735 SCH_PORT1_U2_S1_TMUX1208 
+C_U2_C6         GND D  5.06p  TC=0,0 
+X_U2_S2    CNTRL2_DELAY GND U2_N00768 D SCH_PORT1_U2_S2_TMUX1208 
+R_U2_R1         GND U2_NISO  10e6 TC=0,0 
+R_U2_R3         U2_N06532 U2_N00768  5 TC=0,0 
+C_U2_C1         GND S2  4.7p  TC=0,0 
+L_U2_L1         U2_N00735 U2_N06210  20nH  
+X_U2_U1         U2_N06210 U2_N06532 VDD GND RON_VCC_VD_TMUX1208 
+C_U2_C2         GND U2_N00735  2p  TC=0,0 
+C_U2_C7         GND U2_N06210  2f  TC=0,0 
+C_U2_C5         U2_N13923 U2_NISO  10p  TC=0,0 
+X_U2_S3    CNTRL2_DELAY GND S2 U2_N12958 SCH_PORT1_U2_S3_TMUX1208 
+C_U2_C3         GND U2_N00768  2p  TC=0,0 
+C_U2_C4         U2_NISO U2_N12958  10p  TC=0,0 
+L_U2_L2         U2_N06532 U2_N00768  20nH  
+X_U2_S4    CNTRL2_DELAY GND D U2_N13923 SCH_PORT1_U2_S4_TMUX1208 
+C_U2_C8         GND U2_N06532  2f  TC=0,0 
+X_U25         S7 GND VCC_MON ILEAK_OFF_TMUX1208 
+R_U11_R5         U11_N349504 U11_RC_IN  1 TC=0,0 
+D_U11_D3         U11_RC_OUT U11_N349504 Dideal 
+C_U11_C3         GND U11_RC_OUT  9n  TC=0,0 
+E_U11_E2         U11_RC_IN GND CNTRL2 GND 10
+R_U11_R4         U11_RC_IN U11_N345841  2 TC=0,0 
+V_U11_V1         U11_N345775 GND 5Vdc
+D_U11_D2         U11_N345841 U11_RC_OUT Dideal 
+X_U11_U9         U11_RC_OUT U11_N345775 CNTRL2_DELAY GND COMPARATOR_TMUX1208 
+R_U5_R2         U5_N00735 U5_N06210  5 TC=0,0 
+X_U5_S1    CNTRL5_DELAY GND S5 U5_N00735 SCH_PORT1_U5_S1_TMUX1208 
+C_U5_C6         GND D  5.06p  TC=0,0 
+X_U5_S2    CNTRL5_DELAY GND U5_N00768 D SCH_PORT1_U5_S2_TMUX1208 
+R_U5_R1         GND U5_NISO  10e6 TC=0,0 
+R_U5_R3         U5_N06532 U5_N00768  5 TC=0,0 
+C_U5_C1         GND S5  4.7p  TC=0,0 
+L_U5_L1         U5_N00735 U5_N06210  20nH  
+X_U5_U1         U5_N06210 U5_N06532 VDD GND RON_VCC_VD_TMUX1208 
+C_U5_C2         GND U5_N00735  2p  TC=0,0 
+C_U5_C7         GND U5_N06210  2f  TC=0,0 
+C_U5_C5         U5_N13923 U5_NISO  10p  TC=0,0 
+X_U5_S3    CNTRL5_DELAY GND S5 U5_N12958 SCH_PORT1_U5_S3_TMUX1208 
+C_U5_C3         GND U5_N00768  2p  TC=0,0 
+C_U5_C4         U5_NISO U5_N12958  10p  TC=0,0 
+L_U5_L2         U5_N06532 U5_N00768  20nH  
+X_U5_S4    CNTRL5_DELAY GND D U5_N13923 SCH_PORT1_U5_S4_TMUX1208 
+C_U5_C8         GND U5_N06532  2f  TC=0,0 
+R_R1         0 EN_INT  1e6 TC=0,0 
+X_U22         S4 GND VCC_MON ILEAK_OFF_TMUX1208 
+X_U19         S1 GND VCC_MON ILEAK_OFF_TMUX1208 
+R_U8_R2         U8_N00735 U8_N06210  5 TC=0,0 
+X_U8_S1    CNTRL8_DELAY GND S8 U8_N00735 SCH_PORT1_U8_S1_TMUX1208 
+C_U8_C6         GND D  5.06p  TC=0,0 
+X_U8_S2    CNTRL8_DELAY GND U8_N00768 D SCH_PORT1_U8_S2_TMUX1208 
+R_U8_R1         GND U8_NISO  10e6 TC=0,0 
+R_U8_R3         U8_N06532 U8_N00768  5 TC=0,0 
+C_U8_C1         GND S8  4.7p  TC=0,0 
+L_U8_L1         U8_N00735 U8_N06210  20nH  
+X_U8_U1         U8_N06210 U8_N06532 VDD GND RON_VCC_VD_TMUX1208 
+C_U8_C2         GND U8_N00735  2p  TC=0,0 
+C_U8_C7         GND U8_N06210  2f  TC=0,0 
+C_U8_C5         U8_N13923 U8_NISO  10p  TC=0,0 
+X_U8_S3    CNTRL8_DELAY GND S8 U8_N12958 SCH_PORT1_U8_S3_TMUX1208 
+C_U8_C3         GND U8_N00768  2p  TC=0,0 
+C_U8_C4         U8_NISO U8_N12958  10p  TC=0,0 
+L_U8_L2         U8_N06532 U8_N00768  20nH  
+X_U8_S4    CNTRL8_DELAY GND D U8_N13923 SCH_PORT1_U8_S4_TMUX1208 
+C_U8_C8         GND U8_N06532  2f  TC=0,0 
+X_U24         S6 GND VCC_MON ILEAK_OFF_TMUX1208 
+R_U4_R2         U4_N00735 U4_N06210  5 TC=0,0 
+X_U4_S1    CNTRL4_DELAY GND S4 U4_N00735 SCH_PORT1_U4_S1_TMUX1208 
+C_U4_C6         GND D  5.06p  TC=0,0 
+X_U4_S2    CNTRL4_DELAY GND U4_N00768 D SCH_PORT1_U4_S2_TMUX1208 
+R_U4_R1         GND U4_NISO  10e6 TC=0,0 
+R_U4_R3         U4_N06532 U4_N00768  5 TC=0,0 
+C_U4_C1         GND S4  4.7p  TC=0,0 
+L_U4_L1         U4_N00735 U4_N06210  20nH  
+X_U4_U1         U4_N06210 U4_N06532 VDD GND RON_VCC_VD_TMUX1208 
+C_U4_C2         GND U4_N00735  2p  TC=0,0 
+C_U4_C7         GND U4_N06210  2f  TC=0,0 
+C_U4_C5         U4_N13923 U4_NISO  10p  TC=0,0 
+X_U4_S3    CNTRL4_DELAY GND S4 U4_N12958 SCH_PORT1_U4_S3_TMUX1208 
+C_U4_C3         GND U4_N00768  2p  TC=0,0 
+C_U4_C4         U4_NISO U4_N12958  10p  TC=0,0 
+L_U4_L2         U4_N06532 U4_N00768  20nH  
+X_U4_S4    CNTRL4_DELAY GND D U4_N13923 SCH_PORT1_U4_S4_TMUX1208 
+C_U4_C8         GND U4_N06532  2f  TC=0,0 
+X_U27         D GND VCC_MON ILEAK_OFF_TMUX1208 
+X_U29         A2 A1 A0 EN VDD GND EN_INT VCC_MON CNTRL1 CNTRL2 CNTRL3 CNTRL4
++  CNTRL5 CNTRL6 CNTRL7 CNTRL8 TMUX1208_DIGITAL 
+X_U21         S3 GND VCC_MON ILEAK_OFF_TMUX1208 
+R_U7_R2         U7_N00735 U7_N06210  5 TC=0,0 
+X_U7_S1    CNTRL7_DELAY GND S7 U7_N00735 SCH_PORT1_U7_S1_TMUX1208 
+C_U7_C6         GND D  5.06p  TC=0,0 
+X_U7_S2    CNTRL7_DELAY GND U7_N00768 D SCH_PORT1_U7_S2_TMUX1208 
+R_U7_R1         GND U7_NISO  10e6 TC=0,0 
+R_U7_R3         U7_N06532 U7_N00768  5 TC=0,0 
+C_U7_C1         GND S7  4.7p  TC=0,0 
+L_U7_L1         U7_N00735 U7_N06210  20nH  
+X_U7_U1         U7_N06210 U7_N06532 VDD GND RON_VCC_VD_TMUX1208 
+C_U7_C2         GND U7_N00735  2p  TC=0,0 
+C_U7_C7         GND U7_N06210  2f  TC=0,0 
+C_U7_C5         U7_N13923 U7_NISO  10p  TC=0,0 
+X_U7_S3    CNTRL7_DELAY GND S7 U7_N12958 SCH_PORT1_U7_S3_TMUX1208 
+C_U7_C3         GND U7_N00768  2p  TC=0,0 
+C_U7_C4         U7_NISO U7_N12958  10p  TC=0,0 
+L_U7_L2         U7_N06532 U7_N00768  20nH  
+X_U7_S4    CNTRL7_DELAY GND D U7_N13923 SCH_PORT1_U7_S4_TMUX1208 
+C_U7_C8         GND U7_N06532  2f  TC=0,0 
+R_U3_R2         U3_N00735 U3_N06210  5 TC=0,0 
+X_U3_S1    CNTRL3_DELAY GND S3 U3_N00735 SCH_PORT1_U3_S1_TMUX1208 
+C_U3_C6         GND D  5.06p  TC=0,0 
+X_U3_S2    CNTRL3_DELAY GND U3_N00768 D SCH_PORT1_U3_S2_TMUX1208 
+R_U3_R1         GND U3_NISO  10e6 TC=0,0 
+R_U3_R3         U3_N06532 U3_N00768  5 TC=0,0 
+C_U3_C1         GND S3  4.7p  TC=0,0 
+L_U3_L1         U3_N00735 U3_N06210  20nH  
+X_U3_U1         U3_N06210 U3_N06532 VDD GND RON_VCC_VD_TMUX1208 
+C_U3_C2         GND U3_N00735  2p  TC=0,0 
+C_U3_C7         GND U3_N06210  2f  TC=0,0 
+C_U3_C5         U3_N13923 U3_NISO  10p  TC=0,0 
+X_U3_S3    CNTRL3_DELAY GND S3 U3_N12958 SCH_PORT1_U3_S3_TMUX1208 
+C_U3_C3         GND U3_N00768  2p  TC=0,0 
+C_U3_C4         U3_NISO U3_N12958  10p  TC=0,0 
+L_U3_L2         U3_N06532 U3_N00768  20nH  
+X_U3_S4    CNTRL3_DELAY GND D U3_N13923 SCH_PORT1_U3_S4_TMUX1208 
+C_U3_C8         GND U3_N06532  2f  TC=0,0 
+R_U17_R5         U17_N349504 U17_RC_IN  1 TC=0,0 
+D_U17_D3         U17_RC_OUT U17_N349504 Dideal 
+C_U17_C3         GND U17_RC_OUT  9n  TC=0,0 
+E_U17_E2         U17_RC_IN GND CNTRL8 GND 10
+R_U17_R4         U17_RC_IN U17_N345841  2 TC=0,0 
+V_U17_V1         U17_N345775 GND 5Vdc
+D_U17_D2         U17_N345841 U17_RC_OUT Dideal 
+X_U17_U9         U17_RC_OUT U17_N345775 CNTRL8_DELAY GND COMPARATOR_TMUX1208 
+X_U26         S8 GND VCC_MON ILEAK_OFF_TMUX1208 
+R_U16_R5         U16_N349504 U16_RC_IN  1 TC=0,0 
+D_U16_D3         U16_RC_OUT U16_N349504 Dideal 
+C_U16_C3         GND U16_RC_OUT  9n  TC=0,0 
+E_U16_E2         U16_RC_IN GND CNTRL7 GND 10
+R_U16_R4         U16_RC_IN U16_N345841  2 TC=0,0 
+V_U16_V1         U16_N345775 GND 5Vdc
+D_U16_D2         U16_N345841 U16_RC_OUT Dideal 
+X_U16_U9         U16_RC_OUT U16_N345775 CNTRL7_DELAY GND COMPARATOR_TMUX1208 
+.MODEL Dideal D
+*.MODEL Dideal D RS=0.001 N=0.001
+.ENDS
+*$
+***
+.subckt SCH_PORT1_U1_S1_TMUX1208 1 2 3 4  
+S_U1_S1         3 4 1 2 _U1_S1
+RS_U1_S1         1 2 1G
+.MODEL         _U1_S1 VSWITCH Roff=10e6 Ron=1m Voff=0.25V Von=0.75V
+.ends
+*$
+***
+.subckt SCH_PORT1_U1_S2_TMUX1208 1 2 3 4  
+S_U1_S2         3 4 1 2 _U1_S2
+RS_U1_S2         1 2 1G
+.MODEL         _U1_S2 VSWITCH Roff=10e6 Ron=1m Voff=0.25V Von=0.75V
+.ends
+*$
+***
+.subckt SCH_PORT1_U1_S3_TMUX1208 1 2 3 4  
+S_U1_S3         3 4 1 2 _U1_S3
+RS_U1_S3         1 2 1G
+.MODEL         _U1_S3 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends
+*$
+***
+.subckt SCH_PORT1_U1_S4_TMUX1208 1 2 3 4  
+S_U1_S4         3 4 1 2 _U1_S4
+RS_U1_S4         1 2 1G
+.MODEL         _U1_S4 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends
+*$
+***
+.subckt SCH_PORT1_U6_S1_TMUX1208 1 2 3 4  
+S_U6_S1         3 4 1 2 _U6_S1
+RS_U6_S1         1 2 1G
+.MODEL         _U6_S1 VSWITCH Roff=10e6 Ron=1m Voff=0.25V Von=0.75V
+.ends
+*$
+***
+.subckt SCH_PORT1_U6_S2_TMUX1208 1 2 3 4  
+S_U6_S2         3 4 1 2 _U6_S2
+RS_U6_S2         1 2 1G
+.MODEL         _U6_S2 VSWITCH Roff=10e6 Ron=1m Voff=0.25V Von=0.75V
+.ends
+*$
+***
+.subckt SCH_PORT1_U6_S3_TMUX1208 1 2 3 4  
+S_U6_S3         3 4 1 2 _U6_S3
+RS_U6_S3         1 2 1G
+.MODEL         _U6_S3 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends
+*$
+***
+.subckt SCH_PORT1_U6_S4_TMUX1208 1 2 3 4  
+S_U6_S4         3 4 1 2 _U6_S4
+RS_U6_S4         1 2 1G
+.MODEL         _U6_S4 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends
+*$
+***
+.subckt SCH_PORT1_U2_S1_TMUX1208 1 2 3 4  
+S_U2_S1         3 4 1 2 _U2_S1
+RS_U2_S1         1 2 1G
+.MODEL         _U2_S1 VSWITCH Roff=10e6 Ron=1m Voff=0.25V Von=0.75V
+.ends
+*$
+***
+.subckt SCH_PORT1_U2_S2_TMUX1208 1 2 3 4  
+S_U2_S2         3 4 1 2 _U2_S2
+RS_U2_S2         1 2 1G
+.MODEL         _U2_S2 VSWITCH Roff=10e6 Ron=1m Voff=0.25V Von=0.75V
+.ends
+*$
+***
+.subckt SCH_PORT1_U2_S3_TMUX1208 1 2 3 4  
+S_U2_S3         3 4 1 2 _U2_S3
+RS_U2_S3         1 2 1G
+.MODEL         _U2_S3 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends
+*$
+***
+.subckt SCH_PORT1_U2_S4_TMUX1208 1 2 3 4  
+S_U2_S4         3 4 1 2 _U2_S4
+RS_U2_S4         1 2 1G
+.MODEL         _U2_S4 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends
+*$
+***
+.subckt SCH_PORT1_U5_S1_TMUX1208 1 2 3 4  
+S_U5_S1         3 4 1 2 _U5_S1
+RS_U5_S1         1 2 1G
+.MODEL         _U5_S1 VSWITCH Roff=10e6 Ron=1m Voff=0.25V Von=0.75V
+.ends
+*$
+***
+.subckt SCH_PORT1_U5_S2_TMUX1208 1 2 3 4  
+S_U5_S2         3 4 1 2 _U5_S2
+RS_U5_S2         1 2 1G
+.MODEL         _U5_S2 VSWITCH Roff=10e6 Ron=1m Voff=0.25V Von=0.75V
+.ends
+*$
+***
+.subckt SCH_PORT1_U5_S3_TMUX1208 1 2 3 4  
+S_U5_S3         3 4 1 2 _U5_S3
+RS_U5_S3         1 2 1G
+.MODEL         _U5_S3 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends
+*$
+***
+.subckt SCH_PORT1_U5_S4_TMUX1208 1 2 3 4  
+S_U5_S4         3 4 1 2 _U5_S4
+RS_U5_S4         1 2 1G
+.MODEL         _U5_S4 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends
+*$
+***
+.subckt SCH_PORT1_U8_S1_TMUX1208 1 2 3 4  
+S_U8_S1         3 4 1 2 _U8_S1
+RS_U8_S1         1 2 1G
+.MODEL         _U8_S1 VSWITCH Roff=10e6 Ron=1m Voff=0.25V Von=0.75V
+.ends
+*$
+***
+.subckt SCH_PORT1_U8_S2_TMUX1208 1 2 3 4  
+S_U8_S2         3 4 1 2 _U8_S2
+RS_U8_S2         1 2 1G
+.MODEL         _U8_S2 VSWITCH Roff=10e6 Ron=1m Voff=0.25V Von=0.75V
+.ends
+*$
+***
+.subckt SCH_PORT1_U8_S3_TMUX1208 1 2 3 4  
+S_U8_S3         3 4 1 2 _U8_S3
+RS_U8_S3         1 2 1G
+.MODEL         _U8_S3 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends
+*$
+***
+.subckt SCH_PORT1_U8_S4_TMUX1208 1 2 3 4  
+S_U8_S4         3 4 1 2 _U8_S4
+RS_U8_S4         1 2 1G
+.MODEL         _U8_S4 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends
+*$
+***
+.subckt SCH_PORT1_U4_S1_TMUX1208 1 2 3 4  
+S_U4_S1         3 4 1 2 _U4_S1
+RS_U4_S1         1 2 1G
+.MODEL         _U4_S1 VSWITCH Roff=10e6 Ron=1m Voff=0.25V Von=0.75V
+.ends
+*$
+***
+.subckt SCH_PORT1_U4_S2_TMUX1208 1 2 3 4  
+S_U4_S2         3 4 1 2 _U4_S2
+RS_U4_S2         1 2 1G
+.MODEL         _U4_S2 VSWITCH Roff=10e6 Ron=1m Voff=0.25V Von=0.75V
+.ends
+*$
+***
+.subckt SCH_PORT1_U4_S3_TMUX1208 1 2 3 4  
+S_U4_S3         3 4 1 2 _U4_S3
+RS_U4_S3         1 2 1G
+.MODEL         _U4_S3 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends
+*$
+***
+.subckt SCH_PORT1_U4_S4_TMUX1208 1 2 3 4  
+S_U4_S4         3 4 1 2 _U4_S4
+RS_U4_S4         1 2 1G
+.MODEL         _U4_S4 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends
+*$
+***
+.subckt SCH_PORT1_U7_S1_TMUX1208 1 2 3 4  
+S_U7_S1         3 4 1 2 _U7_S1
+RS_U7_S1         1 2 1G
+.MODEL         _U7_S1 VSWITCH Roff=10e6 Ron=1m Voff=0.25V Von=0.75V
+.ends
+*$
+***
+.subckt SCH_PORT1_U7_S2_TMUX1208 1 2 3 4  
+S_U7_S2         3 4 1 2 _U7_S2
+RS_U7_S2         1 2 1G
+.MODEL         _U7_S2 VSWITCH Roff=10e6 Ron=1m Voff=0.25V Von=0.75V
+.ends
+*$
+***
+.subckt SCH_PORT1_U7_S3_TMUX1208 1 2 3 4  
+S_U7_S3         3 4 1 2 _U7_S3
+RS_U7_S3         1 2 1G
+.MODEL         _U7_S3 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends
+*$
+***
+.subckt SCH_PORT1_U7_S4_TMUX1208 1 2 3 4  
+S_U7_S4         3 4 1 2 _U7_S4
+RS_U7_S4         1 2 1G
+.MODEL         _U7_S4 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends
+*$
+***
+.subckt SCH_PORT1_U3_S1_TMUX1208 1 2 3 4  
+S_U3_S1         3 4 1 2 _U3_S1
+RS_U3_S1         1 2 1G
+.MODEL         _U3_S1 VSWITCH Roff=10e6 Ron=1m Voff=0.25V Von=0.75V
+.ends
+*$
+***
+.subckt SCH_PORT1_U3_S2_TMUX1208 1 2 3 4  
+S_U3_S2         3 4 1 2 _U3_S2
+RS_U3_S2         1 2 1G
+.MODEL         _U3_S2 VSWITCH Roff=10e6 Ron=1m Voff=0.25V Von=0.75V
+.ends
+*$
+***
+.subckt SCH_PORT1_U3_S3_TMUX1208 1 2 3 4  
+S_U3_S3         3 4 1 2 _U3_S3
+RS_U3_S3         1 2 1G
+.MODEL         _U3_S3 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends
+*$
+***
+.subckt SCH_PORT1_U3_S4_TMUX1208 1 2 3 4  
+S_U3_S4         3 4 1 2 _U3_S4
+RS_U3_S4         1 2 1G
+.MODEL         _U3_S4 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends
+*$
+***
+.SUBCKT COMPARATOR_TMUX1208  INP INN OUT GND
+.PARAM VHI = 1
+.PARAM VLOW = 0
+EOUT OUT GND VALUE = {VHI*0.5*(1+ (SGN(V(INP,INN)) - ABS(SGN(V(INP,INN))) + 1))}
+.ENDS
+*$
+***
+.SUBCKT ILEAK_OFF_TMUX1208 OUT GND EN
+.PARAM I_LEAK_OFF = 0.01n
+G1 OUT GND VALUE = {V(EN,GND)*I_LEAK_OFF}
+.ENDS
+*$
+**
+**
+.SUBCKT RON_VCC_VD_TMUX1208 1 2 VCC GND
+* Functions below are valid only for 0V <= VCC <= 5V
+EV NVCC 0 VALUE = {V(VCC,GND)}
+E1_1 NA2_1 0 TABLE {V(VCC,GND)} = 
++ (1.2, 42.3005397390134)
++ (1.8, 57.8002033895847)
++ (3.3, 1.21890185523962)
++ (5.0, 0.0982697628988714)
+***
+E2_1 NA1_1 0 TABLE {V(VCC,GND)} = 
++ (1.2, 45.7002025290512)
++ (1.8, -22.9619444990021)
++ (3.3, 0.366538369751295)
++ (5.0, 0.334075012262873)
+***
+E3_1 NA0_1 0 TABLE {V(VCC,GND)} = 
++ (1.2, 6.05538463555096)
++ (1.8, 7.55014634577868)
++ (3.3, 2.2258522266275)
++ (5.0, 1.59270630931255)
+*********************************
+E1_2 NA2_2 0 TABLE {V(VCC,GND)} = 
++ (1.2, 0)
++ (1.8, 0)
++ (3.3, 1.01001434656275)
++ (5.0, 0.313515990674095)
+***
+E2_2 NA1_2 0 TABLE {V(VCC,GND)} = 
++ (1.2, 0)
++ (1.8, 0)
++ (3.3, -3.01061852785705)
++ (5.0, -1.33603519270412)
+***
+E3_2 NA0_2 0 TABLE {V(VCC,GND)} = 
++ (1.2, 71)
++ (1.8, 31)
++ (3.3, 6.71137851675848)
++ (5.0, 3.52701455285872)
+***********************************
+E1_3 NA2_3 0 TABLE {V(VCC,GND)} = 
++ (1.2, 1814.33338866619)
++ (1.8, 51.3659302869117)
++ (3.3, 1.08257115897377)
++ (5.0, 0.131198754759804)
+***
+E2_3 NA1_3 0 TABLE {V(VCC,GND)} = 
++ (1.2, -4047.3787914191)
++ (1.8, -167.991650726449)
++ (3.3, -7.39874940186072)
++ (5.0, -1.56761016639175)
+***
+E3_3 NA0_3 0 TABLE {V(VCC,GND)} = 
++ (1.2, 2263.40418487475)
++ (1.8, 141.720714063816)
++ (3.3, 15.0821060821423)
++ (5.0, 6.4754818417246)
+***********************************
+E1 N1 0 VALUE = {V(NA2_1)*PWR(V(1,GND),2) + V(NA1_1)*V(1,GND) + V(NA0_1)}
+E2 N2 0 VALUE = {V(NA2_2)*PWR(V(1,GND),2) + V(NA1_2)*V(1,GND) + V(NA0_2)}
+E3 N3 0 VALUE = {V(NA2_3)*PWR(V(1,GND),2) + V(NA1_3)*V(1,GND) + V(NA0_3)}
+E4 N4 0 VALUE = {ABS(MIN(MIN(V(N1),V(N2)),V(N3))) + 1u}
+G1 1  2 VALUE = {V(1,2)/V(N4)}
+*
+.ENDS
+*$
+***
+.SUBCKT TMUX1208_DIGITAL A2 A1 A0 EN VCC GND EN_INT VCC_MON CNTRL1 CNTRL2 CNTRL3 CNTRL4 CNTRL5 CNTRL6 CNTRL7 CNTRL8
+.PARAM	VTHR = 0.85
+.PARAM VCC_MAX = 5.6
+.PARAM VCC_MIN = 0.9
+EEN NEN 0 VALUE = {0.5*(SGN(V(EN,GND)-VTHR) + ABS(SGN(V(EN,GND)-VTHR)))}
+E1 N1 0 VALUE = {0.5*(SGN(VCC_MAX - V(VCC,GND))+ ABS(SGN(VCC_MAX - V(VCC,GND))))}
+E2 N2 0 VALUE = {0.5*(SGN(V(VCC,GND) - VCC_MIN)+ ABS(SGN(V(VCC,GND) - VCC_MIN)))}
+EA0 NA0 0 VALUE = {0.5*(SGN(V(A0,GND)-VTHR) + ABS(SGN(V(A0,GND)-VTHR)))}
+EA1 NA1 0 VALUE = {0.5*(SGN(V(A1,GND)-VTHR) + ABS(SGN(V(A1,GND)-VTHR)))}
+EA2 NA2 0 VALUE = {0.5*(SGN(V(A2,GND)-VTHR) + ABS(SGN(V(A2,GND)-VTHR)))}
+ES1 CNTRL1 GND VALUE = {V(N1)*V(N2)*V(NEN)*(1-V(NA2))*(1-V(NA1))*(1-V(NA0))}
+ES2 CNTRL2 GND VALUE = {V(N1)*V(N2)*V(NEN)*(1-V(NA2))*(1-V(NA1))*(V(NA0))}
+ES3 CNTRL3 GND VALUE = {V(N1)*V(N2)*V(NEN)*(1-V(NA2))*(V(NA1))*(1-V(NA0))}
+ES4 CNTRL4 GND VALUE = {V(N1)*V(N2)*V(NEN)*(1-V(NA2))*(V(NA1))*(V(NA0))}
+ES5 CNTRL5 GND VALUE = {V(N1)*V(N2)*V(NEN)*(V(NA2))*(1-V(NA1))*(1-V(NA0))}
+ES6 CNTRL6 GND VALUE = {V(N1)*V(N2)*V(NEN)*(V(NA2))*(1-V(NA1))*(V(NA0))}
+ES7 CNTRL7 GND VALUE = {V(N1)*V(N2)*V(NEN)*(V(NA2))*(V(NA1))*(1-V(NA0))}
+ES8 CNTRL8 GND VALUE = {V(N1)*V(N2)*V(NEN)*(V(NA2))*(V(NA1))*(V(NA0))}
+GVCC VCC GND VALUE = {V(N1)*V(N2)*0.02u}
+EEN_INT EN_INT GND VALUE = {V(NEN)}
+EVCCMON VCC_MON GND VALUE = {V(N1)*V(N2)}
+.ENDS
+*$

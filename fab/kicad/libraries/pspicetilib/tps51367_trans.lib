@@ -1,0 +1,974 @@
+*$
+* TPS51367
+*****************************************************************************
+*  (C) Copyright 2013 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+** Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: TPS51367
+* Date: 06MAR2013
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: TPS51367EVM
+* Datasheet: SLUSBB7
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+.SUBCKT TPS51367_TRANS VREF VIN1 VIN2 VIN3 VSNS EN LP GSNS VBST SW1 SW2
++ SW3 SW4 MODE PwrPd REFIN REFIN2 PGND1 PGND2 PGND3 PGND4 PGND5 PGOOD
++ SLEW TRIP V5IN GND PARAMS: FASTSS = 1 
+R_R25         GND N21942921  1e6  
+X_U260         N21943400 N21943463 TBLNKB ENCIRD NAND3_PS PARAMS: VHI=1 VLO=0
++  VTHRESH=500E-3 TPLH=1E-9 TPHL=1E-9 TR=1E-9 TF=1E-9
+X_U304         OVP PWMMINUS N21944225 OR
+C_C23         GND N219408171  10p  
+X_S2    DISCH GND VSNS GSNS TPS51367_S2 
+R_R42         N21942346 LLO  1Meg  
+X_U275         DRVOFF DRVOFF N21943553 UVP HIDRIVE NOR4
+X_U303         PWMMINUS PWMPLUS MASKEN OR
+E_ABM11         N21945216 0 VALUE { if( V(OCLTHR)  
++ >V(LLO) ,1,0)   }
+G_ABM2I2         V5FILT TON VALUE { if(V(DQOS)<0.25, V(SW1)/250K,0)    }
+V_V87         MODECHECK N21942589 0
+E_ABM24         BIASP 0 VALUE { if( V(N21941262) > 0.5,  
++ V(VSREF) + 45m , 2)   }
+E_ABM25         BIASM 0 VALUE { if( V(N21944225) > 0.5,  
++ V(VSREF) - 45m , 0)   }
+G_ABM2I5         GND GMOUT VALUE { IF(V(ENCIRD) > 0.5, LIMIT((V(VSREF) -
++  V(N21940395))*60u, -10u,10u),0)    }
+V_V77         N21944146 GSNS 2.1
+X_U238         ENCIRD N21945216 N21943216 AND
+X_U32         VID1 N21942146 N219421082 MONONEG_PS PARAMS: PW=1u
+E_ABM27         MODECLADDER 0 VALUE { if( V(MODESAMPLE)< .5,1,0)    }
+X_U194         N21942630 NCL BUFFER_PS PARAMS: VHI=1 VLO=0 VTHRESH=500E-3
++  TPLH=50n TPHL=50n TR=1E-9 TF=1E-9
+C_C13         GND MODESAMPLE  10 IC=0 TC=0,0 
+X_S19    SKIPCHECK GND SKIPTIME GND TPS51367_S19 
+C_C16         N21942346 GND  1p  TC=0,0 
+E_ABM17         N21942381 0 VALUE { if( V(FCCINT)>0.5  
++ | V(MASKPG)>0.5   
++ | V(OVP)>0.5, 1, 0 )  }
+E_ABM57         N21944074 0 VALUE { if( V(V5INOK)>0.5  
++ & V(EN)>0.5,1,0)   }
+X_U26         UV UVD delay PARAMS: T={1000000 * (1 - 0.9*FASTSS)}
+E_ABM53         OVD 0 VALUE { if( V(ENCIRD)>0.5 &  
++ V(MASKPG) < 0.5 &  
++ V(OV) >0.5, 1,0)  }
+G_ABM2I3         TON GND VALUE { if(V(DQOS) >.75, V(TON)/100,0)    }
+X_U267         TBLNK N21944643 TOS TOS NAND3_PS PARAMS: VHI=1 VLO=0
++  VTHRESH=500E-3 TPLH=1E-9 TPHL=1E-9 TR=1E-9 TF=1E-9
+X_S8    EN GND VREF GSNS TPS51367_S8 
+X_U580         HIDRIVE HIEDGE N21941068 MONOPOS_PS PARAMS: PW=10n
+R_R15         GND N21945542  1Meg TC=0,0 
+E_ABM15         N21942630 0 VALUE { if( V(LLO)  
++ > V(MODECHECK) ,1,0)   }
+R_R8         GND N219421082  1Meg TC=0,0 
+X_S3    ENHITOGG GND N21942211 MODESAMPLE TPS51367_S3 
+E_E13         N21945329 GND BIASM GND 1
+X_U210         N21943921 ENHI_RECAL BUFFER_PS PARAMS: VHI=1 VLO=0
++  VTHRESH=500E-3 TPLH=20u TPHL=2n TR=1E-9 TF=1E-9
+E_ABM5         UV 0 VALUE { if(V(VSNS) < V(VSREF) * 0.7, 1,0)    }
+E_ABM26         TONSEL 0 VALUE { if( V(MODESAMPLE)< .5,1,0.5)    }
+X_U268         N21944643 ENCIRD N21942479 TBLNK NAND3_PS PARAMS: VHI=1 VLO=0
++  VTHRESH=500E-3 TPLH=1E-9 TPHL=1E-9 TR=1E-9 TF=1E-9
+E_ABM20         OVPX 0 VALUE { if( V(VSNS)  
++ >V(N21944146) ,1,0)   }
+X_U288         HIEDGE ZCOFF RESCOUNT AND
+X_U251         N21941151 N21941325 FORCEOFF OR
+X_U13         N219406891 SW1 d_d1 PARAMS:
+X_U250         DRVHPREBIAS N21940880 INVERTER
+R_R31         SWINT IINFO  2.74e6 TC=0,0 
+E_E8         VORAMP VSNS IINFO IAVG 0.25
+E_ABM48         OVP 0 VALUE { if( V(OVLATCH)>0.5 &  
++ V(ENCIRD) >0.5, 1,0)   }
+X_U35         OVD OVS delay PARAMS: T=430
+R_R34         GND ENCIR  1e8  
+R_R10         GND N219420302  1Meg TC=0,0 
+X_U188         TBLNK N21943131 BUFFER_PS PARAMS: VHI=1 VLO=0 VTHRESH=500E-3
++  TPLH=30E-9 TPHL=2E-9 TR=1E-9 TF=1E-9
+E_ABM54         UVS 0 VALUE { if( V(SSEND)>0.5 &  
++ V(MASKPG) < 0.5 &  
++ V(UVD) >0.5, 1,0)  }
+X_U269         N21943385 N21943180 N21944475 ZCOFF NAND3_PS PARAMS: VHI=1 VLO=0
++  VTHRESH=500E-3 TPLH=1E-9 TPHL=1E-9 TR=1E-9 TF=1E-9
+X_S18    MASKPG GND N21944403 AFTER_DELAY TPS51367_S18 
+X_U256         N219412421 LUP INVERTER
+R_R33         GND MODESAMPLE  1e8  
+R_R21         GMOUT GND  50Meg TC=0,0 
+X_U14         N219407001 VIN1 d_d1 PARAMS:
+E_E14         N21945324 GND BIASP GND 1
+X_U242         BLNKM N21943216 OCLDIS OR
+E_E12         VREF GSNS N21940962 GND 1
+X_U302         N21942146 N219420301 N21942163 OR
+X_U52         N21941279 N21940468 ULQ N21945542 srnandlatchshp_basic PARAMS:
+X_U48         UVS ENHIRECAL UVLATCH N21941463 srnandlatchshp_basic PARAMS:
+X_U280         LOWDRIVE XLOWDRIVE INVERTER
+X_U193         N21943553 DQOS BUFFER_PS PARAMS: VHI=1 VLO=0 VTHRESH=500E-3
++  TPLH=2E-9 TPHL=2E-9 TR=1E-9 TF=1E-9
+E_ABM6         1P125VREF 0 VALUE { V(VSREF) * 1.2    }
+G_ABMII3         V5FILT SKIPTIME VALUE { if(V(SKIPCHECK)>0.5, 0.25u,0)    }
+E_ABM81         LPBAR 0 VALUE { if( V(SSEND) > 0.5 &  
++ V(LP) <1, 1,0)   }
+X_U253         ZCOFF N21940330 INVERTER
+C_C14         LLO PGND1  10p  TC=0,0 
+X_U218         FORCEOFF N21940781 TOS AND
+V_V3         N219407001 SW1 -250m
+E_E6         N21942211 GND MODE GND 1
+X_U191         N21944800 N21944692 BUFFER_PS PARAMS: VHI=1 VLO=0 VTHRESH=500E-3
++  TPLH=10n TPHL=20n TR=1E-9 TF=1E-9
+C_C10         GND GMOUT  1p  
+R_R32         GND N21942624  1e8 TC=0,0 
+R_R37         IINFO IAVG  3.165e6 TC=0,0 
+X_U289         NCL LPPAR2 N21941279 AND
+E_ABM3         N21940551 0 VALUE { if(V(SLEW)>V(VSref)-.04 & V(ENCIRD) >0.5,
++  1,0)    }
+X_U50         OVS ENHIRECAL OVLATCH N21941557 srnandlatchshp_basic PARAMS:
+X_U295         N21944126 DRVHPREBIAS HIDRIVE NAND2_PS PARAMS: VHI=1 VLO=0
++  VTHRESH=500E-3 TPLH=1E-9 TPHL=1E-9 TR=1E-9 TF=1E-9
+R_R45         GND N21941068  1e8  
+C_C11         GND AFTER_DELAY  10n  
+X_S25    ULQ GND VSREF SLEW TPS51367_S25 
+X_U30         VID0 N219420842 N219420430 MONOPOS_PS PARAMS: PW=1u
+X_U301         N219444211 LOWDRIVE N21940468 AND
+E_ABM61         ENSKIP 0 VALUE { if(V(SKIPTIME)>1,1,0)    }
+X_S23    DRVL PGND1 SW1 PGND1 TPS51367_S23 
+X_U278         N21943553 N21944800 INVERTER
+X_S13    HIDRIVE GND VBST DRVH TPS51367_S13 
+R_R18         GND ENHI_RECAL  1E8  
+X_U579         FCCM N21940397 N21941151 MONOPOS_PS PARAMS: PW=40n
+E_ABM9         N21943136 0 VALUE { if( V(DRVL)>2.5 & V(SW1) <0.5,  
++ V(SW1),  
++ V(PGND1) )  }
+E_E15         N21944403 GND TO_DELAY GND 1
+X_U582         N21940551 ENHI_TOGG SSEND N219404991 srlatchrhp_basic_gen
++  PARAMS: VDD=1 VSS=0 VTHRESH=.5
+X_U291         N21942163 N21942792 PWM OR
+X_U190         N21942436 LUPB BUFFER_PS PARAMS: VHI=1 VLO=0 VTHRESH=500E-3
++  TPLH=50n TPHL=50n TR=1E-9 TF=1E-9
+X_U196         N21942921 TO_DELAY BUFFER_PS PARAMS: VHI=1 VLO=0 VTHRESH=500E-3
++  TPLH=1u TPHL=1u TR=1E-9 TF=1E-9
+X_U270         N21943937 N219430121 N21944777 NOR2
+E_E10         SWINT VSNS SW1 VSNS 1
+G_G5         N21940957 N21940962 TABLE { V(N21940957, N21940962) } 
++ ( (-10,-300u)(-1m,-295u)(0,0)(1m,295u)(10,300u) )
+E_ABM18         N21941325 0 VALUE { if( V(HIDRIVE)> 0.5 |  
++  V(DRVHON)>0.5 |  
++ V(LOWDRIVE)>0.5, 1, 0 )  }
+C_C28         SW1 VIN1  10p IC=0 TC=0,0 
+X_U252         FCCM NCL NCLPWM AND
+X_S15    XLOWDRIVE GND DRVL PGND1 TPS51367_S15 
+R_R23         MODE V5FILT  1e6 TC=0,0 
+E_ABM10         DRVHON 0 VALUE { if(V(DRVH)>5,1,0)    }
+E_ABM33         N21944363 0 VALUE { if(V(AFTER_DELAY)>0.5 & V(ENCIRD) >0.5,1,0)
++     }
+C_C29         PGND1 SW1  10p IC=0 TC=0,0 
+R_R43         GND N219404991  1Meg  
+X_U23          VSNS 1P125VREF HYSTVAL OV COMP_HYS
+R_R19         TRIP GND  1e15 TC=0,0 
+X_U244         LOOPRES NCLPWM N219412421 OR
+X_U299         N219424471 N21943385 INV_PS PARAMS: VHI=1 VLO=0 VTHRESH=500E-3
++  TPLH=320n TPHL=10E-9 TR=1E-9 TF=1E-9
+X_U192         DRVL N21943937 BUFFER_PS PARAMS: VHI=1 VLO=0 VTHRESH=2.5
++  TPLH=2E-9 TPHL=2E-9 TR=1E-9 TF=1E-9
+R_R30         V5IN V5FILT  3.32  
+X_U265         ON ONSET ONSET N21943108 NAND3_PS PARAMS: VHI=1 VLO=0
++  VTHRESH=500E-3 TPLH=1E-9 TPHL=1E-9 TR=1E-9 TF=1E-9
+R_R9         LLO N21943136  100  
+R_R14         LP V5FILT  1Meg TC=0,0 
+X_U54         N21940330 RESCOUNT CCMDIS N21941528 srnandlatchshp_basic PARAMS:
+X_U294         N21943553 ON N21944777 NAND2_PS PARAMS: VHI=1 VLO=0
++  VTHRESH=500E-3 TPLH=1E-9 TPHL=1E-9 TR=1E-9 TF=1E-9
+X_U282         ULQ ULQBAR INVERTER
+X_S24    N21940804 SW1 VIN1 SW1 TPS51367_S24 
+X_U293         N21942381 N21942381 FCCM OR
+X_U296         BLNKM TBLNKB N21944771 NAND2_PS PARAMS: VHI=1 VLO=0
++  VTHRESH=500E-3 TPLH=1E-9 TPHL=1E-9 TR=1E-9 TF=1E-9
+E_ABM21         OCLTHR 0 VALUE { if( V(MASKPG) > 0.5,  
++ V(TRIPCL)*1.25, V(TRIPCL))   }
+R_R4         GND ENSKIP  1Meg TC=0,0 
+X_U205         N21944363 N21944809 BUFFER_PS PARAMS: VHI=1 VLO=0 VTHRESH=500E-3
++  TPLH={1m * (1- FASTSS * 0.9)} TPHL=.1u TR=1E-9 TF=1E-9
+C_C27         N21943382 IINFO  4.83p  
+X_U264         N21944927 N21943769 N21944126 SSEND NAND3_PS PARAMS: VHI=1 VLO=0
++  VTHRESH=500E-3 TPLH=1E-9 TPHL=1E-9 TR=1E-9 TF=1E-9
+R_R13         GND LP  1Meg TC=0,0 
+R_R22         GND MODE  1e6 TC=0,0 
+X_U300         N21942479 N219424471 INV_PS PARAMS: VHI=1 VLO=0 VTHRESH=500E-3
++  TPLH=1E-9 TPHL=1E-9 TR=1E-9 TF=1E-9
+E_ABM47         OOB 0 VALUE { if(V(VSNS) > V(SLEW)*1.08,  
++ 1,0)   }
+R_R11         GND N21941463  1e11  
+X_U2         N21945329 GMOUT d_d2 PARAMS:
+R_R49         GND ENHI_TOGG  1Meg  
+E_ABM19         N21944528 0 VALUE { if( V(N21941355)  
++ >V(TON) ,1,0)   }
+E_ABM16         N21942436 0 VALUE { if( V(VORAMP) + 6.66mV  
++ >V(SLEW) ,0,1)   }
+C_CFILT         GND V5FILT  1u IC=0 
+E_ABM80         TRIPCL 0 VALUE { if(V(TRIP) < 0.5, -0.048, if(V(TRIP)>4.5,
++  -0.072, -0.096))    }
+E_ABM14         N21942921 0 VALUE { if( V(HIGH_C)>0.5  
++ & V(LOW_C)>0.5  
++ & V(SSEND)>0.5, 1, 0 )  }
+E_ABM29         VSEL 0 VALUE { ( V(VSNS)*  
++ V(TONSEL) )   }
+R_R111         DRVH N21940804  4.7  
+X_S29    CCMDIS GND VSNS N21940395 TPS51367_S29 
+X_U221         SSEND SSENDb INVERTER
+X_U266         N21943108 ON TOS ENCIRD NAND3_PS PARAMS: VHI=1 VLO=0
++  VTHRESH=500E-3 TPLH=1E-9 TPHL=1E-9 TR=1E-9 TF=1E-9
+X_U222         MASKEN MASKENBAR INVERTER
+X_S27    MODECLADDER GND N21943382 VSNS TPS51367_S27 
+X_F1    N21941012 N21940957 EN GND TPS51367_F1 
+X_U240         NCL NCLB INVERTER
+R_R40         N21942288 N21942346  1Meg  
+X_U272         N21943385 N21943769 UVP N21942530 NOR3
+X_U243         BLNKM NCLB N21942973 OR
+X_U271         DRVHPREBIAS N219430251 N21943180 NOR2
+V_V15         N219406891 PGND1 -250m
+X_U31         VID1 N21942050 N219420042 MONOPOS_PS PARAMS: PW=1u
+E_ABM78         BIAS 0 VALUE { (V(VSREF) + 25m)    }
+X_S16    LOWDRIVE GND V5IN DRVL TPS51367_S16 
+X_U286         N21942530 PREBIAS LOWDRIVE AND
+R_R46         GND PwrPD  1e8  
+E_ABM70         PWMPLUS 0 VALUE { if(V(SSEND)>0.5 &  
++ V(SLEW) - V(VSREF) <-55m, 1,0)   }
+X_U254         LPPAR2 N219444211 INVERTER
+X_U16         V5IN VBST d_d2 PARAMS:
+X_U277         ZCOFF N21944834 N21944771 OR
+X_U3         GMOUT N21945324 d_d2 PARAMS:
+X_U262         ZCOFF N21945003 TBLNKB ENCIRD NAND3_PS PARAMS: VHI=1 VLO=0
++  VTHRESH=500E-3 TPLH=1E-9 TPHL=1E-9 TR=1E-9 TF=1E-9
+X_U281         DRVHON N21944692 DRVHPREBIAS AND
+R_R7         GND N219420042  1Meg TC=0,0 
+R_R27         GND N21941528  1Meg TC=0,0 
+E_ABM58         FASTCURRENT 0 VALUE { if(V(SSEND)<0.5, {FASTSS* V(OCLthr)},0)  
++   }
+X_U258         N21943128 N21943158 TBLNKB ENCIRD NAND3_PS PARAMS: VHI=1 VLO=0
++  VTHRESH=500E-3 TPLH=1E-9 TPHL=1E-9 TR=1E-9 TF=1E-9
+X_U287         N21940336 PREBIAS PREBIAS ENCIR NAND3_PS PARAMS: VHI=1 VLO=0
++  VTHRESH=500E-3 TPLH=1E-9 TPHL=1E-9 TR=1E-9 TF=1E-9
+R_R17         GND ENHITOGG  1e11  
+R_R26         N219408171 TON  100 TC=0,0 
+R_R24         GND TON  10Meg TC=0,0 
+C_C17         N21942288 GND  1p  TC=0,0 
+E_ABM22         N21941012 0 VALUE { if(V(EN)>0.5, 2,0)    }
+X_U208         ENCIR ENCIRD BUFFER_PS PARAMS: VHI=1 VLO=0 VTHRESH=500E-3
++  TPLH=400u TPHL=2E-9 TR=1E-9 TF=1E-9
+X_U276         OVP N21942253 INVERTER
+X_U33         VID0 N219420301 N219420302 MONONEG_PS PARAMS: PW=1u
+X_U257         N21943158 N21944412 N21944412 N21943128 NAND3_PS PARAMS: VHI=1
++  VLO=0 VTHRESH=500E-3 TPLH=1E-9 TPHL=1E-9 TR=1E-9 TF=1E-9
+X_U261         N21945003 N21942973 N21942973 ZCOFF NAND3_PS PARAMS: VHI=1 VLO=0
++  VTHRESH=500E-3 TPLH=1E-9 TPHL=1E-9 TR=1E-9 TF=1E-9
+E_ABM52         DISCH 0 VALUE { if( V(UVP)>0.5 |  
++ V(UVP) >0.5 |  
++ V(EN) <0.5, 1,0)  }
+E_ABM66         N21941355 0 VALUE { if(V(VSEL) > 0.2, V(VSEL), 0.2)    }
+R_U1_R3         U1_N00145 REFIN2  1e8  
+V_U1_V1         U1_N00145 GND 5V
+E_U1_ABM2         U1_N01537 0 VALUE { if( V(REFIN) > 2.3,  
++ if(V(REFIN2) < 0.4, 1.2,1.35),0)   }
+R_U1_R4         REFIN2 GND  1e8  
+R_U1_R1         U1_N00145 REFIN  1e8  
+E_U1_ABM3         U1_N01783 0 VALUE { ( V(U1_N01506)  
++ +V(U1_N01537) )   }
+R_U1_R2         REFIN GND  1e8  
+E_U1_ABM5         VSREF 0 VALUE { if( V(REFIN) >0.41 & V(REFIN)< 2.1, V(REFIN),
++   
++ V(U1_N01783))   }
+E_U1_ABM1         U1_N01506 0 VALUE { if( V(REFIN) <0.4,  
++ if(V(REFIN2) < 0.4, 1.05,1.5),0)   }
+X_U241         BLNKM LUP N21944412 OR
+X_U273         PREBIAS N21940336 N21940880 N21940880 NAND3_PS PARAMS: VHI=1
++  VLO=0 VTHRESH=500E-3 TPLH=1E-9 TPHL=1E-9 TR=1E-9 TF=1E-9
+E_ABM71         PWMMINUS 0 VALUE { if(V(SSEND)>0.5 &  
++ V(SLEW) - V(VSREF) > 55m, 1,0)   }
+C_C22         VSNS IAVG  17.69p  
+X_U246         N21943131 TBLNKB INVERTER
+X_U297         ENCIR ENHITOGG N21943921 MONOPOS_PS PARAMS: PW=100u
+R_R41         LLOAVG N21942288  1Meg  
+X_U198         LPBAR LPPAR2 BUFFER_PS PARAMS: VHI=1 VLO=0 VTHRESH=500E-3
++  TPLH=100u TPHL=16u TR=1E-9 TF=1E-9
+R_R6         GND N219420430  1Meg TC=0,0 
+E_ABM30         HYSTVAL 0 VALUE { V(VSREF) * 0.1    }
+E_ABM8         LOW_C 0 VALUE { if(V(VSNS) > V(VSREF) * 0.84, 1,0)    }
+X_U220         N21944809 L_PGOOD INVERTER
+X_U217         DQOS N21944782 N21940781 OR
+X_U247         N21943385 N219430121 INVERTER
+X_U245         N21943937 N21944834 INVERTER
+R_R20         V5FILT TRIP  1e15 TC=0,0 
+X_U212         ENCIR ENGm BUFFER_PS PARAMS: VHI=1 VLO=0 VTHRESH=500E-3
++  TPLH=786u TPHL=2n TR=1E-9 TF=1E-9
+X_U263         N21943769 ENCIRD ENCIRD N21944927 NAND3_PS PARAMS: VHI=1 VLO=0
++  VTHRESH=500E-3 TPLH=1E-9 TPHL=1E-9 TR=1E-9 TF=1E-9
+R_R12         GND N21941557  1e11  
+C_C19         LLOAVG GND  1p  TC=0,0 
+X_U292         UV PWMPLUS N21941262 OR
+X_U195         MASK MASKPG BUFFER_PS PARAMS: VHI=1 VLO=0 VTHRESH=500E-3 TPLH=1n
++  TPHL=45u TR=1E-9 TF=1E-9
+X_U216         N21944528 ENCIRD N21944782 AND
+X_U248         N21943553 N219430251 INVERTER
+X_U17          V5FILT V5INOK COMP_HYS2 PARAMS:  TH=3.75 HYS=.3
+R_R35         GND N219411000  1e8  
+X_U255         N21942253 LUPB LOOPRES AND
+X_U249         ON N21944475 INVERTER
+X_S28    CCMDIS GND N21940395 GMOUT TPS51367_S28 
+E_E11         VSNSI GSNS VSNS GSNS 1
+E_ABM12         N21942589 0 VALUE { if( V(FCCM)>0.5,  
++ -V(OCLTHR) ,  
++ V(GND) )  }
+X_U279         HIDRIVE N21944137 INVERTER
+X_S10    L_PGOOD GND PGOOD GND TPS51367_S10 
+X_U259         N21943463 OCLDIS OCLDIS N21943400 NAND3_PS PARAMS: VHI=1 VLO=0
++  VTHRESH=500E-3 TPLH=1E-9 TPHL=1E-9 TR=1E-9 TF=1E-9
+R_R44         GND N21940397  1e8  
+C_C18         GND SKIPTIME  4p IC=0 TC=0,0 
+C_C26         VSNS IINFO  9.67p  
+E_ABM77         SKIPCHECK 0 VALUE { if(V(HIDRIVE) < 0.5 &  
++ V(LOWDRIVE) <0.5  
++ & V(ENCIRD) > 0.5,1,0 )   }
+X_U274         ENCIR DRVOFF INVERTER
+E_ABM7         HIGH_C 0 VALUE { if(V(VSNS) < V(VSREF) * 1.12, 1,0)    }
+X_S26    ULQBAR GND SLEW GMOUT TPS51367_S26 
+X_U209         N21944074 ENCIR BUFFER_PS PARAMS: VHI=1 VLO=0 VTHRESH=500E-3
++  TPLH=6u TPHL=2n TR=1E-9 TF=1E-9
+X_U51         PWM MASKENBAR MASK N21942624 srnandlatchshp_basic PARAMS:
+X_U49         OOB LOOPRES FCCINT N219411000 srnandlatchshp_basic PARAMS:
+E_ABM46         UVP 0 VALUE { if( V(UVLATCH)>0.5 &  
++ V(SSEND) >0.5, 1,0)   }
+X_U29         TON V5FILT d_d1 PARAMS:
+X_S14    N21944137 GND DRVH SW1 TPS51367_S14 
+X_U298         N21942050 N219420842 N21942792 OR
+R_R29         GND SKIPTIME  1e8 TC=0,0 
+X_U142         ONSET OVPX N21943128 N21943400 TBLNK OR4_PS PARAMS: VHI=1 VLO=0
++  VTHRESH=500E-3 TPLH=1E-9 TPHL=1E-9 TR=1E-9 TF=1E-9
+.ends
+
+.subckt TPS51367_S2 1 2 3 4  
+S_S2         3 4 1 2 _S2
+RS_S2         1 2 1G
+.MODEL         _S2 VSWITCH Roff=1e8 Ron=42 Voff=0.0V Von=1.0V
+.ends TPS51367_S2
+
+.subckt TPS51367_S19 1 2 3 4  
+S_S19         3 4 1 2 _S19
+RS_S19         1 2 1G
+.MODEL         _S19 VSWITCH Roff=1e11 Ron=1 Voff=.75 Von=.25
+.ends TPS51367_S19
+
+.subckt TPS51367_S8 1 2 3 4  
+S_S8         3 4 1 2 _S8
+RS_S8         1 2 1G
+.MODEL         _S8 VSWITCH Roff=1e11 Ron=20 Voff=0.75 Von=.25
+.ends TPS51367_S8
+
+.subckt TPS51367_S3 1 2 3 4  
+S_S3         3 4 1 2 _S3
+RS_S3         1 2 1G
+.MODEL         _S3 VSWITCH Roff=1e11 Ron=1.0e-8 Voff=0 Von=1
+.ends TPS51367_S3
+
+.subckt TPS51367_S18 1 2 3 4  
+S_S18         3 4 1 2 _S18
+RS_S18         1 2 1G
+.MODEL         _S18 VSWITCH Roff=1m Ron=1e11 Voff=0.25 Von=0.75
+.ends TPS51367_S18
+
+.subckt TPS51367_S25 1 2 3 4  
+S_S25         3 4 1 2 _S25
+RS_S25         1 2 1G
+.MODEL         _S25 VSWITCH Roff=1e8 Ron=5k Voff=0.25V Von=0.75V
+.ends TPS51367_S25
+
+.subckt TPS51367_S23 1 2 3 4  
+S_S23         3 4 1 2 _S23
+RS_S23         1 2 1G
+.MODEL         _S23 VSWITCH Roff=1e6 Ron=6m Voff=1 Von=3
+.ends TPS51367_S23
+
+.subckt TPS51367_S13 1 2 3 4  
+S_S13         3 4 1 2 _S13
+RS_S13         1 2 1G
+.MODEL         _S13 VSWITCH Roff=1e11 Ron=1.6 Voff=.25 Von=.75
+.ends TPS51367_S13
+
+.subckt TPS51367_S15 1 2 3 4  
+S_S15         3 4 1 2 _S15
+RS_S15         1 2 1G
+.MODEL         _S15 VSWITCH Roff=1e11 Ron=0.5 Voff=.25 Von=.75
+.ends TPS51367_S15
+
+.subckt TPS51367_S24 1 2 3 4  
+S_S24         3 4 1 2 _S24
+RS_S24         1 2 1G
+.MODEL         _S24 VSWITCH Roff=1e6 Ron=12m Voff=1 Von=3
+.ends TPS51367_S24
+
+.subckt TPS51367_S29 1 2 3 4  
+S_S29         3 4 1 2 _S29
+RS_S29         1 2 1G
+.MODEL         _S29 VSWITCH Roff=1 Ron=1e8 Voff=0.25V Von=0.75V
+.ends TPS51367_S29
+
+.subckt TPS51367_S27 1 2 3 4  
+S_S27         3 4 1 2 _S27
+RS_S27         1 2 1G
+.MODEL         _S27 VSWITCH Roff=1e8 Ron=1.0 Voff=0.25V Von=0.75V
+.ends TPS51367_S27
+
+.subckt TPS51367_F1 1 2 3 4  
+F_F1         3 4 VF_F1 1
+VF_F1         1 2 0V
+.ends TPS51367_F1
+
+.subckt TPS51367_S16 1 2 3 4  
+S_S16         3 4 1 2 _S16
+RS_S16         1 2 1G
+.MODEL         _S16 VSWITCH Roff=1e11 Ron=.9 Voff=.25 Von=.75
+.ends TPS51367_S16
+
+.subckt TPS51367_S28 1 2 3 4  
+S_S28         3 4 1 2 _S28
+RS_S28         1 2 1G
+.MODEL         _S28 VSWITCH Roff=1e8 Ron=1.0 Voff=0.25V Von=0.75V
+.ends TPS51367_S28
+
+.subckt TPS51367_S10 1 2 3 4  
+S_S10         3 4 1 2 _S10
+RS_S10         1 2 1G
+.MODEL         _S10 VSWITCH Roff=1e8 Ron=1.0 Voff=0.25 Von=0.75
+.ends TPS51367_S10
+
+.subckt TPS51367_S26 1 2 3 4  
+S_S26         3 4 1 2 _S26
+RS_S26         1 2 1G
+.MODEL         _S26 VSWITCH Roff=1e8 Ron=3k Voff=0.25V Von=0.75V
+.ends TPS51367_S26
+
+.subckt TPS51367_S14 1 2 3 4  
+S_S14         3 4 1 2 _S14
+RS_S14         1 2 1G
+.MODEL         _S14 VSWITCH Roff=1e11 Ron=0.6 Voff=.25 Von=.75
+.ends TPS51367_S14
+
+
+
+.subckt delay in out
++ params:  t=100
+s_s1         meas 0 reset2 0 s1
+e_abm1         ch 0 value { if( v(in)>0.5,1,0)    }
+e_abm3         out 0 value { if( v(meas)>0.5 & v(ch)>0.5,1,0)    }
+r_r1         meas ch  {t} 
+c_c1         0 meas  1.4427n  
+e_abm2         reset 0 value { if(v(ch)<0.5,1,0)    }
+r_r2         reset2 reset  0.1  
+c_c2         0 reset2  1.4427n  
+.model s1 vswitch
++ roff=1e+009
++ ron=1
++ voff=0.25
++ von=0.75
+.ends delay
+*$
+.subckt d_d1 1 2
+d1 1 2 dd1
+.model dd1 d
++ is=1e-015
++ tt=1e-011
++ rs=0.01
++ n=0.01
+.ends d_d1
+*$
+.subckt d_d2 1 2
+d1 1 2 dd2
+.model dd2 d
++ is=1e-015
++ tt=1e-011
++ rs=0.01
++ n=0.01
+.ends d_d2
+*$
+.subckt srlatchrhp_basic_gen s r q qb params: vdd=1 vss=0 vthresh=0.5 
+rs s 0 1e11
+rr r 0 1e11
+gq 0 qint value = {if(v(r) > {vthresh},-5,if(v(s)>{vthresh},5, 0))}
+cqint qint 0 1n
+rqint qint 0 1000meg
+d_d10 qint my5 d_d1
+v1 my5 0 {vdd}
+d_d11 myvss qint d_d1
+v2 myvss 0 {vss} 
+eq qqq 0 qint 0 1
+x3 qqq qqqd1 buffer_ps
+rqq qqqd1 q 1
+eqb qbr 0 value = {if( v(q) > {vthresh}, {vss},{vdd})}
+rqb qbr qb 1 
+cdummy1 q 0 10p ic={0}
+cdummy2 qb 0 10p ic={0}
+.ic v(qint) {vss}
+.model d_d1 d
++ is=1e-015
++ tt=1e-011
++ rs=0.05	
++ n=0.1
+.ends srlatchrhp_basic_gen
+*$
+.subckt srnandlatchshp_basic s r q qb
+r1 r 0 1e11
+r2 s 0 1e11
+gq 0 qint value = {if(v(s) > .5,1,if(v(r)>.5,-1, 0))}
+cqint qint 0 1n
+rqint qint 0 1000meg
+d_d10 qint my5 d_d1
+v1 my5 0 5
+d_d11 0 qint d_d1
+eq qqq 0 qint 0 1
+x3 qqq qqqd1 buffer_ps
+rqq qqqd1 q 1
+eqb qbr 0 value = {if( v(q) > .5, 0,1)}
+rqb qbr qb 1 
+cdummy1 q 0 10p ic={1}
+cdummy2 qb 0 10p ic={0}
+.model d_d1 d
++ is=1e-015
++ tt=1e-011
++ rs=0.05
++ n=0.1
+.ends srnandlatchshp_basic
+*$
+.SUBCKT SRLATCHSHP_BASIC_GEN S R Q QB PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+rs s 0 1e11
+rr r 0 1e11
+GQ 0 Qint VALUE = {IF(V(S) > {VTHRESH},5,IF(V(R)>{VTHRESH},-5, 0))}
+CQint Qint 0 1n
+RQint Qint 0 1000MEG
+D_D10 Qint MY5 D_D1
+V1 MY5 0 {VDD}
+D_D11 MYVSS Qint D_D1
+V2 MYVSS 0 {VSS} 
+EQ Qqq 0 Qint 0 1
+X3 Qqq Qqqd1 buffer_ps
+RQq Qqqd1 Q 1
+EQb Qbr 0 VALUE = {IF( V(Q) > {VTHRESH}, {VSS},{VDD})}
+RQb Qbr QB 1 
+Cdummy1 Q 0 10p 
+Cdummy2 QB 0 10p
+.IC V(Qint) {VSS}
+.model d_d1 d
++ is=1e-015
++ tt=1e-011
++ rs=0.05
++ n=0.1
+.ENDS SRLATCHSHP_BASIC_GEN
+*$
+.SUBCKT NMOSIDEAL_PS  D G S PARAMS: k=1 vth=0.5
+RDDUM D 0 1e11
+RSDUM S 0 1e11
+RGDUM G 0 1e11
+CG G D 0.01pF
+CD D S 0.01pF
+EON Yp 0 VALUE={IF(V(G,S) > {vth}, 1, 0)}
+GOUT D S VALUE={IF(V(D,S) > (V(G,S)-{vth}), V(Yp)*({k}/2)*
++(V(G,S)-{vth})**2,
++ V(Yp)*({k})*(V(G,S)-{vth}-(V(D,S)/2))*V(D,S))}
+.ENDS
+*$
+.SUBCKT PMOSIDEAL_PS D G S PARAMS: k=1 vth=0 
+RDDUM D 0 1e11
+RSDUM S 0 1e11
+RGDUM G 0 1e11
+CG G D 0.01pF
+CD D S 0.01pF
+EON Yp 0 VALUE={IF(V(S,G) > {vth}, -1, 0)}
+GOUT D S VALUE={IF(V(S,D) > (V(S,G)-{vth}), V(Yp)*({k}/2)*
++(V(S,G)-{vth})**2,
++ V(Yp)*({k})*(V(S,G)-{vth}-(V(S,D)/2))*V(S,D))}
+.ENDS PMOSIDEAL_PS
+*$
+.subckt DC_1mV_1A_1V_1nA A C
+G1 A C TABLE { V(A, C) } ( (-1,-1n)(0,0)(1m,1) (2m,10) (3m,1000) )
+.ends DC_1mV_1A_1V_1nA 
+*$
+.SUBCKT ANALOG_BUFFER IN OUT  
++ PARAMs:  GAIN=1
+EOUT OUT 0 VALUE { GAIN * V(IN)}
+.ends ANALOG_BUFFER
+*$
+.SUBCKT AND A B OUT  
+EOUT OUT1 0 VALUE { IF( V(A)>0.5 & V(B)>0.5,1,0) }
+R1 OUT1 OUT 1
+C1 OUT 0 10p
+.ends AND
+*$
+.SUBCKT OR A B OUT  
+EOUT OUT1 0 VALUE { IF( V(A)>0.5 | V(B)>0.5,1,0) }
+R1 OUT1 OUT 1
+C1 OUT 0 10p
+.ends OR
+*$
+.SUBCKT NOR2 A B OUT  
+EOUT OUT1 0 VALUE { IF( V(A)>0.5 | V(B)>0.5,0,1) }
+R1 OUT1 OUT 1
+C1 OUT 0 10p
+.ends NOR2
+*$
+.SUBCKT NOR3 A B C OUT  
+EOUT OUT1 0 VALUE { IF( V(A)>0.5 | V(B)>0.5 | V(C)>0.5,0,1) }
+R1 OUT1 OUT 1
+C1 OUT 0 10p
+.ends NOR3
+*$
+.SUBCKT NOR4 A B C D OUT  
+EOUT OUT1 0 VALUE { IF( V(A)>0.5 | V(B)>0.5 | V(C)>0.5 | V(D)>0.5,0,1) }
+R1 OUT1 OUT 1
+C1 OUT 0 10p
+.ends NOR4
+*$
+.SUBCKT NAND3 A B C OUT  
+EOUT OUT1 0 VALUE { IF( V(A)<0.5 & V(B)<0.5 & V(C)<0.5,1,0) }
+R1 OUT1 OUT 1
+C1 OUT 0 10p
+.ends NAND3
+*$
+.SUBCKT NAND2 A B OUT  
+EOUT OUT1 0 VALUE { IF( V(A)<0.5 & V(B)<0.5,1,0) }
+R1 OUT1 OUT 1
+C1 OUT 0 10p
+.ends NAND2
+*$
+.SUBCKT AND3 A B C OUT  
+EOUT OUT1 0 VALUE { IF( V(A)>0.5 & V(B)>0.5 & V(C)>0.5,1,0) }
+R1 OUT1 OUT 1
+C1 OUT 0 10p
+.ends AND3
+*$
+.SUBCKT INVERTER IN OUT  
+EOUT OUT1 0 VALUE { IF( V(IN)<0.5,1,0) }
+R1 OUT1 OUT 1
+C1 OUT 0 10p
+.ends INVERTER
+*$
+.SUBCKT COMP_HYS INP INM HYS OUT 
+EIN INP1 INM1 INP INM 1 
+EHYS INP1 INP2 VALUE { IF( V(1)>0.5,-V(HYS)/2,V(HYS)/2) }
+EOUT OUT 0 VALUE { IF( V(INP2)>V(INM1),1,0) }
+R1 OUT 1 1
+C1 1 0 1p
+RINP1 INP1 0 100K
+.ends COMP_HYS
+*$
+.SUBCKT COMP_HYS2 INP OUT 
++ PARAMs:  TH=.5 HYS=0.1
+EIN INP1 0 INP 0 1 
+EHYS INP1 INP2 VALUE { IF( V(1)>0.5,-(HYS)/2,HYS/2) }
+EOUT OUT 0 VALUE { IF( V(INP2)>TH,1,0) }
+R1 OUT 1 1
+C1 1 0 1n
+RINP1 INP1 0 10K
+.ends COMP_HYS2
+*$
+.SUBCKT LAG_PS A Y PARAMS: gain=1 freq=10e6
+RA A 0 1e11
+EG FIRST 0 VALUE={gain*V(A)}
+EPOLE Y 0 LAPLACE {V(FIRST)}={(1/(1+s/(2*3.1415*{freq})))}
+RY Y 0 1e11
+.ENDS LAG_PS
+*$
+.SUBCKT NAND3_PS Y A B C PARAMS: vhi=1 vlo=0 vthresh=500e-3
++ tplh=1e-9 tphl=1e-9 tr=1e-9 tf=1e-9
+RA A 0 1e11
+CA A 0 0.01pF
+RB B 0 1e11
+CB B 0 0.01pF
+RC C 0 1e11
+CC C 0 0.01pF
+VS VSUP 0 DC 1
+***** boolean ************
+ENAND3 Ypp 0 VALUE={IF(V(A) > {vthresh} & V(B) > {vthresh} & V(C) >
++ {vthresh}, 0, 1)}
+ROUTpp Ypp 0 1e11
+***** add delay lines ****
+XNSW1 OUTp Ypp 0 NSW_PS PARAMS: RONval={(tplh+1e-15)/(1e-12*0.693)}
++ VTHval=0.5
+XPSW1 OUTp Ypp VSUP PSW_PS PARAMS: RONval={(tphl+1e-15)/(1e-12*0.693)}
++ VTHval=0.5
+CDEL1 OUTp 0 1pF
+ETHRESH Yp 0 VALUE={IF(V(OUTp) > 0.5, 1, 0)}
+ROUTp Yp 0 1e11
+** add rise and fall *****
+XNSW2 OUTr Yp 0 NSW_PS PARAMS: RONval={(tf+1e-15)/(1e-12*2.3)} VTHval=0.5
+XPSW2 OUTr Yp VSUP PSW_PS PARAMS: RONval={(tr+1e-15)/(1e-12*2.3)} VTHval=0.5
+CDEL2 OUTr 0 1pF
+**************************
+EOUT OUTf 0 VALUE={V(OUTr)*({vhi} - {vlo})+{vlo}}
+RDR OUTf Y  1000
+RO Y 0 1e11
+.ENDS NAND3_PS
+*$
+.SUBCKT DIDEAL_PS A C PARAMS: ron=1e-3 roff=1e9 
+RA A 0 1e11
+RC C 0 1e11
+RAC A C 1e11
+CAC A C 0.01pF ic=0
+GD A B VALUE={LIMIT((0.01/{roff})*EXP((V(A,B)- 0.01)*{5}/0.026),40,-10u)}
+RB B 0 1e9
+RD B C {ron}
+CC C 0 0.1pF 
+.ENDS DIDEAL_PS
+*$
+.SUBCKT BUFFER_PS A Y PARAMS: vhi=1 vlo=0 vthresh=500e-3
++ tplh=1e-9 tphl=1e-9 tr=1e-9 tf=1e-9
+RA A 0 1e11
+CA A 0 0.01pF
+VS VSUP 0 DC 1
+***** boolean ************
+EBUF1 Ypp 0 VALUE={IF(V(A) > ({vthresh}), 1, 0)}
+ROUTpp Ypp 0 1e11
+***** add delay lines ****
+XNSW1 OUTp Ypp 0 NSW_PS PARAMS: RONval={(tplh+1e-15)/(1e-12*0.693)}
++ VTHval=0.5
+XPSW1 OUTp Ypp VSUP PSW_PS PARAMS: RONval={(tphl+1e-15)/(1e-12*0.693)}
++ VTHval=0.5
+CDEL1 OUTp 0 1pF
+ETHRESH Yp 0 VALUE={IF(V(OUTp) > 0.5, 1, 0)}
+ROUTp Yp 0 1e11
+** add rise and fall *****
+XNSW2 OUTr Yp 0 NSW_PS PARAMS: RONval={(tf+1e-15)/(1e-12*2.3)} VTHval=0.5
+XPSW2 OUTr Yp VSUP PSW_PS PARAMS: RONval={(tr+1e-15)/(1e-12*2.3)} VTHval=0.5
+CDEL2 OUTr 0 1pF
+**************************
+EOUT OUTf 0 VALUE={V(OUTr)*({vhi} - {vlo})+{vlo}}
+RDR OUTf Y  1000
+RO Y 0 1e11
+.ENDS BUFFER_PS
+*$
+.SUBCKT INV_PS Y A PARAMS: vhi=1 vlo=0 vthresh=500e-3
++ tplh=1e-9 tphl=1e-9 tr=1e-9 tf=1e-9
+RA A 0 1e11
+CA A 0 0.01pF
+VS VSUP 0 DC 1
+***** boolean ************
+EINV1 Ypp 0 VALUE={IF(V(A) > ({vthresh}), 0, 1)}
+ROUTpp Ypp 0 1e11
+***** add delay lines ****
+XNSW1 OUTp Ypp 0 NSW_PS PARAMS: RONval={(tplh+1e-15)/(1e-12*0.693)}
++ VTHval=0.5
+XPSW1 OUTp Ypp VSUP PSW_PS PARAMS: RONval={(tphl+1e-15)/(1e-12*0.693)}
++ VTHval=0.5
+CDEL1 OUTp 0 1pF
+ETHRESH Yp 0 VALUE={IF(V(OUTp) > 0.5, 1, 0)}
+ROUTp Yp 0 1e11
+** add rise and fall *****
+XNSW2 OUTr Yp 0 NSW_PS PARAMS: RONval={(tf+1e-15)/(1e-12*2.3)} VTHval=0.5
+XPSW2 OUTr Yp VSUP PSW_PS PARAMS: RONval={(tr+1e-15)/(1e-12*2.3)} VTHval=0.5
+CDEL2 OUTr 0 1pF
+**************************
+EOUT OUTf 0 VALUE={V(OUTr)*({vhi} - {vlo})+{vlo}}
+RDR OUTf Y  100
+RO Y 0 1e11
+.ENDS INV_PS
+*$
+.SUBCKT OR4_PS Y A B C D PARAMS: vhi=1 vlo=0 vthresh=500e-3
++ tplh=1e-9 tphl=1e-9 tr=1e-9 tf=1e-9
+RA A 0 1e11
+CA A 0 0.01pF
+RB B 0 1e11
+CB B 0 0.01pF
+RC C 0 1e11
+CC C 0 0.01pF
+RD D 0 1e11
+CD D 0 0.01pF
+VS VSUP 0 DC 1
+***** boolean ************
+EOR4 Ypp 0 VALUE={IF(V(A) > {vthresh} | V(B) > {vthresh} 
++ | V(C) > {vthresh}  | V(D) > {vthresh}, 1, 0)}
+ROUTpp Ypp 0 1e11
+***** add delay lines ****
+XNSW1 OUTp Ypp 0 NSW_PS PARAMS: RONval={(tplh+1e-15)/(1e-12*0.693)}
++ VTHval=0.5
+XPSW1 OUTp Ypp VSUP PSW_PS PARAMS: RONval={(tphl+1e-15)/(1e-12*0.693)}
++ VTHval=0.5
+CDEL1 OUTp 0 1pF
+ETHRESH Yp 0 VALUE={IF(V(OUTp) > 0.5, 1, 0)}
+ROUTp Yp 0 1e11
+** add rise and fall *****
+XNSW2 OUTr Yp 0 NSW_PS PARAMS: RONval={(tf+1e-15)/(1e-12*2.3)} VTHval=0.5
+XPSW2 OUTr Yp VSUP PSW_PS PARAMS: RONval={(tr+1e-15)/(1e-12*2.3)} VTHval=0.5
+CDEL2 OUTr 0 1pF
+**************************
+EOUT OUTf 0 VALUE={V(OUTr)*({vhi} - {vlo})+{vlo}}
+RDR OUTf Y  1000
+RO Y 0 1e11
+.ENDS OR4_PS
+*$
+.SUBCKT COMPIDEAL_PS Y NEG POS PARAMS: td=1e-9 tt=1e-9
+RP POS 0 1e11
+CP POS 0 0.01pF
+RN NEG 0 1e11
+CN NEG 0 0.01pF
+VS VSUP 0 DC 1
+**** Comparator ****
+ECOUT Ypp 0 VALUE={IF (V(POS) > V(NEG), 1, 0)}
+RYPP Ypp 0 1e11
+***** Add delay lines ****
+XNSW1 OUTp Ypp 0 NSW_PS PARAMS: RONval={(td+1e-15)/(1e-12*0.693)} VTHval=0.5
+XPSW1 OUTp Ypp VSUP PSW_PS PARAMS: RONval={(td+1e-15)/(1e-12*0.693)}
++ VTHval=0.5
+CDEL1 OUTp 0 1pF
+ETHRESH Yp 0 VALUE={IF(V(OUTp) > 0.5, 1, 0)} 
+ROUTp Yp 0 1e11
+** Add rise and fall *****
+XNSW2 OUTr Yp 0 NSW_PS PARAMS: RONval={(tt+1e-15)/(1e-12*2.3)} VTHval=0.5
+XPSW2 OUTr Yp VSUP PSW_PS PARAMS: RONval={(tt+1e-15)/(1e-12*2.3)} VTHval=0.5
+CDEL2 OUTr 0 1pF
+**************************
+EOUT OUTf 0 VALUE={V(OUTr)}
+RDR OUTf Y 1000
+RO Y 0 1e11
+.ENDS COMPIDEAL_PS
+*$
+.SUBCKT VCVSCLIP_PS YP YN POS NEG PARAMS: gain=1 vomax=1 vomin=-1
+RP POS 0 1e11
+CP POS 0 0.01pF
+RN NEG 0 1e11
+CN NEG 0 0.01pF
+ROUTN YN 0 1e11
+COUTN YN 0 0.01pF
+***** boolean ************
+EVCLP YP YN VALUE={LIMIT((V(POS)-V(NEG))*{gain},{vomax},{vomin})}
+**************************
+RO YP 0 1e11
+.ENDS VCVSCLIP_PS
+*$
+.SUBCKT NAND2_PS Y A B PARAMS: vhi=1 vlo=0 vthresh=500e-3
++ tplh=1e-9 tphl=1e-9 tr=1e-9 tf=1e-9
+RA A 0 1e11
+CA A 0 0.01pF
+RB B 0 1e11
+CB B 0 0.01pF
+VS VSUP 0 DC 1
+***** boolean ************
+ENAND2 Ypp 0 VALUE={IF(V(A) > {vthresh} & V(B) > {vthresh}, 0, 1)}
+ROUTpp Ypp 0 1e11
+***** add delay lines ****
+XNSW1 OUTp Ypp 0 NSW_PS PARAMS: RONval={(tplh+1e-15)/(1e-12*0.693)}
++ VTHval=0.5
+XPSW1 OUTp Ypp VSUP PSW_PS PARAMS: RONval={(tphl+1e-15)/(1e-12*0.693)}
++ VTHval=0.5
+CDEL1 OUTp 0 1pF
+ETHRESH Yp 0 VALUE={IF(V(OUTp) > 0.5, 1, 0)}
+ROUTp Yp 0 1e11
+** add rise and fall *****
+XNSW2 OUTr Yp 0 NSW_PS PARAMS: RONval={(tf+1e-15)/(1e-12*2.3)} VTHval=0.5
+XPSW2 OUTr Yp VSUP PSW_PS PARAMS: RONval={(tr+1e-15)/(1e-12*2.3)} VTHval=0.5
+CDEL2 OUTr 0 1pF
+**************************
+EOUT OUTf 0 VALUE={V(OUTr)*({vhi} - {vlo})+{vlo}}
+RDR OUTf Y  1000
+RO Y 0 1e11
+.ENDS NAND2_PS
+*$
+.SUBCKT NSW_PS D G S PARAMS: RONval=10k VTHval=0.7 VCHARval=0.01
++ CGval=0.01pF CDval=0.01pF 
+RDDUM D 0 1e11
+RSDUM S 0 1e11
+RGDUM G 0 1e11
+CG G D {CGval}
+CD D S {CDval}
+EEXP F1 0 VALUE={LIMIT(((V(G,S)-VTHval)/VCHARval),-80,80)} 
+GOUT D S VALUE={V(D,S)/(RONval*(1+EXP(-LIMIT(((V(G,S)-VTHval)
++ /VCHARval),-80,80))))}
+.ENDS NSW_PS
+*$
+.SUBCKT PSW_PS D G S PARAMS: RONval=10k VTHval=0.7 VCHARval=0.01
++ CGval=0.01pF CDval=0.01pF 
+RDDUM D 0 1e11
+RSDUM S 0 1e11
+RGDUM G 0 1e11
+CG G D {CGval}
+CD D S {CDval}
+EEXP F1 0 VALUE={LIMIT(((V(S,G)-VTHval)/VCHARval),-80,80)} 
+GOUT S D VALUE={V(S,D)/(RONval*(1+EXP(-LIMIT(((V(S,G)-VTHval)
++ /VCHARval),-80,80))))}
+.ENDS PSW_PS
+*$
+.SUBCKT GAIN_MUL IN OUT  
++ PARAMs:  GAIN=1
+EOUT OUT 0 VALUE { GAIN * V(IN)}
+.ends GAIN_MUL
+*$
+.SUBCKT MONOPOS_PS in Q Qn PARAMS: PW=250u 
+VS VSUP 0 DC 1
+RS VSUP 0 1e11
+r1 IN 0 1e11
+GIN VSUP YA VALUE={IF(V(IN)>0.5, V(VSUP)/1000K, 0)}
+GDIS YA 0 VALUE={IF(V(IN)>0.5,0, V(YA)/1m)}
+CIN YA 0 1n IC=0
+RIN YA 0 1e11
+EABM1 YTD 0 VALUE={IF(V(YA)> {PW*1000}, 1, 0)}
+RYTD YTD 0 1e11
+EXOR P 0 VALUE={IF(V(YTD) > 0.5 ^ V(IN) > .5, 1, 0)}
+ROUTpp2 P 0 1e11
+EAND1 Q1 0 VALUE={ IF(V(P)>0.5 & V(IN)>0.5, 1, 0)}
+Ro1 Q1 Q 1m
+Co1 Q 0 1p
+ROUT2 Q 0 1e11
+EAND2 Qn1 0 VALUE={ IF(V(Q)>0.5, 0, 1)}
+Ro2 Qn1 Qn 1m
+Co2 Qn 0 1p
+ROUT4 Qn 0 1e11
+.ENDS MONOPOS_PS
+*$
+.SUBCKT MONONEG_PS in Q Qn PARAMS: PW=250u 
+VS VSUP 0 DC 1
+r1 IN 0 1e11
+RS VSUP 0 1e11
+GIN VSUP YA VALUE={IF(V(IN)<0.5, V(VSUP)/1000K, 0)}
+GDIS YA 0 VALUE={IF(V(IN)<0.5,0, V(YA)/1m)}
+CIN YA 0 1n IC=1
+RIN YA 0 1e11
+EABM1 YTD 0 VALUE={IF(V(YA)> {PW*1000}, 0, 1)}
+RYTD YTD 0 1e11
+EXOR P 0 VALUE={IF(V(YTD) > 0.5 ^ V(IN) > .5, 1, 0)}
+ROUTpp2 P 0 1e11
+EAND1 Q1 0 VALUE={ IF(V(P)>0.5 & V(YTD)>0.5, 1, 0)}
+Ro1 Q1 Q 1m
+Co1 Q 0 1p IC=0
+ROUT2 Q 0 1e11
+EAND2 Qn1 0 VALUE={ IF(V(Q)>0.5, 0, 1)}
+Ro2 Qn1 Qn 1m
+Co2 Qn 0 1p
+ROUT4 Qn 0 1e11
+.ENDS MONONEG_PS
+*$
+.SUBCKT CESR IN OUT
++ PARAMs:  C=100u ESR=0.01 X=2 IC=0
+C	IN 1  {C*X} IC={IC}
+RESR	1 OUT {ESR/X}
+.ENDS CESR
+*$
+.SUBCKT LDCR IN OUT
++ PARAMs:  L=1u DCR=0.01 IC=0
+L	IN 1  {L} IC={IC}
+RDCR	1 OUT {DCR}
+.ENDS LDCR
+*$
+.model Clot1 CAP (C=1 LOT/1/UNIFORM 5%)
+*$

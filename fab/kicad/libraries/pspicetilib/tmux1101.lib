@@ -1,0 +1,170 @@
+* source SPST_TEMPLATE
+.subckt TMUX1101 S1 D1 SEL1 VDD GND  
+
+R_U1_R1         GND U1_NISO  10e6 TC=0,0 
+X_U1_S2    CNTRL1_D GND U1_N27498 D1 ANALOG_SWITCH_SCH_U1_S2 
+C_U1_C3         GND U1_N27498  2p  TC=0,0 
+C_U1_C8         GND U1_N27490  2f  TC=0,0 
+X_U1_S1    CNTRL1_D GND S1 U1_N27464 ANALOG_SWITCH_SCH_U1_S1 
+C_U1_C5         U1_N27304 U1_NISO  10p  TC=0,0 
+C_U1_C7         GND U1_N27472  2f  TC=0,0 
+C_U1_C4         U1_NISO U1_N27278  10p  TC=0,0 
+C_U1_C2         GND U1_N27464  2p  TC=0,0 
+C_U1_C6         GND D1  7p  TC=0,0 
+X_U1_S4    CNTRL1_D GND D1 U1_N27304 ANALOG_SWITCH_SCH_U1_S4 
+R_U1_R2         U1_N27464 U1_N27472  5 TC=0,0 
+C_U1_C1         GND S1  3p  TC=0,0 
+X_U1_S3    CNTRL1_D GND S1 U1_N27278 ANALOG_SWITCH_SCH_U1_S3 
+R_U1_R3         U1_N27490 U1_N27498  5 TC=0,0 
+L_U1_L1         U1_N27464 U1_N27472  140nH  
+L_U1_L2         U1_N27490 U1_N27498  140nH  
+X_U1_U1         U1_N27472 U1_N27490 GND ron_vd_5V
+X_U5         SEL1 GND GND GND VDD VDD GND EN_INT SEL1_INT SEL2_INT SEL3_INT
++  SEL4_INT GPN_DIGITAL 
+C_U6_C3         GND U6_CNTRLX10_RC  1n  TC=0,0 
+X_U6_U4         U6_CNTRLX10_RC U6_N310903 CNTRL1_D GND COMPARATOR 
+D_U6_D3         U6_CNTRLX10_RC U6_N310631 Dd
+E_U6_E2         U6_CNTRLX10 GND SEL1_INT GND 10
+R_U6_R4         U6_CNTRLX10 U6_N310833  16 TC=0,0 
+V_U6_V1         U6_N310903 GND 5Vdc
+R_U6_R6         U6_CNTRLX10 U6_N310631  16 TC=0,0 
+D_U6_D2         U6_N310833 U6_CNTRLX10_RC Dd
+R_R1         GND EN_INT  10k TC=0,0 
+R_R2         GND SEL3_INT  10k TC=0,0 
+R_R3         GND SEL4_INT  10k TC=0,0 
+R_R4         GND SEL2_INT  10k TC=0,0 
+.model Dd D
+.ends
+
+.subckt ANALOG_SWITCH_SCH_U1_S2 1 2 3 4  
+S_U1_S2         3 4 1 2 _U1_S2
+RS_U1_S2         1 2 1G
+.MODEL         _U1_S2 VSWITCH Roff=10e6 Ron=1m Voff=0.25V Von=0.75V
+.ends ANALOG_SWITCH_SCH_U1_S2
+
+.subckt ANALOG_SWITCH_SCH_U1_S1 1 2 3 4  
+S_U1_S1         3 4 1 2 _U1_S1
+RS_U1_S1         1 2 1G
+.MODEL         _U1_S1 VSWITCH Roff=10e6 Ron=1m Voff=0.25V Von=0.75V
+.ends ANALOG_SWITCH_SCH_U1_S1
+
+.subckt ANALOG_SWITCH_SCH_U1_S4 1 2 3 4  
+S_U1_S4         3 4 1 2 _U1_S4
+RS_U1_S4         1 2 1G
+.MODEL         _U1_S4 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends ANALOG_SWITCH_SCH_U1_S4
+
+.subckt ANALOG_SWITCH_SCH_U1_S3 1 2 3 4  
+S_U1_S3         3 4 1 2 _U1_S3
+RS_U1_S3         1 2 1G
+.MODEL         _U1_S3 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends ANALOG_SWITCH_SCH_U1_S3
+
+.SUBCKT COMPARATOR  INP INN OUT GND
+.PARAM VHI = 1
+.PARAM VLOW = 0
+EOUT OUT GND VALUE = {VHI*0.5*(1+ (SGN(V(INP,INN)) - ABS(SGN(V(INP,INN))) + 1))}
+.ENDS
+
+.SUBCKT GPN_DIGITAL SEL1 SEL2 SEL3 SEL4 EN VCC GND EN_INT SEL1_INT SEL2_INT SEL3_INT SEL4_INT 
+**
+** Digital Threshold
+.PARAM	VTHR = 1.1
+**VTHR is the control logic threshold based on mid-point of VIH(min) and VIL(max)
+**MAX and Min is operation VCC
+.PARAM VCC_MAX = 5.1
+.PARAM VCC_MIN = 4.9
+.PARAM IQ_EN = 4n
+.PARAM IQ_DIS= 0.4n
+**
+** Convert EN pin to '1' or '0' for active HIGH
+** If ENZ, the swap '1' and '0' for active LOW
+** Lines/nodes internal to this subcircuit can be referenced
+** to global ground (0), as opposed to the model ground (GND).
+EEN NEN 0 VALUE = {IF(V(EN,GND) > VTHR,1,0)}
+**
+** Convert SELx pin to '1' or '0' for active HIGH
+** If SELx is active LOW, the swap '1' and '0'
+** Lines/nodes internal to this subcircuit can be referenced
+** to global ground (0), as opposed to the model ground (GND).
+ESEL1 NSEL1 0 VALUE = {IF(V(SEL1,GND) > VTHR,1,0)}
+ESEL2 NSEL2 0 VALUE = {IF(V(SEL2,GND) > VTHR,0,1)}
+ESEL3 NSEL3 0 VALUE = {IF(V(SEL3,GND) > VTHR,0,1)}
+ESEL4 NSEL4 0 VALUE = {IF(V(SEL4,GND) > VTHR,0,1)}
+**
+** Test for Min and Max power supplies
+** If VCC < VCC_MAX then N1 = '1', else '0'
+** If VCC > VCC_MIN then N2 = '1', else '0'*  
+** Lines/nodes internal to this subcircuit can be referenced
+** to global ground (0), as opposed to the model ground (GND).
+E1 N1 0 VALUE = {IF(V(VCC,GND) < VCC_MAX,1,0)}
+E2 N2 0 VALUE = {IF(V(VCC,GND) > VCC_MIN,1,0)}
+**
+** Current Drain at 5V
+** This spource is referenced to the model power supply (VCC)
+** and the model ground (GND)
+GVCC VCC GND VALUE = {(V(N1))*(V(N2))*((V(NEN))*IQ_EN + (1-V(NEN))*IQ_DIS)}
+**
+** Output internal SEL line as {1,0}
+** Including V(NEN), V(N1), V(N2) to disable the individual switches
+** if VCC is out of range (N1,N2) or if the chip is disabled.
+** These output lines are ref'd to the model GND, not global ground (0).
+ESEL_INT1 SEL1_INT GND VALUE = {V(NSEL1)*V(NEN)*V(N1)*V(N2)}
+ESEL_INT2 SEL2_INT GND VALUE = {V(NSEL2)*V(NEN)*V(N1)*V(N2)}
+ESEL_INT3 SEL3_INT GND VALUE = {V(NSEL3)*V(NEN)*V(N1)*V(N2)}
+ESEL_INT4 SEL4_INT GND VALUE = {V(NSEL4)*V(NEN)*V(N1)*V(N2)}
+**
+** Internal enable line 
+** jointly controlled by ENABLE line (NEN) or the power supply (N1,N2).
+EEN_INT EN_INT GND VALUE = {V(NEN)*V(N1)*V(N2)}
+**
+.ENDS
+
+.SUBCKT ron_vd_5V 1 2 GND
+* Functions below are valid only for VCC = 5.0V
+*
+E1 N1 0 TABLE {V(1,GND)} = 
++ (0.2502201,1.593176)
++ (0.3689637,1.63603)
++ (0.4877075,1.682047)
++ (0.6064512,1.731734)
++ (0.725195,1.785404)
++ (0.8439387,1.843775)
++ (0.9626825,1.907685)
++ (1.081426,1.977754)
++ (1.20017,2.054965)
++ (1.318914,2.131715)
++ (1.437657,2.159867)
++ (1.556401,2.123608)
++ (1.675145,2.082607)
++ (1.793889,2.052045)
++ (1.912632,2.032251)
++ (2.031376,2.021801)
++ (2.15012,2.020432)
++ (2.268864,2.027505)
++ (2.387607,2.04275)
++ (2.506351,2.066793)
++ (2.625095,2.099435)
++ (2.743839,2.141469)
++ (2.862582,2.193908)
++ (2.981326,2.257338)
++ (3.10007,2.333315)
++ (3.218814,2.420828)
++ (3.337557,2.507984)
++ (3.456301,2.537119)
++ (3.575045,2.481794)
++ (3.693789,2.403228)
++ (3.812532,2.328928)
++ (3.931276,2.260962)
++ (4.05002,2.198836)
++ (4.168764,2.141622)
++ (4.287507,2.088608)
++ (4.406251,2.039476)
++ (4.524995,1.993514)
++ (4.643739,1.950389)
++ (4.762482,1.909765)
++ (4.881226,1.871204)
+*
+G1 1  2 VALUE = {V(1,2)/(V(N1)+1u)}
+*
+.ENDS

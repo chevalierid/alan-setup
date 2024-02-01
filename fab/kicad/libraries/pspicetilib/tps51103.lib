@@ -1,0 +1,256 @@
+* PSpice Model Editor - Version 16.0.0
+*$
+* TPS51103
+*****************************************************************************
+*  (C) Copyright 2009 Texas Instruments Incorporated. All rights reserved.  
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.     
+** TI and its licensors and suppliers make no warranties, either expressed  
+** or implied, with respect to this model, including the warranties of      
+** merchantability or fitness for a particular purpose. The model is        
+** provided solely on an "as is" basis. The entire risk as to its quality   
+** and performance is with the customer                                   
+*****************************************************************************
+*
+** Released by: Analog e-Lab Design Center, Texas Instruments Inc.
+* Part: TPS51103
+* Date: 08/25/2009
+* Model Type: TRANSIENT		
+* Simulator: PSPICE
+* Simulator Version: 16.0.0.s001
+* EVM Order Number: TPS51103EVM
+* EVM Users Guide: SLUU303AJUNE 2008Revised SEPTEMBER 2008
+* Datasheet: SLUS808JUNE 2008
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+.SUBCKT TPS51103 VREG3 VREG5 VCLK VIN VRTC3 V3IN EN3 EN5 V5IN GND
+R_R12         GND N205469  250K TC=0,0 
+X_U25         N207449 VIN N207553 VREF VCVSCLIP_PS PARAMS: GAIN=5000 VOMAX=1
++  VOMIN=-2
+X_S3    ENV3IN GND VREG3 V3IN Netlist_S3 
+X_U3         V5IN N206577 N2065533 N206639 COMP_HYS
+E_ABM2         N206731 0 VALUE { IF( V(EN3)>0.5  
++ ,V(N206993),0)   }
+X_U20         VREG5 VIN DIDEAL_PS PARAMS: RON=1E-3 ROFF=1E9
+E_ABM14         N205611 0 VALUE { IF( V(EN5)>0.5  
++ ,V(N205815),0)   }
+X_U16         N207121 VIN N207063 VREF VCVSCLIP_PS PARAMS: GAIN=5000 VOMAX=1
++  VOMIN=-2
+X_U8         N205611 N205913 delay PARAMS: PARAMS: T=1E6
+X_U17         VREG5 N207969 VIN PMOSIDEAL_PS PARAMS: K=.32 VTH=1
+X_U4         VLOW VHI Q N206131 srnandlatchshp_basic PARAMS:
+X_U2         N206731 N207151 delay PARAMS: PARAMS: T=1E6
+V_V3         N206577 GND 1.85
+E_E2         N207833 0 V5IN GND 1
+X_U1         V3IN N206791 N206725 N206993 COMP_HYS
+R_R4         RAMP GND  1Meg TC=0,0 
+V_V4         N2065533 GND .3
+E_ABM10         VREF 0 VALUE { if(V(VIN) > 4, 1.25,0)    }
+X_U23         N205913 ENV5IN BUFFER_PS PARAMS: VHI=1 VLO=0 VTHRESH=500E-3
++  TPLH=1E-9 TPHL=1E-9 TR=1E-9 TF=1E-9
+X_S4    ENV5IN GND VREG5 V5IN Netlist_S4 
+R_R2         N206131 GND  1Meg TC=0,0 
+R_R5         VHI GND  1Meg TC=0,0 
+V_V2         N206791 GND 3.05
+X_U22         N207151 ENV3IN BUFFER_PS PARAMS: VHI=1 VLO=0 VTHRESH=500E-3
++  TPLH=1E-9 TPHL=1E-9 TR=1E-9 TF=1E-9
+R_R6         VLOW GND  1Meg TC=0,0 
+X_U24         N205969 VIN N205469 VREF VCVSCLIP_PS PARAMS: GAIN=5000 VOMAX=1
++  VOMIN=-2
+R_R8         N207553 VRTC3  410K TC=0,0 
+E_ABM3         ENCLK 0 VALUE { IF( V(EN5)>0.5  
++ & V(N206639)>0.5 ,1, 0)   }
+E_ABM8         N207855 0 VALUE { IF( V(SETCLK)>0.5  
++ ,V(N207833), 0)   }
+X_U15         VREG3 N206763 VIN PMOSIDEAL_PS PARAMS: K=.3 VTH=1
+R_R7         GND N207553  250K TC=0,0 
+R_R14         N207063 VREG3  410K TC=0,0 
+R_R3         VCLK N207855  10 TC=0,0 
+E_ABM7         VLOW 0 VALUE { IF( V(RAMP)<0.1  
++ ,V(V5), 0)   }
+E_ABM6         SETCLK 0 VALUE { IF( V(Q)>0.5  
++ & V(ENCLK)>0.5 ,1, 0)   }
+X_U7         V5IN N205727 N205561 N205815 COMP_HYS
+E_ABM15         ENLDO3 0 VALUE { IF( V(ENV3IN)<0.5  
++ & V(EN3)>0.5 ,1,0)   }
+R_R15         GND N207063  250K TC=0,0 
+*X_U19         VRTC3 VIN DIDEAL_PS PARAMS: RON=1 ROFF=1E9
+E_ABM11         ENLDO5 0 VALUE { IF( V(ENV5IN)<0.5  
++ & V(EN5)>0.5 ,1,0)   }
+C_C5         GND VCLK  100p  TC=0,0 
+C_C1         GND RAMP  4n  TC=0,0 
+V_V9         N206725 GND .04
+E_ABM9         VHI 0 VALUE { IF( V(RAMP)>2 | V(V5)<2  
++ ,V(V5), 0)   }
+X_U21         VREG3 VIN DIDEAL_PS PARAMS: RON=1E-3 ROFF=1E9
+X_S1    SETCLK GND RAMP GND Netlist_S1 
+V_V7         N205727 GND 4.625
+R_R11         N205469 VREG5  751k TC=0,0 
+R_R1         N206319 V5  1k TC=0,0 
+E_ABM17         N207969 0 VALUE { if( V(ENLDO5)>0.5,  
++ V(N205969),  
++ V(VIN) )  }
+X_U14         VRTC3 N207449 VIN PMOSIDEAL_PS PARAMS: K=30m VTH=1
+E_ABM18         N206763 0 VALUE { if( V(ENLDO3)>0.5,  
++ V(N207121),  
++ V(VIN) )  }
+V_V5         V5 GND 5
+V_V8         N205561 GND .05
+X_S2    SETCLK GND N206319 RAMP Netlist_S2 
+.ENDS TPS51103
+*$
+.subckt Netlist_S3 1 2 3 4  
+S_S3         3 4 1 2 _S3
+RS_S3         1 2 1G
+.MODEL         _S3 VSWITCH Roff=1e8 Ron=1.5 Voff=0 Von=1
+.ends Netlist_S3
+*$
+.subckt Netlist_S4 1 2 3 4  
+S_S4         3 4 1 2 _S4
+RS_S4         1 2 1G
+.MODEL         _S4 VSWITCH Roff=1e8 Ron=1 Voff=0 Von=1
+.ends Netlist_S4
+*$
+.subckt Netlist_S1 1 2 3 4  
+S_S1         3 4 1 2 _S1
+RS_S1         1 2 1G
+.MODEL         _S1 VSWITCH Roff=1e8 Ron=167 Voff=1 Von=0
+.ends Netlist_S1
+*$
+.subckt Netlist_S2 1 2 3 4  
+S_S2         3 4 1 2 _S2
+RS_S2         1 2 1G
+.MODEL         _S2 VSWITCH Roff=1e8 Ron=1m Voff=0 Von=1
+.ends Netlist_S2
+*$
+.SUBCKT PMOSIDEAL_PS D G S PARAMS: k=1 vth=0 
+RDDUM D 0 1e11
+RSDUM S 0 1e11
+RGDUM G 0 1e11
+CG G D 0.01pF
+CD D S 0.01pF
+EON Yp 0 VALUE={IF(V(G,S) < -{vth}, -1,0)}
+GOUT D S VALUE={IF(V(D,S) <= (V(G,S)+{vth}), V(Yp)*({k}/2)*(V(G,S)+{vth})**2, 
++ V(Yp)*({k})*(V(S,G)-{vth}-V(S,D)/2)*V(S,D))}
+.ENDS PMOSIDEAL_PS
+*$
+.SUBCKT COMP_HYS INP INM HYS OUT 
+EIN INP1 INM1 INP INM 1 
+EHYS INP1 INP2 VALUE { IF( V(1)>0.5,-V(HYS)/2,V(HYS)/2) }
+EOUT OUT 0 VALUE { IF( V(INP2)>V(INM1),1,0) }
+R1 OUT 1 1
+C1 1 0 1n
+RINP1 INP1 0 10K
+.ends COMP_HYS
+*$
+.SUBCKT COMP_HYS2 INP OUT 
++ PARAMs:  TH=.5 HYS=0.1
+EIN INP1 0 INP 0 1 
+EHYS INP1 INP2 VALUE { IF( V(1)>0.5,-(HYS)/2,HYS/2) }
+EOUT OUT 0 VALUE { IF( V(INP2)>TH,1,0) }
+R1 OUT 1 1
+C1 1 0 1n
+RINP1 INP1 0 10K
+.ends COMP_HYS2
+*$
+.SUBCKT DELAY IN OUT
++ PARAMs:  T=100
+S_S1         MEAS 0 RESET2 0 S1
+E_ABM1         CH 0 VALUE { if( V(IN)>0.5,1,0)    }
+E_ABM3         OUT 0 VALUE { if( V(MEAS)>0.5 & V(CH)>0.5,1,0)    }
+R_R1         MEAS CH  {T} 
+C_C1         0 MEAS  1.4427n  
+E_ABM2         RESET 0 VALUE { if(V(CH)<0.5,1,0)    }
+R_R2         RESET2 RESET  0.1  
+C_C2         0 RESET2  1.4427n  
+.MODEL         S1 VSWITCH Roff=1e9 Ron=1.0 Voff=0.25V Von=0.75V
+.ENDS DELAY
+*$
+.SUBCKT DIDEAL_PS A C PARAMS: ron=1 roff=1e9 
+RA A 0 1e11
+RC C 0 1e11
+RAC A C 1e11
+CAC A C 0.01pF ic=0
+GD A B VALUE={LIMIT((0.01/{roff})*EXP((V(A,B)- 0.01)*{5}/0.026),40,-10u)}
+RB B 0 1e9
+RD B C {ron}
+CC C 0 0.1pF 
+.ENDS DIDEAL_PS
+*$
+.SUBCKT BUFFER_PS A Y PARAMS: vhi=1 vlo=0 vthresh=500e-3 tplh=1e-9 tphl=1e-9 tr=1e-9 tf=1e-9
+RA A 0 1e11
+CA A 0 0.01pF
+VS VSUP 0 DC 1
+EBUF1 Ypp 0 VALUE={IF(V(A) > ({vthresh}), 1, 0)}
+ROUTpp Ypp 0 1e11
+XNSW1 OUTp Ypp 0 NSW_PS PARAMS: RONval={(tplh+1e-15)/(1e-12*0.693)} VTHval=0.5
+XPSW1 OUTp Ypp VSUP PSW_PS PARAMS: RONval={(tphl+1e-15)/(1e-12*0.693)} VTHval=0.5
+CDEL1 OUTp 0 1pF
+ETHRESH Yp 0 VALUE={IF(V(OUTp) > 0.5, 1, 0)}
+ROUTp Yp 0 1e11
+XNSW2 OUTr Yp 0 NSW_PS PARAMS: RONval={(tf+1e-15)/(1e-12*2.3)} VTHval=0.5
+XPSW2 OUTr Yp VSUP PSW_PS PARAMS: RONval={(tr+1e-15)/(1e-12*2.3)} VTHval=0.5
+CDEL2 OUTr 0 1pF
+EOUT OUTf 0 VALUE={V(OUTr)*({vhi} - {vlo})+{vlo}}
+RDR OUTf Y  1000
+RO Y 0 1e11
+.ENDS BUFFER_PS
+*$
+.SUBCKT SRNANDLATCHSHP_BASIC S R Q QB
+GQ 0 Qint VALUE = {IF(V(S) > 2.5,5,IF(V(R)>2.5,-5, 0))}
+CQint Qint 0 1n
+RQint Qint 0 1000MEG
+D_D10 Qint MY5 D_D1
+V1 MY5 0 5
+D_D11 0 Qint D_D1 
+EQ Qqq 0 Qint 0 1
+X3 Qqq Qqqd1 BUFFER_PS
+RQq Qqqd1 Q 1
+EQb Qbr 0 VALUE = {IF( V(Q) > 2.5, 0,5)}
+RQb Qbr QB 1 
+Cdummy1 Q 0 10p IC={5}
+Cdummy2 QB 0 10p IC={0}
+.MODEL D_D1 D( IS=1e-15 TT=10p Rs=0.05 N=.1  )
+.ENDS SRNANDLATCHSHP_BASIC
+*$
+.SUBCKT VCVSCLIP_PS YP YN POS NEG PARAMS: gain=1 vomax=1 vomin=-1
+RP POS 0 1e11
+CP POS 0 0.01pF
+RN NEG 0 1e11
+CN NEG 0 0.01pF
+ROUTN YN 0 1e11
+COUTN YN 0 0.01pF
+EVCLP YP YN VALUE={LIMIT((V(POS)-V(NEG))*{gain},{vomax},{vomin})}
+RO YP 0 1e11
+.ENDS VCVSCLIP_PS
+*$
+.SUBCKT PSW_PS D G S PARAMS: RONval=10k VTHval=0.7 VCHARval=0.01 CGval=0.01pF CDval=0.01pF 
+RDDUM D 0 1e11
+RSDUM S 0 1e11
+RGDUM G 0 1e11
+CG G D {CGval}
+CD D S {CDval}
+EEXP F1 0 VALUE={LIMIT(((V(S,G)-VTHval)/VCHARval),-80,80)} 
+GOUT S D VALUE={V(S,D)/(RONval*(1+EXP(-LIMIT(((V(S,G)-VTHval)/VCHARval),-80,80))))}
+.ENDS PSW_PS
+*$
+.SUBCKT NSW_PS D G S PARAMS: RONval=10k VTHval=0.7 VCHARval=0.01 CGval=0.01pF CDval=0.01pF 
+RDDUM D 0 1e11
+RSDUM S 0 1e11
+RGDUM G 0 1e11
+CG G D {CGval}
+CD D S {CDval}
+EEXP F1 0 VALUE={LIMIT(((V(G,S)-VTHval)/VCHARval),-80,80)} 
+*RF1 F1 0 1e8
+*GOUT S D VALUE={V(D,S)/(RONval*(1+EXP(-V(F1))))}
+*GOUT S D VALUE={V(D,S)/(RONval*(2-V(F1)+(-V(F1)**2)/2+(-V(F1)**3)/6+(-V(F1)**4)/24))}
+GOUT D S VALUE={V(D,S)/(RONval*(1+EXP(-LIMIT(((V(G,S)-VTHval)/VCHARval),-80,80))))}
+.ENDS NSW_PS
+*$

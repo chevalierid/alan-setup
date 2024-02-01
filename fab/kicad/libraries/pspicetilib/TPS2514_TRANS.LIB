@@ -1,0 +1,80 @@
+*$
+*TPS2514
+*****************************************************************************
+* (C) Copyright 2013 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+****************************************************************************
+*
+** Released by: Webench Design Center, Texas Instruments Inc.
+* Part: TPS2514
+* Date: 10MAY2013
+* Model Type: Transient 
+* Simulator: PSpice 
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: 
+* EVM Users Guide: SLVU910
+* Datasheet: SLBSBY8 - APRIL 2013
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+****************************************************************************
+.SUBCKT TPS2514_TRANS DM1 DP1 GND IN N/C1 N/C2  
+V_V2         N16698177 GND 100mVdc
+R_R4         N/C2 GND  1 TC=0,0 
+X_U2         N16702760 N16702016 BUF_BASIC_GEN PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+X_U1         IN N16698149 N16698177 N16702760 COMPHYS_BASIC_GEN PARAMS: VDD=5
++  VSS=0 VTHRESH=2.5
+R_R1         N/C1 GND  1e7 TC=0,0 
+X_U4         DM1 N16702016 N16704061 NMOSIDEAL_PS PARAMS: K=100 VTH=0.3
+V_V1         N16698149 GND 4.1Vdc
+V_V3         N16703988 GND 2.7Vdc
+X_U3         DP1 N16702016 N16703988 NMOSIDEAL_PS PARAMS: K=100 VTH=0.3
+R_R2         N/C2 GND  1e7 TC=0,0 
+R_R3         N/C1 GND  1 TC=0,0 
+G_ABMII1         IN GND VALUE { IF(V(N16702016) > 0.5, 155u, 0.01u)    }
+V_V4         N16704061 GND 2.0Vdc
+.ENDS TPS2514_TRANS
+
+
+.SUBCKT NMOSIDEAL_PS D G S PARAMS: k=1 vth=0
+RDDUM D 0 1e11
+RSDUM S 0 1e11
+RGDUM G 0 1e11
+EON Yp 0 VALUE={IF(V(G,S) > {vth}, 1, 0)}
+GOUT D S VALUE={IF(V(D,S) >= (V(G,S)-{vth}), V(Yp)*({k}/2)*(V(G,S)-{vth})**2, V(Yp)*({k})*(V(G,S)-{vth}-V(D,S)/2)*V(D,S))}
+.ENDS NMOSIDEAL_PS
+*$
+
+.SUBCKT BUF_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS BUF_BASIC_GEN
+
+.SUBCKT COMPHYS_BASIC_GEN INP INM HYS OUT PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+EIN INP1 INM1 INP INM 1 
+EHYS INP1 INP2 VALUE { IF( V(1) > {VTHRESH},-V(HYS),0) }
+EOUT OUT 0 VALUE { IF( V(INP2)>V(INM1), {VDD} ,{VSS}) }
+R1 OUT 1 1
+C1 1 0 5n
+RINP1 INP1 0 1K
+.ENDS COMPHYS_BASIC_GEN
+*$

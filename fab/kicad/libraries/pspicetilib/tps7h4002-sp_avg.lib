@@ -1,0 +1,127 @@
+* TPS7H4002-SP
+*****************************************************************************
+* (C) Copyright 2021 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+* Released by: Texas Instruments Inc.
+* Part: TPS7H4002-SP
+* Date: 15AUG2021
+* Model Type: AVERAGE 
+* Simulator: PSPICE
+* Simulator Version: 17.4.0.s012
+* EVM Order Number: TPS7H4002EVM-CVAL
+* EVM Users Guide: SLVUBI1
+* Datasheet: SLVSFL2
+* Verified Topologies: BUCK
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+*
+* 
+* 1. Since this is an average model used for AC analysis, only the pins affecting AC analysis are modeled. 
+* 2. The model takes the inductance (L) and switching frequency (FS) as parameters. Pass appropriate values to these parameters based on the application circuit.
+* 3. The operating quiescent current and thermal properties have not been modeled.   
+*****************************************************************************
+
+.SUBCKT TPS7H4002-SP_AVG VIN PVIN_0 PVIN_1 COMP PH_0 PH_1 PH_2 PH_3 PH_4 VSENSE GND PGND_0 PGND_1 PGND_2 PAD PARAMS: L=2.2u FS=500k 
+
+R_R24         LX PH_1  1u  
+R_R25         LX PH_2  1u  
+R_R26         LX PH_3  1u  
+R_R21         PVIN_1 VIN  1u  
+R_R23         LX PH_0  1u  
+R_R27         LX PH_4  1u  
+R_R29         GND PGND_0  1u  
+R_R19         COMP GND  7Meg TC=0,0 
+C_C5         COMP GND  2.7p  
+G_ABM2I1         GND COMP VALUE { LIMIT(((V(N1165059) - V(VSENSE))
++  *1400u),-125u,125u)    }
+R_R22         VIN VIN  1u  
+E_U5_ABM5         U5_DCX 0 VALUE { ( V(U5_CX)/  
++ (V(VIN) + 1u))   }
+V_U5_V1         U5_CLPN 0 0.048Vdc
+X_U5_H1    U5_CX LX U5_VM 0 CCM_U5_H1 
+E_U5_ABM2         U5_MODE 0 VALUE { (4/({L}*(6.28*{Fs})*(6.28*{Fs})))    }
+G_U5_ABMII1         0 U5_N14480023 VALUE { (V(U5_DCX) * 100u)    }
+V_U5_V2         U5_CLPP 0 0.99Vdc
+G_U5_ABM3I1         U5_CX GND VALUE { (V(U5_SA)  
++ *V(DC)  
++ /(Acs*Ri*Fs)+(V(U5_CX))/(L*Fs)*(((1-V(DC))/2)))  }
+E_U5_ABM3         DC 0 VALUE { (V(U5_N14480023) )    }
+D_U5_D32         U5_N14480023 U5_CLPP D_D1 
+G_U5_ABM2I1         VIN GND VALUE { (V(DC) * V(U5_VM))    }
+X_U5_U23         U5_CX GND U5_MODE VARICAP
+G_U5_ABMII3         GND U5_CX VALUE { (V(COMP) / ({Acs}*{Ri}))    }
+E_U5_ABM1         U5_SA 0 VALUE { (10*{Fs}*Ri)    }
+D_U5_D33         U5_CLPN U5_N14480023 D_D1 
+R_U5_Rdc         U5_N14480023 0  10k TC=0,0 
+R_R30         GND PAD  1u  
+R_R20         PVIN_0 VIN  1u  
+R_R31         GND PGND_2  1u  
+R_R28         GND PGND_1  1u  
+V_V28         N1165059 GND 0.8
+.PARAM  ri={1/12} acs=1
+.ENDS TPS7H4002-SP_AVG
+
+*****************************************************************************
+
+.subckt CCM_U5_H1 1 2 3 4  
+H_U5_H1         3 4 VH_U5_H1 1
+VH_U5_H1         1 2 0V
+.ends CCM_U5_H1
+
+.model D_D1 d
++ is=1e-15
++ tt=1e-11
++ rs=0.1
++ n=0.01
+
+.SUBCKT VARICAP 1 2 CTRL
+R1 1 3 1u
+VC 3 4
+EBC 4 2 Value = { (1/v(ctrl))*v(int) }
+GINT 0 INT Value = { I(VC) }
+CINT INT 0 1
+Rdum INT 0 10E10
+.ENDS VARICAP
+*$
+.SUBCKT LDCR IN OUT
++ PARAMs:  L=1u DCR=0.01 IC=0
+L             IN 1  {L} 
+RDCR	1 OUT {DCR}
+.ENDS LDCR
+*$
+.SUBCKT CESR IN OUT
++ PARAMs:  C=100u ESR=0.01 X=2 IC=0
+C	IN 1  {C*X} 
+RESR	1 OUT {ESR/X}
+.ENDS CESR
+*$
+.subckt D_B410-13-F 1 2
+d1 1 2 dd1
+.model dd1 d
++ n=1
++ rs=0.1
+.ends D_B410-13-F
+*$

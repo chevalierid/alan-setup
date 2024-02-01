@@ -1,0 +1,150 @@
+* TPS3898A Model
+***************************************************************************
+** This product is designed as an aid for customers of Texas Instruments.**
+** No warranties, either expressed or implied, with respect to this third**
+** party software (if any) or with respect to its fitness for any        **
+** particular purpose is claimed by Texas Instruments or the author. The **
+** software (if any) is provided soley on an "as is" basis. The entire   **
+** risk as to its quality and performance is with the customer           **
+********************************************************************************
+* 
+* (C) Copyright 2011 Texas Instruments Incorporated  . All rights reserved.
+*
+* Released by: Analog e-Lab Design Center, Texas Instruments Inc.
+* Part: TPS3898A
+* Date: 08/29/2011
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* EVM Order Number: TPS389XA-XP-EVM047
+* EVM Users Guide: SLVU524 - August 2011
+* Datasheet: SBVS172 - July 2011
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*********************************************************************************
+* source TPS3895
+.SUBCKT TPS3898A ENABLE GND SENSE SENSE_OUT CT VCC
+C_U2_C1         N24440 VCC  10p  
+G_U2_G1         0 N24440 UVLO 0 1.238m
+C_U2_C2         GND N24440  320p  
+R_U2_R1         VCC N24440  1MEG  
+R_U2_R2         N24440 GND  1k  TC=0, -15n 
+R_R3         N32826 N24584  1k  
+V_V1         N24338 0 5mVdc
+C_C1         N24584 0  22.8n  
+R_R1         N24464 N24440  738k  
+M_M1         SENSE_OUT N24704 GND GND NMOS01  
++ L=1.5u  
++ W=50u          
++ M=2
+R_R2         GND N24464  500k  
+X_U8         N32146 N24704 VCC GND BUF_BOB
+X_U5_U10         N32146 U5_N25759 N24620 U5_N25933 N24620 DLATCH_BOB PARAMS:
++  VTHRESH=0.5
+V_U5_V3         U5_N25591 0 0.2Vdc
+X_U5_U13         U5_N25799 U5_N25591 CT U5_N25547 COMP_BOB
+X_U5_U11         U5_N29138 U5_N25783 U5_N25771 U5_N25471 U5_N25771 DLATCH_BOB
++  PARAMS: VTHRESH=0.5
+R_U5_R1         U5_N25707 CT  100  
+C_U5_C1         GND U5_N25707  2.5p  
+G_U5_G1         VCC CT U5_N29138 0 310n
+C_U5_C2         0 U5_N25471  10n  
+X_U5_U5         U5_N25799 N24620 U5_N25767 AND2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+X_U5_S1    U5_N25783 0 CT GND Delay_U5_S1 
+R_U5_R2         U5_N25471 U5_N25767  2k  
+X_U5_U7         U5_N25759 N24620 U5_N25771 AND2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+X_U5_U9         U5_N25471 U5_N25767 d_d1 PARAMS:
+X_U5_U12         U5_N25933 CT N24440 U5_N25547 COMP_BOB
+V_U5_V1         U5_N25547 0 0.1Vdc
+X_U1_U5         U1_N26862 U1_N26814 BGOK AND2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+V_U1_V1         U1_N26942 GND 1.55Vdc
+V_U1_V2         U1_N27450 GND 0.76Vdc
+X_U1_U2         ENB U1_N27450 ENABLE U1_N26870 COMP_BOB
+R_U1_R1         U1_N26862 U1_N26814  9.3k  
+V_U1_V3         U1_N26926 GND 1.00Vdc
+C_U1_C1         GND U1_N26814  10n  
+V_U1_V4         U1_N26870 GND 0.01Vdc
+X_U1_U3         U1_N26862 N24440 U1_N26926 U1_N26870 COMP_BOB
+X_U1_U9         U1_N26814 U1_N26862 d_d1 PARAMS:
+X_U1_U1         UVLO VCC U1_N26942 U1_N26870 COMP_BOB
+X_U3         N32826 SENSE N24464 N24338 COMP_BOB
+X_U6         ENB BGOK N24584 N24620 AND3_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+.ENDS TPS3898A
+*$
+.subckt Delay_U5_S1 1 2 3 4  
+S_U5_S1         3 4 1 2 _U5_S1
+RS_U5_S1         1 2 1G
+.MODEL         _U5_S1 VSWITCH Roff=1e8 Ron=1.0 Voff=0.0V Von=1.0V
+.ends Delay_U5_S1
+*$
+.SUBCKT INV_BOB A  Y VDD VSS PARAMS: VTHRESH=0.5 
+E_ABMGATE  YINT 0 VALUE {IF(V(A) > {VTHRESH}, V(VSS), V(VDD))}
+RINT YINT Y 10
+CINT Y 0 28.6n
+.ENDS INV_BOB
+*$
+.SUBCKT COMP_BOB VOUT VINP VINN VHYS
+E_ABMGATE  YINT 0 VALUE {IF(V(VINP) + V(VOUT)*V(VHYS) > V(VINN), 1, 0)}
+RINT YINT VOUT 1
+CINT VOUT 0 1n
+.ENDS COMP_BOB
+*$
+.SUBCKT DLATCH_BOB Q1 Q0 D CLK RST0 PARAMS: VTHRESH=0.5
+E1 W 0 VALUE { IF( V(RST0) < {VTHRESH}, 0, IF( V(CLK) < {VTHRESH}, IF( V(D) > {VTHRESH}, 1, 0 ), 
++ IF( V(X) > {VTHRESH}, 1, 0 ) ) ) }
+R1 W X 1
+C1 X 0 1n
+E2 Y 0 VALUE { IF( V(RST0) < {VTHRESH}, 0, IF( V(CLK) > {VTHRESH}, IF( V(X) > {VTHRESH}, 1, 0 ), 
++ IF( V(Z) > {VTHRESH}, 1, 0 ) ) ) }
+R2 Y Z 1
+C2 Z 0 1n
+E3 Z1 0 VALUE { IF( V(Z) > {VTHRESH}, 1, 0 ) }
+R3 Z1 Q1 1
+C3 Q1 0 1n
+E4 Z0 0 VALUE { IF( V(Z) > {VTHRESH}, 0, 1 ) }
+R4 Z0 Q0 1
+C4 Q0 0 1n
+.ENDS DLATCH_BOB
+*$
+.SUBCKT AND2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS AND2_BASIC_GEN
+*$
+.SUBCKT AND3_BASIC_GEN A B C Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH} &
++ V(C) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS AND3_BASIC_GEN
+*$
+.SUBCKT BUF_BOB A  Y VDD VSS PARAMS: VTHRESH=0.5 
+E_ABMGATE  YINT 0 VALUE {IF(V(A) < {VTHRESH}, V(VSS), V(VDD))}
+RINT YINT Y 10
+CINT Y 0 28.6n
+.ENDS BUF_BOB
+*$
+.SUBCKT D_D1 1 2
+D1 1 2 DD1
+.MODEL DD1 D( IS=1e-15 TT=10p Rs=0.05 N=.5 XTI=0 )
+.ENDS D_D1
+*$
+.model NMOS01 nmos
++ vto=0.47
++ kp=2.04e-005
++ lambda=0.001
++ tox=2e-008
++ rs=40
+*$

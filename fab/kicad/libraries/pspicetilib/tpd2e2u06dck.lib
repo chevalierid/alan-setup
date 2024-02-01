@@ -1,0 +1,59 @@
+*$
+* TPD2E2U06DCK
+*****************************************************************************
+* (C) Copyright 2021 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Texas Instruments Inc.
+* Part: TPD2E2U06DCK
+* Date: 22JUN2021
+* Model Type: TRANSIENT
+* Simulator: PSPICE 
+* Simulator Version: 17.4.0 (Nov. 2018)
+* EVM Order Number: N/A
+* EVM User's N/A
+* Datasheet: SLLSEG9C   
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+*$
+.SUBCKT TPD2E2U06DCK IO1 IO2 GND
+Lpar1 IO1 IO1_L 0.6837n
+Rpar1 IO1_L IO1_R 0.05614
+Cpar1 IO1 GND_INT 0.1253p
+D1 IO1_R D_INT Dbreak
+D2 GND_INT IO1_R Dbreak
+Lpar2 IO2 IO2_L 0.6837n
+Rpar2 IO2_L IO2_R 0.05614
+Cpar2 IO2 GND_INT 0.1253p
+D3 IO2_R D_INT Dbreak
+D4 GND_INT IO2_R Dbreak
+CINTR IO1 IO2 0.02p
+D5 GND_INT D_INT DbreakZ
+RPAR GND_INT GND_LPAR 0.0015
+LPAR GND_LPAR GND 6.250p
+CPAR GND_INT GND 86.0f
+.MODEL Dbreak D(IS=10n TT=10p VJ=0.65 N=1.55 Rs=0.5 CJO=1.5p)
+.MODEL DbreakZ D(IS=10n TT=10p N=1.55 VJ=0.65 IBV=1m BV=7.5)
+.ENDS TPD2E2U06DCK
+*$

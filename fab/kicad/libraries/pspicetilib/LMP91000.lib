@@ -1,0 +1,357 @@
+*===============================================================================
+*
+*//////////////////////////////////////////////////////////////////////
+* (C) National Semiconductor, Corporation.
+* Models developed and under copyright by:
+* National Semiconductor, Corporation. 
+*/////////////////////////////////////////////////////////////////////
+* Legal Notice: 
+* The model may be copied, and distributed without any modifications;
+* however, reselling or licensing the material is illegal.
+* We reserve the right to make changes to the model without prior notice.
+* Pspice Models are provided "AS IS, WITH NO WARRANTY OF ANY KIND"
+*////////////////////////////////////////////////////////////////////
+* For more information, and our latest models,
+* please visit the models section of our website at
+*       http://www.national.com/models/
+*////////////////////////////////////////////////////////////////////*
+*
+*===============================================================================
+.subckt LMP91000  DGND MENB SCL SDA NC VDD AGND VOUT C2 C1 VREF WE RE CE 
+*===============================================================================
+*
+* CAUTION & NOTE :-
+*_____________________
+*
+* VK7, VK2-VK0, VH7-VH0, VG4-VG0 are the Voltage Sources which are equivalent
+* to internal EPROM bits, loaded through I2C.
+* Assign 0/1 (STRICTLY) to the Voltage Sources. Otherwise the Analog Output 
+* would be Erroneous. 
+*
+*----------------------------------------------------------------
+* MODECN : Register Bits 
+*----------------------------------------------------------------
+VK7    K7 INT_GND   0
+*
+VK2    K2 INT_GND   0
+VK1    K1 INT_GND   0
+VK0    K0 INT_GND   1
+*----------------------------------------------------------------
+* REFCN : Register Bits
+*----------------------------------------------------------------
+VH7    H7 INT_GND   1
+*
+VH6    H6 INT_GND   1
+VH5    H5 INT_GND   0
+*
+VH4    H4 INT_GND   1
+*
+VH3    H3 INT_GND   0
+VH2    H2 INT_GND   0
+VH1    H1 INT_GND   0
+VH0    H0 INT_GND   1
+*----------------------------------------------------------------
+* TIACN : Register Bits [TIA -> G2-G4] [RLOAD -> G0-G1]
+*----------------------------------------------------------------
+VG4    G4 INT_GND   0
+VG3    G3 INT_GND   1
+VG2    G2 INT_GND   0
+*
+VG1    G1 INT_GND   0
+VG0    G0 INT_GND   1
+*----------------------------------------------------------------
+* 2 bit DAC
+*----------------------------------------------------------------
+E_ESUM9  REFCN_5_6 0 POLY(2) H6 0 H5 0    0 2 1
+*----------------------------------------------------------------
+* 3 bit DAC
+*----------------------------------------------------------------
+E_ESUM7  G4G3 	 0 POLY(2) G4   0 G3 0  0 4 2
+E_ESUM8  TIACN_2_4 0 POLY(2) G4G3 0 G2 0  0 1 1
+*----------------------------------------------------------------
+* 4 bit DAC
+*----------------------------------------------------------------
+E_ESUM3  H3H2   	 0 POLY(2)  H3     0  H2  0    0 8 4
+E_ESUM4  H3H2H1 	 0 POLY(2)  H3H2   0  H1  0    0 1 2
+E_ESUM5  REFCN_0_3 0 POLY(2)  H3H2H1 0  H0  0    0 1 1
+*----------------------------------------------------------------
+* 2 bit DAC
+*----------------------------------------------------------------
+E_ESUM6  TIACN_0_1 0 POLY(2) G1  0  G0  0        0 2 1
+*----------------------------------------------------------------
+* 3 bit DAC
+*----------------------------------------------------------------
+E_ESUM10 K2K1 	  0 POLY(2) K2   0 K1 0    0 4 2
+E_ESUM11 MODECN_0_2 0 POLY(2) K2K1 0 K0 0    0 1 1
+*===============================================================================
+*----------------------------------------------------------------
+* FET_SHORT
+*----------------------------------------------------------------
+SFET RE C1 K7 INT_GND SWFET 
+.MODEL SWFET VSWITCH Roff=100E6 Ron=200 Voff=0.3V Von=0.6V
+*----------------------------------------------------------------
+* Programmable RLOAD
+*----------------------------------------------------------------
+SLOAD  WE C1 CTRSL1 INT_GND SWSLOAD
+.MODEL   SWSLOAD VSWITCH Roff=10 Ron=200 Voff=6.0V Von=1.0V
+E_TABLE2         CTRSL1 0 TABLE {V(TIACN_0_1)} 
++ 0V    6.1V  
++ 1V    3.84V  
++ 2V    3.376V
++ 3V    2.56V  
+*----------------------------------------------------------------
+* Programmable TIA Resistor
+*----------------------------------------------------------------
+STIA   C2 C1  N2549666 INT_GND SWSTIA 
+.MODEL SWSTIA VSWITCH Roff=350k Ron=2.75k Voff=5V Von=1V
+E_TABLE5     N2549666 0 TABLE {V(TIACN_2_4)}
++ 0V  5.1V  
++ 1V  0.8V
++ 2V  1.5401V  
++ 3V  2.125V  
++ 4V  2.5548V
++ 5V  3.0664V  
++ 6V  3.7846V
++ 7V	5.1V
+*----------------------------------------------------------------
+* Programmable INT_Z :- INTERNAL ZERO
+*----------------------------------------------------------------
+E_E2   N3306119 INT_GND INT_Z_IN INT_GND 1
+R_REF1 N3306063 N3306119  40 
+E_E3   N3306447 INT_GND N3306063 INT_GND 1
+SREF2  N3306063 INT_GND   N3306515 INT_GND SWSREF2 
+.MODEL  SWSREF2 VSWITCH Roff=10 Ron=200 Voff=6.0V Von=1.0V
+E_TABLE3         N3306515 0 TABLE {V(REFCN_5_6)}
++ 0V  5.9V  
++ 1V  3.624247V
++ 2V  2.82V  
++ 3V  2.56V  
++ 4V  16V
+*----------------------------------------------------------------
+* Programmable BIAS
+*----------------------------------------------------------------
+S5  N3306447 BIAS_A2   REFCN_5_6 INT_GND SWS5
+.MODEL  SWS5 VSWITCH Roff=1e9 Ron=100m Voff=2.5V Von=2.2V
+S6  INT_Z_IN BIAS_A2 REFCN_5_6 INT_GND SWS6
+.MODEL   SWS6 VSWITCH Roff=100m Ron=1e9 Voff=2.5V Von=2.2V
+*----------------------------------------------------------------
+S3  VDD INT_Z_IN H7 INT_GND SWS3 
+.MODEL  SWS3 VSWITCH Roff=1.0 Ron=1e9 Voff=0.3V Von=0.6V
+S4 VREF INT_Z_IN H7 INT_GND SWS4 
+.MODEL  SWS4 VSWITCH Roff=1e9 Ron=1.0 Voff=0.3V Von=0.6V
+*----------------------------------------------------------------
+* Selection of Bias Polarity for A1
+*----------------------------------------------------------------
+S30 NFRACBIASP N32 H4 INT_GND SWS30 
+.MODEL  SWS30 VSWITCH Roff=10m Ron=1e9 Voff=0.3V Von=0.6V
+S40 NFRACBIASN N32 H4 INT_GND SWS40 
+.MODEL  SWS40 VSWITCH Roff=1e9 Ron=10m Voff=0.3V Von=0.6V
+EBIAS1  VARBIAS_A1 0 POLY(2) N32        0 INT_Z_IN 0	  0 0 0 0 1
+EBIAS1a BIAS_A1    0 POLY(2) VARBIAS_A1 0 BIAS_A2  0	  0 1 1
+*----------------------------------------------------------------
+E_TABLE61POS   NFRACBIASP 0 TABLE {V(REFCN_0_3)}
++ 0V   0.00V  
++ 1V   0.01V  
++ 2V   0.02V  
++ 3V   0.04V  
++ 4V   0.06V  
++ 5V   0.08V  
++ 6V   0.10V  
++ 7V   0.12V  
++ 8V   0.14V  
++ 9V   0.16V  
++ 10V  0.18V  
++ 11V  0.20V  
++ 12V  0.22V  
++ 13V  0.24V  
+E_TABLE61NEG   NFRACBIASN 0 TABLE {V(REFCN_0_3)}
++ 0V   -0.00V  
++ 1V   -0.01V  
++ 2V   -0.02V  
++ 3V   -0.04V  
++ 4V   -0.06V  
++ 5V   -0.08V  
++ 6V   -0.10V  
++ 7V   -0.12V  
++ 8V   -0.14V  
++ 9V   -0.16V  
++ 10V  -0.18V  
++ 11V  -0.20V  
++ 12V  -0.22V  
++ 13V  -0.24V  
+*----------------------------------------------------------------
+* SUPPLY CURRENT
+*----------------------------------------------------------------
+R_R20 N3209442 VDD  1 
+E_E6  N3217921 INT_GND TABLE {V(MODECN_0_2)}
++ 0V   0.6V  
++ 1V   6.2V  
++ 2V   6.5V  
++ 3V   10V  
++ 6V   11.4V  
++ 7V   14.9V  
+G_G1  N3209442 AGND N3217921 INT_GND -1e-6
+*----------------------------------------------------------------
+* OFFSET CONTROLLER
+*----------------------------------------------------------------
+E_TABLE7     NVOS 0 TABLE {V(REFCN_0_3)} 
++ 0V   -89.43uV
++ 1V   -64.8uV
++ 2V   -39.8uV
++ 3V    0uV
++ 4V    47.67uV
++ 5V    97.6uV
++ 6V    122.5uV  
++ 7V    172.5uV
++ 8V    206.9uV  
++ 9V    259.9uV
++ 10V   297.5uV
++ 11V   347.5uV
++ 12V   397.4uV
++ 13V   438.4uV
+*----------------------------------------------------------------
+* TCVos CONTROLLER
+*----------------------------------------------------------------
+E_TABLE6    NCOEF 0 TABLE {V(REFCN_0_3)} 
++ 0V   3.5V
++ 1V   3.5V
++ 2V   3.5V
++ 3V   4.0V
++ 4V   4.0V
++ 5V   4.0V
++ 6V   5.0V
++ 7V   5.0V
++ 8V   5.5V
++ 9V   5.5V
++ 10V  6.0V
++ 11V  6.0V
++ 12V  6.0V
++ 13V  6.0V
+E_EMUL2     NTCVOS INT_GND POLY(2) NCOEF 0 TEMPOUT 0    0 0 0 0 1E-6
+*----------------------------------------------------------------
+V_V32     N3702655 0 0
+V_V31     INT_GND 0 0Vdc
+*----------------------------------------------------------------
+*===============================================================================
+* Common OpAmp Circuit Elements & Parameters
+*===============================================================================
+.param V_IOUTMAX=0.65
+.param V_IOUTMIN=0.55
+.param IBIAS=90p
+.param NF=0.1515
+*-------------------------------------------------------------------------------
+.MODEL DLT D IS=1E-14
+*-------------------------------------------------------------------------------
+EINTVDD  VDDINT 0 VDD 0 1
+EINTVEE  VEEINT 0 AGND 0 1
+*-------------------------------------------------------------------------------
+* NOISE MODELING
+*-------------------------------------------------------------------------------
+INSA1 0 133 DC 1E-6  
+INSA2 0 134 DC 1E-6  
+DNSA1 133 0 DEQIN 
+DNSA2 134 0 DEQIN
+ENSA  VNO1 0 133 134 1
+*-------------------------------------------------------------------------------
+.MODEL DEQIN D KF=3e-016  AF=1
+*-------------------------------------------------------------------------------
+* MODELING PSRR. PSRRNEGGAIN=20*LOG10(GPSRRNEG*RPSRRNEG2)
+*-------------------------------------------------------------------------------
+EPSRRINNEG    NPSRRNEG1 0 AGND 0 1
+CSUPFILTERNEG NPSRRNEG1 NPSRRNEG2  10E-3
+RSUPFILTERNEG NPSRRNEG2 0 1E15 
+GPSRRNEGA     NPSRRNEG4 0 NPSRRNEG2 0 30E-8
+LPSRRNEG1     NPSRRNEG3 NPSRRNEG4  159E-3
+RPSRRNEG1     NPSRRNEG3 NPSRRNEG4  10E3
+RPSRRNEG2     NPSRRNEG3 0 10 
+EPSRRINPOS    NPSRRPOS1 0 VDD 0 1
+CSUPFILTERPOS NPSRRPOS1 NPSRRPOS2  10E-3 
+RSUPFILTERPOS NPSRRPOS2 0  1E15 
+GPSRRPOS      NPSRRPOS4 0 NPSRRPOS2 0 30E-8
+LPSRRPOS1     NPSRRPOS3 NPSRRPOS4  159E-3  
+RPSRRPOS1     NPSRRPOS3 NPSRRPOS4  10E3 
+RPSRRPOS2     NPSRRPOS3 0 10
+EPSRRSUM   	  PSRROUT   0 POLY(2) NPSRRPOS4  0  NPSRRNEG4  0	0 1 1
+*===============================================================================
+* OPAMP - 1
+*===============================================================================
+IBS1A  BIAS_A1 0 {IBIAS}
+IBS2A	 RE 	0 {IBIAS}
+*RIN1 BIAS_A1 0 10e6
+EWS1A	BIAS_A1   AINP1 NVOS    0  1.00
+EWS2A AINP1     AINP2 NTCVOS  0  1.00
+EWS3A AINP2     AINP3 VNO1    0  {NF}
+EWS4A	AINP3     AINP4 PSRROUT 0  1.00
+EWS5A ANDIF1OUT 0     AINP4   RE 1.00
+*------------------------------------------------------------------------------
+* AMPLIFIER CORE : gain - 120dB
+*------------------------------------------------------------------------------
+GAMP1A  A155  0  ANDIF1OUT 0 -1E-3
+RAMP1A  A155  0  1e9
+CAMP1A  A155  0  10p
+D19A    A155  ANMAXLIM DLT 
+D20A    ANMINLIM A155  DLT 
+EAOUTA  AEAOUT  0 A155 0  1
+*REAOUTA AEAOUT  CE 3340 
+REAOUTA AEAOUT  CE 10
+*------------------------------------------------------------------------------
+VEEREFA   ANMINLIM VEEINT {V_IOUTMIN}
+VDDREFA   ANMAXLIM VDDINT {-1*V_IOUTMAX}
+*------------------------------------------------------------------------------
+*===============================================================================
+* OPAMP - 2
+*===============================================================================
+IBS1B	 BIAS_A2   0 {IBIAS}
+IBS2B	 C1 	     0 {IBIAS}
+EWS1B  BIAS_A2   BINP1   NVOS    0  1.00
+EWS2B  BINP1     BINP2   NTCVOS  0  1.00
+EWS3B  BINP2     BINP3   VNO1    0  {NF}
+EWS4B	 BINP3     BINP4   PSRROUT 0  1.00
+EWS5B  BNDIF1OUT 0 	 BINP4   C1 1.00
+*------------------------------------------------------------------------------
+* AMPLIFIER CORE : gain - 120dB
+*------------------------------------------------------------------------------
+GAMP1B  B155  0  BNDIF1OUT 0 -1E-3
+RAMP1B  B155  0  1e9
+CAMP1B  B155  0  10p
+D19B    B155  BNMAXLIM DLT 
+D20B    BNMINLIM B155  DLT 
+EAOUTB  BEAOUT  0 B155 0  1
+*REAOUTB BEAOUT  C2 3340 
+REAOUTB BEAOUT  C2 10
+*------------------------------------------------------------------------------
+VEEREFB   BNMINLIM VEEINT {V_IOUTMIN}
+VDDREFB   BNMAXLIM VDDINT {-1*V_IOUTMAX}
+*------------------------------------------------------------------------------
+*===============================================================================
+* TEMPERATURE SENSOR
+*===============================================================================
+I_ITH1       0 		NTHERM1 	DC 1E-6  
+I_ITH2       0 		NTHERM2 	DC 1E-6  
+D_DTHERMAL1  NTHERM1 	0 	DIODEIDEAL
+D_DTHERMAL2  NTHERM2 	0 	DIODEIDEAL 
+D_DTHERMAL3  NTHERM2 	0 	DIODEIDEAL
+E_ETCNVRSN1  NTHERM3 	0 	NTHERM1 	NTHERM2 	1.67386293783563E4
+V_VTEMP1     NTHERM4 	0 	273
+E_ETCNVRSN   TEMPOUT	0 	NTHERM3 	NTHERM4 	1
+*------------------------------------------------------------------------------
+.MODEL DIODEIDEAL D IS=1E-14
+*------------------------------------------------------------------------------
+E_E5 N3005399 INT_GND POLY(1) TEMPOUT INT_GND 1.5622 -8.16e-3
+S1   N3005399 N115959  MODECN_0_2 INT_GND  SWS1 
+.MODEL   SWS1 VSWITCH Roff=100m Ron=1e6 Voff=3.6V Von=3.5V
+S2  N115959 C2 MODECN_0_2 INT_GND SWS2 
+.MODEL  SWS2 VSWITCH Roff=1e6 Ron=1.0 Voff=3.6V Von=3.5V
+R_R1 INT_GND N115959  1e9 
+E_E1 N116327 INT_GND N115959 INT_GND 1
+R_R2 VOUT N116327  100  
+*------------------------------------------------------------------------------
+
+
+.ends LMP91000
+
+*===============================================================================================
+*
+* NATIONAL SEMICONDUCTOR CONFIDENTIAL
+*
+*===============================================================================================

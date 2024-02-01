@@ -1,0 +1,782 @@
+*****************************************************************************
+* (C) Copyright 2022 Texas Instruments Incorporated. All rights reserved.     
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.      
+** TI and its licensors and suppliers make no warranties, either expressed   
+** or implied, with respect to this model, including the warranties of       
+** merchantability or fitness for a particular purpose. The model is        
+** provided solely on an "as is" basis. The entire risk as to its quality   
+** and performance is with the customer                                    
+*****************************************************************************	
+* Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: INA827
+* Precision instrumentation amplifier
+* Version 1.1 Date: 2022-03-04
+* Version 1.0 Date: 2012-06-25
+* Model Type: TINA
+* Simulator: TINA-TI
+* Simulator Version: 9 SF-TI
+* Datasheet: SBOS631_INA827_061812.pdf – May 2012
+*
+*****************************************************************************
+* Version 1.1: (a) Stripped off all unused SUBCKT definitions and 
+*                  MODEL statements
+*			   (b) Moved GLOBAL definitions of PARAM and MODEL statements into
+*                  each applicable SUBCKT definitions
+*              (c) All SUBCKT has _INA826 as unique name qualifications
+*
+* Version 1.0 : Release to Web
+*
+******************************************************
+.subckt INA827 IN+ IN- RG+ RG- VDD GND OUT REF
+******************************************************
+*
+CC1         NEG_21 OUT 318.3146609037F  
+CC2         PLUS REF 318.3146609037F  
+CC3         OUT2 NEG_23 6P  
+CC4         OUT1 NEG 6P  
+CEMI1       VB1 GND 4.9P  
+CEMI2       VB2 GND 4.9P  
+RB1         NEG GND 20K TC=-15.4731U
+RB2         NEG_23 GND 20K 
+RG1         RG+ OUT1 8.0002K TC=-35U
+RG2         RG- OUT2 8.0002K TC=-35U
+RG3         OUT NEG_21 49.99925K TC=-36U
+RG4         NEG_21 OUT2 10.00015K TC=-34U
+RG5         PLUS OUT1 9.99985K TC=-34U
+RG6         REF PLUS 50.00075K TC=-36U
+XBIAS IAVDD VDD VNEG GND BIAS VM VT0PI VB VEPS VT0P VT0 IGND VNOISE VT0I 
++ BIAS_0_INA827 
+XD1         OUT VDD D_D2_0_INA827
+XD10        VB2 RG- D_DBE_0_INA827
+XD11        VB1 VDD D_D2_0_INA827
+XD12        GND VB1 D_D2_0_INA827
+XD13        VB2 VDD D_D2_0_INA827
+XD14        GND VB2 D_D2_0_INA827
+XD2         GND OUT D_D2_0_INA827
+XD3         RG- VDD D_D2_0_INA827
+XD4         REF VDD D_D2_0_INA827
+XD5         GND REF D_D2_0_INA827
+XD6         GND RG- D_D2_0_INA827
+XD7         RG+ VDD D_D2_0_INA827
+XD8         GND RG+ D_D2_0_INA827
+XD9         VB1 RG+ D_DBE_0_INA827
+XINPUT1 VM NEG IGND BIAS IAVDD OUT1 VDD VB GND VT0PI VT0I VEPS VNEG VNOISE 
++ INPUT_1_INA827 
+XOUTPUT VM NEG_21 IGND BIAS IAVDD OUT VDD VEPS GND VT0P VT0 PLUS VNEG VNOISE 
++ OUTPUT_0_INA827 
+XT1         NEG_23 VB2 RG- PNP_INN_0_INA827
++ PARAMS: AREA=4 
+XT2         IN- 27 27 JPF_0_INA827
+XT3         VB2 27 27 JPF_0_INA827
+XT4         NEG VB1 RG+ PNP_INP_0_INA827
++ PARAMS: AREA=4 
+XT5         VB1 25 25 JPF_0_INA827
+XT6         IN+ 25 25 JPF_0_INA827
+XU1 VM NEG_23 IGND BIAS IAVDD OUT2 VDD VB GND VT0PI VT0I VEPS VNEG VNOISE 
++ INPUT_0_INA827 
+.ENDS  INA827
+*
+.SUBCKT D_D2_0_INA827       1    2
+D1 1 2  D2
+.MODEL D2 D( IS=1p N=1.0 XTI=0 RS=10)
+.ENDS  D_D2_0_INA827
+*
+.SUBCKT D_DBE_0_INA827   1 2
+D1 1 2  DBE
+.Model Dbe D ( IS=8.8E-18 N=1 RS=100 AF=1.0 KF=1.682e-18)
+.ENDS  D_DBE_0_INA827
+*
+.SUBCKT JPF_0_INA827  1 2 3
+J1 1 2 3 JPF
+.model JPF PJF(Beta=315.0u Lambda=10m Vto=-2.0)
+.ENDS  JPF_0_INA827
+*
+.SUBCKT PNP_INN_0_INA827  1    2    3
++ PARAMS: AREA = 1
+Q    1 2 3 Q_PNP_INN   {AREA}
+*
+.MODEL Q_PNP_INN PNP 
++ IS=1.27E-18
++ NF=1
++ NR=1
++ IKF=3.0
++ IKR=3.0
++ BF=176.8
++ ISE=270E-18
++ NE=2.5
++ BR=2.0
++ ISC=23F
++ NC=2
++ CJE=10F
++ CJC=20F
++ TF=6P
++ TR=600P
++ XTB=-2.55
++ EG=1.02
++ XTI=3
++ KF=5.1326E-18
+*
+.ENDS  PNP_INN_0_INA827
+*
+.SUBCKT PNP_INP_0_INA827  1    2    3
++ PARAMS: AREA = 1
+Q    1 2 3 Q_PNP_INP   {AREA}
+*
+.MODEL Q_PNP_INP PNP 
++ IS=1.26733629E-18
++ NF=1
++ NR=1
++ IKF=3.0
++ IKR=3.0
++ BF=180.7
++ ISE=270E-18
++ NE=2.5
++ BR=2.0
++ ISC=23F
++ NC=2
++ CJE=10F
++ CJC=20F
++ TF=6P
++ TR=600P
++ XTB=-2.55
++ EG=1.02
++ XTI=3
++ KF=5.1326E-18
+*
+.ENDS  PNP_INP_0_INA827
+*
+*
+******************************************************
+.subckt BIAS_0_INA827 IAVDD VDD VNEG GND Bias VM Vt0pi Vb Veps Vt0p Vt0 IGND Vnoise 
++ Vt0i
+******************************************************
+*
+EAVDD       IAVDD IGND VALUE = {V(VDD,GND)}
+EGND        IGND 0 GND 0  1
+EVM         IAVDD VM VALUE = {3.13*V(BIAS,IGND)}
+EVNEG       VM VNEG VALUE = {2.68*V(BIAS,IGND)}
+FAVB        IGND BIAS VAVB_IN     66.6666666667
+G8PS        GND VEPS 77 VDD  1
+GIB1        VT0P VT0 BIAS IGND  1.5U
+GIB2        VT0PI VT0I BIAS IGND  500N
+GIVB        GND VB BIAS IGND 3.125U
+IS1         80 75 14.9247252747U
+R1          BIAS IGND 1.0067K TC=3.75M,2U
+R2          VDD VT0P 100MEG 
+R3          VT0 GND 100MEG 
+R4          VDD VT0PI 100MEG 
+R5          VT0I GND 100MEG 
+R6          VEPS GND 1 
+RNO1        0 VNO 195.4130452932K 
+RNO2        0 VNO 195.4130452932K 
+RPSRR1      VT0P VT0 10G 
+RPSRR2      VT0PI VT0I 10G 
+RS4         80 75 364MEG 
+RVB         VB GND 40K 
+VAVB_IN     75 GND
+VPSREF      77 GND 30
+VS1         81 VT0I 1.4
+VS2         82 VT0 1.4
+VS3         79 0 567.7114646746M
+VS4         0 78 567.7114646746M
+XD1         81 VT0PI D_LIM1_0_BIAS_0_INA827
+XD2         82 VT0P D_LIM1_0_BIAS_0_INA827
+XD3         75 80 D_D4_0_BIAS_0_INA827
+XD4         VNOISE 78 D_DBE_1_BIAS_0_INA827
+XDP2        79 VNOISE D_DBE_1_BIAS_0_INA827
+XDZB1       80 VDD D_ZB1_0_BIAS_0_INA827
+XT2         VT0 VT0 GND NPN_1_0_BIAS_0_INA827
++ PARAMS: AREA=0.25 
+XT3         VT0I VT0I GND NPN_1_0_BIAS_0_INA827
++ PARAMS: AREA=0.125 
+XT4         VT0PI VT0PI VDD PNP_1_0_BIAS_0_INA827
++ PARAMS: AREA=0.125 
+XT5         VT0P VT0P VDD PNP_1_0_BIAS_0_INA827
++ PARAMS: AREA=0.25 
+.ENDS  BIAS_0_INA827
+*
+.SUBCKT D_D4_0_BIAS_0_INA827       1    2
+D1 1 2  DD
+.MODEL DD D( IS=10F N=0.10 RS=1 XTI=0 EG=0.11)
+.ENDS  D_D4_0_BIAS_0_INA827
+*
+.SUBCKT D_DBE_1_BIAS_0_INA827   1 2
++ PARAMS: AREA = 1
+D1 1 2  DBE  {AREA}
+.Model Dbe D ( IS=8.8E-18 N=1 RS=100 AF=1.0 KF=1.682e-18)
+.ENDS  D_DBE_1_BIAS_0_INA827
+*
+.SUBCKT D_LIM1_0_BIAS_0_INA827   1 2
+D1 1 2  D_LIM1
+.MODEL D_Lim1 D( IS=10F N=1.0 RS=1000 XTI=0 AF=0 KF=0 EG=1.11)
+.ENDS  D_LIM1_0_BIAS_0_INA827
+*
+.SUBCKT D_ZB1_0_BIAS_0_INA827        1    2
+D1 1 2  D_2_6V
+CD 1 2 10P
+.MODEL D_2_6V D( IS=100F N=1.0 BV=2.6 IBV=1.0U RS=0 XTI=0)
+.ENDS  D_ZB1_0_BIAS_0_INA827
+*
+.SUBCKT NPN_1_0_BIAS_0_INA827  1 2 3
++ PARAMS: AREA = 1
+Q    1 2 3 Q_NPN_1  {AREA}
+*
+.MODEL Q_NPN_1 NPN 
++ IS=8.8E-18
++ NF=1
++ NR=1
++ VAF=532
++ VAR=100
++ IKF=2.0
++ IKR=2.0
++ BF=210
++ ISE=16E-18
++ NE=1.6438
++ BR=10
++ ISC=2.0f
++ NC=2
++ RE=31
++ RB=850
++ RC=67
++ CJE=12f
++ CJC=3f
++ CJS=7.0f
++ TF=10p
++ TR=600p
++ KF=3.7629e-18
+*
+.ENDS  NPN_1_0_BIAS_0_INA827
+*
+.SUBCKT PNP_1_0_BIAS_0_INA827  1    2    3
++ PARAMS: AREA = 1
+Q    1 2 3 Q_PNP_1  {AREA}
+*
+.MODEL Q_PNP_1 PNP 
++ IS=1.25E-18
++ NF=1
++ NR=1
++ VAF=532
++ VAR=100
++ IKF=3.0
++ IKR=3.0
++ BF=210
++ ISE=270E-18
++ NE=2.5
++ BR=2
++ ISC=35.0f
++ NC=2
++ RE=61.0
++ RB=640
++ RC=220
++ CJE=12.0f
++ CJC=34f
++ CJS=7.0f
++ TF=6p
++ TR=600p
++ KF=3.7629e-18
+*
+.ENDS  PNP_1_0_BIAS_0_INA827
+*
+* 
+******************************************************
+.subckt INPUT_0_INA827 VM Neg IGND Bias IAVDD OUT2 VDD Plus GND Vt0p Vt0 Veps VNEG 
++ Vnoise
+******************************************************
+*
+C33         VV_55 VM 2.5731056167P  
+CF1         VBP_57 62 5P  
+CF2         62 VBN_58 5P  
+CF4         VBP_57 OUT2 800F  
+CF5         OUT2 VBN_58 800F  
+CF6         VDD VBP_57 10F  
+CF7         VBN_58 GND 10F  
+CGM2        59 IGND 10F  
+CM1         OUT2 64 5.2P  
+CO21        60 NEG 100F  
+CO22        NEG GND 100F  
+CO23        GND 60 100F  
+EVF2        61 GND VV_55 IGND  400M
+EVOFFS      PLUS 60 POLY(2) VEPS GND VNOISE 0 0 2.7U -522M 0 0 
+EVT01       67 IGND VT0 GND  1
+EVT02       69 GND VT0 GND  2
+EVT0P2      VDD 70 VDD VT0P  2
+EVT0_1      68 IGND VT0 GND  -1
+FGI3        VDD VBP_57 VI3B 1
+FGI8        VBN_58 GND VI8B -1
+GM1         VM VV_55 NEG 60  44.3610441345U
+GM2         IGND 59 VV_55 VM  19.3414152427U
+R1          VV_55 64 8K 
+R2          VDD VBP_57 100MEG 
+R3          VBN_58 GND 100MEG 
+R4          VBP_57 63 1K 
+R6          VBP_57 VBN_58 1G 
+R83         VV_55 VM 123.7064985288MEG 
+RE1         71 GND 50 
+RE2         VDD 72 50 
+RGM2        59 IGND 178.87324K 
+RO21        60 NEG 1G 
+RO22        NEG GND 100G 
+RO23        GND 60 100G 
+ROF2        62 61 51.7025247353K TC=-2.67U,-1N
+VI3B        59 66 ; CURRENT ARROW
+VI8B        59 65 ; CURRENT ARROW
+VO21        IAVDD 73 633.8289718289M
+VO22        74 VNEG 633.8289718289M
+XD1         74 VV_55 D_LIM1_0_INPUT_0_INA827
+XD2         VV_55 73 D_LIM1_0_INPUT_0_INA827
+XD3         GND VBN_58 D_LIM1_0_INPUT_0_INA827
+XD5         VBP_57 VDD D_LIM1_0_INPUT_0_INA827
+XD7         67 65 D_DBE_2_INPUT_0_INA827
++ PARAMS: AREA=0.125
+XD8         66 68 D_DBE_3_INPUT_0_INA827
++ PARAMS: AREA=0.125
+XT1         OUT2 VBP_57 72 PNP_1_0_INPUT_0_INA827
++ PARAMS: AREA=6 
+XT2         OUT2 VBN_58 71 NPN_1_0_INPUT_0_INA827
++ PARAMS: AREA=6 
+XT3         63 69 VBN_58 NPN_1_0_INPUT_0_INA827
++ PARAMS: AREA=0.125 
+XT4         VBN_58 70 VBP_57 PNP_1_0_INPUT_0_INA827
++ PARAMS: AREA=0.125 
+.ENDS  INPUT_0_INA827
+*
+.SUBCKT D_DBE_2_INPUT_0_INA827   1 2
++ PARAMS: AREA = 1
+D1 1 2  DBE  {AREA}
+.Model Dbe D ( IS=8.8E-18 N=1 RS=100 AF=1.0 KF=1.682e-18)
+.ENDS  D_DBE_2_INPUT_0_INA827
+*
+.SUBCKT D_DBE_3_INPUT_0_INA827   1 2
+D1 1 2  DBE 0.25
+.Model Dbe D ( IS=8.8E-18 N=1 RS=100 AF=1.0 KF=1.682e-18)
+.ENDS  D_DBE_3_INPUT_0_INA827
+*
+.SUBCKT D_LIM1_0_INPUT_0_INA827   1 2
+D1 1 2  D_LIM1
+.MODEL D_Lim1 D( IS=10F N=1.0 RS=1000 XTI=0 AF=0 KF=0 EG=1.11)
+.ENDS  D_LIM1_0_INPUT_0_INA827
+*
+.SUBCKT NPN_1_0_INPUT_0_INA827  1 2 3
++ PARAMS: AREA = 1
+Q    1 2 3 Q_NPN_1  {AREA}
+*
+.MODEL Q_NPN_1 NPN 
++ IS=8.8E-18
++ NF=1
++ NR=1
++ VAF=532
++ VAR=100
++ IKF=2.0
++ IKR=2.0
++ BF=210
++ ISE=16E-18
++ NE=1.6438
++ BR=10
++ ISC=2.0f
++ NC=2
++ RE=31
++ RB=850
++ RC=67
++ CJE=12f
++ CJC=3f
++ CJS=7.0f
++ TF=10p
++ TR=600p
++ KF=3.7629e-18
+*
+.ENDS  NPN_1_0_INPUT_0_INA827
+*
+.SUBCKT PNP_1_0_INPUT_0_INA827  1    2    3
++ PARAMS: AREA = 1
+Q    1 2 3 Q_PNP_1  {AREA}
+*
+.MODEL Q_PNP_1 PNP 
++ IS=1.25E-18
++ NF=1
++ NR=1
++ VAF=532
++ VAR=100
++ IKF=3.0
++ IKR=3.0
++ BF=210
++ ISE=270E-18
++ NE=2.5
++ BR=2
++ ISC=35.0f
++ NC=2
++ RE=61.0
++ RB=640
++ RC=220
++ CJE=12.0f
++ CJC=34f
++ CJS=7.0f
++ TF=6p
++ TR=600p
++ KF=3.7629e-18
+*
+.ENDS  PNP_1_0_INPUT_0_INA827
+*
+* 
+******************************************************
+.subckt INPUT_1_INA827 VM Neg IGND Bias IAVDD OUT1 VDD Plus GND Vt0p Vt0 Veps VNEG 
++ Vnoise
+******************************************************
+*
+C33         VV VM 2.5731056167P  
+CF1         VBP 91 5P  
+CF2         91 VBN 5P  
+CF4         VBP OUT1 800F  
+CF5         OUT1 VBN 800F  
+CF6         VDD VBP 10F  
+CF7         VBN GND 10F  
+CGM2        88 IGND 10F  
+CM1         OUT1 93 5.2P  
+CO21        89 NEG 100F  
+CO22        NEG GND 100F  
+CO23        GND 89 100F  
+EVF2        90 GND VV IGND  400M
+EVOFFS      PLUS 89 POLY(2) VEPS GND VNOISE 0 0 2.8U 522M 0 0 
+EVT01       96 IGND VT0 GND  1
+EVT02       98 GND VT0 GND  2
+EVT0P2      VDD 99 VDD VT0P  2
+EVT0_1      97 IGND VT0 GND  -1
+FGI3        VDD VBP VI3B 1
+FGI8        VBN GND VI8B -1
+GM1         VM VV NEG 89  44.3610441345U
+GM2         IGND 88 VV VM  19.3414152427U
+R1          VV 93 8K 
+R2          VDD VBP 100MEG 
+R3          VBN GND 100MEG 
+R4          VBP 92 1K 
+R6          VBP VBN 1G 
+R83         VV VM 123.7064985288MEG 
+RE1         100 GND 50 
+RE2         VDD 101 50 
+RGM2        88 IGND 178.87324K 
+RO21        89 NEG 1G 
+RO22        NEG GND 100G 
+RO23        GND 89 100G 
+ROF2        91 90 51.7025247353K TC=-2.67U,-1N
+VI3B        88 95 ; CURRENT ARROW
+VI8B        88 94 ; CURRENT ARROW
+VO21        IAVDD 102 633.8289718289M
+VO22        103 VNEG 633.8289718289M
+XD1         103 VV D_LIM1_0_INPUT_1_INA827
+XD2         VV 102 D_LIM1_0_INPUT_1_INA827
+XD3         GND VBN D_LIM1_0_INPUT_1_INA827
+XD5         VBP VDD D_LIM1_0_INPUT_1_INA827
+XD7         96 94 D_DBE_2_INPUT_1_INA827
++ PARAMS: AREA=0.125
+XD8         95 97 D_DBE_3_INPUT_1_INA827
++ PARAMS: AREA=0.125
+XT1         OUT1 VBP 101 PNP_1_0_INPUT_1_INA827
++ PARAMS: AREA=6 
+XT2         OUT1 VBN 100 NPN_1_0_INPUT_1_INA827
++ PARAMS: AREA=6 
+XT3         92 98 VBN NPN_1_0_INPUT_1_INA827
++ PARAMS: AREA=0.125 
+XT4         VBN 99 VBP PNP_1_0_INPUT_1_INA827
++ PARAMS: AREA=0.125 
+.ENDS  INPUT_1_INA827
+*
+.SUBCKT D_DBE_2_INPUT_1_INA827   1 2
++ PARAMS: AREA = 1
+D1 1 2  DBE  {AREA}
+.Model Dbe D ( IS=8.8E-18 N=1 RS=100 AF=1.0 KF=1.682e-18)
+.ENDS  D_DBE_2_INPUT_1_INA827
+*
+.SUBCKT D_DBE_3_INPUT_1_INA827   1 2
+D1 1 2  DBE 0.25
+.Model Dbe D ( IS=8.8E-18 N=1 RS=100 AF=1.0 KF=1.682e-18)
+.ENDS  D_DBE_3_INPUT_1_INA827
+*
+.SUBCKT D_LIM1_0_INPUT_1_INA827   1 2
+D1 1 2  D_LIM1
+.MODEL D_Lim1 D( IS=10F N=1.0 RS=1000 XTI=0 AF=0 KF=0 EG=1.11)
+.ENDS  D_LIM1_0_INPUT_1_INA827
+*
+.SUBCKT NPN_1_0_INPUT_1_INA827  1 2 3
++ PARAMS: AREA = 1
+Q    1 2 3 Q_NPN_1  {AREA}
+*
+.MODEL Q_NPN_1 NPN 
++ IS=8.8E-18
++ NF=1
++ NR=1
++ VAF=532
++ VAR=100
++ IKF=2.0
++ IKR=2.0
++ BF=210
++ ISE=16E-18
++ NE=1.6438
++ BR=10
++ ISC=2.0f
++ NC=2
++ RE=31
++ RB=850
++ RC=67
++ CJE=12f
++ CJC=3f
++ CJS=7.0f
++ TF=10p
++ TR=600p
++ KF=3.7629e-18
+*
+.ENDS  NPN_1_0_INPUT_1_INA827
+*
+.SUBCKT PNP_1_0_INPUT_1_INA827  1    2    3
++ PARAMS: AREA = 1
+Q    1 2 3 Q_PNP_1  {AREA}
+*
+.MODEL Q_PNP_1 PNP 
++ IS=1.25E-18
++ NF=1
++ NR=1
++ VAF=532
++ VAR=100
++ IKF=3.0
++ IKR=3.0
++ BF=210
++ ISE=270E-18
++ NE=2.5
++ BR=2
++ ISC=35.0f
++ NC=2
++ RE=61.0
++ RB=640
++ RC=220
++ CJE=12.0f
++ CJC=34f
++ CJS=7.0f
++ TF=6p
++ TR=600p
++ KF=3.7629e-18
+*
+.ENDS  PNP_1_0_INPUT_1_INA827
+*
+* 
+******************************************************
+.subckt OUTPUT_0_INA827 VM Neg IGND Bias IAVDD OUT VDD Veps GND Vt0p Vt0 Plus VNEG 
++ Vnoise
+******************************************************
+*
+C33         VV_31 VM  9.88452793058326F  
+C330        33 VM 98.8452793058P  
+CF1         VBP_36 VOC 15P  
+CF2         VOC VBN_37 15P  
+CF4         VBP_36 OUT 800F  
+CF5         OUT VBN_37 800F  
+CF6         VDD VBP_36 1.0P  
+CF7         VBN_37 GND 1.0P  
+CGM2        38 IGND 100F  
+CM1         OUT 46 2.7P  
+CM3         OUT 39 1.5P  
+CO21        35 NEG 10F  
+CO22        NEG GND 10F  
+CO23        GND 35 10F  
+EIOS        PLUS 35 POLY(3) VEPS GND VNOISE 0 0 VOS 0 800N 0 1 0 
+EVCVS1      34 VM 35 NEG  1
+EVF2        44 GND VV_31 IGND  500M
+EVT01       49 IGND VT0 GND  1
+EVT02       51 GND VT0 GND  2
+EVT0P2      VDD 52 VDD VT0P  2
+EVT0_1      50 IGND VT0 GND  -1
+FGI3        VDD VBP_36 VI3B 1
+FGI8        VBN_37 GND VI8B -1
+GM1         VM VV_31 VM 33  77.3656609706U
+GM2         IGND 38 VV_31 VM  24.1767690533U
+GMF1        VV_31 VM 39 GND  -15.4731321941U
+R1          VV_31 46 9K 
+R2          VDD VBP_36 10MEG 
+R3          VBN_37 GND 10MEG 
+R4          VBP_36 45 400 
+R5          39 GND 25K TC=-2.67U,-1N
+R6          VBP_36 VBN_37 10G 
+R83         VV_31 VM 161.0142074661MEG 
+R830        34 33 161.0142074661 
+RE1         53 GND 10 
+RE2         VDD 41 10 
+RGM2        38 IGND 178.8732394366K 
+RO21        35 NEG 1G 
+RO22        NEG GND 100G 
+RO23        GND 35 100G 
+ROF2        VOC 44 6.4628155919K TC=-2.67U,-1N
+VI3B        38 48 ; CURRENT ARROW
+VI8B        38 47 ; CURRENT ARROW
+VO21        IAVDD 54 648.2062590927M
+VO22        40 VNEG 648.2062590927M
+XD1         40 VV_31 D_LIM5_0_OUTPUT_0_INA827
+XD2         VV_31 54 D_LIM5_0_OUTPUT_0_INA827
+XD3         GND VBN_37 D_LIM1_0_OUTPUT_0_INA827
+XD5         VBP_36 VDD D_LIM1_0_OUTPUT_0_INA827
+XD7         49 47 D_DBE_1_OUTPUT_0_INA827
+XD8         48 50 D_DBE_1_OUTPUT_0_INA827
+XT1         OUT VBP_36 41 PNP_OUT_0_OUTPUT_0_INA827
++ PARAMS: AREA=10 
+XT2         OUT VBN_37 53 NPN_OUT_0_OUTPUT_0_INA827
++ PARAMS: AREA=10 
+XT3         45 51 VBN_37 NPN_1_0_OUTPUT_0_INA827
++ PARAMS: AREA=0.25 
+XT4         VBN_37 52 VBP_36 PNP_1_0_OUTPUT_0_INA827
++ PARAMS: AREA=0.25 
+XVOS        0 VOS VOST_0_OUTPUT_0_INA827
+.ENDS  OUTPUT_0_INA827
+*
+.SUBCKT D_DBE_1_OUTPUT_0_INA827   1 2
++ PARAMS: AREA = 1
+D1 1 2  DBE  {AREA}
+.Model Dbe D ( IS=8.8E-18 N=1 RS=100 AF=1.0 KF=1.682e-18)
+.ENDS  D_DBE_1_OUTPUT_0_INA827
+*
+.SUBCKT D_LIM1_0_OUTPUT_0_INA827   1 2
+D1 1 2  D_LIM1
+.MODEL D_Lim1 D( IS=10F N=1.0 RS=1000 XTI=0 AF=0 KF=0 EG=1.11)
+.ENDS  D_LIM1_0_OUTPUT_0_INA827
+*
+.SUBCKT D_LIM5_0_OUTPUT_0_INA827    1 2
+D1 1 2  D_LIM5
+.MODEL D_Lim5 D( IS=10F N=1.0 RS=10 XTI=0 AF=0 KF=0)
+.ENDS  D_LIM5_0_OUTPUT_0_INA827
+*
+.SUBCKT NPN_1_0_OUTPUT_0_INA827  1 2 3
++ PARAMS: AREA = 1
+Q    1 2 3 Q_NPN_1  {AREA}
+*
+.MODEL Q_NPN_1 NPN 
++ IS=8.8E-18
++ NF=1
++ NR=1
++ VAF=532
++ VAR=100
++ IKF=2.0
++ IKR=2.0
++ BF=210
++ ISE=16E-18
++ NE=1.6438
++ BR=10
++ ISC=2.0f
++ NC=2
++ RE=31
++ RB=850
++ RC=67
++ CJE=12f
++ CJC=3f
++ CJS=7.0f
++ TF=10p
++ TR=600p
++ KF=3.7629e-18
+*
+.ENDS  NPN_1_0_OUTPUT_0_INA827
+*
+.SUBCKT NPN_OUT_0_OUTPUT_0_INA827  1 2 3
++ PARAMS: AREA = 1
+Q    1 2 3 Q_NPN_OUT  {AREA}
+*
+.MODEL Q_NPN_OUT NPN 
++ IS=8.8E-18
++ NF=1
++ NR=1
++ VAF=532
++ VAR=100
++ IKF=2.0
++ IKR=2.0
++ BF=210
++ ISE=16E-18
++ NE=1.6438
++ BR=10
++ ISC=2.0f
++ NC=2
++ RE=31
++ RB=850
++ RC=67
++ CJE=12f
++ CJC=3f
++ CJS=7.0f
++ TF=10p
++ TR=600p
++ KF=3.7629e-18
++ XTB=-2.55
+*
+.ENDS  NPN_OUT_0_OUTPUT_0_INA827
+*
+.SUBCKT PNP_1_0_OUTPUT_0_INA827  1    2    3
++ PARAMS: AREA = 1
+Q    1 2 3 Q_PNP_1  {AREA}
+*
+.MODEL Q_PNP_1 PNP 
++ IS=1.25E-18
++ NF=1
++ NR=1
++ VAF=532
++ VAR=100
++ IKF=3.0
++ IKR=3.0
++ BF=210
++ ISE=270E-18
++ NE=2.5
++ BR=2
++ ISC=35.0f
++ NC=2
++ RE=61.0
++ RB=640
++ RC=220
++ CJE=12.0f
++ CJC=34f
++ CJS=7.0f
++ TF=6p
++ TR=600p
++ KF=3.7629e-18
+*
+.ENDS  PNP_1_0_OUTPUT_0_INA827
+*
+.SUBCKT PNP_OUT_0_OUTPUT_0_INA827  1    2    3
++ PARAMS: AREA = 1
+Q    1 2 3 Q_PNP_OUT  {AREA}
+*
+.MODEL Q_PNP_OUT PNP 
++ IS=1.25E-18
++ NF=1
++ NR=1
++ VAF=532
++ VAR=100
++ IKF=3.0
++ IKR=3.0
++ BF=210
++ ISE=270E-18
++ NE=2.5
++ BR=2
++ ISC=35.0f
++ NC=2
++ RE=61.0
++ RB=640
++ RC=220
++ CJE=12.0f
++ CJC=34f
++ CJS=7.0f
++ TF=6p
++ TR=600p
++ KF=3.7629e-18
++ XTB=-2.55
+*
+.ENDS  PNP_OUT_0_OUTPUT_0_INA827
+*
+.SUBCKT VOST_0_OUTPUT_0_INA827   1 2
+.PARAM I0 = 1M
+.PARAM DVOS_DT = {-1.0U}
+.PARAM RG3 = 50K
+.PARAM RG4 = 50K
+.PARAM AOS = {(RG3 + RG4)/RG4}
+.PARAM VOFFS = {(200U - 27U)/AOS} ;VOSI = 40U, VOSO = 200U
+.PARAM R0 = {VOFFS/I0}
+.PARAM TC1= {DVOS_DT/R0/I0/AOS}
+
+R2 40 0 RMOD2 {R0}
+I2 0 40 {I0}
+E3 1 2 40 0 1
+.MODEL RMOD2 RES (TC1={TC1} TC2=0 TCE=0)
+.ENDS  VOST_0_OUTPUT_0_INA827
+*
+*$
+*

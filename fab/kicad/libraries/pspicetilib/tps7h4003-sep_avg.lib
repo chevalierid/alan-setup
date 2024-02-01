@@ -1,0 +1,208 @@
+* TPS7H4003-SEP
+*****************************************************************************
+* (C) Copyright 2021 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose. The model is
+** provided solely on an "as is" basis. The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+* Released by: Texas Instruments Inc.
+* Part: TPS7H4003-SEP
+* Date: 01DEC2021
+* Model Type: Average
+* Simulator: PSpice
+* Simulator Version: 17.4
+* EVM Order Number: TPS7H4003EVM
+* EVM Users Guide: SLVUC73
+* Datasheet: SLVSG41
+* Verified Topologies: BUCK
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+***************************************************************************
+*
+* Model Usage Notes:
+*
+* 1. This model is intended for AC simulation only and does not support transient simulation.
+* 2. The following features have not been modeled:
+*	- RT, SYNC1, SYNC2, REFCAP, SS/TR, and PWRGD pins
+*	- Thermal shutdown
+*
+*****************************************************************************
+
+.SUBCKT TPS7H4003-SEP_AVG VIN PVIN_0 PVIN_1 PVIN_2 PVIN_3 PVIN_4 COMP RSC 
++  PH_0 PH_1 PH_2 PH_3 PH_4 PH_5 PH_6 PH_7 PH_8 PH_9 PH_10 PH_11 VSENSE
++  GND PGND_0 PGND_1 PGND_2 PGND_3 PGND_4 PGND_5 PGND_6 PAD 
++  PARAMS: FS=500k L=0.9u
+R_R21         PVIN_1 VIN  1u  
+R_R23         LX PH_0  1u  
+R_R48         LX PH_7  1u  
+R_R46         LX PH_5  1u  
+G_ABM3I1         GND COMP VALUE { LIMIT(((V(N1165059) - V(VSENSE))
++  *V(GMEA_TOL)),-140u,140u)    }
+R_R19         COMP GND  7Meg TC=0,0 
+E_TABLE2         N16779934 0 TABLE {V(N16779903)} -55V          1.149306V  
++ -35V          1.104943V  
++ -15V          1.070203V  
++ 0V             1.048069V  
++ 15V           1.027854V  
++ 35V           1.002369V  
++ 55V           0.977411V  
++ 70V           0.958642V  
++ 90V           0.933354V  
++ 110V         0.907704V  
++ 125V         0.888173V
+R_R24         LX PH_1  1u  
+V_V29         N16782730 0 1.1
+R_R33         PVIN_3 VIN  1u  
+R_R45         GND PGND_6  1u  
+R_R25         LX PH_2  1u  
+E_ABM1         N16779903 0 VALUE { {TEMP}    }
+R_R44         GND PGND_5  1u  
+C_C5         COMP GND  2.7p  
+E_TABLE1         N16779929 0 TABLE {V(IOUT_DC)} 0V             0.811806V  
++ 0.3V          0.911806V  
++ 0.5V          0.981806V  
++ 1.5V          1.011806V  
++ 3V             1.011806V  
++ 4.5V              1.0125V  
++ 6V             1.013194V  
++ 9V             1.015278V  
++ 12V           1.019444V   
++ 15V           1.025694V  
++ 18V           1.032639V
+E_ABM4         SA 0 VALUE {
++  (1040*V(ISC)/1.1)/(0.001+(30*V(ISC)/1.1)-(24000000*V(ISC)/({FS}*1.1)))    }
+X_U5_H1    U5_N16723688 LX U5_VM GND Power_stage_U5_H1 
+V_U5_V_Acs         U5_ACS GND 1
+X_U5_H3    U5_N16724405 GND U5_GMPS_TOL GND Power_stage_U5_H3 
+G_U5_ABM3I2         GND U5_CX VALUE { (V(COMP)*V(U5_GMPS_TOL))/V(U5_ACS)    }
+X_U5_U24          U5_DCX U5_N16719974 GND DC DC_LIMIT
+R_U5_R1         U5_IOUT IOUT_DC  100 TC=0,0 
+E_U5_TABLE2         U5_N16724425 0 TABLE {V(U5_N16724419)} -55V         
++  0.853284V  
++ -35V          0.911659V  
++ -15V          0.899109V  
++ 0V             0.931716V  
++ 15V           0.960447V  
++ 35V             0.98246V  
++ 55V           1.012594V  
++ 70V           1.010308V  
++ 90V               1.0384V  
++ 110V         1.053517V  
++ 125V         1.067671V
+E_U5_ABM5         U5_DCX 0 VALUE { ( V(U5_CX)/  
++ (V(VIN) + 1u))   }
+E_U5_ABM1         U5_N16724419 0 VALUE { {TEMP}    }
+X_U5_H2    U5_CX U5_N16723688 U5_IOUT GND Power_stage_U5_H2 
+E_U5_TABLE3         U5_N16724251 0 TABLE {V(IOUT_DC)} 0V             0.506389V 
++  
++ 0.3V          0.626389V  
++ 0.5V          0.676389V  
++ 1.5V          0.878889V  
++ 3V             0.928889V  
++ 4.5V          0.970278V  
++ 6V             1.009722V  
++ 9V             1.024722V  
++ 12V           1.061389V  
++ 15V           1.069444V  
++ 18V           1.075556V
+R_U5_R50         U5_GMPS U5_N16724405 R_U5_R50 1  
+.model        R_U5_R50 RES R=1 DEV={Tol_GMps}
+E_U5_ABM6         U5_GMPS 0 VALUE { ( V(U5_N16724251)*V(U5_N16724425)*36)    }
+X_U5_U25         U5_N16719974 GND DC_LOWLIMIT PARAMS:  FS={FS}
+C_U5_C1         GND IOUT_DC  1m  
+X_U5_U26         U5_GMPS_TOL DC U5_CX U5_ACS SA GND U5_CX GND ABM3I1_GMPS
++  PARAMS:  L={L} FS={FS}
+G_U5_ABM2I1         VIN GND VALUE { (V(DC) * V(U5_VM))    }
+E_U5_ABM2         U5_MODE 0 VALUE { (4/({L}*(6.28*{Fs})*(6.28*{Fs})))    }
+X_U5_U23          U5_CX GND U5_MODE VARICAP
+R_R20         PVIN_0 VIN  1u  
+R_R40         LX PH_10  1u  
+R_R22         VIN VIN  1u  
+R_R26         LX PH_3  1u  
+R_R38         LX PH_8  1u  
+R_R43         GND PGND_4  1u  
+E_ABM2         GMEA 0 VALUE { ( V(N16779929)*V(N16779934)*1.44m)    }
+V_V28         N1165059 GND 0.6
+R_R47         LX PH_6  1u  
+R_R42         GND PGND_3  1u  
+R_R34         PVIN_4 VIN  1u  
+R_R50         GMEA N16780026 R_R50 1  
+.model        R_R50 RES R=1 DEV={Tol_GMea}
+R_R37         GND PGND_2  1u  
+R_R27         LX PH_4  1u  
+R_R49         GND IOUT_DC  1G TC=0,0 
+R_R36         GND PGND_1  1u  
+R_R41         LX PH_11  1u  
+R_R30         GND PAD  1u  
+X_H2    N16782730 RSC ISC 0 TPS7H4003-SEP_AVG_H2 
+R_R32         PVIN_2 VIN  1u  
+R_R35         GND PGND_0  1u  
+R_R39         LX PH_9  1u  
+X_H1    N16780026 GND GMEA_TOL GND TPS7H4003-SEP_AVG_H1 
+.PARAM  tol_gmea=0.109 tol_gmps=0.058
+.ENDS TPS7H4003-SEP_AVG
+*$
+.subckt Power_stage_U5_H1 1 2 3 4  
+H_U5_H1         3 4 VH_U5_H1 1
+VH_U5_H1         1 2 0V
+.ends Power_stage_U5_H1
+*$
+.subckt Power_stage_U5_H3 1 2 3 4  
+H_U5_H3         3 4 VH_U5_H3 1
+VH_U5_H3         1 2 0V
+.ends Power_stage_U5_H3
+*$
+.subckt Power_stage_U5_H2 1 2 3 4  
+H_U5_H2         3 4 VH_U5_H2 1
+VH_U5_H2         1 2 0V
+.ends Power_stage_U5_H2
+*$
+.subckt TPS7H4003-SEP_AVG_H2 1 2 3 4  
+H_H2         3 4 VH_H2 1
+VH_H2         1 2 0V
+.ends TPS7H4003-SEP_AVG_H2
+*$
+.subckt TPS7H4003-SEP_AVG_H1 1 2 3 4  
+H_H1         3 4 VH_H1 1
+VH_H1         1 2 0V
+.ends TPS7H4003-SEP_AVG_H1
+*$
+.SUBCKT VARICAP 1 2 CTRL
+R1 1 3 1u
+VC 3 4
+EBC 4 2 Value = { (1/v(ctrl))*v(int) }
+GINT 0 INT Value = { I(VC) }
+CINT INT 0 1
+Rdum INT 0 10E10
+.ENDS VARICAP
+*$
+.SUBCKT DC_LIMIT IN LOW GND OUT
+E_DC OUT GND VALUE { LIMIT( V(IN,GND),V(LOW,GND),0.99) }
+.ENDS
+*$
+.SUBCKT DC_LOWLIMIT OUT GND PARAMS: FS=100k
+E_DC_LOW         OUT GND VALUE { 235n*{Fs} }
+.ENDS
+*$
+.SUBCKT ABM3I1_GMps GMps_Tol DC CX Acs SA GND OUT+ OUT- PARAMS: L=0.9u FS=500k
+G_U5_ABM3I1 OUT+ OUT- VALUE {((V(SA,GND)*{Fs}*V(DC,GND)/V(GMps_Tol,GND))/
++ ((V(Acs,GND)*{Fs})/V(GMps_Tol,GND)))+((V(CX,GND))/(L*Fs))*((1-V(DC,GND))/2)}
+.ENDS
+*$

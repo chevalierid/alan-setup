@@ -1,0 +1,290 @@
+* AFE031
+*****************************************************************************
+* (C) Copyright 2022 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+* Part: AFE031
+* Last Release Date: 03/15/2022
+* 1st Release Date: 11/21/2014
+* Model Type: All In One
+* Simulators: PSPICE and TINA-TI
+* PSpice Version: 17.4.0.s0028
+* TINA-TI Version: 9.3.200.277 SF-TI
+* EVM Order Number: N/A 
+* EVM Users Guide:  N/A 
+* Datasheet: SBOS531D – AUGUST 2010 – REVISED MAY 2012
+*
+* Model Version: 1.1
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.1: (a) Stripped off all unused SUBCKT definitions and 
+*                  MODEL statements
+*			   (b) Moved GLOBAL definitions of PARAM and MODEL statements into
+*                  each applicable SUBCKT definitions
+*              (c) All SUBCKT has AFE031_ as unique name qualifications
+*
+* Version 1.0 : Release to Web
+*
+*****************************************************************************
+* Notes:
+* This macromodel is to model the open loop power amplifier of AFE031. 
+*
+* To create the nominal closed loop gain of -6.5V/V, the customer will have 
+* to use RG=20k, RF=130k, and to bias the positive terminal of the amplifier 
+* to mid supply (VS/2)
+*
+* The open loop power amplifier macro model, model the following paramaters:
+* Input voltage range, Bandwidth, Slew Rate, Output Swing, output current 
+* limit, Gain Error.
+*   
+*****************************************************************************
+*$
+*
+.SUBCKT AFE031 VINP VINM VCC VEE VOUT ISET
+XI0 VCC VEE VINM VINP VOUT ISET AFE031_HT1
+.ends
+*$
+*
+.SUBCKT AFE031_ANALOG_BUFFER VOUT VIN
+R0 VIN 0 1e9
+R1 VOUT 0 1e9
+E0 VOUT 0 VIN 0 1
+.ends AFE031_ANALOG_BUFFER
+*$
+*
+.SUBCKT AFE031_HT1 VCC VEE VINM VINP VOUT ISET
+*
+.MODEL DIDEAL1 D N=0.1m
+*
+EAHDLI56 NET40 NET069 VALUE { LIMIT(V(NET080,0)*1, 0, 2) }
+EAHDLI54 NET44 NET0105 VALUE { LIMIT(V(NET080,0)*1, 0, 2) }
+XAHDLINV0 NET081 NET083 VCC_INT VEE_INT AFE031_HPA_INV_IDEAL
+L0 NET073 NET069 500e-12
+XI44 NET090 NET085 VIMON AFE031_Rout_HT1
+XAHDLI43 NET067 NET0205 NET081 VCC_INT VEE_INT AFE031_HPA_OR2
+XAHDLI41 VOUT NET082 NET067 VCC_INT VEE_INT AFE031_HPA_COMP_IDEAL
+XAHDLI42 NET084 VOUT NET0205 VCC_INT VEE_INT AFE031_HPA_COMP_IDEAL
+XI21 NET066 NET065 AFE031_CMRR_HT1
+XI19 VCC_INT VEE_INT NET8 NET066 AFE031_PSRR_HT1
+XI18 NET058 NET8 AFE031_Inoise_HT1
+XI17 NET048 NET058 AFE031_Vnoise_HT1
+XI10 VCC VEE VIMON AFE031_ILOAD_HT1
+H3 NET080 0 V27  20e3
+H2 VIMON 0 VCURSOURCEDETECT  1
+I5 VCC VEE 50e-3
+I0 NET041 0 1e-9
+I3 NET065 0 1e-9
+R14 NET0187 ISET 5e3
+R5 NET048 NET8 1e9
+R3 NET086 NET0110 1
+R9 VINP NET048 100e-3
+R10 VINM NET8 100e-3
+R1 VIMON 0 1e9
+R0 NET66 NET39 5.967e6
+R4 NET069 NET45 1
+C1 NET086 0 1e-15
+C7 0 NET048 1e-15
+C8 NET8 0 1e-15
+C6 NET048 NET8 1e-15
+C0 NET39 NET66 37.5e-12
+XI23 NET0110 NET0170 AFE031_ANALOG_BUFFER
+XI13 VEE_INT VEE AFE031_ANALOG_BUFFER
+XI12 VCC_INT VCC AFE031_ANALOG_BUFFER
+XI11 NET0105 NET45 AFE031_ANALOG_BUFFER
+XI2 NET085 NET086 AFE031_ANALOG_BUFFER
+D8 NET0105 NET40 DIDEAL1
+D13 VOL NET45 DIDEAL1
+D14 NET45 VOH DIDEAL1
+D7 NET0168 NET0116 DIDEAL1
+D6 NET0135 NET0168 DIDEAL1
+D2 NET46 NET041 DIDEAL1
+D1 NET041 NET25 DIDEAL1
+D4 NET065 NET27 DIDEAL1
+D3 NET48 NET065 DIDEAL1
+D9 NET069 NET44 DIDEAL1
+V27 NET0188 NET0187 0
+V26 NET0188 0 1.2
+V22 VOH NET082 10e-3
+V23 NET084 VOL 10e-3
+V20 NET0145 VEE_INT 10e-3
+V21 VCC_INT NET0183 10e-3
+V18 NET090 NET073 0
+V7 NET041 NET058 0
+V12 VCC_INT NET0116 -30
+V14 NET0135 VEE_INT -30
+V1 NET67 NET39
+V2 NET66 0 0
+V3 NET46 VEE_INT -100e-3
+V6 NET48 VEE_INT -100e-3
+V0 NET39 NET0170
+V5 VCC_INT NET27 -100e-3
+V4 VCC_INT NET25 -100e-3
+VCURSOURCEDETECT NET45 NET59 0
+VCURSINKDETECT VOUT NET59 0
+GAHDLI6 NET66 NET67 VALUE { LIMIT(V(NET041,NET065)*1.257e-3, -1e-3, 1e-3) }
+H5 NET0183 VOH POLY(1) Vcursourcedetect  0  1  0  0  1e-9  0  0  0  0  0  1e-9
+H6 VOL NET0145 POLY(1) Vcursinkdetect  0  1  0  0  1e-9  0  0  0  0  0  1e-9
+.ends AFE031_HT1
+*$
+*
+.SUBCKT AFE031_HPA_OR2 1 2 3 VDD VSS
+E1 4 0 VALUE = { IF( ((V(1)< (V(VDD)+V(VSS))/2 ) & (V(2)< (V(VDD)+V(VSS))/2 )), V(VSS), V(VDD) ) }
+R1 4 3 1
+C1 3 0 1e-12
+.ENDS
+*$
+*
+.SUBCKT AFE031_HPA_INV_IDEAL 1 2 VDD VSS
+E1 2 0 VALUE = { IF( V(1)> (V(VDD)+V(VSS))/2, V(VSS), V(VDD) ) }
+.ENDS
+*$
+*
+.SUBCKT AFE031_HPA_COMP_IDEAL INP INN OUT VDD VSS
+E1 OUT 0 VALUE = { IF( (V(INP) > V(INN)), V(VDD), V(VSS) ) }
+.ENDS
+*$
+*
+.SUBCKT AFE031_Rout_HT1 A B VIMON
+.PARAM Ro_Iout_0A = 200
+.PARAM Multiplier = 66
+G1 A B VALUE = { V(A,B) * 1/(Ro_Iout_0A - Multiplier * ABS(V(VIMON)) )  }
+.ENDS
+*$
+*
+.SUBCKT AFE031_ILOAD_HT1  VDD VSS VIMON
+G1 VDD 0 VALUE = {IF(V(VIMON) >= 0,V(VIMON),0)}
+G2 VSS 0 VALUE = {IF(V(VIMON) < 0,V(VIMON),0)}
+.ENDS
+*$
+*
+.SUBCKT AFE031_Vnoise_HT1 A B
+.PARAM X = { 1  }
+.PARAM Y = { 1 }
+.PARAM Z = { 0.5  }
+X1 A B AFE031_VNSE PARAMS: NLF = { Y } FLW = { X }  NVR = { Z }
+.ENDS
+*$
+*
+.SUBCKT AFE031_Inoise_HT1 A B
+.PARAM X = { 1  }
+.PARAM Y = { 10 }
+.PARAM Z = { 5 }
+X1 A B AFE031_FEMT PARAMS: NLFF = { Y }  FLWF = { X } NVRF = { Z }
+.ENDS
+*$
+*
+.SUBCKT AFE031_PSRR_HT1 VDD VSS A B
+X1 VDD VSS A B 0 AFE031_PSRR_DUAL_NEW
++ PARAMS: PSRRP = 70 FPSRRP = 667
++ PSRRN = 70 FPSRRN = 667
+.ENDS
+*$
+*
+.SUBCKT AFE031_CMRR_HT1 A B
+X1 A B 0 AFE031_CMRR_NEW PARAMS: CMRR = 120 FCMRR = 667
+.ENDS
+*$
+*
+.SUBCKT AFE031_VNSE  1 2 PARAMS: NLF = 10 FLW = 4  NVR = 4.6
+.PARAM GLF={PWR(FLW,0.25)*NLF/1164}
+.PARAM RNV={1.184*PWR(NVR,2)}
+.MODEL DVN D KF={PWR(FLW,0.5)/1E11} IS=1.0E-16
+I1 0 7 10E-3
+I2 0 8 10E-3
+D1 7 0 DVN
+D2 8 0 DVN
+E1 3 6 7 8 {GLF}
+R1 3 0 1E9
+R2 3 0 1E9
+R3 3 6 1E9
+E2 6 4 5 0 10
+R4 5 0 {RNV}
+R5 5 0 {RNV}
+R6 3 4 1E9
+R7 4 0 1E9
+E3 1 2 3 4 1
+C1 1 0 1E-15
+C2 2 0 1E-15
+C3 1 2 1E-15
+.ENDS
+*$
+*
+.SUBCKT AFE031_FEMT  1 2 PARAMS: NLFF = 0.1 FLWF = 0.001 NVRF = 0.1
+.PARAM GLFF={PWR(FLWF,0.25)*NLFF/1164}
+.PARAM RNVF={1.184*PWR(NVRF,2)}
+.MODEL DVNF D KF={PWR(FLWF,0.5)/1E11} IS=1.0E-16
+I1 0 7 10E-3
+I2 0 8 10E-3
+D1 7 0 DVNF
+D2 8 0 DVNF
+E1 3 6 7 8 {GLFF}
+R1 3 0 1E9
+R2 3 0 1E9
+R3 3 6 1E9
+E2 6 4 5 0 10
+R4 5 0 {RNVF}
+R5 5 0 {RNVF}
+R6 3 4 1E9
+R7 4 0 1E9
+G1 1 2 3 4 1E-6
+C1 1 0 1E-15
+C2 2 0 1E-15
+C3 1 2 1E-15
+.ENDS
+*$
+*
+.SUBCKT AFE031_PSRR_DUAL_NEW   VDD  VSS  VI  VO  GNDF 
++ PARAMS: PSRRP = 130 FPSRRP = 1.6
++ PSRRN = 130 FPSRRN = 1.6
+.PARAM PI = 3.141592
+.PARAM RPSRRP = 1
+.PARAM GPSRRP = {PWR(10,-PSRRP/20)/RPSRRP}
+.PARAM LPSRRP = {RPSRRP/(2*PI*FPSRRP)}
+.PARAM RPSRRN = 1
+.PARAM GPSRRN = {PWR(10,-PSRRN/20)/RPSRRN}
+.PARAM LPSRRN = {RPSRRN/(2*PI*FPSRRN)}
+G1  GNDF 1 VDD GNDF {GPSRRP}
+R1  1 2 {RPSRRP}
+L1  2 GNDF {LPSRRP}
+EA  101 GNDF 1 GNDF 1
+GRA  101 102 VALUE = { V(101,102)/1e6 }
+CA  102 GNDF 1e3
+EB  1 1a VALUE = {V(102,GNDF)}
+G2  GNDF 3 VSS GNDF {GPSRRN}
+R2  3 4 {RPSRRN}
+L2  4 GNDF {LPSRRN}
+EC  301 GNDF 3 GNDF 1
+GRC  301 302 VALUE = { V(301,302)/1e6 }
+CC  302 GNDF 1e3
+ED  3 3a VALUE = {V(302,GNDF)}
+E1  VO VI VALUE = {V(1a,GNDF) + V(3a,GNDF)}
+C3  VDD VSS 10P
+.ENDS
+*$
+*
+.SUBCKT AFE031_CMRR_NEW   VI  VO  GNDF PARAMS: CMRR = 130 FCMRR = 1.6K
+.PARAM PI = 3.141592
+.PARAM RCMRR = 1
+.PARAM GCMRR = {PWR(10,-CMRR/20)/RCMRR}
+.PARAM LCMRR = {RCMRR/(2*PI*FCMRR)}
+G1  GNDF 1 VI GNDF {GCMRR}
+R1  1 2 {RCMRR}
+L1  2 GNDF {LCMRR}
+EA  101 GNDF 1 GNDF 1
+GRA  101 102 VALUE = {V(101,102)/1e6}
+CA  102 GNDF 1e3
+EB  1 1a VALUE = {V(102,GNDF)}
+E1  VI VO 1a GNDF 1
+.ENDS
+*$
+*

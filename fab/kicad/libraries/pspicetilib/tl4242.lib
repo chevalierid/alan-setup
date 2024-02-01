@@ -1,0 +1,187 @@
+* TL4242
+*****************************************************************************
+* (C) Copyright 2011 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************	   
+*
+* Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part:              TL4242
+* Date:              07/07/2011
+* Model Type:        All In One
+* Simulator:         TINA-TI
+* Simulator Version: Version: 7.0.30.267 SF-TI
+* EVM Order Number:  N/A 
+* EVM Users Guide:   N/A
+* Datasheet:         SLVS641A–APRIL 2008–REVISED MAY 2009
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 : Release to Web
+*
+*****************************************************************************	   
+* 
+*****************************************************************************	 
+*.subckt TL4242 I Q REF GND
+*.ends
+*$
+.subckt TL4242 I Q REF GND
+XI1 GND Q REF  I   VREF_INT VREG TL4242_OUT
+XI0 GND I VREF_INT VREG TL4242_BGREF
+.ends TL4242
+*$
+.subckt TL4242_OUT GND Q REF_EXT VCC VREF_INT VREG
+QN31   NET30   CSAC    NET0167 NVA20X20 {628   *2}
+QN33   NET6    NET103  NET96   NVA20X20 {2512  *8}
+QN32   NET6    NET30   NET103  NVA20X20 {942   *3}
+QN34   NET46   NET112  Q       NVA20X20 {2198  *7}
+QN38   NET086  NET086  NET34   NVA20X20 {314   *2}
+QN37   NET30   NET086  NET38   NVA20X20 {628.0 *2}
+QP34   GND     NET6    NET46   LPNP_DP  {2512  *4}
+QPOUT1 OUTB    OUTB    VCC     LPNP_DP  {1570  *5}
+*Q119   OUTB    NET21   VCC     LPNP_DP  {1884  *6}
+QPOUT  Q       OUTB    VCC     LPNP_DP  {57462 *183}
+QPDRV  NET46   NET113  OUTB    LPNP_DP  {2826  *9}
+QOUT2A NET0141 OUTB    VCC     LPNP_DP  {78.5  *250}
+QPOUT2 OUTB    OUTB    VCC     LPNP_DP  {235.5 *250}
+QPDRV1 NET113  NET113  OUTB    LPNP_DP  314
+QPSAC  CSAC    OUTB    VCC     LPNP_DP  314
+QPSAC3 GND     NET113  OUTB    LPNP_DP  314
+QPSAC1 OUTB    OUTB    VCC     LPNP_DP  314
+QPS9   GND     NET31   NET30   PVA      95
+QP23   NET30   NET0146 NET78   PLA13P0  95
+QP22   CLIM    NET0146 NET82   PLA13P0  95
+QP36   NET0141 NET0141 NET86   PLA13P0  95
+QP25   NET086  VREG    NET90   PLA13P0  95
+V0  VCC     NET0146 DC 700e-3
+D2  NET0141 NET22   Simple_zener 1
+D1  NET22   NET24   Simple_zener 1
+D0  NET24   NET26   Simple_zener 1
+D3  GND     NET30   Simple_zener 1
+R39 NET0167 GND     {9*1900}
+R38 CSAC    GND     {1*1900}
+R40 NET103  GND     {23*1900}
+R41 NET96   GND     {(5.5*160)/8}
+R29 NET26   NET0164 {23*1900}
+R47 NET0164 VCC     {10*1900}
+R30 NET26   NET0164 {23*1900}
+R36 NET30   NET103  {250*1900}
+R42 NET0141 GND     {(16*160)/1.6}
+R31 OUTB    VCC     {10*1900}
+R32 OUTB    NET113  {6*1900}
+R44 NET112  NET46   {1*1900}
+R34 NET113  NET6    {1*160}
+R33 NET113  OUTB    {4*160}
+R19 NET90   CLIM    {2*1900}
+R28 GND     NET38   {8*1900}
+R27 GND     NET34   {8*1900}
+R24 NET86   CLIM    {2*1900}
+R5  NET78   VCC     {3.5*1900}
+R6  NET82   VCC     {2.5*1900}
+E0  NET31   GND VREF_INT REF_EXT 1e6
+.ends TL4242_OUT
+*$
+.subckt TL4242_BGREF GND VCC VREF VREG
+V0  VBG GND   DC  1.306
+I0  VCC VREG  DC  10.21e-6
+R88 VREG VBG  {32.8*1900}
+R45 N3   GND  {1.4*1900}
+R10 N2   VREF {7.2*1900}
+R8  VBG  N1   {32.8*1900}
+R9  N1   N2   {24.4*1900}
+R13 VREF N3   {9.2*1900}
+.ends TL4242_BGREF
+*$
+.MODEL Simple_zener D 
++ IS=5.024E-18  RS=7.74E2  N=1.274 
+*+ CJO=9.44E-16  PHI=0.871 M=0.403 PT=3.996 
++ BV = 6.8  IBV = 4e-10   TNOM=27
+*$
+.MODEL LED D 
++ IS=1.0E-18  RS=1  N=1.703 
++ CJO=9.44E-16  PHI=0.871 M=0.403 PT=3.996 
++ BV = 12  IBV = 1e-7   TNOM=27
+*$
+.MODEL LPNP_DP PNP
++ IS      = {1.9582e-17 *    1}
++ BF      = {440        *    0.5}
++ VA      = {33.5       *    1}
++ BR      = {99.997	*    1}
++ VAR     = {100.00	*    1}
++ ISE     = {7.9E-17	*    1}
++ ISC     = {6.2426E-18 *    1}
++ IK      = {1.0345E-6 	*    1}
++ IKR     = {3.1847E-03	*    1}
++ IRB     = {2.52842E-6	*    1}
++ RB      = {69115.2	*    1}
++ RBM     = {3141.6 	*    1}
++ RE      = {2047.1	/    1}
++ CJE     = {0.3270f	*    1}
++ CJC     = {1.5371f	*    1}
++ RC      = {3958.42	/    1}
++ AF      = 1.4142
++ KF      = 1.5003E-13
+*$
+.MODEL NVA20X20 NPN
++ IS	= {1.3897E-17	  *   1}
++ BF	= {200.00    	  *   0.5}
++ VA	= {150.00    	  *   1}
++ BR	= {0.900     	  *   1}
++ VAR	= {15.61            *   1}
++ ISE	= {8.6137E-20	  *   1}
++ ISC	= {7.8075E-18	  *   1}
++ IK	= {2.8694E-05	  *   1}
++ IKR	= {2.7586E-04	  *   1}
++ IRB	= {9.8277E-09	  *   1}
++ RB	= {2.1600E+05	  *   1}
++ RBM	= {1.2578E+04 	  *   1}
++ CJE	= {1.2357f          *   1}
++ RE	= {2.0000E+03	  /   1}
++ CJE	= {1.2357f          *   1}
++ CJC	= {0.5670f          *   1}
+*$
+.MODEL  PVA  PNP
++ IS      = {7.5115E-18	  *  1}
++ BF      = {400.00       *  0.9}
++ VA      = {70.01        *  1}
++ BR      = {0.300        *  1}
++ VAR     = {15.00	  *  1}
++ ISE     = {1.0904E-16   *  1}
++ ISC     = {3.0741E-17   *  1}
++ IK      = {9.8868E-07   *  1}
++ IKR     = {6.4691E-06   *  1}
++ IRB	    = {1.2346E-10   *  1}
++ RB      = {7.8038E+05   *  1}  
++ RBM     = {1.5949E+03   *  1}  
++ RE      = {5.6533E+03   /  1}  
++ CJE	    = {0.6125f      *  1}
+*$
+.MODEL PLA13P0 PNP
++ IS      = { 2.5296E-17*  1}
++ BF      = { 635.00	*  0.5}
++ VA      = { 30.00	*  1}
++ BR      = { 30.000	*  1}
++ VAR     = { 13.87	*  1}
++ ISE     = { 2.9691E-17*  1}
++ ISC     = { 8.1250E-16*  1}
++ IK      = { 6.8367E-07*  1}
++ IKR     = { 2.1875E-06*  1}
++ IRB     = { 8.6508E-09*  1}
++ RB      = { 7.6800E+04*  1}
++ RBM     = { 1.0433E+04*  1}
++ RE      = { 5.5512E+03*  1}
++ CJE     = { 0.8080f	*  1}
++ CJC     = { 5.6799f	*  1}
++ RC      = { 1.6640E+04*  1}
++ AF 	    = 1
++ KF	    = 0
+*$

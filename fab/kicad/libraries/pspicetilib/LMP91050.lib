@@ -1,0 +1,304 @@
+* LMP91050
+*****************************************************************************
+* (C) Copyright 2012 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: LMP91050
+* Date: 2/6/2012
+* Model Type: All In One
+* Simulator: Pspice
+* Simulator Version: Pspice 16.2
+* EVM Order Number: N/A
+* EVM Users Guide: N/A
+* Datasheet: January 4, 2012
+*
+* Model Version: 2.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 : Release to Web
+* Version 2.0 : Release to Web
+*
+*****************************************************************************
+* Notes:
+*****************************************************************************
+.subckt LMP91050 IN CMOUT CSB SCLK SDIO GND OUT A1 A0 VDD PARAMS: DCR0=0 DCR1=0
++ DCR2=0 DCR3=0 DCR4=0 DCR5=1 DCR6=1 NDAC0=0 NDAC1=0 NDAC2=0 NDAC3=0 NDAC4=0
++ NDAC5=0 NDAC6=0 NDAC7=0
+*========================================================
+
+***********PGA1 Model*************
+
+*PGA1 ref
+E2 VREF_PGA1 VEE VCC VEE 0.5
+
+*PGA1 phase delay
+**Phase Delay = 6e-6
+.PARAM td1 = 6e-6
+E_LAPLACE1         IN1 0 LAPLACE {V(IN)} {(15120 - 6720*(s*td1) +
++  1260*(s*td1)*(s*td1) - 120*(s*td1)*(s*td1)*(s*td1) +
++  (s*td1)*(s*td1)*(s*td1)*(s*td1))/(15120 + 8400*(s*td1) +
++  2100*(s*td1)*(s*td1) + 300*(s*td1)*(s*td1)*(s*td1) +
++  25*(s*td1)*(s*td1)*(s*td1)*(s*td1) +
++  (s*td1)*(s*td1)*(s*td1)*(s*td1)*(s*td1))}
+** end Phase Delay
+
+*PGA1 offset
+R39 IN1 VINP_PGA1 0.01
+V6 NetE3_4 VINP_PGA1 {-1*(0.165*(1-(TEMP - 27)*1e-3))*1e-3}
+
+*PGA1 noise
+I4 0 NetD1_1 1u
+I5 0 NetD5_1 1u
+D1 NetD1_1 0 DN
+D5 NetD5_1 0 DN
+E3 VINP_NOISE_PGA1 NetE3_4 NetD1_1 NetD5_1 1
+
+*PGA1 PSRR
+E5 VINP_PSRR_PGA1 VINP_NOISE_PGA1 VPSRR_PGA1 0 1
+G6 VPSRR_PGA1 0 VCC VEE -3.16e-6
+R11 NetL2_1 VPSRR_PGA1 1e4
+R18 0 NetL2_1 1
+L2 NetL2_1 VPSRR_PGA1 10mH
+
+*PGA1 CMRR
+E6 VINP_CMRR_PGA1 VINP_PSRR_PGA1 VCMRR_PGA1 0 1
+G1 VCMRR_PGA1 0 NetE1_3 0 -3.16e-6
+R2 NetL1_1 VCMRR_PGA1 1e4
+R9 0 NetL1_1 1
+L1 NetL1_1 VCMRR_PGA1 10mH
+E1 NetE1_3 NetE1_4 VINP_PGA1 VEE 0.5
+E4 NetE1_4 0 VINN_PGA1 VEE 0.5
+
+* PGA1 IBIAS and Input cap
+C9 VINP_PGA1 0 100p
+G26 VINP_PGA1 0 VALUE { IF(DCR3==1 , -5e-12 , 5e-12) }
+R43 0 VINP_PGA1 1e12
+
+* PGA1 input stage gain=0.1
+I1 VCC NetI1_2 1m
+R4 NetQ1_3 NetI1_2 10
+R5 NetI1_2 NetQ2_3 10
+MQ1 NetG4_1 VINP_CMRR_PGA1 NetQ1_3 NetQ1_3 PMOS L=1u W=100u AD=1u AS=1u
+MQ2 NetG4_2 VINN_PGA1 NetQ2_3 NetQ2_3 PMOS L=1u W=100u AD=1u AS=1u
+R15 VEE NetG4_1 100
+R16 VEE NetG4_2 100
+
+*PGA1 gain stage gain=1000
+G4 VCC NetG4_4 NetG4_1 NetG4_2 1m
+G9 VEE NetG4_4 NetG4_1 NetG4_2 1m
+R7 NetG4_4 VCC 1e6
+R12 VEE NetG4_4 1e6
+D2 NetD2_1 VCC DIODE
+D6 VEE NetD6_2 DIODE
+V2 NetD2_1 NetG4_4 0.95
+V7 NetG4_4 NetD6_2 0.95
+
+*PGA1 gain and pole1 stage gain=1000
+G5 VCC NetC1_2 NetG4_4 VREF_PGA1 1m
+G10 VEE NetC1_2 NetG4_4 VREF_PGA1 1m
+R6 NetC1_2 VCC 1e6
+R13 VEE NetC1_2 1e6
+C1 VCC NetC1_2 5n
+C3 NetC1_2 VEE 5n
+D3 NetD3_1 VCC DIODE
+D7 VEE NetD7_2 DIODE
+V3 NetD3_1 NetC1_2 0.95
+V8 NetC1_2 NetD7_2 0.95
+
+*PGA1  pole2 stage
+G3 VCC VOUTD_PGA1 NetC1_2 VREF_PGA1 1u
+G7 VEE VOUTD_PGA1 NetC1_2 VREF_PGA1 1u
+R8 VOUTD_PGA1 VCC 1e6
+R14 VEE VOUTD_PGA1 1e6
+C2 VCC VOUTD_PGA1 10f
+C4 VOUTD_PGA1 VEE 10f
+D4 NetD4_1 VCC DIODE
+D8 VEE NetD8_2 DIODE
+V4 NetD4_1 VOUTD_PGA1 0.95
+V9 VOUTD_PGA1 NetD8_2 0.95
+
+*PGA1 output stage
+G2 VCC VOUT_PGA1 VCC VOUTD_PGA1 10m
+G8 VOUT_PGA1 VEE VOUTD_PGA1 VEE 10m
+R3 VOUT_PGA1 VCC 100
+R17 VEE VOUT_PGA1 100
+
+
+******************PGA2 Model*****************
+
+*PGA2 ref
+E9 VREF_PGA2 VEE VCC VEE 0.5
+
+*PGA2 phase delay
+**Phase Delay = 2e-6
+.PARAM td2 = 2e-6
+E_LAPLACE2         VINP1_PGA2 0 LAPLACE {V(VINP_PGA2)} {(15120 - 6720*(s*td2) +
++  1260*(s*td2)*(s*td2) - 120*(s*td2)*(s*td2)*(s*td2) +
++  (s*td2)*(s*td2)*(s*td2)*(s*td2))/(15120 + 8400*(s*td2) +
++  2100*(s*td2)*(s*td2) + 300*(s*td2)*(s*td2)*(s*td2) +
++  25*(s*td2)*(s*td2)*(s*td2)*(s*td2) +
++  (s*td2)*(s*td2)*(s*td2)*(s*td2)*(s*td2))}
+** end Phase Delay
+
+
+*PGA2 offset
+V15 NetE10_4 VINP1_PGA2 10m
+
+*PGA2 noise
+I4_pga2 0 NetD9_1 0.22n
+I5_pga2 0 NetD13_1 0.22n
+D9 NetD9_1 0 DN
+D13 NetD13_1 0 DN
+E10 VINP_NOISE_PGA2 NetE10_4 NetD9_1 NetD13_1 1
+
+
+*PGA2 PSRR
+E13 NetE12_4 VINP_NOISE_PGA2 VPSRR_PGA2 0 1
+G16 VPSRR_PGA2 0 VCC VEE -3.16e-6
+R31 NetL4_1 VPSRR_PGA2 1e4
+R38 0 NetL4_1 1
+L4 NetL4_1 VPSRR_PGA2 10mH
+
+*PGA2 CMRR
+E12 VINP_CMRR_PGA2 NetE12_4 VCMRR_PGA2 0 1
+E8 NetE8_3 NetE8_4 VINP_PGA2 VEE 0.5
+E11 NetE8_4 0 VINN_PGA2 VEE 0.5
+G11 VCMRR_PGA2 0 NetE8_3 0 -3.16e-6
+R21 NetL3_1 VCMRR_PGA2 1e4
+R28 0 NetL3_1 1
+L3 NetL3_1 VCMRR_PGA2 10mH
+
+*PGA2 IBIAS and Input cap
+G27 VINP_PGA2 0 VALUE { IF(DCR3==1, -5e-12 , 5e-12) }
+C10 VINP_PGA2 0 5p
+R44 0 VINP_PGA2 1e12
+
+*PGA2 input stage gain =0.1
+I2 VCC NetI2_2 1m
+R23 NetQ3_3 NetI2_2 10
+R24 NetI2_2 NetQ4_3 10
+MQ3 NetG14_1 VINP_CMRR_PGA2 NetQ3_3 NetQ3_3 PMOS L=1u W=100u AD=1u AS=1u
+MQ4 NetG14_2 VINN_PGA2 NetQ4_3 NetQ4_3 PMOS L=1u W=100u AD=1u AS=1u
+R35 VEE NetG14_1 100
+R36 VEE NetG14_2 100
+
+*PGA2 gain stage gain=1000
+G14 VCC NetG14_4 NetG14_1 NetG14_2 1m
+G19 VEE NetG14_4 NetG14_1 NetG14_2 1m
+R26 NetG14_4 VCC 1e6
+R32 VEE NetG14_4 1e6
+V11 NetD10_1 NetG14_4 0.7
+V16 NetG14_4 NetD14_2 0.7
+D10 NetD10_1 VCC DIODE
+D14 VEE NetD14_2 DIODE
+
+*PGA2 gain and pole1 stage gain=1000
+G15 VCC NetC5_2 NetG14_4 VREF_PGA2 1m
+G20 VEE NetC5_2 NetG14_4 VREF_PGA2 1m
+R25 NetC5_2 VCC 1e6
+R33 VEE NetC5_2 1e6
+C5 VCC NetC5_2 1.9n
+C7 NetC5_2 VEE 1.9n
+D11 NetD11_1 VCC DIODE
+D15 VEE NetD15_2 DIODE
+V12 NetD11_1 NetC5_2 0.65
+V17 NetC5_2 NetD15_2 0.65
+
+*PGA2 gain and pole2 stage gain=1000
+G13 VCC VOUTD_PGA2 NetC5_2 VREF_PGA2 1u
+G17 VEE VOUTD_PGA2 NetC5_2 VREF_PGA2 1u
+R27 VOUTD_PGA2 VCC 1e6
+R34 VEE VOUTD_PGA2 1e6
+C6 VCC VOUTD_PGA2 1f
+C8 VOUTD_PGA2 VEE 1f
+D12 NetD12_1 VCC DIODE
+D16 VEE NetD16_2 DIODE
+V13 NetD12_1 VOUTD_PGA2 0.65
+V18 VOUTD_PGA2 NetD16_2 0.65
+
+*PGA2 output stage
+G12 VCC VOUT_PGA2 VCC VOUTD_PGA2 10m
+G18 VOUT_PGA2 VEE VOUTD_PGA2 VEE 10m
+R22 VOUT_PGA2 VCC 100
+R30 VOUT_PGA2 OUT 0.1
+R37 VEE VOUT_PGA2 100
+
+***Programmable feedback resistors*******
+*PGA1
+G21 VOUT_PGA1 VINN_PGA1 VALUE {
++ V(VOUT_PGA1,VINN_PGA1)/((250e3-DCR0*209e3)*(1+1e-5*(TEMP-27))) }
+R40 CMOUT VINN_PGA1 1000
+
+*PGA2
+G22 VOUT_PGA2 VINN_PGA2 VALUE { V(VOUT_PGA2,VINN_PGA2)/((3.01e3 + 4e3*DCR1 +
++ 12e3*DCR2 + 12e3*DCR1*DCR2)*(1+3e-5*(TEMP-27))) }
+R19 BUFFER_OUT VINN_PGA2 1k
+
+**********VDAC***********
+V25 NetV25_1 0 {NDAC0}
+V26 NetV26_1 NetV25_1 {NDAC1*2}
+V27 NetV27_1 NetV26_1 {NDAC2*4}
+V28 NetV28_1 NetV27_1 {NDAC3*8}
+V29 NetV29_1 NetV28_1 {NDAC4*16}
+V30 NetV30_1 NetV29_1 {NDAC5*32}
+V31 NetV31_1 NetV30_1 {NDAC6*64}
+V32 NetV32_1 NetV31_1 {NDAC7*128}
+V33 NetU3_1 NetV32_1 -128
+EDAC VDAC CMOUT NetU3_1 0 -33.8e-3
+
+***********BUFFER**************
+E15 BUFFER_OUT 0 CMOUT NetE15_2 1e5
+G23 VDAC NetE15_2 VALUE { V(VDAC,NetE15_2)/(3.01e3 + 4e3*DCR1 + 12e3*DCR2 +
++ 12e3*DCR1*DCR2) }
+R41 NetE15_2 BUFFER_OUT 1k
+
+
+***********CMOUT****************
+E16 NetE16_3 0 VALUE = {IF(DCR3==1, 0  ,1 )}
+E17 NetE17_3 0 VALUE = {IF(DCR3==1, 1  ,0 )}
+V19 NetS1_4 0 {1.15*(1+3.6e-5*(TEMP-27))}
+V20 NetS2_4 0 {2.59*(1+3.6e-5*(TEMP-27))}
+S1 CMOUT NetS1_4 NetE16_3 0 SW01
+S2 CMOUT NetS2_4 NetE17_3 0 SW01
+
+**********Switch Network*********
+E21 NetE21_3 0 VALUE = {IF(DCR4==1, 1  ,0 )}
+E22 NetE22_3 0 VALUE = {IF(DCR4==1, 1  ,0 )}
+E23 NetE23_3 0 VALUE = {IF(DCR4==1, 0  ,1 )}
+S3 A0 VOUT_PGA1 NetE21_3 0 SW01
+S4 A1 VINP_PGA2 NetE22_3 0 SW01
+S5 VINP_PGA2 VOUT_PGA1 NetE23_3 0 SW01
+RS3 A0 0 1e6
+Rs4 A1 0 1e6
+
+*********Supply current************
+I3 VDD GND 10u
+R42 GND VDD 46k
+G24 VDD GND VALUE { IF(DCR6==1, 1.6e-3+ (V(VDD,GND)-2.7)/5e3 , 0 )}
+G25 VDD GND VALUE { IF(DCR5==1, 1.25e-3+( V(VDD,GND)-2.7)/1.65e3 , 0) }
+
+*******Internal Supply*************
+E24 VCC 0 VDD 0 1
+E25 VEE 0 GND 0 1
+
+.MODEL DN D ( IS = 1E-14 N = 1 AF = 1 KF = 7e-19)
+
+.MODEL DIODE D(KF = 0)
+
+.MODEL PMOS PMOS()
+
+.MODEL SW01 VSWITCH ( VT = 0.5 VH = 0.2 RON = 0.1 ROFF = 10G )
+
+.ENDS LMP91050
+*$

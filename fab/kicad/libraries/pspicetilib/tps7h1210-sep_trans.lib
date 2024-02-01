@@ -1,0 +1,86 @@
+*****************************************************************************
+* (C) Copyright 2021 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose. The model is
+** provided solely on an "as is" basis. The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+* Released by: Texas Instruments Inc.
+* Part: TPS7H1210-SEP
+* Date: 06DEC2021
+* Model Type: Transient
+* Simulator: PSpice
+* Simulator Version: 17.4
+* EVM Order Number: TPS7H1210EVM
+* EVM Users Guide: SLVUCA1
+* Datasheet: SBVS414
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+***************************************************************************
+*
+* Model Usage Notes:
+*
+* 1. This model is intended for transient simulation only. It is not validated for frequency response simulation.
+* 2. The following features have not been modeled:
+*         - Thermal shutdown
+*         - PSRR
+*         - Noise Spectral Density
+* 3. EN threshold is modeled as a fixed threshold
+* 4. Dropout is modeled as a typical value, independent of load
+*
+*****************************************************************************
+.SUBCKT TPS7H1210-SEP_TRANS IN EN NR_SS GND FB OUT
+E_ABM7         VYY 0 VALUE { LIMIT(V(N28779), V(VYY)+(-V(IOUT)-2.9)*0.03, 0) }
+X_H1    N28967 N29141 IOUT 0 TPS7H1210-SEP_H1 
+X_S11    ENABLED 0 N29141 OUT TPS7H1210-SEP_S11 
+R_R1         IN VXX  10MEG TC=0,0 
+E_ABM5         N222524 0 VALUE { MAX( V(N05382), MIN( V(IN)+0.363, 0))    }
+R_R7         GND N05348  1G TC=0,0 
+E_ABM4         N05382 0 VALUE { V(N05348) * V(OUT) / ( V(FB)-1e-6 )    }
+E_E1         N28779 GND VXX GND 1
+R_R6         N05382 GND  1G TC=0,0 
+E_ABM2         N05348 0 VALUE { -V(NR_SS)    }
+X_F1    VYY N28967 IN VYY TPS7H1210-SEP_F1 
+R_R13         N29361 NR_SS  368k TC=0,0 
+E_ABM6         N29361 0 VALUE { IF( V(ENABLED)>0.5, 1.182, 0)    }
+C_C1         IN VXX  3.2p  TC=0,0 
+R_R2         N222524 VXX  3.16k TC=0,0 
+C_C2         N222524 VXX  500p  TC=0,0 
+E_ABM8         ENABLED 0 VALUE { IF( ABS(V(EN))>1.2, 1, 0)    }
+.ends TPS7H1210-SEP_TRANS
+
+*********************************************************************************
+
+.subckt TPS7H1210-SEP_H1 1 2 3 4  
+H_H1         3 4 VH_H1 1
+VH_H1         1 2 0V
+.ends TPS7H1210-SEP_H1
+
+.subckt TPS7H1210-SEP_S11 1 2 3 4  
+S_S11         3 4 1 2 _S11
+RS_S11         1 2 1G
+.MODEL         _S11 VSWITCH Roff=1G Ron=0.03 Voff=0.0V Von=1.0V
+.ends TPS7H1210-SEP_S11
+
+.subckt TPS7H1210-SEP_F1 1 2 3 4  
+F_F1         3 4 VF_F1 1
+VF_F1         1 2 0V
+.ends TPS7H1210-SEP_F1
+
+

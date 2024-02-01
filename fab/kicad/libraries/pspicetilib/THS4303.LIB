@@ -1,0 +1,136 @@
+* THS4303
+*****************************************************************************
+* (C) Copyright 2011 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: THS4303
+* Date: 08JUL2011
+* Model Type: ALL IN ONE
+* Simulator: PSPICE
+* Simulator Version: 16.0.0.p001
+* EVM Order Number: N/A
+* EVM Users Guide: N/A
+* Datasheet: SLOS421B – NOVEMBER 2003 – REVISED JANUARY 2005
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+* 
+* Updates:
+*
+* Version 1.0 : 
+* Release to Web
+*
+*****************************************************************************
+* Connections:   non-inverting input
+*                |   inverting input
+*                |   |   positive power supply
+*                |   |   |   negative power supply
+*                |   |   |   |   output
+*                |   |   |   |   |   Powerdown
+*                |   |   |   |   |   |
+*****************************************************************************
+.subckt THS4303  IN+ IN- VS+ VS- OUT PD
+.MODEL S_TRUE VSWITCH Roff=1e9 Ron=1e-3 Voff=0.9 Von=1.5
+.MODEL S_Output VSWITCH Roff=50e3 Ron=2 Voff=0.2 Von=0.8
+.MODEL S_FALSE  VSWITCH Roff=1e9 Ron=1e-3 Voff=1 Von=0.8
+.model dx D(Is=800.00E-18)
+.model qx1 NPN(Is=800.00E-18 Bf=1.1786E3 KF=3.23E-12)
+.model qx2 NPN(Is=864.3162E-18 Bf=1.1786E3 KF=3.23E-12)
+* input stage
+  rc1  VS+ 11 44.210
+  rc2  VS+ 12 44.210
+  q1   11 2 13 qx1
+  q2   12  INP 14 qx2
+  L+   IN+  INP .5nH
+  re1  13 10 64
+  re2  14 10 64
+  Cdif  INP  2  0.1p
+  Cni   IN+ 99  .5p
+  Cinv  2 99  0.05p
+
+* Vic range limits
+  d10  15  10  dx
+  v15  15  VS- dc 1.0
+
+* Biasing
+  Vbias1  90  VS- 2V
+  Sbias   90  91  PD VS- S_TRUE
+  Rbias1  91  92  1600
+  Rbias2  92  VS-  400
+  Cbias   92  VS-  7.5n
+  Ebias   94  VS-  92 VS- 2.5
+  Rbias3  94  93   1k
+  Vbias2  93  VS-  0
+
+  fee  10  VS- Vbias2 16.5
+  fcc  VS+  VS-  Vbias2 17.068
+  Iccpd  VS+  VS-  0.9m
+  egnd  99  0  poly(2)  VS+  0  VS-  0  0 .5  .5
+
+* gain stage and dominant pole
+  ga   21 99 11 12 -10.4
+  ra   21 99 100
+  ca   21 99 0.815E-10
+
+* GAIN STAGE SWING LIMIT
+  DPC  21 23 dx
+  EPC  23 99 Poly(2)   VS+  99   VS-  99 -1.7  .5  -.5
+  DNC  24 21 dx
+  ENC  24 99 Poly(2)   VS+  99   VS-  99 1.7  -.5  .5
+
+* phase shift stage
+  gps   25 99 21 99 -100.0E-6
+  rps   25 99 10.0E3
+  cps   25 99 2E-15
+
+* Output stage
+  X_OP  25 99  VS+  VS- OUTa 94 THS430X_OP
+  Lo    OUTa OUT .12nH
+  Copd  OUTa 99  4.5p
+
+* Internal feedback
+  Rf    OUTa  2  450.0
+  Rg    2   INM  49.7
+  L-    INM IN-  .5n
+.ends THS4303
+*$
+
+* Output stage
+* connections:      non-inverting input
+*                   | inverting input
+*                   | | positive power supply
+*                   | | | negative power supply
+*                   | | | | output
+*                   | | | | | Powerdown
+*                   | | | | | |
+.subckt THS430X_OP  1 2 3 4 5 6
+.MODEL S_TRUE VSWITCH Roff=1e9 Ron=1e-3 Voff=0.9 Von=1.5
+.MODEL S_Output VSWITCH Roff=50e3 Ron=2 Voff=0.2 Von=0.8
+.MODEL S_FALSE  VSWITCH Roff=1e9 Ron=1e-3 Voff=1 Von=0.8
+.model dx D(Is=800.00E-18)
+  Srop  3  32   6  4 S_Output
+  EOP  32  31  Poly(2)   2  1  3  4  -.75  1  .5
+  DOP  31   7  dx
+
+* LOWER DRIVE STAGE
+  DON   7  41  dx
+  EON  41  42  Poly(2)   1  2  3  4  -.75  1  .5
+  Sron 42  4  6  4  S_Output
+
+  Rout  7  5  -.01
+.ends
+*$

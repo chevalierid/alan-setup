@@ -1,0 +1,254 @@
+* LM48560
+*****************************************************************************
+* (C) Copyright 2013 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: LM48560
+* Date: 2/18/2013
+* Model Type: All In One
+* Simulator: Pspice
+* Simulator Version: Pspice 16.0.0.p001
+* EVM Order Number: N/A
+* EVM Users Guide: N/A
+* Datasheet: SNAS513D –AUGUST 2011–REVISED AUGUST 2012
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 : Release to Web
+*
+*****************************************************************************
+* Notes:
+*	Parameters Modeled
+*	1. PSRR
+*	2. Quiescent Current
+*	3. Shut Down Current
+*	4. ShutDown mode
+*   5. CMRR
+*   6. Class H 
+*   The boost converter is modeled as an ideal boost converter. The output
+*   common mode is centered around zero to avoid generating a varying 
+*   reference voltage, and speed up simulation time. 
+*   When SW_HW mode is low, Hardware mode is enabled and the gain can be 
+*   selected using the GAIN_HW pin. When Software mode is enabled the 
+*   GAIN1_SW/GAIN0_SW pins can be used to set the gain in Software mode.
+*****************************************************************************
+.SUBCKT LM48560 VDD IN1+ IN1- IN2+ IN2- IN_SEL BOOST_EN SW_HW GAIN_HW GAIN1_SW GAIN0_SW SHDN GND OUT+ OUT-
+RGND        GND 0 1MEG
+RVDD        VDDx 0 1MEG
+V2          34 IN2+ 0
+Vos         49 IN1+ 0
+R10         GNDF IN2- 50K
+R4          IN2+ GNDF 50K
+R9          GNDF IN1- 50K
+R3          IN1+ GNDF 50K
+ECS1        VSS 0 VALUE = {V(VDDx,0)*-1}
+C3          VPEAK 0 1N
+R5          VPEAK 27 1
+ECS2        27 0 VALUE = {ABS(V(28,0)-V(29,0))}
+XU17 VDDx IN1+ IN1- IN2+ IN2- IN_SEL GAIN_HW GAIN0_SW GAIN1_SW SW_HW BOOST_EN
++ SHDN 31 30 GNDF LM48560_MUX
+R6          31 28 1
+R7          30 29 1
+C4          0 28 160N
+C5          29 0 160N
+XU16        33 32 GNDF CMRR
++ PARAMS: CMRR=80 FCMRR=2K
+XU15        VDDx VSS 34 32 35 36 GNDF CMR
++ PARAMS: VMAX=0 VMIN=0
+XU2         VDDx VSS IN2- 33 GNDF PSRR
++ PARAMS: PSRR=80 FPSRR=2K
+XU14 VDDx 38 37 35 36 IN_SEL GAIN_HW GAIN0_SW GAIN1_SW SW_HW BOOST_EN SHDN 40 39
++ GNDF LM48560_MUX
+C2          41 0 160N
+C1          0 42 160N
+R2          39 41 1
+R1          40 42 1
+XU10        43 OUT+ VIMONP AMETER
++ PARAMS: GAIN=1
+XU6         44 OUT- VIMONN AMETER
++ PARAMS: GAIN=1
+XU9         45 43 OUT_CURRENT_CLAMP
++ PARAMS: RSER=1 IMAX=1.5 IMIN=1.5
+XU4         46 44 OUT_CURRENT_CLAMP
++ PARAMS: RSER=1 IMAX=1.5 IMIN=1.5
+XU3         VDDx VSS 41 46 VIMONN GNDF VCLAMP_W_CLAW
++ PARAMS: VMAXIO=0 VMINIO=0 SLOPE=0
+XU5         VDDx VSS 42 45 VIMONP GNDF VCLAMP_W_CLAW
++ PARAMS: VMAXIO=0 VMINIO=0 SLOPE=0
+XU8         48 47 GNDF CMRR
++ PARAMS: CMRR=80 FCMRR=2K
+XU13        VDDx VSS 49 47 38 37 GNDF CMR
++ PARAMS: VMAX=0 VMIN=0
+XU11        VDDx VSS GNDF GND_FLOAT
+XU12        VDD 0 SHDN IQ
++ PARAMS: IQQ=5M IOFF=0.01U
+XU7         VDDx VSS IN1- 48 GNDF PSRR
++ PARAMS: PSRR=80 FPSRR=2K
+XU1         BOOST_EN VDD VDDx VPEAK BOOST_LM48560
+.ENDS
+
+
+.SUBCKT LM48560_MUX  VDD IN1+ IN1- IN2+ IN2- IN_SEL GAIN_HW GAIN0_SW GAIN1_SW SW_HW BOOST_EN SHDW OUT+ OUT- GNDF
+
+ECODE1        CODE1  0  VALUE = {IF(V(BOOST_EN) >= 1.5,1,0)*4 + IF(V(GAIN1_SW) >= 1.5,1,0)*2
++ + IF(V(GAIN0_SW) >= 1.5,1,0)}
+EDACS1        DACS1  0  VALUE = {IF(V(CODE1) == 0,0,
++ IF(V(CODE1) == 1,6,
++ IF(V(CODE1) == 2,12,
++ IF(V(CODE1) == 3,18,
++ IF(V(CODE1) == 4,21,
++ IF(V(CODE1) == 5,24,
++ IF(V(CODE1) == 6,27,30)))))))}
+EGAIN1        GVAL1  0  VALUE = {(IF(V(SW_HW) >= 1.5, 0, 1) * IF(V(IN_SEL) >= 1.5, IF(V(GAIN_HW) >= 1.5, 30, 24),
++ IF(V(GAIN_HW) >= 1.5, 6, 0))  +
++ IF(V(SW_HW) >= 1.5, 1, 0)*V(DACS1))}
+
+EOUT1         OUT+  GNDF  VALUE = {0.5*IF(V(IN_SEL) >= 1.5,V(IN2+,IN2-), V(IN1+,IN1-))
++ * PWR(10,V(GVAL1)/20) * IF(V(SHDW) >= 1.5,1,0)}
+
+EOUT2         GNDF  OUT-  VALUE = {0.5*IF(V(IN_SEL) >= 1.5,V(IN2+,IN2-), V(IN1+,IN1-))
++ * PWR(10,V(GVAL1)/20) * IF(V(SHDW) >= 1.5,1,0)}
+
+.ENDS
+
+
+
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+
+.SUBCKT CMRR   VI  VO  GNDF PARAMS: CMRR = 130 FCMRR = 1.6K
+.PARAM PI = 3.141592
+.PARAM RCMRR = 1
+.PARAM GCMRR = {PWR(10,-CMRR/20)/RCMRR}
+.PARAM LCMRR = {RCMRR/(2*PI*FCMRR)}
+G1  GNDF 1 VI GNDF {GCMRR}
+R1  1 2 {RCMRR}
+L1  2 GNDF {LCMRR}
+E1  VI VO 1 GNDF 1
+.ENDS
+
+
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+
+.SUBCKT CMR    VDD  VSS  VIP  VIM  VOP VOM  GNDF
++ PARAMS: VMAX = 0 VMIN = 0
+ECLAMPP  VOP GNDF VALUE = {LIMIT(V(VIP,GNDF),V(VDD,GNDF) - VMAX, V(VSS,GNDF) + VMIN)}
+ECLAMPM  VOM GNDF VALUE = {LIMIT(V(VIM,GNDF),V(VDD,GNDF) - VMAX, V(VSS,GNDF) + VMIN)}
+.ENDS
+
+
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+
+.SUBCKT PSRR   VDD  VSS  VI  VO  GNDF PARAMS: PSRR = 130 FPSRR = 1.6
+.PARAM PI = 3.141592
+.PARAM RPSRR = 1
+.PARAM GPSRR = {PWR(10,-PSRR/20)/RPSRR}
+.PARAM LPSRR = {RPSRR/(2*PI*FPSRR)}
+G1  GNDF 1 VDD VSS {GPSRR}
+R1  1 2 {RPSRR}
+L1  2 GNDF {LPSRR}
+E1  VO VI 1 GNDF 1
+C2  VDD VSS 10P
+.ENDS
+
+
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+
+.SUBCKT AMETER   VI  VO VIMON
++ PARAMS: GAIN = 1
+VSENSE VI VO DC = 0
+EMETER VIMON 0 VALUE = {I(VSENSE)*GAIN}
+.ENDS
+
+
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+
+.SUBCKT OUT_CURRENT_CLAMP   IN  OUT
++PARAMS: RSER = 1 IMAX = 10M  IMIN = 10M
+GRESP  OUTX OUT VALUE = {LIMIT(V(OUTX,OUT)/RSER,IMAX,-IMIN)}
+GRESN  IN OUTX VALUE = {-V(IN,OUTX)/RSER}
+.ENDS
+
+
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+
+.SUBCKT VCLAMP_W_CLAW   VDD  VSS  VI  VO VIMON  GNDF
++ PARAMS: VMAXIO = 0 VMINIO = 0 SLOPE = 0
+EPCLIP  VDD_CLP 0 VALUE = {V(VDD,GNDF) - SLOPE*V(VIMON) - VMAXIO}
+ENCLIP  VSS_CLP 0 VALUE = {V(VSS,GNDF) - SLOPE*V(VIMON) + VMINIO}
+ECLAMP  VO GNDF VALUE = {LIMIT(V(VI,GNDF), V(VDD_CLP), V(VSS_CLP))}
+.ENDS
+
+
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+
+.SUBCKT GND_FLOAT   VDD VSS GNDF
+EVCM  GNDF  0  VALUE = {(V(VDD) + V(VSS))*0.5}
+.ENDS
+
+
+**************************************
+**                      **
+**                               **
+**                         **
+**                          **
+**************************************
+
+.SUBCKT IQ   VDD VSS SHDN
++ PARAMS: IQQ = 1M  IOFF = 1P
+G1 VDD VSS VALUE = {IF(V(SHDN) >= V(VDD)/2,IQQ,IOFF)}
+.ENDS
+
+
+.SUBCKT BOOST_LM48560  BOOST_EN VDD AVDD VPEAK
+
+EBOOST     AVDD 0 VALUE = {IF(V(BOOST_EN) >= V(VDD)/2,MIN(MAX(V(VPEAK)*SGN(V(VPEAK)),3),15)
++ *(IF(V(VDD) >= 2,1,0)),IF(V(VDD) >= 6,3,IF(V(VDD) <= 2,0,V(VDD))))} ; INCLUDES SUPPLY CLAMP
+
+.ENDS

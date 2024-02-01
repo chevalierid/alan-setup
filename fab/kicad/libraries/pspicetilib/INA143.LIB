@@ -1,0 +1,157 @@
+* INA143
+*****************************************************************************
+* (C) Copyright 2011 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: INA143
+* Date: 24JUN2011
+* Model Type: ALL IN ONE
+* Simulator: PSPICE
+* Simulator Version: 16.0.0.p001
+* EVM Order Number: N/A
+* EVM Users Guide: N/A
+* Datasheet: SBOS116
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+* 
+* Updates:
+*
+* Version 1.0 : 
+* Release to Web
+*
+*****************************************************************************
+*
+* THIS MODEL IS APPLICABLE FOR INA143 & INA2143
+*
+* BEGIN FEATURES
+* CLOSED LOOP GAIN
+* SLEW RATE
+* INPUT VOLTAGE NOISE
+* WITH 1/F EFFECTS
+* CMRR VS FREQ
+* PSRR+ VS FREQ
+* PSRR- VS FREQ
+* INPUT VOLTAGE RANGE
+* VOS
+* GAIN ERROR
+* CLOAD RESPONSE
+* SETTLING TIME 0.1%
+* IQ
+* END FEATURES
+* BEGIN MODEL INA143
+* PINOUT ORDER +IN -IN +V -V OUT SEN REF
+* PINOUT ORDER  3   2   7  4  6   5   1
+*****************************************************************************
+.SUBCKT INA143 3 2 7 4 6 5 1
+Q26 8 9 10 QON
+Q27 11 9 12 QOP
+Q28 4 13 14 QOP
+Q29 7 15 16 QON
+I4 8 15 0.5E-3
+I5 13 11 0.5E-3
+R34 17 16 20
+R35 14 17 20
+C6 9 18 20E-12
+R36 19 9 1E3
+G1 9 19 20 0 -1E-3
+G2 21 19 22 23 -1.83E-5
+R37 19 21 1E10
+C7 20 24 15.5E-12
+R38 20 21 100
+E1 25 19 20 19 1
+D2 25 21 DD
+R39 19 24 1.5E3
+Q30 23 26 27 QIN
+Q31 22 28 29 QIN
+Q32 30 31 32 QNN
+R40 33 32 17.4E3
+V6 31 34 1.2613
+R41 23 35 60E3
+R42 22 35 60E3
+V7 8 36 -1.3
+R45 30 27 5500
+R46 30 29 5500
+R47 6 17 75
+D1 36 35 DD
+D3 21 25 DD
+D4 37 8 DD
+D5 11 38 DD
+V8 37 21 1.7
+V9 21 38 1.1
+E6 39 0 8 0 1
+E7 40 0 11 0 1
+E8 41 0 42 0 1
+R48 39 43 1E6
+R49 40 44 1E6
+R50 41 45 1E6
+R51 0 43 10
+R52 0 44 10
+R53 0 45 10
+E11 46 47 45 0 0.85
+R54 48 42 1E3
+R55 42 49 1E3
+C10 39 43 5E-9
+C11 40 44 1E-9
+C12 41 45 5E-12
+E12 50 46 44 0 0.75
+E13 51 50 43 0 1.5
+R60 50 51 1E9
+R61 46 50 1E9
+R62 47 46 1E9
+E22 48 0 52 0 1
+E23 49 0 51 0 1
+E24 53 54 55 56 2.5E-2
+I7 0 56 100E-6
+D6 56 0 DVN
+I8 0 55 100E-6
+D7 55 0 DVN
+R63 26 51 2E3
+R64 53 28 2E3
+Q33 26 26 57 QNN
+Q34 57 57 28 QNN
+Q35 58 58 26 QNN
+Q36 28 28 58 QNN
+E25 11 0 4 0 1
+E26 8 0 7 0 1
+I9 7 4 0.17E-3
+R65 4 7 100E3
+E27 19 0 8 11 0.001
+C13 52 0 3E-12
+C14 51 0 3E-12
+C15 51 52 5E-12
+V10 54 52 103E-6
+R66 12 15 20
+R67 13 10 20
+Q37 34 34 33 QNN
+I15 11 31 286E-6
+R68 1 47 99990
+R69 52 5 99990
+R70 2 52 10E3
+R71 47 3 10E3
+V12 33 11 -1.3
+R72 19 18 500
+D8 4 17 DD
+D9 17 7 DD
+.MODEL DD D
+.MODEL DVN D KF=1.6E-13
+.MODEL QNN NPN
+.MODEL QIN NPN BF=270 KF=4E-17
+.MODEL QON NPN BF=60 RC=70
+.MODEL QOP PNP BF=60 RC=95
+.ENDS
+* END MODEL INA143

@@ -1,0 +1,197 @@
+
+
+
+
+
+* THS6032
+*****************************************************************************
+* (C) Copyright 2011 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: THS6032
+* Date: 01JUL2011
+* Model Type: ALL-IN-ONE
+* Simulator: PSPICE
+* Simulator Version: 16.0.0.p001
+* EVM Order Number: N/A
+* EVM Users Guide: N/A
+* Datasheet: SLOS233F –APRIL 1999–REVISED AUGUST 2009
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 : 
+* Release to Web
+*
+*****************************************************************************
+* THS6032 SUBCIRCUIT
+* HIGH SPEED MONLITHIC OPERATIONAL AMPLIFIER
+* CLASS-G ADSL DRIVER
+* TEMPLATE=X^@REFDES %IN+ %IN- %VCC+HI %VCC-HI %OUT %SHDN %DGND %VCC+LO %VCC-LO @MODEL
+* CONNECTIONS:      NON-INVERTING INPUT
+*                   | INVERTING INPUT
+*                   | | POSITIVE POWER SUPPLY - HIGH
+*                   | | | NEGATIVE POWER SUPPLY - HIGH
+*                   | | | | OUTPUT
+*                   | | | | | SHUTDOWN
+*                   | | | | | | DIGITAL GROUND
+*                   | | | | | | | POSITIVE POWER SUPPLY - LOW
+*                   | | | | | | | | NEGATIVE POWER SUPPLY - LOW
+*                   | | | | | | | | |
+.SUBCKT THS6032     1 2 3 4 5 6 7 8 9
+*
+* INPUT *
+QD1        46 46 16 NPN_IN 0.25
+QD2        48 48 16 PNP_IN 0.5
+Q1         18 46 17 NPN_IN 0.25
+Q2         19 48 17 PNP_IN 0.5
+Q4         19 1 2 PNP_IN 0.5
+Q3         18 1 2 NPN_IN 0.25
+* PROTECTION DIODES *
+D44         1 3 D1N
+D51         4 1 D1N
+D49         2 3 D1N
+D50         4 2 D1N
+D54         7 6 D1N
+D53         6 3 D1N
+D52         4 6 D1N
+* SECOND STAGE *
+Q5         21 18 20 PNP 0.25
+Q7         12 12 21 PNP .5
+Q9         22 22 12 PNP 3
+Q6         14 19 23 NPN 0.125
+Q8         13 13 14 NPN .5
+Q10        22 22 13 NPN 3
+F1         3 18 VF1 1
+VF1        27 28 0V
+F2         3 52 VF2 1
+VF2        28 20 0V
+F3         19 4 VF3 1
+VF3        29 30 0V
+F4         11 4 VF4 1
+VF4        23 29 0V
+C1         7 22  3p
+* VCC_HI TO VCC_LO POWER DISTRIBUTION *
+E3         37 0 21 0 1
+Q11         3 37 38 NPN 100
+R3         36 38  0.695
+D1         8 35 DS40
+R5         36 35  2.31
+E4         15 0 14 0 1
+Q12         4 15 24 PNP 50
+R8         24 32  0.695
+D2         31 9 DS40
+R10         31 32  2.31
+* HIGH FREQUENCY SHAPING *
+R1         10 53  22
+R2         51 50  22
+C3         0 11  45p
+C4         52 0  45p
+E1         10 0 12 0 1
+E2         51 0 13 0 1
+L1         53 11  14n
+L2         50 52  14n
+* OUTPUT *
+Q15         36 11 39 NPN 100
+Q16         32 52 40 PNP 55
+* COMPLEX OUTPUT IMPEDANCE *
+RO1         41 39  25
+RO3         43 40  25
+RO2         42 39  0.7
+RO4         44 40  0.7
+CO1         41 5  20.2p
+CO2         43 5  20.2p
+* BIAS SOURCES *
+G1 45 46 3 4 1.6e-6
+G2 48 49 3 4 1.6e-6
+I1    45 46  DC 175e-6
+I2    48 49  DC 175e-6
+V1         3 45 0.83
+V2         49 4 0.83
+V3         3 27 0.83
+V4         30 4 0.83
+* POWER DRAW FROM VCC+/-HI *
+Rbias       3 4 10k
+* POWER DOWN SWITCHING *
+* INPUT
+R11         5 47  1k
+S1         16 1 6 0 S1
+RS1        6 0 1G
+S2         16 7 6 0 S2
+RS2        6 0 1G
+S3         17 2 6 0 S1
+RS3        6 0 1G
+S4         17 47 6 0 S2
+RS4        6 0 1G
+* GAIN STAGE *
+S5         14 60 6 0 S2
+RS5        6 0 1G
+S6         21 61 6 0 S2
+RS6        6 0 1G
+Rg1sd      60 0 5meg
+Rg2sd      0 61 5meg
+Cg1sd    60 0 6p
+Cg2sd     0 61 6p
+* OUTPUT *
+S9         62 44 6 0 S1
+RS9         6 0 1G
+S10        63 42 6 0 S1
+RS10        6 0 1G
+LO1a       62 5  45n
+LO2a       63 5  45n
+S7         64 44 6 0 S2
+RS7         6 0 1G
+S8         65 42 6 0 S2
+RS8         6 0 1G
+LO1b       64 5  150n
+LO2b       65 5  150n
+* MODELS *
+.MODEL NPN_IN NPN
++ IS=170E-18 BF=100 NF=1 VAF=100 IKF=0.0389 ISE=7.6E-18
++ NE=1.13489 BR=1.11868 NR=1 VAR=4.46837 IKR=8 ISC=8E-15
++ NC=1.8 RB=100 RE=0.1220 RC=100 CJE=120.2E-15 VJE=1.0888 MJE=0.381406
++ VJC=0.589703 MJC=0.265838 FC=0.1 CJC=133.8E-15 XTF=272.204 TF=12.13E-12
++ VTF=10 ITF=0.294 TR=3E-09 XTB=1 XTI=5 KF=3E-15
+.MODEL NPN NPN
++ IS=170E-18 BF=100 NF=1 VAF=100 IKF=0.0389 ISE=7.6E-18
++ NE=1.13489 BR=1.11868 NR=1 VAR=4.46837 IKR=8 ISC=8E-15
++ NC=1.8 RB=250 RE=0.1220 RC=200 CJE=120.2E-15 VJE=1.0888 MJE=0.381406
++ VJC=0.589703 MJC=0.265838 FC=0.1 CJC=133.8E-15 XTF=272.204 TF=12.13E-12
++ VTF=10 ITF=0.147 TR=3E-09 XTB=1 XTI=5
+.MODEL PNP_IN PNP
++ IS=296E-18 BF=100 NF=1 VAF=100 IKF=0.021 ISE=494E-18
++ NE=1.49168 BR=0.491925 NR=1 VAR=2.35634 IKR=8 ISC=8E-15
++ NC=1.8 RB=100 RE=0.1220 RC=100 CJE=120.2E-15 VJE=0.940007 MJE=0.55
++ VJC=0.588526 MJC=0.55 FC=0.1 CJC=133.8E-15 XTF=141.135 TF=12.13E-12
++ VTF=6.82756 ITF=0.267 TR=3E-09 XTB=1 XTI=5 KF=3E-15
+.MODEL PNP PNP
++ IS=296E-18 BF=100 NF=1 VAF=100 IKF=0.021 ISE=494E-18
++ NE=1.49168 BR=0.491925 NR=1 VAR=2.35634 IKR=8 ISC=8E-15
++ NC=1.8 RB=250 RE=0.1220 RC=200 CJE=120.2E-15 VJE=0.940007 MJE=0.55
++ VJC=0.588526 MJC=0.55 FC=0.1 CJC=133.8E-15 XTF=141.135 TF=12.13E-12
++ VTF=6.82756 ITF=0.267 TR=3E-09 XTB=1 XTI=5
+.MODEL D1N D IS=10E-15 N=1.836 ISR=1.565e-9 IKF=.04417 BV=30 IBV=10E-6 RS=45
++ TT=11.54E-9 CJO=2E-12 VJ=.5 M=.3333
+.MODEL DS40 D
++  RS= 1.7  N= 1.0254 Is=5.5e-11 CJO= 1.874E-16  M= 0.4908    TT= 0.000E-9
++ FC= 0.5000  EG=0.730  BV= 42.6  IBV= 1.000E-10
+.MODEL S1 VSWITCH Roff=1e12 Ron=1.0m Voff=0.8 Von=0.0
+.MODEL S2 VSWITCH Roff=1e12 Ron=1.0m Voff=0.8 Von=2
+.ENDS
+* END OF THS6032 model

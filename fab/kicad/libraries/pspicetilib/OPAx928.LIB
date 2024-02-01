@@ -1,0 +1,704 @@
+* OPAX928
+************************************************************************************************************************
+* (C) Copyright 2022 Texas Instruments Incorporated. All rights reserved.     
+************************************************************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.      
+** TI and its licensors and suppliers make no warranties, either expressed   
+** or implied, with respect to this model, including the warranties of       
+** merchantability or fitness for a particular purpose. The model is        
+** provided solely on an "as is" basis. The entire risk as to its quality   
+** and performance is with the customer
+************************************************************************************************************************
+* Released by: Srivatsan Sathyamoorthy
+* Date: 12/07/2022
+* Part: OPAx928
+* Model Type: Generic (suitable for all analysis types)
+* EVM Users Guide:  SBOU282
+* Datasheet: SBOSA77 - DECEMBER 2022
+* Created with Green-Williams-Lis Op Amp Macro-model Architecture
+*
+* Top Level Model: OPAx928
+* Model Verison: 1.0
+*
+************************************************************************************************************************
+*
+************************************************************
+* Model Usage Notes:
+* 1. The following parameters are modeled: 
+*    a. OPEN-LOOP GAIN AND PHASE VS. FREQUENCY  WITH RL, CL EFFECTS (Aol)
+*    b. UNITY GAIN BANDWIDTH (GBW)
+*    c. INPUT COMMON-MODE REJECTION RATIO VS. FREQUENCY (CMRR)
+*    d. POWER SUPPLY REJECTION RATIO VS. FREQUENCY (PSRR)
+*    e. DIFFERENTIAL INPUT IMPEDANCE (Zid)
+*    f. COMMON-MODE INPUT IMPEDANCE (Zic)
+*    g. OPEN-LOOP OUTPUT IMPEDANCE VS. FREQUENCY (Zo)
+*    h. OUTPUT CURRENT THROUGH THE SUPPLY (Iout)
+*    i. INPUT VOLTAGE NOISE DENSITY VS. FREQUENCY (en)
+*    j. INPUT CURRENT NOISE DENSITY VS. FREQUENCY (in)
+*    k. OUTPUT VOLTAGE SWING vs. OUTPUT CURRENT (Vo)
+*    l. SHORT-CIRCUIT OUTPUT CURRENT (Isc)
+*    m. QUIESCENT CURRENT (Iq)
+*    n. SETTLING TIME VS. CAPACITIVE LOAD (ts)
+*    o. SLEW RATE (SR)
+*    p. SMALL SIGNAL OVERSHOOT VS. CAPACITIVE LOAD
+*    q. LARGE SIGNAL RESPONSE
+*    r. OVERLOAD RECOVERY TIME (tor)
+*    s. INPUT BIAS CURRENT (Ib)
+*    t. INPUT OFFSET CURRENT (Ios)
+*    u. INPUT OFFSET VOLTAGE (Vos)
+*    v. INPUT OFFSET VOLTAGE VS. TEMPERATURE (Vos Drift)
+*    w. INPUT COMMON-MODE VOLTAGE RANGE (Vcm)
+*    x. INPUT OFFSET VOLTAGE VS. INPUT COMMON-MODE VOLTAGE (Vos vs. Vcm)
+*    y. INPUT/OUTPUT ESD CELLS (ESDin, ESDout)
+*
+************************************************************************************************************************
+.SUBCKT OPAX928 IN+ IN- V+ V- OUT GRD1 GRD2 
+****************************************
+* Models
+.MODEL R_NOISELESS RES (T_ABS=-273.15)
+****************************************
+* Components
+I_I_Q V+ V- DC 300U
+R_R1 N1 OUT R_NOISELESS 5 
+R_R2 N2 N3 R_NOISELESS 1 
+R_R3 N258562 N3 R_NOISELESS 1K 
+R_R4 GRD1 N258562 R_NOISELESS 100M 
+R_R5 GRD2 N258562 R_NOISELESS 100M 
+X_OPA_AMP IN+ IN- N1 V+ V- OPA_AMP_OPAX928
+X_OPA_BUF IN+ N2 N3 V+ V- OPA_BUF_OPAX928
+X_OPAX928_ESD_SCH GRD1 GRD2 IN+ IN- OUT V+ V- OPA928X_ESD_OPAX928
+.ENDS OPAX928
+************************************************************************************************************************
+
+************************************************************************************************************************
+.SUBCKT AOL_1_OPAX928 VC+ VC- IOUT+ IOUT- PARAMS: GAIN=1E-4 IPOS=.5 INEG=-.5
+****************************************
+* Components
+G1 IOUT+ IOUT- VALUE={LIMIT(GAIN*V(VC+,VC-),INEG,IPOS)}
+.ENDS AOL_1_OPAX928
+************************************************************************************************************************
+
+************************************************************************************************************************
+.SUBCKT AOL_2_OPAX928 VC+ VC- IOUT+ IOUT- PARAMS: GAIN=150E-3 IPOS=5.04 INEG=-6.85
+****************************************
+* Components
+G1 IOUT+ IOUT- VALUE={LIMIT(GAIN*V(VC+,VC-),INEG,IPOS)}
+.ENDS AOL_2_OPAX928
+************************************************************************************************************************
+
+************************************************************************************************************************
+.SUBCKT CL_SRC_OPAX928 VC+ VC- IOUT+ IOUT- PARAMS: GAIN=1 IPOS=1.08E1 INEG=-1.08E1
+****************************************
+* Components
+G1 IOUT+ IOUT- VALUE={LIMIT(GAIN*V(VC+,VC-),INEG,IPOS)}
+.ENDS CL_SRC_OPAX928
+************************************************************************************************************************
+
+************************************************************************************************************************
+.SUBCKT CLAMP_AMP_HI_OPAX928 VC+ VC- VIN COM VO+ VO- PARAMS: G=10
+****************************************
+* Components
+GVO- COM VO- VALUE = {IF(V(VIN,COM)<V(VC-,COM),((V(VC-,COM)-V(VIN,COM))*G),0)}
+GVO+ COM VO+ VALUE = {IF(V(VIN,COM)>V(VC+,COM),((V(VIN,COM)-V(VC+,COM))*G),0)}
+.ENDS CLAMP_AMP_HI_OPAX928
+************************************************************************************************************************
+
+************************************************************************************************************************
+.SUBCKT CLAMP_AMP_LO_OPAX928 VC+ VC- VIN COM VO+ VO- PARAMS: G=1
+****************************************
+* Components
+GVO- COM VO- VALUE = {IF(V(VIN,COM)<V(VC-,COM),((V(VC-,COM)-V(VIN,COM))*G),0)}
+GVO+ COM VO+ VALUE = {IF(V(VIN,COM)>V(VC+,COM),((V(VIN,COM)-V(VC+,COM))*G),0)}
+.ENDS CLAMP_AMP_LO_OPAX928
+************************************************************************************************************************
+
+************************************************************************************************************************
+.SUBCKT CLAW_SRC_OPAX928 VC+ VC- IOUT+ IOUT- PARAMS: GAIN=1 IPOS=0.54E1 INEG=-0.54E1
+****************************************
+* Components
+G1 IOUT+ IOUT- VALUE={LIMIT(GAIN*V(VC+,VC-),INEG,IPOS)}
+.ENDS CLAW_SRC_OPAX928
+************************************************************************************************************************
+
+************************************************************************************************************************
+.SUBCKT CLAWN_OPAX928 VC+ VC- IOUT+ IOUT-
+****************************************
+* Components
+G1 IOUT+ IOUT- TABLE {(V(VC+,VC-))} =(0, 6.85E-6)(29.2181, 1.21E-03)(56.5391, 2.64E-03)(62.7692, 3.05E-03)(65, 1.51E-02)
+.ENDS CLAWN_OPAX928
+************************************************************************************************************************
+
+************************************************************************************************************************
+.SUBCKT CLAWP_OPAX928 VC+ VC- IOUT+ IOUT-
+****************************************
+* Components
+G1 IOUT+ IOUT- TABLE {(V(VC+,VC-))} =(0, 10.32E-6)(24.3008, 1.03E-03)(43.3259, 1.95E-03)(56.3275, 2.82E-03)(61.6231,
++ 3.28E-03)(63.5475, 3.55E-03)(65, 3.72E-03)
+.ENDS CLAWP_OPAX928
+************************************************************************************************************************
+
+************************************************************************************************************************
+.SUBCKT FEMT_OPAX928 1 2 PARAMS: NVRF=1.5
+****************************************
+* Components
+E1 3 0 5 0 10
+G1 1 2 3 0 1E-6
+R1 5 0 {1.184*PWR(NVRF,2)} 
+R2 5 0 {1.184*PWR(NVRF,2)} 
+.ENDS FEMT_OPAX928
+************************************************************************************************************************
+
+************************************************************************************************************************
+.SUBCKT GR_SRC_OPAX928 VC+ VC- IOUT+ IOUT- PARAMS: GAIN=1 IPOS=10.08E1 INEG=-13.5E1
+****************************************
+* Components
+G1 IOUT+ IOUT- VALUE={LIMIT(GAIN*V(VC+,VC-),INEG,IPOS)}
+.ENDS GR_SRC_OPAX928
+************************************************************************************************************************
+
+************************************************************************************************************************
+.SUBCKT IQ_SRC_OPAX928 VC+ VC- IOUT+ IOUT- PARAMS: GAIN=1E-3
+****************************************
+* Components
+G1 IOUT+ IOUT- VALUE={IF((V(VC+,VC-)<=0),0,GAIN*V(VC+,VC-))}
+.ENDS IQ_SRC_OPAX928
+************************************************************************************************************************
+
+************************************************************************************************************************
+.SUBCKT OL_SENSE_OPAX928 COM SW+ OLN OLP
+****************************************
+* Components
+GSW+ COM SW+ VALUE = {IF((V(OLN,COM)>10E-3|V(OLP,COM)>10E-3),1,0)}
+.ENDS OL_SENSE_OPAX928
+************************************************************************************************************************
+
+************************************************************************************************************************
+.SUBCKT OPA_AMP_OPAX928 IN+ IN- OUT VCC VEE
+****************************************
+* Models
+.MODEL R_NOISELESS RES (T_ABS=-273.15)
+****************************************
+* Components
+C_C_COM0 IN_PX MID 6.4P 
+C_C_COM1 MID IN_NX 6.4P 
+C_C_DIFF IN_NX IN_PX 1.6P 
+C_C1 N3294772 N2991553 4.3N 
+C_C4 N2991657 MID 1F 
+C_C5 CLAMP MID 765N 
+C_C10 N3294626 N3294630 15.9U 
+C_C11 MID N50865911 318F 
+C_C13 N2992397 0 1F 
+C_C14 0 N2992375 1U 
+C_C15 N2992413 0 1F 
+C_C16 N2991741 MID 1F 
+C_C17 N2991765 MID 1F 
+C_C18 N2991811 MID 1F 
+C_C19 N2991831 MID 1F 
+C_C20 N2991907 MID 1F 
+C_C21 N2991925 MID 1F 
+C_C22 MID N2991969 1F 
+C_C23 N2992033 MID 1F 
+C_C24 N2992029 MID 1F 
+C_C25 N2992093 MID 1P 
+C_C26 N2992099 MID 1P 
+C_C27 SW_OL MID 100P 
+C_C29 VIMON MID 1N 
+C_C30 VOUT_S MID 1N 
+C_C70 VCLP MID 100P 
+C_C74 N3827259 N3828449 636F 
+C_C108 N3294524 MID 3.8P 
+C_C123 N4969418 N2991579 758F 
+C_C125 N4828960 N5072813 35.4P 
+C_C126 N5085181 N2991581 758F 
+E_E1 MID 0 N2992375 0 1
+E_E3 N2992163 MID OUT MID 1
+E_E4 N3294618 MID CL_CLAMP MID 1
+G_G1 N3294772 MID IN_PX MID -75M
+G_G2 N2991563 N2991555 N2991553 MID -1U
+G_G5 N2991587 N2991583 N2991581 N2991579 -1U
+G_G6 VSENSE MID CLAMP MID -1M
+G_G12 CLAW_CLAMP MID N3294524 MID -1M
+G_G13 CL_CLAMP MID CLAW_CLAMP MID -1M
+G_G18 VCC_B 0 VCC 0 -1
+G_G19 VEE_B 0 VEE 0 -1
+G_G20 VCC_CLP MID N2992033 MID -1M
+G_G21 VEE_CLP MID N2992029 MID -1M
+G_G22 N2992299 MID N2992295 MID -1
+G_G23 N2992323 MID N2992331 MID -1
+G_G39 N3294626 MID CL_CLAMP N2992235 -89
+G_G79 N3294524 MID VSENSE MID -100U
+G_G84 N3827259 MID N4723831 MID -1
+G_G86 N4828960 MID N3294630 MID -2.4
+G_G96 N4969418 MID VEE_B MID -3.27M
+G_G98 N4724134 MID N5072813 MID -4
+G_G99 N5085181 MID VCC_B MID -3.27M
+I_I_B MID N2991607 DC 2F
+I_I_OS MID IN_NX DC 2F
+R_R5 MID N3294772 R_NOISELESS 1 
+R_R6 N2991553 N3294772 R_NOISELESS 100MEG 
+R_R7 MID N2991553 R_NOISELESS 100 
+R_R8 N2991563 N2991555 R_NOISELESS 1MEG 
+R_R15 N2991583 N2991563 R_NOISELESS 1 
+R_R16 N2991587 N2991583 R_NOISELESS 1MEG 
+R_R17 N2991619 IN_NX R_NOISELESS 1 
+R_R18 MID N2991623 R_NOISELESS 1T 
+R_R19 MID N2991635 R_NOISELESS 1T 
+R_R20 N2991643 MID R_NOISELESS 1 
+R_R21 N2991657 N2991643 R_NOISELESS 1M 
+R_R22 MID N2991667 R_NOISELESS 1MEG 
+R_R23 MID CLAMP R_NOISELESS 1MEG 
+R_R24 MID VSENSE R_NOISELESS 1K 
+R_R32 MID CLAW_CLAMP R_NOISELESS 1K 
+R_R33 MID CL_CLAMP R_NOISELESS 1K 
+R_R34 N3294630 N3294626 R_NOISELESS 10K 
+R_R35 MID N3294626 R_NOISELESS 1 
+R_R36 MID N3294630 R_NOISELESS 7.143K 
+R_R37 MID N4724134 R_NOISELESS 1 
+R_R38 N4723831 N4724134 R_NOISELESS 52.63K 
+R_R39 N50865911 N4723831 R_NOISELESS 10K 
+R_R43 MID N3294682 R_NOISELESS 1 
+R_R46 VCC_B 0 R_NOISELESS 1 
+R_R47 VCC_B N2992397 R_NOISELESS 1M 
+R_R48 N2992397 N2992375 R_NOISELESS 1MEG 
+R_R49 N2992375 0 R_NOISELESS 1T 
+R_R50 N2992375 N2992413 R_NOISELESS 1MEG 
+R_R51 N2992413 VEE_B R_NOISELESS 1M 
+R_R52 VEE_B 0 R_NOISELESS 1 
+R_R53 VCC_CLP MID R_NOISELESS 1T 
+R_R54 N2991729 MID R_NOISELESS 1 
+R_R55 N2991741 N2991729 R_NOISELESS 1M 
+R_R56 VEE_CLP MID R_NOISELESS 1T 
+R_R57 N2991763 MID R_NOISELESS 1 
+R_R58 N2991765 N2991763 R_NOISELESS 1M 
+R_R59 N2991807 MID R_NOISELESS 1T 
+R_R60 N2991809 MID R_NOISELESS 1 
+R_R61 N2991811 N2991809 R_NOISELESS 1M 
+R_R62 N2991831 N2991837 R_NOISELESS 1M 
+R_R63 N2991849 MID R_NOISELESS 1T 
+R_R64 N2991837 MID R_NOISELESS 1 
+R_R65 N2991901 MID R_NOISELESS 1T 
+R_R66 N2991905 MID R_NOISELESS 1 
+R_R67 N2991907 N2991905 R_NOISELESS 1M 
+R_R68 N2991925 N2991931 R_NOISELESS 1M 
+R_R69 N2991943 MID R_NOISELESS 1T 
+R_R70 N2991931 MID R_NOISELESS 1 
+R_R71 N2991969 VSENSE R_NOISELESS 1M 
+R_R72 VCC_B N2991997 R_NOISELESS 1K 
+R_R73 N2991997 N2992033 R_NOISELESS 1M 
+R_R74 N2992001 VEE_B R_NOISELESS 1K 
+R_R75 N2992001 N2992029 R_NOISELESS 1M 
+R_R76 MID VCC_CLP R_NOISELESS 1K 
+R_R77 VEE_CLP MID R_NOISELESS 1K 
+R_R78 N2992323 MID R_NOISELESS 1 
+R_R79 N2992299 MID R_NOISELESS 1 
+R_R80 V11 N2992093 R_NOISELESS 100 
+R_R81 V12 N2992099 R_NOISELESS 100 
+R_R82 N2992105 MID R_NOISELESS 1 
+R_R83 N2992105 SW_OL R_NOISELESS 100 
+R_R167 N3294618 VCLP R_NOISELESS 100 
+R_R176 MID N3827259 R_NOISELESS 1 
+R_R178 N3828449 N3827259 R_NOISELESS 10K 
+R_R179 MID N3828449 R_NOISELESS 25 
+R_R266 MID N3294524 R_NOISELESS 10K 
+R_R297 N2991579 N4969418 R_NOISELESS 100G 
+R_R300 MID N2991579 R_NOISELESS 31.11K 
+R_R301 MID N4969418 R_NOISELESS 311.5 
+R_R305 N5072813 N4828960 R_NOISELESS 10K 
+R_R306 MID N4828960 R_NOISELESS 1 
+R_R307 MID N5072813 R_NOISELESS 3.33K 
+R_R308 N2991581 N5085181 R_NOISELESS 100G 
+R_R309 MID N5085181 R_NOISELESS 311.5 
+R_R310 MID N2991581 R_NOISELESS 31.11K 
+R_RDUMMY MID N2992235 R_NOISELESS 33K 
+R_RS_INN IN- IN_NX R_NOISELESS 100 
+R_RS_INP IN+ IN_PX R_NOISELESS 100 
+R_RX N2992235 N3294682 R_NOISELESS 330K 
+R_RX1 MID N2992151 R_NOISELESS 1T 
+R_RX2 VIMON N2992151 R_NOISELESS 100 
+R_RX3 MID N2992163 R_NOISELESS 1T 
+R_RX4 VOUT_S N2992163 R_NOISELESS 100 
+V_V_GRN N2991943 MID -270
+V_V_GRP N2991901 MID 270
+V_V_ISCN N2991849 MID -65
+V_V_ISCP N2991807 MID 65
+V_V_ORN N2992295 VCLP -2.26
+V_V_ORP N2992331 VCLP 9
+V_V1 N2991607 N2991555 6.408UVDC
+V_VCM_MAX N2991623 VCC_B 101M
+V_VCM_MIN N2991635 VEE_B -101M
+X_H1 N2992235 OUT N2992151 MID OPA_AMP_H1_OPAX928
+X_H2 N2992287 N2992323 V12 MID OPA_AMP_H2_OPAX928
+X_H3 N2992267 N2992299 V11 MID OPA_AMP_H3_OPAX928
+X_S1 N2992267 CLAMP N2992267 CLAMP OPA_AMP_S1_OPAX928
+X_S2 CLAMP N2992287 CLAMP N2992287 OPA_AMP_S2_OPAX928
+X_U1 IN_PX N2991607 VNSE_OPAX928 PARAMS: FLW=1 GLF=83.762E-3 RNV=266.4
+X_U6 N2991587 MID N2991643 MID N2991623 N2991635 VCM_CLAMP_OPAX928 PARAMS: GAIN=1
+X_U10 VCC_CLP VEE_CLP VOUT_S MID N2991729 N2991763 CLAMP_AMP_LO_OPAX928 PARAMS: G=1
+X_U11 N2991807 N2991849 VIMON MID N2991809 N2991837 CLAMP_AMP_LO_OPAX928 PARAMS: G=1
+X_U12 N2991901 N2991943 N2991969 MID N2991905 N2991931 CLAMP_AMP_HI_OPAX928 PARAMS: G=10
+X_U16 MID N2992105 N2992093 N2992099 OL_SENSE_OPAX928
+X_U18 VIMON MID N2991997 VCC_B CLAWP_OPAX928
+X_U19 MID VIMON VEE_B N2992001 CLAWN_OPAX928
+X_U22 N2991811 N2991831 CL_CLAMP MID CL_SRC_OPAX928 PARAMS: GAIN=1 IPOS=1.08E1 INEG=-1.08E1
+X_U23 N2991907 N2991925 CLAMP MID GR_SRC_OPAX928 PARAMS: GAIN=1 IPOS=12.2E1 INEG=-0.88E1
+X_U25 SW_OL MID N3294626 N3294630 SW_OL_OPAX928
+X_U26 VIMON MID VCC MID IQ_SRC_OPAX928 PARAMS: GAIN=1E-3
+X_U27 MID VIMON MID VEE IQ_SRC_OPAX928 PARAMS: GAIN=1E-3
+X_U30 N2991657 N2991619 MID N2991667 AOL_1_OPAX928 PARAMS: GAIN=1E-4 IPOS=.5 INEG=-.5
+X_U31 N2991667 MID MID CLAMP AOL_2_OPAX928 PARAMS: GAIN=150E-3 IPOS=5.76 INEG=-7.57
+X_U32 N3828449 MID MID N3294682 ZO_SRC_OPAX928 PARAMS: GAIN=400 IPOS=50E4 INEG=-50E4
+X_U35 N2991741 N2991765 CLAW_CLAMP MID CLAW_SRC_OPAX928 PARAMS: GAIN=1 IPOS=0.54E1 INEG=-0.54E1
+X_U36 MID N2991607 FEMT_OPAX928 PARAMS: NVRF=25M
+X_U37 IN_NX MID FEMT_OPAX928 PARAMS: NVRF=25M
+.ENDS OPA_AMP_OPAX928
+************************************************************************************************************************
+
+************************************************************************************************************************
+.SUBCKT OPA_AMP_H1_OPAX928 1 2 3 4
+****************************************
+* Components
+H_H1 3 4 VH_H1 1K
+VH_H1 1 2 0V
+.ENDS OPA_AMP_H1_OPAX928
+************************************************************************************************************************
+
+************************************************************************************************************************
+.SUBCKT OPA_AMP_H2_OPAX928 1 2 3 4
+****************************************
+* Components
+H_H2 3 4 VH_H2 1
+VH_H2 1 2 0V
+.ENDS OPA_AMP_H2_OPAX928
+************************************************************************************************************************
+
+************************************************************************************************************************
+.SUBCKT OPA_AMP_H3_OPAX928 1 2 3 4
+****************************************
+* Components
+H_H3 3 4 VH_H3 -1
+VH_H3 1 2 0V
+.ENDS OPA_AMP_H3_OPAX928
+************************************************************************************************************************
+
+************************************************************************************************************************
+.SUBCKT OPA_AMP_S1_OPAX928 1 2 3 4
+****************************************
+* Models
+.MODEL _S1 VSWITCH (ROFF=1E12 RON=10M VOFF=0.0V VON=10MV)
+****************************************
+* Components
+RS_S1 1 2 1G 
+S_S1 3 4 1 2 _S1
+.ENDS OPA_AMP_S1_OPAX928
+************************************************************************************************************************
+
+************************************************************************************************************************
+.SUBCKT OPA_AMP_S2_OPAX928 1 2 3 4
+****************************************
+* Models
+.MODEL _S2 VSWITCH (ROFF=1E12 RON=10M VOFF=0.0V VON=10MV)
+****************************************
+* Components
+RS_S2 1 2 1G 
+S_S2 3 4 1 2 _S2
+.ENDS OPA_AMP_S2_OPAX928
+************************************************************************************************************************
+
+************************************************************************************************************************
+.SUBCKT OPA_BUF_OPAX928 IN+ IN- OUT VCC VEE
+****************************************
+* Models
+.MODEL R_NOISELESS RES (T_ABS=-273.15)
+****************************************
+* Components
+C_C_COM0 ESDP MID 6.4P 
+C_C_COM1 MID ESDN 6.4P 
+C_C_DIFF ESDN ESDP 1.6P 
+C_C1 N3294772 N2991553 4.3N 
+C_C4 N2991657 MID 1F 
+C_C5 CLAMP MID 765N 
+C_C10 N3294626 N3294630 15.9U 
+C_C11 MID N51244231 318F 
+C_C13 N2992397 0 1F 
+C_C14 0 N2992375 1U 
+C_C15 N2992413 0 1F 
+C_C16 N2991741 MID 1F 
+C_C17 N2991765 MID 1F 
+C_C18 N2991811 MID 1F 
+C_C19 N2991831 MID 1F 
+C_C20 N2991907 MID 1F 
+C_C21 N2991925 MID 1F 
+C_C22 MID N2991969 1F 
+C_C23 N2992033 MID 1F 
+C_C24 N2992029 MID 1F 
+C_C25 N2992093 MID 1P 
+C_C26 N2992099 MID 1P 
+C_C27 SW_OL MID 100P 
+C_C29 VIMON MID 1N 
+C_C30 VOUT_S MID 1N 
+C_C70 VCLP MID 100P 
+C_C74 N3827259 N3828449 636F 
+C_C108 N3294524 MID 3.8P 
+C_C123 N4969418 N2991579 758F 
+C_C125 N4828960 N5072813 35.4P 
+C_C126 N5085181 N2991581 758F 
+E_E1 MID 0 N2992375 0 1
+E_E3 N2992163 MID OUT MID 1
+E_E4 N3294618 MID CL_CLAMP MID 1
+G_G1 N3294772 MID ESDP MID -75M
+G_G2 N2991563 N2991555 N2991553 MID -1U
+G_G5 N2991587 N2991583 N2991581 N2991579 -1U
+G_G6 VSENSE MID CLAMP MID -1M
+G_G12 CLAW_CLAMP MID N3294524 MID -1M
+G_G13 CL_CLAMP MID CLAW_CLAMP MID -1M
+G_G18 VCC_B 0 VCC 0 -1
+G_G19 VEE_B 0 VEE 0 -1
+G_G20 VCC_CLP MID N2992033 MID -1M
+G_G21 VEE_CLP MID N2992029 MID -1M
+G_G22 N2992299 MID N2992295 MID -1
+G_G23 N2992323 MID N2992331 MID -1
+G_G39 N3294626 MID CL_CLAMP N2992235 -89
+G_G79 N3294524 MID VSENSE MID -100U
+G_G84 N3827259 MID N4723831 MID -1
+G_G86 N4828960 MID N3294630 MID -2.4
+G_G96 N4969418 MID VEE_B MID -3.27M
+G_G98 N4724134 MID N5072813 MID -4
+G_G99 N5085181 MID VCC_B MID -3.27M
+R_R5 MID N3294772 R_NOISELESS 1 
+R_R6 N2991553 N3294772 R_NOISELESS 100MEG 
+R_R7 MID N2991553 R_NOISELESS 100 
+R_R8 N2991563 N2991555 R_NOISELESS 1MEG 
+R_R15 N2991583 N2991563 R_NOISELESS 1 
+R_R16 N2991587 N2991583 R_NOISELESS 1MEG 
+R_R17 N2991619 ESDN R_NOISELESS 1 
+R_R18 MID N2991623 R_NOISELESS 1T 
+R_R19 MID N2991635 R_NOISELESS 1T 
+R_R20 N2991643 MID R_NOISELESS 1 
+R_R21 N2991657 N2991643 R_NOISELESS 1M 
+R_R22 MID N2991667 R_NOISELESS 1MEG 
+R_R23 MID CLAMP R_NOISELESS 1MEG 
+R_R24 MID VSENSE R_NOISELESS 1K 
+R_R32 MID CLAW_CLAMP R_NOISELESS 1K 
+R_R33 MID CL_CLAMP R_NOISELESS 1K 
+R_R34 N3294630 N3294626 R_NOISELESS 10K 
+R_R35 MID N3294626 R_NOISELESS 1 
+R_R36 MID N3294630 R_NOISELESS 7.143K 
+R_R37 MID N4724134 R_NOISELESS 1 
+R_R38 N4723831 N4724134 R_NOISELESS 52.63K 
+R_R39 N51244231 N4723831 R_NOISELESS 10K 
+R_R43 MID N3294682 R_NOISELESS 1 
+R_R46 VCC_B 0 R_NOISELESS 1 
+R_R47 VCC_B N2992397 R_NOISELESS 1M 
+R_R48 N2992397 N2992375 R_NOISELESS 1MEG 
+R_R49 N2992375 0 R_NOISELESS 1T 
+R_R50 N2992375 N2992413 R_NOISELESS 1MEG 
+R_R51 N2992413 VEE_B R_NOISELESS 1M 
+R_R52 VEE_B 0 R_NOISELESS 1 
+R_R53 VCC_CLP MID R_NOISELESS 1T 
+R_R54 N2991729 MID R_NOISELESS 1 
+R_R55 N2991741 N2991729 R_NOISELESS 1M 
+R_R56 VEE_CLP MID R_NOISELESS 1T 
+R_R57 N2991763 MID R_NOISELESS 1 
+R_R58 N2991765 N2991763 R_NOISELESS 1M 
+R_R59 N2991807 MID R_NOISELESS 1T 
+R_R60 N2991809 MID R_NOISELESS 1 
+R_R61 N2991811 N2991809 R_NOISELESS 1M 
+R_R62 N2991831 N2991837 R_NOISELESS 1M 
+R_R63 N2991849 MID R_NOISELESS 1T 
+R_R64 N2991837 MID R_NOISELESS 1 
+R_R65 N2991901 MID R_NOISELESS 1T 
+R_R66 N2991905 MID R_NOISELESS 1 
+R_R67 N2991907 N2991905 R_NOISELESS 1M 
+R_R68 N2991925 N2991931 R_NOISELESS 1M 
+R_R69 N2991943 MID R_NOISELESS 1T 
+R_R70 N2991931 MID R_NOISELESS 1 
+R_R71 N2991969 VSENSE R_NOISELESS 1M 
+R_R72 VCC_B N2991997 R_NOISELESS 1K 
+R_R73 N2991997 N2992033 R_NOISELESS 1M 
+R_R74 N2992001 VEE_B R_NOISELESS 1K 
+R_R75 N2992001 N2992029 R_NOISELESS 1M 
+R_R76 MID VCC_CLP R_NOISELESS 1K 
+R_R77 VEE_CLP MID R_NOISELESS 1K 
+R_R78 N2992323 MID R_NOISELESS 1 
+R_R79 N2992299 MID R_NOISELESS 1 
+R_R80 V11 N2992093 R_NOISELESS 100 
+R_R81 V12 N2992099 R_NOISELESS 100 
+R_R82 N2992105 MID R_NOISELESS 1 
+R_R83 N2992105 SW_OL R_NOISELESS 100 
+R_R167 N3294618 VCLP R_NOISELESS 100 
+R_R176 MID N3827259 R_NOISELESS 1 
+R_R178 N3828449 N3827259 R_NOISELESS 10K 
+R_R179 MID N3828449 R_NOISELESS 25 
+R_R266 MID N3294524 R_NOISELESS 10K 
+R_R297 N2991579 N4969418 R_NOISELESS 100G 
+R_R300 MID N2991579 R_NOISELESS 31.11K 
+R_R301 MID N4969418 R_NOISELESS 311.5 
+R_R305 N5072813 N4828960 R_NOISELESS 10K 
+R_R306 MID N4828960 R_NOISELESS 1 
+R_R307 MID N5072813 R_NOISELESS 3.33K 
+R_R308 N2991581 N5085181 R_NOISELESS 100G 
+R_R309 MID N5085181 R_NOISELESS 311.5 
+R_R310 MID N2991581 R_NOISELESS 31.11K 
+R_RDUMMY MID N2992235 R_NOISELESS 33K 
+R_RS_INN IN- ESDN R_NOISELESS 100 
+R_RS_INP IN+ ESDP R_NOISELESS 100 
+R_RX N2992235 N3294682 R_NOISELESS 330K 
+R_RX1 MID N2992151 R_NOISELESS 1T 
+R_RX2 VIMON N2992151 R_NOISELESS 100 
+R_RX3 MID N2992163 R_NOISELESS 1T 
+R_RX4 VOUT_S N2992163 R_NOISELESS 100 
+V_V_GRN N2991943 MID -270
+V_V_GRP N2991901 MID 270
+V_V_ISCN N2991849 MID -65
+V_V_ISCP N2991807 MID 65
+V_V_ORN N2992295 VCLP -2.26
+V_V_ORP N2992331 VCLP 9
+V_V1 N2991555 ESDP 0VDC
+V_VCM_MAX N2991623 VCC_B 101M
+V_VCM_MIN N2991635 VEE_B -101M
+X_H1 N2992235 OUT N2992151 MID OPA_BUF_H1_OPAX928
+X_H2 N2992287 N2992323 V12 MID OPA_BUF_H2_OPAX928
+X_H3 N2992267 N2992299 V11 MID OPA_BUF_H3_OPAX928
+X_S1 N2992267 CLAMP N2992267 CLAMP OPA_BUF_S1_OPAX928
+X_S2 CLAMP N2992287 CLAMP N2992287 OPA_BUF_S2_OPAX928
+X_U6 N2991587 MID N2991643 MID N2991623 N2991635 VCM_CLAMP_OPAX928 PARAMS: GAIN=1
+X_U10 VCC_CLP VEE_CLP VOUT_S MID N2991729 N2991763 CLAMP_AMP_LO_OPAX928 PARAMS: G=1
+X_U11 N2991807 N2991849 VIMON MID N2991809 N2991837 CLAMP_AMP_LO_OPAX928 PARAMS: G=1
+X_U12 N2991901 N2991943 N2991969 MID N2991905 N2991931 CLAMP_AMP_HI_OPAX928 PARAMS: G=10
+X_U16 MID N2992105 N2992093 N2992099 OL_SENSE_OPAX928
+X_U18 VIMON MID N2991997 VCC_B CLAWP_OPAX928
+X_U19 MID VIMON VEE_B N2992001 CLAWN_OPAX928
+X_U22 N2991811 N2991831 CL_CLAMP MID CL_SRC_OPAX928 PARAMS: GAIN=1 IPOS=1.08E1 INEG=-1.08E1
+X_U23 N2991907 N2991925 CLAMP MID GR_SRC_OPAX928 PARAMS: GAIN=1 IPOS=12.2E1 INEG=-0.88E1
+X_U25 SW_OL MID N3294626 N3294630 SW_OL_OPAX928
+X_U26 VIMON MID VCC MID IQ_SRC_OPAX928 PARAMS: GAIN=1E-3
+X_U27 MID VIMON MID VEE IQ_SRC_OPAX928 PARAMS: GAIN=1E-3
+X_U30 N2991657 N2991619 MID N2991667 AOL_1_OPAX928 PARAMS: GAIN=1E-4 IPOS=.5 INEG=-.5
+X_U31 N2991667 MID MID CLAMP AOL_2_OPAX928 PARAMS: GAIN=150E-3 IPOS=5.04 INEG=-6.85
+X_U32 N3828449 MID MID N3294682 ZO_SRC_OPAX928 PARAMS: GAIN=400 IPOS=50E4 INEG=-50E4
+X_U35 N2991741 N2991765 CLAW_CLAMP MID CLAW_SRC_OPAX928 PARAMS: GAIN=1 IPOS=0.54E1 INEG=-0.54E1
+.ENDS OPA_BUF_OPAX928
+************************************************************************************************************************
+
+************************************************************************************************************************
+.SUBCKT OPA_BUF_H1_OPAX928 1 2 3 4
+****************************************
+* Components
+H_H1 3 4 VH_H1 1K
+VH_H1 1 2 0V
+.ENDS OPA_BUF_H1_OPAX928
+************************************************************************************************************************
+
+************************************************************************************************************************
+.SUBCKT OPA_BUF_H2_OPAX928 1 2 3 4
+****************************************
+* Components
+H_H2 3 4 VH_H2 1
+VH_H2 1 2 0V
+.ENDS OPA_BUF_H2_OPAX928
+************************************************************************************************************************
+
+************************************************************************************************************************
+.SUBCKT OPA_BUF_H3_OPAX928 1 2 3 4
+****************************************
+* Components
+H_H3 3 4 VH_H3 -1
+VH_H3 1 2 0V
+.ENDS OPA_BUF_H3_OPAX928
+************************************************************************************************************************
+
+************************************************************************************************************************
+.SUBCKT OPA_BUF_S1_OPAX928 1 2 3 4
+****************************************
+* Models
+.MODEL _S1 VSWITCH (ROFF=1E12 RON=10M VOFF=0.0V VON=10MV)
+****************************************
+* Components
+RS_S1 1 2 1G 
+S_S1 3 4 1 2 _S1
+.ENDS OPA_BUF_S1_OPAX928
+************************************************************************************************************************
+
+************************************************************************************************************************
+.SUBCKT OPA_BUF_S2_OPAX928 1 2 3 4
+****************************************
+* Models
+.MODEL _S2 VSWITCH (ROFF=1E12 RON=10M VOFF=0.0V VON=10MV)
+****************************************
+* Components
+RS_S2 1 2 1G 
+S_S2 3 4 1 2 _S2
+.ENDS OPA_BUF_S2_OPAX928
+************************************************************************************************************************
+
+************************************************************************************************************************
+.SUBCKT OPA928X_ESD_OPAX928 GRD1 GRD2 IN+ IN- OUT V+ V-
+****************************************
+* Models
+.MODEL DIO_ESD D (RS=1K IS=1E-15 TT=1P BV=40 CJO=5E-13)
+****************************************
+* Components
+D_D1 GRD1 IN+ DIO_ESD 
+D_D2 IN+ GRD1 DIO_ESD 
+D_D3 IN- GRD2 DIO_ESD 
+D_D4 GRD2 IN- DIO_ESD 
+D_D5 OUT V+ DIO_ESD 
+D_D6 V- OUT DIO_ESD 
+D_D7 GRD1 V+ DIO_ESD 
+D_D8 V- GRD1 DIO_ESD 
+D_D9 GRD2 V+ DIO_ESD 
+D_D10 V- GRD2 DIO_ESD 
+.ENDS OPA928X_ESD_OPAX928
+************************************************************************************************************************
+
+************************************************************************************************************************
+.SUBCKT SW_OL_OPAX928 SW_OL MID CAP_L CAP_R
+****************************************
+* Models
+.MODEL OL_SW VSWITCH (RON=1E-3 ROFF=1E12 VON=900E-3 VOFF=800E-3)
+****************************************
+* Components
+S1 CAP_L CAP_R SW_OL MID OL_SW
+.ENDS SW_OL_OPAX928
+************************************************************************************************************************
+
+************************************************************************************************************************
+.SUBCKT VCM_CLAMP_OPAX928 VIN+ VIN- IOUT- IOUT+ VP+ VP- PARAMS: GAIN=1
+****************************************
+* Components
+G1 IOUT+ IOUT- VALUE={LIMIT(GAIN*V(VIN+,VIN-),V(VP-,VIN-),V(VP+,VIN-))}
+.ENDS VCM_CLAMP_OPAX928
+************************************************************************************************************************
+
+************************************************************************************************************************
+.SUBCKT VNSE_OPAX928 1 2 PARAMS: FLW=1 GLF=83.762E-3 RNV=266.4
+****************************************
+* Models
+.MODEL DVN D (KF={PWR(FLW,0.5)/1E11} IS=1.0E-16)
+****************************************
+* Components
+D1 7 0 DVN 
+D2 8 0 DVN 
+E1 3 6 7 8 {GLF}
+E2 6 4 5 0 10
+E3 1 2 3 4 1
+I1 0 7 10E-3
+I2 0 8 10E-3
+R1 3 0 1E9 
+R2 3 0 1E9 
+R3 3 6 1E9 
+R4 5 0 {RNV} 
+R5 5 0 {RNV} 
+R6 3 4 1E9 
+R7 4 0 1E9 
+.ENDS VNSE_OPAX928
+************************************************************************************************************************
+
+************************************************************************************************************************
+.SUBCKT ZO_SRC_OPAX928 VC+ VC- IOUT+ IOUT- PARAMS: GAIN=400 IPOS=50E4 INEG=-50E4
+****************************************
+* Components
+G1 IOUT+ IOUT- VALUE={LIMIT(GAIN*V(VC+,VC-),INEG,IPOS)}
+.ENDS ZO_SRC_OPAX928
+************************************************************************************************************************
+

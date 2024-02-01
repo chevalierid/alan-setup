@@ -1,0 +1,275 @@
+* LM48557
+*****************************************************************************
+* (C) Copyright 2013 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: LM48557
+* Date: 2/8/2013
+* Model Type: All In One
+* Simulator: Pspice
+* Simulator Version: Pspice 16.0.0.p001
+* EVM Order Number: N/A
+* EVM Users Guide: N/A
+* Datasheet: SNAS486C - JULY2009 - REVISED MARCH 2010
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 : Release to Web
+*
+*****************************************************************************
+* Notes:
+*	Parameters Modeled
+*	1. Charge Pump
+*	2. PSRR
+*	3. 36-Step Adjustable Gain
+*	4. Quiescent Current
+*	5. Shut Down Current
+*	6. Offset Voltage
+*	7. Attenuation (Mute & ShutDown modes)
+*   8. CMRR
+*****************************************************************************
+*$
+.SUBCKT LM48557 VDD GND IN+ IN- VCM VOL5 VOL4 VOL3 VOL2 VOL1 VOL0 SHDN MUTE OUT+ OUT-
+Vos         22 IN+ 3M
+XU6         14 OUT+ VIMONP AMETER
++ PARAMS: GAIN=1
+XU2         15 OUT- VIMONN AMETER
++ PARAMS: GAIN=1
+XU9         16 14 OUT_CURRENT_CLAMP
++ PARAMS: RSER=1 IMAX=800M IMIN=800M
+XU4         17 15 OUT_CURRENT_CLAMP
++ PARAMS: RSER=1 IMAX=800M IMIN=800M
+XU3         VDDx VSS 18 17 VIMONN VCM VCLAMP_W_CLAW
++ PARAMS: VMAXIO=0 VMINIO=0 SLOPE=0
+XU5         VDDx VSS 19 16 VIMONP VCM VCLAMP_W_CLAW
++ PARAMS: VMAXIO=0 VMINIO=0 SLOPE=0
+ECS1        0 VSS VDDx 0 1
+R4          VCM IN- 3MEG
+R3          IN+ VCM 3MEG
+XU8         21 20 VCM CMRR
++ PARAMS: CMRR=40 FCMRR=200K
+XU13        VDDx VSS 22 20 23 24 VCM CMR
++ PARAMS: VMAX=0 VMIN=0
+XU11        VDDx VSS VCM GND_FLOAT
+XU12        VDD 0 SHDN IQ
++ PARAMS: IQQ=5M IOFF=0.01U
+XU7         VDDx VCM IN- 21 VCM PSRR
++ PARAMS: PSRR=80 FPSRR=2K
+XU1         VDDx VCM 23 24 VOL5 VOL4 VOL3 VOL2 VOL1 VOL0 VCM SHDN MUTE 19x 18x LM48557_PGA
+RU1         18x 18 1
+CU1         18  0  160n
+RU2         19x 19 1
+CU2         19  0  160n
+ECS2        VDDx 0 VALUE = {LIMIT(V(VDD,0),2.7,5.25)}
+.ENDS
+*$
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+.SUBCKT AMETER   VI  VO VIMON
++ PARAMS: GAIN = 1
+VSENSE VI VO DC = 0
+EMETER VIMON 0 VALUE = {I(VSENSE)*GAIN}
+.ENDS
+*$
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+.SUBCKT OUT_CURRENT_CLAMP   IN  OUT
++PARAMS: RSER = 1 IMAX = 10M  IMIN = 10M
+GRESP  OUTX OUT VALUE = {LIMIT(V(OUTX,OUT)/RSER,IMAX,-IMIN)}
+GRESN  IN OUTX VALUE = {-V(IN,OUTX)/RSER}
+.ENDS
+*$
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+.SUBCKT VCLAMP_W_CLAW   VDD  VSS  VI  VO VIMON  GNDF
++ PARAMS: VMAXIO = 0 VMINIO = 0 SLOPE = 0
+EPCLIP  VDD_CLP 0 VALUE = {V(VDD,GNDF) - SLOPE*V(VIMON) - VMAXIO}
+ENCLIP  VSS_CLP 0 VALUE = {V(VSS,GNDF) - SLOPE*V(VIMON) + VMINIO}
+ECLAMP  VO GNDF VALUE = {LIMIT(V(VI,GNDF), V(VDD_CLP), V(VSS_CLP))}
+.ENDS
+*$
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+.SUBCKT CMRR   VI  VO  GNDF PARAMS: CMRR = 130 FCMRR = 1.6K
+.PARAM PI = 3.141592
+.PARAM RCMRR = 1
+.PARAM GCMRR = {PWR(10,-CMRR/20)/RCMRR}
+.PARAM LCMRR = {RCMRR/(2*PI*FCMRR)}
+G1  GNDF 1 VI GNDF {GCMRR}
+R1  1 2 {RCMRR}
+L1  2 GNDF {LCMRR}
+E1  VI VO 1 GNDF 1
+.ENDS
+*$
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+.SUBCKT CMR    VDD  VSS  VIP  VIM  VOP VOM  GNDF
++ PARAMS: VMAX = 0 VMIN = 0
+ECLAMPP  VOP GNDF VALUE = {LIMIT(V(VIP,GNDF),V(VDD,GNDF) - VMAX, V(VSS,GNDF) + VMIN)}
+ECLAMPM  VOM GNDF VALUE = {LIMIT(V(VIM,GNDF),V(VDD,GNDF) - VMAX, V(VSS,GNDF) + VMIN)}
+.ENDS
+*$
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+.SUBCKT GND_FLOAT   VDD VSS GNDF
+RVDD  VDD GNDF 1MEG
+RVSS  GNDF VSS 1MEG
+.ENDS
+*$
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+.SUBCKT IQ   VDD VSS SHDN
++ PARAMS: IQQ = 1M  IOFF = 1P
+G1 VDD VSS VALUE = {IF(V(SHDN) >= V(VDD)/2,IQQ,IOFF)}
+.ENDS
+*$
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+.SUBCKT PSRR   VDD  VSS  VI  VO  GNDF PARAMS: PSRR = 130 FPSRR = 1.6
+.PARAM PI = 3.141592
+.PARAM RPSRR = 1
+.PARAM GPSRR = {PWR(10,-PSRR/20)/RPSRR}
+.PARAM LPSRR = {RPSRR/(2*PI*FPSRR)}
+G1  GNDF 1 VDD VSS {GPSRR}
+R1  1 2 {RPSRR}
+L1  2 GNDF {LPSRR}
+E1  VO VI 1 GNDF 1
+C2  VDD VSS 10P
+.ENDS
+*$
+.SUBCKT LM48557_PGA  VDD VSS VIP VIN VOL5 VOL4 VOL3 VOL2 VOL1 VOL0 VCM SHDN MUTE VOP VON
+; INPUT LOGIC TRANSLATOR
+ETL5  VB5 0 VALUE = {IF(V(VOL5) >= V(VDD)/2, 1, 0)}
+ETL4  VB4 0 VALUE = {IF(V(VOL4) >= V(VDD)/2, 1, 0)}
+ETL3  VB3 0 VALUE = {IF(V(VOL3) >= V(VDD)/2, 1, 0)}
+ETL2  VB2 0 VALUE = {IF(V(VOL2) >= V(VDD)/2, 1, 0)}
+ETL1  VB1 0 VALUE = {IF(V(VOL1) >= V(VDD)/2, 1, 0)}
+ETL0  VB0 0 VALUE = {IF(V(VOL0) >= V(VDD)/2, 1, 0)}
+EMUTE VMT 0 VALUE = {IF(V(MUTE) >= V(VDD)/2,0,1)}
+ESHDN VSD 0 VALUE = {IF(V(SHDN) >= V(VDD)/2,1,0)}
+EDAC  VDAC 0 VALUE = {(V(VB4)*16 + V(VB3)*8 + V(VB2)*4 + V(VB1)*2 + V(VB0))*(V(VMT)*V(VSD))}
+EDAC2 VDAC2 0 VALUE = {V(VB5)*32 + V(VDAC)}
+EAMP1a  NX1a VCM VALUE = {V(VIP,VIN)/2 * IF(V(VDAC2) >= 60, 1,
++    IF(V(VDAC) == 0, PWR(10,-90/20),
++  IF(V(VDAC) == 1, PWR(10,-25/20),
++  IF(V(VDAC) == 2, PWR(10,-22/20),
++  IF(V(VDAC) == 3, PWR(10,-19/20),
++  IF(V(VDAC) == 4, PWR(10,-16/20),
++  IF(V(VDAC) == 5, PWR(10,-13/20),
++  IF(V(VDAC) == 6, PWR(10,-10/20),
++  IF(V(VDAC) == 7, PWR(10,-8/20),
++  IF(V(VDAC) == 8, PWR(10,-6/20),
++  IF(V(VDAC) == 9, PWR(10,-4/20),
++  IF(V(VDAC) == 10, PWR(10,-2/20),
++  IF(V(VDAC) == 11, 1,
++  IF(V(VDAC) == 12, PWR(10,2/20),
++  IF(V(VDAC) == 13, PWR(10,4/20),
++  IF(V(VDAC) == 14, PWR(10,6/20),
++  IF(V(VDAC) == 15, PWR(10,8/20),
++  IF(V(VDAC) == 16, PWR(10,10/20),
++  IF(V(VDAC) == 17, PWR(10,12/20),
++  IF(V(VDAC) == 18, PWR(10,14/20),
++  IF(V(VDAC) == 19, PWR(10,16/20),
++  IF(V(VDAC) == 20, PWR(10,18/20),
++  IF(V(VDAC) == 21, PWR(10,20/20),
++  IF(V(VDAC) == 22, PWR(10,22/20),
++  IF(V(VDAC) == 23, PWR(10,24/20),1
++  )))))))))))))))))))))))))}
+EAMP1b  NX1  VCM VALUE = {V(NX1a) * IF(V(VDAC2) >= 60, 1,
++  IF(V(VDAC) == 24, PWR(10,26/20),
++  IF(V(VDAC) == 25, PWR(10,28/20),
++  IF(V(VDAC) == 26, PWR(10,30/20),
++  IF(V(VDAC) == 27, PWR(10,32/20),
++  IF(V(VDAC) == 28, PWR(10,34/20),
++  IF(V(VDAC) == 29, PWR(10,36/20),
++  IF(V(VDAC) == 30, PWR(10,38/20),
++  IF(V(VDAC) == 31, PWR(10,40/20), 1)))))))))}
+EAMP2a  NX2a VCM VALUE = {V(VIP,VIN)/2 * IF(V(VDAC2) >= 60, 1,
++    IF(V(VDAC) == 0, PWR(10,-90/20),
++  IF(V(VDAC) == 1, PWR(10,-25/20),
++  IF(V(VDAC) == 2, PWR(10,-22/20),
++  IF(V(VDAC) == 3, PWR(10,-19/20),
++  IF(V(VDAC) == 4, PWR(10,-16/20),
++  IF(V(VDAC) == 5, PWR(10,-13/20),
++  IF(V(VDAC) == 6, PWR(10,-10/20),
++  IF(V(VDAC) == 7, PWR(10,-8/20),
++  IF(V(VDAC) == 8, PWR(10,-6/20),
++  IF(V(VDAC) == 9, PWR(10,-4/20),
++  IF(V(VDAC) == 10, PWR(10,-2/20),
++  IF(V(VDAC) == 11, 1,
++  IF(V(VDAC) == 12, PWR(10,2/20),
++  IF(V(VDAC) == 13, PWR(10,4/20),
++  IF(V(VDAC) == 14, PWR(10,6/20),
++  IF(V(VDAC) == 15, PWR(10,8/20),
++  IF(V(VDAC) == 16, PWR(10,10/20),
++  IF(V(VDAC) == 17, PWR(10,12/20),
++  IF(V(VDAC) == 18, PWR(10,14/20),
++  IF(V(VDAC) == 19, PWR(10,16/20),
++  IF(V(VDAC) == 20, PWR(10,18/20),
++  IF(V(VDAC) == 21, PWR(10,20/20),
++  IF(V(VDAC) == 22, PWR(10,22/20),
++  IF(V(VDAC) == 23, PWR(10,24/20),1
++  )))))))))))))))))))))))))}
+EAMP2b  VCM NX2 VALUE = {V(NX2a) * IF(V(VDAC2) >= 60, 1,
++   IF(V(VDAC) == 24, PWR(10,26/20),
++  IF(V(VDAC) == 25, PWR(10,28/20),
++  IF(V(VDAC) == 26, PWR(10,30/20),
++  IF(V(VDAC) == 27, PWR(10,32/20),
++  IF(V(VDAC) == 28, PWR(10,34/20),
++  IF(V(VDAC) == 29, PWR(10,36/20),
++  IF(V(VDAC) == 30, PWR(10,38/20),
++  IF(V(VDAC) == 31, PWR(10,40/20), 1)))))))))}
+EAMP3  VOP 0 VALUE = {V(NX1)* IF(V(VDAC2) == 60, PWR(10,42/20),
++ IF(V(VDAC2) == 61, PWR(10,44/20),
++ IF(V(VDAC2) == 62, PWR(10,46/20),
++ IF(V(VDAC2) == 63, PWR(10,48/20), 1))))}
+EAMP4  VON 0 VALUE = {V(NX2)* IF(V(VDAC2) == 60, PWR(10,42/20),
++ IF(V(VDAC2) == 61, PWR(10,44/20),
++ IF(V(VDAC2) == 62, PWR(10,46/20),
++ IF(V(VDAC2) == 63, PWR(10,48/20), 1))))}
+.ENDS
+*$

@@ -1,0 +1,62 @@
+* PSpice Model Editor - Version 17.4.0
+* JFE2140
+*****************************************************************************
+* (C) Copyright 2021 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Online Design Tools, Texas Instruments Inc.
+* Part: JFE2140
+* Date: 16AUG2021
+* Model Type: Generic (suitable for all analysis types)
+* EVM Order Number: N/A 
+* EVM Users Guide:  N/A 
+* Datasheet: SLPS730
+* Created with Shichman and Hodges JFET SPICE modeling
+*
+* Model Version: Final 1.0
+*
+*****************************************************************************
+*
+* Final 1.0
+* Release to Web.
+*****************************************************************************
+* Model Usage Notes:
+* The following parameters are modeled: 
+*      Static, large and small signals, and noise parameters
+*
+* Use 2 Symbols of JFEx140 to match one unit of JFE2140 device.
+*
+*****************************************************************************
+*$
+.SUBCKT JFEx140 D G S VCH VCL
+*****************************************************************************
+.model DJFEx140 D Is=1e-12 Cjo=0.1pF Rs=190k BV=10
+.model NJFEx140 NJF (BETA=14.24m BETATCE=-0.22 VTO=-975m VTOTC=0.45m LAMBDA=11.9m RD=10 RS=8 N=1 M=0.33 PB=0.705 IS=5.34f CGD=3.5p CGS=9.2p AF=1 KF=0.2e-18 FC=0.5)
+*
+J_J1         D G S NJFEx140 
+D_D1         G D   DJFEx140
+X_U1         D VCH VCL ESD_OUT_JFEx140
+X_U2         G VCH VCL ESD_OUT_JFEx140
+X_U3         S VCH VCL ESD_OUT_JFEx140
+.ENDS JFEx140
+*$
+*
+.SUBCKT ESD_OUT_JFEx140 OUT VCH VCL
+.MODEL ESD_SW VSWITCH(RON=50 ROFF=1E12 VON=700E-3 VOFF=100E-3)
+S1 VCH OUT OUT VCH ESD_SW
+S2 OUT VCL VCL OUT ESD_SW
+.ENDS  ESD_OUT_JFEx140
+*$
+*

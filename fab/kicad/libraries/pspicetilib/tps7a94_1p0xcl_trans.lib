@@ -1,0 +1,67 @@
+.SUBCKT TPS7A94_1ADC_TRANS EN FB_PG GND IN NR/SS OUT PG SNS  
+X_U1 FB_PG NR/SS PG SNS EN GND IN N222524 OUT V_INT  
+R_R5         VZZ VYY  {ROUT}  
+R_R1         VXX IN  {RINP}  
+X_F1    VZZ OUT IN VYY TPS7A94_F1 
+R_R2         N222524 VXX  {PSRR*RINP}  
+C_C1         VXX IN  {1/(6.28*RINP*POLE)}  
+C_C2         VXX N222524  {1/(6.28*PSRR*RINP*ZERO)}  
+E_ABM1         N242982 0 VALUE { MIN(V(VXX), (V(VZZ)+(ILIM*ROUT)))    }
+R_R6         N242982 VYY  10 TC=0,0 
+C_C3         0 VYY  1n  
+.PARAM  iref=150ua zero=400e3 uhys=0.053 ehys=0.11 psrr=17.8e-6 drop=0.18 uvlo=1.6
++  venb=1.22 pg_uhys=10m pole=3000 ilim=1.3 rout=4m rinp=1e7
+.ENDS
+ 
+.SUBCKT V_INT FB_PG NR/SS PG SNS V_ENB V_GND V_INP V_INT V_OUT  
+E_ABM4         N09035 0 VALUE { V(NR/SS)  
++ * (ABS(V(V_OUT)) + 1e-6)  
++ / (ABS(V(SNS)) + 1e-6)  }
+R_R1         V_GND NR/SS  1G  
+R_R2         V_GND N05382  1G  
+E_ABM5         N09745 0 VALUE { MIN(V(N05382),  
++ MAX(V(V_INP) - {DROP}, 0))   }
+E_ABM6         N08164 0 VALUE { IF(V(N13377)> 0.6 & V(N11113) > 0.6, {IREF}, 0)
++     }
+R_R4         N09035 N05382  10 TC=0,0 
+C_C2         0 N05382  1n  
+R_R5         N09745 V_INT  10 TC=0,0 
+C_C3         0 V_INT  1n  
+X_U1         V_ENB N11911 N11626 N11113 COMPHYS_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+V_V1         N11626 0 {EHYS}
+V_V2         N11911 0 {VENB}
+X_U2         V_INP N12783 N12664 N13377 COMPHYS_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+V_V3         N12664 0 {UHYS}
+V_V4         N12783 0 {UVLO}
+C_C4         0 NR/SS  10p  
+X_U3         FB_PG N20164 N18575 N18883 COMPHYS_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+V_V5         N18575 0 {PG_UHYS}
+X_S1    N18883 0 PG 0 V_INT_S1 
+G_G1         V_INP NR/SS N08164 0 1
+V_V6         N20164 0 200mVdc
+.PARAM  iref=150ua zero=400e3 uhys=0.053 ehys=0.11 psrr=17.8e-6 drop=0.18 uvlo=1.6
++  venb=1.22 pg_uhys=10m pole=3000 ilim=1.3 rout=4m rinp=1e7
+.ENDS
+
+.subckt TPS7A94_F1 1 2 3 4  
+F_F1         3 4 VF_F1 1
+VF_F1         1 2 0V
+.ends TPS7A94_F1
+
+.subckt V_INT_S1 1 2 3 4  
+S_S1         3 4 1 2 _S1
+RS_S1         1 2 1G
+.MODEL         _S1 VSWITCH Roff=10m Ron=1e6 Voff=0.25V Von=0.75V
+.ends V_INT_S1
+
+.SUBCKT COMPHYS_BASIC_GEN INP INM HYS OUT PARAMS: VDD=1 VSS=0 VTHRESH=0.5	
+EIN INP1 INM1 INP INM 1 
+EHYS INP1 INP2 VALUE { IF( V(1) > {VTHRESH},-V(HYS),0) }
+EOUT OUT 0 VALUE { IF( V(INP2)>V(INM1), {VDD} ,{VSS}) }
+R1 OUT 1 1
+C1 1 0 5n
+RINP1 INP1 0 1K
+.ENDS COMPHYS_BASIC_GEN

@@ -1,0 +1,156 @@
+*$ 
+* LMC6001A
+*****************************************************************************
+* (C) Copyright 2022 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Online Design Tools, Texas Instruments Inc.
+* Part: LMC6001A
+* Date: 19JUL2022
+* EVM Order Number: NA
+* EVM Users Guide:  NA
+* Datasheet: SNOS694I -MARCH 1995-REVISED SEPTEMBER 2015
+* Parts is a MicroSim product.
+*
+*
+* Model Version: Final 1.1
+*
+*****************************************************************************
+*
+*
+* Updates:
+*
+* Final 1.1
+* 1. Updated PSpice Symbol.
+* 2. Added .ENDS name as LMC6001A.
+*
+* Final 1.0: 
+* Release to Web
+*
+*****************************************************************************
+* Model Usage Notes:
+* 1. Model file is updated with latest header.
+* 2. This CMOS electrometer simulates guaranteed (100% tested) input offset 
+*    voltage (VOS) & input bias current (IB)
+* 3. Noise is not modeled.
+* 4. Asymmetrical gain is not modeled.
+* 5. Features:
+*    Operates from single supply
+*    Rail-to-rail output swing
+*    Low offset voltage (max) =           350uV
+*    Ultra low input current (max) =       25fA
+*    Slew rate =                        1.5V/uS
+*    Gain-bandwidth product =            1.3MHz 
+*    Supply current =                     450uA
+***************************************************************************** 
+* Connections:    Non-inverting input
+*                 |   Inverting input
+*                 |   |   Positive power supply
+*                 |   |   |   Negative power supply
+*                 |   |   |   |   Output
+*                 |   |   |   |   |
+*                 |   |   |   |   |
+.SUBCKT LMC6001A  1   2  99  50  28
+***************************************************************************** 
+* CAUTION:  SET .OPTIONS GMIN=1E-16 TO CORRECTLY MODEL INPUT BIAS CURRENT.
+CI1 1  50 2P
+CI2 2  50 2P
+* 1.634 Hz pole capacitor
+C3  98 9  9.715N
+* 1.1 MHz pole capacitor
+C4  6  5  13.95P
+* 4.98 MHz pole capacitor
+C5  98 15 31.9F
+* Drain-substrate capacitor
+C6  50 4  3P
+* 28.6 MHz pole capacitor
+C7  98 11 5.62F
+DP1 1  99 DA
+DP2 50 1  DD
+DP3 2  99 DB
+DP4 50 2  DC
+D1  9  8  DX
+D2  10 9  DX
+D3  18 20 DX
+D4  21 18 DX
+D5  26 24 DX
+D6  25 27 DX
+D7  22 99 DX
+D8  50 22 DX
+D9  0  14 DX
+D10 12 0  DX
+EH  97 98 99    49 1.0
+EN  0  96 0     50 1.0
+* Input offset voltage -|
+EOS 7  1  POLY(1) 16 49 350U 1
+EP  97 0  99    0  1.0
+E1  97 19 99    18 1.0
+* Sourcing load +Vs current
+F1  99 0  VA2   1
+* Sinking load -Vs current
+F2  0  50 VA3   1
+F3  13 0  VA1   1
+G1  98 9  5     6  0.1
+G2  98 11 9     49 1U
+G3  98 15 11    49 1U
+* DC CMRR
+G4  98 16 POLY(2) 1 49 2 49 0 1.26E-8 1.26E-8
+G5  98 18 15    49 1U
+I1  99 4  33.46U
+I2  99 50 366.5U
+* Load dependent pole 
+L1  22 28 80.4U
+* CMR lead inductor
+L2  16 17 73.1M
+* 3.30 MHz lead inductor
+L3  98 3  48.2M
+M1  5  2  4     99 MX
+M2  6  7  4     99 MX
+R3  5  50 5.18K
+R4  6  50 5.18K
+R5  98 9  1E7
+R8  99 49 50K
+R9  49 50 50K
+R10 18 3  1E6
+R12 98 11 1E6
+R13 98 17 1K
+* -Rout
+R16 23 24 70.7
+* +Rout
+R17 23 25 80.3
+* +Isc slope control
+R18 20 29 64K
+* -Isc slope control
+R19 21 30 130K
+R21 98 15 1E6
+R22 22 28 636
+VA1 19 23 0V
+VA2 14 13 0V
+VA3 13 12 0V
+V2  97 8  0.713V
+V3  10 96 0.710V
+V4  29 22 1.170V
+V5  22 30 0.63V
+V6  26 22 0.63V
+V7  22 27 0.63V
+* Input bias and offset current differences
+.MODEL  DA D    (IS=425FA)
+.MODEL  DB D    (IS=425FA)
+.MODEL  DC D    (IS=405FA)
+.MODEL  DD D    (IS=400FA)
+.MODEL  DX D    (IS=1.0E-14)
+.MODEL  MX PMOS (VTO=-2.456 KP=7.0547E-4)
+.ENDS LMC6001A
+*

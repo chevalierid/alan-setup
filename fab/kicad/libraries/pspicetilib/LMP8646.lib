@@ -1,0 +1,144 @@
+* LMP8646
+*****************************************************************************
+* (C) Copyright 2012 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: LMP8646
+* Date: 2/20/2012
+* Model Type: All In One
+* Simulator: Pspice
+* Simulator Version: Pspice 16.2
+* EVM Order Number: N/A
+* EVM Users Guide: N/A
+* Datasheet: SNOSC63 February 1, 2012
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 : Release to Web
+*
+*****************************************************************************
+* Notes:
+* 1. The following parameters/functionalities are modeled:
+*    Supply Current, Transfer Function, Slew Rate,
+*    Input Offset Voltage, Input Bias Current, Input Common
+*    Mode Range, Maximum & Minimum Output Voltage, PSRR and CMRR
+*    
+*****************************************************************************
+.SUBCKT    LMP8646    VOUT  VEE  IN1  IN2  RG  VCC
+
+EOFFSET IN1  INNAA POLY(1)  TCVos   0  1E-3  -7E-6
+ECMRR  INNAA  INNXX CMRROUT 0 1
+EPSRR  INNXX  INNYY PSRROUT 0 1
+E_OTA  INNZZ  0  VALUE {if( V(IN1)>(-2),(V(INNYY)-V(IN2)),0) }
+G_OTA  INNYY  RG  INNZZ  0 200E-6
+EsatRG1 st1 0 VALUE {if( V(IN1) < 1.79999 , 1.8 , 0 ) }
+EsatRG2 st2 0 VALUE {if( (V(IN1)> 1.79999)&(V(IN1)< (V(VCC)+0.0001)) , min((V(VCC)-1.5),(V(IN1)-V(INNZZ)-0.25)) , 0 ) }
+EsatRG3 st3 0 VALUE {if( V(IN1) > (V(VCC)+0.0001) , V(VCC)-1.5 , 0 ) }
+Esat stA 0 VALUE {V(st1) + V(st2) + V(st3)}
+D19  RG    N220 DIODEIDEAL
+VDDDROP   N220   NDROP -0.6
+EVDDREF    NDROP  0  stA  0  1.00
+D20    N221 RG  DIODEIDEAL
+VEEREF N221 0  0.6
+.MODEL DIODEIDEAL D IS=1E-14
+I_IBIAS1 IN1   0  12E-6
+I_IBIAS2 IN2   0  12E-6
+*--------------------------------------------------------------------------------------
+CINBUF      RG  0      19E-12
+ESLEWTABLE  INSLWCTRL     0      TABLE {V(VCC_NORIPPLE)}
++  2.7V    10E-19
++  4.0V    20E-12
++  5.0V    35E-12
++ 12.0V    25E-12
+G_SLEWRATECONTROL       RG  0    VALUE {V(INSLWCTRL)*DDT(V(RG))}
+*--------------------------------------------------------------------------------------
+VFEEDBACK 150 VOUT 0.00
+*
+Rdm1 150 RG 100MEG
+Rcm1 150 0   100MEG
+Rcm2 RG  0   100MEG
+Ggain4 a155 0 RG 150 -10E-6
+Rgain4 a155 0 200E6
+*
+D19a a155  aN220 DIODEIDEAL
+VDIODEDROP1 aN222 aN220 0.70
+EVDDREFa aN222 0 VCC 0 1.00
+D20a aN221 a155  DIODEIDEAL
+VDIODEDROP2a aN221 aN223 0.70
+EVEEREFa aN223 0 VEE 0 1.00
+*
+EAOUT  EAOUT 0 a155 0  1
+*REAOUT EAOUT VOUT 20
+DEAOUT EAOUT VOUT DX
+.MODEL DX D IS=1E-14
+*--------------------------------------------------------------------------------------
+E_SUM_CMAVG        NCMRR1  0  VALUE {0.5*{V(IN1)+V(IN2)}}
+E_ECMRRCONTROL     CTRLCMRR  0  TABLE {V(IN1)}
++ -2.0V   40E-6
++  2.1V   10E-7
++  5.0V   4E-8
++ 70.0V   0.2E-8
+G_CMRR        CMRRSIG    0    VALUE {V(CTRLCMRR)*V(NCMRR1)}
+R_RCMRR1 NCMRR3  CMRRSIG   1E3
+L_LCMRR1 NCMRR3  CMRRSIG   159E-3
+R_RCMRR2 NCMRR3 0     10
+E_ECMRROUT         CMRROUT    0      CMRRSIG    0     1.00
+*
+*--------------------------------------------------------------------------------------
+E_EPSRRINPOS        NPSRRPOS1 0 VCC 0 1
+C_CSUPFILTERPOS     NPSRRPOS1 NPSRRPOS2  1E-3
+R_RSUPFILTERPOS     NPSRRPOS2 0  1E15
+G_GPSRRPOS          NPSRRPOS4 0 NPSRRPOS2 0 3.65E-6
+R_RPSRRPOS2         NPSRRPOS3 0 10
+R_RPSRRPOS1         NPSRRPOS3 NPSRRPOS4  10k
+L_LPSRRPOS1         NPSRRPOS3 NPSRRPOS4  159E-3
+*
+E_EPSRRINNEG        NPSRRNEG1 0 VEE 0 1
+C_CSUPFILTERNEG     NPSRRNEG1 NPSRRNEG2  1E-3
+R_RSUPFILTERNEG     NPSRRNEG2 0  1E15
+G_GPSRRNEG          NPSRRNEG4 0 NPSRRNEG2 0 3.65E-6
+R_RPSRRNEG1         NPSRRNEG3 NPSRRNEG4  10E3
+R_RPSRRNEG2         NPSRRNEG3 0 10
+L_LPSRRNEG1         NPSRRNEG3 NPSRRNEG4  159E-3
+*
+E_SUMPSRR PSRROUT 0 VALUE {V(NPSRRPOS4)+V(NPSRRNEG4)}
+*--------------------------------------------------------------------------------------
+E_EPosSupply      VCC_NORIPPLE 0 VCC 0 1
+E_ENegSupply      VEE_NORIPPLE 0 VEE 0 1
+*--------------------------------------------------------------------------------------
+G_GVsupDepIsup          VCC VEE SUPDEPNODE 0 1E-4
+E_TABLE_SUPDEPCURRENT   SUPDEPNODE 0 TABLE {V(VCC)}
++  0.0V     0.00V
++  2.0V     3.60V
++  2.7V     2.945V
++  3.0V     2.30V
++  5.0V     2.92V
++ 12.0V     1.71V
+R_RIsupplyStatic    VCC VEE  31.6E3
+G_GPUDEPENDENTSUPPLYCURRENT   VCC VEE TABLE {V(IN1)}
++  -2V,  1612E-6
++ 1.6V,   0
+*---------------------------------------------------------------------------------------------------------
+I_ITH1       0   NTHERM1  DC 1E-6
+I_ITH2       0   NTHERM2  DC 1E-6
+D_DTHERMAL1  NTHERM1  0   DIODEIDEAL
+D_DTHERMAL2  NTHERM2  0   DIODEIDEAL
+D_DTHERMAL3  NTHERM2  0   DIODEIDEAL
+E_ETCNVRSN1  NTHERM3  0   NTHERM1  NTHERM2  1.67386293783563E4
+V_VTEMP1     NTHERM4  0   273
+E_ETCNVRSNa  TCVos  0   NTHERM3  NTHERM4  1
+*--------------------------------------------------------------------------------------
+.ENDS LMP8646
+*$

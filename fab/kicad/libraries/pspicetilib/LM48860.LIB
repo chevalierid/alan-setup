@@ -1,0 +1,223 @@
+* LM48860
+*****************************************************************************
+* (C) Copyright 2012 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: LM48860
+* Date: 02/29/2012
+* Model Type: All In One
+* Simulator: Pspice
+* Simulator Version: Pspice 16.0.0.p001
+* EVM Order Number: N/A 
+* EVM Users Guide: N/A
+* Datasheet: SNAS398C - DECEMBER 2011
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 : Release to Web
+*
+*****************************************************************************
+* Notes: 
+* 1. Features Modeled:
+*         Quiescent current (on)
+*         Quiescent current (off)
+*         Maximum/Minimum output current
+*         Output voltage swing
+*         Input offset voltage
+*         Power down (both channels)
+*         Closed loop gain
+*         Output/Input impedance
+*         Noise
+*         Charge pump (modeled as ideal controlled source)
+*         Power Supply Rejection Ratio
+*****************************************************************************
+.SUBCKT LM48860   RIN LIN VDD VSS ROUT LOUT SD_RC SD_LC GND
+
+EEN EN GND VALUE = { IF(V(SD_RC) > 1.2 | V(SD_LC) > 1.2,1,0)}
+GQ  VDDX GND VALUE = {IF(V(EN) >= 0.5,4M,0.1U)}
+ECP VSS GND VDDX GND -1
+ES1  VDD  VDDX  VALUE = {IF(V(VDD,0)> 6,V(VDD,0) - 6,0)}
+
+XR  RIN VDDX VSS ROUT SD_RC LM48860_SINGLE_CHANNEL
+XL  LIN VDDX VSS LOUT SD_LC LM48860_SINGLE_CHANNEL
+
+.ENDS
+
+
+**************************************
+**          **
+**                       ** 
+**             **          
+**             **
+**************************************
+
+.SUBCKT LM48860_SINGLE_CHANNEL VIN VDD VSS VOUT EN
+V6          9 0 1
+V5          12 GNDF 2.9M
+XU4         EN ENX TOLOGIC
+XU1         9 ENX DIS 0 NOT
+XSW4        13 GNDF DIS 0 RELAY
++ PARAMS: RON=0.1 ROFF=100MEG VON=0.5
+RSW4        13 GNDF 1G
+XSW3        14 VOUT ENX 0 RELAY_1
++ PARAMS: RON=0.1 ROFF=100MEG VON=0.5 IMAX=100M IMIN=-100M
+XSW2        15 GNDF DIS 0 RELAY
++ PARAMS: RON=0.1 ROFF=100MEG VON=0.5
+XSW1        13 15 ENX 0 RELAY
++ PARAMS: RON=0.1 ROFF=100MEG VON=0.5
+XR1         VIN 13 RNOISE_LESS_WILIM
++ PARAMS: RX=20K
+XR3         15 VOUT RNOISE_LESS_WILIM
++ PARAMS: RX=30K
+XU11        11 10 17 GNDF GBW_SLEW_SE
++ PARAMS: AOL=120 GBW=1MEG SR=1MEG IT=1M
+ECS1        GNDF 0 VALUE = {(V(VSS,0)+V(VDD,0))*0.5}
+XU7         VDD VSS 18 10 GNDF PSRR
++ PARAMS: PSRR=126 FPSRR=2.7
+XU6         VDD VSS 17 14 GNDF VCLAMP
++ PARAMS: VMAX=0.1 VMIN=0.1
+XU3         19 11 VNSE
++ PARAMS: NLF=26.5 FLW=2 NVR=28.5
+XU2         12 15 19 18 GNDF INPUT
++ PARAMS: RCM=1 CCM=100F CDM=100F
+.ENDS
+
+.SUBCKT TOLOGIC  VI VO 
+
+ESLICE VO 0 VALUE = {IF(V(VI)>=1.2,1,0)}
+
+.ENDS
+
+
+
+.SUBCKT NOT  VDD VI VO VSS 
+
+ESLICE VX 0  VALUE = {IF(V(VI)>=V(VCM),V(VSS),V(VDD))}
+RX  VX  VY  1
+CX  VY  0   100E-15  IC = 0
+EO  VO  0  VY  0  1
+ECM  VCM  0  VALUE = {(V(VDD,0)+V(VSS,0))*0.5}
+
+.ENDS NOT 
+
+
+.SUBCKT RELAY   VP  VN  CP  CN  
++PARAMS: RON = 1 ROFF = 1G   VON = 0.5
+GRES  VP VN VALUE = {IF(V(CP,CN) >= VON,1,0)*V(VP,VN)/RON + IF(V(CP,CN) >= VON,0,1)*V(VP,VN)/ROFF }
+.ENDS
+
+
+.SUBCKT RELAY_1   VP  VN  CP  CN  
++PARAMS: RON = 1 ROFF = 1G   VON = 0.5 IMAX = 10M  IMIN = -10M
+GRES  VP VN VALUE = {LIMIT(IF(V(CP,CN) >= VON,1,0)*V(VP,VN)/RON 
++ + IF(V(CP,CN) >= VON,0,1)*V(VP,VN)/ROFF,IMAX,IMIN)}
+.ENDS
+
+
+.SUBCKT RNOISE_LESS_WILIM   P  N  PARAMS: RX = 1K
+GRES P N VALUE = {V(P,N)/RX}
+.ENDS
+
+
+**************************************
+**                                  **
+**                                  ** 
+**                                  **          
+**                                  **
+**************************************
+
+.SUBCKT GBW_SLEW_SE   VIP  VIM  VO  GNDF PARAMS: AOL = 100  GBW = 1MEG  SR = 1MEG  IT = 1M
+.PARAM PI = 3.141592
+.PARAM CC = {IT/SR}
+.PARAM FP = {GBW/PWR(10,AOL/20)}
+.PARAM RC = {1/(2*PI*CC*FP)}
+.PARAM GC = {PWR(10,AOL/20)/RC}
+G1          GNDF VO VALUE = {LIMIT(GC*V(VIP,VIM),IT,-IT)}
+C1          VO GNDF {CC} IC = 0 
+R1          VO GNDF {RC}
+.ENDS
+
+
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+
+.SUBCKT PSRR   VDD  VSS  VI  VO  GNDF PARAMS: PSRR = 130 FPSRR = 1.6
+.PARAM PI = 3.141592
+.PARAM RPSRR = 1
+.PARAM GPSRR = {PWR(10,-PSRR/20)/RPSRR}
+.PARAM LPSRR = {RPSRR/(2*PI*FPSRR)}
+G1  GNDF 1 VDD VSS {GPSRR}
+R1  1 2 {RPSRR}
+L1  2 GNDF {LPSRR}
+E1  VO VI 1 GNDF 1
+C2  VDD VSS 10P
+.ENDS
+
+
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+
+.SUBCKT VCLAMP   VDD  VSS  VI  VO  GNDF PARAMS: VMAX = 0.1 VMIN = 0.1
+ECLAMP  VO GNDF VALUE = {LIMIT(V(VI,GNDF),V(VDD,GNDF) - VMAX, V(VSS,GNDF) + VMIN)}
+.ENDS
+
+.SUBCKT VNSE  1 2 PARAMS: NLF = 10 FLW = 4  NVR = 4.6
+
+.PARAM GLF={PWR(FLW,0.25)*NLF/1164}
+.PARAM RNV={1.184*PWR(NVR,2)}
+.MODEL DVN D KF={PWR(FLW,0.5)/1E11} IS=1.0E-16
+I1 0 7 10E-3
+I2 0 8 10E-3
+D1 7 0 DVN
+D2 8 0 DVN
+E1 3 6 7 8 {GLF}
+R1 3 0 1E9
+R2 3 0 1E9
+R3 3 6 1E9
+E2 6 4 5 0 10
+R4 5 0 {RNV}
+R5 5 0 {RNV}
+R6 3 4 1E9
+R7 4 0 1E9
+E3 1 2 3 4 1
+C1 1 0 1E-15
+C2 2 0 1E-15
+C3 1 2 1E-15
+.ENDS
+* END PROG NSE NANOV/RT-HZ
+
+
+**************************************
+**                                  **
+**                                  ** 
+**                                  **          
+**                                  **
+**************************************
+
+.SUBCKT INPUT   VIP  VIN  VOP  VON  GNDF PARAMS: RCM = 1  CCM = 100F  CDM = 100F
+C1          VOP GNDF {CCM} 
+C2          VON GNDF {CCM}
+C3          VOP VON {CDM}
+R1          VIP VOP {RCM}
+R2          VIN VON {RCM} 
+.ENDS

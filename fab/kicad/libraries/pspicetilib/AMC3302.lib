@@ -1,0 +1,1246 @@
+*****************************************************************************
+* (C) Copyright 2022 Texas Instruments Incorporated. All rights reserved.     
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.      
+** TI and its licensors and suppliers make no warranties, either expressed   
+** or implied, with respect to this model, including the warranties of       
+** merchantability or fitness for a particular purpose. The model is        
+** provided solely on an "as is" basis. The entire risk as to its quality   
+** and performance is with the customer                                    
+*****************************************************************************	
+* Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: AMC3302
+* Precision isolation amplifier
+* Date: 04/21/2022
+* Model Type: TINA
+* Simulator: TINA-TI
+* Simulator Version: 9.3.200.277 SF-TI
+* Datasheet: SBASA11 - AUGUST 2020
+*
+*****************************************************************************
+* version 1.12:
+*
+*****************************************************************************	
+* AMC3302 SUBCIRCUIT
+* Precision isolation amplifier 
+** source AMC3302
+
+.SUBCKT AMC3302 DCDCin DCDCgnd LDOout VDD GND OUTP OUTN DCDCout DCDChgnd 
++ HLDOin HLDOout HGND INN INP 
+XHLDO       HLDOin HLDOout HGND LDO_0
+XLDO        VDD LDOout GND LDO_1
+XDCDC       DCDCin DCDCgnd DCDCout DCDChgnd DC/DC_Converter_0
+XAMP        OUTP OUTN HLDOout INP INN GND HGND VDD AMC3302_Amp_0
+.ENDS
+
+.SUBCKT LDO_0 HLDOin HLDOout HGND
+.PARAM Ioclim= {18m}
+.PARAM R_D= {10}
+.PARAM Voclim= {R_D*Ioclim}
+.PARAM Goc= {Aoc/Roc}
+.PARAM Coc= {100n/Roc}
+.PARAM Roc= {1000}
+.PARAM Aoc= {100}
+.PARAM Vout= {3.15}
+.PARAM Rfb_2= {100k}
+.PARAM Rfb_1= {(Vout - Vref)*Rfb_2/Vref}
+.PARAM Vref= {1.25}
+.PARAM Vuv= {2.8}
+VIZ1        22 21 ; Current Arrow
+GVCCS2      HLDOin 15 VALUE = {I(VIZ1)-1U}
+XD_Z2       HGND 15 D_ZD_1_25V_0
++ PARAMS: Vref={Vref}
+R3          15 16 100K 
+C4          16 17  20P
+XD_Z3       VF1_18 HLDOin D_ZD_10V_1
+C1          VF1_18 HLDOin  {Coc}
+R2          VF1_18 HLDOin {Roc} 
+GVCCS1      HLDOin VF1_18 VALUE = {GOC*(V(19,HLDOout)-VOCLIM)}
+XD_D3       VF1_18 17 D_D4_0
+RD          19 HLDOout {R_D} 
+R4          21 HGND 10MEG
+XD_D1       15 HLDOin D_D4_1
+R1          15 HGND 1MEG
+XDZb1       HGND 21 D_ZB1_0
++ PARAMS: Vuv={Vuv}
+Rs4         HLDOin 22 200MEG
+XD1         22 HLDOin D_D4_2
+XD_Z1       HGND HLDOout D_Z1V2_0
+C2          HLDOout HGND  1P
+XU1         VACin_20 16 HLDOin HGND 17 STDOPAMP_0
++ PARAMS: RIN=100MEG GAIN=20K RINC=1E9 ROUT=1000 SLEWRATE=100MEG FPOLE1=1000
++ VDROPOH=0 VDROPOL=2.42 CIN=10F CINC=10F
+XQ1         19 17 HLDOin HLDOin SWMOSP_0
++ PARAMS: VTH=-1000M KP=10.0M L=1U W=100U RD=1m RS=10M
+C3          VACin_20 19  50P
+Rfb2        VACin_20 HGND {Rfb_2} 
+Rfb1        HLDOout VACin_20 {Rfb_1} 
+.ENDS
+
+.SUBCKT LDO_1 VDD LDOout GND
+.PARAM Ioclim= {35m}
+.PARAM R_D= {10}
+.PARAM Voclim= {R_D*Ioclim}
+.PARAM Goc= {Aoc/Roc}
+.PARAM Coc= {100n/Roc}
+.PARAM Roc= {1000}
+.PARAM Aoc= {100}
+.PARAM Vout= {2.9}
+.PARAM Rfb_2= {100k}
+.PARAM Rfb_1= {(Vout - Vref)*Rfb_2/Vref}
+.PARAM Vref= {1.25}
+.PARAM Vuv= {2.7}
+VIZ1        30 29 ; Current Arrow
+GVCCS2      VDD 23 VALUE = {I(VIZ1)-1U}
+R3          23 24 100K 
+C4          24 25  20P
+XD_Z3       VF1_26 VDD D_ZD_10V_1
+C1          VF1_26 VDD  {Coc}
+R2          VF1_26 VDD {Roc} 
+GVCCS1      VDD VF1_26 VALUE = {GOC*(V(27,LDOout)-VOCLIM)}
+XD_D3       VF1_26 25 D_D4_0
+RD          27 LDOout {R_D} 
+R4          29 GND 10MEG
+XD_D1       23 VDD D_D4_1
+R1          23 GND 1MEG
+XD_Z2       GND 23 D_ZD_1_25V_0
++ PARAMS: Vref={Vref}
+XDZb1       GND 29 D_ZB1_0
++ PARAMS: Vuv={Vuv}
+Rs4         VDD 30 200MEG
+XD1         30 VDD D_D4_2
+XD_Z1       GND LDOout D_Z1V2_0
+C2          LDOout GND  1P
+XU1         VACin_28 24 VDD GND 25 STDOPAMP_0
++ PARAMS: RIN=100MEG GAIN=20K RINC=1E9 ROUT=1000 SLEWRATE=100MEG FPOLE1=1000
++ VDROPOH=0 VDROPOL=2.42 CIN=10F CINC=10F
+XQ1         27 25 VDD VDD SWMOSP_0
++ PARAMS: VTH=-1000M KP=10.0M L=1U W=100U RD=1m RS=10M
+C3          VACin_28 27  50P
+Rfb2        VACin_28 GND {Rfb_2} 
+Rfb1        LDOout VACin_28 {Rfb_1} 
+.ENDS
+
+.SUBCKT DC/DC_Converter_0 DCDCin DCDCgnd DCDCout DCDChgnd
+R1          DCDCgnd 34 1G 
+XDelta_Gamma Out_32 DCDCgnd Out_31 DCDChgnd G1 VOR1 DVout1 DELTA_GAMMA_0
+XGamma      Out_32 DCDCgnd Toutp DCDChgnd G1 GAMMA_0
+XU3         Out_31 DCDCout DCDChgnd LPF_0
+XU2         Out_32 DCDCin DCDCgnd LPF_1
+XDAB Toutp 34 DCDCin DCDCgnd DCDCout DCDChgnd Out_32 Out_31 
++ DAB_CONVERTER_0 
++ PARAMS: K=0.7 L1=450N L2=675N CDCDC=12N FSWITCH=31.7MEG
+.ENDS
+
+.SUBCKT LPF_0 Out In Gnd
+Cc          Out Gnd  53.051648P
+Rc          In Out 100 
+.ENDS
+
+.SUBCKT LPF_1 Out In Gnd
+Cc          Out Gnd  53.051648P
+Rc          In Out 100 
+.ENDS
+
+.SUBCKT AMC3302_Amp_0 VOUTP VOUTN VDD1 VINP VINN GND2 GND1 VDD2
+XDFilter    POut1_44 VOCM NOut1_45 INP_46 GND2 DFilter_0
+XFilter     POut1_44 NOut1_45 GND2 VDD2 VOUTN VOCM VOUTP Filter_Block_0
+XGain       POut1_47 NOut1_49 VDD1 GND1 VDD2 GND2 INP_46 GND2 FSO VGAIN_0
+XD10        50 GND1 D_ZR_5V3_0
+XD9         51 GND1 D_ZR_5V3_0
+XD8         50 VINN D_D2_0
+XD7         VINN VDD1 D_D2_0
+XD6         51 VINP D_D2_0
+XD5         VINP VDD1 D_D2_0
+XD4         GND2 VOUTN D_D2_0
+XD3         VOUTN VDD2 D_D2_0
+XD2         GND2 VOUTP D_D2_0
+XD1         VOUTP VDD2 D_D2_1
+XInput      VINP VINN GND2 POut1_47 FSO VDD1 GND1 NOut1_49 Input_circuit_0
+R3          GND2 GND1 100G 
+C1          GND2 GND1  1.2P 
+RIO         VDD2 VDD1 100G 
+CIO         VDD2 VDD1  1.2P 
+.ENDS
+
+.SUBCKT DFilter_0 POut1 VOCM NOut1 INP GND2
+R25         52 GND2 1 
+GVCCS3      52 GND2 53 GND2  -1
+GVCCS2      NOut1 VOCM VALUE = {0.5*V(52,GND2)}
+GVCCS1      VOCM POut1 VALUE = {0.5*V(52,GND2)}
+R22         VOCM NOut1 1 
+R21         POut1 VOCM 1 
+R6          54 INP 200K 
+C6          53 GND2  428.833333F 
+C4          52 54  885.333333F 
+R5          53 54 200K 
+.ENDS
+
+.SUBCKT Filter_Block_0 INP INN GND2 VDD2 VOUTN VOCM VOUTP
+VPSref      68 GND2 3.3
+XOutputn VM_56 Neg_62 IGND_60 Bias IAVDD_61 VOUTN VDD2 Plus_63 GND2 Vt0p Vt0 
++ Output_0 
+R21ops      64 0 29 
+L2ops       64 0  3.076996U 
+R1          65 64 1 
+R11ops      66 0 59 
+L1ops       66 0  47.424958U 
+R1ops       67 66 1 
+G2ops       0 65 67 0  1
+G1ops       0 67 68 VDD2  36.379858U
+R22ops      69 0 10 
+C2ops       Veps_55 69  321.525138P 
+R3ops       Veps_55 0 990 
+G3ops       0 Veps_55 65 0  1.010101M
+XBias       IAVDD_61 VDD2 IGND_60 GND2 Bias VM_56 Vt0p Vt0 VOCM Bias_0
+XOutputp VM_56 Neg_70 IGND_60 Bias IAVDD_61 VOUTP VDD2 Plus_71 GND2 Vt0p Vt0 
++ Output_1 
+C7          72 73  2.481818P 
+EVCVS2      72 GND2 75 GND2  1
+EVCVS1      74 GND2 76 GND2  1
+R16         77 INP 200K 
+C8          76 75  1.018182P 
+R15         73 INN 200K 
+R14         75 73 200K 
+C5          74 77  2.481818P 
+R11         76 77 200K 
+R8          78 74 200K 
+Epsp        VOCM Plus_71 Veps_55 0  -1
+Epsn        Plus_63 VOCM Veps_55 0  -1
+C3          78 79  3.245455P 
+R7          79 72 200K 
+C4          VOUTP Neg_70  700F 
+R6          Neg_70 79 100K 
+R5          VOUTP 79 200K 
+C2          VOUTN Neg_62  700F 
+R3          Neg_62 78 100K 
+R2          VOUTN 78 200K 
+.ENDS
+
+.SUBCKT Output_0 VM Neg IGND Bias IAVDD OUT VDD2 Plus GND2 Vt0p Vt0
+VAM2        84 VGN_82 ; Current Arrow
+VAM1        87 OUT ; Current Arrow
+Vo21        IAVDD 90 695.218247M
+Vo22        85 IGND 695.218247M
+XD5         VGP_81 VDD2 D_LIM100_05_0
+XD3         GND2 VGN_82 D_LIM100_05_0
+XD6         83 VGP_81 D_LIM100_05_0
+XD1         85 VV_80 D_LIM1_0
+XD4         VGN_82 86 D_LIM100_05_0
+RO2         VDD2 88 10 
+RO1         89 GND2 10 
+XD2         VV_80 90 D_LIM1_0
+C33         VV_80 VM  15.915494F 
+XT7         87 VGP_81 88 VDD2 Q_PMOS_OUT_L1_0
++ PARAMS: M=25 W=20U L=0.8U
+XT2         OUT VGN_82 89 GND2 Q_NMOS_OUT_L1_0
++ PARAMS: M=25 W=20U L=0.8U
+EVMP2       VDD2 83 VALUE = {LIMIT(1.05*V(VDD2,Vt0p),0,V(VDD2,GND2))}
+EVMN2       86 GND2 VALUE = {LIMIT(1.05*V(Vt0,GND2),0,V(VDD2,GND2))}
+Ro23        VM Neg 100G 
+Ro22        Plus VM 100G 
+Ro21        Neg Plus 1G 
+Co21        Neg Plus  10F 
+Rdn2        VGP_81 Vt0p 2.041402MEG 
+Gdn2        Vt0p VGP_81 VM VV_80  146.95U
+Rdn1        84 Vt0 2.041402MEG 
+Gdn1        Vt0 84 VM VV_80  146.95U
+Cf5         OUT 84  1P 
+Cf4         VGP_81 OUT  1P 
+Co23        VM Neg  10F 
+RCo23_RPAR  VM Neg 1T
+Co22        Plus VM  10F 
+RCo22_RPAR  Plus VM 1T
+R83         VV_80 VM 100K 
+G23         VM VV_80 Plus Neg  10U
+.ENDS
+
+.SUBCKT Bias_0 IAVDD VDD2 IGND GND2 Bias VM Vt0p Vt0 VOCM
+VS2         93 94 1.2
+XU5         0 Vocmtemp VOCMTEMP_0
+EVSOCM      VOCM GND2 VALUE = {LIMIT(V(Vt0,GND2)*2,0,(1.4461-1.8182M*V(VDD2,GND2))*V(Vocmtemp,0))}
+GIb2        IGND Bias VALUE = {48.98M*V(VDD2,GND2)+730.612M}
+Rb3         Bias IGND 1 TC=970U,-77N
+R3          94 GND2 10MEG 
+R2          VDD2 95 10MEG 
+EVCVS1      VM IGND VALUE = {0.5*V(IAVDD,IGND)}
+EAVDD       IAVDD IGND VALUE = {5*V(Bias,IGND)}
+EGND        IGND 0 GND2 0  1
+EBMG        96 GND2 Vt0 GND2 1
+XT4         95 95 VDD2 VDD2 Q_PMOS_OUT_L1_1
++ PARAMS: M=1 W=10U L=4U 
+XT1         VT1 96 GND2 GND2 Q_NMOS_OUT_L1_1
++ PARAMS: M=9 W=21U L=0.8U
+XT3         94 94 GND2 GND2 Q_NMOS_OUT_L1_2
++ PARAMS: M=1 W=10U L=4U 
+XD2         93 95 D_LIM1_1
+Rsp1        VDD2 VT1 2.111111K 
+GIb1        95 94 Bias IGND  10U
+Rpsrr1      95 94 10MEG 
+EVMP1       Vt0p VDD2 95 VDD2  1
+EVMN1       Vt0 GND2 94 GND2  1
+.ENDS
+
+.SUBCKT Output_1 VM Neg IGND Bias IAVDD OUT VDD2 Plus GND2 Vt0p Vt0
+VAM2        101 VGN_99 ; Current Arrow
+VAM1        104 OUT ; Current Arrow
+Vo21        IAVDD 107 695.218247M
+Vo22        102 IGND 695.218247M
+XD5         VGP_98 VDD2 D_LIM100_05_0
+XD3         GND2 VGN_99 D_LIM100_05_0
+XD6         100 VGP_98 D_LIM100_05_0
+XD1         102 VV_97 D_LIM1_0
+XD4         VGN_99 103 D_LIM100_05_0
+RO2         VDD2 105 10 
+RO1         106 GND2 10 
+XD2         VV_97 107 D_LIM1_0
+C33         VV_97 VM  15.915494F 
+XT7         104 VGP_98 105 VDD2 Q_PMOS_OUT_L1_0
++ PARAMS: M=25 W=20U L=0.8U
+XT2         OUT VGN_99 106 GND2 Q_NMOS_OUT_L1_0
++ PARAMS: M=25 W=20U L=0.8U
+EVMP2       VDD2 100 VALUE = {LIMIT(1.05*V(VDD2,Vt0p),0,V(VDD2,GND2))}
+EVMN2       103 GND2 VALUE = {LIMIT(1.05*V(Vt0,GND2),0,V(VDD2,GND2))}
+Ro23        VM Neg 100G 
+Ro22        Plus VM 100G 
+Ro21        Neg Plus 1G 
+Co21        Neg Plus  10F 
+Rdn2        VGP_98 Vt0p 2.041402MEG 
+Gdn2        Vt0p VGP_98 VM VV_97  146.95U
+Rdn1        101 Vt0 2.041402MEG 
+Gdn1        Vt0 101 VM VV_97  146.95U
+Cf5         OUT 101  1P 
+Cf4         VGP_98 OUT  1P 
+Co23        VM Neg  10F 
+RCo23_RPAR  VM Neg 1T
+Co22        Plus VM  10F 
+RCo22_RPAR  Plus VM 1T
+R83         VV_97 VM 100K 
+G23         VM VV_97 Plus Neg  10U
+.ENDS
+
+.SUBCKT Input_circuit_0 VINP VINN GND2 POut1 FSO VDD1 GND1 NOut1
+VCMref      CMref GND1 380M
+VPSref      134 GND1 5
+EVCVS1      VM_117 IGND_108 VM_109 116  100K
+R2          116 POut 100K 
+R1          NOut1 116 100K 
+XU5         0 VOS VOST_0
+XBias       GND1 IGND_108 IAVDD_115 VM_109 VDD1 Bias_1
+Rint21      120 Neg_121 2K 
+Rint11      122 Plus_123 2K 
+Cin1        122 120  16P 
+GVCCS1      IGND_108 FSO VALUE = {IF(V(VM_109,IGND_108)<924M|V(124,IGND_108)>0.5,1,0)}
+R11         FSO IGND_108 1 
+XU2         VICM GND1 124 IGND_108 HYSTCOMPGD_0
++ PARAMS: VTHRES=1 VHYST=94M VOUTH=1 VOUTL=0 ROUT=100 DELAY=1N
+Eios        125 122 VALUE = {1.0*V(Vecm,0)+V(Venoise,0)+50.1187N*V(GND1,GND2)+1.0*V(VOS,0)+1.0*V(Veps_112,0)}
+L3          126 0  9.4498U 
+R10         126 0 999 
+R9          Venoise 126 1 
+Gnoise      0 Venoise 0 127  29.374884M
+L2          128 0  6.366198U 
+R8          128 0 4 
+R7          Veps_112 128 1 
+G88ps       0 Veps_112 0 129  1
+Rfb1        122 NOut1 50K TC=41.6667U
+Rfb2        120 130 50K TC=41.6667U
+Rint1       VINP 125 2.5K TC=41.6667U
+Rint2       VINN 120 2.5K TC=41.6667U
+Eps         130 POut1 POLY(1) Veps_112 0 0 1N 
+R6          131 0 600M 
+L1          131 0  596.831037U 
+R5          129 131 1 
+R210        132 0 258.925412M 
+L4          132 0  32.733678U 
+R20         Vecm 132 1 
+G8ps        0 129 134 VDD1  19.952623U
+G8          0 Vecm CMref VLCM  10.471285U
+Rip2        VICM VINN 100K 
+Rip1        VINP VICM 100K 
+Enoise      POut 130 POLY(1) Venoise 0 0 5 
+Rnoise2     127 0 4.8263MEG 
+Rnoise1     127 0 4.8263MEG 
+C37         VINN GND1  2P 
+C38         VINP GND1  2P 
+Cfb2        Neg_121 POut  800F 
+Cfb1        Plus_123 NOut1  800F 
+XInput1 VM_117 Neg_121 IGND_108 VLCM IAVDD_115 NOut1 VDD1 POut Plus_123 GND1 
++ VICM Input1_0 
+.ENDS
+
+.SUBCKT Bias_1 GND1 IGND IAVDD VM VDD1
+IS1         135 GND1 4.8144M
+EVSVM       VM IGND IAVDD IGND  380M
+EAVDD       IAVDD IGND VALUE = {LIMIT(5*(V(VDD1,GND1)-2),5,0)}
+Rs4         135 GND1 1.785714K TC=-6M,20U
+XD1         GND1 135 D_D4_3
+XDZb1       135 VDD1 D_ZB1_1
+EGND        IGND 0 GND1 0  1
+.ENDS
+
+.SUBCKT Input1_0 VM Neg IGND VLCM IAVDD NOut VDD1 POut Plus GND1 VICM
+VIvcvs3     143 141 ; Current Arrow
+VIvs1       139 144 ; Current Arrow
+VS1         144 IGND -598.634215M
+VdrophO1    IAVDD 138 915.387691M
+VdroplO1    137 IGND 915.387691M
+XD1         137 VB D_LIM1T_0
+XD4         VB 138 D_LIM1T_0
+XD6         139 140 D_LIMCM_0
+XD5         140 141 D_LIMCM_0
+XD3         139 142 D_LIMCM_0
+GVCCS1      IGND 142 VALUE = {5U*(V(Plus,IGND)-V(142,IGND))}
+GVCCS2      IGND 140 VALUE = {5U*(V(Neg,IGND)-V(140,IGND))}
+EVCVS3      143 IGND VALUE = {245.3009M+(V(VDD1,GND1))*666.6667M}
+R2          140 IGND 1T 
+XD2         142 141 D_LIMCM_0
+R1          142 IGND 1T 
+EVCVS2      MCM 0 VALUE = {1-1*LIMIT(3E5*(-I(VIvs1)+I(VIvcvs3)),0,1)}
+Ro110       VLCM Neg 1G 
+Ro11        VLCM Plus 1G 
+Go13        VM VB VALUE = {50M*V(142,140)*V(MCM,0)}
+Ro15        VM Neg 100G 
+Ro12        Plus VM 100G 
+Co11        Neg Plus  10F 
+Co13        IGND Neg  10F 
+Co12        Plus IGND  10F 
+Ro13        NOut VM 1 
+Go11        VM NOut VM VB  1
+Ro14        POut VM 1 
+Go12        VM POut VB VM  1
+Co19        VB VM  79.577472P 
+RCo19_RPAR  VB VM 1T
+Ro19        VB VM 10MEG 
+.ENDS
+
+.SUBCKT D_ZD_1_25V_0 1    2
++ PARAMS: Vref=1.25
+D1 1 2  D_1_25V
+CD 1 2 10P
+.MODEL D_1_25V D( IS=1n N=0.5 BV={Vref} IBV=2.75u RS=0  T_ABS=27)
+.ENDS 
+
+.SUBCKT D_ZD_10V_1 1    2
+D1 1 2  D_10V
+CD 1 2 1P
+*.MODEL D_10V D( IS=1n N=1.0 BV=10.0 IBV=1.0u RS=0 XTI=0 EG=1.11 T_ABS=25)
+.MODEL D_10V D( IS=1n N=1.0 BV=10.0 IBV=1.0u RS=0 T_ABS=27)
+.ENDS 
+
+.SUBCKT D_D4_0 1    2
+D1 1 2  DD
+*.MODEL DD D( IS=1p N=2.0 RS=0 T_ABS=27)	  
+.MODEL DD D( IS=1p N=1.0 RS=0 T_ABS=27)
+.ENDS
+
+.SUBCKT D_D4_1 1    2
+D1 1 2  DD
+*.MODEL DD D( IS=1n N=0.50 RS=1  T_ABS=27)  
+.MODEL DD D( IS=1n N=1.0 RS=1  T_ABS=27)
+.ENDS
+
+.SUBCKT D_ZB1_0 1    2
++ PARAMS: Vuv=2.6
+D1 1 2  D_3_0V
+*CD 1 2 10P
+.MODEL D_3_0V D( IS=1n N=0.5 BV={Vuv - 100m} IBV=5.0u RS=0 T_ABS=27)
+.ENDS 
+
+.SUBCKT D_D4_2 1    2
+D1 1 2  DD
+.MODEL DD D( IS=5u N=1.0 RS=0 XTI=0 T_ABS=27)
+.ENDS
+
+*
+* Connections:   A
+*                |    C
+*                |    |
+.SUBCKT D_Z1V2_0 1    2
+D1 1 2  D_Z1V2
+.MODEL D_Z1V2 D( IS=1n N=1.0 BV=6 IBV=100.0N RS=0 )
+.ENDS
+
+.SUBCKT STDOPAMP_0 INP INM VP VM OUT
++ PARAMS: GAIN=200K RIN=2MEG RINC=1E9 CIN=1p CINC=1p ROUT=75 SLEWRATE=500K FPOLE1=5 
++ VDROPOH=1.9 VDROPOL=1.9 
+*
+.PARAM PI = 3.141592
+.PARAM IS = 1.0E-12
+.PARAM VT = 0.02585
+.PARAM N = 0.1
+.PARAM IMAX = 100.0E-6
+.PARAM RS = {1.0E-2/IMAX}
+.PARAM C1 = {IMAX/SLEWRATE}
+.PARAM R1 = {1/(2*PI*C1*FPOLE1)}
+.PARAM GM1 = {GAIN/R1}
+.PARAM GOUT = {1/ROUT}
+.PARAM VDF = {N*VT*LOG(1 + IMAX/IS) + RS*IMAX}
+*
+RINM1      INM VP  {2*RINC}
+RINM2      INM VM  {2*RINC}
+RINP1      INP VP  {2*RINC}
+RINP2      INP VM  {2*RINC}
+RIN        INM INP  {RIN}
+CINM1      INM VM  {CINC}
+CINP1      INP VM  {CINC}
+CIN        INM INP  {CIN}
+*EVM VMI 0 VALUE = { IF (TIME < 1e-30, V(VP)-(VDROPOL - VDF), Limit(V(VP)-(VDROPOL - VDF), V(VM) + VDF, V(VP) + VDF) )}
+*EVP VPI 0 VALUE = { IF (TIME < 1e-30, V(VP)-(VDROPOH + VDF), Limit(V(VP)-(VDROPOH + VDF), V(VM) + VDF, V(VP)) )}
+EVM VMI 0 VALUE = {Limit(V(VP)-(VDROPOL - VDF), V(VM) + VDF, V(VP) + VDF) }
+EVP VPI 0 VALUE = { Limit(V(VP)-(VDROPOH + VDF), V(VM) + VDF, V(VP))}
+
+GIQ         VP VM VALUE = {5M*ABS(V(P1,OUT))}
+GMO2        VM OUT P1 VM {0.5*GOUT}
+RO2         OUT VM {2*ROUT} 
+GMO1        OUT VP VP P1 {0.5*GOUT}
+RO1         VP OUT {2*ROUT} 
+
+D3         VMI P1  D_1
+D2          P1 VPI  D_1
+C1          P1 VPI  {C1}
+R1          P1 VPI  {R1}
+*GM1         VPI P1 VALUE = { IF (TIME < 1e-30, 0.1*GM1*V(INP,INM), LIMIT( GM1*V(INP,INM), -IMAX, IMAX)) }
+GM1         VPI P1 VALUE = {LIMIT( GM1*V(INP,INM), -IMAX, IMAX) }
+
+.MODEL D_1 D( IS={IS} N={N} RS={RS} T_ABS=27)
+.ENDS
+
+.SUBCKT SWMOSP_0 D  G  S  B Params: Vth=2.0 KP=10 Rd=1m Rs=1m L=1u W=1u
+
+Rs     S    Si   {Rs}
+*Rd     D    Di   {Rd} 
+
+M1      D    G    Si    B    SWMOS    L={L}   W={W}
+.MODEL SWMOS PMOS (LEVEL=1 KP= {KP}  VTO={Vth} IS=0 LAMBDA=0.5M T_ABS=27)
+RDS D    Si 1MEG
+
+Cgd     G    D    1p
+Cgs     G    Si    1p
+Cds     D    Si    10f
+.ENDS 
+
+*// VerilogA for work_Damien, Delta_Gamma, veriloga
+
+*`include "constants.vams"
+*`include "disciplines.vams"
+
+*module Delta_Gamma(tVinp,tVinm,tVoutp,tVoutm,Gamma,Voutref,DeltaVout);
+.SUBCKT DELTA_GAMMA_0 tVinp tVinm tVoutp tVoutm Gamma Voutref DeltaVout
+
+*input tVinp,tVinm,tVoutp,tVoutm;
+*output Gamma,Voutref,DeltaVout;
+
+*electrical tVinp,tVinm,tVoutp,tVoutm,Gamma,Voutref,DeltaVout;
+
+*real adummy = 0;
+
+*real a = 0;
+
+*analog begin
+
+*@(cross(V(tVinp,tVinm) -2.2,0))
+
+*if (V(tVinp,tVinm) > 2.2)
+*	adummy = 1;
+*else
+*	adummy = 0;
+
+*a = transition(adummy,0,100p,100p);
+
+XC1 tVinp tVinm a 0 Cross_Comp 
++ Params: Vthres=2.2 Vhyst=10u VoutH=1 VoutL=0 Rout=100 Tdel=30p
+
+*V(Voutref,tVoutm) <+ (1-a)*(2.5035*V(tVinp,tVinm)-3.3568)+a*(1.5175*V(tVinp,tVinm)-1.1876);
+Eoutref Voutref tVoutm Value = {(1-V(a))*(2.5035*V(tVinp,tVinm)-3.3568)+V(a)*(1.5175*V(tVinp,tVinm)-1.1876)}
+*Eoutref Voutref tVoutm Value = {(1.5175*V(tVinp,tVinm)-1.1876)}
+
+*V(DeltaVout,tVoutm) <+ V(tVoutp,tVoutm) - V(Voutref,tVoutm);
+EDeltaVout DeltaVout tVoutm Value = {V(tVoutp,tVoutm) - V(Voutref,tVoutm)}
+
+*V(Gamma,tVoutm) <+ -0.0558*V(DeltaVout,tVoutm);
+EGamma Gamma tVoutm Value = {-0.0558*V(DeltaVout,tVoutm)}
+
+*end
+
+*endmodule
+.ends
+
+.SUBCKT Cross_Comp inp inm out gnd 
++ Params: Vthres=0 Vhyst=1 VoutH=5 VoutL=0 Rout=1 Tdel=1N
+*
+.PARAM Delay = {MAX(Tdel,1n)}
+.Param Rdel = {IF ( (Delay > 1E-15) & (Rout < 1), 1, Rout ) }
+.Param VoutM={(VoutH+VoutL)/2}
+.Param VthH={Vthres+Vhyst}
+.Param VthL={Vthres-Vhyst}
+.Param Cout={Delay/(0.693*(Rdel+1u))}
+.Param Gdlh={1/Rdel}
+.Param Gdhl={1*Gdlh}
+.Param Ktm=1.0
+*
+*Rinp inp gnd 1G
+*Rinm inm gnd 1G
+Gthr gnd thr Value= { IF ( V(out,gnd) < {VoutM}, {VthH}, {VthL}) }
+Rthr gnd thr 1
+Gout gnd out Value= { IF ( (V(inp,inm) > V(thr,gnd)), (VoutH - V(out,gnd))*Gdlh, (VoutL - V(out,gnd))*Gdhl ) }
+Cout out gnd {Cout}
+Rout out gnd {1e5*Rdel}
+
+Gtm gnd tm  Value= {1m/(Abs(V(inp,inm) - V(thr,gnd)) + 1m)}
+Rtm tm gnd {1}
+Ctm tm gnd {Ktm*Cout*Rdel}
+.ENDS
+
+*// VerilogA for work_Damien, Gamma, veriloga
+
+*`include "constants.vams"
+*`include "disciplines.vams"
+
+* /*
+
+*verilogA block that generates Gamma = (Phi/Pi)*(1-Phi/Pi) that is used in the twoPort model
+*Phi being the phase shift between V_primary and V_secondary
+
+***************************************
+*Set of parameters :
+
+*For trim code 0011
+*Nominal process
+*Room temperature 27 C
+
+*real A = 106.5m;
+*real B = 1.6;
+*real C = 320m;
+*real D = 4.7m;
+*real E = -0.00874;
+*real F = 0.06174;
+*real G = 0.00437;
+***************************************
+*/
+
+*module Gamma(tinp,tinm,toutp,toutm,DeltaGamma);
+.SUBCKT GAMMA_0 tinp tinm toutp toutm DeltaGamma
+
+*real A = 106.5m;
+*real B = 1.6;
+*real C = 320m;
+*real D = 4.7m;
+*real E = -0.00874;
+*real F = 0.06174;
+*real G = 0.00437;
+
+.Param A = 106.5m
+.Param B = 1.6
+.Param C = 320m
+.Param D = 4.7m
+.Param E = -0.00874
+.Param F = 0.06174
+.Param G = 0.00437
+
+*input tinp, tinm,DeltaGamma;
+*output toutp,toutm;
+
+*electrical tinp,tinm,toutp,toutm,DeltaGamma;
+
+*real adummy = 0;
+*real bdummy = 0;
+
+*real a = 0;
+*real b = 0;
+
+*analog begin
+
+*@(cross(V(tinp,tinm) -1.598,0))
+;
+*if (V(tinp,tinm) > 1.598)
+*		adummy = 1;
+*else
+*		adummy = 0;
+XC1 tinp tinm a 0 Cross_Comp 
++ Params: Vthres=1.598 Vhyst=10u VoutH=1 VoutL=0 Rout=100 Tdel=30p
+
+*@(cross(V(tinp,tinm) -2.3,0))
+;
+*if (V(tinp,tinm) > 2.3 )
+*		bdummy = 1;
+*else
+*		bdummy = 0;
+XC2 tinp tinm b 0 Cross_Comp 
++ Params: Vthres=2.3 Vhyst=10u VoutH=1 VoutL=0 Rout=100 Tdel=30p
+
+*a = transition(adummy,0,100p,100p);
+*b = transition(bdummy,0,100p,100p);
+
+*V(toutp,toutm) <+ //(1-b)*(1-a)*0.01924+
+*					b*(E*V(tinp,tinm)*V(tinp,tinm)+F*V(tinp,tinm)+G) + V(DeltaGamma,toutm);
+Eout toutp toutm Value = { 
+*+ (1-V(b))*(1-V(a))*0.01924+
++                          V(b)*(E*V(tinp,tinm)*V(tinp,tinm)+F*V(tinp,tinm)+G) + V(DeltaGamma,toutm)}
+
+*//(1-b)*a*(A*(1-exp((-V(tinp,tinm)+B)/C))+D)
+*+ (1-V(b))*V(a)*(A*(1-exp((-V(tinp,tinm)+B)/C))+D) }
+*+ V(a)*(A*(1-exp((-V(tinp,tinm)+B)/C))+D) }
+
+*//V(toutp,toutm) <+ (1-b)*0.01924+b*(E*V(tinp,tinm)+F);
+*//	V(toutp,toutm) <+ A*pow(V(tinp,tinm),3) + B*pow(V(tinp,tinm),2) + C*V(tinp,tinm) + D;
+*end
+*endmodule
+.ends
+
+
+*// VerilogA for work_Damien, DAB_converter, veriloga
+
+*`include "constants.vams"
+*`include "disciplines.vams"
+
+*nature Frequency
+*	abstol = 1m;
+*	access = FF;
+*	units = "Hz";
+*endnature
+
+*discipline freq_current
+*	potential Frequency;
+*	flow Current;
+*enddiscipline
+
+*
+
+*module DAB_converter(Vphi,Tfreq,Vinp,Vinm,Voutp,Voutm,VinFiltered,VoutFiltered);
+.SUBCKT DAB_CONVERTER_0 Vphi Tfreq Vinp Vinm Voutp Voutm VinFiltered VoutFiltered  
+*Tst1 Tst2
+*// -------------------------------Parameters of the model----------------------------
+*	parameter real k = 0.7 from (0:1);
+*	parameter real L1 = 450n from (1n:1);
+*	parameter real L2 = 675n from (1n:1);
+*	parameter real Cdcdc = 12n from (0:1);
+*	parameter real Fswitch = 31.7Meg;
++ Params: k = 0.7 L1 = 450n L2 = 675n Cdcdc = 12n Fswitch = 31.7Meg
+
+	
+*// -------------------------------terminals definition----------------------------
+
+*	input Vinp,Vinm;
+*    input Tfreq,Vphi;
+*	input VinFiltered,VoutFiltered;
+*	output Voutp,Voutm;
+
+*	electrical Vinp,Vinm,Voutp,Voutm,Vphi,VinFiltered,VoutFiltered;
+
+*    freq_current Tfreq;
+	*real L12;
+    *real n;
+    *real K1;
+    *real fswi;
+	*real Cnorm;
+	*real Kc;
+	*real efficiency;
+
+	*real adummy,bdummy,cdummy;
+	*real a, b, c;
+	*real deriv;
+
+	*real f_caliber, f_caliber_dummy;
+	*real min_value = 1u;
+
+	*real V_in;
+.Param min_value = 1u
+
+*analog begin
+
+*	@(initial_step) begin
+*		L12  = k*sqrt(L1*L2);
+*		n    = sqrt(L2/L1);
+*	    fswi = 31.7E6;
+*		efficiency = 0.56;
+*		Kc = 35m;
+*	    K1   = (Fswitch/fswi)/(2*L12*n*fswi);
+*		Cnorm = 12n;
+*	end
+.Param L12  = {k*sqrt(L1*L2)}
+.Param n    = {sqrt(L2/L1)}
+.Param fswi = {31.7E6}
+.Param efficiency = 0.56
+.Param Kc = 35m
+.Param K1   = {(Fswitch/fswi)/(2*L12*n*fswi)}
+.Param Cnorm = 12n
+
+*if (Fswitch == 31.7M)  // if frequency isn't the nominal one of 31.7MHz then a scale factor is added so the model remains precise for other frequencies
+*	f_caliber_dummy = 1;
+
+*if (Fswitch < 31.7M	)
+*	f_caliber_dummy = 1.24;
+
+*if (Fswitch > 31.7M	)	
+*//	f_caliber_dummy = 2.4085-(Fswitch/1M)*0.0455;  order 1
+*//	f_caliber_dummy = 0.00367274*pow(Fswitch/1M,2)- 0.298142*pow(Fswitch/1M,1)+ 6.74781*pow(Fswitch/1M,0); order 2 : simple but 5-20 mV error in worst cases
+*	f_caliber_dummy = - 0.0018701712*pow(Fswitch/1M,5)
+*						+ 0.3203249445*pow(Fswitch/1M,4)
+*							- 21.9337870385*pow(Fswitch/1M,3)
+*								+ 750.5146719220*pow(Fswitch/1M,2)
+*									- 12833.0042895422*pow(Fswitch/1M,1)
+*										+ 87723.8841393226*pow(Fswitch/1M,0);		// order 5 : complicated but much more accurate : < 2 mV error in all cases
+.Param f_caliber_dummy = 
++ {if (Fswitch == 31.7Meg, 1,										
++   if (Fswitch < 31.7Meg, 1.24,
++          - 0.0018701712*PWR(Fswitch/1Meg,5)
++						+ 0.3203249445*PWR(Fswitch/1Meg,4)
++							- 21.9337870385*PWR(Fswitch/1Meg,3)
++								+ 750.5146719220*PWR(Fswitch/1Meg,2)
++									- 12833.0042895422*PWR(Fswitch/1Meg,1)
++										+ 87723.8841393226*PWR(Fswitch/1Meg,0) ) )} 
+* ;		// order 5 : complicated but much more accurate : < 2 mV error in all cases
+
+*if (I(Voutm,Voutp) > 50m) // if I_out becomes to big then it's capped at 50m
+*	bdummy = 1;
+*else 
+*	bdummy = 0;
+RTfreq	Tfreq 0 1G
+Viout Voutpi Voutp 0
+Ebdummy bdummy 0 Value = { if (I(Viout) > 50m, 1, 0) }
+
+*if (ddt(V(VoutFiltered,Voutm)) > 4E6)	// if the dVout/dt term becomes too big, it's capped
+*	cdummy = 0;
+*else 
+*	cdummy = 1;
+*EddtVoutFilt ddtVoutFilt 0 Value = {ddt(V(VoutFiltered,Voutm))}
+*Ecdummy cdummy 0 Value = {if (V(ddtVoutFilt,Voutm) > 4E6, 0, 1)}
+EddtVoutFilt ddtVoutFilt 0 Value = {Limit(1e-6*ddt(V(VoutFiltered,Voutm)), -40,40)}
+Ecdummy cdummy 0 Value = {if (V(ddtVoutFilt) > 4E0, 0, 1)}
+
+*f_caliber = transition(f_caliber_dummy,10p,100p,100p);
+*b = transition(bdummy,0,1n,1n);
+*c = transition(cdummy,10p,100p,100p);
+
+Vf_caliber_dummy nf_caliber_dummy 0 {f_caliber_dummy}
+*Xf_caliber nf_caliber_dummy f_caliber transition Params: DT=10p TR=100p TF=100p
+Xf_caliber nf_caliber_dummy f_caliber transition_sd Params: DT=10p TR=100p TF=100p
+*Xb bdummy b transition Params: DT=0p TR=1000p TF=1000p
+Xb bdummy b transition0 Params: TR=1000p TF=1000p
+*Xc cdummy c transition Params: DT=10p TR=100p TF=100p
+Xc cdummy c transition_sd Params: DT=10p TR=100p TF=100p
+
+*deriv = c*ddt(V(VoutFiltered,Voutm));
+*Ederiv deriv 0 Value = {V(c)*V(ddtVoutFilt,Voutm)}
+Ederiv deriv 0 Value = {V(c)*V(ddtVoutFilt)}
+									
+*I(Voutm,Voutp) <+ slew((1-b)*
+*					V(Vphi)   // from Gamma block that is a function of the phase shift between V_pri and V_secondary
+*						*K1			// constant term 
+*							*f_caliber	// scale factor depending on the frequency used
+*								*V(VinFiltered,Vinm)*	// V_in dependancy
+*									(1+((Kc*Cdcdc/Cnorm)*deriv/		
+*										(780k*V(VinFiltered,Vinm)-712k)))
+*													+b*20m,50000,-50000);	// dynamical behavior (empirical)
+Eiout Iout0 0 Value = {(1-V(b))*
++					    V(Vphi,Voutm)   ;// from Gamma block that is a function of the phase shift between V_pri and V_secondary
++						*K1			;// constant term 
++							*V(f_caliber)	;// scale factor depending on the frequency used
++								*V(VinFiltered,Vinm)*	;// V_in dependancy
++									(1+((Kc*Cdcdc/Cnorm)*1e6*V(deriv)/		
+*+										(780k*V(VinFiltered,Vinm)-712k)))
++										(780k*Max(V(VinFiltered,Vinm),1m)-712k)))
++													+V(b)*20m }
+Xslewo Iout0 Iout slew Params: POS_SLEW=50000 NEG_SLEW=-50000
+Giout Voutm Voutpi  Value = {V(Iout)} 
+*Rtst1 Tst1 b 1													
+*Rtst2 Tst2 deriv 1
+*/**********************************************/
+*/* used to force V_in to never be zero as it's in the denominator for I_in calculation */
+
+*V_in = V(VinFiltered,Vinm);
+*if (abs(V_in ) < min_value)
+*	V_in  = ( V_in  > 0.0) ? min_value : -min_value;
+
+*/**********************************************/
+*I(Vinp,Vinm) <+ slew(V(VoutFiltered,Voutm)*I(Voutm,Voutp)/(efficiency*V_in),50000,-50000);
+
+EIinp Iinp0 0 Value = {V(VoutFiltered,Voutm)*I(Viout)/(efficiency*(Abs(V(VinFiltered,Vinm) - min_value)+min_value))*if(V(VinFiltered,Vinm) > 0, 1, -1) }
+Xslewi Iinp0 Iinp slew Params: POS_SLEW=50000 NEG_SLEW=-50000
+GIinp Vinp Vinm  Value = {V(Iinp)} 
+*end 
+*endmodule
+.ends
+
+.SUBCKT TRANSITION IN OUT PARAMS: DT=1n TR=1n TF=1n
+
+.Param POS_SLEW = {1/Max(1e-12,TR)}
+.Param NEG_SLEW = {1/Max(1e-12,TF)}
+*
+.Param C1=1N
+.Param K=2.287
+.Param IPmax={K*Abs(POS_SLEW)*C1}
+.Param INmax= {-K*Abs(NEG_SLEW)*C1}
+.Param Vmin= 1
+*.Param T1= {MAX(IPmax, Abs(INmax))/Vmin}
+.Param T1= {IPmax}
+.Param T2= {Abs(INmax)}
+*
+XDEL1 IN 1 DELAY PARAMS: DT={DT}
+*G1          1 2 VALUE = {LIMIT(V(1,2)*T1, Abs(V(10,0))*INmax, Abs(V(1,0))*IPmax)}
+G1          1 2 VALUE = {Max(V(1,2)*T1, 0)}
+G2          1 2 VALUE = {Min(V(1,2)*T2, 0)}
+C1          2 0 {C1} 
+RpC1        2 0 1G 
+E2          OUT 0 2 0  1
+Re2          OUT 0 1G 
+.ENDS
+
+.SUBCKT TRANSITION0 IN OUT PARAMS: TR=1n TF=1n
+.Param POS_SLEW = {1/Max(1e-12,TR)}
+.Param NEG_SLEW = {1/Max(1e-12,TF)}
+*
+.Param C1=1N
+.Param K=2.287
+.Param IPmax={K*Abs(POS_SLEW)*C1}
+.Param INmax= {-K*Abs(NEG_SLEW)*C1}
+.Param Vmin= 1
+*.Param T1= {MAX(IPmax, Abs(INmax))/Vmin}
+.Param T1= {IPmax}
+.Param T2= {Abs(INmax)}
+*
+*XDEL1 IN 1 DELAY PARAMS: DT={DT}
+EL1 1 0 IN 0 1
+*G1          1 2 VALUE = {LIMIT(V(1,2)*T1, Abs(V(10,0))*INmax, Abs(V(1,0))*IPmax)}
+G1          1 2 VALUE = {Max(V(1,2)*T1, 0)}
+G2          1 2 VALUE = {Min(V(1,2)*T2, 0)}
+C1          2 0 {C1}
+RpC1        2 0 1G
+E2          OUT 0 2 0  1
+Re2          OUT 0 1G
+.ENDS  
+
+.SUBCKT TRANSITION_SD IN OUT PARAMS: DT=1n TR=1n TF=1n
+.Param POS_SLEW = {1/Max(1e-12,TR)}
+.Param NEG_SLEW = {1/Max(1e-12,TF)}
+*
+.Param C1=1N
+.Param K=2.287
+.Param IPmax={K*Abs(POS_SLEW)*C1}
+.Param INmax= {-K*Abs(NEG_SLEW)*C1}
+.Param Vmin= 1
+*.Param T1= {MAX(IPmax, Abs(INmax))/Vmin}
+.Param T1= {IPmax}
+.Param T2= {Abs(INmax)}
+*
+XDEL1 IN 1 0 RLC_Delay PARAMS: DT={DT}
+*G1          1 2 VALUE = {LIMIT(V(1,2)*T1, Abs(V(10,0))*INmax, Abs(V(1,0))*IPmax)}
+G1          1 2 VALUE = {Max(V(1,2)*T1, 0)}
+G2          1 2 VALUE = {Min(V(1,2)*T2, 0)}
+C1          2 0 {C1}
+RpC1        2 0 1G
+E2          OUT 0 2 0  1
+Re2          OUT 0 1G
+.ENDS  
+
+.SUBCKT DELAY IN OUT PARAMS: DT=1n
+.Param Del= {MAX(DT, 1p)}
+*
+E1          10 0 IN 0  1
+R1          10 3 100 
+TL1         3 0 20 0  Z0=100 TD={Del}
+R2          20 0 100 
+E2          OUT 0 20 0  2
+Re2          OUT 0 1G 
+.ENDS
+
+.SUBCKT RLC_Delay In Out Gnd PARAMS: DT= 1n
+.PARAM zeta= { 0.8}
+.PARAM tau= {830.29m*DT}
+.PARAM tlc= {zeta*tau}
+.PARAM R1= {1}
+.PARAM L1= {tau/(2*R1)}
+.PARAM C1= {tlc^2/L1}
+E1      3 Gnd In Gnd  1
+C1      4 Gnd  {C1}
+L1      5 4  {L1}
+E2      Out Gnd 4 Gnd  1
+R1      3 5 {R1} 
+.ENDS
+
+.SUBCKT SLEW IN OUT PARAMS: POS_SLEW = 1K NEG_SLEW= 1K
+*
+.Param C1=1N
+.Param IPmax={Abs(POS_SLEW)*C1}
+.Param INmax= {-Abs(NEG_SLEW)*C1}
+.Param Vmin= 10U
+.Param T1= {MAX(IPmax, Abs(INmax))/Vmin}
+*
+E1          1 0 IN 0  1
+G1          1 2 VALUE = {LIMIT(V(1,2)*T1, INmax, IPmax)}
+C1          2 0 {C1} 
+RpC1        2 0 1G 
+E2          OUT 0 2 0  1
+R1          OUT 0 1G 
+.ENDS
+
+.SUBCKT VGAIN_0 INP INN VDD1 GND1 VDD2 GND2 OUTP OUTN FSO
+*GAIN ERROR THERMAL DRIFT
+*VS TEMPERATURE: TCGERR ±15 PPM/°K AMC1301
+*VS TEMPERATURE: TCGERR ±20 PPM/°K AMC3301
+*VS TEMPERATURE: TCGERR ±15 PPM/°K AMC3302
+.PARAM TCGERR= {-15E-6}
+.PARAM EG= {(-50E-3 + 8m)/100}
+*.PARAM Gin={2.0}
+.PARAM Gin={4.0}
+.PARAM Gout={1.0/1.0}
+*.PARAM G={8.2} ;AMC1301, AMC3301
+.PARAM G={41} ;AMC1302, AMC3302
+.PARAM RG1= {1/Gin}
+.PARAM RG2= {1}
+.PARAM I0 = 1
+.PARAM R0 = {1/(I0*Gout)}
+*.PARAM R0 = {(1 + 250p)/(I0*Gout)}
+*.PARAM R0 = {(1 + EG + 2*TCGERR + 56u)/(I0*Gout)}
+*.PARAM Rout = {R0*(1 + EG + 2*TCGERR + 26u)}
+*.PARAM Rout = {R0*(1 + 2*TCGERR + 560u)}
+.PARAM Rout = {R0*(1 + 2*TCGERR + 0u)}
+.PARAM TC1= {TCGERR/R0/I0}
+.PARAM C25={56.0014427}
+.PARAM B25={0.146489}
+.PARAM C125={47.45704}
+.PARAM B125={0.17289}
+
+*.PARAM MC={(C125-C25)/100}
+.PARAM MC={0}
+.PARAM C0={C25 - MC}
+*.PARAM MB={(B125-B25)/100}
+.PARAM MB={0}
+.PARAM B0={B25 - MB}
+
+.PARAM A0={-0.010854}
+.PARAM D0={0.088938}
+
+.PARAM Vclip={302.7m}
+.PARAM VL={Vclip*Gin}
+.PARAM VLFSO={-2.563/R0 - 1m}
+
+GVDD1 0 G1 VALUE = {1 + EG}
+RG1 G1 0 {RG1}
+GVDD2 0 G12 TABLE {V(VDD2,GND1)} = (3.00026 0.999503704) (5.00641 0.999441518) (5.50466 0.99944447)
+RG12 G12 0 1.0
+G2 0 G2 VALUE = { V(G1)*V(G12)*Limit(V(INP,INN), -VL, VL) }
+RG2 G2 0 {RG2}
+*G1 OUTN OUTP  VALUE = {IF ( V(FSO,GND1) < 0.5, ((C0 + MC*V(Temp))*TANH( (B0 + MB*V(Temp))*(V(G2) + A0) ) + D0), VLFSO) }
+G1 OUTN OUTP  VALUE = {IF ( V(FSO,GND1) < 0.5, ((C0)*TANH( (B0)*(V(G2) + A0) ) + D0), VLFSO) }
+ROUT OUTP OUTN  RMOD2 {Rout}
+.MODEL RMOD2 RES (TC1={TC1} TC2=0 TCE=0)
+
+*Itemp 0 Temp 1
+*RTemp Temp 0 RTemp 1
+*.MODEL RTemp RES (TC1={1} TC2=0 TCE=0)
+.ENDS
+
+.SUBCKT D_ZR_5V3_0 1    2
+D1 1 2  D_Z5V3
+.MODEL D_Z5V3 D( IS=1P N=1.0 BV=5.3 IBV=1.0M RS=10 XTI=0 T_ABS=27)
+.ENDS 
+
+.SUBCKT D_D2_0 1    2
+D1 1 2  D2
+.ENDS
+*
+
+.SUBCKT D_D2_1 1    2
+D1 1 2  D2
+.ENDS
+*
+
+.SUBCKT D_LIM100_05_0 1 2
+D1 1 2  D_Lim100_05
+.ENDS
+*$
+
+.SUBCKT D_LIM1_0 1 2
+D1 1 2  D_Lim1
+.ENDS
+*$
+
+.SUBCKT Q_PMOS_OUT_L1_0 D G S B PARAMS:  M = 1 W = 100U L = 10U
+*_L1
+M1 D G S B Q_PMOS_Out_L1 W = {W} L = {L} M = {M} 
+.ENDS
+*$
+
+.SUBCKT Q_NMOS_OUT_L1_0 D G S B PARAMS:  M = 1 W = 100U L = 10U
+M1 D G S B Q_NMOS_Out_L1  W = {W} L = {L} M = {M} 
+.ENDS
+*$
+
+.SUBCKT VOCMTEMP_0 1 2
+.PARAM R0 = {1/1.44}
+GVocmtemp 1 2 table {TEMP} = (-55,1.43532, -39.6341,1.43680, -24.8955,1.43778, -9.84321,1.43901, 4.89547,1.43975, 19.9477,1.44000, 
++ 35,1.44025, 49.8955,1.44037, 65.1045,1.44049, 80.1568,1.44025, 94.8955,1.43988, 109.948,1.43926, 124.686,1.43852)
+Rout 1 2 {R0}
+.ENDS
+
+.SUBCKT Q_PMOS_OUT_L1_1 D G S B PARAMS:  M = 1 W = 100U L = 10U
+M1 D G S B Q_PMOS_Out_L1 W = {W} L = {L} M = {M} AD={W*LS} AS={W*LS} PD={W + 2*LS} PS={W + 2*LS} 
++ NRD={LS/W} NRS={LS/W}
+.ENDS
+*$
+
+.SUBCKT Q_NMOS_OUT_L1_1 D G S B PARAMS:  M = 1 W = 100U L = 10U
+M1 D G S B Q_NMOS_Out_L1  W = {W} L = {L} M = {M} AD={W*LS} AS={W*LS} PD={W + 2*LS} PS={W + 2*LS} 
++ NRD={LS/W} NRS={LS/W}
+.ENDS
+*$
+
+.SUBCKT Q_NMOS_OUT_L1_2 D G S B PARAMS:  M = 1 W = 100U L = 10U
+M1 D G S B Q_NMOS_Out_L1  W = {W} L = {L} M = {M} AD={W*LS} AS={W*LS} PD={W + 2*LS} PS={W + 2*LS} 
++ NRD={LS/W} NRS={LS/W}
+.ENDS
+*$
+
+.SUBCKT D_LIM1_1 1 2
+D1 1 2  D_Lim1
+.ENDS
+*$
+
+.SUBCKT VOST_0 1 2
+*OFFSET VOLTAGE, VOS = 0 ±100 UV AMC3302
+*VS TEMPERATURE DVOS/DT = ±0.15 ±0.8 UV/°C AMC3302
+*.PARAM I0 = 1M
+.PARAM I0 = {1M*Sgn(VOFFS)}
+.PARAM DVOS_DT= {-0.15U}
+.PARAM VOFFS = {36.0U + 2*DVOS_DT}
+*.PARAM R0 = {VOFFS/I0}
+.PARAM R0 = {Abs(VOFFS/I0)}
+.PARAM TC1= {DVOS_DT/R0/I0}
+
+R2 40 0 RMOD2 {R0}
+I2 40 0 {I0}
+E3 1 2 40 0 1
+.MODEL RMOD2 RES (TC1={TC1} TC2=0 TCE=0)
+.ENDS
+
+.SUBCKT HYSTCOMPGD_0 inp inm out gnd 
++ Params: Vthres=0 Vhyst=1 VoutH=5 VoutL=0 Rout=1 Delay=1N
+*
+.Param MinADel = 1n
+.PARAM Tdel = {MAX(Delay,MinADel)}
+.Param Rdel = {IF ( (Tdel > 1E-15) & (Rout < 1), 1, Rout ) }
+.Param VoutM={(VoutH+VoutL)/2}
+.Param VthH={Vthres+Vhyst}
+.Param VthL={Vthres-Vhyst}
+.Param Cout={Tdel/(0.693*(Rdel+1u))}
+.Param Gdlh={1/Rdel}
+.Param Gdhl={1*Gdlh}
+*
+Gthr gnd thr Value= { IF ( V(out,gnd) < {VoutM}, {VthH}, {VthL}) }
+Rthr gnd thr 1
+Gout gnd out Value= { IF ( (V(inp,inm) > V(thr,gnd)), (VoutH - V(out,gnd))*Gdlh, (VoutL - V(out,gnd))*Gdhl ) }
+Cout out gnd {Cout}
+Rout out gnd {1e5*Rdel}
+.ENDS
+
+.SUBCKT D_D4_3 1    2
+D1 1 2  DD
+.MODEL DD D( IS=10n N=0.50 RS=1 XTI=0 Eg=0.55 T_ABS=27)
+.ENDS
+
+.SUBCKT D_ZB1_1 1    2
+D1 1 2  D_4_9V
+CD 1 2 10P
+.MODEL D_4_9V D( IS=1n N=1.0 BV=2.9 IBV=1.0m RS=0 XTI=0 T_ABS=27)
+.ENDS 
+
+.SUBCKT D_LIM1T_0 1 2
+D1 1 2  D_Lim1T
+.ENDS
+
+.SUBCKT D_LIMCM_0 1 2
+D1 1 2  D_Limcm
+.MODEL D_LIMcm D( IS=1p N=1.0 RS=100 XTI=0 AF=0 KF=0 T_ABS=27)
+.ENDS
+
+.MODEL D_LIM1T D( IS=10F N=1.0 RS=10 XTI=0 AF=0 KF=0 T_ABS=27)
+*$
+
+*Parameters: 0.4um CMOS
+.PARAM LS = 1.0U
+.PARAM VTOHP = 0.75
+.PARAM VTOHN = 0.75
+
+.PARAM LAMBDA = 10M
+
+.PARAM GAMMA = 0.00
+.PARAM KAPPA = 1.0
+.PARAM THETA = 0.23
+.PARAM ETA = 3
+
+.PARAM KPN = {UON*COX * 1e-4}
+.PARAM KPP = {UOP*COX * 1e-4}
+.PARAM LDN = 0.09U
+.PARAM LDP = 0.09U
+.PARAM RSW = 1810
+.PARAM RSN = 1.41
+.PARAM RDS = 10MEG
+.PARAM VBMUL = 1E6
+.PARAM RPAR = 1T
+.PARAM CBDJ = 1.0 
+.PARAM CBDS = 1.0
+.PARAM CGBF = 1.0
+.PARAM PBP = 0.7
+.PARAM PBN = 0.7
+.PARAM UON = 450
+.PARAM UOP = 450
+*.PARAM UOP = 150
+*
+.PARAM CJN = {200U}
+.PARAM CJP = {400U} 
+.PARAM CJSWN = {1.2N}
+.PARAM CJSWP = {2.4N}
+.PARAM XJN = 0.15U
+.PARAM CGSON = {0.6*XJN*COX} 
+.PARAM CGDON = {CGSON}
+.PARAM CGBON = {CGBF*CGDON}
+.PARAM XJP = 0.18U
+.PARAM CGSOP = {0.6*XJP*COX} 
+.PARAM CGDOP = {CGSOP}
+.PARAM CGBOP = {CGBF*CGDOP}
+.PARAM EPSSIO2 = {3.9*8.854214871E-12}
+.PARAM TOX = 80E-10
+.PARAM COX = {EPSSIO2/TOX}
+*$
+.MODEL Q_NMOS NMOS Level=1 L=2U W=10U KP={KPN} VTO={VTOHN}  AF=0 KF=0
+*$
+.MODEL Q_PMOS PMOS Level=1 L=2U W=10U KP={KPP} VTO={-VTOHP}  AF=0 KF=0
+*$
+.MODEL Q_NMOS_Out_L1 NMOS LEVEL=1 L=10U W=100U KP={KPN} VTO={VTOHN} LAMBDA={LAMBDA}
++ CJ={CJN} CJSW={CJSWN} CGSO={CGSON} CGDO={CGDON} RSH= 4 PB={PBN} LD= {LDN} RDS={RDS} 
+*$
+.MODEL Q_NMOS_Out NMOS LEVEL=3 L=10U W=100U KP={KPN} VTO={VTOHN} THETA={THETA}
++ CJ={CJN} CJSW={CJSWN} CGSO={CGSON} CGDO={CGDON} RSH= 4 PB={PBN} LD= {LDN} RDS={RDS} TOX={TOX} XJ={XJN}
++ GAMMA={GAMMA} KAPPA={KAPPA} ETA={ETA}
+*$
+.MODEL Q_PMOS_Out_L1 PMOS LEVEL=1 L=10U W=100U KP={KPP} VTO={-VTOHP} LAMBDA={LAMBDA}
++ CJ={CJP} CJSW={CJSWP} CGSO={CGSOP} CGDO={CGDOP} RSH=4 PB={PBP} LD= {LDP} RDS={RDS} 
+*$
+.MODEL Q_PMOS_Out PMOS LEVEL=3 L=10U W=100U KP={KPP} VTO={-VTOHP} THETA={THETA}
++ CJ={CJP} CJSW={CJSWP} CGSO={CGSOP} CGDO={CGDOP} RSH=4 PB={PBP} LD= {LDP} RDS={RDS} TOX={TOX} XJ={XJP}
++ GAMMA={GAMMA} KAPPA={KAPPA} ETA={ETA}
+*$
+.MODEL D_Lim1 D( IS=10F N=1.0 RS=1000 XTI=0 AF=0 KF=0 EG=1.11 T_ABS=27)
+*$
+.MODEL D_Lim100 D( IS=10F N=1.0 RS=100 XTI=0 AF=0 KF=0 EG=1.11 T_ABS=27)
+*$
+.MODEL D_Lim1005 D( IS=10F N=0.5 RS=100 XTI=0 AF=0 KF=0 EG=0.555 T_ABS=27)
+.MODEL D_Lim100_05 D( IS=10F N=0.5 RS=100 XTI=0 AF=0 KF=0 EG=0.555 T_ABS=27)
+*$
+.MODEL D_Lim10 D( IS=10F N=1.0 RS=10 XTI=0 AF=0 KF=0 EG=1.11 T_ABS=27)
+*$
+.MODEL D_Lim2 D( IS=10f N=0.5 RS=1 XTI=0 AF=0 KF=0 EG=0.555 T_ABS=27 )
+*$
+.MODEL D_Lim3 D( IS=1E-18 N=1.0 RS=1 XTI=0 AF=0 KF=0 T_ABS=27)
+*$
+.MODEL D_Lim4 D( IS=10F N=1.0 RS=1m XTI=0 AF=0 KF=0 T_ABS=27)
+*$
+.MODEL D1 D( IS=1p N=1.0 RS=0 XTI=3 AF=0 KF=0 T_ABS=27 )
+*$
+.MODEL DZ_14V D( IS=1p N=1.0 BV=14.0 IBV=5.0M XTI=0 RS=10 T_ABS=27)
+.MODEL DZ_80V D( IS=1p N=1.0 BV=80.0 IBV=5.0M XTI=0 RS=10 T_ABS=27)
+*$
+.MODEL D2 D( IS=1p N=1.0 XTI=0 RS=10 T_ABS=27)
+

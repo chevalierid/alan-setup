@@ -1,0 +1,191 @@
+
+* PSpice Model Editor - Version 16.2.0
+
+* TPS3702CX33
+*****************************************************************************
+* (C) Copyright 2014 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: TPS3702CX33
+* Date: 25NOV2014
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number:
+* EVM Users Guide: 
+* Datasheet: SBVS251 –SEPTEMBER 2014
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+.SUBCKT TPS3702CX33_TRANS OUTA_N OUTB_N GND SET VDD SENSE 
+X_U11         STARTUP_DELAY VDD_UVLO START AND2 PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+V_VREF3         N152820 GND 16.5m
+E_U20_ABM1         U20_N00189 0 VALUE {
++  (I(V_U20_V1)**2)*(2100.6/(V(U20_NVDD)+0001))+((19.867+V(U20_NVDD))*I(V_U20_V1))
++     }
+V_U20_V1         OUTA_N U20_N00239 0Vdc
+E_U20_ABM2         U20_NVDD 0 VALUE { MIN (V(VDD),5)    }
+E_U20_E1         U20_N00239 N112569 U20_N00189 0 1
+V_VREF         VREF GND 3.17
+X_U23         VREF SENSE N143027 N165891 COMPHYS_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+V_VREF2         N143027 GND 16.5m
+V_V1         N2016351 GND 250mVdc
+X_U26         N165891 N166262 INV_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=500E-3
+X_S2    N17976 GND N105482 GND TPS3702CX33_HEIRATTCHY_S2 
+X_U13         N68707 START POR N71416 START_POR_LOGIC PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+V_VREF1         N136268 GND 3.6
+X_U24         SENSE N136268 N152820 N154455 COMPHYS_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=0.5
+R_U6_R3         N166262 U6_N03801  50.51 TC=0,0 
+C_U6_C2         U6_N03759 0  1u  TC=0,0 
+X_U6_U1         U6_N03759 U6_N03807 d_d1 PARAMS:
+V_U6_V_posd         U6_N03763 0 0.5V
+X_U6_U4         U6_N03801 U6_N03759 d_d1 PARAMS:
+X_U6_U2         U6_N03759 U6_N03763 N68707 COMP_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+R_U6_R2         N166262 U6_N03807  27.42 TC=0,0 
+C_C2         GND N105482  110p  TC=0,0 
+X_U2_U1         U2_N08030 VDD POR COMP_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+V_U2_V1         U2_N08030 0 0.8Vdc
+X_U2_U2         VDD U2_N08075 VDD_UVLO COMP_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+V_U2_V2         U2_N08075 0 1.5Vdc
+X_U22         STARTUP_DELAY VDD_UVLO N17902 N17976 COMP_OV PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+X_U28         N2023031 OUTA_N d_d1 PARAMS:
+X_S1    N71416 GND N112569 GND TPS3702CX33_HEIRATTCHY_S1 
+V_V2         N2023031 GND 250mVdc
+E_U21_ABM1         U21_N00189 0 VALUE {
++  (I(V_U21_V1)**2)*(2100.6/(V(U21_NVDD)+0001))+((19.867+V(U21_NVDD))*I(V_U21_V1))
++     }
+V_U21_V1         OUTB_N U21_N00239 0Vdc
+E_U21_ABM2         U21_NVDD 0 VALUE { MIN (V(VDD),5)    }
+E_U21_E1         U21_N00239 N105482 U21_N00189 0 1
+R_R3         SET GND  1.25meg TC=0,0 
+C_C1         GND N112569  110p  TC=0,0 
+X_U27         N2016351 OUTB_N d_d1 PARAMS:
+X_U5_U4         U5_N02251 U5_N02972 d_d1 PARAMS:
+R_U5_R2         N09943 U5_N03258  27.42 TC=0,0 
+R_U5_R3         N09943 U5_N02972  50.51 TC=0,0 
+C_U5_C2         U5_N02251 0  1u  TC=0,0 
+V_U5_V_negd         U5_N02339 0 0.5V
+X_U5_U1         U5_N03258 U5_N02251 d_d1 PARAMS:
+X_U5_U2         U5_N02251 U5_N02339 N17902 COMP_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+X_U25         N154455 N09943 INV_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=500E-3
+G_DD         VDD GND TABLE { V(VDD, GND) } 
++ ( (1,0) (1.19,0.77u) (1.33,2u) (1.7,3.98u)  (2.08,5.7u) (2.361,6.02u)
++  (2.98,6.45u) (3.73,6.64u) (4.52,7.04u) (5.93,7.04u) (17.88,7.1u) )
+X_U10_U2         U10_N00584 U10_N00212 d_d1 PARAMS:
+X_U10_U1         VDD U10_N04218 U10_REF_CAN COMP_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+X_U10_U3         U10_N00212 U10_N02170 STARTUP_DELAY COMP_BASIC_GEN PARAMS:
++  VDD=1 VSS=0 VTHRESH=0.5
+V_U10_V_stup         U10_N02072 0 1.8V
+E_U10_E1         U10_N02072 U10_N04218 U10_REF_CAN 0 1.8
+R_U10_R1         U10_REF_CAN U10_N00584  432.9 TC=0,0 
+C_U10_C1         0 U10_N00212  1u  TC=0,0 
+V_U10_V_stup1         U10_N02170 0 0.5V
+R_U10_R2         U10_REF_CAN 0  1Meg TC=0,0 
+X_U10_U4         U10_N00212 U10_REF_CAN d_d1 PARAMS:
+.IC         V(U10_REF_CAN )=0
+.ends TPS3702CX33_TRANS
+*$
+************************
+.subckt TPS3702CX33_HEIRATTCHY_S2 1 2 3 4  
+S_S2         3 4 1 2 _S2
+RS_S2         1 2 1G
+.MODEL         _S2 VSWITCH Roff=10e6 Ron=500 Voff=0.8V Von=0.1V
+.ends TPS3702CX33_HEIRATTCHY_S2
+*$
+.subckt TPS3702CX33_HEIRATTCHY_S1 1 2 3 4  
+S_S1         3 4 1 2 _S1
+RS_S1         1 2 1G
+.MODEL         _S1 VSWITCH Roff=10e6 Ron=500 Voff=0.8V Von=0.1V
+.ends TPS3702CX33_HEIRATTCHY_S1
+
+*$
+.SUBCKT INV_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS INV_BASIC_GEN
+
+*$
+.SUBCKT COMPHYS_BASIC_GEN INP INM HYS OUT PARAMS: VDD=1 VSS=0 VTHRESH=0.5	
+EIN INP1 INM1 INP INM 1 
+EHYS INP1 INP2 VALUE { IF( V(1) > {VTHRESH},-V(HYS),0) }
+EOUT OUT 0 VALUE { IF( V(INP2)>V(INM1), {VDD} ,{VSS}) }
+R1 OUT 1 1
+C1 1 0 5n
+RINP1 INP1 0 1K
+.ENDS COMPHYS_BASIC_GEN
+*$
+.SUBCKT START_POR_LOGIC COMP START POR OUT PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {IF(V(START) >{VTHRESH},  
++ V(COMP) ,{IF(V(POR)>0.5,{VSS},{VDD})})}
+RINT YINT OUT 1
+CINT OUT 0 1n
+.ENDS START_POR_LOGIC 
+*$
+.subckt d_d1 1 2
+d1 1 2 dd1
+.MODEL dd1 D( IS=1e-15 TT=10p Rs=0.05 N=.001  )
+.ends d_d1
+*$
+.SUBCKT COMP_BASIC_GEN INP INM Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5	
+E_ABM Yint 0 VALUE {IF (V(INP) > 
++ V(INM), {VDD},{VSS})}
+R1 Yint Y 1
+C1 Y 0 1p
+R_inp INP 0 1Meg
+R_inm INM 0 1Meg
+.ENDS COMP_BASIC_GEN
+*$
+.SUBCKT COMP_OV START VDD_UV  COMP OUT PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {IF(V(START) <{VTHRESH},  
++ {VDD},{IF(V(VDD_UV)>0.5,V(COMP),{VDD})})}
+RINT YINT OUT 1
+CINT OUT 0 1n
+.ENDS COMP_OV
+*$
+
+.SUBCKT OR2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  |  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS OR2_BASIC_GEN
+*$
+.SUBCKT AND2 A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS AND2
+*$

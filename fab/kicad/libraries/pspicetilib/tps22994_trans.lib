@@ -1,0 +1,784 @@
+* PSpice Model Editor - Version 16.2.0
+*$
+* TPS22994
+*****************************************************************************
+* (C) Copyright 2014 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose. The model is
+** provided solely on an "as is" basis. The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: TPS22994
+* Date: 28AUG2014
+* Model Type: Transient
+* Simulator: PSpice
+* Simulator Version: 16.2.0.p001
+* EVM Order Number:
+* EVM Users Guide:
+* Datasheet: TPS22994 Quad Channel Load Switch with GPIO and I2C Control (SLVSCL4 –APRIL 2013)
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+*
+* 1. The following features have been modeled
+*      a. Switching Characteristics and variation with VIN
+*      b. RON and variation with VIN,VBIAS
+*      c. Quiescent Current v/s VIN at room temperature
+*      d. IIN(OFF) v/s VIN at room temperature
+*      e. ON Threshold.
+*      f.Quiescent Currents for VDD and VBIAS  at room temperature.
+*	 g. Pull down resistance w.r.t QOD parameter.
+* 2. Temperature effects are not been modeled. 
+* 3. I2C characteristics are not been modeled. 
+*
+*****************************************************************************
+.SUBCKT TPS22994_TRANS VOUT1 VOUT2 VOUT3 VOUT4 VIN1 VIN2 VIN3 VIN4 ADD1 ADD2 ADD3 
++SCL SDA VDD ON1 ON2 ON3 ON4 VBIAS GND
+R_R4         SDA 0  1E6 TC=0,0 
+R_R2         ADD2 0  1E6 TC=0,0 
+C_Q_C8         0 Q_N15311873  1n  
+E_Q_E28         Q_H 0 TABLE { V(VIN2, 0) } 
++ (
++  (0,0)(1,1.33m)(1.05,1.33m)(1.5,1.5m)(1.8,2.22m)(2.5,5.36m)(3.3,14m)(3.6,21.35m)
++  )
+E_Q_E4         Q_K3 0 TABLE { V(Q_VIN11, 0) } 
++ ( (0,0)(1.05,0.032)(1.5,0.032)(1.8,0.032)(3.3,0.03) )
+E_Q_ABM8         Q_KA 0 VALUE { IF(V(Q_VGATE)<0.731, V(Q_KG) , 1 )    }
+G_Q_G3         Q_N15309897 Q_VGATE Q_N15310347 0 1
+E_Q_E19         Q_N15310335 0 VALUE { 
++ {IF(SR2==000,V(Q_1),IF(SR2==001,V(Q_2),IF(SR2==010,V(Q_3),IF(SR2==011,V(Q_4),
++IF(SR2==100,V(Q_5),0)))))}
++  }
+X_Q_S2    Q_N15308083 0 Q_N15308051 Q_N15308021 CHANNEL2_Q_S2 
+E_Q_x         Q_U 0 VALUE { 
++ {IF(V(Q_J)==4.5,V(Q_F),IF(V(Q_J)==2.7,V(Q_E),IF(V(Q_J)==5.2,V(Q_H),IF(V(Q_J)==6,
++V(Q_I),0))))}
++  }
+X_Q_S1    Q_N15308095 0 Q_N15308021 0 CHANNEL2_Q_S1 
+G_Q_G2         VIN2 GND TABLE { V(Q_N15311873, 0) } 
++ ( (0,0)(1.1,4.00E-04u) (1.2,4.00E-04u) (1.8,6.00E-04u) (2.5,0.001u)
++  (3.6,0.001u) )
+C_Q_C4         0 Q_N15308755  1n  
+E_Q_E15         Q_KC 0 TABLE { V(VIN2, 0) } 
++ ( (0,0)(1.05,5.1)(1.5,5.1)(1.8,5.155)(3.3,3.5) )
+E_Q_E5         Q_K4 0 TABLE { V(Q_VIN11, 0) } 
++ ( (0,0)(1.05,0.011)(1.5,0.011)(1.8,0.011)(3.3,0.0103) )
+D_Q_D6         Q_VGATE Q_N15309897 DD 
+X_Q_S3    Q_ON_INT 0 Q_N15309833 GND CHANNEL2_Q_S3 
+X_Q_U44         ON_INT2 Q_ON_INT Q_N15308083 AND2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+V_Q_V52q         Q_N15308121 0 2
+E_Q_E26         Q_KB 0 TABLE { V(VIN2, 0) } 
++ ( (0,0)(1.05,1)(1.5,1)(1.8,1)(3.3,1) )
+E_Q_E8         Q_R 0 TABLE { V(Q_VIN11, 0) } 
++ ( (0,0)(1.05,65.7u)(1.5,65.8u)(1.8,54.7u)(3.3,100m) )
+E_Q_E29         Q_I 0 TABLE { V(VIN2, 0) } 
++ (
++  (0,0)(1,1.27m)(1.05,1.27m)(1.5,1.27m)(1.8,1.27m)(2.5,1.9m)(3.3,5.312m)(3.6,6.6m)
++  )
+E_Q_E3         Q_K2 0 TABLE { V(Q_VIN11, 0) } 
++ ( (0,0)(1.05,0.11)(1.5,0.11)(1.8,0.11)(3.3,0.1) )
+E_Q_E20         Q_KE 0 TABLE { V(VIN2, 0) } 
++ ( (0,0)(1.05,5.25)(1.5,5.2)(1.8,5.155)(3.3,4.04) )
+V_Q_V446         Q_N15308051 0 1
+C_Q_C2         0 Q_VIN_1  1n  
+C_Q_C1         0 Q_N15308021  1n  
+X_Q_U43         Q_N15308021 Q_ON_INT BUF_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+E_Q_E11         Q_4 0 TABLE { V(Q_VIN_1, 0) } 
++ ( (0,0)(1.05,0.24u)(1.5,0.26u)(1.8,0.275u)(3.3,0.315u) )
+X_Q_S5    Q_ON_INT 0 Q_VGATE Q_N15307963 CHANNEL2_Q_S5 
+E_Q_E2         Q_K1 0 TABLE { V(Q_VIN11, 0) } 
++ ( (0,0)(1.05,1.1)(1.5,1.1)(1.8,1.1)(3.3,1) )
+V_Q_V7         Q_N15307987 0 1.05
+C_Q_C5         Q_N15307963 Q_VGATE  85p  
+X_Q_U7         Q_N15307963 VOUT2 Q_U 0 RVAR PARAMS:  RREF=1
+E_Q_E13         Q_P 0 TABLE { V(Q_VIN11, 0) } 
++ ( (0,0)(1.05,54.7u)(1.5,54.8u)(1.8,54.7u)(3.3,58.8u) )
+M_Q_M3         VIN2 Q_VGATE Q_N15307963 Q_N15307963 NMOS01           
+E_Q_ABM5         Q_N15308767 0 VALUE { IF(V(ON_INT2) < 0.5, V(VIN2),0)    }
+E_Q_E16         Q_KF 0 TABLE { V(VIN2, 0) } 
++ ( (0,0)(1.05,5.158)(1.5,5.3)(1.8,5.2)(3.3,4.37) )
+E_Q_E12         Q_N15308837 0 VALUE { 
++ {IF(SR2==000,V(Q_P),IF(SR2==001,V(Q_Q),IF(SR2==010,V(Q_R),IF(SR2==011,V(Q_S),
++IF(SR2==100,V(Q_T),0)))))}
++  }
+X_Q_U1         ON2 Q_N15307987 Q_N153091633 ON_INT2 COMPHYS_BASIC_GEN PARAMS:
++  VDD=1 VSS=0 VTHRESH=0.5
+E_Q_E21         Q_E 0 TABLE { V(VIN2, 0) } 
++ ( (0,0)(1,25m)(1.05,27m)(1.5,58m)(1.7,104m)(2.5,1meg)(3.6,1meg) )
+X_Q_S4    Q_N15310615 0 VOUT2 Q_N15309833 CHANNEL2_Q_S4 
+E_Q_E9         Q_T 0 TABLE { V(Q_VIN11, 0) } 
++ ( (0,0)(1.05,65.7u)(1.5,65.8u)(1.8,54.7u)(3.3,100m) )
+D_Q_D3         Q_N15308021 Q_N15308121 DD 
+E_Q_E10         Q_S 0 TABLE { V(Q_VIN11, 0) } 
++ ( (0,0)(1.05,65.7u)(1.5,65.8u)(1.8,54.7u)(3.3,100m) )
+E_Q_E27         Q_F 0 TABLE { V(VIN2, 0) } 
++ ( (0,0)(1.05,6.7m)(1.5,8.2m)(1.8,10m)(2.5,18m)(3.3,44m)(3.6,109m) )
+E_Q_ABM9         Q_N15310347 0 VALUE { V(Q_N15310335)*V(Q_KA)    }
+R_Q_R4         Q_N15310317 Q_VIN_1  1 TC=0,0 
+C_Q_C6         0 Q_E  161.7p  
+R_Q_R2         Q_N15308669 Q_VIN11  10 TC=0,0 
+C_Q_C3         0 Q_VIN11  1n  
+E_Q_ABM4         Q_N15308669 0 VALUE { IF(V(ON_INT2) >= 0.5, V(VIN2),0)    }
+E_Q_E22         Q_KD 0 TABLE { V(VIN2, 0) } 
++ ( (0,0)(1.05,5.1)(1.5,5.1)(1.8,5.155)(3.3,3.9) )
+E_Q_ABM6         Q_N15308825 0 VALUE { V(Q_N15308837)*V(Q_K0)    }
+E_Q_E17         Q_KG 0 VALUE { 
++ {IF(SR2==000,V(Q_KB),IF(SR2==001,V(Q_KC),IF(SR2==010,V(Q_KD),IF(SR2==011,
++V(Q_KE),IF(SR2==100,V(Q_KF),0)))))}
++  }
+E_Q_E6         Q_1 0 TABLE { V(Q_VIN_1, 0) } 
++ ( (0,0)(1.05,152u)(1.5,160u)(1.8,168u)(3.3,180u) )
+E_Q_E7         Q_Q 0 TABLE { V(Q_VIN11, 0) } 
++ ( (0,0)(1.05,65.7u)(1.5,65.8u)(1.8,54.7u)(3.3,100m) )
+G_Q_G4         Q_N15308021 0 TABLE { V(Q_N15308755, 0) } 
++ ( (0,0)(1.05,300u)(1.5,300u)(1.8,300u)(3.3,300u) )
+E_Q_E23         Q_2 0 TABLE { V(Q_VIN_1, 0) } 
++ ( (0,0)(1.05,0.733u)(1.5,0.8u)(1.8,0.85u)(3.3,0.97u) )
+E_Q_E14         Q_K0 0 VALUE { 
++ {IF(ON_DEL2==00,V(Q_K1),IF(ON_DEL2==01,V(Q_K2),IF(ON_DEL2==10,
++V(Q_K3),IF(ON_DEL2==11,V(Q_K4),0))))}
++  }
+D_Q_D4         Q_N15307963 VIN2 DD 
+R_Q_R5         Q_N15311887 Q_N15311873  10 TC=0,0 
+X_Q_U46         Q_ON_INT ON_INT2 Q_N15308095 NOR2_BASIC_GEN 
++PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+E_Q_ABM12         Q_J 0 VALUE { V(VBIAS)    }
+E_Q_ABM10         Q_N15310615 0 VALUE { V(VIN2)    }
+E_Q_E18         Q_3 0 TABLE { V(Q_VIN_1, 0) } 
++ ( (0,0)(1.05,0.43u)(1.5,0.455u)(1.8,0.485u)(3.3,0.56u) )
+C_Q_C9         0 Q_H  161.7p  
+G_Q_G6         Q_N15308121 Q_N15308021 Q_N15308825 0 1
+E_Q_ABM1         Q_N15309897 0 VALUE {  V(VIN2)+3.6    }
+E_Q_ABM3         Q_N15311887 0 VALUE { IF (V(Q_ON_INT) < 0.5 , 
++V(VIN2) ,  0)   
++  }
+R_Q_R3         Q_N15308767 Q_N15308755  10 TC=0,0 
+E_Q_ABM7         Q_N15310317 0 VALUE { IF(V(Q_ON_INT) >= 0.5, 
++V(VIN2),0)    }
+C_Q_C7         Q_VGATE VIN2  88p  
+V_Q_V6         Q_N153091633 0 120m
+E_Q_E24         Q_5 0 TABLE { V(Q_VIN_1, 0) } 
++ ( (0,0)(1.05,0.122u)(1.5,0.1325u)(1.8,0.14u)(3.3,0.16u) )
+R_R1         ADD1 0  1E6 TC=0,0 
+C_R_C8         0 R_N15311873  1n  
+E_R_E28         R_H 0 TABLE { V(VIN3, 0) } 
++ (
++  (0,0)(1,1.33m)(1.05,1.33m)(1.5,1.5m)(1.8,2.22m)(2.5,5.36m)
++(3.3,14m)(3.6,21.35m)
++  )
+E_R_ABM8         R_KA 0 VALUE { IF(V(R_VGATE)<0.731, V(R_KG) , 1 )    }
+G_R_G3         R_N15309897 R_VGATE R_N15310347 0 1
+E_R_E19         R_N15310335 0 VALUE { 
++ {IF(SR3==000,V(R_1),IF(SR3==001,V(R_2),IF(SR3==010,V(R_3),
++IF(SR3==011,V(R_4),IF(SR3==100,V(R_5),0)))))}
++  }
+X_R_S2    R_N15308083 0 R_N15308051 R_N15308021 CHANNEL3_R_S2 
+E_R_x         R_U 0 VALUE { 
++ {IF(V(R_J)==4.5,V(R_F),IF(V(R_J)==2.7,V(R_E),IF(V(R_J)==5.2,
++V(R_H),IF(V(R_J)==6,V(R_I),0))))}
++  }
+X_R_S1    R_N15308095 0 R_N15308021 0 CHANNEL3_R_S1 
+G_R_G2         VIN3 GND TABLE { V(R_N15311873, 0) } 
++ ( (0,0)(1.1,4.00E-04u) (1.2,4.00E-04u) (1.8,6.00E-04u) 
++(2.5,0.001u)
++  (3.6,0.001u) )
+C_R_C4         0 R_N15308755  1n  
+E_R_E15         R_KC 0 TABLE { V(VIN3, 0) } 
++ ( (0,0)(1.05,5.1)(1.5,5.1)(1.8,5.155)(3.3,3.5) )
+E_R_E4         R_K3 0 TABLE { V(R_VIN11, 0) } 
++ ( (0,0)(1.05,0.032)(1.5,0.032)(1.8,0.032)(3.3,0.03) )
+D_R_D6         R_VGATE R_N15309897 DD 
+X_R_S3    R_ON_INT 0 R_N15309833 GND CHANNEL3_R_S3 
+X_R_U44         ON_INT3 R_ON_INT R_N15308083 AND2_BASIC_GEN 
++PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+V_R_V52q         R_N15308121 0 2
+E_R_E26         R_KB 0 TABLE { V(VIN3, 0) } 
++ ( (0,0)(1.05,1)(1.5,1)(1.8,1)(3.3,1) )
+E_R_E8         R_R 0 TABLE { V(R_VIN11, 0) } 
++ ( (0,0)(1.05,65.7u)(1.5,65.8u)(1.8,54.7u)(3.3,100m) )
+E_R_E29         R_I 0 TABLE { V(VIN3, 0) } 
++ (
++  (0,0)(1,1.27m)(1.05,1.27m)(1.5,1.27m)(1.8,1.27m)
++(2.5,1.9m)(3.3,5.312m)(3.6,6.6m)
++  )
+E_R_E5         R_K4 0 TABLE { V(R_VIN11, 0) } 
++ ( (0,0)(1.05,0.011)(1.5,0.011)(1.8,0.011)(3.3,0.0103) )
+E_R_E20         R_KE 0 TABLE { V(VIN3, 0) } 
++ ( (0,0)(1.05,5.25)(1.5,5.2)(1.8,5.155)(3.3,4.04) )
+V_R_V446         R_N15308051 0 1
+C_R_C2         0 R_VIN_1  1n  
+C_R_C1         0 R_N15308021  1n  
+X_R_U43         R_N15308021 R_ON_INT BUF_BASIC_GEN 
++PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+E_R_E11         R_4 0 TABLE { V(R_VIN_1, 0) } 
++ ( (0,0)(1.05,0.24u)(1.5,0.26u)(1.8,0.275u)(3.3,0.315u) )
+X_R_S5    R_ON_INT 0 R_VGATE R_N15307963 CHANNEL3_R_S5 
+E_R_E3         R_K2 0 TABLE { V(R_VIN11, 0) } 
++ ( (0,0)(1.05,0.11)(1.5,0.11)(1.8,0.11)(3.3,0.1) )
+V_R_V7         R_N15307987 0 1.05
+C_R_C5         R_N15307963 R_VGATE  85p  
+X_R_U7         R_N15307963 VOUT3 R_U 0 RVAR PARAMS:  RREF=1
+E_R_E13         R_P 0 TABLE { V(R_VIN11, 0) } 
++ ( (0,0)(1.05,54.7u)(1.5,54.8u)(1.8,54.7u)(3.3,58.8u) )
+M_R_M3         VIN3 R_VGATE R_N15307963 R_N15307963 NMOS01           
+E_R_ABM5         R_N15308767 0 VALUE { IF(V(ON_INT3) < 0.5, 
++V(VIN3),0)    }
+E_R_E16         R_KF 0 TABLE { V(VIN3, 0) } 
++ ( (0,0)(1.05,5.158)(1.5,5.3)(1.8,5.2)(3.3,4.37) )
+E_R_E2         R_K1 0 TABLE { V(R_VIN11, 0) } 
++ ( (0,0)(1.05,1.1)(1.5,1.1)(1.8,1.1)(3.3,1) )
+E_R_E12         R_N15308837 0 VALUE { 
++ {IF(SR3==000,V(R_P),IF(SR3==001,V(R_Q),IF(SR3==010,V(R_R),
++IF(SR3==011,V(R_S),IF(SR3==100,V(R_T),0)))))}
++  }
+X_R_U1         ON3 R_N15307987 R_N153091633 ON_INT3 COMPHYS_BASIC_GEN PARAMS:
++  VDD=1 VSS=0 VTHRESH=0.5
+E_R_E21         R_E 0 TABLE { V(VIN3, 0) } 
++ ( (0,0)(1,25m)(1.05,27m)(1.5,58m)(1.7,104m)(2.5,1meg)(3.6,1meg) )
+X_R_S4    R_N15310615 0 VOUT3 R_N15309833 CHANNEL3_R_S4 
+E_R_E9         R_T 0 TABLE { V(R_VIN11, 0) } 
++ ( (0,0)(1.05,65.7u)(1.5,65.8u)(1.8,54.7u)(3.3,100m) )
+D_R_D3         R_N15308021 R_N15308121 DD 
+E_R_E10         R_S 0 TABLE { V(R_VIN11, 0) } 
++ ( (0,0)(1.05,65.7u)(1.5,65.8u)(1.8,54.7u)(3.3,100m) )
+E_R_E27         R_F 0 TABLE { V(VIN3, 0) } 
++ ( (0,0)(1.05,6.7m)(1.5,8.2m)(1.8,10m)(2.5,18m)(3.3,44m)(3.6,109m) )
+E_R_ABM9         R_N15310347 0 VALUE { V(R_N15310335)*V(R_KA)    }
+R_R_R4         R_N15310317 R_VIN_1  1 TC=0,0 
+C_R_C6         0 R_E  161.7p  
+R_R_R2         R_N15308669 R_VIN11  10 TC=0,0 
+C_R_C3         0 R_VIN11  1n  
+E_R_ABM4         R_N15308669 0 VALUE { IF(V(ON_INT3) >= 0.5, V(VIN3),0)    }
+E_R_E22         R_KD 0 TABLE { V(VIN3, 0) } 
++ ( (0,0)(1.05,5.1)(1.5,5.1)(1.8,5.155)(3.3,3.9) )
+E_R_ABM6         R_N15308825 0 VALUE { V(R_N15308837)*V(R_K0)    }
+E_R_E17         R_KG 0 VALUE { 
++ {IF(SR3==000,V(R_KB),IF(SR3==001,V(R_KC),IF(SR3==010,V(R_KD),
++IF(SR3==011,V(R_KE),IF(SR3==100,V(R_KF),0)))))}
++  }
+E_R_E6         R_1 0 TABLE { V(R_VIN_1, 0) } 
++ ( (0,0)(1.05,152u)(1.5,160u)(1.8,168u)(3.3,180u) )
+E_R_E7         R_Q 0 TABLE { V(R_VIN11, 0) } 
++ ( (0,0)(1.05,65.7u)(1.5,65.8u)(1.8,54.7u)(3.3,100m) )
+G_R_G4         R_N15308021 0 TABLE { V(R_N15308755, 0) } 
++ ( (0,0)(1.05,300u)(1.5,300u)(1.8,300u)(3.3,300u) )
+E_R_E23         R_2 0 TABLE { V(R_VIN_1, 0) } 
++ ( (0,0)(1.05,0.733u)(1.5,0.8u)(1.8,0.85u)(3.3,0.97u) )
+E_R_E14         R_K0 0 VALUE { 
++ {IF(ON_DEL3==00,V(R_K1),IF(ON_DEL3==01,V(R_K2),IF(ON_DEL3==10,
++V(R_K3),IF(ON_DEL3==11,V(R_K4),0))))}
++  }
+D_R_D4         R_N15307963 VIN3 DD 
+R_R_R5         R_N15311887 R_N15311873  10 TC=0,0 
+X_R_U46         R_ON_INT ON_INT3 R_N15308095 NOR2_BASIC_GEN 
++PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+E_R_ABM12         R_J 0 VALUE { V(VBIAS)    }
+E_R_ABM10         R_N15310615 0 VALUE { V(VIN3)    }
+E_R_E18         R_3 0 TABLE { V(R_VIN_1, 0) } 
++ ( (0,0)(1.05,0.43u)(1.5,0.455u)(1.8,0.485u)(3.3,0.56u) )
+C_R_C9         0 R_H  161.7p  
+G_R_G6         R_N15308121 R_N15308021 R_N15308825 0 1
+E_R_ABM1         R_N15309897 0 VALUE {  V(VIN3)+3.6    }
+E_R_ABM3         R_N15311887 0 VALUE { IF (V(R_ON_INT) < 0.5 , V(VIN3) ,  0)   
++  }
+R_R_R3         R_N15308767 R_N15308755  10 TC=0,0 
+E_R_ABM7         R_N15310317 0 VALUE { IF(V(R_ON_INT) >= 0.5, V(VIN3),0)    }
+C_R_C7         R_VGATE VIN3  88p  
+V_R_V6         R_N153091633 0 120m
+E_R_E24         R_5 0 TABLE { V(R_VIN_1, 0) } 
++ ( (0,0)(1.05,0.122u)(1.5,0.1325u)(1.8,0.14u)(3.3,0.16u) )
+R_R5         SCL 0  1E6 TC=0,0 
+R_R3         ADD3 0  1E6 TC=0,0 
+C_P_C1         0 P_N15005252  1n  
+E_P_E28         P_H 0 TABLE { V(VIN1, 0) } 
++ (
++  (0,0)(1,1.33m)(1.05,1.33m)(1.5,1.5m)(1.8,2.22m)(2.5,5.36m)(3.3,14m)(3.6,21.35m)
++  )
+E_P_E21         P_E 0 TABLE { V(VIN1, 0) } 
++ ( (0,0)(1,25m)(1.05,27m)(1.5,58m)(1.7,104m)(2.5,1meg)(3.6,1meg) )
+X_P_U43         P_N15005252 P_ON_INT BUF_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+R_P_R4         P_N15011809 P_VIN_1  1 TC=0,0 
+X_P_S4    P_N15012121 0 VOUT1 P_N15011323 CHANNEL1_P_S4 
+V_P_V7         P_N15005218 0 1.05
+E_P_E27         P_F 0 TABLE { V(VIN1, 0) } 
++ ( (0,0)(1.05,6.7m)(1.5,8.2m)(1.8,10m)(2.5,18m)(3.3,44m)(3.6,109m) )
+E_P_E13         P_P 0 TABLE { V(P_VIN11, 0) } 
++ ( (0,0)(1.05,54.7u)(1.5,54.8u)(1.8,54.7u)(3.3,58.8u) )
+E_P_ABM9         P_N15011839 0 VALUE { V(P_N15011827)*V(P_KA)    }
+E_P_ABM5         P_N15006004 0 VALUE { IF(V(ON_INT11) < 0.5, V(VIN1),0)    }
+C_P_C6         0 P_E  161.7p  
+E_P_E2         P_K1 0 TABLE { V(P_VIN11, 0) } 
++ ( (0,0)(1.05,1.1)(1.5,1.1)(1.8,1.1)(3.3,1) )
+E_P_E17         P_KG 0 VALUE { 
++ {IF(SR1==000,V(P_KB),IF(SR1==001,V(P_KC),IF(SR1==010,V(P_KD),IF(SR1==011,
++V(P_KE),IF(SR1==100,V(P_KF),0)))))}
++  }
+E_P_E22         P_KD 0 TABLE { V(VIN1, 0) } 
++ ( (0,0)(1.05,5.1)(1.5,5.1)(1.8,5.155)(3.3,3.9) )
+E_P_E12         P_N15006074 0 VALUE { 
++ {IF(SR1==000,V(P_P),IF(SR1==001,V(P_Q),IF(SR1==010,V(P_R),IF(SR1==011,
++V(P_S),IF(SR1==100,V(P_T),0)))))}
++  }
+X_P_U1         ON1 P_N15005218 P_N150064003 ON_INT11 COMPHYS_BASIC_GEN PARAMS:
++  VDD=1 VSS=0 VTHRESH=0.5
+E_P_E29         P_I 0 TABLE { V(VIN1, 0) } 
++ (
++  (0,0)(1,1.27m)(1.05,1.27m)(1.5,1.27m)(1.8,1.27m)(2.5,1.9m)(3.3,5.312m)(3.6,6.6m)
++  )
+E_P_E6         P_1 0 TABLE { V(P_VIN_1, 0) } 
++ ( (0,0)(1.05,152u)(1.5,160u)(1.8,168u)(3.3,180u) )
+D_P_D4         P_N15011377 VIN1 DD 
+E_P_E10         P_S 0 TABLE { V(P_VIN11, 0) } 
++ ( (0,0)(1.05,65.7u)(1.5,65.8u)(1.8,54.7u)(3.3,100m) )
+D_P_D3         P_N15005252 P_N15005352 DD 
+E_P_E23         P_2 0 TABLE { V(P_VIN_1, 0) } 
++ ( (0,0)(1.05,0.733u)(1.5,0.8u)(1.8,0.85u)(3.3,0.97u) )
+E_P_E9         P_T 0 TABLE { V(P_VIN11, 0) } 
++ ( (0,0)(1.05,65.7u)(1.5,65.8u)(1.8,54.7u)(3.3,100m) )
+E_P_E4         P_K3 0 TABLE { V(P_VIN11, 0) } 
++ ( (0,0)(1.05,0.032)(1.5,0.032)(1.8,0.032)(3.3,0.03) )
+E_P_ABM1         P_N15011381 0 VALUE {  V(VIN1)+3.6    }
+C_P_C3         0 P_VIN11  1n  
+E_P_E18         P_3 0 TABLE { V(P_VIN_1, 0) } 
++ ( (0,0)(1.05,0.43u)(1.5,0.455u)(1.8,0.485u)(3.3,0.56u) )
+E_P_ABM10         P_N15012121 0 VALUE { V(VIN1)    }
+R_P_R2         P_N15005898 P_VIN11  10 TC=0,0 
+E_P_ABM4         P_N15005898 0 VALUE { IF(V(ON_INT11) >= 0.5, V(VIN1),0)    }
+E_P_ABM7         P_N15011809 0 VALUE { IF(V(P_ON_INT) >= 0.5, V(VIN1),0)    }
+E_P_ABM6         P_N15006062 0 VALUE { V(P_N15006074)*V(P_K0)    }
+C_P_C7         P_VGATE VIN1  88p  
+E_P_ABM8         P_KA 0 VALUE { IF(V(P_VGATE)<0.731, V(P_KG) , 1 )    }
+E_P_E24         P_5 0 TABLE { V(P_VIN_1, 0) } 
++ ( (0,0)(1.05,0.122u)(1.5,0.1325u)(1.8,0.14u)(3.3,0.16u) )
+G_P_G4         P_N15005252 0 TABLE { V(P_N15005994, 0) } 
++ ( (0,0)(1.05,300u)(1.5,300u)(1.8,300u)(3.3,300u) )
+G_P_G3         P_N15011381 P_VGATE P_N15011839 0 1
+E_P_E7         P_Q 0 TABLE { V(P_VIN11, 0) } 
++ ( (0,0)(1.05,65.7u)(1.5,65.8u)(1.8,54.7u)(3.3,100m) )
+E_P_ABM12         P_J 0 VALUE { V(VBIAS)    }
+R_P_R5         P_N15014370 P_N15014356  10 TC=0,0 
+E_P_E14         P_K0 0 VALUE { 
++ {IF(ON_DEL1==00,V(P_K1),IF(ON_DEL1==01,V(P_K2),IF(ON_DEL1==10,V(P_K3),
++IF(ON_DEL1==11,V(P_K4),0))))}
++  }
+E_P_E15         P_KC 0 TABLE { V(VIN1, 0) } 
++ ( (0,0)(1.05,5.1)(1.5,5.1)(1.8,5.155)(3.3,3.5) )
+E_P_E19         P_N15011827 0 VALUE { 
++ {IF(SR1==000,V(P_1),IF(SR1==001,V(P_2),IF(SR1==010,V(P_3),
++IF(SR1==011,V(P_4),IF(SR1==100,V(P_5),0)))))}
++  }
+X_P_U46         P_ON_INT ON_INT11 P_N15005326 NOR2_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=500E-3
+E_P_x         P_U 0 VALUE { 
++ {IF(V(P_J)==4.5,V(P_F),IF(V(P_J)==2.7,V(P_E),IF(V(P_J)==5.2,V(P_H),
++IF(V(P_J)==6,V(P_I),0))))}
++  }
+E_P_E3         P_K2 0 TABLE { V(P_VIN11, 0) } 
++ ( (0,0)(1.05,0.11)(1.5,0.11)(1.8,0.11)(3.3,0.1) )
+E_P_ABM3         P_N15014370 0 VALUE { IF (V(P_ON_INT) < 0.5 , V(VIN1) ,  0)   
++  }
+X_P_S3    P_ON_INT 0 P_N15011323 GND CHANNEL1_P_S3 
+G_P_G6         P_N15005352 P_N15005252 P_N15006062 0 1
+D_P_D6         P_VGATE P_N15011381 DD 
+V_P_V6         P_N150064003 0 120m
+R_P_R3         P_N15006004 P_N15005994  10 TC=0,0 
+E_P_E26         P_KB 0 TABLE { V(VIN1, 0) } 
++ ( (0,0)(1.05,1)(1.5,1)(1.8,1)(3.3,1) )
+C_P_C2         0 P_VIN_1  1n  
+E_P_E5         P_K4 0 TABLE { V(P_VIN11, 0) } 
++ ( (0,0)(1.05,0.011)(1.5,0.011)(1.8,0.011)(3.3,0.0103) )
+E_P_E11         P_4 0 TABLE { V(P_VIN_1, 0) } 
++ ( (0,0)(1.05,0.24u)(1.5,0.26u)(1.8,0.275u)(3.3,0.315u) )
+C_P_C8         0 P_N15014356  1n  
+E_P_E20         P_KE 0 TABLE { V(VIN1, 0) } 
++ ( (0,0)(1.05,5.25)(1.5,5.2)(1.8,5.155)(3.3,4.04) )
+X_P_S1    P_N15005326 0 P_N15005252 0 CHANNEL1_P_S1 
+C_P_C5         P_N15011377 P_VGATE  85p  
+X_P_S2    P_N15005314 0 P_N15005282 P_N15005252 CHANNEL1_P_S2 
+X_P_S5    P_ON_INT 0 P_VGATE P_N15011377 CHANNEL1_P_S5 
+C_P_C4         0 P_N15005994  1n  
+M_P_M3         VIN1 P_VGATE P_N15011377 P_N15011377 NMOS01           
+X_P_U7         P_N15011377 VOUT1 P_U 0 RVAR PARAMS:  RREF=1
+V_P_V52q         P_N15005352 0 2
+E_P_E16         P_KF 0 TABLE { V(VIN1, 0) } 
++ ( (0,0)(1.05,5.158)(1.5,5.3)(1.8,5.2)(3.3,4.37) )
+X_P_U44         ON_INT11 P_ON_INT P_N15005314 AND2_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=500E-3
+C_P_C9         0 P_H  161.7p  
+E_P_E8         P_R 0 TABLE { V(P_VIN11, 0) } 
++ ( (0,0)(1.05,65.7u)(1.5,65.8u)(1.8,54.7u)(3.3,100m) )
+G_P_G2         VIN1 GND TABLE { V(P_N15014356, 0) } 
++ ( (0,0)(1.1,4.00E-04u) (1.2,4.00E-04u) (1.8,6.00E-04u) (2.5,0.001u)
++  (3.6,0.001u) )
+V_P_V446         P_N15005282 0 1
+R_Z_R5         Z_N14962628 Z_N14962634  10 TC=0,0 
+E_Z_E11         Z_ON_OK1 0 VALUE { IF(V(ON_INT11)>0.5,1,0) }
+R_Z_R2         Z_N14958052 Z_N14958058  10 TC=0,0 
+E_Z_E12         Z_ON_OK2 0 VALUE { IF(V(ON_INT2)>0.5,1,0) }
+E_Z_E15         Z_ON_OK 0 VALUE {
++  V(Z_ON_OK1)+V(Z_ON_OK2)+V(Z_ON_OK3)+V(Z_ON_OK4) }
+G_Z_G1         Z_BIAS 0 TABLE { V(Z_N14957882, 0) } 
++ (
++  (0,0)(2.7,18.1u)(4.5,19.3u)(5.2,19.2u)(7.2,21.1u)(10.8,21.5u)(12.6,21.7u)(17.2,22.0u)
++  )
+C_Z_C4         0 Z_N14960800  1n  
+C_Z_C1         0 Z_N14957882  1n  
+G_Z_G3         Z_VDD_1 0 TABLE { V(Z_N14959262, 0) } 
++ ( (0,0)(1.8,0.6u)(3.6,1.2u) )
+G_Z_G5         Z_BIAS 0 TABLE { V(Z_N14962634, 0) } 
++ ( (0,0)(2.7,4.658u) (4.5,4.867u) (7.2,5.148u) (17.2,6.627u) (20,7.023u) )
+V_Z_VBIAS         VBIAS Z_BIAS 0
+E_Z_ABM1         Z_N14957876 0 VALUE { IF (V(Z_ON_OK) == 4 , V(VBIAS) ,  0)   
++  }
+G_Z_G2         Z_BIAS 0 TABLE { V(Z_N14958058, 0) } 
++ (
++  (0,0)(2.7,8.2u)(4.5,9.4u)(5.2,9.8u)(7.2,11.2u)(10.8,11.7u)(12.6,11.8u)(17.2,12.0u)
++  )
+E_Z_E13         Z_ON_OK3 0 VALUE { IF(V(ON_INT3)>0.5,1,0) }
+E_Z_ABM3         Z_N14959256 0 VALUE { IF (V(Z_ON_OK) >=0.5 , V(VDD) ,  0)    }
+C_Z_C5         0 Z_N14962634  1n  
+E_Z_ABM5         Z_N14962628 0 VALUE { IF (V(Z_ON_OK) <0.5 , V(VBIAS) ,  0)   
++  }
+E_Z_ABM2         Z_N14958052 0 VALUE { IF (V(Z_ON_OK) == 1 , V(VBIAS) ,  0)   
++  }
+R_Z_R4         Z_N14960794 Z_N14960800  10 TC=0,0 
+G_Z_G4         Z_VDD_1 0 TABLE { V(Z_N14960800, 0) } 
++ ( (0,0)(1.8,0.6u)(3.6,1.2u) )
+V_Z_VDD         VDD Z_VDD_1 0
+C_Z_C3         0 Z_N14959262  1n  
+E_Z_E14         Z_ON_OK4 0 VALUE { IF(V(ON_INT4)>0.5,1,0) }
+R_Z_R1         Z_N14957876 Z_N14957882  10 TC=0,0 
+R_Z_R3         Z_N14959256 Z_N14959262  10 TC=0,0 
+C_Z_C2         0 Z_N14958058  1n  
+E_Z_ABM4         Z_N14960794 0 VALUE { IF (V(Z_ON_OK) <0.5 , V(VDD) ,  0)    }
+C_S_C8         0 S_N15311873  1n  
+E_S_E28         S_H 0 TABLE { V(VIN4, 0) } 
++ (
++  (0,0)(1,1.33m)(1.05,1.33m)(1.5,1.5m)(1.8,2.22m)(2.5,5.36m)(3.3,14m)(3.6,21.35m)
++  )
+E_S_ABM8         S_KA 0 VALUE { IF(V(S_VGATE)<0.731, V(S_KG) , 1 )    }
+G_S_G3         S_N15309897 S_VGATE S_N15310347 0 1
+E_S_E19         S_N15310335 0 VALUE { 
++ {IF(SR4==000,V(S_1),IF(SR4==001,V(S_2),IF(SR4==010,V(S_3),IF(SR4==011,V(S_4),
++IF(SR4==100,V(S_5),0)))))}
++  }
+X_S_S2    S_N15308083 0 S_N15308051 S_N15308021 CHANNEL4_S_S2 
+E_S_x         S_U 0 VALUE { 
++ {IF(V(S_J)==4.5,V(S_F),IF(V(S_J)==2.7,V(S_E),IF(V(S_J)==5.2,V(S_H),
++IF(V(S_J)==6,V(S_I),0))))}
++  }
+X_S_S1    S_N15308095 0 S_N15308021 0 CHANNEL4_S_S1 
+G_S_G2         VIN4 GND TABLE { V(S_N15311873, 0) } 
++ ( (0,0)(1.1,4.00E-04u) (1.2,4.00E-04u) (1.8,6.00E-04u) (2.5,0.001u)
++  (3.6,0.001u) )
+C_S_C4         0 S_N15308755  1n  
+E_S_E15         S_KC 0 TABLE { V(VIN4, 0) } 
++ ( (0,0)(1.05,5.1)(1.5,5.1)(1.8,5.155)(3.3,3.5) )
+D_S_D6         S_VGATE S_N15309897 DD 
+X_S_S3    S_ON_INT 0 S_N15309833 GND CHANNEL4_S_S3 
+X_S_U44         ON_INT4 S_ON_INT S_N15308083 AND2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+V_S_V52q         S_N15308121 0 2
+E_S_E26         S_KB 0 TABLE { V(VIN4, 0) } 
++ ( (0,0)(1.05,1)(1.5,1)(1.8,1)(3.3,1) )
+E_S_E8         S_R 0 TABLE { V(S_VIN11, 0) } 
++ ( (0,0)(1.05,65.7u)(1.5,65.8u)(1.8,54.7u)(3.3,100m) )
+E_S_E29         S_I 0 TABLE { V(VIN4, 0) } 
++ (
++  (0,0)(1,1.27m)(1.05,1.27m)(1.5,1.27m)(1.8,1.27m)(2.5,1.9m)(3.3,5.312m)(3.6,6.6m)
++  )
+E_S_E20         S_KE 0 TABLE { V(VIN4, 0) } 
++ ( (0,0)(1.05,5.25)(1.5,5.2)(1.8,5.155)(3.3,4.04) )
+V_S_V446         S_N15308051 0 1
+C_S_C2         0 S_VIN_1  1n  
+C_S_C1         0 S_N15308021  1n  
+X_S_U43         S_N15308021 S_ON_INT BUF_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+E_S_E11         S_4 0 TABLE { V(S_VIN_1, 0) } 
++ ( (0,0)(1.05,0.24u)(1.5,0.26u)(1.8,0.275u)(3.3,0.315u) )
+X_S_S5    S_ON_INT 0 S_VGATE S_N15307963 CHANNEL4_S_S5 
+V_S_V7         S_N15307987 0 1.05
+C_S_C5         S_N15307963 S_VGATE  85p  
+X_S_U7         S_N15307963 VOUT4 S_U 0 RVAR PARAMS:  RREF=1
+E_S_E13         S_P 0 TABLE { V(S_VIN11, 0) } 
++ ( (0,0)(1.05,54.7u)(1.5,54.8u)(1.8,54.7u)(3.3,58.8u) )
+M_S_M3         VIN4 S_VGATE S_N15307963 S_N15307963 NMOS01           
+E_S_ABM5         S_N15308767 0 VALUE { IF(V(ON_INT4) < 0.5, V(VIN4),0)    }
+E_S_E16         S_KF 0 TABLE { V(VIN4, 0) } 
++ ( (0,0)(1.05,5.158)(1.5,5.3)(1.8,5.2)(3.3,4.37) )
+E_S_E12         S_N15308837 0 VALUE { 
++ {IF(SR4==000,V(S_P),IF(SR4==001,V(S_Q),IF(SR4==010,V(S_R),IF(SR4==011,
++V(S_S),IF(SR4==100,V(S_T),0)))))}
++  }
+X_S_U1         ON4 S_N15307987 S_N153091633 ON_INT4 COMPHYS_BASIC_GEN PARAMS:
++  VDD=1 VSS=0 VTHRESH=0.5
+E_S_E21         S_E 0 TABLE { V(VIN4, 0) } 
++ ( (0,0)(1,25m)(1.05,27m)(1.5,58m)(1.7,104m)(2.5,1meg)(3.6,1meg) )
+X_S_S4    S_N15310615 0 VOUT4 S_N15309833 CHANNEL4_S_S4 
+E_S_E9         S_T 0 TABLE { V(S_VIN11, 0) } 
++ ( (0,0)(1.05,65.7u)(1.5,65.8u)(1.8,54.7u)(3.3,100m) )
+D_S_D3         S_N15308021 S_N15308121 DD 
+E_S_E10         S_S 0 TABLE { V(S_VIN11, 0) } 
++ ( (0,0)(1.05,65.7u)(1.5,65.8u)(1.8,54.7u)(3.3,100m) )
+E_S_E27         S_F 0 TABLE { V(VIN4, 0) } 
++ ( (0,0)(1.05,6.7m)(1.5,8.2m)(1.8,10m)(2.5,18m)(3.3,44m)(3.6,109m) )
+E_S_ABM9         S_N15310347 0 VALUE { V(S_N15310335)*V(S_KA)    }
+E_S_E4         S_K3 0 TABLE { V(S_VIN11, 0) } 
++ ( (0,0)(1.05,0.032)(1.5,0.032)(1.8,0.032)(3.3,0.03) )
+R_S_R4         S_N15310317 S_VIN_1  1 TC=0,0 
+C_S_C6         0 S_E  161.7p  
+R_S_R2         S_N15308669 S_VIN11  10 TC=0,0 
+C_S_C3         0 S_VIN11  1n  
+E_S_ABM4         S_N15308669 0 VALUE { IF(V(ON_INT4) >= 0.5, V(VIN4),0)    }
+E_S_E22         S_KD 0 TABLE { V(VIN4, 0) } 
++ ( (0,0)(1.05,5.1)(1.5,5.1)(1.8,5.155)(3.3,3.9) )
+E_S_ABM6         S_N15308825 0 VALUE { V(S_N15308837)*V(S_K0)    }
+E_S_E5         S_K4 0 TABLE { V(S_VIN11, 0) } 
++ ( (0,0)(1.05,0.011)(1.5,0.011)(1.8,0.011)(3.3,0.0103) )
+E_S_E17         S_KG 0 VALUE { 
++ {IF(SR4==000,V(S_KB),IF(SR4==001,V(S_KC),IF(SR4==010,V(S_KD),IF(SR4==011,
++V(S_KE),IF(SR4==100,V(S_KF),0)))))}
++  }
+E_S_E6         S_1 0 TABLE { V(S_VIN_1, 0) } 
++ ( (0,0)(1.05,152u)(1.5,160u)(1.8,168u)(3.3,180u) )
+E_S_E7         S_Q 0 TABLE { V(S_VIN11, 0) } 
++ ( (0,0)(1.05,65.7u)(1.5,65.8u)(1.8,54.7u)(3.3,100m) )
+G_S_G4         S_N15308021 0 TABLE { V(S_N15308755, 0) } 
++ ( (0,0)(1.05,300u)(1.5,300u)(1.8,300u)(3.3,300u) )
+E_S_E23         S_2 0 TABLE { V(S_VIN_1, 0) } 
++ ( (0,0)(1.05,0.733u)(1.5,0.8u)(1.8,0.85u)(3.3,0.97u) )
+E_S_E14         S_K0 0 VALUE { 
++ {IF(ON_DEL4==00,V(S_K1),IF(ON_DEL4==01,V(S_K2),IF(ON_DEL4==10,
++V(S_K3),IF(ON_DEL4==11,V(S_K4),0))))}
++  }
+E_S_E3         S_K2 0 TABLE { V(S_VIN11, 0) } 
++ ( (0,0)(1.05,0.11)(1.5,0.11)(1.8,0.11)(3.3,0.1) )
+D_S_D4         S_N15307963 VIN4 DD 
+R_S_R5         S_N15311887 S_N15311873  10 TC=0,0 
+X_S_U46         S_ON_INT ON_INT4 S_N15308095 NOR2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+E_S_ABM12         S_J 0 VALUE { V(VBIAS)    }
+E_S_ABM10         S_N15310615 0 VALUE { V(VIN4)    }
+E_S_E18         S_3 0 TABLE { V(S_VIN_1, 0) } 
++ ( (0,0)(1.05,0.43u)(1.5,0.455u)(1.8,0.485u)(3.3,0.56u) )
+C_S_C9         0 S_H  161.7p  
+G_S_G6         S_N15308121 S_N15308021 S_N15308825 0 1
+E_S_ABM1         S_N15309897 0 VALUE {  V(VIN4)+3.6    }
+E_S_ABM3         S_N15311887 0 VALUE { IF (V(S_ON_INT) < 0.5 , V(VIN4) ,  0)   
++  }
+E_S_E2         S_K1 0 TABLE { V(S_VIN11, 0) } 
++ ( (0,0)(1.05,1.1)(1.5,1.1)(1.8,1.1)(3.3,1) )
+R_S_R3         S_N15308767 S_N15308755  10 TC=0,0 
+E_S_ABM7         S_N15310317 0 VALUE { IF(V(S_ON_INT) >= 0.5, V(VIN4),0)    }
+C_S_C7         S_VGATE VIN4  88p  
+V_S_V6         S_N153091633 0 120m
+E_S_E24         S_5 0 TABLE { V(S_VIN_1, 0) } 
++ ( (0,0)(1.05,0.122u)(1.5,0.1325u)(1.8,0.14u)(3.3,0.16u) )
+.ends TPS22994_TRANS
+*$
+.subckt CHANNEL2_Q_S2 1 2 3 4  
+S_Q_S2         3 4 1 2 _Q_S2
+RS_Q_S2         1 2 1G
+.MODEL         _Q_S2 VSWITCH Roff=100e6 Ron=1m Voff=0.2 Von=0.8
+.ends CHANNEL2_Q_S2
+*$
+.subckt CHANNEL2_Q_S1 1 2 3 4  
+S_Q_S1         3 4 1 2 _Q_S1
+RS_Q_S1         1 2 1G
+.MODEL         _Q_S1 VSWITCH Roff=100e6 Ron=1m Voff=0.2 Von=0.8
+.ends CHANNEL2_Q_S1
+*$
+.subckt CHANNEL2_Q_S3 1 2 3 4  
+S_Q_S3         3 4 1 2 _Q_S3
+RS_Q_S3         1 2 1G
+.MODEL         _Q_S3 VSWITCH Roff=10e6 Ron=10m Voff=0.8 Von=0.2
+.ends CHANNEL2_Q_S3
+*$
+.subckt CHANNEL2_Q_S5 1 2 3 4  
+S_Q_S5         3 4 1 2 _Q_S5
+RS_Q_S5         1 2 1G
+.MODEL         _Q_S5 VSWITCH Roff=1e9 Ron=0.2 Voff=0.8 Von=0.2
+.ends CHANNEL2_Q_S5
+*$
+.subckt CHANNEL2_Q_S4 1 2 3 4  
+S_Q_S4         3 4 1 2 _Q_S4
+RS_Q_S4         1 2 1G
+.MODEL         _Q_S4 VSWITCH Roff=297 Ron=
++ {IF(QOD2==00,93,IF(QOD2==01,469,IF(QOD2==10,938,0)))} Voff=1 Von=3.3
+.ends CHANNEL2_Q_S4
+*$
+.subckt CHANNEL3_R_S2 1 2 3 4  
+S_R_S2         3 4 1 2 _R_S2
+RS_R_S2         1 2 1G
+.MODEL         _R_S2 VSWITCH Roff=100e6 Ron=1m Voff=0.2 Von=0.8
+.ends CHANNEL3_R_S2
+*$
+.subckt CHANNEL3_R_S1 1 2 3 4  
+S_R_S1         3 4 1 2 _R_S1
+RS_R_S1         1 2 1G
+.MODEL         _R_S1 VSWITCH Roff=100e6 Ron=1m Voff=0.2 Von=0.8
+.ends CHANNEL3_R_S1
+*$
+.subckt CHANNEL3_R_S3 1 2 3 4  
+S_R_S3         3 4 1 2 _R_S3
+RS_R_S3         1 2 1G
+.MODEL         _R_S3 VSWITCH Roff=10e6 Ron=10m Voff=0.8 Von=0.2
+.ends CHANNEL3_R_S3
+*$
+.subckt CHANNEL3_R_S5 1 2 3 4  
+S_R_S5         3 4 1 2 _R_S5
+RS_R_S5         1 2 1G
+.MODEL         _R_S5 VSWITCH Roff=1e9 Ron=0.2 Voff=0.8 Von=0.2
+.ends CHANNEL3_R_S5
+*$
+.subckt CHANNEL3_R_S4 1 2 3 4  
+S_R_S4         3 4 1 2 _R_S4
+RS_R_S4         1 2 1G
+.MODEL         _R_S4 VSWITCH Roff=297 Ron=
++ {IF(QOD3==00,93,IF(QOD3==01,469,IF(QOD3==10,938,0)))} Voff=1 Von=3.3
+.ends CHANNEL3_R_S4
+*$
+.subckt CHANNEL1_P_S4 1 2 3 4  
+S_P_S4         3 4 1 2 _P_S4
+RS_P_S4         1 2 1G
+.MODEL         _P_S4 VSWITCH Roff=297 Ron=
++ {IF(QOD1==00,93,IF(QOD1==01,469,IF(QOD1==10,938,0)))} Voff=1 Von=3.3
+.ends CHANNEL1_P_S4
+*$
+.subckt CHANNEL1_P_S3 1 2 3 4  
+S_P_S3         3 4 1 2 _P_S3
+RS_P_S3         1 2 1G
+.MODEL         _P_S3 VSWITCH Roff=10e6 Ron=10m Voff=0.8 Von=0.2
+.ends CHANNEL1_P_S3
+*$
+.subckt CHANNEL1_P_S1 1 2 3 4  
+S_P_S1         3 4 1 2 _P_S1
+RS_P_S1         1 2 1G
+.MODEL         _P_S1 VSWITCH Roff=100e6 Ron=1m Voff=0.2 Von=0.8
+.ends CHANNEL1_P_S1
+*$
+.subckt CHANNEL1_P_S2 1 2 3 4  
+S_P_S2         3 4 1 2 _P_S2
+RS_P_S2         1 2 1G
+.MODEL         _P_S2 VSWITCH Roff=100e6 Ron=1m Voff=0.2 Von=0.8
+.ends CHANNEL1_P_S2
+*$
+.subckt CHANNEL1_P_S5 1 2 3 4  
+S_P_S5         3 4 1 2 _P_S5
+RS_P_S5         1 2 1G
+.MODEL         _P_S5 VSWITCH Roff=1e9 Ron=0.2 Voff=0.8 Von=0.2
+.ends CHANNEL1_P_S5
+*$
+.subckt CHANNEL4_S_S2 1 2 3 4  
+S_S_S2         3 4 1 2 _S_S2
+RS_S_S2         1 2 1G
+.MODEL         _S_S2 VSWITCH Roff=100e6 Ron=1m Voff=0.2 Von=0.8
+.ends CHANNEL4_S_S2
+*$
+.subckt CHANNEL4_S_S1 1 2 3 4  
+S_S_S1         3 4 1 2 _S_S1
+RS_S_S1         1 2 1G
+.MODEL         _S_S1 VSWITCH Roff=100e6 Ron=1m Voff=0.2 Von=0.8
+.ends CHANNEL4_S_S1
+*$
+.subckt CHANNEL4_S_S3 1 2 3 4  
+S_S_S3         3 4 1 2 _S_S3
+RS_S_S3         1 2 1G
+.MODEL         _S_S3 VSWITCH Roff=10e6 Ron=10m Voff=0.8 Von=0.2
+.ends CHANNEL4_S_S3
+*$
+.subckt CHANNEL4_S_S5 1 2 3 4  
+S_S_S5         3 4 1 2 _S_S5
+RS_S_S5         1 2 1G
+.MODEL         _S_S5 VSWITCH Roff=1e9 Ron=0.2 Voff=0.8 Von=0.2
+.ends CHANNEL4_S_S5
+*$
+.subckt CHANNEL4_S_S4 1 2 3 4  
+S_S_S4         3 4 1 2 _S_S4
+RS_S_S4         1 2 1G
+.MODEL         _S_S4 VSWITCH Roff=297 Ron=
++ {IF(QOD4==00,93,IF(QOD4==01,469,IF(QOD4==10,938,0)))} Voff=1 Von=3.3
+.ends CHANNEL4_S_S4
+*$
+.SUBCKT COMPHYS_BASIC_GEN INP INM HYS OUT PARAMS: VDD=1 VSS=0 VTHRESH=0.5	
+EIN INP1 INM1 INP INM 1 
+EHYS INP1 INP2 VALUE { IF( V(1) > {VTHRESH},-V(HYS),0) }
+EOUT OUT 0 VALUE { IF( V(INP2)>V(INM1), {VDD} ,{VSS}) }
+R1 OUT 1 1
+C1 1 0 5n
+RINP1 INP1 0 1K
+.ENDS COMPHYS_BASIC_GEN
+*$
+.MODEL DD D( IS=1F N=0.01 TT = 10p )
+*$
+.model NMOS01 NMOS
++ VTO     = 0.731
++ KP      = 8.67
++ LAMBDA  = 0.001
+*$
+.model PMOS01 PMOS
++ VTO     = -0.4
++ KP      = 8.5
++ LAMBDA  = 0.001
+*$
+.SUBCKT AND2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS AND2_BASIC_GEN
+*$
+.SUBCKT INV_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS INV_BASIC_GEN
+*$
+.SUBCKT BUF_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS BUF_BASIC_GEN
+*$
+.SUBCKT NOR2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  |  
++ V(B) > {VTHRESH},{VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS NOR2_BASIC_GEN
+*$
+.subckt rvar 101 102 201 202 Params: Rref=1
+* nodes : 101 102 : nodes between which variable resistance is placed
+* 201 202 : nodes to whose voltage the resistance is proportional
+* parameters : rref : reference value of the resistance
+rin 201 202 1G; input resistance
+r 301 0 {rref}
+fcopy 0 301 vsense 1; copy output current thru Z
+eout 101 106 poly(2) 201 202 301 0 0 0 0 0 1; multiply VoverZ with Vctrl
+vsense 106 102 0; sense iout
+.ends
+*$

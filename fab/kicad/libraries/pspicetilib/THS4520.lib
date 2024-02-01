@@ -1,0 +1,135 @@
+* THS4520
+*****************************************************************************
+* (C) Copyright 2011 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warrenties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+** Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: THS4520
+* Date: 06/01/2011
+* Model Type: All In One
+* Simulator: PSPICE 
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: N/A
+* EVM Users Guide: N/A
+* Datasheet: SLOS503B - July 2007
+*
+* Model Version: REV C
+*
+*****************************************************************************
+*
+* Updates:
+* REV. A - Created 10/30/06 X-ramus2@ti.com
+* REV. B - Tweak the model to be compatible with Multisim 10.1 as well. 
+* REV. C - Adding the resistors to bias CM pin (Figure 61 of Datasheet)
+*
+*****************************************************************************
+* NOTES:
+*   1- This macromodel predicts well: DC, small-signal AC, noise,
+*      , and transient performance under a wide range
+*      of conditions.
+*   2- This macromodel does not predict well: distortion
+*      (harmonic, intermod, diff. gain & phase, ...),
+*      temperature effects, board parasitics, differences
+*      between package styles, and process changes
+*   3- For some simulators the subckt for the F statement need to be placed 
+*      inside the ends statement followed by carriage return  
+*   4- Known Problems: - Do not simulate Iout
+*****************************************************************************
+*                     NonInverting Input
+*                     |    Inverting Input
+*                     |    |     Positive Supply
+*                     |    |     |    Negative Supply
+*                     |    |     |     |     Negative Output
+*                     |    |     |     |     |      Positive Supply
+*                     |    |     |     |     |      |     Common Mode Input
+*                     |    |     |     |     |      |     |
+*                     |     |     |     |       |      |      |
+*                     |     |     |     |       |      |      |
+*
+.SUBCKT THS4520 In+ In- Vs+ Vs- Out- Out+ CM
+
+.PARAM Raol = 1.2k
+.PARAM Lp = 30n
+
+C_C1         Vmid N_0001  99.47n  
+R_R3         N_0002 N_0001  {Raol}  
+R_R5         N_0001 Vmid  100MEG  
+E_E2         N_0003 Vmid N_0001 Vmid 1
+R_R7         N_0003 N_0004  8  
+L_L1         N_0004 N_0005  0.5nH  
+C_C3         Vmid N_0005  250p  
+R_R1         N_0007 N_0006  30  
+R_R2         N_0009 N_0008  30  
+E_E1         N_0002 N_0010 N_0007 N_0009 1.02MEG
+G_G1         Vs+ N_0012 Vs+ N_0011 0.7m
+E_E10         N_0014 Vmid N_0013 Vmid 125u
+R_R4         N_0010 N_0015  {Raol}  
+E_E3         N_0016 Vmid N_0015 Vmid 1
+R_R8         N_0016 N_0017  8  
+L_L2         N_0017 N_0018  0.5nH  
+C_C4         N_0018 Vmid  250p  
+C_C2         N_0015 Vmid  99.47n  
+R_R6         Vmid N_0015  100MEG  
+C_C5         Vmid N_0019  1p  
+L_L5         CM N_0020  900nH  
+R_R9         N_0020 N_0019  900  
+E_E6         N_0021 N_0014 N_0019 Vmid 1
+E_U2         Out- N_0021  VALUE 
++ {LIMIT(V(N_0005,Vmid)*1,V(N_0022,Vmid),V(N_0023,Vmid))}
+V_V12         N_0022 Vs- DC 0.25 
+R_RV12        N_0022 Vmid 1e6
+E_U3         Out+ N_0021  VALUE 
++ {LIMIT(V(N_0018,Vmid)*1,V(N_0024,Vmid),V(N_0025,Vmid))}
+V_V14         N_0024 Vs- DC 0.25  
+R_RV14        N_0024 Vmid 1e6
+V_V13         Vs+ N_0025 DC 0.25  
+R_RV13  	   N_0025 Vmid 1e6
+E_E11         N_0013 Vmid POLY(2) In- Vmid  In+ Vmid  0 0.5 0.5
+Q_Q2         N_0009 In- N_0026 NPN8 1
+E_E4         Vmid Vs- Vs+ Vs- 0.5
+V_V6         N_0011 Vs- DC 3V  
+V_V7         N_0012 Vs- DC 0V
+I_I5         Vs+ Vs- DC 10.8mA  
+Q_Q1         N_0007 In+ N_0026 NPN8 1
+I_I2         Vs+ In+ DC 9.2uA  
+I_I3         Vs+ In- DC 9uA  
+L_L4         N_0008 Vs+  {Lp}  
+L_L3         N_0006 Vs+  {Lp}  
+V_V11         Vs+ N_0023 DC 0.25  
+R_RV11        N_0023 Vmid 1e6
+I_I4         CM Vs- DC 0.6uA  
+X_S2    Vs+ Vs- N_0027 Vs- THS4520_Model_S2
+R_R19         N_0027 N_0026  1m  
+R_CM1	Vs+ CM 50k
+R_CM2	CM Vs- 50k
+
+.MODEL NPN8 NPN
++ IS = 7.604E-18 BF = 1.570E+02 NF = 1.000E+00 VAF= 7.871E+01
++ IKF= 3.975E-02 ISE= 3.219E-14 NE = 2.000E+00 BR = 7.614E-01
++ NR = 1.000E+00 VAR= 1.452E+00 IKR= 8.172E-02 ISC= 7.618E-21
++ NC = 1.847E+00 RB = 1.060E+02 IRB= 0.000E+00 RBM= 2.400E+00
++ RE = 2.520E+00 RC = 1.270E+02 CJE= 1.120E-13 VJE= 7.591E-01
++ MJE= 5.406E-01 TF = 1.213E-11 XTF= 2.049E+00 VTF= 1.813E+00
++ ITF= 4.293E-02 PTF= 0.000E+00 CJC= 8.208E-14 VJC= 6.666E-01
++ MJC= 4.509E-01 XCJC=8.450E-02 TR = 4.000E-11 CJS= 1.160E-13
++ VJS= 5.286E-01 MJS= 4.389E-01 XTB= 1.022E+00 EG = 1.120E+00
++ XTI= 1.780E+00 KF = 3.500E-16 AF = 1.000E+00 FC = 8.273E-01
+
+
+.ENDS    THS4520
+*
+
+.subckt THS4520_Model_S2 1 2 3 4  
+S_S2         3 4 1 2 _S2
+RS_S2         1 2 1G
+.MODEL         _S2 VSWITCH Roff=0.166748625431493 Ron=932.790061092598
++  Voff=-8.102659644524 Von=6.08261917857915
+.ends THS4520_Model_S2
+*

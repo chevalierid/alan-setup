@@ -1,0 +1,100 @@
+*$
+* LMZ13610
+*****************************************************************************
+* (C) Copyright 2013 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: LMZ13610
+* Date: 02JAN2013
+* Model Type: AVERAGE
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: AN-2134 LMZ13610/8/6 and LMZ12010/8/6
+* EVM Users Guide: SNVA478B - Revised June 2011
+* Datasheet: SNVS709C – Revised May	 2011
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+****************************************************************************
+.SUBCKT LMZ13610_AVG VIN AGND FB VOUT VC PARAMS: VIN=12 VOUT=2.5
+.PARAM c1_den = {-1*{VOUT}/({VIN}*350000)}
+RDCR 21 VOUT 10M
+L1 VSW 21 2.2E-6
+E_BEFF VIN VINP value = {(1-0.99)*V(VIN)}
+GM1 AGND VC REF FB 500U
+G_B4 AGND VSWX value = { IF(V(IV)>0 ,V(ILS) ,V(IL))}
+CC3 29 AGND 20P
+E_BAVERAGE IL AGND value = { 2.2E-6 * 350000.0 *(V(IP)**2-V(IV)**2)/2*(1/V(VSW) + 1/V(VON))}
+XAHS IL ILS S_XFER PARAMS: c1_den = {c1_den}
+RC4 VC 29 2MEG
+E_BRAMPX VC VR value = {V(VINP)*(1/(3.5MEG * 15P * 350000.0 ))*V(D)}
+E_BPEAKX IPX AGND value = { V(VR)/0.04}
+E_BVALLEY IV AGND value = {V(IVX)}
+E_BDUTY D AGND value = { IF(V(DX) < 0 , 0 , V(DX))}
+E_BDUTYX DX AGND value = { IF(( 2.2E-6 * 350000.0 *(V(IP)-V(IV))/V(VON)) > 0.99 , 
++ 0.99 , ( 2.2E-6 * 350000.0*(V(IP)-V(IV))/V(VON)))}
+E_BPEAK IP AGND value = { IF(V(IPX) > 0 , V(IPX) , 0)}
+E_BVALLEYX IVX AGND value = {(V(IP)-V(VSW)*(1-V(VSW)/V(VINP))/( 2.2E-6 * 350000.0 ))}
+XBUFF1 29 18 GAIN_0
+R9 VC 18 12.5K
+V2 REF AGND DC=0.8
+G_BIN VINP AGND value = {V(VSW)*I(VIL1)/(V(VINP))}
+VIL1 VSWX VSW DC=0
+C7 VC AGND 500P
+D1X VSWX VINP _D1_MOD
+.MODEL _D1_MOD D AF=1 BV=50 CJO=5.37397E-11 EG=0.849639  FC=0.5 IBV=0.000002 
++ IS=9.82502E-09 KF=0 M=0.515449  N=1.57715 RS=0.0304421 TT=0 VJ=1.24876 XTI=0.5
+E_BON VON AGND value = {V(VINP,VSW)}
+.ENDS LMZ13610_AVG
+*$
+.SUBCKT S_XFER 1 2 PARAMS: IN_OFFSET=0	GAIN=1 c0_num=1 c2_den= 8.271117032027576E-13 
++ c1_den=-5.952380952380953E-7 c0_den=1 out_ic=0 denorm_freq=1
+ES_XFER 2 0 LAPLACE {IN_OFFSET+GAIN*V(1)}={(c0_num/(c2_den*s*s+c1_den*s+c0_den))}
+.ENDS
+*$
+.SUBCKT GAIN_0 1 2
+E1 2 0 1 0 1.0
+.ENDS
+*$
+.SUBCKT Cout 2 4
+R1 2 3 0.0090
+C1 3 1 4.256E-4 
+R3 5 4 150; "free space" reduced by sqrt(dielectric constant)
+R2 2 4 2349624.060150376
+R4 3 26 2.31552762774837568E17
+R6 3 7 2.315527627748376E11
+C5 7 1 8.271117032027576E-13 
+R7 3 10 2.315527627748376E11
+C6 10 1 8.271117032027576E-13 
+R8 3 13 2.315527627748376E11
+C7 13 1 8.271117032027576E-13 
+C2 26 1 8.271117032027576E-13 
+R9 3 28 2.315527627748376E15
+C3 28 1 8.271117032027576E-13 
+R10 3 29 2.3155276277483758E13
+C4 29 1 8.271117032027576E-13 
+L8 1 5 0.2e-9
+R24 1 5 0.026999999999999996
+L12 5 4 10e-12
+.ENDS
+*$

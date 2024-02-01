@@ -1,0 +1,141 @@
+*$
+* INAx321
+*****************************************************************************
+* (C) Copyright 2023 Texas Instruments Incorporated. All rights reserved.     
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.      
+** TI and its licensors and suppliers make no warranties, either expressed   
+** or implied, with respect to this model, including the warranties of       
+** merchantability or fitness for a particular purpose. The model is        
+** provided solely on an "as is" basis. The entire risk as to its quality   
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Online Design Tools, Texas Instruments Inc.
+* Part: INAx321
+* Date: 24JAN2023
+* Model Type: ALL IN ONE
+* EVM Order Number: N/A 
+* EVM Users Guide:  N/A 
+* Datasheet: SBOS168D - DECEMBER 2000 - REVISED JANUARY 2006
+*
+* Model Version: Final 1.1
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.1
+* 1. Updated PSpice symbol
+* 2. Updated Model Name from INA321 to INAx321
+*
+* Final 1.0 : 
+* Release to Web
+*
+*****************************************************************************
+* Model Usage Notes:
+* 1. INAx321 model is available in single core(INA321) and dual core(INA2321)
+*****************************************************************************
+* Connections:  non-inverting input
+*               |   inverting input
+*		        |   |   positive power supply 
+*               |   |   |  negative power supply
+*               |   |   |  |  output 
+*               |   |   |  |  |   reference
+*               |   |   |  |  |   |   gainset
+*               |   |   |  |  |   |   |  
+*               |   |   |  |  |   |   |  
+.SUBCKT INAx321 IN+ IN- V+ V- OUT REF RG   
+*****************************************************************************
+* Components
+R1 A2NEG A2OUT 160K 
+R2 A1OUT A2NEG 40K 
+R3 REF A1NEG 160K 
+R4 A1NEG A1OUT 40K 
+XA1 IN- A1NEG V+ V- A1OUT OPAMP12_INAx321
+XA2 IN+ A2NEG V+ V- A2OUT OPAMP12_INAx321
+XA3 A2OUT RG V+ V- OUT OPAMP3_INAx321
+.ENDS INAx321
+*****************************************************************************
+.SUBCKT OPAMP3_INAx321 1 2 3 4 5
+*****************************************************************************
+* Models
+.MODEL DX D (IS=800.00E-18)
+.MODEL DY D (IS=800.00E-18 RS=1M CJO=10P)
+.MODEL MP PMOS (VTO=-0.75 KP=205.5U RD=1 RS=1 RG=1 RB=1 CGBO=16.667E-9 CBS=2.34E-13 CBD=2.34E-13)
+*****************************************************************************
+* Components
+C1 11 12 385.88E-15 
+C2 6 7 2.00E-12 
+CSS 10 99 1.000E-30 
+DC 5 53 DY 
+DE 54 5 DY 
+DLN 92 90 DX 
+DLP 90 91 DX 
+DP 4 3 DX 
+EGND 99 0 POLY(2) (3,0) (4,0) 0 .5 .5
+FB 7 99 POLY(5) VB VC VE VLP VLN 0 6.3662E9 -1E3 1E3 6E9 -6E9
+GA 6 0 11 12 6.2832E-6
+GCM 0 6 10 99 6.2832E-12
+HLIM 90 0 VLIM 1K
+ISS 3 10 DC 450.00E-9
+M1 11 2 10 3 MP L=1E-6 W=10E-6 M=1
+M2 12 1 10 3 MP L=1E-6 W=10E-6 M=1
+R2 6 9 100.00E3 
+RD1 4 11 159.15E3 
+RD2 4 12 159.15E3 
+RO1 8 5 50 
+RO2 7 99 25 
+RP 3 4 357.14E3 
+RSS 10 99 666.67E6 
+VB 9 0 DC 0
+VC 3 53 DC .8047
+VE 54 4 DC .8047
+VLIM 7 8 DC 0
+VLN 0 92 DC 12
+VLP 91 0 DC 12
+.ENDS OPAMP3_INAx321
+*****************************************************************************
+.SUBCKT OPAMP12_INAx321 1 2 3 4 5
+****************************************************************************** Models
+.MODEL DX D (IS=800.00E-18)
+.MODEL DY D (IS=800.00E-18 RS=1M CJO=10P)
+.MODEL MP PMOS (VTO=-0.75 KP=205.5U RD=1 RS=1 RG=1 RB=1 CGBO=16.667E-9 CBS=2.34E-13 CBD=2.34E-13)
+*****************************************************************************
+* Components
+C1 11 12 785.88E-15 
+C2 6 7 1.500E-12 
+CSS 10 99 1.000E-30 
+DC 5 53 DY 
+DE 54 5 DY 
+DLN 92 90 DX 
+DLP 90 91 DX 
+DP 4 3 DX 
+EGND 99 0 POLY(2) (3,0) (4,0) 0 .5 .5
+FB 7 99 POLY(5) VB VC VE VLP VLN 0 6.3662E9 -1E3 1E3 6E9 -6E9
+GA 6 0 11 12 6.2832E-6
+GCM 0 6 10 99 6.2832E-12
+HLIM 90 0 VLIM 1K
+ISS 3 10 DC 300.00E-9
+M1 11 2 10 3 MP L=2E-6 W=20E-6 M=1
+M2 12 1 10 3 MP L=2E-6 W=20E-6 M=1
+R2 6 9 100.00E3 
+RD1 4 11 159.15E3 
+RD2 4 12 159.15E3 
+RO1 8 5 50 
+RO2 7 99 25 
+RP 3 4 357.14E3 
+RSS 10 99 666.67E6 
+VB 9 0 DC 0
+VC 3 53 DC .8047
+VE 54 4 DC .8047
+VLIM 7 8 DC 0
+VLN 0 92 DC 12
+VLP 91 0 DC 12
+.ENDS OPAMP12_INAx321
+*

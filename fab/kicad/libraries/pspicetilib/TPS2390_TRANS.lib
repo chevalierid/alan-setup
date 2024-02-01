@@ -1,0 +1,199 @@
+*$
+* TPS2390
+*****************************************************************************
+* (C) Copyright 2013 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+* Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: TPS2390
+* Date: 31JAN2013
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: TPS2390EVM
+* EVM Users Guide: SLUU150 – February 2003
+* Datasheet: SLUS471D - JUNE 2002 - REVISED JANUARY 2008
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+****************************************************************************
+.SUBCKT TPS2390_TRANS EN FAULT_B FLTTIME GATE IRAMP ISENSE RTN VIN_N  
+E_E9         N17039168 VIN_N N17039139 0 1
+E_ABM9         N17082100 0 VALUE { IF(V(N17052343)>0.5, 15+V(VIN_N),V(VIN_N))  
++   }
+E_LIMIT1         N16720298 0 VALUE {LIMIT(V(N16742379),V(VIN_N),0.04+V(VIN_N))}
+X_S1    HARD_PULLDOWN 0 FAULT_B VIN_N TPS2390_LCA_TOPLEVEL_S1 
+E_ABM4         OVERLOAD 0 VALUE { IF(V(N16974809)>100mV, 1V,0V)    }
+G_ABMII-RAMP         RTN IRAMP VALUE { IF(V(IRAMP_REF_GND)>0.5, 10uA,0.6uA)   
++  }
+G_ABMII-FLTIM         RTN FLTTIME VALUE { IF(V(N17024818)>0.5, 50uA,0uA)    }
+R_R1         OVERLOAD CAP_CHARGE  1.4426 TC=0,0 
+E_E3         IRAMP_REF_GND 0 IRAMP VIN_N 1
+R_R2         N17105395 LATCH_S  1.4426 TC=0,0 
+D_D1         IRAMP N16804202 D_D1 
+X_S2    GATE2 0 IRAMP VIN_N TPS2390_LCA_TOPLEVEL_S2 
+C_C1         0 CAP_CHARGE  3.5u  TC=0,0 
+X_S4    N16974841 charge CAP_CHARGE 0 TPS2390_LCA_TOPLEVEL_S4 
+E_E6         N16943572 0 ISENSE VIN_N 1
+X_U18         EN_OK RTN_OK LATCH_R AND2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+X_U11         N192520 LATCH_S LATCH_Q NAND2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+X_S3    GATE3 0 FLTTIME VIN_N TPS2390_LCA_TOPLEVEL_S3 
+R_u8_R_emp_out         u8_N218286 GATE  1m TC=0,0 
+E_u8_E6         u8_N218492 VIN_N VDD_AMP VIN_N 0.5
+E_u8_E1         u8_N218530 0 N16720298 ISENSE 79432.823
+E_u8_ABM10         u8_N218286 0 VALUE { IF(V(u8_N218522)
++  <V(VIN_N),V(VIN_N),IF(V(u8_N218522) >V(VDD_AMP),V(VDD_AMP),V(u8_N218522)))   
++  }
+C_u8_C_emp         0 u8_EMP_HIGHDB  1.1492m  TC=0,0 
+E_u8_E5         u8_N218522 u8_N218492 u8_EMP_HIGHDB 0 1
+R_u8_R_emp         u8_N218530 u8_EMP_HIGHDB  0.33 TC=0,0 
+V_V1         N16974841 0 1
+E_ABM8         OVERLOAD_40M 0 VALUE { IF(V(N16943572)>40m, 0,1)    }
+C_C2         LATCH_S 0  0.5u  TC=0,0 
+E_E1         N16847232 0 EN VIN_N 1
+E_ABM1         FAULT_OUT 0 VALUE { IF(V(N17003700)>4V, 1V,0V)    }
+X_U21         GATE_FAULT GATE_OK INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+X_U22         LATCH_R GATE_OK N17052343 AND2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+E_ABM3         EN_OK 0 VALUE { IF(V(N16847232)>1.4V-(V(EN_OK)*0.06), 1V,0V)   
++  }
+X_U13         GATE_FAULT OVERLOAD_40M GATE3 OR2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+X_U17         OVERLOAD_40M N17024379 INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+E_E8         GATE_FAULT 0 LATCH_Q 0 1
+E_E4         N17003700 0 FLTTIME VIN_N 1
+E_E7         N16848019 0 RTN VIN_N 1
+X_U15         FAULT_OUT DEGLITCH_OUT TOTAL_FAULT_OUT OR2_BASIC_GEN PARAMS:
++  VDD=1 VSS=0 VTHRESH=500E-3
+M_M2         GATE N17039168 VIN_N VIN_N NMOS01  
++ L=10u  
++ W=10u         
+E_E5         N16742379 VIN_N IRAMP VIN_N 0.01
+E_E10         N16974809 0 ISENSE VIN_N 1
+C_C_supply         0 VDD_AMP  1u  TC=0,0 
+X_U20         IRAMP_REF_GND N17024379 N17024818 AND2_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=500E-3
+X_U14         LATCH_Q LATCH_R N192520 NAND2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+R_R_supply         N17082100 VDD_AMP  1 TC=0,0 
+X_U19         GATE_FAULT LATCH_R HARD_PULLDOWN AND2_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=500E-3
+X_U12         N277682 GATE_FAULT GATE2 OR2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+E_ABM7         N17039139 0 VALUE { IF(V(HARD_PULLDOWN)>0.5, 15,0)    }
+V_Vint2         N16804202 VIN_N 5.78
+E_ABM6         RTN_OK 0 VALUE { IF(V(N16848019)>30V-(V(RTN_OK)*2.3), 1V,0V)   
++  }
+E_ABM5         DEGLITCH_OUT 0 VALUE { IF(V(CAP_CHARGE)>0.5V, 1V,0V)    }
+X_U10         TOTAL_FAULT_OUT N17105395 INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+X_U16         LATCH_R N277682 INV_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=500E-3
+.ENDS
+
+.subckt TPS2390_LCA_TOPLEVEL_S1 1 2 3 4  
+S_S1         3 4 1 2 _S1
+RS_S1         1 2 1G
+.MODEL         _S1 VSWITCH Roff=1e9 Ron=1.0 Voff=0.1 Von=0.9
+.ends TPS2390_LCA_TOPLEVEL_S1
+
+.subckt TPS2390_LCA_TOPLEVEL_S2 1 2 3 4  
+S_S2         3 4 1 2 _S2
+RS_S2         1 2 1G
+.MODEL         _S2 VSWITCH Roff=1e9 Ron=10 Voff=0.1 Von=0.9
+.ends TPS2390_LCA_TOPLEVEL_S2
+
+.subckt TPS2390_LCA_TOPLEVEL_S4 1 2 3 4  
+S_S4         3 4 1 2 _S4
+RS_S4         1 2 1G
+.MODEL         _S4 VSWITCH Roff=1e9 Ron=10m Voff=0.1 Von=0.9
+.ends TPS2390_LCA_TOPLEVEL_S4
+
+.subckt TPS2390_LCA_TOPLEVEL_S3 1 2 3 4  
+S_S3         3 4 1 2 _S3
+RS_S3         1 2 1G
+.MODEL         _S3 VSWITCH Roff=1e9 Ron=100 Voff=0.1 Von=0.9
+.ends TPS2390_LCA_TOPLEVEL_S3
+
+*$
+.model D_D1 d
++ is=1e-015
++ tt=1e-011
++ rs=0.5
++ n=0.1
+
+*$
+.model NMOS01 nmos
++ vto=0.5
++ kp=0.0009512
+
+*$
+.SUBCKT INV_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS INV_BASIC_GEN
+
+*$
+.SUBCKT AND2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS AND2_BASIC_GEN
+
+*$
+.SUBCKT OR2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  |  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS OR2_BASIC_GEN
+
+*$
+.SUBCKT NAND2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH},{VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS NAND2_BASIC_GEN
+
+*$
+.subckt POWERMOS G D S PARAMS: RDSON=12.3m Ciss=1430p Crss=15p Coss=385p VSP=2.8 RG=2
+C_C1         S Da  {Coss} 
+R_R1         Da D  10
+C_C2         Ga D  {Crss}
+R_R2         G Ga {RG}
+C_C3         Ga S  {Ciss}
+D_D1         S Db Dbreak
+R_R3         Db D 1m
+S_switchM         D S Ga S _switchM
+RS_switchM         Ga S 100Meg
+.MODEL         _switchM VSWITCH Roff=100e6 Ron={RDSON} Voff=1.1 Von={VSP}
+.model Dbreak D Is=1e-14 Cjo=.1pF Rs=.1
+.ends 
+
+*$

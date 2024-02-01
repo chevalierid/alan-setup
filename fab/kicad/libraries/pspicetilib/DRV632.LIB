@@ -1,0 +1,243 @@
+* DRV632
+*****************************************************************************
+* (C) Copyright 2012 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: DRV632
+* Date: 7/11/2012
+* Model Type: All In One
+* Simulator: PSPICE
+* Simulator Version: Pspice 16.0.0.p001
+* EVM Order Number: N/A
+* EVM Users Guide: N/A
+* Datasheet: SLOS681 - December 2010
+*
+* Model Version: 3.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 : Release to web
+* Version 2.0 : Improved UVP circuitry
+* Version 3.0 : CMRR added
+*
+*****************************************************************************
+* Notes: 
+* 1. The following parameters are being modeled: Ao, f-3dB, Slew Rate
+*    Max/Min voltage/Current, noise, input voltage offset, current consumption
+*    Under voltage protection with hysteresis, Mute.
+* 3. The following parameters are not being modeled: PSRR
+* 4. Charge pump is being modeled using ideal Voltage controlled voltage source
+*****************************************************************************
+*$
+.SUBCKT DRV632 OUT_L -INL GND VSS EN +INL -INR +INR OUT_R VDD UVP
+V5          30 31 1M
+Vos         33 34 1M
+V10         35 GND 3.3
+V8          37 GND 1.25
+V4          38 GND 3.3
+V2          39 GND 500M
+V6          36 GND 3.3
+V1          41 GND 3.3
+XU5         29 VDDx VSSx 18 30 MUTExx DRV_AMP_EN_0
+XU11        -INR 18 GND_FLT CMRR_0
++ PARAMS: CMRR=83 FCMRR=220 
+XU10        -INL 20 GND_FLT CMRR_0
++ PARAMS: CMRR=83 FCMRR=220 
+XVn12       +INR 31 VNSE_0
+XU2         32 VDDx VSSx 20 33 MUTExx DRV_AMP_EN_0
+R16         29 OUT_R 110M 
+R15         32 OUT_L 110M 
+XVn11       +INL 34 VNSE_0
+XU7         35 MUTEx MUTExx GND NOT_0
+XU8         36 Comp_Out EN MUTEx GND AND_2_0
+XU13        38 UVP 37 Comp_Out GND STD_OPA_SE_0
+XU9         36 UVP Comp_Out GND VCVS_0
+C7          GND -INR 500F IC=0 
+C3          GND -INL 500F IC=0 
+C2          GND +INR 500F IC=0 
+C1          GND +INL 500F IC=0 
+R4          VSS VSSx 1 
+XU12        VDD 39 40 SCLAMP_0
+R36         EN GND 100K 
+XU6         GND VSSx VDDx GND VCVS_1
+XU1         VSSx VDDx MUTEx GND VCVS_2
+XU3         40 41 VDDx SCLAMP_1
+XU4         GND_FLT GND VDDx VSSx VCVS_3
+.ENDS
+*$
+**************************************
+**                                  **
+**                                  ** 
+**                                  **          
+**                                  **
+**************************************
+.SUBCKT DRV_AMP_EN_0 Vout V+ V- -IN +IN EN
+EVCVS1      44 GND_FLOAT_43 Over_clamp_42 GND_FLOAT_43  1
+XU11        47 45 46 GND_FLOAT_43 EN GBW_SLEW_SE_PD_0
++ PARAMS: AOL=154 GBW=11MEG SRP=5MEG SRN=5MEG IT=1 VON=0.5 RSC=1M 
+XU23        44 Vout OUT_CURRENT_CLAMP_0
++ PARAMS: RSER=0.1 IMAX=25M IMIN=25M 
+XU18        V+ V- GND_FLOAT_43 GND_FLOAT_0
+XU10        +IN -IN 47 45 GND_FLOAT_43 INPUT_0
++ PARAMS: RCM=1 CCM=100F CDM=100F
+R2          48 49 10 
+R1          50 51 10 
+XU7         52 V- 0 V- VCVS_4
+XU9         V+ 53 V+ 0 VCVS_4
+XR108       Over_clamp_42 GND_FLOAT_43 RNOISE_FREE_0
+GVCCS12     GND_FLOAT_43 Over_clamp_42 46 GND_FLOAT_43  1M
+C2          Over_clamp_42 GND_FLOAT_43 1P IC=1.0022663618 
+XU3         49 Over_clamp_42 IDEAL_D_0
+EVCVS5      48 GND_FLOAT_43 52 Over_clamp_42  100K
+XU1         Over_clamp_42 51 IDEAL_D_0
+EVCVS2      50 GND_FLOAT_43 53 Over_clamp_42  100K
+.ENDS
+*$
+**************************************
+**                                  **
+**                                  ** 
+**                                  **          
+**                                  **
+**************************************
+.SUBCKT GBW_SLEW_SE_PD_0    VIP  VIM  VO  GNDF  PD
++ PARAMS: AOL = 100  GBW = 1MEG  SRP = 1MEG  SRN = 1MEG IT = 1M  
++ VON = 0.5 RSC = 1M
+.PARAM PI = 3.141592
+.PARAM IP = {IF(SRP <= SRN,IT,IT*(SRP/SRN))}
+.PARAM IN = {IF(SRN <= SRP,-IT,-IT*(SRN/SRP))}
+.PARAM CC = {IF(SRP <= SRN,IT/SRP,IT/SRN)}
+.PARAM FP = {GBW/PWR(10,AOL/20)}
+.PARAM RC = {1/(2*PI*CC*FP)}
+.PARAM GC = {PWR(10,AOL/20)/RC}
+G1          GNDF VO VALUE = {IF(V(PD) < VON,LIMIT(GC*V(VIP,VIM),IP,IN),0)}
+C1          VO GNDF {CC}
+GR1         VO GNDF VALUE =  {IF(V(PD) < VON,V(VO,GNDF)/RC,V(VO,GNDF)/RSC)}
+GR11        VO GNDF VALUE =  {V(VO,GNDF)/(RC*1000)}
+.ENDS
+*$
+**************************************
+**                                  **
+**                                  ** 
+**                                  **          
+**                                  **
+**************************************
+.SUBCKT OUT_CURRENT_CLAMP_0   IN  OUT  
++PARAMS: RSER = 1 IMAX = 10M  IMIN = 10M
+GRES  IN OUT VALUE = {LIMIT(V(IN,OUT)/RSER,IMAX,-IMIN)}
+.ENDS
+*$
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+.SUBCKT CMRR_0   VI  VO  GNDF PARAMS: CMRR = 130 FCMRR = 1.6K
+.PARAM PI = 3.141592
+.PARAM RCMRR = 1
+.PARAM GCMRR = {PWR(10,-CMRR/20)/RCMRR}
+.PARAM LCMRR = {RCMRR/(2*PI*FCMRR)}
+G1  GNDF 1 VI GNDF {GCMRR}
+R1  1 2 {RCMRR}
+L1  2 GNDF {LCMRR} IC = 0
+R2  2 GNDF 1k
+E1  VI VO 1 GNDF 1
+.ENDS
+*$
+**************************************
+**                                  **
+**                                  ** 
+**                                  **          
+**                                  **
+**************************************
+.SUBCKT GND_FLOAT_0   VDD VSS GNDF 
+EGNDF  GNDF 0 VALUE = {(V(VDD)+V(VSS))*0.5}
+.ENDS
+*$
+**************************************
+**                                  **
+**                                  ** 
+**                                  **          
+**                                  **
+**************************************
+.SUBCKT INPUT_0   VIP  VIN  VOP  VON  GNDF PARAMS: RCM = 1  CCM = 100F  CDM = 100F
+C1          VOP GNDF {CCM} 
+C2          VON GNDF {CCM}
+C3          VOP VON {CDM}
+R1          VIP VOP {RCM}
+R2          VIN VON {RCM} 
+.ENDS
+*$
+**************************************
+.SUBCKT VNSE_0  1 2
+R4 3 0 100G
+E3 1 2 3 0 1
+.ENDS
+*$
+.SUBCKT NOT_0  VDD VI VO VSS 
+ESLICE VO 0  VALUE = {IF(V(VI)>=V(VCM),V(VSS),V(VDD))}
+ECM  VCM  0  VALUE = {(V(VDD,0)+V(VSS,0))*0.5}
+.ENDS NOT_0 
+*$
+.SUBCKT AND_2_0  VDD A B Y VSS 
+ECM  VCM  0  VALUE = {(V(VDD,0)+V(VSS,0))*0.5}
+EA  VA  0  VALUE = {IF(V(A)>=V(VCM),1,0)}
+EB  VB  0  VALUE = {IF(V(B)>=V(VCM),1,0)}
+EY  Y  0  VALUE = {IF(V(VA)*V(VB)>0.5,V(VDD),V(VSS))}
+.ENDS AND_2_0 
+*$
+.SUBCKT STD_OPA_SE_0  VDD VIP VIN VO VSS
+.PARAM GAIN = 100E3
+EGAIN VO 0 VALUE = {LIMIT(V(VIP,VIN)*GAIN,V(VDD),V(VSS))}
+.ENDS STD_OPA_SE_0 
+*$
+.SUBCKT VCVS_0  VP VN CP CN PARAMS: G = 0.5
+G VP VN VALUE = {IF(V(CP,CN) >= 1.65,5U,1N)}
+.ENDS VCVS_0 
+*$
+.SUBCKT SCLAMP_0   VIN VLIM VOUT 
+ES1  VIN  VOUT  VALUE = { IF(V(VIN,0)<= V(VLIM,0),V(VIN) - V(VLIM),0) }
+.ENDS SCLAMP_0 
+*$
+.SUBCKT VCVS_1  VP VN CP CN 
+E VP VN VALUE = {V(CP,CN)}
+.ENDS VCVS_1 
+*$
+.SUBCKT VCVS_2  VP VN CP CN PARAMS: G = 0.5
+G VP VN VALUE = {IF(V(CP,CN) >= 1.65,-14M,-1M)}
+.ENDS VCVS_2 
+*$
+.SUBCKT SCLAMP_1   VIN VLIM VOUT 
+ES1  VIN  VOUT  VALUE = { IF(V(VIN,0)>V(VLIM,0),V(VIN) - V(VLIM),0) }
+.ENDS SCLAMP_1 
+*$
+.SUBCKT VCVS_3  VP VN CP CN PARAMS: G = 0.5
+E1 VP VN VALUE = {(V(CP) + V(CN))*G}
+.ENDS VCVS_3 
+*$
+.SUBCKT VCVS_4  VP VN CP CN 
+E VP VN VALUE = {IF(V(CP,CN) >= 3,(V(CP,CN)+0.1)/6.8,0.5)}
+.ENDS VCVS_4 
+*$
+.SUBCKT RNOISE_FREE_0  1 2
+.PARAM ROHMS=1E3
+ERES 1 3 VALUE = { I(VSENSE) * ROHMS }
+RDUMMY 30 3 1
+VSENSE 30 2 DC 0V
+.ENDS RNOISE_FREE_0 
+*$
+.SUBCKT IDEAL_D_0  A C
+D1 A C DNOM
+.MODEL DNOM D (TT=10P CJO=1E-18 IS=1E-15 RS=1E-3)
+.ENDS IDEAL_D_0
+*$

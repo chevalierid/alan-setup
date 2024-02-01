@@ -1,0 +1,210 @@
+
+* OPA860 is the SPICE model of the OTA in the OPA860
+* This model is same at OPA861_Model 
+* REV. A - Created 12/06/04 RS
+* REV. B - Revised 4/25/06 X-ramus2@ti.com
+*
+* NOTES:
+*   1- This macromodel predicts well: DC, small-signal AC, noise,
+*       and transient performance under a wide range of conditions
+*   2- This macromodel does not predict well: distortion
+*      (harmonic, intermod, diff. gain & phase, ...),
+*      temperature effects, board parasitics, differences
+*      between package styles, and process changes
+*   3- For Spice3F4 users they might need to un-comment the lines for the F 
+*      function and comment out the Lines for PSpice F functions
+*      and subckts. First try the present netlist then comment out lines if 
+*      errors appear.
+*      General form:
+*      FXXXXXXX N+ N- <POLY(ND)> VN1 <VN2 ...> P0 <P1 ...> <IC=...>
+*      Examples:
+*      F1 12 10 VCC 1MA 1.3M
+*   4- For some simulators the subckt for the F statement need to be placed 
+*      inside the ends statement followed by carriage return  
+*   5- Known Problems: - Slew Rate too high on single +5V supply
+*   6- Add 5.8mA to IQ to account for quiescent current of buffer amp when
+*       comparing transconductance to data sheet.	
+*
+* |-------------------------------------------------------------|
+* |  This macro model is being supplied as an aid to            |
+* |  circuit designs.  While it reflects reasonably close       |
+* |  similarity to the actual device in terms of performance,   |
+* |  it is not suggested as a replacement for breadboarding.    |
+* |  Simulation should be used as a forerunner or a supplement  |
+* |  to traditional lab testing.                                |
+* |                                                             |
+* |  Neither this library nor any part may be copied without    |
+* |  the express written consent of Texas Instruments Corp.     |
+* |-------------------------------------------------------------|
+*
+* CONNECTIONS:
+*                                      B Input
+*                                      |  C Output
+*                                      |  |   E Input/Output
+*                                      |  |   |    Quiescent Current Adjust 
+*                                      |  |   |    |    Positive Supply
+*                                      |  |   |    |     |   Negative Supply
+*                                      |  |   |    |     |   | 
+.SUBCKT OPA860        IN OUT B C  E IQADJ V+ V- 
+
+.PARAM A_Q35 = 1.25
+.PARAM A_Q46 = {A_Q35*1.6}
+.PARAM A_Q78 = {A_Q35*3.2}
+.PARAM A_Q1011 = {A_Q35*0.8}
+
+.PARAM x4=0.66667
+.PARAM x10={x4*2.5}
+.PARAM x16={x4*4}
+.PARAM x8={x4*2}
+.PARAM x32={x4*8}
+.PARAM x64={x32*2}
+
+V1         b1 V- DC 0.10813096  
+R11         B 23a  50  
+R10         B 23_  50  
+R6         b4 b3  329  
+R17         V- 29_  250  
+R12         V- 25_  150  
+R4         IQADJ b4  220  
+R5         V- b4  30k  
+R21         V- 39_  50  
+C2         C 37_  1.85pF  
+R35         C 37_  100K  
+C3         39_ C  1.85pF  
+R36         39_ C  100K  
+R13         26_ V+  150  
+R8         21_ V+  250  
+R20         37_ V+  50  
+R18         CM1_ V+  50  
+R19         V- CM3_  50  
+R14         22 30_  125  
+R15         28 31_  110  
+X_F11    b1 b2 +Io_ V- OPA861_Model_F11 
+X_F21    b2 b3 V+ -Io_ OPA861_Model_F21 
+Q3         22 +Io_ 21_ PNP5 {A_Q35}
+Q4         +Io_ +Io_ 26_ PNP5 {A_Q46}
+Q1         -Io_ 23_ 22 PNP5 0.25
+Q2         +Io_ 23a 28 NPN5 0.25
+Q5         -Io_ -Io_ 25_ NPN5 {A_Q35}
+Q6         28 -Io_ 29_ NPN5 {A_Q46}
+G4         C 39_ CM3_ V- 0.02
+G3         37_ C V+ CM1_ 0.0201190476
+V5         CM1_ 33_ DC .792  
+V6         35_ CM3_ DC .792  
+Q10         30_ 30_ 99_ NPN5 {A_Q1011}
+Q11         31_ 31_ 99_ PNP5 {A_Q1011}
+Q8         35_ 31_ E PNP5 {A_Q78}
+Q7         33_ 30_ E NPN5 {A_Q78}
+
+
+Q_Q9         38 $N_0001 $N_0002 PNP6 {x32}
+Q_Q10         $N_0002 $N_0001 38 NPN6 {x32}
+Q_Q13         30 30 99 NPN6 {x8}
+Q_Q14         31 31 99 PNP6 {x8}
+Q_Q7         33 30 $N_0007 NPN6 {x32}
+Q_Q8         35 31 $N_0009 PNP6 {x32}
+V_V5         CM1 33 DC 0.792  
+V_V6         35 CM3 DC 0.792  
+R_R20         37 V+  40  
+G_G1         37 $N_0002 V+ CM1 0.025
+G_G2         38 39 CM3 V- 0.025
+R_R18         CM1 V+  40  
+R_R13         26 V+  150  
+R_R8         21 V+  250  
+X_F1         $N_0003 $N_0004 V+ $N_0005 BUF602_Model_F1 
+X_F2         $N_0006 $N_0003 V+ 4 BUF602_Model_F2 
+D_D1         V+ CM1 DX 1
+D_D2         V+ 37 DX 1
+R_R6         $N_0008 $N_0007  30  
+R_R7         $N_0009 $N_0008  30  
+Q_Q11         V+ $N_0002 OUTRH NPN6 {x64}
+Q_Q12         V- 38 OUTRL PNP6 {x64}
+RH	    OUTRH OUT 7.5
+RL	    OUTRL OUT 7.5
+Q_Q6         31 4 29 NPN6 {x10*0.4}
+Q_Q3         30 +Io 21 PNP6 {x10*0.5}
+Q_Q4         +Io +Io 26 PNP6 {x16*0.7}
+R_R21         V- 39  40  
+D_D4         39 V- DX 1
+R_R12         V- 25  150  
+R_R19         V- CM3  40  
+V_V1         $N_0006 V- 0.11
+R_R1         V- $N_0004  1205 
+X_F3         $N_0005 V- +Io V- BUF602_Model_F2 
+D_D3         CM3 V- DX 1
+R_R17         V- 29  250  
+Q_Q5         4 4 25 NPN6 {x16*0.1}
+Q_Q1         4 $N_0010 30 PNP6 {x4}
+Q_Q2         +Io $N_0011 31 NPN6 {x4}
+R_R2         $N_0008 OUT  70  
+R_R10         IN 23  600  
+R_R11         23 $N_0010  50  
+R_R30         23 $N_0011  50  
+
+.MODEL NPN5 NPN
++ IS=70.40E-18 BF=157 NF=1.0 VAF=70 IKF=39.750E-3 ISE=32.190E-15 NE=2
++ BR=.7614 NR=1.0E+00 VAR=1.4520 IKR=81.720E-3 ISC=7.6180E-21 NC=1.8470
++ RE=5.537E+00 RB=3.346E+01 IRB= 0.000E+00 RBM= 2.400E+00 RC=2.156E+01
++ CJE=120.20E-15 VJE=.7591 MJE=.5406 CJC=133.80E-15 VJC=.6666
++ MJC=.4509 XCJC=8.450E-02 TR = 4.000E-11 CJS= 3.180E-14 FC=.827
++ TF=12.130E-12 XTF=2.0490 VTF=1.8130 ITF=42.930E-3 TR=40.000E-12 
++ CJS= 3.180E-14 EG=1.1840 XTB=1.0220 XTI=1.7800 KF = 17.500E-15 
++ AF = 1.000E+00 FC = 8.273E-01
+
+.MODEL PNP5 PNP
++ IS = 2.015E-16 BF = 1.418E+02 NF = 1.000E+00 VAF= 5.058E+01
++ IKF= 1.085E-01 ISE= 2.233E-15 NE = 1.505E+00 BR = 3.252E+01
++ NR = 1.050E+00 VAR= 1.093E+00 IKR= 5.000E-05 ISC= 6.621E-16
++ NC = 1.150E+00 RB = 3.346E+01 IRB= 0.000E+00 RBM= 2.40e+00
++ RE = 5.537E+00 RC = 2.156E+01 CJE= 1.202E-13 VJE= 7.320E-01
++ MJE= 4.930E-01 TF = 1.303E-11 XTF= 3.500E+01 VTF= 3.259E+00
++ ITF= 2.639E-01 PTF= 0.000E+00 CJC= 1.595E-13 VJC= 7.743E-01
++ MJC= 5.000E-01 XCJC=8.504E-02 TR = 1.500E-10 CJS= 7.620E-13
++ VJS= 9.058E-01 MJS= 4.931E-01 XTB= 1.732E+00 EG = 1.184E+00
++ XTI= 2.000E+00 KF = 10.890E-16 AF = 1.000E+00 FC = 8.500E-01
+
+.MODEL PNP6 PNP
++ IS = 2.015E-16 BF = 1.418E+02 NF = 1.000E+00 VAF= 5.058E+01
++ IKF= 1.085E-01 ISE= 2.233E-15 NE = 1.505E+00 BR = 3.252E+01
++ NR = 1.050E+00 VAR= 1.093E+00 IKR= 5.000E-05 ISC= 6.621E-16
++ NC = 1.150E+00 RB = 0.667E+02 IRB= 0.000E+00 RBM= 1.54e+01
++ RE = 2.537E-02 RC = 9.156E+01 CJE= 1.602E-15 VJE= 7.320E-01
++ MJE= 4.930E-01 TF = 1.303E-11 XTF= 3.500E+01 VTF= 3.259E+00
++ ITF= 2.639E-01 PTF= 0.000E+00 CJC= 2.595E-16 VJC= 7.743E-01
++ MJC= 5.000E-01 XCJC=8.504E-03 TR = 1.500E-10 CJS= 1.25E-13 
++ VJS= 9.058E-01 MJS= 4.931E-01 XTB= 1.732E+00 EG = 1.184E+00
++ XTI= 2.000E+00 KF = 3E-15 AF = 1.000E+00 FC = 8.500E-01
+
+.MODEL NPN6 NPN
++ IS=1.60E-16 BF=157 NF=1.0 VAF=70 IKF=39.750E-3 ISE=32.190E-15 NE=2
++ BR=.7614 NR=1.0E+00 VAR=1.4520 IKR=81.720E-3 ISC=7.6180E-21 NC=1.8470
++ RE=1.22E-01 RB=1.816E+02 IRB= 0.000E+00 RBM= 1.400E+01 RC=1.972E+01
++ CJE=1.6E-15 VJE=.7591 MJE=.5406 CJC=233.80E-17 VJC=.6666
++ MJC=.4509 XCJC=8.450E-03 TR = 4.000E-11 CJS= 1.25E-13 FC=.827
++ TF=12.130E-12 XTF=2.0490 VTF=1.8130 ITF=42.930E-3 TR=40.000E-12 
++ EG=1.1840 XTB=1.0220 XTI=1.7800 KF = 3E-15 
++ AF = 1.000E+00 FC = 8.273E-01
+
+.MODEL DX D IS=100E-15  BV=100 IBV=100E-15 RS=0.1 TT=1E-12 CJO=2E-12
+
+.ENDS    OPA860
+
+.subckt OPA861_Model_F11 1 2 3 4  
+F_F1         3 4 VF_F1 5.230536
+VF_F1         1 2 0V
+.ends OPA861_Model_F11
+
+.subckt OPA861_Model_F21 1 2 3 4  
+F_F2         3 4 VF_F2 5.15646
+VF_F2         1 2 0V
+.ends OPA861_Model_F21
+
+.subckt BUF602_Model_F1 1 2 3 4  
+F_F1         3 4 VF_F1 1
+VF_F1         1 2 0V
+.ends BUF602_Model_F1
+
+.subckt BUF602_Model_F2 1 2 3 4  
+F_F2         3 4 VF_F2 10
+VF_F2         1 2 0V
+.ends BUF602_Model_F2

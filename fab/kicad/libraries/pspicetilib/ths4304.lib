@@ -1,0 +1,109 @@
+* [Disclaimer] (C) Copyright Texas Instruments Incorporated 2004 All rights reserved 
+* Texas Instruments Incorporated hereby grants the user of this SPICE Macro-model a 
+* non-exclusive, nontransferable license to use this SPICE Macro-model under the following 
+* terms. Before using this SPICE Macro-model, the user should read this license. If the 
+* user does not accept these terms, the SPICE Macro-model should be returned to Texas 
+* Instruments within 30 days. The user is granted this license only to use the SPICE 
+* Macro-model and is not granted rights to sell, load, rent, lease or license the SPICE 
+* Macro-model in whole or in part, or in modified form to anyone other than user. User may 
+* modify the SPICE Macro-model to suit its specific applications but rights to derivative 
+* works and such modifications shall belong to Texas Instruments. This SPICE Macro-model is 
+* provided on an "AS IS" basis and Texas Instruments makes absolutely no warranty with 
+* respect to the information contained herein. TEXAS INSTRUMENTS DISCLAIMS AND CUSTOMER 
+* WAIVES ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING WARRANTIES OF MERCHANTABILITY OR 
+* FITNESS FOR A PARTICULAR PURPOSE. The entire risk as to quality and performance is with 
+* the Customer. ACCORDINGLY, IN NO EVENT SHALL THE COMPANY BE LIABLE FOR ANY DAMAGES, 
+* WHETHER IN CONTRACT OR TORT,INCLUDING ANY LOST PROFITS OR OTHER INCIDENTAL, CONSEQUENTIAL,
+* EXEMPLARY, OR PUNITIVE DAMAGES ARISING OUT OF THE USE OR APPLICATION OF THE SPICE 
+* Macro-model provided in this package. Further, Texas Instruments reserves the right to 
+* discontinue or make changes without notice to any product herein to improve reliability, 
+* function, or design. Texas Instruments does not convey any license under patent rights or 
+* any other intellectual property rights, including those of third parties.
+*  
+* THS4304 SUBCIRCUIT Rev-
+* HIGH SPEED VOLTAGE FEEDBACK AMPLIFIER  
+* WRITTEN 8/1/04
+* THIS MODEL SIMULATES TYPICAL VALUES FOR THE FOLLOWING:
+* BANDWIDTH IN NOISE GAINS OF 2V/V OR MORE, SLEW RATE, SETTLING TIME, OUTPUT VOLTAGE LIMIT,  
+* INPUT VOLTAGE NOISE, INPUT BIAS CURRENT, INPUT OFFSET VOLTAGE, INPUT OFFSET CURRENT, OUTPUT LOADING EFFECTS
+* CMRR AND PSRR SHOW THE SAME TREND AS MEASURED DATA, BUT ARE NOT ACCURATE OVER FREQUENCY
+* THIS MODEL WILL NOT PROVIDE ACCURATE SIMULATION OF:
+* OUTPUT IMPEDANCE, INPUT CURRENT NOISE, DISTORTION, INPUT OFFSET vs INPUT COMMON-MODE VOLTAGE
+* UNITY GAIN BANDWIDTH OF THIS MODEL IS LOWER THAN ACTUAL PART. IT IS IMPROVED BY ADDING 2nH INDUCTOR IN FEEDBACK (2.39 GHz vs 3GHz ACTUAL)
+* CONNECTIONS:      	NON-INVERTING INPUT
+*  		    	| INVERTING INPUT
+*     		   	|  | POSITIVE POWER SUPPLY
+*      		    	|  |  | NEGATIVE POWER SUPPLY
+*             	    	|  |  |  |  OUTPUT
+*		
+.SUBCKT THS4304     IN+ IN-  Vs+ Vs- OUT
+*
+*INPUT*
+Q1         04 114 011 NPN_IN  10
+Q2         05 IN- 012 NPN_IN  10
+R1         021 011  75  
+R2         021 012  75  
+I1         021 022 DC 1.6m  
+I2         06 01 DC 1.6m  
+V1         022 Vs- 1.6
+C1         0 IN+  1.5p  
+Q3         013 114 02 PNP_IN  10
+Q4         014 IN- 03 PNP_IN  10
+R3         02 01  75  
+R4         03 01  75  
+V2         Vs+ 06 1.6
+C2         0 IN-  1.5p  
+
+* OFFSET AND BIAS CURRENT*
+Vio IN+ 114 500u
+IBIAS+	0 IN+ 7.25u
+IBIAS-	0 IN- 6.75u
+
+*Z NODE*
+Q5         07 07 04 PNP  5
+Q6         08 07 05 PNP  5
+R5         04 Vs+  75 
+R6         05 Vs+  75  
+I3         07 023 DC 0.8m  
+V3         023 Vs- 3.8
+C5         08 Vs+  1.1p  
+C4         Vs- 08   1.1p  
+R13         08 Vs+  400k  
+Q7         015 015 013 NPN  5
+Q8         08 015 014 NPN  5
+R7         Vs- 013  75  
+R8         Vs- 014  75  
+I4         024 015 DC 0.8m  
+V4         Vs+ 024 3.8
+R14         Vs- 08  400k  
+
+*VOLTAGE LIMIT*
+Q16         08 08 28 NPN  5
+V16         Vs+ 28   1.75 
+Q18         08 08 38 PNP  5
+V18         38 Vs-   1.75  
+
+*FREQUENCY SHAPING* 
+E1         09 0 08 0 1
+L1         09 010  1.5n  
+R15         010 016  25  
+C3         0 016  3.5p  
+
+*OUTPUT BUFFER*
+Q9         Vs- 016 017 PNP  5
+R9         025 Vs+  125  
+I5         025 017 DC 2m  
+Q11         Vs+ 017 019 NPN  100
+R11         OUT 019  4  
+Q10         Vs+ 016 018 NPN  5
+R10         Vs- 026  125  
+I6         018 026 DC 2m  
+Q12         Vs- 018 020 PNP  100
+R12         020 OUT  4  
+
+.MODEL NPN_IN NPN KF=1E-12
+.MODEL PNP_IN PNP KF=1E-12
+.MODEL NPN NPN
+.MODEL PNP PNP
+.ENDS
+*$

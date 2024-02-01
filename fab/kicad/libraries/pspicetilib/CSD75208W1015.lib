@@ -1,0 +1,91 @@
+*****************************************************************************
+***********************************************************************
+*  (C) Copyright 2014 Texas Instruments Incorporated. All rights reserved.
+***********************************************************************
+***********************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose. The model is
+** provided solely on an "as is" basis. The entire risk as to its quality
+** and performance is with the customer
+********************************************************************************
+*
+* Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: CSD75208W1015
+* Date: 07/14/2014
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.2
+* EVM Order Number: 
+* EVM Users Guide: 
+* Datasheet: SLPS512 - JULY 2014
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+*
+*****************************************************************************
+**********************************************************************
+*                                                                    *
+*  CSD75208W1015  -  P-Channel 20/06 CSP 1.0x1.5 mm^2                *
+*                                                                    *
+**********************************************************************
+.param ptrc1 {1.00e-3*1}
+.param ptrc2 {5.00e-6*1}
+
+.subckt	CSD75208W1015	D1	D2	G1	G2	S
+x1	D1	G1	Sinside	P75208
+x2	D2	G2	Sinside	P75208
+R1	Sinside	S	12.33e-3 TC={ptrc1},{ptrc2}
+.ends CSD75208W1015
+
+.SUBCKT P75208  1 2 3
+
+.param width {0.4844/1.53}
+.param length 0.4u
+
+R_drain_ball	1	n1	0.05e-3
+R_drain_metal	n1	n2	0.01e-3
+RG		2	n3	30
+MP1		n2	n3	n4	n4	RITSUBP7 l={length} w={width} ps={2.1*width} pd={2.1*width}
+R_substrate		n4	3	RTEMP	17.67e-3
+DB	1	3	DBD
+desd  2	n4	  zenerd
+DGD  n2 n7	  DD
+DDG  n3 n7	  DD
+
+.MODEL RITSUBP7 PMOS (LEVEL=7 VERSION=3.2 CAPMOD=2 MOBMOD=1
++	TOX=1.0E-8	XJ=2.26E-7	NCH=2.00E17	KT1=-0.65	VOFF=-0.14
++	NSUB=3.16E16	XT=8.66E-8 NSS=3E11	ua=1e-8	ub=5.00E-18
++	PCLM=5	VTH0=-1.0	U0= 300.00	WINT=2.0E-7	LINT=2.26E-8	NGATE=5E20
++	RSH=0	JS=3.51E-18 JSW=3.51E-18 CJ=5.28E-18 MJ=0.5 PB=0.94
++	CJSW=1.19E-18	MJSW=0.5	PBSW=0.94
++	CGSO=262.5E-12	CGDO=1.0E-18	CGBO=5.75E-18)
+
+.MODEL RTEMP RES (TC1={ptrc1} TC2={ptrc2})
+
+.MODEL DBD D (
++ CJO=250E-12	VJ=0.9	M=0.20	FC=0.5	TT=3e-9
++ TNOM=27	RS=30.00e-3 	TRS1=1e-3  IS=3.00e-12 N=1.05
++ XTI=1.00 	BV=21)
+
+.MODEL DD D (
++ CJO=1e-12	VJ=0.9	M=0.9	FC=0.5	TT=1e-9
++ TNOM=27	IS=1.00e-12 N=1.0  RS = 0.1 )
+
+.MODEL ZENERD D (
++ CJO=25E-15	VJ=0.7	M=0.45	RS=0.225	TRS1=-2e-3
++ FC=0.5	TT=3E-9	IS=1.00e-14 N=1.02 	XTI=3.5
++ BV=6.08)
+
+.ENDS P75208  
+*$

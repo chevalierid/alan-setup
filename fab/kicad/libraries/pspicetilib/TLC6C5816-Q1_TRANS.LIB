@@ -1,0 +1,930 @@
+*$
+* TLC6C5816-Q1
+*****************************************************************************
+* (C) Copyright 2017 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: TLC6C5816-Q1
+* Date: 28AUG2017
+* Model Type: TRANSIENT 
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: TLC6C5816EVM
+* EVM Users Guide: SLVUB43
+* Datasheet: SLASEJ5–FEBRUARY 2017
+* Topologies Supported: NA
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+*
+* 1. The following features have been modeled
+*      a. Timing Characteristics of Output Signal such as propagation delay, rise/fall time
+*      b. Serial Communication
+*      c. Command Error fault, LED open/short fault
+*	   d. Thermal shutdown
+* 2. Setup & Hold time for SER_IN input has not been modeled. 
+* 3. Operating current and shutdown current have not been modeled.
+*
+*****************************************************************************
+.SUBCKT TLC6C5816-Q1_TRANS CLR_N DRAIN0 DRAIN1_DIAG0 DRAIN2 DRAIN3_DIAG2 DRAIN4
++  DRAIN5_DIAG4 DRAIN6 DRAIN7_DIAG6 DRAIN8 DRAIN9_DIAG8 DRAIN10 DRAIN11_DIAG10
++  DRAIN12 DRAIN13_DIAG12 DRAIN14 DRAIN15_DIAG14 EN_N ERR_N G1_N G2_N GND NC RCK
++  SER_IN SER_OUT SRCK VCC PAD 
+X_U24         TSD TSDBAR INV_BASIC_GEN PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+X_U21 CRC0 CRC1 CRC2 CRC3 CRC4 CRC5 SER_IN RCK RST_BAR SRCK_INT CRC_Generator  
+X_U11 CMD_ERR CMD_ERR1 CMD_ERR3 CMD_ERR5 CMD_ERR7 CMD_ERR9 CMD_ERR11 CMD_ERR13
++  CMD_ERR15 DATA1 DATA3 DATA5 DATA7 DATA9 DATA11 DATA13 DATA15 DIAG0 DIAG0_OPEN
++  DIAG0_SHORT DIAG2 DIAG2_OPEN DIAG2_SHORT DIAG4 DIAG4_OPEN DIAG4_SHORT DIAG6
++  DIAG6_OPEN DIAG6_SHORT DIAG8 DIAG8_OPEN DIAG8_SHORT DIAG10 DIAG10_OPEN
++  DIAG10_SHORT DIAG12 DIAG12_OPEN DIAG12_SHORT DIAG14 DIAG14_OPEN DIAG14_SHORT
++  ERR_N FAULT_ERR TSD ERR_TSD  
+X_U1 CMD_ERR1 DATA0 DATA1 DIAG0 DIAG0_OPEN DIAG0_SHORT DRAIN0 DRAIN1_DIAG0 G1_N
++  TSDBAR VCC Driver  
+X_U2 D23 DATA0 DATA1 DATA2 DATA3 DATA4 DATA5 DATA6 DATA7 DATA8 DATA9 DATA10
++  DATA11 DATA12 DATA13 DATA14 DATA15 DIAG0 DIAG2 DIAG4 DIAG6 DIAG8 DIAG10 DIAG12
++  DIAG14 RCK RST_BAR SER_IN SEROUT_CONFIG SRCK_INT SRCK_INT_BAR Shift_Register  
+X_U6 CMD_ERR9 DATA8 DATA9 DIAG8 DIAG8_OPEN DIAG8_SHORT DRAIN8 DRAIN9_DIAG8 G2_N
++  TSDBAR VCC Driver  
+X_U22 RST_BAR SRCK SRCK_INT Max_Freq_Constraint  
+X_U12 ENABLE EN_N POR VCC House_Keeping  
+X_U3 CMD_ERR3 DATA2 DATA3 DIAG2 DIAG2_OPEN DIAG2_SHORT DRAIN2 DRAIN3_DIAG2 G1_N
++  TSDBAR VCC Driver  
+R_R2         N673206 N672498  23  
+X_UMUX9 SEROUT_CONFIG SEROUT_FAULT RCK N673206 MUX2_1  
+C_C2         N672498 0  1n  
+R_R1         N584894 SER_OUT  9  
+X_U10 CMD_ERR CRC0 CRC1 CRC2 CRC3 CRC4 CRC5 DIAG0_OPEN DIAG0_SHORT DIAG2_OPEN
++  DIAG2_SHORT DIAG4_OPEN DIAG4_SHORT DIAG6_OPEN DIAG6_SHORT DIAG8_OPEN
++  DIAG8_SHORT DIAG10_OPEN DIAG10_SHORT DIAG12_OPEN DIAG12_SHORT DIAG14_OPEN
++  DIAG14_SHORT RCK RST_BAR SEROUT_FAULT SRCK_INT SRCK_INT_BAR TSD
++  Fault_Readback_Register  
+X_U25         ENABLE CLR_N POR RST_BAR AND3_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+X_U7 CMD_ERR11 DATA10 DATA11 DIAG10 DIAG10_OPEN DIAG10_SHORT DRAIN10
++  DRAIN11_DIAG10 G2_N TSDBAR VCC Driver  
+X_U9 CMD_ERR15 DATA14 DATA15 DIAG14 DIAG14_OPEN DIAG14_SHORT DRAIN14
++  DRAIN15_DIAG14 G2_N TSDBAR VCC Driver  
+X_U5 CMD_ERR7 DATA6 DATA7 DIAG6 DIAG6_OPEN DIAG6_SHORT DRAIN6 DRAIN7_DIAG6 G1_N
++  TSDBAR VCC Driver  
+E_ABM1         N584894 0 VALUE { IF(V(N672498)>2.5, V(VCC), 0)    }
+X_U8 CMD_ERR13 DATA12 DATA13 DIAG12 DIAG12_OPEN DIAG12_SHORT DRAIN12
++  DRAIN13_DIAG12 G2_N TSDBAR VCC Driver  
+X_U4 CMD_ERR5 DATA4 DATA5 DIAG4 DIAG4_OPEN DIAG4_SHORT DRAIN4 DRAIN5_DIAG4 G1_N
++  TSDBAR VCC Driver  
+C_C1         SER_OUT 0  1n  
+.ENDS TLC6C5816-Q1_TRANS
+*$
+.SUBCKT Fault_Readback_Register CMD_ERR CRC0 CRC1 CRC2 CRC3 CRC4 CRC5
++  DIAG0_OPEN DIAG0_SHORT DIAG2_OPEN DIAG2_SHORT DIAG4_OPEN DIAG4_SHORT
++  DIAG6_OPEN DIAG6_SHORT DIAG8_OPEN DIAG8_SHORT DIAG10_OPEN DIAG10_SHORT
++  DIAG12_OPEN DIAG12_SHORT DIAG14_OPEN DIAG14_SHORT RCK RST_bar SEROUT_FAULT
++  SRCK_INT SRCK_INT_bar TSD  
+X_UMUX17 CRC_Q1 CRC2 RCK_PULSE N484995 MUX2_1  
+X_U26         FAULT_SHORT4 N280152 CLKIN N279072 RST_BAR SET
++  dffsbrb_rhp_custom1 PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+X_U37         FAULT_SHORT10 N279872 CLKIN N279836 RST_BAR SET
++  dffsbrb_rhp_custom1 PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+X_U60         CMD_ERR_Q N509407 CLKIN N509403 RST_BAR SET dffsbrb_rhp_custom1
++  PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+X_U38         FAULT_SHORT14 N279918 CLKIN N376708 RST_BAR SET
++  dffsbrb_rhp_custom1 PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+X_U43         N404396 RCK_PULSE CLKIN OR2_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+X_U31         FAULT_OPEN2 N279566 CLKIN N279542 RST_BAR SET dffsbrb_rhp_custom1
++  PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+X_U39         FAULT_OPEN10 N279994 CLKIN N279958 RST_BAR SET
++  dffsbrb_rhp_custom1 PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+X_UMUX9 FAULT_OPEN4 DIAG6_SHORT RCK_PULSE N362991 MUX2_1  
+X_U29         FAULT_SHORT2 N279400 CLKIN N279376 RST_BAR SET
++  dffsbrb_rhp_custom1 PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+X_UMUX11 FAULT_OPEN10 DIAG12_SHORT RCK_PULSE N368991 MUX2_1  
+X_U33         FAULT_SHORT8 N280066 CLKIN N279708 RST_BAR SET
++  dffsbrb_rhp_custom1 PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+X_UMUX14 FAULT_SHORT14 DIAG14_OPEN RCK_PULSE N377186 MUX2_1  
+X_U61         FAULT_OPEN14 SEROUT_FAULT BUF_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+X_U34         FAULT_SHORT12 N280074 CLKIN N368991 RST_BAR SET
++  dffsbrb_rhp_custom1 PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+X_UMUX13 FAULT_OPEN12 DIAG14_SHORT RCK_PULSE N376708 MUX2_1  
+X_U55         CRC_Q0 N484913 CLKIN N484899 RST_BAR SET dffsbrb_rhp_custom1
++  PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+X_U1 RCK RCK_PULSE POS_EDGE PARAMS: PW=20n
+X_UMUX12 FAULT_SHORT12 DIAG12_OPEN RCK_PULSE N376238 MUX2_1  
+X_UMUX3 FAULT_SHORT2 DIAG2_OPEN RCK_PULSE N279542 MUX2_1  
+X_U53         CRC_Q3 N485031 CLKIN N484763 RST_BAR SET dffsbrb_rhp_custom1
++  PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+V_V1         SET 0 5
+X_UMUX1 FAULT_SHORT0 DIAG0_OPEN RCK_PULSE N279254 MUX2_1  
+X_U59         TSD_Q N509439 CLKIN N509345 RST_BAR SET dffsbrb_rhp_custom1
++  PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+X_U27         FAULT_OPEN0 N279316 CLKIN N279254 RST_BAR SET dffsbrb_rhp_custom1
++  PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+X_UMUX5 FAULT_SHORT8 DIAG8_OPEN RCK_PULSE N334140 MUX2_1  
+X_U58         CRC_Q5 N498670 CLKIN N493469 RST_BAR SET dffsbrb_rhp_custom1
++  PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+V_V2         N767070 0 0Vdc
+X_UMUX23 FAULT_OPEN2 DIAG4_SHORT RCK_PULSE N279072 MUX2_1  
+X_UMUX15 CRC_Q2 CRC3 RCK_PULSE N484763 MUX2_1  
+X_UMUX20 CMD_ERR_Q TSD RCK_PULSE N509345 MUX2_1  
+X_U40         FAULT_OPEN14 N280002 CLKIN N377186 RST_BAR SET
++  dffsbrb_rhp_custom1 PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+X_UMUX8 FAULT_SHORT4 DIAG4_OPEN RCK_PULSE N355368 MUX2_1  
+X_U30         FAULT_SHORT6 N279420 CLKIN N362991 RST_BAR SET
++  dffsbrb_rhp_custom1 PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+X_UMUX22 TSD_Q DIAG0_SHORT RCK_PULSE N279028 MUX2_1  
+X_UMUX2 FAULT_OPEN0 DIAG2_SHORT RCK_PULSE N279376 MUX2_1  
+X_UMUX19 CRC_Q4 CRC5 RCK_PULSE N493469 MUX2_1  
+X_U35         FAULT_OPEN8 N279794 CLKIN N334140 RST_BAR SET dffsbrb_rhp_custom1
++  PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+X_U36         FAULT_OPEN12 N279802 CLKIN N376238 RST_BAR SET
++  dffsbrb_rhp_custom1 PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+X_U41         SRCK_INT_BAR RCK N404396 AND2_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+X_U57         CRC_Q4 N496666 CLKIN N492804 RST_BAR SET dffsbrb_rhp_custom1
++  PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+X_UMUX21 CRC_Q5 CMD_ERR RCK_PULSE N509403 MUX2_1  
+X_UMUX6 FAULT_OPEN8 DIAG10_SHORT RCK_PULSE N279836 MUX2_1  
+X_UMUX10 FAULT_SHORT6 DIAG6_OPEN RCK_PULSE N365956 MUX2_1  
+X_UMUX16 CRC_Q0 CRC1 RCK_PULSE N484847 MUX2_1  
+X_U32         FAULT_OPEN6 N279572 CLKIN N365956 RST_BAR SET dffsbrb_rhp_custom1
++  PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+X_U42         SRCK_INT SRCK_INT_BAR INV_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+X_U28         FAULT_OPEN4 N279342 CLKIN N355368 RST_BAR SET dffsbrb_rhp_custom1
++  PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+X_UMUX18 CRC_Q3 CRC4 RCK_PULSE N492804 MUX2_1  
+X_U25         FAULT_SHORT0 N279096 CLKIN N279028 RST_BAR SET
++  dffsbrb_rhp_custom1 PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+X_U56         CRC_Q2 N484999 CLKIN N484995 RST_BAR SET dffsbrb_rhp_custom1
++  PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+X_UMUX24 N767070 CRC0 RCK_PULSE N484899 MUX2_1  
+X_U54         CRC_Q1 N484967 CLKIN N484847 RST_BAR SET dffsbrb_rhp_custom1
++  PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+X_UMUX7 FAULT_SHORT10 DIAG10_OPEN RCK_PULSE N279958 MUX2_1  
+X_UMUX4 FAULT_OPEN6 DIAG8_SHORT RCK_PULSE N279708 MUX2_1  
+.ENDS Fault_Readback_Register
+*$
+.SUBCKT POS_EDGE IN OUT PARAMS: PW=10N
+X_U2         IN N00190 OUT AND2_BASIC_GEN PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+X_U1         IN N00190 INV_DELAY_BASIC_GEN PARAMS: VDD=5 VSS=0 VTHRESH=2.5
++  DELAY={PW}
+.ENDS POS_EDGE
+*$
+.SUBCKT MUX2_1 A B S Y  
+E_ABM1         Y 0 VALUE { IF(V(S) < 2.5, V(A) ,V(B))    }
+.ENDS MUX2_1
+*$
+.SUBCKT House_Keeping Enable ENbar POR VCC  
+X_U1         ENBAR N200493 N97691 ENABLE_BAR COMPHYS_BASIC_GEN PARAMS: VDD=5
++  VSS=0 VTHRESH=2.5
+R_R1         N203053 ENABLE  72.15k  
+V_V1         N97691 0 1.7
+V_V3         N201096 0 2.5
+X_U2         VCC N201096 N201142 POR COMPHYS_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+V_V4         N201142 0 1.5
+V_V2         N200493 0 2.4
+C_C1         ENABLE 0  1n  
+X_U3         ENABLE_BAR N203053 INV_BASIC_GEN PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+D_D1         ENABLE N203053 D_D1 
+.ENDS House_Keeping
+*$
+.SUBCKT Max_Freq_Constraint CHIP_EN SRCK SRCK_INT  
+R_R5         N1059173 PERIOD  1m  
+X_U10         PERIOD N1060947 N1065774 COMP_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+X_U1 N1059113 LATCH_OFF2 POS_EDGE PARAMS: PW=8n
+C_C3         0 PERIOD  1n IC=0 
+E_ABM5         N1060947 0 VALUE { IF(V(SRCK_EN)<2.5,82n,77n)    }
+G_ABMII6         VDD N1059217 VALUE { {V(N1059151)*1n/5}    }
+R_R6         N1065774 SRCK_EN  3  
+X_U2 N1059113 LATCH_PERIOD POS_EDGE PARAMS: PW=5n
+C_C5         SRCK_EN 0  1n  
+X_U22_S2    N1059135 0 N1059217 0 Max_Freq_Constraint_U22_S2 
+E_ABM6         SRCK_INT 0 VALUE { IF(V(SRCK_EN)> 2.5, V(SRCK), 0)    }
+X_U3 N1059113 N1059369 POS_EDGE PARAMS: PW=20n
+V_V2         VDD 0 5
+E_ABM4         N1059113 0 VALUE { IF(V(CHIP_EN)> 2.5, V(SRCK), 0)    }
+C_C4         0 N1059217  1n IC=0 
+D_D1         0 N1059217 D_D1 
+X_U7         N1059369 N1059135 BUF_DELAY_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5 DELAY=10n
+R_R2         0 LATCH_OFF2  1G  
+E_ABM2         N1059173 0 VALUE { IF(V(LATCH_OFF2)>2.5,V(N1059217),V(PERIOD))  
++   }
+X_U9         LATCH_PERIOD N1059151 INV_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+.ENDS Max_Freq_Constraint
+*$
+.SUBCKT Shift_Register D23 DATA0 DATA1 DATA2 DATA3 DATA4 DATA5 DATA6 DATA7
++  DATA8 DATA9 DATA10 DATA11 DATA12 DATA13 DATA14 DATA15 DIAG0 DIAG2 DIAG4 DIAG6
++  DIAG8 DIAG10 DIAG12 DIAG14 RCK RST_bar SERIN SEROUT_CONFIG SRCK_INT
++  SRCK_INT_bar  
+X_U38         DATA13 N109372 RCK D13 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U34         DATA9 N109156 RCK D9 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U27         DATA2 N106618 RCK D2 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U8         D7 N102312 SRCK_INT D6 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U24         D23 N105702 SRCK_INT D22 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U4         D3 N101408 SRCK_INT D2 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U33         DATA8 N109150 RCK D8 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U23         D22 N105698 SRCK_INT D21 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U2         D1 N98068 SRCK_INT D0 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U13         D12 N103883 SRCK_INT D11 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U42         DIAG2 N110979 RCK D17 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U11         D10 N103705 SRCK_INT D9 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U48         DIAG14 N111361 RCK D23 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U29         DATA4 N107253 RCK D4 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U20         D19 N105346 SRCK_INT D18 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U17         D16 N105164 SRCK_INT D15 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U5         D4 N101847 SRCK_INT D3 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U32         DATA7 N107915 RCK D7 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U44         DIAG6 N111029 RCK D19 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U9         D8 N103527 SRCK_INT D7 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U31         DATA6 N107909 RCK D6 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U43         DIAG4 N111023 RCK D18 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U14         D13 N103887 SRCK_INT D12 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U49         SEROUT_CONFIG N204315 SRCK_INT_BAR D23 RST_BAR SET
++  dffsbrb_rhp_custom1 PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+X_U30         DATA5 N107259 RCK D5 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U21         D20 N105520 SRCK_INT D19 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U1         D0 N98035 SRCK_INT SERIN RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U46         DIAG10 N111195 RCK D21 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U18         D17 N105168 SRCK_INT D16 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U6         D5 N101851 SRCK_INT D4 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U37         DATA12 N109366 RCK D12 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U45         DIAG8 N111189 RCK D20 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U26         DATA1 N00650 RCK D1 RST_BAR SET dffsbrb_rhp_custom1 PARAMS: VDD=5
++  VSS=0 VTHRESH=2.5
+X_U15         D14 N104061 SRCK_INT D13 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U41         DIAG0 N110973 RCK D16 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U40         DATA15 N109538 RCK D15 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U36         DATA11 N109206 RCK D11 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+V_V1         SET 0 5
+X_U25         DATA0 N00634 RCK D0 RST_BAR SET dffsbrb_rhp_custom1 PARAMS: VDD=5
++  VSS=0 VTHRESH=2.5
+X_U7         D6 N102308 SRCK_INT D5 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U39         DATA14 N109532 RCK D14 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U10         D9 N103531 SRCK_INT D8 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U35         DATA10 N109200 RCK D10 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U22         D21 N105524 SRCK_INT D20 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U28         DATA3 N106624 RCK D3 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U47         DIAG12 N111355 RCK D22 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U16         D15 N104065 SRCK_INT D14 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U19         D18 N105342 SRCK_INT D17 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U3         D2 N101404 SRCK_INT D1 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+X_U12         D11 N103709 SRCK_INT D10 RST_BAR SET dffsbrb_rhp_custom1 PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+.ENDS Shift_Register
+*$
+.SUBCKT Driver CMD_ERRY DATAX DATAY DIAGX DIAGX_OPEN DIAGX_SHORT DRAINX
++  DRAINY_DIAGX Gbar TSDbar VCC  
+X_U847         G DATAX TSDBAR G_CHX AND3_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+G_ABMII2         GATEY 0 VALUE {
++  if(V(G_CHY)>2.5,if(V(GATEY)<1.29,-6.5m,-145u),0)    }
+X_U840         G_CHX N263527 INV_BASIC_GEN PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+V_V5         N45842 0 0.75
+X_U1         DRAINX GATEX 0 NMOS_TEMP PARAMS: K=240m VTH=1.286 TC1=6.3m TC2=10u
+X_U2         DRAINY_DIAGX GATEY 0 NMOS_TEMP PARAMS: K=240m VTH=1.286 TC1=6.3m
++  TC2=10u
+G_ABMII4         GATEY 0 VALUE {
++  if(V(N202243)>2.5,if(V(GATEY)>1.7,450u,139u),0)    }
+V_V4         N450263 0 37m
+V_V6         N458300 0 10m
+X_U831         N45850 N45842 N458300 N191772 COMPHYS_BASIC_GEN PARAMS: VDD=5
++  VSS=0 VTHRESH=2.5
+X_U843         G_CHY N202243 INV_BASIC_GEN PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+D_D15         0 GATEY D_D1 
+C_C4         0 GATEX  53.41p IC=0 
+D_D11         GATEY VCC D_D1 
+X_U846         N191772 DIAGX CMD_ERRY_B GATEX_ON DIAGX_OPEN AND4_BASIC_GEN
++  PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+R_R11         0 N49652  65k  
+D_D14         0 GATEX D_D1 
+V_V7         N47435 0 0.75
+G_ABMII3         GATEX 0 VALUE {
++  if(V(N263527)>2.5,if(V(GATEX)>1.7,450u,139u),0)    }
+G_ABMII1         GATEX 0 VALUE {
++  if(V(G_CHX)>2.5,if(V(GATEX)<1.29,-6.5m,-145u),0)    }
+X_U833         GBAR G INV_BASIC_GEN PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+D_D10         GATEX VCC D_D1 
+C_C5         0 GATEY  53.41p IC=0 
+C_C11         0 DRAINX  1p  
+X_U1_S2    DIAGX_CONNECT 0 N254236 DRAINY_DIAGX Driver_U1_S2 
+R_R10         N49652 N53991  40k  
+X_U848         G DATAY TSDBAR G_CHY AND3_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+X_U827         DIAGX CMD_ERRY_B DIAGX_CONNECT AND2_BASIC_GEN PARAMS: VDD=5
++  VSS=0 VTHRESH=2.5
+X_U844         CMD_ERRY CMD_ERRY_B INV_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+X_U828         N47435 N49652 N450263 N45170 COMPHYS_BASIC_GEN PARAMS: VDD=5
++  VSS=0 VTHRESH=2.5
+X_U845         N45170 DIAGX CMD_ERRY_B GATEX_ON DIAGX_SHORT AND4_BASIC_GEN
++  PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+R_R12         0 N45850  53k  
+X_U1_S1    DIAGX_CONNECT 0 N53991 DRAINY_DIAGX Driver_U1_S1 
+C_C12         0 DRAINY_DIAGX  1p  
+E_ABM1         GATEX_ON 0 VALUE { IF(V(GATEX) > 1.8, 5, 0)    }
+R_R13         N45850 N254236  244k  
+.ENDS Driver
+*$
+.SUBCKT ERR_TSD CMD_ERR CMD_ERR1 CMD_ERR3 CMD_ERR5 CMD_ERR7 CMD_ERR9 CMD_ERR11
++  CMD_ERR13 CMD_ERR15 DATA1 DATA3 DATA5 DATA7 DATA9 DATA11 DATA13 DATA15 DIAG0
++  DIAG0_OPEN DIAG0_SHORT DIAG2 DIAG2_OPEN DIAG2_SHORT DIAG4 DIAG4_OPEN
++  DIAG4_SHORT DIAG6 DIAG6_OPEN DIAG6_SHORT DIAG8 DIAG8_OPEN DIAG8_SHORT DIAG10
++  DIAG10_OPEN DIAG10_SHORT DIAG12 DIAG12_OPEN DIAG12_SHORT DIAG14 DIAG14_OPEN
++  DIAG14_SHORT ERRbar FAULT_ERR TSD  
+X_U9         CMD_ERR1 CMD_ERR3 CMD_ERR5 CMD_ERR7 N187285 OR4_BASIC_GEN PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+D_D2         N234617 N250100 D_D1 
+X_U3         DIAG4 DATA5 CMD_ERR5 AND2_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+E_ABM2         N245619 0 VALUE { V(CMD_ERR)    }
+V_V3         N232803 0 15
+X_U4         DIAG6 DATA7 CMD_ERR7 AND2_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+X_U13         DIAG4_SHORT DIAG4_OPEN DIAG6_SHORT DIAG6_OPEN N198800
++  OR4_BASIC_GEN PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+X_U11_S1    ERR 0 ERRBAR 0 ERR_TSD_U11_S1 
+R_R2         N245619 N234643  1.443k  
+X_U5         DIAG8 DATA9 CMD_ERR9 AND2_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+E_ABM1         VTEMP 0 VALUE { TEMP    }
+X_U14         DIAG8_SHORT DIAG8_OPEN DIAG10_SHORT DIAG10_OPEN N199084
++  OR4_BASIC_GEN PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+X_U10         CMD_ERR9 CMD_ERR11 CMD_ERR13 CMD_ERR15 N187492 OR4_BASIC_GEN
++  PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+X_U12         DIAG0_SHORT DIAG0_OPEN DIAG2_SHORT DIAG2_OPEN N198388
++  OR4_BASIC_GEN PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+X_U6         DIAG10 DATA11 CMD_ERR11 AND2_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+C_C1         N234643 0  1n  
+E_ABM3         N250100 0 VALUE { V(FAULT_ERR)    }
+X_U15         DIAG12_SHORT DIAG12_OPEN DIAG14_SHORT DIAG14_OPEN N199376
++  OR4_BASIC_GEN PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+X_U16         N198388 N198800 N199084 N199376 FAULT_ERR OR4_BASIC_GEN PARAMS:
++  VDD=5 VSS=0 VTHRESH=2.5
+D_D1         N234643 N245619 D_D1 
+R_R1         ERRBAR 0  1G  
+X_U7         DIAG12 DATA13 CMD_ERR13 AND2_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+X_U17         N234643 N234617 ERR OR2_BASIC_GEN PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+X_U1         DIAG0 DATA1 CMD_ERR1 AND2_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+X_U8         DIAG14 DATA15 CMD_ERR15 AND2_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+X_U18         VTEMP N232789 N232803 TSD COMPHYS_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+R_R3         N250100 N234617  50.505k  
+V_V2         N232789 0 175
+X_U2         DIAG2 DATA3 CMD_ERR3 AND2_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+C_C2         N234617 0  1n  
+X_U11         N187285 N187492 CMD_ERR OR2_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+.ENDS ERR_TSD
+*$
+.SUBCKT CRC_Generator CRC0 CRC1 CRC2 CRC3 CRC4 CRC5 CRC_Ser_In RCK RST_bar
++  SRCK_INT  
+X_U45         CRC5 N467391 SRCK_INT CRC4 RST_CRC_BAR SET dffsbrb_rhp_custom1
++  PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+V_V1         SET 0 5
+X_U51         CRC2 N467595 SRCK_INT CRC1 RST_CRC_BAR SET dffsbrb_rhp_custom1
++  PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+X_U46         CRC_SER_IN CRC5 SQ XOR2_BASIC_GEN PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+X_U47         CRC1 N467559 SRCK_INT N467509 RST_CRC_BAR SET dffsbrb_rhp_custom1
++  PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+X_U53         RCK N476313 INV_BASIC_GEN PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+X_U52         CRC3 N467637 SRCK_INT CRC2 RST_CRC_BAR SET dffsbrb_rhp_custom1
++  PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+X_U48         CRC0 SQ N467509 XOR2_BASIC_GEN PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+X_U50         CRC0 N467563 SRCK_INT SQ RST_CRC_BAR SET dffsbrb_rhp_custom1
++  PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+X_U54         N476313 RST_BAR RST_CRC_BAR AND2_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=2.5
+X_U44         CRC4 N467395 SRCK_INT CRC3 RST_CRC_BAR SET dffsbrb_rhp_custom1
++  PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+.ENDS CRC_Generator
+*$
+.subckt Max_Freq_Constraint_U22_S2 1 2 3 4  
+S_S2         3 4 1 2 _S2
+RS_S2         1 2 1G
+.MODEL         _S2 VSWITCH Roff=1e9 Ron=1m Voff=2 Von=3
+.ends Max_Freq_Constraint_U22_S2
+*$
+.subckt Driver_U1_S2 1 2 3 4  
+S_S2         3 4 1 2 _S2
+RS_S2         1 2 1G
+.MODEL         _S2 VSWITCH Roff=10e9 Ron=1.0m Voff=2.0V Von=3.0V
+.ends Driver_U1_S2
+*$
+.subckt Driver_U1_S1 1 2 3 4  
+S_S1         3 4 1 2 _S1
+RS_S1         1 2 1G
+.MODEL         _S1 VSWITCH Roff=10e9 Ron=1.0m Voff=2.0V Von=3.0V
+.ends Driver_U1_S1
+*$
+.subckt ERR_TSD_U11_S1 1 2 3 4  
+S_S1         3 4 1 2 _S1
+RS_S1         1 2 1G
+.MODEL         _S1 VSWITCH Roff=1e9 Ron=75 Voff=0.2V Von=0.8V
+.ends ERR_TSD_U11_S1
+*$
+.model D_D1 d
++ t_abs=25
++ is=1e-015
++ tt=1e-011
++ rs=0.05
++ n=0.01
+*$
+.SUBCKT NMOSIDEAL_PS D G S PARAMS: k=1 vth=0
+RDDUM D 0 1e11
+RSDUM S 0 1e11
+RGDUM G 0 1e11
+EON Yp 0 VALUE={IF(V(G,S) > {vth}, 1, 0)}
+GOUT D S VALUE={IF(V(D,S) >= (V(G,S)-{vth}), V(Yp)*({k}/2)*(V(G,S)-{vth})**2, V(Yp)*({k})*(V(G,S)-{vth}-V(D,S)/2)*V(D,S))}
+.ENDS NMOSIDEAL_PS
+*$
+.SUBCKT NMOS_TEMP  D G S PARAMS: k=1 vth=0 TC1=0 TC2=0 
+R_R4         D Dint  4.3 TC={TC1},{TC2} 
+X_U655         Dint G S NMOSIDEAL_PS PARAMS: K=240m VTH=1.286
+.ENDS NMOS_TEMP
+*$
+.SUBCKT ONE_SHOT IN OUT
++ PARAMs:  T=100
+S_S1         MEAS 0 RESET2 0 S1
+E_ABM1         CH 0 VALUE { if( V(IN)>0.5 | V(OUT)>0.5,1,0)    }
+R_R2         RESET2 RESET  0.1  
+E_ABM3         OUT 0 VALUE { if( V(MEAS)<0.5 & V(CH)>0.5,1,0)    }
+R_R1         MEAS CH  {T} 
+C_C2         0 RESET2  1.4427n  
+C_C1         0 MEAS  1.4427n  
+E_ABM2         RESET 0 VALUE { if(V(CH)<0.5,1,0)    }
+.MODEL         S1 VSWITCH Roff=1e9 Ron=1.0 Voff=0.25V Von=0.75V
+.ENDS ONE_SHOT
+*$
+.SUBCKT COMP_BASIC_GEN INP INM Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5	
+E_ABM Yint 0 VALUE {IF (V(INP) > 
++ V(INM), {VDD},{VSS})}
+R1 Yint Y 1
+C1 Y 0 1n
+.ENDS COMP_BASIC_GEN
+*$
+.SUBCKT COMPHYS_BASIC_GEN INP INM HYS OUT_0 PARAMS: VDD=1 VSS=0 VTHRESH=0.5	
+EIN INP1 INM1 INP INM 1 
+EHYS INP1 INP2 VALUE { IF( V(1) > {VTHRESH},-V(HYS),0) }
+EOUT OUT_0 0 VALUE { IF( V(INP2)>V(INM1), {VDD} ,{VSS}) }
+R1 OUT_0 1 1
+C1 1 0 5n
+RINP1 INP1 0 1K
+.ENDS COMPHYS_BASIC_GEN
+*$
+.SUBCKT AND2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS AND2_BASIC_GEN
+*$
+.SUBCKT AND3_BASIC_GEN A B C Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH} &
++ V(C) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS AND3_BASIC_GEN
+*$
+.SUBCKT AND4_BASIC_GEN A B C D Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH} &
++ V(C) > {VTHRESH} &
++ V(D) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS AND4_BASIC_GEN
+*$
+.SUBCKT OR2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  |  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS OR2_BASIC_GEN
+*$
+.SUBCKT OR4_BASIC_GEN A B C D Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  |  
++ V(B) > {VTHRESH} |
++ V(C) > {VTHRESH} |
++ V(D) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS OR4_BASIC_GEN
+*$
+.SUBCKT XOR2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE  YINT 0 VALUE {{IF(V(A) > {VTHRESH}  ^  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS XOR2_BASIC_GEN
+*$
+.SUBCKT INV_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS INV_BASIC_GEN
+*$
+.SUBCKT INV_DELAY_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 DELAY = 10n 
+E_ABMGATE1    YINT1 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT1 YINT2 1
+CINT YINT2 0 {DELAY*1.3}
+E_ABMGATE2    YINT3 0 VALUE {{IF(V(YINT2) > {VTHRESH} , 
++ {VSS},{VDD})}}
+RINT2 YINT3 Y 1
+CINT2 Y 0 1n
+.ENDS INV_DELAY_BASIC_GEN
+*$
+.SUBCKT XNOR2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE  YINT 0 VALUE {{IF(V(A) > {VTHRESH}  ^  
++ V(B) > {VTHRESH},{VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS XNOR2_BASIC_GEN
+*$
+.SUBCKT MUX2_BASIC_GEN A B S Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE  YINT 0 VALUE {{IF(V(S) > {VTHRESH},  
++ V(B),V(A))}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS MUX2_BASIC_GEN
+*$
+.SUBCKT BUF_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS BUF_BASIC_GEN
+*$
+.SUBCKT SRLATCHRHP_BASIC_GEN S R Q QB PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+GQ 0 Qint VALUE = {IF(V(R) > {VTHRESH},-5,IF(V(S)>{VTHRESH},5, 0))}
+CQint Qint 0 1n
+D_D10 Qint MY5 D_D1
+V1 MY5 0 {VDD}
+D_D11 MYVSS Qint D_D1
+V2 MYVSS 0 {VSS} 
+EQ Qqq 0 Qint 0 1
+X3 Qqq Qqqd1 BUF_BASIC_GEN PARAMS: VDD={VDD} VSS={VSS} VTHRESH={VTHRESH}
+RQq Qqqd1 Q 1
+EQb Qbr 0 VALUE = {IF( V(Q) > {VTHRESH}, {VSS},{VDD})}
+RQb Qbr QB 1 
+Cdummy1 Q 0 1n 
+Cdummy2 QB 0 1n
+.IC V(Qint) {VSS}
+.ENDS SRLATCHRHP_BASIC_GEN
+*$
+.SUBCKT LED_LW_G6SP 1 2
+dpwc1 1 2 wled_20
+dpwc2 1 2 wled_20
+dpwc3 1 2 wled_20
+dpwc4 1 2 wled_20
+dpwc5 1 2 wled_20
+dpwc6 1 2 wled_20
+dpwc7 1 2 wled_20
+dpwc8 1 2 wled_20
+dpwc9 1 2 wled_20
+dpwc10 1 2 wled_20
+dpwc11 1 2 wled_20
+dpwc12 1 2 wled_20
+dpwc13 1 2 wled_20
+dpwc14 1 2 wled_20
+dpwc15 1 2 wled_20
+dpwc16 1 2 wled_20
+dpwc17 1 2 wled_20
+dpwc18 1 2 wled_20
+dpwc19 1 2 wled_20
+dpwc20 1 2 wled_20
+dpwc21 1 2 wled_20
+dpwc22 1 2 wled_20
+dpwc23 1 2 wled_20
+dpwc24 1 2 wled_20
+dpwc25 1 2 wled_20
+dpwc26 1 2 wled_20
+dpwc27 1 2 wled_20
+dpwc28 1 2 wled_20
+dpwc29 1 2 wled_20
+dpwc30 1 2 wled_20
+dpwc31 1 2 wled_20
+dpwc32 1 2 wled_20
+dpwc33 1 2 wled_20
+dpwc34 1 2 wled_20
+dpwc35 1 2 wled_20
+dpwc36 1 2 wled_20
+dpwc37 1 2 wled_20
+dpwc38 1 2 wled_20
+dpwc39 1 2 wled_20
+dpwc40 1 2 wled_20
+dpwc41 1 2 wled_20
+dpwc42 1 2 wled_20
+dpwc43 1 2 wled_20
+dpwc44 1 2 wled_20
+dpwc45 1 2 wled_20
+dpwc46 1 2 wled_20
+dpwc47 1 2 wled_20
+dpwc48 1 2 wled_20
+dpwc49 1 2 wled_20
+dpwc50 1 2 wled_20
+dpwc51 1 2 wled_20
+dpwc52 1 2 wled_20
+dpwc53 1 2 wled_20
+dpwc54 1 2 wled_20
+dpwc55 1 2 wled_20
+dpwc56 1 2 wled_20
+dpwc57 1 2 wled_20
+dpwc58 1 2 wled_20
+dpwc59 1 2 wled_20
+dpwc60 1 2 wled_20
+dpwc61 1 2 wled_20
+dpwc62 1 2 wled_20
+dpwc63 1 2 wled_20
+dpwc64 1 2 wled_20
+dpwc65 1 2 wled_20
+dpwc66 1 2 wled_20
+dpwc67 1 2 wled_20
+dpwc68 1 2 wled_20
+dpwc69 1 2 wled_20
+dpwc70 1 2 wled_20
+dpwc71 1 2 wled_20
+dpwc72 1 2 wled_20
+dpwc73 1 2 wled_20
+.model wled_20 d
++is=2.405e-19    n=3.038                rs=20.76               trs1=-3.2e-3       trs2=8.5e-6
++ vj=2.989               m=0.2739            fc=0.7    xti=33.2                ikf=0.95e-3
++tikf=19e-3         isr=1.655e-12     nr=10.65
+.ends LED_LW_G6SP
+*$
+.SUBCKT PWL_SOURCE 1 2
+VG1         1 2 PWL
++		(0,	0)
++		(1.44u,	0)
++		(1.45u,	5)
++		(1.65u,	5)
++		(1.66u,	0)
++		(1.84u,	0)
++		(1.85u,	5)
++		(2.15u,	5)
++		(2.16u,	0)
++		(2.44u,	0)
++		(2.45u,	5)
++		(3.25u,	5)
++		(3.26u,	0)
++		(4.04u,	0)
++		(4.05u,	5)
++		(4.65u,	5)
++		(4.66u,	0)
++		(4.84u,	0)
++		(4.85u,	5)
++		(5.065u, 5)
++		(5.075u, 0)
++		(5.24u,	0)
++		(5.25u,	5)
++		(5.63u,	5)
++ 		(5.64u,	0)
+.ENDS PWL_SOURCE
+*$
+.SUBCKT PWL_SOURCE2 1 2
+VG1         1 2 PWL
++		(0,	0)
++		(840n,	0)
++		(850n,	5)
++		(1.25u,	5)
++		(1.26u,	0)
++		(1.44u,	0)
++		(1.45u,	5)
++		(1.65u,	5)
++		(1.66u,	0)
++		(1.84u,	0)
++		(1.85u,	5)
++		(2.45u,	5)
++		(2.46u,	0)
++		(3.24u,	0)
++		(3.25u,	5)
++		(4.05u,	5)
++		(4.06u,	0)
++		(4.24u,	0)
++		(4.25u,	5)
++		(4.64u, 5)
++		(4.65u, 0)
++		(4.84u,	0)
++		(4.85u,	5)
++		(5.05u,	5)
++ 		(5.06u,	0)
+.ENDS PWL_SOURCE2
+*$
+.SUBCKT PWL_SOURCE3 1 0_a
+VG1         1int 0 PWL
++      REPEAT FOREVER (0,	0) 
++		(1n,	5)
++		(400n,	5)
++		(410n,	0)
++		(650n,	0)
++		(660n,	5)
++		(850n,	5)
++		(860n,	0)
++		(1.05u,	0)
++		(1.06u,	5)
++		(1.65u,	5)
++		(1.66u,	0)
++		(2.45u,	0)
++		(2.46u,	5)
++		(3.25u,	5)
++		(3.26u,	0)
++		(3.45u,	0)
++		(3.46u,	5)
++		(3.85u,	5)
++		(3.86u, 0)
++		(4.05u, 0)
++		(4.06u,	5)
++		(4.25u,	5)
++		(4.26u,	0)
++ 		(4.81u,	0)
++		()
++      ENDREPEAT
+V_pulse	2int 0 PULSE 0 5 0 1n 1n 9.6u 19.2u
+X_AND2	1int 2int 1 AND2_BASIC_GEN PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+.ENDS PWL_SOURCE3
+*$
+.subckt dffsr_rhpbasic_gen q qb clk d r s params: vdd=1 vss=0 vthresh=0.5 
+x1 clk clkdel inv_delay_basic_gen params: vdd={vdd} vss={vss} vthresh=
++ {vthresh} delay = 15n
+x2 clk clkdel clkint and2_basic_gen params: vdd={vdd} vss={vss} vthresh=
++ {vthresh}  
+gq 0 qint value = {if(v(r) > {vthresh},-5,if(v(s) > {vthresh},5, if(v(clkint)>
++  {vthresh}, 
++ if(v(d)> {vthresh},5,-5),0)))}
+cqint qint 0 1n
+rqint qint 0 1000meg
+d_d10 qint my5 d_d1
+v1 my5 0 {vdd}
+d_d11 myvss qint d_d1
+v2 myvss 0 {vss} 
+eq qqq 0 qint 0 1
+x3 qqq qqqd1 buf_delay_basic_gen params: vdd={vdd} vss={vss} vthresh={vthresh}
++  delay = 20n
+rqq qqqd1 q 1
+eqb qbr 0 value = {if( v(q) > {vthresh}, {vss},{vdd})}
+rqb qbr qb 1 
+cdummy1 q 0 1nf 
+cdummy2 qb 0 1nf 
+.ic v(qint) {vss}
+.model d_d1 d
++ is=1e-015
++ tt=1e-011
++ rs=0.05
++ n=0.1
+.ends dffsr_rhpbasic_gen
+*$
+.subckt dffsbrb_rhp_custom1 q qb clk d rb sb params: vdd=1 vss=0 vthresh=0.5 
+x1 clk clkdel inv_delay_basic_gen params: vdd={vdd} vss={vss} vthresh=
++ {vthresh} delay = 5n
+x2 clk clkdel clkint and2_basic_gen params: vdd={vdd} vss={vss} vthresh=
++ {vthresh} 
+gq 0 qint value = {if(v(rb) < {vthresh},-5,if(v(sb)< {vthresh},5,
++  if(v(clkint)> {vthresh}, 
++ if(v(d)> {vthresh},5,-5),0)))}
+cqint qint 0 1n
+rqint qint 0 1000meg
+d_d10 qint my5 d_d1
+v1 my5 0 5
+d_d11 0 qint d_d1 
+eq qqq 0 qint 0 1
+x3 qqq q buf_delay_basic_gen params: vdd={vdd} vss={vss} vthresh={vthresh}
++  delay = 10n
+eqb qbr 0 value = {if( v(q) > {vthresh}, {vss},{vdd})}
+rqb qbr qb 1 
+cdummy2 qb 0 1nf 
+.ic v(qint) {vss}
+.model d_d1 d
++ t_abs=25
++ is=1e-015
++ tt=1e-011
++ rs=0.05
++ n=0.1
+.ends dffsbrb_rhp_custom1
+*$
+.subckt dffsbrb_rhp_custom2 q qb clk d rb sb params: vdd=1 vss=0 vthresh=0.5 
+x1 clk clkdel inv_delay_basic_gen params: vdd={vdd} vss={vss} vthresh=
++ {vthresh} delay = 5n
+x2 clk clkdel clkint and2_basic_gen params: vdd={vdd} vss={vss} vthresh=
++ {vthresh} 
+gq 0 qint value = {if(v(rb) < {vthresh},-5,if(v(sb)< {vthresh},5,
++  if(v(clkint)> {vthresh}, 
++ if(v(d)> {vthresh},5,-5),0)))}
+cqint qint 0 1n
+rqint qint 0 1000meg
+d_d10 qint my5 d_d1
+v1 my5 0 5
+d_d11 0 qint d_d1 
+eq qqq 0 qint 0 1
+x3 qqq q BUF_DELAY_BASIC_GEN params: vdd={vdd} vss={vss} vthresh={vthresh}
++  delay = 30n
+eqb qbr 0 value = {if( v(q) > {vthresh}, {vss},{vdd})}
+rqb qbr qb 1 
+cdummy2 qb 0 1nf 
+.ic v(qint) {vss}
+.model d_d1 d
++ t_abs=25
++ is=1e-015
++ tt=1e-011
++ rs=0.05
++ n=0.1
+.ends dffsbrb_rhp_custom2
+*$
+.SUBCKT BUF_DELAY_CUSTOM1 A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 DELAY = 10n 
+E_ABMGATE1    YINT1 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT1 YINT2 1
+CINT YINT2 0 {DELAY*1.3}
+E_ABMGATE2    Y 0 VALUE {{IF(V(YINT2) > {VTHRESH} , 
++ {VDD},{VSS})}}
+.ENDS BUF_DELAY_CUSTOM1
+*$
+.SUBCKT BUF_DELAY_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 DELAY = 10n 
+E_ABMGATE1    YINT1 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT1 YINT2 1
+CINT YINT2 0 {DELAY*1.3}
+E_ABMGATE2    YINT3 0 VALUE {{IF(V(YINT2) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT2 YINT3 Y 1
+CINT2 Y 0 1n
+.ENDS BUF_DELAY_BASIC_GEN
+*$

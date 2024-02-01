@@ -1,0 +1,749 @@
+*$
+* TPS3808G01
+*****************************************************************************
+* (C) Copyright 2011 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warrenties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: TPS3808G01
+* Date: 16MAR2011
+* Model Type: TRANSIENT 
+* Simulator: PSPICE
+* Simulator Version: 16.0.0.p001
+* EVM Order Number: TPS3808G01EVM 
+* EVM Users Guide:  SBVU015 - April 2010
+* Datasheet: SBVS050J – MAY 2004 – REVISED AUGUST 2008
+*
+* Model Version: Final 2.00
+*
+*****************************************************************************
+*
+* Updates: The model updated to solve the delay issues.
+*
+* Final 2.00
+* Release to Web.
+*
+*****************************************************************************
+.subckt TPS3808G01 RESET_BAR MR_BAR VDD SENSE CT
+M_M114         N18876597 N18876474 N18876779 N18876779 MbreakN  
++ L=300n  
++ W=490n         
+M_M237         N18466239 N18466239 N18466254 N18466254 MbreakP  
++ L=300n  
++ W=1.8u         
+M_M51         N17175380 N17175257 N17175562 N17175562 MbreakN  
++ L=300n  
++ W=1000n         
+C_C18         0 N19699488 Cbreak 15p 
+M_M284         N17871129 N17865723 VDDINT VDDINT MbreakP  
++ L=300n  
++ W=20u         
+M_M14         N18873446 N18873361 N18873364 N18873364 MbreakP  
++ L=300n  
++ W=3u         
+M_M72         CTOPEN N17707860 0 0 MbreakN  
++ L=300n  
++ W=10u         
+M_M9         CTBAR CT 0 0 Mbreakn  
++ L=300n  
++ W=100u         
+M_M300         VDD N19629310 0 0 MbreakN  
++ L=1000n  
++ W=72n         
+M_M293         N19049316 N18876436 0 0 MbreakN  
++ L=300n  
++ W=100u         
+M_M26         N16722470 N16722424 VDDINT VDDINT MbreakP  
++ L=300n  
++ W=1.8u         
+M_M250         N16841370 RESINITBAR N21590 N21590 Mbreakp  
++ L=300n  
++ W=10u         
+C_C11         0 N17414385 Cbreak 0.5u 
+M_M271         N17495253 CTVDD 0 0 MbreakN  
++ L=300n  
++ W=3u         
+M_M17         N16722456 N16722456 0 0 Mbreakn  
++ L=300n  
++ W=500n         
+M_M90         N18466364 N18466364 N18466529 N18466529 MbreakN  
++ L=300n  
++ W=900n         
+M_M119         MRBAR_INT MR_INT 0 0 MbreakN  
++ L=300n  
++ W=3u         
+M_M106         N18876496 N18887313 N18876480 N18876480 Mbreakn  
++ L=600n  
++ W=300n         
+M_M10         CTBAR CT N17781516 N17781516 MbreakP  
++ L=300n  
++ W=100u         
+X_E9    0 0 N20834453 MRBAR_INT SCHEMATIC1_E9 
+M_M34         N17005244 GP8NCAP 0 0 MbreakN  
++ L=300n  
++ W=3u         
+M_M24         N17175279 N17186235 N17175263 N17175263 Mbreakn  
++ L=600n  
++ W=900n         
+M_M285         N17871129 N17865723 0 0 MbreakN  
++ L=300n  
++ W=3u         
+M_M82         N18466234 N18466234 VDDINT VDDINT Mbreakp  
++ L=300n  
++ W=1.8u         
+M_M39         N17032174 GP8NCAP VDDINT VDDINT MbreakP  
++ L=300n  
++ W=3u         
+M_M264         N17404182 N17421609 N17414385 N17414385 MbreakN  
++ L=300n  
++ W=3u         
+M_M77         N18085370 N17447515 VDDINT VDDINT MbreakP  
++ L=300n  
++ W=30u         
+M_M272         N17495253 CTOPEN 0 0 MbreakN  
++ L=300n  
++ W=3u         
+M_M6         RESINITBAR RESINIT N23882 N23882 MbreakP  
++ L=300n  
++ W=50u         
+M_M120         MRBAR_INT MR_INT N18873364 N18873364 MbreakP  
++ L=300n  
++ W=3u         
+M_M230         N18873486 N18873486 N18873484 N18873484 MbreakN  
++ L=300n  
++ W=650n         
+M_M282in         N18308547 N17871129 VDD VDD MbreakP  
++ L=300n  
++ W=1u         
+M_M115         N18876474 N18876474 N18876779 N18876779 MbreakN  
++ L=300n  
++ W=2500n         
+M_M251         N16853286 N16848660 VDDINT VDDINT MbreakP  
++ L=1u  
++ W=3u         
+X_E3    0 0 N18887313 MR_BAR SCHEMATIC1_E3 
+M_M61         N17175257 N17175257 N17175562 N17175562 MbreakN  
++ L=300n  
++ W=1500n         
+M_M27         N16723420 N16722492 VDDINT VDDINT Mbreakp  
++ L=300n  
++ W=900n         
+M_M261         G1P2 N17175144 VDDINT VDDINT MbreakP  
++ L=300n  
++ W=1u         
+M_M83         N18466263 N18466263 VDDINT VDDINT Mbreakp  
++ L=300n  
++ W=1.8u         
+M_M40         N17032174 L1P2 VDDINT VDDINT MbreakP  
++ L=300n  
++ W=3u         
+M_M107         N18876480 N18876480 0 0 Mbreakn  
++ L=450n  
++ W=200n         
+M_M15         N16879715 RESINIT 0 0 MbreakN  
++ L=300n  
++ W=3u         
+M_M273         N17495253 CTCAP 0 0 MbreakN  
++ L=300n  
++ W=3u         
+V_V34         N18636473 0 0.405Vdc
+M_M28         N17175263 N17175263 0 0 Mbreakn  
++ L=300n  
++ W=800n         
+M_M96         N18873497 N18873481 N18873364 N18873364 MbreakP  
++ L=300n  
++ W=1.8u         
+*C_C19         0 CT Cbreak 1n 
+M_M239         N18876476 N18876476 N18876487 N18876487 MbreakP  
++ L=300n  
++ W=1.8u         
+M_M283in         N18308547 N17871129 0 0 MbreakN  
++ L=300n  
++ W=1u         
+M_M236         N17175259 N17175259 N17175270 N17175270 MbreakP  
++ L=300n  
++ W=1.8u         
+M_M37         L1P2 G1P2 0 0 MbreakN  
++ L=300n  
++ W=1u         
+M_M78         N18085370 N17447515 0 0 MbreakN  
++ L=300n  
++ W=30u         
+M_M201         N16723092 N16722442 N16723420 N16723420 MbreakP  
++ L=50u  
++ W=3u         
+M_M41         N17032184 N17032174 VDDINT VDDINT MbreakP  
++ L=300n  
++ W=3u         
+M_M16         N16879715 RESINIT VDDINT VDDINT MbreakP  
++ L=300n  
++ W=300n         
+R_R20         VDD MR_BAR Rbreak 90k
+M_M277         N17544790 N17495253 VDDINT VDDINT MbreakP  
++ L=300n  
++ W=3u         
+M_M18         N16722424 N16722424 VDDINT VDDINT Mbreakp  
++ L=300n  
++ W=1.8u         
+M_M116         N18876597 N18876597 N18876779 N18876779 MbreakN  
++ L=300n  
++ W=1000n         
+M_M97         N18873910 N18873506 N18873364 N18873364 Mbreakp  
++ L=300n  
++ W=1.8u         
+M_M62         N17175380 N17175380 N17175562 N17175562 MbreakN  
++ L=300n  
++ W=1500n         
+M_M38         L1P2 G1P2 VDDINT VDDINT MbreakP  
++ L=300n  
++ W=3u         
+M_M4         CT RESINITBAR 0 0 MbreakN  
++ L=300n  
++ W=300u         
+M_M298         0 N20976373 N17447515 N17447515 MbreakP  
++ L=300n  
++ W=2000u         
+M_M108         N18876471 N18876471 N18876354 N18876354 Mbreakp  
++ L=300n  
++ W=1.8u         
+M_M274         N17489588 CTVDD VDDINT VDDINT MbreakP  
++ L=300n  
++ W=3u         
+M_M52         N17032184 N17032174 0 0 MbreakN  
++ L=300n  
++ W=3u         
+M_M29         N17175254 N17175254 VDDINT VDDINT Mbreakp  
++ L=300n  
++ W=1.8u         
+M_M35         N17016632 N17005787 0 0 MbreakN  
++ L=300n  
++ W=3u         
+V_V49         N21590 0 1.5Vdc
+M_M286         N17894786 N17414385 VDDINT VDDINT MbreakP  
++ L=300n  
++ W=3u         
+M_M228         N18466239 N18466239 N18466237 N18466237 MbreakN  
++ L=300n  
++ W=650n         
+M_M46         N16722430 N16722430 N16723138 N16723138 MbreakN  
++ L=300n  
++ W=2500n         
+M_M282in1         N18830356 N18466113 VDDINT VDDINT MbreakP  
++ L=300n  
++ W=3u         
+M_M7         N16848660 N16723092 0 0 MbreakN  
++ L=300n  
++ W=3u         
+M_M103         N18876436 N18876351 0 0 MbreakN  
++ L=300n  
++ W=3u         
+M_M79         CTCAP N18085370 VDDINT VDDINT MbreakP  
++ L=300n  
++ W=10u         
+M_M109         N18876496 N18876496 N18876354 N18876354 Mbreakp  
++ L=300n  
++ W=1.8u         
+M_M223         N16723092 N16722442 N16722712 N16722712 MbreakN  
++ L=300n  
++ W=520n         
+M_M284in         N18308663 N18308547 VDD VDD MbreakP  
++ L=300n  
++ W=1u         
+V_V10         N23882 0 3.3Vdc
+M_M30         N17175279 N17175279 VDDINT VDDINT Mbreakp  
++ L=300n  
++ W=1.8u         
+M_M31         N17005787 G1P2 VDDINT VDDINT MbreakP  
++ L=300n  
++ W=2u         
+M_M36         N17016632 N17005787 VDDINT VDDINT MbreakP  
++ L=300n  
++ W=3u         
+*C_C16         0 N19049316 Cbreak 1.5n 
+C_C16         0 N19049316 Cbreak 3.0n 
+M_M84         N18466254 N18466234 VDDINT VDDINT MbreakP  
++ L=300n  
++ W=1.8u         
+M_M287         N17894786 N17414385 0 0 MbreakN  
++ L=300n  
++ W=3u         
+M_M280         CTBAR N17045526 N17840270 N17840270 MbreakN           
+M_M8         N16848660 N16723092 VDDINT VDDINT MbreakP  
++ L=300n  
++ W=3u         
+M_M283in1         N18830356 N18466113 0 0 MbreakN  
++ L=300n  
++ W=3u         
+M_M67         N17426082 N17623567 VDDINT VDDINT MbreakP  
++ L=300n  
++ W=10u         
+M_M104         N18876436 N18876351 N18876354 N18876354 MbreakP  
++ L=300n  
++ W=3u         
+M_M25         N16722492 N16722492 VDDINT VDDINT Mbreakp  
++ L=300n  
++ W=1.8u         
+X_E1    0 0 N18466143 N18636473 SCHEMATIC1_E1 
+M_M204         N18873361 N18873486 N18873910 N18873910 MbreakP  
++ L=50u  
++ W=3u         
+R_R12         0 N18525749 Rbreak 700k
+M_M98         N18873789 N18873789 0 0 MbreakN  
++ L=300n  
++ W=600n         
+M_M275         N17488789 CTOPEN N17489588 N17489588 MbreakP  
++ L=300n  
++ W=3u         
+M_M80         CTCAP N18085370 0 0 MbreakN  
++ L=300n  
++ W=10u         
+R_R16         N19629310 N19625576 Rbreak2 200k
+M_M19         CLK N16879715 0 0 MbreakN  
++ L=300n  
++ W=3u         
+R_R3         N17426117 VDDINT Rbreak 111k
+M_M53         N17032174 GP8NCAP N17032330 N17032330 MbreakN  
++ L=300n  
++ W=3u         
+*V_V35         SENSE 0  
+*+PWL 0m 0 50m 0 400m 0 400.001m 0.8 475m 0.8 600m 0.8 900m 0.8 
+M_M235         N16722442 N16722442 N16722470 N16722470 MbreakP  
++ L=300n  
++ W=1.8u         
+M_M121         N19268120 N18830470 VDDINT VDDINT MbreakP  
++ L=300n  
++ W=300n         
+R_R4         N17445946 VDDINT Rbreak 100k
+M_M285in         N18308663 N18308547 0 0 MbreakN  
++ L=300n  
++ W=1u         
+M_M85         N18466665 N18466263 VDDINT VDDINT Mbreakp  
++ L=300n  
++ W=900n         
+M_M55         N17045517 LP8CAP VDDINT VDDINT MbreakP  
++ L=300n  
++ W=3u         
+M_M229         N18873361 N18873486 N18873607 N18873607 MbreakN  
++ L=300n  
++ W=650n         
+M_M262         G1P2 N17175144 0 0 MbreakN  
++ L=300n  
++ W=1000n         
+M_M296         RESINIT N19268120 VDDINT VDDINT MbreakP  
++ L=300n  
++ W=50u         
+M_M68         N17426082 N17623567 0 0 MbreakN  
++ L=300n  
++ W=10u         
+R_R17         0 N19629310 Rbreak1 200k
+C_C12         0 N17426080 Cbreak 0.2u 
+M_M99         N18873484 N18873607 N18873789 N18873789 Mbreakn  
++ L=300n  
++ W=1000n         
+M_M20         CLK N16879715 VDDINT VDDINT MbreakP  
++ L=300n  
++ W=300n         
+M_M54         N17032330 L1P2 0 0 MbreakN  
++ L=300n  
++ W=3u         
+M_M122         N19268120 MRBAR_INT VDDINT VDDINT MbreakP  
++ L=300n  
++ W=300n         
+M_M276         N17495253 CTCAP N17488789 N17488789 MbreakP  
++ L=300n  
++ W=3u         
+M_M42         N16723138 N16723138 0 0 MbreakN  
++ L=300n  
++ W=600n         
+M_M11         N16722424 N23375643 N16722456 N16722456 MbreakN  
++ L=500n  
++ W=450n         
+M_M302         RESET_BAR N19699488 0 0 Mreset  
++ L=300n  
++ W=40u         
+C_C5         0 LP8CAP Cbreak 1n 
+R_R15         N19088687 N18873364 Rbreak 1k
+M_M255         N16860207 N16853518 VDDINT VDDINT MbreakP  
++ L=1u  
++ W=3u         
+M_M32         N17005787 GP8NCAP VDDINT VDDINT MbreakP  
++ L=300n  
++ W=3u         
+M_M232         N18876476 N18876476 N18876474 N18876474 MbreakN  
++ L=300n  
++ W=650n         
+M_M226         N17175259 N17175259 N17175257 N17175257 MbreakN  
++ L=300n  
++ W=650n         
+M_M284in1         N18830470 N18830356 VDDINT VDDINT MbreakP  
++ L=300n  
++ W=20u         
+M_M284in2         N19699488 N18308663 VDD VDD MbreakP  
++ L=300n  
++ W=1u         
+M_M56         N17045517 L1P2 VDDINT VDDINT MbreakP  
++ L=300n  
++ W=3u         
+M_M91         N18873481 N18887313 N18873490 N18873490 MbreakN  
++ L=500n  
++ W=600n         
+M_M288         CTVDD N17894786 VDDINT VDDINT MbreakP  
++ L=300n  
++ W=6u         
+V_V41         N19625576 0 5Vdc
+M_M266         N17426117 N17032184 N17426135 N17426135 MbreakN  
++ L=300n  
++ W=1u         
+M_M47         N16722712 N16722712 N16723138 N16723138 MbreakN  
++ L=300n  
++ W=1000n         
+M_M100         N18873607 N18873484 N18873789 N18873789 MbreakN  
++ L=300n  
++ W=490n         
+*R_R18         RESET_BAR VDD Rbreak 10k
+M_M282         N17865723 N17544790 VDDINT VDDINT MbreakP  
++ L=300n  
++ W=3u         
+X_E12    0 0 N17421609 RESINIT SCHEMATIC1_E12 
+M_M123         N19268120 N18830470 N19268118 N19268118 Mbreakn  
++ L=300n  
++ W=10u         
+M_M256         LP8CAP CLK_BAR N16860207 N16860207 MbreakP  
++ L=1u  
++ W=3u         
+V_V48         N17781516 0 1.5Vdc
+V_V47         N23375643 0 1.23Vdc
+C_C4         N16879715 0 Cbreak 4n 
+V_V46         N18876354 0 7Vdc
+M_M297         RESINIT N19268120 0 0 MbreakN  
++ L=300n  
++ W=10u         
+M_M110         N18876487 N18876471 N18876354 N18876354 MbreakP  
++ L=300n  
++ W=1.8u         
+M_M203         N18466066 N18466239 N18466665 N18466665 MbreakP  
++ L=50u  
++ W=3u         
+M_M43         N17175270 N17175254 VDDINT VDDINT MbreakP  
++ L=300n  
++ W=1.8u         
+M_M5         RESINITBAR RESINIT 0 0 MbreakN  
++ L=300n  
++ W=100u         
+M_M257         LP8CAP CLK N16860211 N16860211 MbreakN  
++ L=1u  
++ W=3u         
+M_M57         N17045526 N17045517 VDDINT VDDINT MbreakP  
++ L=300n  
++ W=3u         
+M_M117         MR_INT N19049316 0 0 MbreakN  
++ L=300n  
++ W=3u         
+M_M86         N18466529 N18466529 0 0 MbreakN  
++ L=300n  
++ W=600n         
+V_V44         VDDINT 0 3.3Vdc
+M_M267         0 N17426082 N17426080 N17426080 MbreakP  
++ L=300n  
++ W=1200u         
+R_R11         N18525749 SENSE_INTERNAL Rbreak 25k
+C_C13         0 N17447515 Cbreak 10n 
+M_M124         N19268118 MRBAR_INT 0 0 MbreakN  
++ L=300n  
++ W=10u         
+M_M92         N18873506 N18939697 N18873490 N18873490 Mbreakn  
++ L=600n  
++ W=600n         
+M_M285in1         N18830470 N18830356 0 0 MbreakN  
++ L=300n  
++ W=3u         
+M_M283         N17865723 N17544790 0 0 MbreakN  
++ L=300n  
++ W=3u         
+M_M291         SENSE_INTERNAL N18466113 N18525749 N18525749 MbreakN  
++ L=300n  
++ W=300n         
+M_M285in2         N19699488 N18308663 0 0 MbreakN  
++ L=300n  
++ W=1u         
+M_M258         N16860211 N16853518 0 0 MbreakN  
++ L=1u  
++ W=3u         
+M_M289         CTVDD N17894786 0 0 MbreakN  
++ L=300n  
++ W=3u         
+M_M227         N18466066 N18466239 N18466364 N18466364 MbreakN  
++ L=300n  
++ W=520n         
+X_E4    0 0 N18939697 VDD SCHEMATIC1_E4 
+M_M268         N17426135 N17426082 N17426080 N17426080 MbreakN  
++ L=300n  
++ W=300n         
+M_M301         N19629310 N19625576 0 0 MbreakN  
++ L=1000n  
++ W=45n         
+M_M69         N17707860 N17426080 VDDINT VDDINT Mbreakp  
++ L=300n  
++ W=3u         
+M_M111         N18876900 N18876496 N18876354 N18876354 Mbreakp  
++ L=300n  
++ W=900n         
+M_M44         N16722430 N16722712 N16723138 N16723138 Mbreakn  
++ L=300n  
++ W=1000n         
+M_M48         N17175683 N17175279 VDDINT VDDINT Mbreakp  
++ L=300n  
++ W=800n         
+M_M118         MR_INT N19049316 N18873364 N18873364 MbreakP  
++ L=300n  
++ W=3u         
+M_M87         N18466237 N18466364 N18466529 N18466529 Mbreakn  
++ L=300n  
++ W=900n         
+M_M259         GP8NCAP LP8CAP VDDINT VDDINT MbreakP  
++ L=1u  
++ W=3u         
+C_C15         0 N18466066 Cbreak 0.14p 
+M_M21         CLK_BAR CLK 0 0 MbreakN  
++ L=300n  
++ W=3u         
+M_M33         N17005787 G1P2 N17005244 N17005244 Mbreakn  
++ L=300n  
++ W=2u         
+M_M263         N21579080 N17016632 N17404182 N17404182 MbreakN  
++ L=300n  
++ W=10u         
+M_M58         N17045526 N17045517 0 0 MbreakN  
++ L=300n  
++ W=3u         
+M_M292         N19088687 N18873446 N19049316 N19049316 MbreakN  
++ L=300n  
++ W=10u         
+X_E2    0 0 SENSE_INTERNAL SENSE SCHEMATIC1_E2 
+M_M12         N16722492 CT N16722456 N16722456 Mbreakn  
++ L=600n  
++ W=300n         
+M_M254         N16853752 N16848660 0 0 MbreakN  
++ L=1u  
++ W=3u         
+X_E11    0 0 N21620757 MRBAR_INT SCHEMATIC1_E11 
+M_M101         N18873484 N18873484 N18873789 N18873789 MbreakN  
++ L=300n  
++ W=2500n         
+M_M270         N18466113 N18466066 VDDINT VDDINT MbreakP  
++ L=300n  
++ W=7u         
+*V_V40         VDD 0 1.7Vdc
+M_M278         N17544790 N17495253 0 0 MbreakN  
++ L=300n  
++ W=3u         
+M_M295         0 N20834453 N17426080 N17426080 MbreakP  
++ L=200n  
++ W=50000u         
+M_M88         N18466364 N18466237 N18466529 N18466529 MbreakN  
++ L=300n  
++ W=490n         
+M_M281         VDDINT N17045517 N17840270 N17840270 MbreakN           
+M_M22         CLK_BAR CLK VDDINT VDDINT MbreakP  
++ L=300n  
++ W=300n         
+M_M63         N18466234 N18525749 N18466243 N18466243 MbreakN  
++ L=500n  
++ W=450n         
+M_M269         N17445946 N17045526 N17447515 N17447515 MbreakN  
++ L=300n  
++ W=2u         
+M_M93         N18873490 N18873490 0 0 Mbreakn  
++ L=600n  
++ W=200n         
+M_M279         N17447515 N17840270 0 0 MbreakN  
++ L=300n  
++ W=180u         
+M_M70         N17707860 N17426080 0 0 MbreakN  
++ L=300n  
++ W=3u         
+M_M238         N18873486 N18873486 N18873497 N18873497 MbreakP  
++ L=300n  
++ W=1.8u         
+C_C14         0 N17175144 Cbreak 10p 
+M_M290         N18466113 N18466066 0 0 MbreakN  
++ L=1800n  
++ W=10u         
+M_M260         GP8NCAP LP8CAP 0 0 MbreakN  
++ L=1u  
++ W=3u         
+M_M294         0 N21620757 N17414385 VDDINT MbreakP  
++ L=300n  
++ W=50000u         
+C_C8         0 N16853518 Cbreak 500p 
+M_M59         N17045517 LP8CAP N17045660 N17045660 MbreakN  
++ L=300n  
++ W=3u         
+M_M205         N18876351 N18876476 N18876900 N18876900 MbreakP  
++ L=50u  
++ W=3u         
+M_M45         N16722712 N16722430 N16723138 N16723138 MbreakN  
++ L=300n  
++ W=490n         
+M_M112         N18876779 N18876779 0 0 MbreakN  
++ L=300n  
++ W=600n         
+M_M253         N16853518 CLK_BAR N16853752 N16853752 MbreakN  
++ L=1u  
++ W=3u         
+M_M202         N17175144 N17175259 N17175683 N17175683 MbreakP  
++ L=50u  
++ W=18u         
+M_M49         N17175562 N17175562 0 0 MbreakN  
++ L=300n  
++ W=600n         
+X_E5    0 0 N18973880 VDD SCHEMATIC1_E5 
+M_M64         N18466263 N18466143 N18466243 N18466243 Mbreakn  
++ L=600n  
++ W=600n         
+M_M102         N18873607 N18873607 N18873789 N18873789 MbreakN  
++ L=300n  
++ W=1000n         
+M_M65         N17623567 RESINIT VDDINT VDDINT MbreakP  
++ L=300n  
++ W=30u         
+V_V45         N18873364 0 7Vdc
+R_R1         CT N16841370 Rbreak 3700k
+M_M231         N18876351 N18876476 N18876597 N18876597 MbreakN  
++ L=300n  
++ W=520n         
+M_M225         N16722442 N16722442 N16722430 N16722430 MbreakN  
++ L=300n  
++ W=650n         
+M_M94         N18873481 N18873481 N18873364 N18873364 Mbreakp  
++ L=300n  
++ W=1.8u         
+M_M224         N17175144 N17175259 N17175380 N17175380 MbreakN  
++ L=300n  
++ W=650n         
+R_R2         N21579080 VDDINT Rbreak 870k
+M_M252         N16853518 CLK N16853286 N16853286 MbreakP  
++ L=1u  
++ W=3u         
+M_M60         N17045660 L1P2 0 0 MbreakN  
++ L=300n  
++ W=3u         
+M_M113         N18876474 N18876597 N18876779 N18876779 Mbreakn  
++ L=300n  
++ W=1000n         
+M_M50         N17175257 N17175380 N17175562 N17175562 Mbreakn  
++ L=300n  
++ W=1000n         
+M_M71         CTOPEN N17707860 VDDINT VDDINT MbreakP  
++ L=300n  
++ W=10u         
+M_M89         N18466237 N18466237 N18466529 N18466529 MbreakN  
++ L=300n  
++ W=2100n         
+M_M13         N18873446 N18873361 0 0 MbreakN  
++ L=300n  
++ W=3u         
+X_E10    0 0 N20976373 MRBAR_INT SCHEMATIC1_E10 
+R_R7         0 N17186235 Rbreak 9500k
+M_M265         0 N17421609 N17414385 VDDINT MbreakP  
++ L=300n  
++ W=4000u         
+R_R8         N17186235 VDD Rbreak 500k
+M_M95         N18873506 N18873506 N18873364 N18873364 Mbreakp  
++ L=300n  
++ W=1.8u         
+M_M66         N17623567 RESINIT 0 0 MbreakN  
++ L=300n  
++ W=30u         
+M_M105         N18876471 N18973880 N18876480 N18876480 MbreakN  
++ L=500n  
++ W=450n         
+M_M81         N18466243 N18466243 0 0 Mbreakn  
++ L=300n  
++ W=300n         
+M_M23         N17175254 CT N17175263 N17175263 MbreakN  
++ L=500n  
++ W=300n         
+.ends TPS3808G01
+ 
+.subckt SCHEMATIC1_E9 NV NVC PV PVC  
+E_E9         PV NV PVC NVC 1
+EDUMMY_E9         NODE_E9 0 VALUE ={1} 
++ERROR={ERROR(1==0,"ZERO VALUED COMPONENT")}
+.ends SCHEMATIC1_E9
+
+.subckt SCHEMATIC1_E3 NV NVC PV PVC  
+E_E3         PV NV PVC NVC 1
+EDUMMY_E3         NODE_E3 0 VALUE ={1} 
++ERROR={ERROR(1==0,"ZERO VALUED COMPONENT")}
+.ends SCHEMATIC1_E3
+
+.subckt SCHEMATIC1_E1 NV NVC PV PVC  
+E_E1         PV NV PVC NVC 1
+EDUMMY_E1         NODE_E1 0 VALUE ={1} 
++ERROR={ERROR(1==0,"ZERO VALUED COMPONENT")}
+.ends SCHEMATIC1_E1
+
+.subckt SCHEMATIC1_E12 NV NVC PV PVC  
+E_E12         PV NV PVC NVC 1
+EDUMMY_E12         NODE_E12 0 VALUE ={1} 
++ERROR={ERROR(1==0,"ZERO VALUED COMPONENT")}
+.ends SCHEMATIC1_E12
+
+.subckt SCHEMATIC1_E4 NV NVC PV PVC  
+E_E4         PV NV PVC NVC 0.7
+EDUMMY_E4         NODE_E4 0 VALUE ={1} 
++ERROR={ERROR(0.7==0,"ZERO VALUED COMPONENT")}
+.ends SCHEMATIC1_E4
+
+.subckt SCHEMATIC1_E2 NV NVC PV PVC  
+E_E2         PV NV PVC NVC 1
+EDUMMY_E2         NODE_E2 0 VALUE ={1} 
++ERROR={ERROR(1==0,"ZERO VALUED COMPONENT")}
+.ends SCHEMATIC1_E2
+
+.subckt SCHEMATIC1_E11 NV NVC PV PVC  
+E_E11         PV NV PVC NVC 1
+EDUMMY_E11         NODE_E11 0 VALUE ={1} 
++ERROR={ERROR(1==0,"ZERO VALUED COMPONENT")}
+.ends SCHEMATIC1_E11
+
+.subckt SCHEMATIC1_E5 NV NVC PV PVC  
+E_E5         PV NV PVC NVC 0.3
+EDUMMY_E5         NODE_E5 0 VALUE ={1} 
++ERROR={ERROR(0.3==0,"ZERO VALUED COMPONENT")}
+.ends SCHEMATIC1_E5
+
+.subckt SCHEMATIC1_E10 NV NVC PV PVC  
+E_E10         PV NV PVC NVC 1
+EDUMMY_E10         NODE_E10 0 VALUE ={1} 
++ERROR={ERROR(1==0,"ZERO VALUED COMPONENT")}
+.ends SCHEMATIC1_E10
+
+
+.model Mbreakn NMOS  LAMBDA=1e-3 
+*$
+.model Rbreak1 RES R=1 TC1=0.0045 TC2=0
+*$
+.model Rbreak2 RES R=1 TC1=0 TC2=0
+*$
+.model Mreset NMOS  LEVEL=2 LAMBDA=1e-2 VTO=.035 KP=1.850E-5 RD=1
+*$
+.model Mbreakp PMOS  LAMBDA=1e-2 U0=0.0001
+*$
+.model Rbreak RES R=1
+*$
+.model Cbreak CAP C=1
+*$

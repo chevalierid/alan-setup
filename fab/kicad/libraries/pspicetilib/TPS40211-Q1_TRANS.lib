@@ -1,0 +1,476 @@
+*$
+* TPS40211-Q1
+*****************************************************************************
+* (C) Copyright 2013 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: TPS40211-Q1
+* Date: 19APR2013
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: N/A
+* EVM Users Guide: N/A
+* Datasheet: SLVS861D –AUGUST 2008–REVISED APRIL 2010
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+.SUBCKT TPS40211-Q1_TRANS DIS VIN RC FB SS GDRV BP COMP GND ISNS
+VS1         19 RC  1
+XU1          VIN DIS 13 BP 14 15   LDO_BGtest_0
+XU3          SS 15 11 12 16 BP GND 17 DIS  SOFTSTART_0
+XU10         ISNS GDRV 12   LEB_0
+XU4          0 VIN BP 11   UVLO_SW_0
+SW3         GDRV GND 18 GND  S_VSWITCH_1
+SW2         BP GDRV 18 GND  S_VSWITCH_2
+XU2          GND 12 20   CSA_0
+XU7          17 13 21   SS_COMP_0
+R3          COMP 20  20K
+R4          14 GND  1MEG
+SW4         COMP GND 16 GND  S_VSWITCH_3
+XU9          21 FB COMP GND   EA_0
+XU5          15 RC GND BP 22 VIN   OSC_0
+XU6          19 20 GND 11 BP 18 22   PWM_COMP_RK_0
+.MODEL S_VSWITCH_1 VSWITCH (RON=1G ROFF=5 VON=3 VOFF=1)
+.MODEL S_VSWITCH_2 VSWITCH (RON=5 ROFF=1G VON=3 VOFF=1)
+.MODEL S_VSWITCH_3 VSWITCH (RON=1G ROFF=10 VON=2.5 VOFF=0)
+.ENDS TPS40211-Q1_TRANS
+*$
+.SUBCKT LDO_BGtest_0 VIN DIS_ENbar BG_700m VLDO BG_250m BG_150m
+VS2         DIS_ENbar 24  1.3
+XU4          24 0 VLDO N27   COMP2_1
+*XU4          24 0 VLDO VIN   COMP2_1
+R7          DIS_ENbar 0  1MEG
+C4          BG_700m 0  10P IC=-1.1659290221
+R6          25 BG_700m  10
+C3          BG_150m 0  10P IC=-1.1659290221
+R5          26 BG_150m  10
+XU3          N27 25 BG_250m 26   BG_0
+*XU3          VIN 25 BG_250m 26   BG_0
+XU1          VIN N27   INV_0
+.ENDS
+*$
+.SUBCKT COMP2_1  1 2 3 4
+*             + - S LDO
+E_B1 3 0 VALUE = { IF ( V(2) > V(1), V(4) , 0 ) }
+*RD 5 3 100
+*CD 3 0 20P
+.ENDS COMP2_1 
+*$
+.SUBCKT BG_0  1 2 3 4
+E_BG1 2 0 VALUE = { IF ( V(1) < 0.26, V(1), 0.26V ) }
+E_BG2 3 0 VALUE = { IF ( V(1) < 0.25, V(1), 0.25V ) }
+E_BG3 4 0 VALUE = { IF ( V(1) < 0.150, V(1), 0.150 ) }
+.ENDS BG_0 
+*$
+.SUBCKT INV_0  1 2
+E_B1 2 0 VALUE = { IF ( V(1)< 7.5, V(1), 7.5V ) }
+.ENDS INV_0 
+*$
+.SUBCKT SOFTSTART_0 SS_PIN VBG_150 RUN ISEN EA_ENABLE LDO GND SS_EAMP DIS
+XD2          27 SS_EAMP   D_D_0
+XU5          RUN 28 INV_01
+XU6          29 RUN 30 AN2_01
+XU4          31 28 32  OR2_01
+XU7          DIS QFF 33  OR2_01
+SW2         LDO SS_PIN EA_ENABLE 0  S_VSWITCH_1
+SW3         SS_PIN GND 33 0  S_VSWITCH_2
+EVCVS1      27 0 SS_PIN 0  1
+XU3          32 30 QFF EA_ENABLE LDO 0   FFLOP_1
+R1          SS_EAMP 0  300K
+XU2          ISEN VBG_150 31 LDO   COMP2_0
+XU1          VBG_150 SS_PIN 29 LDO   COMP2_0
+.MODEL S_VSWITCH_1 VSWITCH (RON=500K ROFF=1G VON=3 VOFF=1)
+.MODEL S_VSWITCH_2 VSWITCH (RON=1.5MEG ROFF=1G VON=3 VOFF=1)
+.ENDS
+*$
+.SUBCKT AN2_01  A B Y PARAMS: RDRV=10K RDLY=10K CDLY=0.1PF DIV=2
+RA A 0 1E11
+CA A 0 0.01PF
+RB B 0 1E11
+CB B 0 0.01PF
+EINV YI 0 VALUE={IF(V(A) > 2.5 & V(B) > 2.5, 5, 0)}
+RD YI YP {RDLY}
+CD YP 0 {CDLY}
+EOUT YPP 0 YP 0 1
+RDR YPP Y {RDRV}
+RO Y 0 1E11
+.ENDS AN2_01 
+*$
+.SUBCKT OR2_01  A B Y PARAMS: RDRV=10K RDLY=10K CDLY=0.1PF DIV=2
+RA A 0 1E11
+CA A 0 0.01PF
+RB B 0 1E11
+CB B 0 0.01PF
+EINV YI 0 VALUE={IF(V(A) > 2.5 | V(B) > 2.5, 5, 0)}
+RD YI YP {RDLY}
+CD YP 0 {CDLY}
+EOUT YPP 0 YP 0 1
+RDR YPP Y {RDRV}
+RO Y 0 1E11
+.ENDS OR2_01
+*$
+.SUBCKT INV_01  A Y PARAMS: RDRV=10K RDLY=10K CDLY=0.1PF DIV=2
+RA A 0 1E11
+CA A 0 0.01PF
+EINV YI 0 VALUE={IF(V(A) >2.5,0,5)}
+RD YI YP {RDLY}
+CD YP 0 {CDLY}
+EOUT YPP 0 YP 0 1
+RDR YPP Y {RDRV}
+RO Y 0 1E11
+.ENDS INV_01 
+*$
+.SUBCKT D_D_0       1    2
+D1 1 2  DD
+.MODEL DD D( IS=1F N=.5 CJo = 1P TT = 10P )
+.ENDS D_D_0 
+*$
+.SUBCKT FFLOP_1  6 8 2 1 3 4
+E_BQB 10 0 VALUE = { IF ( (V(8)<800M) & (V(2)>800M), 0, V(3,4) ) }
+E_BQ  20 0 VALUE = { IF ( (V(6)<800M) & (V(1)>800M), 0, V(3,4) ) }
+RD1   10 1 100
+CD1   1 0 10P IC=0
+RD2   20 2 100
+CD2   2 0 10P IC=5
+.ENDS FFLOP_1 
+*$
+.SUBCKT COMP2_0  1 2 3 4
+E_B1 5 0 VALUE = { IF ( V(1) > V(2), V(4), 0 ) } 
+RD 5 3 100
+CD 3 0 20P
+.ENDS COMP2_0 
+*$
+.SUBCKT LEB_0 ISNS VGATE ISNS_LEB
+V3          37 0  5
+ECS1        34 0 VALUE = {IF(V(ISNS,0)<0,0,V(ISNS,0))}
+C1          ISNS_LEB 0  10P IC=0
+R2          35 ISNS_LEB  100
+ECS2        35 0 VALUE = {IF(V(36,0)>0.393,V(34,0),0)}
+SW1         37 38 VGATE 0  S_VSWITCH_1
+R19         36 0  100
+C8          36 0  100P IC=499.9994500006N
+R18         38 36  1K
+.MODEL S_VSWITCH_1 VSWITCH (RON=1 ROFF=1G VON=3 VOFF=1)
+.ENDS
+*$
+.SUBCKT UVLO_SW_0 GND VIN VLDO RUN
+R1          RUN GND  1MEG
+XSW1        VLDO RUN VIN GND  SW PARAMS: RON=1 ROFF=1G VH=125M VT=4.125
+.ENDS
+*$
+.SUBCKT SW N+ N- NC+ NC-
++ PARAMS: VT=0 VH=0 RON=1 ROFF=1E12 TDEL=10N
+.PARAM VTHH={VT+VH}
+.PARAM VTHL={VT-VH}
+.PARAM RD=1  
+.PARAM CD={TDEL/(0.693*RD)}
+.PARAM RSW={RON*ROFF/(ROFF - RON)}
+.PARAM GSW={1/RSW}
+R2 NC+ 0 1E9
+R3 NC- 0 1E9
+R4 N+ N- {ROFF}
+G1 N+ N- VALUE= { IF ( V(NC+,NC-) > V(CN), V(N+,N-)*{GSW}, 0) }
+E1 1 0 VALUE= { IF ( V(NC+,NC-) > V(CN), {VTHL}, {VTHH}) }
+R1 1 CN {RD}
+C1 CN 0 {CD}
+.ENDS SW
+*$
+.SUBCKT CSA_0 GND ISEN CSA_OUT
+EVCVS2      39 GND ISEN GND  1
+GVCCS2      CSA_OUT GND 40 GND  290U
+C1          40 GND  10P IC=0
+R2          39 40  10K
+.ENDS
+*$
+.SUBCKT SS_COMP_0 SS_EAMP BG_700m NINV
+XU7          BG_700m SS_EAMP NINV   COMP_0
+.ENDS
+*$
+.SUBCKT COMP_0  1 2 3
+E_B1 4 0 VALUE = { IF ( V(2) < V(1), V(2), V(1) ) }
+R 4 3 200
+C 3 0 20P
+.ENDS COMP_0 
+*$
+.SUBCKT EA_0 NINV INV COMP GND
+XU8          NINV INV COMP GND   ERRAMP_0
+.ENDS
+*$
+.SUBCKT ERRAMP_0  20 8  3  21 PARAMS: ISINK= 1M ISOURCE=150U VHIGH=8
++ VLOW=100M POLE=200 GAIN=5000
+*              +  - OUT GND
+RIN 20 8 8MEG
+CP1 11 21 {1/(6.28*(GAIN/100U)*POLE)}
+E1 5 21 11 21 1
+R9 5 2 5
+D14 2 13 DMOD
+IS 13 21 {ISINK/100} ; MA
+Q1 21 13 16 QPMOD
+ISRC 7 3 {ISOURCE}  ; UA
+D12 3 7 DMOD
+D15 21 11 DCLAMP
+G1 21 11 20 8 100U
+V1 7 21 {VHIGH-0.6V}
+V4 3 16 {VLOW-38MV}
+RP1 11 21 {GAIN/100U}
+.MODEL QPMOD PNP
+.MODEL DCLAMP D (RS=10 BV=10 IBV=0.01)
+.MODEL DMOD D (TT=1N CJo=10P)
+.ENDS ERRAMP_0 
+*$
+.SUBCKT OSC_0 BG_150m RC GND VLDO CLK Vcc
+XU2          BG_150m RC 41 VLDO   COMP2_0
+XU1          RC 42 43 VLDO   COMP2_0
+C2          GND 42  1P IC=-797.4619042989M
+XSW1        RC GND CLK GND  SW PARAMS: RON=200 ROFF=1MEG VH=25M VT=2.5
+XU12         43 41 CLK 44 VLDO GND   FFLOP_0
+R5          44 GND  1MEG
+R6          42 GND  24K
+R7          Vcc 42  337K
+.ENDS
+*$
+.SUBCKT PWM_COMP_RK_0 RC CSA_OUT GND RUN VLDO GATE CLK
+XU1          RC CSA_OUT 45 VLDO   COMP2_0
+XU13         CLK 46 47 VLDO GND   AN2_0
+XU14         45 46 VLDO GND   INV_1
+R11         48 GND  1G
+XU15         47 49 VLDO GND   INV_1
+XU16         49 50 RUN GATE VLDO GND   AN3_0
+XU17         47 45 50 48 VLDO GND   FFLOP_0
+.ENDS
+*$
+.SUBCKT AN2_0  A B Y DVDD DVSS PARAMS: RDRV=10K RDLY=10K CDLY=0.1PF DIV=2
+RA A DVSS 1E11
+CA A DVSS 0.01PF
+RB B DVSS 1E11
+CB B DVSS 0.01PF
+EINV YI 0 VALUE={IF(V(A,DVSS) > (V(DVDD,DVSS)/{DIV}) & V(B,DVSS) 
++ > (V(DVDD,DVSS)/{DIV}), V(DVDD), V(DVSS))}
+RD YI YP {RDLY}
+CD YP DVSS {CDLY}
+EOUT YPP DVSS YP DVSS 1
+RDR YPP Y {RDRV}
+RO Y DVSS 1E11
+.ENDS AN2_0 
+*$
+.SUBCKT INV_1  A Y DVDD DVSS PARAMS: RDRV=10K RDLY=10K CDLY=0.1PF DIV=2
+RA A DVSS 1E11
+CA A DVSS 0.01PF
+EINV YI 0 VALUE={IF(V(A,DVSS) > (V(DVDD,DVSS)/{DIV}), V(DVSS), V(DVDD))}
+RD YI YP {RDLY}
+CD YP DVSS {CDLY}
+EOUT YPP DVSS YP DVSS 1
+RDR YPP Y {RDRV}
+RO Y DVSS 1E11
+.ENDS INV_1
+*$
+**** 2 INPUT OR 
+.SUBCKT OR2_0  A B Y DVDD DVSS PARAMS: RDRV=10K RDLY=10K CDLY=0.1PF DIV=2
+RA A DVSS 1E11
+CA A DVSS 0.01PF
+RB B DVSS 1E11
+CB B DVSS 0.01PF
+EINV YI 0 VALUE={IF(V(A,DVSS) > (V(DVDD,DVSS)/{DIV}) | V(B,DVSS) > 
++(V(DVDD,DVSS)/{DIV}), V(DVDD), V(DVSS))}
+RD YI YP {RDLY}
+CD YP DVSS {CDLY}
+EOUT YPP DVSS YP DVSS 1
+RDR YPP Y {RDRV}
+RO Y DVSS 1E11
+.ENDS OR2_0
+*$
+.SUBCKT AN3_0  A B C Y DVDD DVSS PARAMS: RDRV=10K RDLY=10K CDLY=0.1PF DIV=2
+RA A DVSS 1E11
+CA A DVSS 0.01PF
+RB B DVSS 1E11
+CB B DVSS 0.01PF
+RC C DVSS 1E11
+CC C DVSS 0.01PF
+EINV YI 0 VALUE={IF(V(A,DVSS) > (V(DVDD,DVSS)/{DIV}) &
++ V(B,DVSS) > (V(DVDD,DVSS)/{DIV}) & V(C,DVSS) 
++ > (V(DVDD,DVSS)/{DIV}), V(DVDD), V(DVSS))}
+RD YI YP {RDLY}
+CD YP DVSS {CDLY}
+EOUT YPP DVSS YP DVSS 1
+RDR YPP Y {RDRV}
+RO Y DVSS 1E11
+.ENDS AN3_0 
+*$
+****
+.SUBCKT FFLOP_0  6 8 2 1 3 4
+*             S R Q Q\VDD VSS 
+E_BQB 10 0 VALUE = { IF ( (V(8)<800M) & (V(2)>800M), 0, V(3,4) ) }
+E_BQ  20 0 VALUE = { IF ( (V(6)<800M) & (V(1)>800M), 0, V(3,4) ) }
+RD1   10 1 100
+CD1   1 0 10P IC=0
+RD2   20 2 100
+CD2   2 0 10P IC=5
+.ENDS FFLOP_0
+*$
+.SUBCKT FDC5612 20 10 30
+*20=DRAIN 10=GATE 30=SOURCE 50=VTEMP
+Rg 10 11X 1
+Rdu 12x 1 1u
+M1 2 1 4x 4x DMOS L=1u W=1u
+.MODEL DMOS NMOS(VTO=2.8 KP=31.8
++THETA=.066666667 VMAX=1E5 LEVEL=3)
+Cgs 1 5x 636p
+Rd 20 4 1.65E-2 
+Dds 5x 4 DDS
+.MODEL DDS D( M=4.95E-1 VJ=9.25E-1 CJO=278p)
+Dbody 5x 20 DBODY
+.MODEL DBODY D(IS=2.88296E-11 N=1.199963855 RS=.00063995 TT=23.74n)
+Ra 4 2 1.65E-2 
+Rs 5x 5 0.5m
+Ls 5 30 0.5n
+M2 1 8 6 6 INTER
+E2 8 6 4 1 2
+.MODEL INTER NMOS(VTO=0 KP=10 LEVEL=1)
+Cgdmax 7 4 459p
+Rcgd 7 4 10meg
+Dgd 6 4 DGD
+Rdgd 6 4 10meg
+.MODEL DGD D(M=3.52E-1 VJ=1.56E-2 CJO=459p)
+M3 7 9 1 1 INTER
+E3 9 1 4 1 -2
+*ZX SECTION
+EOUT 4x 6x poly(2) (1x,0) (3x,0) 0 0 0 0 1
+FCOPY 0 3x VSENSE 1
+RIN 1x 0 1G
+VSENSE 6x 5x 0
+RREF 3x 0 10m
+*TEMP SECTION
+VTEMP 50 0 25
+ED 101 0 VALUE {V(50,100)}
+VAMB 100 0 25
+EKP 1x 0 101 0 .031
+*VTO TEMP SECTION
+EVTO 102 0 101 0 .0035
+EVT 12x 11x 102 0 1
+*DIODE THEMO BREAKDOWN SECTION
+EBL VB1 VB2 101 0 .08
+VBLK VB2 0 60
+D 20 DB1 DBLK
+.MODEL DBLK D(IS=1E-14 CJO=.1p RS=.1)
+EDB DB1 0 VB1 0 1
+.ENDS FDC5612
+*FDC5612 (Rev.A1) 5/14/02 **ST
+*$
+.MODEL D_MBR340_1 D( IS=25.5N N=789M BV=40 IBV=600U RS=62.7M 
++ CJo=300P VJ=1.89 M=565M TT=1.69N )
+*$
+*.SUBCKT Si4850EY  DRAIN GATE SOURCE
+* New Si4850EY *
+*M1 DRAIN 1 SOURCE SOURCE _SI4850
+*.MODEL _SI4850 NMOS KP=10 LAMBDA=500U RD=5M RS=5M
+*+ VTO=2.7
+*RB 1 GATE 20
+*CGS 1 SOURCE 813P
+*D1 SOURCE DRAIN _DBOD
+*.MODEL _DBOD D BV=72 CJO=551P IBV=250U IS=2.648P M=.399
+*+ N=.995 RS=51M TT=50N VJ=.358
+*C2 2 1 5N
+*D2 2 DRAIN _DCRSS
+*.MODEL _DCRSS D CJO=450P M=1.876 VJ=2.704
+*C3 2 DRAIN 80P
+*.ENDS
+*$
+.SUBCKT Si7850DP DRAIN GATE SOURCE
+* DRAIN GATE SOURCE 4 1 2
+M1  3 GATE SOURCE SOURCE NMOS W=1611091u L=0.40u 
+M2  SOURCE GATE SOURCE DRAIN PMOS W=1611091u L=0.62u 
+R1  DRAIN 3     RTEMP 66E-4
+CGS GATE SOURCE 520E-12
+DBD SOURCE DRAIN DBD
+**************************************************************************
+.MODEL  NMOS       NMOS  (LEVEL  = 3               TOX    = 7E-8
++ RS     = 88E-4          RD     = 0               NSUB   = 1.44E17  
++ KP     = 2.1E-5         UO     = 650             
++ VMAX   = 0              XJ     = 5E-7            KAPPA  = 7E-1
++ ETA    = 1E-4           TPG    = 1  
++ IS     = 0              LD     = 0                           
++ CGSO   = 0              CGDO   = 0               CGBO   = 0 
++ NFS    = 0.8E12         DELTA  = 0.1)
+*************************************************************************
+.MODEL  PMOS       PMOS (LEVEL   = 3               TOX    = 7E-8
++NSUB    = 2E16           TPG    = -1)   
+*************************************************************************
+.MODEL DBD D (CJO=500E-12     VJ=0.38    M=0.4
++RS=0.1 FC=0.5 IS=1E-12 TT=4.8E-8 N=1 BV=60.5)
+*************************************************************************
+.MODEL RTEMP RES (TC1=11.5E-3  TC2=5.5E-6)
+*************************************************************************
+.ENDS
+*$
+.SUBCKT SI4850EY_Vishay  4 1 2
+M1  3 1 2 2 NMOS W=1611091U L=0.40U 
+M2  2 1 2 4 PMOS W=1611091U L=0.62U 
+R1  4 3     RTEMP  66E-4
+CGS 1 2     520E-12
+DBD 2 4     DBD
+.MODEL  NMOS       NMOS  (LEVEL  = 3               TOX    = 7E-8
++ RS     = 88E-4          RD     = 0               NSUB   = 1.44E17  
++ KP     = 2.1E-5         UO     = 650             
++ VMAX   = 0              XJ     = 5E-7            KAPPA  = 7E-1
++ ETA    = 1E-4           TPG    = 1  
++ IS     = 0              LD     = 0                           
++ CGSO   = 0              CGDO   = 0               CGBO   = 0 
++ NFS    = 0.8E12         DELTA  = 0.1)
+.MODEL  PMOS       PMOS (LEVEL   = 3               TOX    = 7E-8
++NSUB    = 2E16           TPG    = -1)   
+.MODEL DBD D (CJo=500E-12 VJ=0.38 M=0.4
++ RS=0.1 FC=0.5 IS=1E-12 TT=4.8E-8 N=1 BV=60.5)
+.MODEL RTEMP RES (TC1=11.5E-3 TC2=5.5E-6)
+.ENDS
+*$
+.SUBCKT CAPRLC 1 2 PARAMS: ESR=.15 ESL=5n C=33u IC=0
+*Parameters: C Capacitance in Farads, ESR ESR in Ohms
+* ESL ESL in Henries, RLEAK Leakage resistance in Ohms
+C1 1 3 {C} IC={IC}
+R1 3 4 {ESR}
+L1 4 2 {ESL} 
+.ENDS
+*$
+.SUBCKT DI_BZT52C43  1 2 
+*        Terminals    A   K 
+D1 1 2 DF 
+DZ 3 1 DR 
+VZ 2 3 40.3 
+.MODEL DF D ( IS=3.93p RS=1.51 N=1.10 
++ CJO=24.1p VJ=1.00 M=0.330 TT=50.1n ) 
+.MODEL DR D ( IS=7.86e-016 RS=84.5 N=3.00 ) 
+.ENDS
+*$
+.SUBCKT CESR 1 2 PARAMS: C=10u ESR=2m IC=0
+C1 1 INT1 {C} IC = {IC}
+R1 INT1 2 {ESR}
+.ENDS CESR
+*$
+.SUBCKT LDCR IN OUT
++ PARAMs:  L=1u DCR=0.01 IC=0
+L	IN 1  {L} IC={IC}
+RDCR	1 OUT {DCR}
+.ENDS LDCR
+*$

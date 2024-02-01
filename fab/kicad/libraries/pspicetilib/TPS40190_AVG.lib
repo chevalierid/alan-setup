@@ -1,0 +1,105 @@
+* PSpice Model Editor - Version 16.0.0
+*$
+*TPS40190 AVERAGE MODEL (TINA Netlist Editor format)
+***************************************************************************
+** This product is designed as an aid for customers of Texas Instruments.
+** No warranties, either expressed or implied, with respect to this third
+** party software (if any) or with respect to its fitness for any        
+** particular purpose is claimed by Texas Instruments or the author. The 
+** software (if any) is provided soley on an "as is" basis. The entire   
+** risk as to its quality and performance is with the customer           
+***************************************************************************
+* This model was developed for Texas Instruments Incorporated by:
+*   AEi Systems, LLC
+*   5777 W. Century Blvd., Suite 876
+*   Los Angeles, California  90045
+*
+* This model is subject to change without notice. Neither Texas Instruments Incorporated 
+* nor AEi Systems is responsible for updating this model.
+* For more information regarding modeling services, model libraries and simulation 
+* products, please call AEi Systems at (310) 216-1144, or contact AEi Systems by email: 
+* info@AENG.com. Or visit AEi Systems on the web at http://www.AENG.com.
+********************************************************************************
+* (C) Copyright 2008 Texas Instruments Incorporated. All rights reserved. 
+*
+* Released by: Analog e-Lab Design Center, Texas Instruments Inc.
+* Part: TPS40190
+* Date: 08/11/2008
+* Model Type: AVERAGE
+* Simulator: TINA
+* EVM Order Number: TPS40190EVM-001
+* EVM Users Guide: SLUU232 –February 2006
+* Datasheet: SLUS658A–JULY 2005–REVISED AUGUST 2005
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+.SUBCKT TPS40190AVG FB COMP VIN OUT GND
+X_U4         COMP N00227 UTD_TPS40190AVG PARAMS: K=1 TD=0.45U
+E_E1         NODE GND N00287 GND 1.6
+X_U1         VIN GND N13081 NODE GND PWM_TPS40190AVG
+E_E2         N02154 GND VALUE { V(NODE, GND)*9m+3m*(1-V(NODE, GND)) }
+V_V3         VBP GND 5
+X_U2         N13081 OUT N02154 GND RVAR_TPS40190AVG 
+X_U3         VBP FB COMP GND TPS40190AMP
+V_V1         N00227 N00287 0.6
+.ENDS
+*$
+.SUBCKT UTD_TPS40190avg 1 2 PARAMS: K=1 TD=0.45U
+RIN 1 0 1E15
+E1 3 0 1 0 {K}
+T1 3 0 2 0 Z0=1 TD={TD}
+R1 2 0 1
+.ENDS
+*$
+.SUBCKT PWM_TPS40190avg 1 2 3 4 5
+R1 1 2 1MEG
+E 6 2 Value= { V(1,2) * V(4,5) }
+G 1 2 Value= { V(6,3) * V(4,5) * 1K }
+R2 6 3 1M
+.ENDS
+*$
+.SUBCKT RVAR_TPS40190avg 101 102 node ground 
+ERAR 201 0 VALUE = {(V(node)-V(ground))*9m+(1-(V(node)-V(ground)))*3m}
+RIN 201 0 1G
+R 301 0 1
+FCOPY 0 301 VSENSE 1
+EOUT 101 106 POLY(2) 201 0 301 0 0 0 0 0 1
+VSENSE 106 102 0; SENSE IOUT
+.ENDS
+*$
+.SUBCKT TPS40190AMP Vcc In Out RTN
+R1 1 0 1k
+C1 1 0 0.0032u
+R2 1 2 500k
+C2 2 0 0.5p
+G1 0 1 7 In 1
+D2 0 1 _DCLAMP 
+.MODEL _DCLAMP D BV=5 IBV=1m RS=1
+EB3 3 RTN Value = {IF(V(2)>5,5,IF(V(2)<0.3,0.3,V(2)))}
+Ro 3 4 100
+D3 4 6 _D4_mod 
+.MODEL _D4_mod D N=0.5
+D4 Out 6 _D4_mod 
+I1 6 4 DC=1m
+I2 6 Out DC=1m
+Vbias 7 RTN DC=0.591
+R5 RTN Vcc 100k
+.ENDS 
+*$
+.SUBCKT CAPRLC 1 2 Params: ESR=20m ESL=2N C=330u 
+C1 1 3 {C} 
+R1 3 4 {ESR}
+L1 4 2 {ESL} 
+.ENDS
+*$
+.SUBCKT LDCR 1 2 PARAMS: L=2.2U RSER=4M
+L1 1 3 {L}
+R1 3 2 {RSER}
+.ENDS
+*$

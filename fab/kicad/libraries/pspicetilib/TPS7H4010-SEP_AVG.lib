@@ -1,0 +1,131 @@
+* TPS7H4010-SEP
+****************************************************************************
+* (C) Copyright 2020 Texas Instruments Incorporated. All rights reserved.
+****************************************************************************
+* This model is designed as an aid for customers of Texas Instruments.
+* TI and its licensors and suppliers make no warranties, either expressed
+* or implied, with respect to this model, including the warranties of 
+* merchantability or fitness for a particular purpose.  The model is
+* provided solely on an "as is" basis.  The entire risk as to its quality
+* and performance is with the customer
+****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Texas Instruments Inc.
+* Part: TPS7H4010-SEP
+* Date: 21JAN2022
+* Model Type: AVERAGE
+* Simulator: PSPICE
+* Simulator Version: 17.4-2019 S010
+* EVM Order Number: TPS7H4010EVM
+* EVM Users Guide: SNVU744–OCTOBER 2020
+* Datasheet: SNVSBL0A - December 2021
+* Topologies Supported: Buck
+*
+* Model Version: Rev A
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Customer.
+*
+* Rev A - 21JAN2022
+*     - Removed unused subcircuits
+*     - Removed unused pins
+*     - Reordered pins in subcircuit declaration for improved convenience
+*     - Added usage notes
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+*
+* 1. Modeled features:
+*	- Average loop implementaion of peak current mode control
+*	- Only VIN, SW and FB pins are modelled
+* 2. Unmodeled features:
+*	- Device does not support PFM cases
+*       - Temperature dependent characteristics
+*	- Operating Quiescent Current
+*       - Shutdown Current
+* 3. Parameters used in the model:
+*	- "L" passes the inductor value into the model
+*	- "FS" passes the switching frequency value into the model
+* 4. This model is for AC simulation only. Transient simulation can be performed using the TPS7H4010-SEP Transient model.
+*
+*****************************************************************************
+
+.SUBCKT TPS7H4010-SEP_AVG VIN SW FB AGND
++ PARAMS: L=3.3u FS=500k
+.param VREF=1 ROUT=40e6 COUT=5e-12 GM=33e-6 Ri=0.115 Vsl=3.478
+R_Rcomp COMP COMPx 500e3
+C_Ccomp COMPx AGND 30e-12
+C_Ccomp2 COMP AGND 1e-15
+**Reference voltage
+V_V2         N16702 AGND {VREF}
+** Error Amplifier ROUT
+R_R7         COMP AGND  {ROUT} 
+** Error Amplifier COUT
+C_C4         COMP  AGND {COUT}
+** Error Amplifier GM
+G_G1         AGND COMP N16702 FB {GM}
+** Power Stage
+X_U1         VIN SW AGND COMP N18300 CCM PARAMS:  L={L} FS={FS} Ri={Ri}
++  Vsl={Vsl} Acs=1
+.ENDS TPS7H4010-SEP_AVG
+
+*****************************************************************************
+
+*$
+.SUBCKT CCM a c p vc dc params: L=1.5u Fs=500k Ri=0.0435 Vsl=10 Acs=1 
+ESe Sa 0 value = {{Vsl}*{Fs}*{Ri}}
+Edc dcx 0 value = { v(cx,p)/(v(a,p)+1u) }
+Xdc dcx dc limit params: clampH={1-{200n*{Fs}}} clampL={125n*{Fs}}
+Ed2 d2X 0 value = {(1 - V(dc))} 
+Xd2 d2X dc d2 limit2
+GIap a p value =  {V(dc)*I(VM)} 
+GIpc p cx value = { V(vc)/({Acs}*{Ri}) }
+GImju cx p value = {V(Sa)*V(dc)/({Acs}*{Ri}*{Fs}) + (v(cx,p))/({L}*{Fs})*((1-V(dc))/2) }
+VM cx c
+XC1 cx p mode varicap 
+Emode mode 0 Value = { IF ((2*{L}*{Fs}*I(VM)/(V(dc)*V(a,cx)+1u))
++ < 1, {4/({L}*(6.28*{Fs})**2)}, {4/({L}*(6.28*{Fs})**2)}) } ;
+.ENDS
+*$
+.subckt limit d dc params: clampH=0.99 clampL=48m
+Gd 0 dcx VALUE = { V(d)*100u }
+Rdc dcx 0 10k
+V1 clpn 0 {clampL}
+V2 clpp 0 {clampH}
+D1 clpn dcx dclamp
+D2 dcx clpp dclamp
+Edc dc 0 value={ V(dcx) }
+.model dclamp d n=0.01 rs=100m
+.ENDS
+*$
+.subckt limit2 d2nc d d2c
+*
+Gd 0 d2cx d2nc 0 100u
+Rdc d2cx 0 10k
+V1 clpn 0 48m
+E2 clpp 0 Value = { 1-V(d) }
+D1 clpn d2cx dclamp
+D2 d2cx clpp dclamp
+Edc d2c 0 value={ V(d2cx) }
+.model dclamp d n=0.01 rs=100m
+.ENDS
+*$
+.SUBCKT VARICAP 1 2 CTRL
+R1 1 3 1u
+VC 3 4
+EBC 4 2 Value = { (1/v(ctrl))*v(int) }
+GINT 0 INT Value = { I(VC) }
+CINT INT 0 1
+Rdum INT 0 10E10
+.ENDS
+*$

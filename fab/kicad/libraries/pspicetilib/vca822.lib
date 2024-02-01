@@ -1,0 +1,389 @@
+* VCA822  Wideband, >40dB Gain Adjust Range, Linear in V/V, Variable Gain Amplifier
+* Rev. A
+*
+* NOTES:
+*   1- This macromodel predicts well: DC, small-signal AC, noise,
+*      , and transient performance under a wide range
+*      of conditions.
+*   2- This macromodel does not predict well: distortion
+*      (harmonic, intermod, diff. gain & phase, ...),
+*      temperature effects, board parasitics, differences
+*      between package styles, and process changes
+*   3- For Spice3F4 users they might need to un-comment the lines for the F 
+*      function and comment out the Lines for PSpice F functions
+*      and subckts. First try the present netlist then comment out lines if 
+*      errors appear.
+*      General form:
+*      FXXXXXXX N+ N- <POLY(ND)> VN1 <VN2 ...> P0 <P1 ...> <IC=...>
+*      Examples:
+*      F1 12 10 VCC 1MA 1.3M
+*   4- For some simulators the subckt for the F statement need to be placed 
+*      inside the ends statement followed by carriage return  
+*   5- Known Problems: - None
+*
+* |-------------------------------------------------------------|
+* |  This macro model is being supplied as an aid to            |
+* |  circuit designs.  While it reflects reasonably close       |
+* |  similarity to the actual device in terms of performance,   |
+* |  it is not suggested as a replacement for breadboarding.    |
+* |  Simulation should be used as a forerunner or a supplement  |
+* |  to traditional lab testing.                                |
+* |                                                             |
+* |  Neither this library nor any part may be copied without    |
+* |  the express written consent of Texas Instruments Corp.     |
+* |-------------------------------------------------------------|
+*
+* CONNECTIONS:
+*                                            Positive Supply
+*                                            |   Gain Control
+*                                            |   |   Non-Inverting Input 
+*                                            |   |   |   Gain Setting Resistor Terminals
+*                                            |   |   |     |   |  Inverting Input
+*                                            |   |   |     |   |    |  Negative Supply
+*                                            |   |   |     |   |    |   |  Reference Voltage 
+*                                            |   |   |     |   |    |   |   |  Output
+*                                            |   |   |     |   |    |   |   |    |
+*                                            |   |   |     |   |    |   |   |    |    Feedback
+*                                            |   |   |     |   |    |   |   |    |      |
+.SUBCKT VCA822 +Vcc VG +Vin +Rg -Rg -Vin -Vcc Vref Out Gnd FB
+
+X_U5_F8    U5_N00257 U5_N00297 N09821 -VCC VCA82X_BIAS_U5_F8 
+X_U5_F1    U5_N00167 U5_N00177 +VCC N06304 VCA82X_BIAS_U5_F1 
+V_U5_V1         U5_N00167 U5_N00195 0.433V
+E_U5_E1         U5_N00195 -VCC +VCC -VCC 0.5
+X_U5_F6    U5_N00297 U5_N00251 N08923 -VCC VCA82X_BIAS_U5_F6 
+X_U5_F3    U5_N00177 U5_N00183 +VCC N08572 VCA82X_BIAS_U5_F3 
+X_U5_F4    U5_N00183 U5_N00189 +VCC N08740 VCA82X_BIAS_U5_F4 
+X_U5_F2    U5_N00189 U5_N00257 +VCC N10100 VCA82X_BIAS_U5_F2 
+X_U5_F5    U5_N00251 U5_N00205 N07015 -VCC VCA82X_BIAS_U5_F5 
+R_U5_R3         U5_N00195 U5_N00205  1k  
+Q_U6_Q24         N06304 U6_N16946 U6_N15431 NPN8 {x1}
+R_U6_R15         U6_N26012 +VCC  300  
+R_U6_R20         U6_N49467 U6_N46592  100  
+Q_U6_Q23         U6_N00503 U6_N16946 U6_N13215 NPN8 {x6}
+C_U6_C1         U6_N00709 U6_N22036  2p  
+E_U6_E2         U6_N327888 -VCC +VCC -VCC 0.5
+R_U6_R24         -VIN U6_N287626  150  
+E_U6_E4         U6_N342053 -VCC +VCC -VCC 0.5
+Q_U6_Q28         U6_N22036 U6_N07222 U6_N26012 PNP8 {x6}
+Q_U6_Q29         U6_N07222 U6_N07222 U6_N612661 PNP8 {x2}
+Q_U6_Q37         U6_N49467 U6_N16946 U6_N49758 NPN8 {x6}
+R_U6_R13         -VCC U6_N19410  2k  
+X_U6_F1    U6_N327930 U6_N327888 U6_N301118 U6_N327888
++  VCA82X_INPUT_BUFFER_U6_F1 
+R_U6_R21         U6_N57293 +VCC  300  
+Q_U6_Q30         N07015 U6_N07222 U6_N29549 PNP8 {x2}
+R_U6_R26         U6_N3429211 -RG  10  
+R_U6_R18         -VCC U6_N36767  160  
+E_U6_E3         N340669 -VCC +VCC -VCC 0.5
+Q_U6_Q32         +RG U6_N16946 U6_N36767 NPN8 {x6}
+E_U6_E1         U6_N00709 -VCC +VCC -VCC 0.5
+R_U6_R25         U6_N3426981 +RG  10  
+Q_U6_Q36         U6_N46276 U6_N46276 U6_N46592 NPN8 {x14}
+Q_U6_Q26         U6_N16946 U6_N16946 U6_N19410 NPN8 {x2}
+Q_U6_Q25         +VCC N06304 U6_N16946 NPN8 {x2}
+Q_U6_Q40         U6_N42606 U6_N07222 U6_N57293 PNP8 {x6}
+R_U6_R23         +VIN U6_N301118  150  
+Q_U6_Q22         U6_N04782 U6_N04782 U6_N10900 NPN8 {x14}
+Q_U6_Q21         +VCC U6_N301118 U6_N04782 NPN8 {x14}
+R_U6_R14         U6_N612661 +VCC  2k  
+R_U6_R17         -VCC U6_N13215  160  
+Q_U6_Q34         +VCC U6_N287626 U6_N46276 NPN8 {x14}
+Q_U6_Q33         N08372 U6_N22036 +RG NPN8 {x14}
+C_U6_C3         U6_N327882 U6_N327930  10m  TC=0,0 
+E_U6_E5         U6_N342410 -VCC +VCC -VCC 0.5
+R_U6_R22         -VCC U6_N51427  160  
+R_U6_R19         -VCC U6_N49758  160  
+Q_U6_Q27         U6_N22036 +RG U6_N00503 NPN8 {x14}
+Q_U6_Q31         -VCC N07015 U6_N07222 PNP8 {x2}
+D_U6_U1         U6_N327882 U6_N327888 dn3 
+C_U6_C2         U6_N00709 U6_N42606  2p  
+Q_U6_Q38         U6_N42606 -RG U6_N49467 NPN8 {x14}
+R_U6_R11         U6_N29549 +VCC  900  
+Q_U6_Q39         -RG U6_N16946 U6_N51427 NPN8 {x6}
+R_U6_R16         U6_N00503 U6_N10900  100  
+C_U6_C5         U6_N342410 U6_N3429211  0.85p  
+R_U6_R12         -VCC U6_N15431  955  
+I_U6_I1         U6_N327888 U6_N327882 DC 1.5u  
+Q_U6_Q35         N08468 U6_N42606 -RG NPN8 {x14}
+C_U6_C4         U6_N342053 U6_N3426981  0.85p  
+R_U7_R27         -VCC U7_N01059  800  
+Q_U7_Q56         U7_N65219 U7_N65219 U7_N64914 NPN8 {x4}
+Q_U7_Q60         U7_N107420 U7_N89137 U7_N81704 NPN8 {x12}
+Q_U7_Q86         U7_N168308 U7_N167450 U7_N168596 NPN8 {x16}
+Q_U7_Q77         U7_N137141 U7_N137141 U7_N142127 PNP8 {x16}
+R_U7_R25         GND U7_N89137  50  
+R_U7_R23         -VCC U7_N01019  100  
+Q_U7_Q59         U7_N86791 U7_N65219 U7_N01059 NPN8 {x1}
+R_U7_R28         -VCC U7_N01061  200  
+R_U7_R32         GND U7_N160714  50  
+R_U7_R17         -VCC U7_N55967  100  
+R_U7_R37         U7_N145504 +VCC  110  
+Q_U7_Q45         U7_N34597 U7_N34597 U7_N34298 PNP8 {x12}
+Q_U7_Q87         U7_N167450 U7_N167450 U7_N168824 NPN8 {x16}
+Q_U7_Q84         U7_N165781 U7_N165781 U7_N168308 NPN8 {x16}
+Q_U7_Q62         U7_N01231 U7_N65219 U7_N01061 NPN8 {x4}
+R_U7_R11         U7_N34298 +VCC  160  
+Q_U7_Q79         U7_N01317 U7_N142759 U7_N145504 PNP8 {x16}
+Q_U7_Q80         N08740 U7_N01231 U7_N137141 PNP8 {x16}
+Q_U7_Q52         U7_N53649 U7_N65219 U7_N55659 NPN8 {x8}
+Q_U7_Q49         U7_N01387 U7_N01387 U7_N37408 PNP8 {x12}
+R_U7_R22         U7_N81704 U7_N82314  1k  
+R_U7_R21         U7_N01001 +VCC  740  
+Q_U7_Q78         U7_N142759 U7_N142759 U7_N145276 PNP8 {x16}
+R_U7_R13         U7_N1695201 VG  50  
+Q_U7_Q88         N08740 U7_N160714 N08923 NPN8 {x2}
+Q_U7_Q61         U7_N116536 U7_N86791 U7_N82314 NPN8 {x12}
+Q_U7_Q65         U7_N01387 U7_N01387 U7_N107420 NPN8 {x12}
+Q_U7_Q63         U7_N01317 U7_N65219 U7_N01207 NPN8 {x4}
+R_U7_R34         U7_N142127 +VCC  110  
+Q_U7_Q85         FB U7_N165781 U7_N167450 NPN8 {x16}
+R_U7_R39         N08923 U7_N1690600  50  
+Q_U7_Q70         U7_N119904 U7_N119904 U7_N122147 PNP8 {x16}
+R_U7_R29         -VCC U7_N01207  200  
+Q_U7_Q55         N08572 U7_N65219 U7_N67656 NPN8 {x2}
+Q_U7_Q71         U7_N122683 U7_N122683 U7_N119904 PNP8 {x16}
+R_U7_R31         -VCC U7_N168596  200  
+Q_U7_Q68         U7_N116528 U7_N116512 U7_N01001 PNP8 {x12}
+Q_U7_Q69         U7_N116536 U7_N116536 U7_N116528 PNP8 {x12}
+Q_U7_Q74         U7_N122683 U7_N01351 N08468 NPN8 {x16}
+R_U7_R26         U7_N86791 GND  3.7k  
+R_U7_R24         -VCC U7_N01017  100  
+Q_U7_Q57         U7_N81704 U7_N65219 U7_N01017 NPN8 {x8}
+R_U7_R38         U7_N122147 +VCC  110  
+Q_U7_Q47         U7_N37110 U7_N34597 U7_N34058 PNP8 {x12}
+Q_U7_Q51         U7_N01387 U7_N45862 U7_N53649 NPN8 {x12}
+Q_U7_Q46         U7_N01351 U7_N37408 U7_N34597 PNP8 {x12}
+Q_U7_Q50         U7_N01351 U7_N1695201 U7_N51592 NPN8 {x12}
+R_U7_R18         -VCC U7_N55659  100  
+Q_U7_Q81         FB U7_N01317 U7_N142759 PNP8 {x16}
+R_U7_R16         -VCC U7_N67656  400  
+R_U7_R15         U7_N51592 U7_N53649  1k  
+Q_U7_Q66         U7_N116512 U7_N116512 U7_N01003 PNP8 {x12}
+R_U7_R35         U7_N145276 +VCC  110  
+Q_U7_Q72         U7_N122683 U7_N01351 N08372 NPN8 {x16}
+R_U7_R19         -VCC U7_N64914  1.4k  
+Q_U7_Q58         U7_N82314 U7_N65219 U7_N01019 NPN8 {x8}
+R_U7_R30         -VCC U7_N168824  200  
+R_U7_R20         U7_N01003 +VCC  740  
+R_U7_R12         U7_N34058 +VCC  160  
+Q_U7_Q53         U7_N51592 U7_N65219 U7_N55967 NPN8 {x8}
+Q_U7_Q76         U7_N01231 U7_N137141 U7_N141896 PNP8 {x16}
+Q_U7_Q54         +VCC N08572 U7_N65219 NPN8 {x4}
+Q_U7_Q67         U7_N107420 U7_N116536 U7_N116512 PNP8 {x12}
+R_U7_R36         U7_N141896 +VCC  110  
+R_U7_R33         U7_N142127 U7_N145276  6k  
+Q_U7_Q73         U7_N01231 U7_N01387 N08372 NPN8 {x16}
+Q_U7_Q75         U7_N01317 U7_N01387 N08468 NPN8 {x16}
+Q_U7_Q48         U7_N37408 U7_N37408 U7_N37110 PNP8 {x12}
+R_U7_R14         GND U7_N45862  50  
+Q_U7_Q64         U7_N01351 U7_N01351 U7_N107420 NPN8 {x12}
+Q_U7_Q82         U7_N165781 U7_N1690600 N08740 PNP8 {x16}
+Q_U8_Q38         -VCC U8_N38844 U8_N39084 PNP8 {x14}
+R_U8_R18         -VCC U8_N82756  125  
+Q_U8_Q49         U8_N79113 U8_N79113 U8_N80276 NPN8 {x5}
+Q_U8_Q56         U8_N105682 U8_N103225 U8_N01001 NPN8 {x24}
+R_U8_R22         U8_N118795 +VCC  60  
+X_U8_F1    U8_N389229 U8_N319651 VREF U8_N319651 VCA820_2_OUTPUT_STAGE_U8_F1 
+R_U8_R19         -VCC U8_N00929  60  
+R_U8_R10         U8_N23775 +VCC  600  
+Q_U8_Q47         U8_N75689 U8_N79113 U8_N73458 NPN8 {x3}
+R_U8_R13         U8_N00843 +VCC  250  
+Q_U8_Q45         U8_N63102 N10100 U8_N66552 NPN8 {x2}
+Q_U8_Q39         +VCC U8_N38844 U8_N84507 NPN8 {x14}
+R_U8_R20         -VCC U8_N00971  60  
+Q_U8_Q52         U8_N01001 U8_N91269 U8_N00971 NPN8 {x8}
+Q_U8_Q36         U8_N39084 U8_N31052 U8_N32378 PNP8 {x6}
+R_U8_R16         -VCC U8_N80276  150  
+I_U8_I1         U8_N319651 U8_N319647 DC 3.12u  
+Q_U8_Q43         U8_N75689 U8_N63102 FB PNP8 {x8}
+Q_U8_Q50         U8_N84507 U8_N79113 U8_N82756 NPN8 {x6}
+Q_U8_Q33         U8_N01025 N09821 U8_N24027 PNP8 {x2}
+Q_U8_Q41         U8_N161311 U8_N01025 FB NPN8 {x8}
+R_U8_R11         -VCC U8_N67452  600  
+R_U8_R21         U8_N00921 +VCC  60  
+D_U8_D14         U8_N73458 -VCC DX 
+Q_U8_Q42         U8_N63102 U8_N63102 U8_N52536 PNP8 {x8}
+Q_U8_Q35         U8_N31052 U8_N31052 U8_N00835 PNP8 {x5}
+Q_U8_Q32         U8_N24027 U8_N24027 U8_N23775 PNP8 {x2}
+Q_U8_Q51         U8_N91269 U8_N91269 U8_N00929 NPN8 {x8}
+D_U8_D17         FB U8_N1399050 DX 
+R_U8_R23         U8_N95355 OUT  10  
+Q_U8_Q34         U8_N161311 U8_N31052 U8_N00843 PNP8 {x3}
+C_U8_C2         U8_N38844 U8_N118795  0.83p  
+D_U8_D18         U8_N1399050 U8_N52536 DX 
+R_U8_R12         -VCC U8_N67680  600  
+Q_U8_Q59         U8_N114858 U8_N114858 U8_N00921 PNP8 {x8}
+D_U8_D16         U8_N1375710 FB DX 
+Q_U8_Q46         U8_N66552 U8_N66552 U8_N67680 NPN8 {x2}
+Q_U8_Q44         N10100 U8_N66552 U8_N67452 NPN8 {x2}
+Q_U8_Q60         U8_N105682 U8_N114858 U8_N118795 PNP8 {x8}
+R_U8_R14         U8_N00835 +VCC  150  
+Q_U8_Q58         U8_N114858 U8_N39084 U8_N95355 NPN8 {x14}
+D_U8_U1         U8_N319647 U8_N319651 dn3 
+Q_U8_Q57         +VCC U8_N105682 OUT NPN8 {x90*1.2}
+Q_U8_Q37         U8_N38844 U8_N161311 U8_N31052 PNP8 {x3}
+R_U8_R17         U8_N32378 +VCC  125  
+R_U8_R24         VREF U8_N52536  10  
+C_U8_C3         U8_N00971 U8_N38844  0.83p  
+R_U8_R9         U8_N19796 +VCC  600  
+Q_U8_Q48         U8_N38844 U8_N75689 U8_N79113 NPN8 {x3}
+D_U8_D12         +VCC U8_N00835 DX 
+Q_U8_Q31         N09821 U8_N24027 U8_N19796 PNP8 {x2}
+D_U8_D13         U8_N52536 U8_N1375710 DX 
+C_U8_C4         U8_N319647 U8_N389229  10m  
+Q_U8_Q54         -VCC U8_N01001 OUT PNP8 {x90*1.2}
+Q_U8_Q53         U8_N91269 U8_N84507 U8_N95355 PNP8 {x14}
+Q_U8_Q55         U8_N01001 U8_N103225 U8_N105682 PNP8 {x24}
+D_U8_D11         +VCC U8_N00843 DX 
+E_U8_E2         U8_N319651 -VCC +VCC -VCC 0.5
+Q_U8_Q40         U8_N01025 U8_N01025 U8_N52536 NPN8 {x8}
+C_U8_C1         U8_N00929 U8_N00921  1p  
+R_U8_R15         -VCC U8_N73458  250  
+D_U8_D15         U8_N80276 -VCC DX 
+
+.PARAM  x4={x2*2} x5={x1*5} x12={x6*2} x6={x2*3} x24={x1*24} x8=1 x14={x2*7}
++  x16={x8*2} x18={x1*18} x90={x1*90} x1={x2/2} x2={x8/4} x3={x1*3}
+
+.MODEL DN3 D( IS=.1F AF=1.0 KF=39.0E-17)
+
+.model dx       d(is=0.1p rs=.1 cjo=2p tt=1p bv=100 ibv=0.1p)
+
+.model NPN8 npn
+
++ is=7.604e-018
++ bf=157
++ nf=1
++ vaf=78.71
++ ikf=0.03975
++ ise=3.219e-014
++ ne=2
++ br=0.7614
++ nr=1
++ var=1.452
++ ikr=0.08172
++ isc=7.618e-021
++ nc=1.847
++ rb=106
++ irb=0
++ rbm=2.4
++ re=2.52
++ rc=127
++ cje=1.12e-013
++ vje=0.7591
++ mje=0.5406
++ tf=1.213e-011
++ xtf=2.049
++ vtf=1.813
++ itf=0.04293
++ ptf=0
++ cjc=8.208e-015
++ vjc=0.6666
++ mjc=0.4509
++ xcjc=0.0845
++ tr=4e-011
++ cjs=1.16e-013
++ vjs=0.5286
++ mjs=0.4389
++ xtb=1.022
++ eg=1.12
++ xti=1.78
++ kf=3.5e-016
++ af=1
++ fc=0.8273
+
+
+.model PNP8 pnp
+
++ is=7.999e-018
++ bf=141.8
++ nf=1
++ vaf=41.58
++ ikf=0.1085
++ ise=2.233e-015
++ ne=1.505
++ br=32.52
++ nr=1.05
++ var=1.093
++ ikr=5e-005
++ isc=6.621e-016
++ nc=1.15
++ rb=62.46
++ irb=0
++ rbm=2.24
++ re=2.537
++ rc=126
++ cje=9.502e-014
++ vje=0.732
++ mje=0.493
++ tf=1.303e-011
++ xtf=35
++ vtf=3.259
++ itf=0.2639
++ ptf=0
++ cjc=1.08e-013
++ vjc=0.7743
++ mjc=0.5
++ xcjc=0.08504
++ tr=1.5e-010
++ cjs=1.29e-013
++ vjs=0.9058
++ mjs=0.4931
++ xtb=1.732
++ eg=1.12
++ xti=2
++ kf=3.5e-016
++ af=1
++ fc=0.85
+
+.ENDS VCA822
+
+.subckt VCA82X_BIAS_U5_F8 1 2 3 4  
+F_U5_F8         3 4 VF_U5_F8 1
+VF_U5_F8         1 2 0V
+.ends VCA82X_BIAS_U5_F8
+
+.subckt VCA82X_BIAS_U5_F1 1 2 3 4  
+F_U5_F1         3 4 VF_U5_F1 1
+VF_U5_F1         1 2 0V
+.ends VCA82X_BIAS_U5_F1
+
+.subckt VCA82X_BIAS_U5_F6 1 2 3 4  
+F_U5_F6         3 4 VF_U5_F6 1
+VF_U5_F6         1 2 0V
+.ends VCA82X_BIAS_U5_F6
+
+.subckt VCA82X_BIAS_U5_F3 1 2 3 4  
+F_U5_F3         3 4 VF_U5_F3 1
+VF_U5_F3         1 2 0V
+.ends VCA82X_BIAS_U5_F3
+
+.subckt VCA82X_BIAS_U5_F4 1 2 3 4  
+F_U5_F4         3 4 VF_U5_F4 1
+VF_U5_F4         1 2 0V
+.ends VCA82X_BIAS_U5_F4
+
+.subckt VCA82X_BIAS_U5_F2 1 2 3 4  
+F_U5_F2         3 4 VF_U5_F2 1
+VF_U5_F2         1 2 0V
+.ends VCA82X_BIAS_U5_F2
+
+.subckt VCA82X_BIAS_U5_F5 1 2 3 4  
+F_U5_F5         3 4 VF_U5_F5 1
+VF_U5_F5         1 2 0V
+.ends VCA82X_BIAS_U5_F5
+
+.subckt VCA82X_INPUT_BUFFER_U6_F1 1 2 3 4  
+F_U6_F1         3 4 VF_U6_F1 30
+VF_U6_F1         1 2 0V
+.ends VCA82X_INPUT_BUFFER_U6_F1
+
+.subckt VCA820_2_OUTPUT_STAGE_U8_F1 1 2 3 4  
+F_U8_F1         3 4 VF_U8_F1 1900
+VF_U8_F1         1 2 0V
+.ends VCA820_2_OUTPUT_STAGE_U8_F1
+
+
+
+
+

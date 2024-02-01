@@ -1,0 +1,174 @@
+*//////////////////////////////////////////////////////////////////////
+* (C) National Semiconductor, Inc.
+* Models developed and under copyright by:
+* National Semiconductor, Inc.  
+*
+*/////////////////////////////////////////////////////////////////////
+* Legal Notice: This material is intended for free software support.
+* The file may be copied, and distributed; however, reselling the 
+*  material is illegal
+*
+*////////////////////////////////////////////////////////////////////
+* For ordering or technical information on these models, contact:
+* National Semiconductor's Customer Response Center
+*                 7:00 A.M.--7:00 P.M.  U.S. Central Time
+*                                (800) 272-9959
+* For Applications support, contact the Internet address:
+*  amps-apps@galaxy.nsc.com
+*/////////////////////////////////////////
+*LMC6442A CMOS Dual Micro-Power Op Amp Macro-Model
+* Only One Channel Modeled
+* MODEL FORMAT: PSPICE
+* Rev:  9/23/97 -- ABG 
+*/////////////////////////////////////////
+* Connections       non-inverting input
+*                   |  inverting input
+*                   |  |  positive power supply 
+*                   |  |  |  negative power supply 
+*                   |  |  |  |  output 
+*                   |  |  |  |  |
+.SUBCKT  lmc6442a   3  2  4  5  6
+* CAUTION:  SET .OPTIONS GMIN=1E-15 TO MODEL INPUT BIAS CURRENT.
+* Features:
+* Output Swing within 30mV of +/- Supply Rails
+* Stable for AV = +2 or AV= -1
+*/////////////////////////////////////////
+**************************************
+EOX 120 10 31 32 2.0
+RCX 120 121 1K
+RDX 121 10 1K
+RBX 120 122 1K
+GOS 10 57 122 121 1.0
+RVOS 31 32 1K
+RINB 2 18 1000
+RINA 3 19 1000
+DIN1 5 18 DMOD2
+DIN2 18 4 DMOD2
+DIN3 5 19 DMOD2
+DIN4 19 4 DMOD2
+EXX 10 5 17 5 1.0
+EEE 10 50 17 5 1.0
+ECC 40 10 4 17 1.0
+RAA 4 17 100MEG
+RBB 17 5 100MEG
+ISET 10 24 1e-3
+DA1 24 23 DMOD1
+RBAL 23 22 1000
+ESUPP 22 21 4 5 1.0
+VOFF 21 10 -1.25
+DA2 24 25 DMOD1
+VSENS1 25 26 DC 0
+RSET 26 10 1K
+CSET 26 10 1e-10
+FSET 10 31 VSENS1 1.0
+R001 34 10 1K
+FTEMP 10 27 VSENS1 1.0
+DTA 27 10 DMOD2
+DTB 28 29 DMOD2
+VTEMP 29 10 DC 0
+ECMR 38 10 11 10 1.0
+VCMX 38 39 DC 0
+RCM2 41 10 1MEG
+EPSR 42 10 4 10 1.0
+CDC1 43 42 10U
+VPSX 43 44 DC 0
+RPSR2 45 10 1MEG
+FCXX 57 10 VCXX 100
+DCX1 98 97 DMOD1
+DCX2 95 94 DMOD1
+RCX1 99 98 100
+RCX2 94 99 100
+VCXX 99 96 DC 0
+ECMX 96 10 11 10 1.0
+DLIM1 52 57 DMOD1
+DLIM2 57 51 DMOD1
+ELIMP 51 10 26 10 99.3
+GDM 10 57 3 2 1
+C1 58 59 1e-10
+DCLMP2 59 40 DMOD1
+DCLMP1 50 59 DMOD1
+RO2 59 10 1K
+GO3 10 71 59 10 1
+RO3 71 10 1
+DDN1 73 74 DMOD1
+DDN2 73 710 DMOD1
+DDP1 75 72 DMOD1
+DDP2 71 720 DMOD1
+RDN2 710 71 100
+RDP 720 72 100
+VOOP 40 76 DC 0
+VOON 77 50 DC 0
+QNO 76 73 78 NPN1
+QNP 77 72 79 PNP1
+RNO 78 81 1
+RPO 79 81 1
+VOX 86 6 DC 0
+RNT 76 81 100MEG
+RPT 81 77 1MEG
+FX 10 93 VOX 1.0
+DFX1 93 91 DMOD1
+VFX1 91 10 DC 0
+DFX2 92 93 DMOD1
+VFX2 10 92 DC 0
+FPX 4 10 VFX1 1.0
+FNX 10 5 VFX2 1.0
+RAX 122 10 MRAX 1.006000e+03
+* Input Offset Voltage
+.MODEL MRAX RES (TC1=8e-07)
+FIN1 18 5 VTEMP 0.95
+FIN2 19 5 VTEMP 1.05
+* Input Bias Currents
+CIN1 2 10 3e-12
+CIN2 3 10 3e-12
+* Common Mode Input Capacitance
+RD1 18 11 5e+12
+RD2 19 11 5e+12
+* Diff. Input Resistance
+RCM 11 10 9.75e+13
+* Common Mode Input Resistance
+FCMR 10 57 VCMX 7.94328
+* Low Freq. CMRR
+FPSR 10 57 VPSX 63.2456
+* Low Freq. PSRR
+RSLOPE 4 5 1e+09
+* Slope of Supp. Curr. vs. Supp. Volt.
+GPWR 4 5 26 10 8.45e-07
+* Quiescent Supply Current
+ETEMP 27 28 32 33 0.654234
+RIB 32 33 MRIB 1K
+* Temp. Co. of Input Currents
+.MODEL MRIB RES (TC1=0.00280777)
+RISC 33 34 MRISC 1K
+.MODEL MRISC RES (TC1=0.001)
+RCM1 39 41 251.189
+CCM 41 10 1.59155e-09
+* CMRR vs. Freq.
+RPSR1 44 45 1000
+CPSR 45 10 1.59155e-08
+* PSRR vs. Freq.
+ELIMN 10 52 26 10 99.3
+RDM 57 10 1813.8
+C2 57 10 4.38734e-09
+ECMP 40 97 26 10 0.9
+ECMN 95 50 26 10 0.2
+G2 58 10 57 10 4e-09
+R2 58 10 137832
+GO2 59 10 58 10 100
+* Avol and Slew-Rate Settings
+EPOS 40 74 26 10 0
+**ENEG 75 50 26 10 0.1
+ENEG 75 50 26 10 0
+* Output Voltage Swing Settings
+GSOURCE 74 73 33 34 1e-05
+GSINK 72 75 33 34 1e-05
+* Output Current Settings
+**ROO 81 86 197.5
+ROO 81 86 97.5
+**
+.MODEL DMOD1 D
+.MODEL DMOD2 D  (IS=1e-17)
+*-- DMOD2 DEFAULT PARAMETERS
+.MODEL NPN1 NPN (BF=100 IS=1e-15)
+.MODEL PNP1 PNP (BF=100 IS=1e-15)
+****************
+.ENDS lmc6442a

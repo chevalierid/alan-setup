@@ -1,0 +1,413 @@
+* OPA4872
+*****************************************************************************
+* (C) Copyright 2009 Texas Instruments Incorporated. All rights reserved.     *****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.    
+** TI and its licensors and suppliers make no warranties, either expressed  
+** or implied, with respect to this model, including the warranties of                      
+** merchantability or fitness for a particular purpose. The model is   
+** provided solely on an "as is" basis. The entire risk as to its quality                                 
+** and performance is with the customer         
+*
+*****************************************************************************
+*
+*  Header Modified on 2009-05-13
+*****************************************************************************
+*
+* Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part:       OPA4872
+* Date:       2009-04-29
+* Model Type: PSpice
+* Simulator:  PSpice 16.0.0.p001
+* Datasheet:  SBOS346B–JUNE 2007–REVISED AUGUST 2008
+*
+*****************************************************************************
+*  
+* OPA4872 SUBCIRCUIT
+* HIGH SPEED MONOLITHIC 4 to 1 MULTIPLEXER
+* THIS MODEL SIMULATES TYPICAL VALUES FOR THE FOLLOWING:
+* OUTPUT VOLTAGE LIMIT, INPUT VOLTAGE NOISE, INPUT BIAS CURRENT,
+* INPUT OFFSET VOLTAGE AND OFFSET BIAS CURRENT,
+* CURRENT DRAW FROM POWER SUPPLY AND OUTPUT IMPEDANCE
+* BANDWIDTH IS A LITTLE LOWER IN GAIN OF +2V/V (430MHZ INSTEAD OF 500MHZ(
+* SLEW RATE IS CORRECT AT 4V STEP 
+* THIS MODEL WILL NOT PROVIDE ACCURATE SIMULATION OF: 
+* CMRR AND PSRR, INPUT CURRENT NOISE, DISTORTION, INPUT OFFSET, OPEN LOOP GAIN
+* GLITCHES WHILE SWITCHING CHANNELS OR TURNING OFF THE DEVICE
+* CONNECTIONS:
+*
+*               Ch 0 Input
+*               |    Ch 1 Input
+*               |    |   Ch 2 Input
+*               |    |   |   Ch 3 Input
+*               |    |   |   |  Positive Supply
+*               |    |   |   |  |   Negative Supply
+*               |    |   |   |  |   |   Output
+*               |    |   |   |  |   |   |   Feedback Connection  
+*               |    |   |   |  |   |   |   |    Channel Select Bit0
+*               |    |   |   |  |   |   |   |    |  Channel Select Bit1
+*               |    |   |   |  |   |   |   |    |  |   Enable Bar
+*               |    |   |   |  |   |   |   |    |  |   |    Ground
+*$
+.subckt OPA4872 CH0 CH1 CH2 CH3 Vcc Vee OUT NFB A0 A1 ENBAR GND
+*
+.PARAM x1  = {1/8}
+.PARAM x2  = {x1*2}
+.PARAM x3  = {x1*3}
+.PARAM x4  = {x1*4}
+.PARAM x5  = {x1*5}
+.PARAM x6  = {x2*3}
+.PARAM x8  = {x2*4}
+.PARAM x10 = {x5*2}
+.PARAM x12 = {x6*2}
+.PARAM x32 = {x8*4}
+.PARAM x60 = {x10*6}
+*
+* U1-Logic and Biasing
+*
+Rp1_u1               Vcc N80  1  
+Rp2_u1               Vee N59  1  
+X_inv1_u1            A0  BA0  N80 GND INV_1 PARAMS: RDRV=10K RDLY=10K CDLY=0.1PF
++  DIV=2
+X_inv2_u1            A1  BA1  N80 GND INV_1 PARAMS: RDRV=10K RDLY=10K CDLY=0.1PF
++  DIV=2
+X_u1_and2_1          BA0 BA1  N593154 N80 GND AN2_0 PARAMS: RDRV=10K RDLY=10K
++  CDLY=1PF DIV=2
+X_u1_and2_2          A0  BA1  N605357 N80 GND AN2_0 PARAMS: RDRV=10K RDLY=10K
++  CDLY=1PF DIV=2
+X_u1_and2_4          A0   A1  N603315 N80 GND AN2_0 PARAMS: RDRV=10K RDLY=10K
++  CDLY=1PF DIV=2
+X_u1_and2_3          BA0  A1  N290632 N80 GND AN2_0 PARAMS: RDRV=10K RDLY=10K
++  CDLY=1PF DIV=2
+X_u1_and2_2a         N80 N605357 NSW2 N80 GND AN2_0 PARAMS: RDRV=10K RDLY=10K
++  CDLY=1PF DIV=2
+X_u1_and2_3a         N80 N290632 NSW3 N80 GND AN2_0 PARAMS: RDRV=10K RDLY=10K
++  CDLY=1PF DIV=2
+X_u1_and2_4a         N80 N603315 NSW4 N80 GND AN2_0 PARAMS: RDRV=10K RDLY=10K
++  CDLY=1PF DIV=2
+X_u1_and2_1a         N80 N593154 NSW1 N80 GND AN2_0 PARAMS: RDRV=10K RDLY=10K
++  CDLY=1PF DIV=2
+X_F2_u1        N493002 NB2 N2767720 N129 SCHEMATIC1_F2_u1 
+X_F3_u1        N280488 NB2 N133  N281784 SCHEMATIC1_F3_u1 
+X_F5_u1        N284217 NB2 N2841890 N130 SCHEMATIC1_F5_u1 
+X_F6_u1        N284269 NB2 N132  N284353 SCHEMATIC1_F6_u1 
+X_F8_u1        N290394 NB2 N2903860 N128 SCHEMATIC1_F8_u1 
+X_F9_u1        N290466 NB2 N134  N290550 SCHEMATIC1_F9_u1 
+X_F11_u1       N297173 NB2 N2971910 N126 SCHEMATIC1_F11_u1 
+X_F12_u1       N297261 NB2 N136  N297345 SCHEMATIC1_F12_u1 
+G2_u1          N272757 N59     NSW1 ENBAR 57u
+G2a_u1         N274153 NB_CM1  NSW1 ENBAR 57u
+G3_u1          NT_CM2  N59     NSW2 ENBAR 57u
+G3a_u2         N284131 NB_CM2  NSW2 ENBAR 57u
+G4_u1          NT_CM3  N59     NSW3 ENBAR 57u
+G4a_u3         N290328 NB_CM3  NSW3 ENBAR 57u
+G5_u1          NT_CM4  N59     NSW4 ENBAR 57u
+G5a_u1         N297107 NB_CM4  NSW4 ENBAR 57u
+Gextra1_u1     N80     N59     N80  ENBAR 0.2e-3
+Gextra2_u1     N80     N59     N80  GND   0.22e-3
+Q2_u1          N322617 N322617 N008291 PNP8 1
+Rconv1_u1      GND NSW1  10MEG  
+Rconv2_u1      GND NSW2  10MEG  
+Rconv3_u1      GND NSW3  10MEG  
+Rconv4_u1      GND NSW4  10MEG  
+Rm1_u1         N493002 NT2  1k  
+Rm2_u1         N284217 NT2  1k  
+Rm3_u1         N290394 NT2  1k  
+Rm4_u1         N297173 NT2  1k  
+Rdeg1_u1       N59 N485949  2k  
+Rdeg2_u1       N008291 N80  2k  
+Ra_u1          NT2  N322617  1k  
+Rb_u1          N484259  NB2  1k  
+R1_u1          N274153  N80  1k  
+R2_u1          N80 N2767720  1k  
+R3_u1          N280488  NT2  1k  
+R4_u1          N59  N281784  1k  
+R5_u1          N284131  N80  1k  
+R6_u1          N80 N2841890  1k  
+R7_u1          N284269  NT2  1k  
+R8_u1          N59  N284353  1k  
+R9_u1          N290328  N80  1k  
+R10_u1         N80 N2903860  1k  
+R11_u1         N290466  NT2  1k  
+R12_u1         N59  N290550  1k  
+R13_u1         N297107  N80  1k  
+R14_u1         N80 N2971910  1k  
+R15_u1         N297261  NT2  1k  
+R16_u1         N59  N297345  1k  
+I1_u1          N484259 N485949 DC 100uAdc  
+V1_ctrl_u1     NT2 NB2 0.1Vdc
+V2_u1          NT_CM1 N272757 0Vdc
+*
+***
+***
+*
+* U2 Buffer
+RP1_U2  Vcc     N36      10
+RP2_U2  Vee     N35      10
+C_U2    N36     N35      6.5p
+RINP_U2 NET0729 CH0      300
+RINN_U2 N49     NFB      10
+C2_U2   NET0729 NET189   150e-15
+C1_U2   NET277  NET0729  150e-15
+Q3_U2   N133    N133     NET334  NPN7 {x4*0.95}
+Q4_U2   NET0578 NET0729  NET334  PNP8 {x4*0.95}
+Q5_U2   NET0433 NET0729  NET0698 NPN7 {x4*0.95}
+Q6_U2   N129    N129     NET0698 PNP8 {x4*0.95}
+Q11_U2  N55     N133     NET286  NPN7 {x4*0.95}
+Q13_U2  N49     N49      NET286  PNP8 {x4*0.95}
+Q12_U2  N49     N49      NET195  NPN7 {x4*0.95}
+Q14_U2  N56     N129     NET195  PNP8 {x4*0.95}
+Q10_U2  N36     N36      NET0433 NPN8 {x4}
+Q9_U2   N35     N35      NET0578 PNP8 {x4}
+RCS1_U2 N36     NET280   660
+RCS2_U2 N36     NET277   220
+RCS3_U2 NET186  N35      660
+RCS4_U2 NET189  N35      220
+Q1_U2   NT_CM1  NT_CM1   NET280  PNP8 {x2}
+Q2_U2   N133    NT_CM1   NET277  PNP8 {x6}
+Q8_U2   NB_CM1  NB_CM1   NET186  NPN8 {x2}
+Q7_U2   N129    NB_CM1   NET189  NPN8 {x6}
+R0_U2   N133    NET0356  100
+D1_U2   N44     NET0356  DX  1
+Q16_U2  N43     N43      N44     NPN8 {x2}
+Q15_U2  N36     GND      N43     NPN8 {x2}
+R1_U2   NET109  N129     100
+D2_U2   NET109  N46      DX 1
+Q26_U2  N35     GND      N48     PNP8 {x2}
+Q25_U2  N48     N48      N46     PNP8 {x2}
+*
+* U3 Buffer
+RP1_U3  Vcc     N17     10
+RP2_U3  NET0862 Vee     10
+C_U3    N17     NET0862 6.5p
+RINP_U3 NET0761 CH1     300
+RINN_U3 NFB     NET0400 10
+C1_U3   NET355  NET0761 150e-15
+C2_U3   NET0761 NET45   150e-15
+Q3_U3   N132    N132    NET292  NPN7 {x4*0.95}
+Q4_U3   NET0575 NET0761 NET292  PNP8 {x4*0.95}
+Q5_U3   NET0430 NET0761 NET289  NPN7 {x4*0.95}
+Q6_U3   N130    N130    NET289  PNP8 {x4*0.95}
+Q11_U3  N55     N132    NET231  NPN7 {x4*0.95}
+Q13_U3  NET0400 NET0400 NET231  PNP8 {x4*0.95}
+Q12_U3  NET0400 NET0400 NET343  NPN7 {x4*0.95}
+Q14_U3  N56     N130    NET343  PNP8 {x4*0.95}
+Q10_U3  N17     N17     NET0430 NPN8 {x4}
+Q9_U3   NET0862 NET0862 NET0575 PNP8 {x4}
+RCS1_U3 N17     NET352  660
+RCS2_U3 N17     NET355  220
+RCS4_U3 NET45   NET0862 220
+RCS3_U3 NET210  NET0862 660
+Q1_U3   NT_CM2  NT_CM2  NET352  PNP8 {x2}
+Q2_U3   N132    NT_CM2  NET355  PNP8 {x6}
+Q7_U3   N130    NB_CM2  NET45   NPN8 {x6}
+Q8_U3   NB_CM2  NB_CM2  NET210  NPN8 {x2}
+R0_u3   N132    NET66   100
+D1_U3   NET114  NET66   DX 1
+Q16_U3  NET235  NET235  NET114  NPN8 {x2}
+Q15_U3  N17     GND     NET235  NPN8 {x2}
+R1_u3   N130    NET113  100
+D2_U3   NET113  NET112  DX 1
+Q26_U3  NET0862 GND     NET348  PNP8 {x2}
+Q25_U3  NET348  NET348  NET112  PNP8 {x2}
+*
+* U4 Buffer
+RP1_U4  Vcc      NET0232  10
+RP2_U4  NET0230  Vee      10
+C_U4    NET0232  NET0230  6.5p
+RINP_U4 NET0654  CH2      300
+RINN_U4 NET0397  NFB      10
+C1_U4   NET0602  NET0654  150e-15
+C2_U4   NET0654  NET0469  150e-15
+Q3_U4   N134     N134     NET0620 NPN7 {x4*0.95}
+Q4_U4   NET0605  NET0654  NET0620 PNP7 {x4*0.95}
+Q6_U4   N128     N128     NET0626 PNP7 {x4*0.95}
+Q5_U4   NET0448  NET0654  NET0626 NPN7 {x4*0.95}
+Q11_U4  N55      N134     NET0617 NPN7 {x4*0.95}
+Q13_U4  NET0397  NET0397  NET0617 PNP7 {x4*0.95}
+Q12_U4  NET0397  NET0397  NET0608 NPN7 {x4*0.95}
+Q14_U4  N56      N128     NET0608 PNP7 {x4*0.95}
+Q10_U4  NET0232  NET0232  NET0448 NPN8 {x4}
+Q9_U4   NET0230  NET0230  NET0605 PNP8 {x4}
+RCS1_U4 NET0232  NET0282  660
+RCS2_U4 NET0232  NET0602  220
+RCS4_U4 NET0469  NET0230  220
+RCS3_U4 NET0277  NET0230  660
+Q1_U4   NT_CM3   NT_CM3   NET0282 PNP8 {x2}
+Q2_U4   N134     NT_CM3   NET0602 PNP8 {x6}
+Q7_U4   N128     NB_CM3   NET0469 NPN8 {x6}
+Q8_U4   NB_CM3   NB_CM3   NET0277 NPN8 {x2}
+R0_U4   N134     NET0280  100
+D1_U4   NET0392  NET0280  DX 1
+Q16_U4  NET0525  NET0525  NET0392 NPN8 {x2}
+Q15_U4  NET0232  GND      NET0525 NPN8 {x2}
+R1_U4   NET0285  N128     100
+D2_U4   NET0285  NET0457  DX 1
+Q25_U4  NET0671  NET0671  NET0457 PNP8 {x2}
+Q26_U4  NET0230  GND      NET0671 PNP8 {x2}
+*
+* U5 Buffer
+RP1_U5  Vcc      NET0234  10
+RP2_U5  NET0763  Vee      10
+C_U5    NET0234  NET0763  6.5p
+RINP_U5 NET0299  CH3      300
+RINN_U5 NET0399  NFB      10
+C1_U5   NET0563  NET0299  150e-15
+C2_U5   NET0299  NET0403  150e-15
+Q3_U5   N136     N136     NET0569 NPN7 {x4*0.95}
+Q4_U5   NET0557  NET0299  NET0569 PNP7 {x4*0.95}
+Q5_U5   NET0418  NET0299  NET0572 NPN7 {x4*0.95}
+Q6_U5   N126     N126     NET0572 PNP7 {x4*0.95}
+Q11_U5  N55      N136     NET0427 NPN7 {x4*0.95}
+Q13_U5  NET0399  NET0399  NET0427 PNP7 {x4*0.95}
+Q12_U5  NET0399  NET0399  NET0566 NPN7 {x4*0.95}
+Q14_U5  N56      N126     NET0566 PNP7 {x4*0.95}
+Q10_U5  NET0234  NET0234  NET0418 NPN8 {x4}
+Q9_U5   NET0763  NET0763  NET0557 PNP8 {x4}
+RCS1_U5 NET0234  NET0581  660
+RCS2_U5 NET0234  NET0563  220
+RCS3_U5 NET0406  NET0763  660
+RCS4_U5 NET0403  NET0763  220
+Q1_U5   NT_CM4   NT_CM4   NET0581 PNP8 {x2}
+Q2_U5   N136     NT_CM4   NET0563 PNP8 {x6}
+Q8_U5   NB_CM4   NB_CM4   NET0406 NPN8 {x2}
+Q7_U5   N126     NB_CM4   NET0403 NPN8 {x6}
+R0_U5   N136     NET0246  100
+D1_U5   NET0376  NET0246  DX 1
+Q15_U5  NET0234  GND      NET0416 NPN8 {x2}
+Q16_U5  NET0416  NET0416  NET0376 NPN8 {x2}
+R1_U5   N126     NET0375  100
+D2_U5   NET0375  NET0A    DX 1
+Q26_U5  NET0763  GND      NET0559 PNP8 {x2}
+Q25_U5  NET0559  NET0559  NET0A   PNP8 {x2}
+*
+* U6 Output Stage
+RP1_U6      Vcc     N13     10
+RP2_U6      N7      Vee     10
+Q1_U6       N55     N55     N3   PNP8 {x5}
+Q2_U6       HIZ_A   N55     N12  PNP8 {x5}
+Q5_U6       N4      N55     N5   PNP8 {x10}
+RCS4_U6     N3      N13     240
+RCS6_U6     N12     N13     240
+RCS5_U6     N13     N5      105
+D1_U6       N13     N3      DX   1
+D2_U6       N13     N12     DX   1
+D5_U6       N13     N13     DX   1
+Q4_U6       N56     N56     N8   NPN8 {x5}
+Q3_U6       HIZ_A   N56     N6   NPN8 {x5}
+Q7_U6       N10     N56     N9   NPN8 {x10}
+RCS1_U6     N7      N8      240
+RCS3_U6     N7      N6      240
+RCS2_U6     N9      N7      105
+D4_U6       N6      N7      DX   1
+D3_U6       N8      N7      DX   1
+D6_U6       N7      N7      DX   1
+Cc_U6       HIZ_A   GND     0.7e-12
+*
+E0_U6       NET0320 GND     HIZ_A GND 1
+L_FShape_U6 NET0320 NET0307 2e-9
+R_FShape_U6 NET0307 HIZB    25
+C_FShape_U6 HIZB    GND     12e-12
+*
+*Q10_U6     N7      N14     HIZB PNP8 {x2}
+*Q9_U6      N13     N15     HIZB NPN8 {x2}
+QEF1_U6     N7      HIZB    N4   PNP8 {x32}
+QEF2_U6     N13     HIZB    N10  NPN8 {x32}
+QO1_U6      N13     N4      N14  NPN8 {x60}
+QO2_U6      N7      N10     N15  PNP8 {x60}
+RBAL1_U6    N14     OUT     8
+RBAL2_U6    OUT     N15     8
+*
+CDc         Vcc     Vee     8p
+*
+* MODELS *
+.MODEL DX D
++ IS=1.0000E-15  
+.MODEL NPN8 NPN
++ IS = 7.604E-18 BF = 1.570E+02 VAF= 7.871E+01  
++ VAR= 1.452E+00 RB = 6.240E+01 RBM= 2.400E+00  TF = 1.213E-11
++ RE = 2.520E+00 RC = 1.270E+02 CJE= 1.120E-16  TR = 4.000E-11 
++ CJC= 1.080E-16 CJS= 1.160E-16 
+.MODEL PNP8 PNP
++ IS = 7.999E-18 BF = 1.418E+02 VAF= 4.158E+01  
++ VAR= 1.093E+00 RB = 6.246E+01 RBM= 2.240E+00  TF = 1.303E-11
++ RE = 2.537E+00 RC = 1.260E+02 CJE= 9.502E-17  TR = 1.500E-10
++ CJC= 1.080E-16 CJS= 1.290E-16 
+.MODEL NPN7 NPN
++ IS = 7.604E-18 BF = 1.570E+02 VAF= 7.871E+01  IKF= 3.975E-02
++ VAR= 1.452E+00 RB = 1.240E+01 RBM= 0.400E+00  TF = 1.213E-11
++ RE = 2.520E+00 RC = 0.670E+01 CJE= 1.120E-16  TR = 4.000E-11 
++ CJC= 1.080E-16 CJS= 1.160E-16 KF = 3.500E-17
+.MODEL PNP7 PNP
++ IS = 7.999E-18 BF = 1.418E+02 VAF= 4.158E+01  IKF= 1.085E-02
++ VAR= 1.093E+00 RB = 1.246E+01 RBM= 0.240E+00  TF = 1.303E-11
++ RE = 2.537E+00 RC = 0.660E+01 CJE= 9.502E-17  TR = 1.500E-10
++ CJC= 1.080E-16 CJS= 1.290E-16 KF = 3.500E-17
+.ends OPA4872
+*$
+**********************************************
+.subckt SCHEMATIC1_F8_u1 1 2 3 4  
+F8_u1         3 4 VF8_u1 2
+VF8_u1         1 2 0V
+.ends SCHEMATIC1_F8_u1
+*$
+.subckt SCHEMATIC1_F11_u1 1 2 3 4  
+F11_u1         3 4 VF11_u1 2
+VF11_u1         1 2 0V
+.ends SCHEMATIC1_F11_u1
+*$
+.subckt SCHEMATIC1_F5_u1 1 2 3 4  
+F5_u1         3 4 VF5_u1 2
+VF5_u1         1 2 0V
+.ends SCHEMATIC1_F5_u1
+*$
+.subckt SCHEMATIC1_F9_u1 1 2 3 4  
+F9_u1         3 4 VF9_u1 2
+VF9_u1         1 2 0V
+.ends SCHEMATIC1_F9_u1
+*$
+.subckt SCHEMATIC1_F12_u1 1 2 3 4  
+F12_u1         3 4 VF12_u1 2
+VF12_u1         1 2 0V
+.ends SCHEMATIC1_F12_u1
+*$
+.subckt SCHEMATIC1_F2_u1 1 2 3 4  
+F2_u1         3 4 VF2_u1 2
+VF2_u1         1 2 0V
+.ends SCHEMATIC1_F2_u1
+*$
+.subckt SCHEMATIC1_F6_u1 1 2 3 4  
+F6_u1         3 4 VF6_u1 2
+VF6_u1         1 2 0V
+.ends SCHEMATIC1_F6_u1
+*$
+.subckt SCHEMATIC1_F3_u1 1 2 3 4  
+F3_u1         3 4 VF3_u1 2
+VF3_u1         1 2 0V
+.ends SCHEMATIC1_F3_u1
+*$
+*
+.SUBCKT AN2_0 A B Y DVDD DVSS PARAMS: RDRV=10K RDLY=10K CDLY=0.1PF DIV=2
+RA A DVSS 1E11
+CA A DVSS 0.01PF
+RB B DVSS 1E11
+CB B DVSS 0.01PF
+EINV YI 0 VALUE={IF(V(A,DVSS) > (V(DVDD,DVSS)/{DIV}) & V(B,DVSS) > (V(DVDD,DVSS)/{DIV}), V(DVDD), V(DVSS))}
+RD YI YP {RDLY}
+CD YP DVSS {CDLY}
+EOUT YPP DVSS YP DVSS 1
+RDR YPP Y {RDRV}
+RO Y DVSS 1E11
+.ENDS AN2_0
+*$
+*
+.SUBCKT INV_1 A Y DVDD DVSS PARAMS: RDRV=10K RDLY=10K CDLY=0.1PF DIV=2
+RA A DVSS 1E11
+CA A DVSS 0.01PF
+EINV YI 0 VALUE={IF(V(A,DVSS) > (V(DVDD,DVSS)/{DIV}), V(DVSS), V(DVDD))}
+RD YI YP {RDLY}
+CD YP DVSS {CDLY}
+EOUT YPP DVSS YP DVSS 1
+RDR YPP Y {RDRV}
+RO Y DVSS 1E11
+.ENDS INV_1
+*$

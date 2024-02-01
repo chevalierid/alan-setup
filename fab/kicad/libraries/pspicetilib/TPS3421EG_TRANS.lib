@@ -1,0 +1,193 @@
+*$
+* TPS3421EG
+*****************************************************************************
+* (C) Copyright 2012 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+* Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: TPS3421EG
+* Date: 11DEC2012
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: TPS3421EGEVM-156
+* EVM Users Guide: SLVU781 – OCTOBER 2012
+* Datasheet: SBVS211 – AUGUST 2012
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+****************************************************************************
+.SUBCKT TPS3421EG_TRANS TS VCC PB1 PB2 GND RST_B 
+E_GAIN3         VCC_INT 0 VALUE {1 * V(VCC)}
+X_S3    IQ 0 N00118 0 TPS3421_TOPLEVEL_S3 
+X_S2    IQ 0 VCC N00118 TPS3421_TOPLEVEL_S2 
+X_S5    IQ 0 N16788577 0 TPS3421_TOPLEVEL_S5 
+G_G1         VCC 0 TABLE { V(N00118, 0) } 
++ ( (0,0)(500m,0.0624u) (1,0.1783u) (1.5,5.4893u) (2,5.7816u) (2.5,6.3097u)
++  (3,6.4695u) (3.5,6.4733u)
++  (4,6.4763u)(4.5,6.4795u)(5,6.4820u)(5.5,6.4859u)(6,6.4916u)(6.5,6.4998u) )
+E_GAIN6         TS1_INT 0 VALUE {1 * V(TS)}
+C_C6         0 N16236033  1m  TC=0,0 
+E_GAIN4         PB1_INT 0 VALUE {1 * V(PB1)}
+E_GAIN7         IQ 0 VALUE {2 * V(N16236033)}
+R_R6         N16236033 N16792516  1 TC=0,0 
+G_G2         VCC 0 TABLE { V(N16788577, 0) } 
++ ( (0,0)(1,1.008n) (1.5,0.15156u)(2,0.15365u) (2.5,0.17341u) (3,0.18791u)
++  (3.5,0.18820u)
++  (4,0.18857u)(4.5,0.18899u)(5,0.18972u)(5.5,0.19084u)(6,0.19258u) )
+E_ABM1         N16792516 0 VALUE { IF( V(PB1_OK) ==0 & V(PB2_OK) == 0 , 1 , 0) 
++    }
+E_GAIN5         PB2_INT 0 VALUE {1 * V(PB2)}
+X_S4    IQ 0 VCC N16788577 TPS3421_TOPLEVEL_S4 
+E_U1_ABM5         U1_TS_VCC 0 VALUE { IF(V(U1_N06576)==V(VCC_INT),1,0)    }
+X_U1_U608         U1_AND_1 U1_AND_2 U1_PULSE AND2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+E_U1_ABM2         U1_PB_OUT 0 VALUE { IF( V(PB1_OK) ==0 & V(PB2_OK) == 0 , 1 ,
++  0)    }
+X_U1_U609         U1_AND_2 U1_AND_1 INV_DELAY_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5 DELAY=2.5m
+E_U1_ABM6         U1_TS_GND 0 VALUE { IF(V(U1_N06576)==0,0,1)    }
+C_U1_C2         GND U1_NAND2  1u  TC=0,0 
+V_U1_V2         U1_N16885392 U1_N16885385  
++PWL 0 0 1n -1 2n -1 2u -1 
+R_U1_R4         U1_A U1_PB_OUT  10.83 TC=0,0 
+M_U1_M1         RST_B U1_GATE U1_N16816416 U1_N16816416 NMOS01           
+R_U1_R2         TS1_INT U1_N06576  1m TC=0,0 
+X_U1_S4    U1_N16885392 GND U1_A GND TPS3421_TOP_U1_S4 
+C_U1_C1         GND U1_A  1  TC=0,0 
+X_U1_U17         U1_A U1_AND_2 BUF_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+R_U1_R5         U1_N16816416 GND  31.4  
+X_U1_S2    U1_TS_SIG GND U1_PB_OUT U1_A TPS3421_TOP_U1_S2 
+D_U1_D25         U1_PULSE U1_NAND2 D_D2 
+E_U1_E1         U1_GATE GND VALUE { IF(V(U1_B, GND) > 0.5, V(VCC_INT), 0) }
+E_U1_ABM3         PB1_OK 0 VALUE { IF ( V(PB1_INT) > (0.65 - 0.4*
++  V(PB1_OK))*V(VCC_INT), 1 , 0)    }
+D_U1_D26         U1_A U1_PB_OUT D_D1 
+E_U1_ABM4         PB2_OK 0 VALUE { IF ( V(PB2_INT) > (0.65 - 0.4*
++  V(PB2_OK))*V(VCC_INT), 1 , 0)    }
+V_U1_V1         U1_N16885385 GND 1
+X_U1_U607         U1_AND_2 U1_NAND2 U1_B AND2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+R_U1_R267         U1_PULSE U1_NAND2  575k  
+E_U1_ABM7         U1_TS_SIG 0 VALUE { IF( V(U1_TS_VCC)==1 & V(U1_TS_GND)==1, 1,
++  0)    }
+.ENDS TPS3421EG_TRANS
+
+*$
+.subckt TPS3421_TOPLEVEL_S3 1 2 3 4  
+S_S3         3 4 1 2 _S3
+RS_S3         1 2 1G
+.MODEL         _S3 VSWITCH Roff=1e9 Ron=1m Voff=1 Von=0
+.ends TPS3421_TOPLEVEL_S3
+
+*$
+.subckt TPS3421_TOPLEVEL_S2 1 2 3 4  
+S_S2         3 4 1 2 _S2
+RS_S2         1 2 1G
+.MODEL         _S2 VSWITCH Roff=1e9 Ron=1m Voff=0 Von=1
+.ends TPS3421_TOPLEVEL_S2
+
+*$
+.subckt TPS3421_TOPLEVEL_S5 1 2 3 4  
+S_S5         3 4 1 2 _S5
+RS_S5         1 2 1G
+.MODEL         _S5 VSWITCH Roff=1e9 Ron=1m Voff=0 Von=1
+.ends TPS3421_TOPLEVEL_S5
+
+*$
+.subckt TPS3421_TOPLEVEL_S4 1 2 3 4  
+S_S4         3 4 1 2 _S4
+RS_S4         1 2 1G
+.MODEL         _S4 VSWITCH Roff=1e9 Ron=1m Voff=1 Von=0
+.ends TPS3421_TOPLEVEL_S4
+
+*$
+.subckt TPS3421_TOP_U1_S4 1 2 3 4  
+S_U1_S4         3 4 1 2 _U1_S4
+RS_U1_S4         1 2 1G
+.MODEL         _U1_S4 VSWITCH Roff=1e9 Ron=0.1m Voff=0.0V Von=1.0V
+.ends TPS3421_TOP_U1_S4
+
+*$
+.subckt TPS3421_TOP_U1_S2 1 2 3 4  
+S_U1_S2         3 4 1 2 _U1_S2
+RS_U1_S2         1 2 1G
+.MODEL         _U1_S2 VSWITCH Roff=1e9 Ron=0.2142m Voff=0.0V Von=1.0V
+.ends TPS3421_TOP_U1_S2
+
+*$
+.model NMOS01 nmos
++ vto=0.31
++ kp=0.05
++ lambda=0.08928
+
+*$
+.model D_D2 d
++ is=1e-015
++ n=0.001
++ tt=1e-011
+
+*$
+.model D_D1 d
++ is=0.0001
++ tt=1e-011
++ rs=0.0005
++ n=0.1
+
+
+*$
+.SUBCKT BUF_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS BUF_BASIC_GEN
+
+*$
+.SUBCKT INV_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS INV_BASIC_GEN
+
+*$
+.SUBCKT AND2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS AND2_BASIC_GEN
+
+*$
+.SUBCKT INV_DELAY_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 DELAY = 10n 
+E_ABMGATE1    YINT1 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT1 YINT2 1
+CINT YINT2 0 {DELAY*1.3}
+E_ABMGATE2    YINT3 0 VALUE {{IF(V(YINT2) > {VTHRESH} , 
++ {VSS},{VDD})}}
+RINT2 YINT3 Y 1
+CINT2 Y 0 1n
+.ENDS INV_DELAY_BASIC_GEN
+
+*$

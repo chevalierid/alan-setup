@@ -1,0 +1,127 @@
+*$
+* LM5022
+*****************************************************************************
+* (C) Copyright 2016 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+* Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: LM5022
+* Date: 09NOV2016
+* Model Type: AVERAGE
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: AN-1557
+* EVM Users Guide: SNVA203B, May 2008
+* Datasheet: SNVS480F –JANUARY 2007–REVISED MARCH 2013
+*
+* Model Version: Final 1.10
+*
+*********************************************************************************
+* Final 1.10
+* Release to Web.
+* 
+* Updates:
+* 1. Added test bench parameters 
+*  
+* Final 1.00
+* Release to Web.
+*******************************************************************************
+* Model Usage Notes:
+* 1. Parameters EFF, RSNS, RS_VALUE, RT used inside the model are made accessible from test bench
+*************************************************************************************************
+.SUBCKT LM5022_AVG VIN FB COMP GND VOUT
++PARAMS: L1 = 4.7E-5 DCR = 0.05 RS_VALUE=6440.0 EFF=0.95 RSNS=0.15 RT=33.2e3
+L1 VIN 100 {L1}
+L1DCR 100 SW {DCR}
+E1 VD 9 SW 0 -1
+V5V V5V0 0 DC=5
+GB1 0 VC Value = {45u}
+C1 VC 0 100p
+X2 FB 28 COMP V5V0 0 OPAMPLX2_0
+R3 VC 0 60K
+EA2 ILS 0 LAPLACE {V(IL)} = {1/(s^2 + (3.14*(1 / ( 5.7E-11*{RT} + 8E-8 ))) )}
+*A2 IL ILS LAPLACEA2
+V1V25 28 0 DC=1.25
+GBIN 0 SW Value={ IF ( V(IV) > 0 , V(ILS) , V(IL) ) }
+EBSLOPE VC VR Value = {(2K + {RS_VALUE} )*5u* V(D)*V(D)}
+R9 9 VOUT 80m
+EBAVERAGE IL 0 Value ={(I(VM1)*V(VD))/( {EFF} *V(SW))+I(VM1)}
+EBDUTY D 0 Value = {IF ({L1} * (1 / ( 5.7E-11 *{RT} + 8E-8 )) *
++ (V(IP)-V(IV))/V(SW) < 0,0,IF({L1} * (1 / ( 5.7E-11 *{RT} + 8E-8 ))*
++(V(IP)-V(IV))/V(SW) > 0.95 , 0.95,{L1}*(1 / ( 5.7E-11 *{RT} + 8E-8 ))*
++ (V(IP)-V(IV))/V(SW)))}
+EBVALLEY IV 0 Value={IF(V(IP)-V(VD)/(({L1}*(1 / ( 5.7E-11 *{RT} + 8E-8 )))
++*(1+V(VD)/V(SW)))<0,0,+V(IP)-V(VD)/
++(({L1}*(1 / ( 5.7E-11 *{RT} + 8E-8 )))*(1+V(VD)/V(SW))))}
+EBPEAK IP 0 Value = {IF(V(VR)/ {RSNS} < 0,0,(V(VR)/ {RSNS}))}
+GBOUT 0 17 Value= {{L1} * (1 / ( 5.7E-11 *{RT} + 8E-8 ))* {EFF}
++ *(V(IP)^2-V(IV)^2)/(2*V(VD))}
+VM1 17 VD DC=0 
+V2 COMP 5 DC=1.4
+V5 1 0 DC=5
+R4 COMP 1 5K
+R5 VC 5 100K
+.ENDS LM5022_AVG
+*$
+.SUBCKT OPAMPLX2_0 2 3 6 7 4
+RP 4 7 10K
+RXX 4 0 10Meg
+IBP 3 0 17.000n
+RIP 3 0 10Meg
+CIP 3 0 1.4p
+IBN 2 0 17.000n
+RIN 2 0 10Meg
+CIN 2 0 1000.4p
+VOFST 2 10 0
+RID 10 3 200K
+EA 11 0 10 3 1
+R1 11 12 5K
+R2 12 13 50K
+C1 12 0 3.2500p
+GA 0 14 0 13 79.137
+C2 13 14 26.750p
+RO 14 0 75
+L 14 6 7.5000u
+RL 14 6 1000
+CL 6 0 3p
+.ENDS
+*$
+.SUBCKT Cout 2 4 PARAMS: IC=30
+R1 2 3 0.542573
+C1 3 1 2.5080000000000004E-5 IC = {IC}
+R3 5 4 150
+R2 2 4 3.987240829346092E7
+R4 3 26 6.782162499999999E10
+R6 3 7 67821.62499999999
+C5 7 1 1.0032000000000002E-5 IC = {IC}
+R7 3 10 67821.62499999999
+C6 10 1 1.0032000000000002E-5 IC = {IC}
+R8 3 13 67821.62499999999
+C7 13 1 1.0032000000000002E-5 IC = {IC}
+C2 26 1 1.0032000000000002E-5 IC = {IC}
+R9 3 28 6.782162499999999E8
+C3 28 1 1.0032000000000002E-5 IC = {IC}
+R10 3 29 6782162.499999999
+C4 29 1 1.0032000000000002E-5 IC = {IC}
+L8 1 5 0.2e-9
+R24 1 5 1.627719
+L12 5 4 10e-12
+.ENDS
+*$
+.SUBCKT CIN 1 2 PARAMS: C = 9.4u ESR = 1m IC= 0
+C 1 3 {C} IC = {IC}
+Resr 3 2 {ESR}
+.ENDS
+*$

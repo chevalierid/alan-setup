@@ -1,0 +1,535 @@
+*$
+* TPS40190
+*****************************************************************************
+* (C) Copyright 2009, 2013 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose. The model is
+** provided solely on an "as is" basis. The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+* This model was developed for Texas Instruments Incorporated by:
+*   AEi Systems, LLC
+*   5777 W. Century Blvd., Suite 876
+*   Los Angeles, California  90045
+*
+* This model is subject to change without notice. Neither Texas Instruments Incorporated 
+* nor AEi Systems is responsible for updating this model.
+* For more information regarding modeling services, model libraries and simulation 
+* products, please call AEi Systems at (310) 216-1144, or contact AEi Systems by email: 
+* info@AENG.com. Or visit AEi Systems on the web at http://www.AENG.com.
+*
+********************************************************************************
+* 
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: TPS40190
+* Date: 02APR2013
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* EVM Order Number: TPS40190EVM-001
+* EVM Users Guide: SLUU232 -February 2006
+* Datasheet: SLUS658A-JULY 2005-REVISED AUGUST 2005
+*
+* Model Version: Final 2.10
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 2.10
+* Changed Global parameters inside model to non-global parameters
+* Enables the use of multiple TPS40190’s in the same schematic.
+*
+* Final 2.00
+* Release to Web.
+*
+*****************************************************************************
+.SUBCKT TPS40190 BOOT BP5 COMP ENABLE FB GND HDRV LDRV SW VDD PARAMS: MODE=1
+R_R23         N4698243 N4698337  1k  
+D_D26         0 N5088781 D_D1 
+X_S4    N1608295 0 BP5 LDRV TPS40190_S4 
+C_C26         0 N11348297  21p  
+C_C60         N12779664 N4806315  104.16u  
+X_U13         N4819425 N4819387 N4820141 N4819995 FFLOP 
+E_E11         N4808115 0 VALUE { {IF (V(N4807545) > V(G_3VBIAS), 5, 0)} }
+R_R31         N4808031 $G_UVLO320MV  1  
+X_S12    N6467248 0 $G_RAMP N4809229 TPS40190_S12 
+X_S19    G_1SET 0 N12843340 0 TPS40190_S19 
+R_R98         N5999406 N6000325  1  
+D_D28         0 N5103489 D_D1 
+R_R51         N1606795 0  10k  
+R_R113         0 GND  1m  
+C_C25         LDRV N1834227  30p  
+R_R58         0 N4806845  1k  
+V_V19         700MVBIAS 0 700mVdc
+D_D23         N5080935 N5080925 D_D1 
+X_U8         N1833082 N1834227 N1837421 N1840068 FFLOP 
+E_ABM6         N4819413 0 VALUE { {IF (V(N4819487) > 70mV, 5V, 0V)}    }
+V_V18         2VBIAS 0 2Vdc
+R_R107         0 N4806395  100  
+C_C45         N1607187 0  1n  
+C_C71         N12704757 N4698915  980u  
+C_C12         0 N4698243  1n  
+C_C46         0 N5088781  55n  
+R_R42         0 N4820019  10k  
+R_R57         0 N1885738  1k  
+R_R96         N5951108 N5088901  1  
+C_C39         0 $G_RAMP  1u  
+C_C7         N1761724 0  10u  
+E_ABM27         N4698981 0 VALUE { {IF ( (V(N4698915) > 1V), 5V, 0)}    }
+R_R67         0 N4807545  1000  
+E_ABM24         N1833082 0 VALUE { {IF ( ( V(N1607543)>0.5V) &  
++ (V(LDRV)  <2.5),5,0)}   }
+R_R95         0 ENABLE  100MEG  
+D_D30         0 N5105195 D_D1 
+R_R60         N4698915 N4698851  1Meg  
+E_ABM8         N4819425 0 VALUE { {IF (V(N4819487) > 300mV, 5V, 0V)}    }
+C_C47         0 N5103489  5.178n  
+C_C17         0 $G_ENBL  1n  
+R_R87         N113482411 N1607187  1  
+C_C43         0 N4698881  1n  
+E_E4         N4698219 0 VALUE { { LIMIT ( (V(N4698249) - V(BP5) ) * 100, 0, 7)}
++  }
+R_R79         $G_E+U N5079334  1k  
+*E_E21         $G_PEAKI 0 VALUE { (V(VDD) - V(SW)) *1 }
+E_E21         PEAKI 0 VALUE { (V(VDD) - V(SW)) *1 }
+X_S11    N5379706 0 N4819477 0 TPS40190_S11 
+E_E14         N4805907 0 VALUE { {IF (V($G_1OCRESET) > V(G_3VBIAS), 1, -1)} }
+E_SUM1         N4819189 0 VALUE {V(N4820015)+V(N4820029)}
+V_V21         N4807843 0 625mVdc
+R_R102         N6295167 N5379706  1  
+C_C55         0 N5379706  1n  
+E_ABM28         N4698851 0 VALUE { 1.1000    }
+E_E12         N4808119 0 VALUE { {IF (V(N4806469) > V(G_3VBIAS), 5, 0)} }
+X_S15    G_1SET 0 N12704757 0 TPS40190_S15 
+X_U1         N4806845 N4808173 $G_1OCRESET N4809951 FFLOP 
+R_R70         0 N4805919  10k  
+C_C33         0 N4808173  1n  
+X_S17    G_1SET 0 N12720485 0 TPS40190_S17 
+R_R43         0 N4820029  1k  
+C_C48         0 N5105195  5.178n  
+V_V15         G_3VBIAS 0 3Vdc
+R_R78         N9354102 N7227799  22  
+D_D10         0 N4807545 D_D1 
+R_R5         0 N1834227  1K  
+C_C73         N12720485 N5080935  4400n  
+C_C31         N5020985 N4806469  200p  
+E_GAIN2         N4819153 0 VALUE {-1 * V(N4819147)}
+E_MULT1         N4807799 0 VALUE {V(N4806419)*V(N4808115)}
+E_ABM20         N1607257 0 VALUE { {IF ( V(N1606795) > 2.5V, 0V, 5V)}    }
+C_C42         0 N4806315  240n  
+E_ABM4         N46987591 0 VALUE { {IF ( (V($G_SS-ENABLE) > 2.5V) &  
++ (V(N4699155) < 2.5V), 5V, 0V)}   }
+R_R6         0 N1840068  10k  
+C_C20         0 N1607961  1n  
+R_R65         N48072891 N4807439  1  
+D_D32         0 N6510273 D_D1 
+*E_E30         $G_95MSLOCK 0 VALUE { V(N7552038) - (0)*1 }
+E_E30         95MSLOCK 0 VALUE { V(N7552038) - (0)*1 }
+V_V8         N4806341 0 7Vdc
+X_S8    N4698225 BP5 VDD BP5 TPS40190_S8 
+R_R40         PWM N1607455  50  
+C_C36         0 $G_UVLO320MV  1n  
+C_C24         0 N1608295  1p  
+R_R44         0 N4820009  10k  
+E_E13         N113482411 0 VALUE { {IF (V(N11348297) > V(G_3VBIAS), 5, 0)} }
+R_R36         N4809035 CLOCK  1  
+C_C35         0 N7227799  1n  
+E_E16         N9354102 0 VALUE { {IF (V(N4806315) > V(G_3VBIAS), 5, 0)} }
+E_E23         N5105189 0 VALUE { {IF (V(N5088781) > V(G_3VBIAS), 5, 0)} }
+G_ABMII2         0 N4699195 VALUE { (V(N4698881) * 0.02516)    }
+C_C44         0 $G_E+U  1n  
+R_R94         N5261962 $G_E+U  10  
+R_R74         N4820129 N4820029  30070  
+R_R37         N4805857 VDD  1.5MEG  
+X_S13    N5067818 0 N1761724 COMP TPS40190_S13 
+C_C61         N6985303 0  1n  
+R_R82         N5088901 N5088781  1k  
+X_S14    N5067818 0 COMP N4819487 TPS40190_S14 
+E_ABM19         N1607441 0 VALUE { {IF ( V(N1607187) > 2.5V, 0V, 5V)}    }
+E_ABM77         G_1SET 0 VALUE { {IF ( V(N12693860) > 0.5V, 0V, 1V)}    }
+C_C67         0 FB  0.5p  
+C_C21         0 N1607079  1n  
+D_D16         N4808303 N4808265 D_D1 
+D_D11         0 N4808303 D_D1 
+C_C27         N1885738 $G_SS-ENABLE  1n  
+R_R66         N4808265 N4808303  1k  
+D_D14         N10380818 N10378630 DBIAS
+X_S9    N4698243 0 N4698249 0 TPS40190_S9 
+E_GLIMIT9         VREF 0 VALUE {LIMIT(V(N4698915)*1,0,0.591V)}
+E_E25         N5980048 0 VALUE { {IF (V(N5080935) > V(G_3VBIAS), 5, 0)} }
+R_R83         N5088901 N5103489  1k  
+R_R38         N4807115 N4806957  1k  
+X_S5    N1607079 0 LDRV 0 TPS40190_S5 
+E_ABM29         N1607041 0 VALUE { {IF ( ( V($G_SS-ENABLE) > 3Vbias) &  
++ ( V(N1837421) > 3Vbias), 1V, 0V ) }   }
+V_V9         N4806565 0 6.5Vdc
+C_C57         0 N6510273  145p  
+C_C72         N12730756 N5088781  2145n  
+D_D9         N4805857 N10380818 DBIAS
+R_R71         0 N4820015  1k  
+R_R16         VDD N4698249  10K  
+R_R81         N6755168 N6985303  1  
+R_R75         N4820135 N4820015  15600  
+R_R39         ENABLE N4805857  1k  
+R_R68         N4805907 N4806419  1  
+C_C40         0 CLOCK  1n  
+E_SUM2         N4820189 0 VALUE {V(N4819153)+V(N4819189)}
+*E_MULT2         N6531079 0 VALUE {V(N6514698)*V($G_PEAKI)}
+E_MULT2         N6531079 0 VALUE {V(N6514698)*V(PEAKI)}
+E_GAIN1         N4807115 0 VALUE {0.94 * V(N4805857)}
+D_D1         N4698249 N4698651 D_D1 
+V_V27         N4809411 0 625mVdc
+D_D21         N5079334 $G_E+U D_D1 
+E_ABM22         N1607895 0 VALUE { {IF (( V(VDD)  
++ - V(SW) ) >0.7,1,0)}   }
+D_D7         N1607455 PWM D_D1 
+X_S16    G_1SET 0 N12730756 0 TPS40190_S16 
+D_D22         0 N5080935 D_D1 
+E_E20         N4698337 0 VALUE { {IF (V($G_ENBL) > 2VBIAS & V($G_UVLOREG)
++  >2VBIAS, 0, 5)} }
+R_R63         N4806101 N4806753  1  
+R_R88         N11349873 N11348297  1113.3  
+R_R108         N7223287 N4806315  1  
+R_R84         N5105189 N5105195  1k  
+R_R99         N6240769 N5080925  1  
+D_D12         0 N4806469 D_D1 
+C_C19         N4807545 N4807439  288p  
+R_R47         N1607961 N1607441  1  
+C_C63         $G_UVLO320MV N7205572  1n  
+E_E1         N5514348 0 VALUE { {LIMIT (V(VREF, FB)*16000, 0, 0.725)} }
+X_U10         PWM N1885738 N1884787 N1909759 FFLOP 
+E_E18         N6284645 0 VALUE { {IF (V(N5080925) < 2VBIAS  &  V(N5088901)
++  >2VBIAS, 1, 0)} }
+R_R76         N4820141 N4819147  34500  
+C_C54         N5067818 0  1n  
+R_R22         N4698219 N4698225  1  
+R_R101         N6284645 N5067818  1  
+R_R104         $G_SS-ENABLE N6467248  1  
+E_ABM31         N1884163 0 VALUE { {IF ( ( V($G_SS-ENABLE) > 3Vbias) &  
++ ( V(N1884159) > 700mVbias), 1V, 0V ) }   }
+R_R109         N7364386 $G_SS-ENABLE  1  
+E_ABM3         N4808031 0 VALUE { {IF(V(N4808005) >3.994V, 5V, 0V)}    }
+C_C52         N5080925 0  1n  
+E_E3         N4698541 0 VALUE { {IF (V(N4698515) > V(N4698007), 5, 0)} }
+E_E8         N4808265 0 VALUE { {IF (V(N4809777) > V(G_3VBIAS), 5, 0)} }
+D_D15         N10378630 0 DBIAS
+E_ABM21         N1607913 0 VALUE { {IF ( V(PWM) > 2.5V, 0V, 5V)}    }
+R_R72         0 N4819995  10k  
+E_E28         N6510397 0 VALUE { {IF (V(N6510273) > V(G_3VBIAS), 1, 0)} }
+C_C15         0 N1607455  400p  
+C_C38         0 N5080935  4.4n  
+C_C56         0 N6467248  1n  
+R_R55         0 N1909759  10k  
+X_S7    N1884163 0 N1608029 N1606795 TPS40190_S7 
+V_V28         N12693860 0 {1*MODE}
+R_R114         N12439577 N1761724  10k  
+V_V3         N4698651 0 5.35Vdc
+X_S2    N1607187 0 BOOT HDRV TPS40190_S2 
+E_ABM23         N1607543 0 VALUE { {IF ( ( V(SW)  
++ - V(0) ) <0.15,1,0)}   }
+R_R20         0 N4819189  1k  
+C_C32         N4806753 N4806845  100p  
+C_C59         N11349873 0  1n  
+D_D18         0 N7223287 D_D1 
+C_C41         0 N4806419  1n  
+E_ABM5         N4807001 0 VALUE { {IF(V(N4806957) >1.6V, 5V, 0V)}    }
+G_ABM2I1         0 N4806277 VALUE { (V(N4807799) - V(0)) *0.0139125    }
+R_R73         0 N4819147  1k  
+V_V23         N4819757 0 400mVdc
+D_D27         N5088781 N5088901 D_D1 
+C_C62         PWM 0  1n  
+E_E2         N6755168 0 VALUE { {IF (V(N1761724) > V($G_RAMP), 5, 0)} }
+*D_D17         N4806315 $G_95MSLOCK D_D1 
+D_D17         N4806315 95MSLOCK D_D1 
+C_C70         FB N12439577  2.2n  
+E_E9         N5020985 0 VALUE { {IF (V(CLOCK) > V(N4807843), 5, 0)} }
+E_E5         N7091440 0 VALUE { {IF (V(N6985303) > 3VBias & V($G_1OCRESET) <
++  3VBias, 5, 0)} }
+C_C64         N4809525 N4806395  1n  
+D_D13         0 N4806845 D_D1 
+D_D25         N11349873 N11348297 D_D1 
+R_R62         0 N4809951  10k  
+C_C11         0 N4698225  1n  
+R_R105         N6510397 N6514698  1  
+D_D29         N5103489 N5088901 D_D1 
+E_E22         N7234210 0 VALUE { {IF ( V(N7227799) > 3VBIAS |  V(N7205572) >
++  3VBIAS, 5, 0 ) } }
+C_C66         N12843340 N5079334  200n  
+R_R89         N114076551 N11349873  1  
+R_R97         N5980048 N5980961  1  
+R_R59         N4699195 N4698915  0.1  
+R_R86         N7091440 PWM  1  
+R_R25         VDD N4698515  10K  
+R_R45         N4809001 CLOCK  1meg  
+E_E15         N4806101 0 VALUE { {IF (V(N6531079) > V(N4820189), 5, 0)} }
+R_R77         0 N4820189  1k  
+R_R28         N4806957 $G_ENBL  8.3K  
+C_C34         N4807439 0  1n  
+R_R41         N1607913 N1608029  50  
+R_R85         WINDOW N6510273  1k  
+E_E7         N4809777 0 VALUE { {IF (V(CLOCK) > V(N4809411), 0, 5)} }
+V_V13         N4698007 0 3.869Vdc
+D_U7         BP5 BOOT TIBoostD
+R_R32         N4819477 N4819487  1  
+D_D31         N5105195 N5105189 D_D1 
+R_R50         0 WINDOW  10k  
+E_E17         N6295167 0 VALUE { {IF (V(N6271414) > 2VBIAS  &  V(N5105189) <
++  2VBIAS, 0, 1)} }
+R_R48         N1607079 N1607257  1  
+C_C10         0 N4806277  10n  
+C_C53         0 N6271414  1n  
+E_E27         N5951108 0 VALUE { {IF (V(N5079334) > V(G_3VBIAS), 5, 0)} }
+C_C50         0 N5980961  1n  
+X_U11         N4819413 N4819387 N4820129 N4820019 FFLOP 
+X_U2         N4806395 N7234210 N7552038 N4805919 FFLOP 
+R_R100         N6270486 N6271414  1  
+R_R24         VDD N4808005  10K  
+R_R26         N4698515 $G_UVLOREG  100k  
+E_ABM7         N4809035 0 VALUE { {IF(V(N4809001) >0.625V, 0.75V, 0.5V)}    }
+R_R80         N5080925 N5080935  1k  
+R_R64         N4808119 N4808173  1  
+R_R61         N4699155 N4698981  1  
+E_E31         N114076551 0 VALUE { {IF (V(WINDOW) > V(G_3VBIAS), 5, 0)} }
+R_R112         0 GND  1m  
+X_S3    N1607961 0 HDRV SW TPS40190_S3 
+D_D2         0 N4806277 D_D1 
+D_D20         0 N5079334 D_D1 
+X_S18    G_1SET 0 N12779664 0 TPS40190_S18 
+C_C16         0 N1608029  1200p  
+R_R29         N4807001 $G_ENBL  1  
+D_D8         N1608029 N1607913 D_D1 
+E_E10         N48072891 0 VALUE { {IF (V(N4808303) > V(G_3VBIAS), 5, 0)} }
+E_ABM25         N1884159 0 VALUE { {IF ( ( V(N1607895)>0.5V) &  
++ (V(N1884787)  >0.7),1,0)}   }
+C_C29         0 N4698915  20uF  
+C_C58         0 N6514698  1n  
+E_E26         N6240769 0 VALUE { {IF (V(N5105195) > V(G_3VBIAS), 5, 0)} }
+C_C13         N4819387 $G_E+U  1n  
+G_ABMII4         0 $G_RAMP VALUE { {IF(V(CLOCK) >0.625V, -0.15A, 0.15A)}    }
+R_R27         N4698541 $G_UVLOREG  1  
+*E_E29         N7364386 0 VALUE { {IF ( V(N6000325) < 3VBIAS |  V($G_95MSLOCK) >
+*+  3VBIAS, 0, 5 ) } }
+E_E29         N7364386 0 VALUE { {IF ( V(N6000325) < 3VBIAS |  V(95MSLOCK) >
++  3VBIAS, 0, 5 ) } }
+C_C65         0 $G_SS-ENABLE  1n  
+R_R30         N4808005 $G_UVLO320MV  154K  
+R_R53         N12369037 N1608295  1k  
+X_U12         N4819419 N4819387 N4820135 N4820009 FFLOP 
+R_R106         0 N7205572  100  
+R_R52         0 N4806469  333  
+V_V25         N4809229 0 0.5Vdc
+D_D3         N4806277 N4806341 D_D1 
+C_C37         0 N5079334  22n  
+R_R34         N4819757 N4819487  12k  
+R_R18         0 N4819387  1k  
+R_R93         N46987591 N4698881  1  
+D_D33         N6510273 WINDOW D_D1 
+X_S10    $G_SS-ENABLE 0 N4698915 0 TPS40190_S10 
+E_E6         N4809525 0 VALUE { {IF (V(N4806277) > V(N4806565), 5, 0)} }
+X_S6    N1607041 0 N1607455 WINDOW TPS40190_S6 
+E_E24         N6270486 0 VALUE { {IF (V(N5103489) > V(G_3VBIAS), 5, 0)} }
+E_E19         N5999406 0 VALUE { {IF ( V($G_E+U) < 2VBIAS |  V(N5980961) <
++  2VBIAS, 0, 5 ) } }
+C_C14         0 $G_UVLOREG  1n  
+E_ABM30         N5261962 0 VALUE { {IF ( ( V($G_ENBL) > 3Vbias) &  
++ ( V($G_UVLO320MV) > 3Vbias), 5V, 0V ) }   }
+C_C18         0 N4808303  1.618n  
+*R_R69         $G_95MSLOCK N4806315  1k  
+R_R69         95MSLOCK N4806315  1k  
+C_C51         N6000325 0  1n  
+C_C49         0 N5088901  1n  
+R_R35         $G_RAMP N4809001  1Meg  
+C_C30         0 N4806753  1n  
+E_E33         N12369037 0 VALUE { {IF (V(N1606795) > V(G_3VBIAS), 5, 0)} }
+C_C28         0 N4699155  1n  
+E_ABM2         N4819419 0 VALUE { {IF (V(N4819487) > 150mV, 5V, 0V)}    }
+R_R17         N5514348 N1761724  1  
+.ENDS
+*$
+.IC         V(N4819387 )=5V
+.IC         V(N4806277 )=0
+.IC         V(N6467248 )=0
+.IC         V(N4698915 )=0
+.IC         V(N5067818 )=0
+.IC         V(N4809035 )=0.5
+.IC         V(N4806315 )=0
+.IC         V(N1885738 )=5V
+.IC         V(BP5 )=0
+.subckt TPS40190_S4 1 2 3 4  
+S_S4         3 4 1 2 _S4
+RS_S4         1 2 1G
+.MODEL         _S4 VSWITCH Roff=1e6 Ron=3 Voff=2.4V Von=2.5V
+.ends TPS40190_S4
+*$
+.subckt TPS40190_S12 1 2 3 4  
+S_S12         3 4 1 2 _S12
+RS_S12         1 2 1G
+.MODEL         _S12 VSWITCH Roff=1e6 Ron=1m Voff=5V Von=0V
+.ends TPS40190_S12
+*$
+.subckt TPS40190_S19 1 2 3 4  
+S_S19         3 4 1 2 _S19
+RS_S19         1 2 1G
+.MODEL         _S19 VSWITCH Roff=100meg Ron=10m Voff=.1V Von=.9V
+.ends TPS40190_S19
+*$
+.subckt TPS40190_S11 1 2 3 4  
+S_S11         3 4 1 2 _S11
+RS_S11         1 2 1G
+.MODEL         _S11 VSWITCH Roff=10e6 Ron=0.1 Voff=0.1V Von=0.9V
+.ends TPS40190_S11
+*$
+.subckt TPS40190_S15 1 2 3 4  
+S_S15         3 4 1 2 _S15
+RS_S15         1 2 1G
+.MODEL         _S15 VSWITCH Roff=100meg Ron=10m Voff=.1V Von=.9V
+.ends TPS40190_S15
+*$
+.subckt TPS40190_S17 1 2 3 4  
+S_S17         3 4 1 2 _S17
+RS_S17         1 2 1G
+.MODEL         _S17 VSWITCH Roff=100meg Ron=10m Voff=.1V Von=.9V
+.ends TPS40190_S17
+*$
+.subckt TPS40190_S8 1 2 3 4  
+S_S8         3 4 1 2 _S8
+RS_S8         1 2 1G
+.MODEL         _S8 VSWITCH Roff=10e6 Ron=10.8 Voff=0.0V Von=1.0V
+.ends TPS40190_S8
+*$
+.subckt TPS40190_S13 1 2 3 4  
+S_S13         3 4 1 2 _S13
+RS_S13         1 2 1G
+.MODEL         _S13 VSWITCH Roff=10e6 Ron=0.1 Voff=1V Von=0V
+.ends TPS40190_S13
+*$
+.subckt TPS40190_S14 1 2 3 4  
+S_S14         3 4 1 2 _S14
+RS_S14         1 2 1G
+.MODEL         _S14 VSWITCH Roff=10e6 Ron=0.1 Voff=0V Von=1V
+.ends TPS40190_S14
+*$
+.subckt TPS40190_S9 1 2 3 4  
+S_S9         3 4 1 2 _S9
+RS_S9         1 2 1G
+.MODEL         _S9 VSWITCH Roff=1e6 Ron=1 Voff=1v Von=4.5V
+.ends TPS40190_S9
+*$
+.subckt TPS40190_S5 1 2 3 4  
+S_S5         3 4 1 2 _S5
+RS_S5         1 2 1G
+.MODEL         _S5 VSWITCH Roff=1e6 Ron=1 Voff=1V Von=4.0V
+.ends TPS40190_S5
+*$
+.subckt TPS40190_S16 1 2 3 4  
+S_S16         3 4 1 2 _S16
+RS_S16         1 2 1G
+.MODEL         _S16 VSWITCH Roff=100meg Ron=10m Voff=.1V Von=.9V
+.ends TPS40190_S16
+*$
+.subckt TPS40190_S7 1 2 3 4  
+S_S7         3 4 1 2 _S7
+RS_S7         1 2 1G
+.MODEL         _S7 VSWITCH Roff=1e6 Ron=1.5 Voff=0.0V Von=1.0V
+.ends TPS40190_S7
+*$
+.subckt TPS40190_S2 1 2 3 4  
+S_S2         3 4 1 2 _S2
+RS_S2         1 2 1G
+.MODEL         _S2 VSWITCH Roff=1e6 Ron=3 Voff=2.4V Von=2.5V
+.ends TPS40190_S2
+*$
+.subckt TPS40190_S3 1 2 3 4  
+S_S3         3 4 1 2 _S3
+RS_S3         1 2 1G
+.MODEL         _S3 VSWITCH Roff=1e6 Ron=1.5 Voff=1.0V Von=4.0V
+.ends TPS40190_S3
+*$
+.subckt TPS40190_S18 1 2 3 4  
+S_S18         3 4 1 2 _S18
+RS_S18         1 2 1G
+.MODEL         _S18 VSWITCH Roff=100meg Ron=10m Voff=.1V Von=.9V
+.ends TPS40190_S18
+*$
+.subckt TPS40190_S10 1 2 3 4  
+S_S10         3 4 1 2 _S10
+RS_S10         1 2 1G
+.MODEL         _S10 VSWITCH Roff=100meg Ron=1m Voff=4.8V Von=0.2V
+.ends TPS40190_S10
+*$
+.subckt TPS40190_S6 1 2 3 4  
+S_S6         3 4 1 2 _S6
+RS_S6         1 2 1G
+.MODEL         _S6 VSWITCH Roff=1e6 Ron=1.5 Voff=0.0V Von=1.0V
+.ends TPS40190_S6
+*$
+.MODEL TIBoostD D  ( IS=2.04e-020 RS=2.43 BV=600 IBV=10.0u
++ CJO=2.15p  M=0.333 N=0.700 TT=0u )
+*$
+.MODEL D_D1 D( IS=1e-15 TT=10p Rs=0.05 N=.1  )
+*$
+.SUBCKT FFLOP 6 8 2 1
+*             S R Q Q\
+E_BQB 10 0 VALUE = { IF ( (V(8)<0.8) & (V(2)>0.8), 0, 5V ) }
+E_BQ  20 0 VALUE = { IF ( (V(6)<0.8) & (V(1)>0.8), 0, 5V ) }
+RD1   10 1 100
+CD1   1 0 5P IC=0
+RD2   20 2 100
+CD2   2 0 5P IC=5
+.ENDS
+*$
+.MODEL DBIAS D  (IS=0.3e-021 RS=2.43 BV=600 IBV=10.0u
++ CJO=2.15p  M=0.333 N=0.700 TT=0u)
+*$
+.SUBCKT 2-2uH 1 2  
+R_R19         N2387916 2  5m  
+L_L3         1 N2387916  2.2uH  
+.ENDS
+*$
+.SUBCKT PosCap330 1 2  
+R_R1         N00130 N00126  40m  
+C_C1         N00126 1  330u  
+L_L1         2 N00130  2nH  
+.ENDS
+*$
+.SUBCKT TDKcap22 1 2  
+R_R1         N00130 N00126  1.5m  
+C_C1         N00126 1  22u  
+L_L1         2 N00130  1.5nH   
+.ENDS
+*$
+.SUBCKT Si7866ADP  D G S
+M1 D 1 S S _MOS 
+.MODEL _MOS NMOS KP=5 LAMBDA=2m RD=1m RS=1m
++ VTO=1.3
+Rb 1 G 15.5
+CGS 1 S 5000p
+D1 S D _DBOD 
+.MODEL _DBOD D BV=24 CJO=2.92n IBV=20u IS=1.453E-10 M=0.471
++ N=1.089 RS=1.492m TT=16n VJ=0.766
+C2 2 1 18.729n
+D2 2 D _DCRSS 
+.MODEL _DCRSS D CJO=1.691n M=1.079 VJ=1.163
+C3 2 D 181.9p
+.ENDS
+*$
+.SUBCKT Si7366DP  D G S
+M1 D 1 S S _MOS
+.MODEL _MOS NMOS KP=100 LAMBDA=2.12M RD=3.04M RS=3.04M
++ VTO=1.6
+RB 1 G 26.2
+CGS 1 S 1.79N
+D1 S D _DBOD
+.MODEL _DBOD D BV=24 CJO=1.157N IBV=20U IS=1.999E-8 M=0.426
++ N=1.467 RS=1.502M TT=16N VJ=0.736
+C2 2 1 7.742N
+D2 2 D _DCRSS
+.MODEL _DCRSS D CJO=641.7P M=0.472 VJ=0.702
+C3 2 D 132.5P
+.ENDS
+*$
+
+

@@ -1,0 +1,99 @@
+* PSpice Model Editor - Version 16.6.0
+
+*$
+* TMP6131DYA
+*****************************************************************************
+* (C) Copyright 2021 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Texas Instruments Inc.
+* Part: TMP6131DYA
+* Date: 04JUN2021
+* Model Type: NA
+* Simulator: PSPICE
+* Simulator Version: 16.6-S084
+* EVM Order Number: NA
+* EVM Users Guide: NA
+* Datasheet: SBOS921E –DEC 2018–REVISED FEB 2020
+* Topologies Supported: NA
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+* 
+* A. The following features have been modeled
+*	1. 	Linear resistance change across temperature
+*	2. 	10-kOhm nominal resistance at 25°C (R25)
+*	3. 	Resistance vs. Ambient Temperature Using Multiple Bias Currents
+*	4. 	Resistance vs. Ambient Temperature Using Multiple Bias Voltages
+*	5. 	Supply Dependence Resistance vs. Bias Current
+*	6. 	Supply Dependence vs. Bias Voltage
+*
+* B. Features have not been modelled
+*	1. TCR vs. Sense Currents (ISNS) and Sense Voltages(VSNS) and thermal 
+*      characteristics of the part have not been modeled.
+*
+*****************************************************************************
+.SUBCKT TMP6131DYA_MODEL 1 2  
+X_H2    2 N03871 N03911 0 TMP6131DYA_MODEL_H1 
+E_E2         N03871 1 VALUE {
++  (((-5.629499534E+14*(V(N03911)*V(N03911)*V(N03911)*V(N03911)*V(N03911)*V(N03911))
++  + 2.765667568E+12*(V(N03911)*V(N03911)*V(N03911)*V(N03911)*V(N03911)) +
++  4.749995390E+15*(V(N03911)*V(N03911)*V(N03911)*V(N03911)) -
++  3.851226681E+12*(V(N03911)*V(N03911)*V(N03911)) +
++  8.581688249E+08*(V(N03911)*V(N03911)) + 8.022176867E+05*(V(N03911)) +
++  8.370842149E+03) +
++  (3.006477107E+10*(V(N03911)*V(N03911)*V(N03911)*V(N03911)*V(N03911)) -
++  2.447337762E+14*(V(N03911)*V(N03911)*V(N03911)*V(N03911)) +
++  1.929112674E+11*(V(N03911)*V(N03911)*V(N03911)) -
++  5.129901413E+07*(V(N03911)*V(N03911)) + 1.561385803E+04*(V(N03911)) +
++  5.219014211E+01)*{temp} + (-
++  2.077992927E+12*(V(N03911)*V(N03911)*V(N03911)*V(N03911)) +
++  1.654113059E+09*(V(N03911)*V(N03911)*V(N03911)) -
++  4.426928534E+05*(V(N03911)*V(N03911)) + 1.023767724E+02*(V(N03911)) +
++  1.412597182E-01)*{temp*temp} +
++  (3.036676096E+09*(V(N03911)*V(N03911)*V(N03911)*V(N03911)*V(N03911)*V(N03911))
++  - 3.761116283E+06*(V(N03911)*V(N03911)*V(N03911)*V(N03911)*V(N03911)) +
++  1.005020795E+11*(V(N03911)*V(N03911)*V(N03911)*V(N03911)) -
++  7.620707421E+07*(V(N03911)*V(N03911)*V(N03911)) +
++  1.788737794E+04*(V(N03911)*V(N03911)) - 1.732341417E+00*(V(N03911)) +
++  8.980697227E-05)*{temp*temp*temp} +
++  (-2.490368000E+07*(V(N03911)*V(N03911)*V(N03911)*V(N03911)*V(N03911)*V(N03911))
++  + 3.095511040E+04*(V(N03911)*V(N03911)*V(N03911)*V(N03911)*V(N03911)) -
++  8.181914603E+08*(V(N03911)*V(N03911)*V(N03911)*V(N03911)) +
++  6.249238496E+05*(V(N03911)*V(N03911)*V(N03911)) -
++  1.492989014E+02*(V(N03911)*V(N03911)) + 1.577483734E-02*(V(N03911)) -
++  2.524795042E-07)*{temp*temp*temp*temp})*V(N03911))+V(N03911)*(Limit
++  (-2.48314304E+24*V(N03911)*V(N03911)*V(N03911)*V(N03911)*V(N03911)*V(N03911)+
++  1.976323908E+21*V(N03911)*V(N03911)*V(N03911)*V(N03911)*V(N03911) -
++  360815935200000000*V(N03911)*V(N03911)*V(N03911)*V(N03911) -
++  40612349560000*V(N03911)*V(N03911)*V(N03911) + 14420874580*V(N03911)*V(N03911)
++  - 2906636.912*V(N03911)+ 471.5485486,0,-35)) }
+.ENDS TMP6131DYA_MODEL
+*$
+.subckt TMP6131DYA_MODEL_H1 1 2 3 4  
+H_H2         3 4 VH_H2 1
+VH_H2         1 2 0V
+.ends TMP6131DYA_MODEL_H1
+*$

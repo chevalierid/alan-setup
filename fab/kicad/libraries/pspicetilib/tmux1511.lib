@@ -1,0 +1,357 @@
+*$
+* TMUX1511
+*****************************************************************************
+* (C) Copyright 2018 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Texas Instruments Inc.
+* Part: TMUX1511
+* Date: 17DEC2019
+* Model Type: ALL IN ONE
+* Simulator: PSPICE
+* Simulator Version: 17.2.0.p001
+* EVM Order Number: 
+* EVM Users Guide: 
+* Datasheet: SCDS390A
+* Topologies Supported: 
+*
+* Model Version: Preliminary
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Preliminary
+*
+*
+* 
+*
+* 
+* 
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+* <Please include features that are modeled, not modeled, and specific model usage notes if any>
+* 1. The following features have been modeled
+*      a. VCC = 5V only - model will not work if the supply (VCC) is not equal to 5V
+* 	   b. Model conforms to the specs published (Bandwidth, RON, CON, COFF, tON/tOFF, tTRAN, Supply current)
+*      c. The off-isolation and propagation delay for the model is better than the published spec
+* 2. Temperature effects are not modeled. 
+*
+*****************************************************************************
+**
+**
+**
+.subckt TMUX1511 VCC GND S1 S2 S3 S4 D1 D2 D3 D4 SEL1 SEL2 SEL3 SEL4
+C_U1_C1         GND S1  1.3p  TC=0,0 
+R_U1_R5         0 U1_N15070  1e4 TC=0,0 
+C_U1_C5         U1_N15070 D1  0.5p  TC=0,0 
+R_U1_R1         GND D1  10e6 TC=0,0 
+C_U1_C7         U1_N15062 U1_N15070  0.5p  TC=0,0 
+C_U1_C4         GND U1_N56035  0.8p  TC=0,0 
+C_U1_C6         GND U1_N56217  0.8p  TC=0,0 
+X_U1_S1    CNTRL1D GND D1 U1_N26296 TMUX1511_PORTA_U1_S1 
+R_U1_R4         GND S1  10e6 TC=0,0 
+L_U1_L3         U1_N15062 S1  1.8nH  
+X_U1_U2         U1_N26296 U1_N15062 GND tmux1511_ron_vd_5V 
+L_U1_L4         U1_N59493 S2  1.8nH  
+X_U1_S5    CNTRL1D GND D1 U1_N56035 TMUX1511_PORTA_U1_S5 
+C_U1_C17         GND U1_N59907  0.8p  TC=0,0 
+X_U1_S7    CNTRL1D GND D2 U1_N59825 TMUX1511_PORTA_U1_S7 
+R_U1_R12         GND S2  10e6 TC=0,0 
+X_U1_S8    CNTRL1D GND S2 U1_N59907 TMUX1511_PORTA_U1_S8 
+R_U1_R8         U1_N15062 S1  50 TC=0,0 
+C_U1_C12         GND D1  1.3p  TC=0,0 
+C_U1_C18         GND S2  1.3p  TC=0,0 
+X_U1_U3         U1_N59667 U1_N59493 GND tmux1511_ron_vd_5V 
+X_U1_S6    CNTRL1D GND S1 U1_N56217 TMUX1511_PORTA_U1_S6 
+C_U1_C14         U1_N59493 U1_N59477  0.5p  TC=0,0 
+R_U1_R9         0 U1_N59477  1e4 TC=0,0 
+C_U1_C13         U1_N59477 D2  0.5p  TC=0,0 
+X_U1_S9    U1_CNTR2 GND D2 U1_N59667 TMUX1511_PORTA_U1_S9 
+C_U1_C16         GND D2  1.3p  TC=0,0 
+R_U1_R10         U1_N59493 S2  50 TC=0,0 
+C_U1_C15         GND U1_N59825  0.8p  TC=0,0 
+R_U1_R11         GND D2  10e6 TC=0,0 
+C_U2_C7         U2_N58684 U2_N58668  0.5p  TC=0,0 
+X_U2_S9    CNTRL4D GND D4 U2_N60267 TMUX1511_PORTB_U2_S9 
+R_U2_R5         0 U2_N58668  1e4 TC=0,0 
+C_U2_C5         U2_N58668 D3  0.5p  TC=0,0 
+X_U2_S1    CNTRL3D GND D3 U2_N58858 TMUX1511_PORTB_U2_S1 
+R_U2_R10         U2_N60093 S4  50 TC=0,0 
+C_U2_C16         GND D4  1.3p  TC=0,0 
+C_U2_C15         GND U2_N60425  0.8p  TC=0,0 
+C_U2_C12         GND D3  1.3p  TC=0,0 
+R_U2_R8         U2_N58684 S3  50 TC=0,0 
+R_U2_R11         GND D4  10e6 TC=0,0 
+C_U2_C4         GND U2_N59016  0.8p  TC=0,0 
+L_U2_L4         U2_N60093 S4  1.8nH  
+R_U2_R1         GND D3  10e6 TC=0,0 
+X_U2_S7    U2_CNTRL1 GND D4 U2_N60425 TMUX1511_PORTB_U2_S7 
+C_U2_C17         GND U2_N60507  0.8p  TC=0,0 
+L_U2_L3         U2_N58684 S3  1.8nH  
+R_U2_R12         GND S4  10e6 TC=0,0 
+C_U2_C6         GND U2_N59098  0.8p  TC=0,0 
+X_U2_S5    U2_CNTRL1 GND D3 U2_N59016 TMUX1511_PORTB_U2_S5 
+R_U2_R4         GND S3  10e6 TC=0,0 
+X_U2_S8    U2_CNTRL1 GND S4 U2_N60507 TMUX1511_PORTB_U2_S8 
+C_U2_C18         GND S4  1.3p  TC=0,0 
+X_U2_S6    U2_CNTRL1 GND S3 U2_N59098 TMUX1511_PORTB_U2_S6 
+X_U2_U3         U2_N60267 U2_N60093 GND tmux1511_ron_vd_5V 
+C_U2_C1         GND S3  1.3p  TC=0,0 
+X_U2_U2         U2_N58858 U2_N58684 GND tmux1511_ron_vd_5V 
+C_U2_C14         U2_N60093 U2_N60077  0.5p  TC=0,0 
+C_U2_C13         U2_N60077 D4  0.5p  TC=0,0 
+R_U2_R9         0 U2_N60077  1e4 TC=0,0 
+X_U5         SEL4 SEL3 SEL2 SEL1 VCC GND CNTRL1 CNTRL2 CNTRL3 CNTRL4
++  TMUX1511_DIGITAL 
+D_U11_D2         U11_N309231 U11_CNTRLX10_RC Dz 
+D_U11_D3         U11_CNTRLX10_RC U11_N309051 Dz 
+R_U11_R6         U11_CNTRLX10 U11_N309051  10 TC=0,0 
+E_U11_E2         U11_CNTRLX10 GND CNTRL1 GND 10
+C_U11_C3         GND U11_CNTRLX10_RC  4n  TC=0,0 
+R_U11_R4         U11_CNTRLX10 U11_N309231  10 TC=0,0 
+V_U11_V1         U11_N309301 GND 5Vdc
+X_U11_U4         U11_CNTRLX10_RC U11_N309301 CNTRL1D GND TMUX1511_COMPARATOR 
+D_U12_D2         U12_N309231 U12_CNTRLX10_RC Dz 
+D_U12_D3         U12_CNTRLX10_RC U12_N309051 Dz 
+R_U12_R6         U12_CNTRLX10 U12_N309051  10 TC=0,0 
+E_U12_E2         U12_CNTRLX10 GND CNTRL2 GND 10
+C_U12_C3         GND U12_CNTRLX10_RC  4n  TC=0,0 
+R_U12_R4         U12_CNTRLX10 U12_N309231  10 TC=0,0 
+V_U12_V1         U12_N309301 GND 5Vdc
+X_U12_U4         U12_CNTRLX10_RC U12_N309301 CNTRL2D GND TMUX1511_COMPARATOR 
+D_U13_D2         U13_N309231 U13_CNTRLX10_RC Dz 
+D_U13_D3         U13_CNTRLX10_RC U13_N309051 Dz 
+R_U13_R6         U13_CNTRLX10 U13_N309051  10 TC=0,0 
+E_U13_E2         U13_CNTRLX10 GND CNTRL3 GND 10
+C_U13_C3         GND U13_CNTRLX10_RC  4n  TC=0,0 
+R_U13_R4         U13_CNTRLX10 U13_N309231  10 TC=0,0 
+V_U13_V1         U13_N309301 GND 5Vdc
+X_U13_U4         U13_CNTRLX10_RC U13_N309301 CNTRL3D GND TMUX1511_COMPARATOR 
+D_U14_D2         U14_N309231 U14_CNTRLX10_RC Dz 
+D_U14_D3         U14_CNTRLX10_RC U14_N309051 Dz 
+R_U14_R6         U14_CNTRLX10 U14_N309051  10 TC=0,0 
+E_U14_E2         U14_CNTRLX10 GND CNTRL4 GND 10
+C_U14_C3         GND U14_CNTRLX10_RC  4n  TC=0,0 
+R_U14_R4         U14_CNTRLX10 U14_N309231  10 TC=0,0 
+V_U14_V1         U14_N309301 GND 5Vdc
+X_U14_U4         U14_CNTRLX10_RC U14_N309301 CNTRL4D GND TMUX1511_COMPARATOR 
+.MODEL Dz D
+.ENDS
+*$
+*****
+*   *
+*****
+.subckt TMUX1511_PORTA_U1_S1 1 2 3 4  
+S_U1_S1         3 4 1 2 _U1_S1
+RS_U1_S1         1 2 1G
+.MODEL         _U1_S1 VSWITCH Roff=100e6 Ron=1u Voff=0.0V Von=1.0V
+.ends TMUX1511_PORTA_U1_S1
+*$
+*****
+*   *
+*****
+.subckt TMUX1511_PORTA_U1_S5 1 2 3 4  
+S_U1_S5         3 4 1 2 _U1_S5
+RS_U1_S5         1 2 1G
+.MODEL         _U1_S5 VSWITCH Roff=100e6 Ron=1m Voff=1.0V Von=0.0V
+.ends TMUX1511_PORTA_U1_S5
+*$
+*****
+*   *
+*****
+.subckt TMUX1511_PORTA_U1_S7 1 2 3 4  
+S_U1_S7         3 4 1 2 _U1_S7
+RS_U1_S7         1 2 1G
+.MODEL         _U1_S7 VSWITCH Roff=100e6 Ron=1m Voff=1.0V Von=0.0V
+.ends TMUX1511_PORTA_U1_S7
+*$
+*****
+*   *
+*****
+.subckt TMUX1511_PORTA_U1_S8 1 2 3 4  
+S_U1_S8         3 4 1 2 _U1_S8
+RS_U1_S8         1 2 1G
+.MODEL         _U1_S8 VSWITCH Roff=100e6 Ron=1m Voff=1.0V Von=0.0V
+.ends TMUX1511_PORTA_U1_S8
+*$
+*****
+*   *
+*****
+.subckt TMUX1511_PORTA_U1_S6 1 2 3 4  
+S_U1_S6         3 4 1 2 _U1_S6
+RS_U1_S6         1 2 1G
+.MODEL         _U1_S6 VSWITCH Roff=100e6 Ron=1m Voff=1.0V Von=0.0V
+.ends TMUX1511_PORTA_U1_S6
+*$
+*****
+*   *
+*****
+.subckt TMUX1511_PORTA_U1_S9 1 2 3 4  
+S_U1_S9         3 4 1 2 _U1_S9
+RS_U1_S9         1 2 1G
+.MODEL         _U1_S9 VSWITCH Roff=100e6 Ron=1u Voff=0.0V Von=1.0V
+.ends TMUX1511_PORTA_U1_S9
+*$
+*****
+*   *
+*****
+.subckt TMUX1511_PORTB_U2_S9 1 2 3 4  
+S_U2_S9         3 4 1 2 _U2_S9
+RS_U2_S9         1 2 1G
+.MODEL         _U2_S9 VSWITCH Roff=100e6 Ron=1u Voff=0.0V Von=1.0V
+.ends TMUX1511_PORTB_U2_S9
+*$
+*****
+*   *
+*****
+.subckt TMUX1511_PORTB_U2_S1 1 2 3 4  
+S_U2_S1         3 4 1 2 _U2_S1
+RS_U2_S1         1 2 1G
+.MODEL         _U2_S1 VSWITCH Roff=100e6 Ron=1u Voff=0.0V Von=1.0V
+.ends TMUX1511_PORTB_U2_S1
+*$
+*****
+*   *
+*****
+.subckt TMUX1511_PORTB_U2_S7 1 2 3 4  
+S_U2_S7         3 4 1 2 _U2_S7
+RS_U2_S7         1 2 1G
+.MODEL         _U2_S7 VSWITCH Roff=100e6 Ron=1m Voff=1.0V Von=0.0V
+.ends TMUX1511_PORTB_U2_S7
+*$
+*****
+*   *
+*****
+.subckt TMUX1511_PORTB_U2_S5 1 2 3 4  
+S_U2_S5         3 4 1 2 _U2_S5
+RS_U2_S5         1 2 1G
+.MODEL         _U2_S5 VSWITCH Roff=100e6 Ron=1m Voff=1.0V Von=0.0V
+.ends TMUX1511_PORTB_U2_S5
+*$
+*****
+*   *
+*****
+.subckt TMUX1511_PORTB_U2_S8 1 2 3 4  
+S_U2_S8         3 4 1 2 _U2_S8
+RS_U2_S8         1 2 1G
+.MODEL         _U2_S8 VSWITCH Roff=100e6 Ron=1m Voff=1.0V Von=0.0V
+.ends TMUX1511_PORTB_U2_S8
+*$
+*****
+*   *
+*****
+.subckt TMUX1511_PORTB_U2_S6 1 2 3 4  
+S_U2_S6         3 4 1 2 _U2_S6
+RS_U2_S6         1 2 1G
+.MODEL         _U2_S6 VSWITCH Roff=100e6 Ron=1m Voff=1.0V Von=0.0V
+.ends TMUX1511_PORTB_U2_S6
+*$
+*****
+*   *
+*****
+.SUBCKT tmux1511_ron_vd_5V 1 2 GND
+* Functions below are valid only for VCC = 5.0V
+**
+E1 N1 0 TABLE {V(1,GND)} = 
++ (0,1.043)
++ (1,1.097)
++ (2,1.18)
++ (3,1.317)
++ (4,1.565)
++ (5,2.11)
+*
+G1 1  2 VALUE = {V(1,2)/(V(N1)+1u)}
+*
+.ENDS
+*$
+*****
+*   *
+*****
+*.SUBCKT TMUX1511_DIGITAL A2 A1 A0 EN VCC GND EN_INT VCC_MON CNTRL1 CNTRL2 CNTRL3 CNTRL4 CNTRL5 CNTRL6 CNTRL7 CNTRL8
+.SUBCKT TMUX1511_DIGITAL SEL4 SEL3 SEL2 SEL1 VCC GND CNTRL1 CNTRL2 CNTRL3 CNTRL4 
+**CNTRL enables or disables the port internal to the model
+** Digital Threshold
+.PARAM	VTHR = 0.85
+**VTHR is the control logic threshold based on mid-point of VIH(min) and VIL(max)
+.PARAM VCC_MAX = 5.1
+.PARAM VCC_MIN = 4.9
+**MAX and Min is operation VCC
+**
+** Convert EN pin to '1' or '0'
+*EEN NEN 0 VALUE = {0.5*(SGN(V(EN,GND)-VTHR) + ABS(SGN(V(EN,GND)-VTHR)))}
+**
+** Test for Min and Max power supplies
+*E1 N1 0 VALUE = {0.5*(SGN(VCC_MAX - V(VCC,GND))+ ABS(SGN(VCC_MAX - V(VCC,GND))))}
+*E2 N2 0 VALUE = {0.5*(SGN(V(VCC,GND) - VCC_MIN)+ ABS(SGN(V(VCC,GND) - VCC_MIN)))}
+E1 N1 0 VALUE = {IF(V(VCC,GND) <= VCC_MAX,1,0)}
+E2 N2 0 VALUE = {IF(V(VCC,GND) >= VCC_MIN,1,0)}
+***
+* AND results of Min/Max tests of power supply
+E3 N3 0 VALUE = {V(N1)*V(N2)}
+*
+* Delay results of power supply tests to mimic TON/TOFF
+X1 N3 N3D GND TMUX1511_CNTRL_DELAY
+*
+** Convert digital input voltages to '1' and '0'
+EA0 NA0 0 VALUE = {0.5*(SGN(V(SEL1,GND)-VTHR) + ABS(SGN(V(SEL1,GND)-VTHR)))}
+EA1 NA1 0 VALUE = {0.5*(SGN(V(SEL2,GND)-VTHR) + ABS(SGN(V(SEL2,GND)-VTHR)))}
+EA2 NA2 0 VALUE = {0.5*(SGN(V(SEL3,GND)-VTHR) + ABS(SGN(V(SEL3,GND)-VTHR)))}
+EA3 NA3 0 VALUE = {0.5*(SGN(V(SEL4,GND)-VTHR) + ABS(SGN(V(SEL4,GND)-VTHR)))}
+** Control for 4 channels not dependent on A0-A3
+*ES1 CNTRL1 GND VALUE = {V(N1)*V(N2)*V(NA0)}
+*ES2 CNTRL2 GND VALUE = {V(N1)*V(N2)*V(NA1)}
+*ES3 CNTRL3 GND VALUE = {V(N1)*V(N2)*V(NA2)}
+*ES4 CNTRL4 GND VALUE = {V(N1)*V(N2)*V(NA3)}
+ES1 CNTRL1 GND VALUE = {V(N3D)*V(NA0)}
+ES2 CNTRL2 GND VALUE = {V(N3D)*V(NA1)}
+ES3 CNTRL3 GND VALUE = {V(N3D)*V(NA2)}
+ES4 CNTRL4 GND VALUE = {V(N3D)*V(NA3)}
+**
+** Current Drain at 5V
+*GVCC VCC GND VALUE = {V(N1)*V(N2)*37u}
+GVCC VCC GND VALUE = {V(N3)*37u}
+**37u is the supply current of 1511
+.ENDS
+*$
+*****
+*   *
+*****
+.SUBCKT TMUX1511_CNTRL_DELAY CNTRL CNTRL_D GND
+D_D2         N309231 CNTRLX10_RC D1
+D_D3         CNTRLX10_RC N309051 D1
+*R_R6         CNTRLX10 N309051  10 TC=0,0 
+R_R6         CNTRLX10 N309051  220 TC=0,0 
+E_E2         CNTRLX10 GND CNTRL GND 10
+*_C3         GND CNTRLX10_RC  4n  TC=0,0 
+C_C3         GND CNTRLX10_RC  10n  TC=0,0 
+V_V1         N309301 GND 5Vdc
+*R_R4         CNTRLX10 N309231  10 TC=0,0 
+R_R4         CNTRLX10 N309231 2600 TC=0,0
+X_U4         CNTRLX10_RC N309301 CNTRL_D GND TMUX1511_COMPARATOR 
+.MODEL D1 D
+.ENDS
+*$
+*****
+*   *
+*****
+.SUBCKT TMUX1511_COMPARATOR  INP INN OUT GND
+.PARAM VHI = 1
+.PARAM VLOW = 0
+EOUT OUT GND VALUE = {VHI*0.5*(1+ (SGN(V(INP,INN)) - ABS(SGN(V(INP,INN))) + 1))}
+.ENDS
+*$

@@ -1,0 +1,171 @@
+***********************************************************************
+
+*  (C) Copyright 2018 Texas Instruments Incorporated. All rights reserved.
+
+***********************************************************************
+
+***********************************************************************
+
+** This model is designed as an aid for customers of Texas Instruments.
+
+** TI and its licensors and suppliers make no warranties, either expressed
+
+** or implied, with respect to this model, including the warranties of
+
+** merchantability or fitness for a particular purpose. The model is
+
+** provided solely on an "as is" basis. The entire risk as to its quality
+
+** and performance is with the customer
+
+********************************************************************************
+
+*
+
+* Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+
+* Part: CSD88584Q5DC
+
+* Date: 19/10/2018
+
+* Model Type: 
+
+* Simulator: PSPICE
+
+* Simulator Version: 16.2
+
+* EVM Order Number: 
+
+* EVM Users Guide: 
+
+* Datasheet: SLPS483 - May 2014
+
+* Model Version: Final 1.00
+
+*
+
+*****************************************************************************
+
+*
+
+* Updates:
+
+*
+
+* Final 1.00
+
+* Release to Web
+
+*
+
+*****************************************************************************
+
+*
+
+* Model Usage Notes:
+
+*
+
+*****************************************************************************
+* PSpice Model Editor - Version 16.2.0
+*
+*$
+**********************************************************************
+**********************************************************************
+*
+* CSD88584Q5DC	P-Spice Model
+* Technology:	TI NexFET 40/20 n-channel 
+* Model Status:	Model extracted from measurements of typical device
+* Assembly:		QFN5x6 Power Block Q5DC
+*
+* nFET SUBCKT Definition:  1=D  2=G  3=S
+* SUBCKT Definition:  1=GH 2=SHr 3=VSW 4=PGND 5=GL 6=VIN
+**********************************************************************
+.SUBCKT  csd88584q5dc 1 2 3 4 5 6
+XnfetHS   7   8   9  n38504
+XnfetLS   9  10  11  n38504
+RGhs      1  1a	   RcuTEMP 101e-3
+RGls      5  5a	   RcuTEMP 126e-3
+RGSHr     2  2a	   RcuTEMP 46.5e-3
+RSW       3  3a	   RcuTEMP 0.0256e-3
+Rpgnd     4  4a	   RcuTEMP 0.0507e-3
+RVin      6   7	   RcuTEMP 0.010e-3
+LGhs     1a   8	   2.45e-9
+LGls     5a  10	   3.07e-9
+LGSHr    2a   9      1.13e-9
+LSW      3a   9      0.17e-9
+Lpgnd    4a  11	   0.24e-9
+RLpnd    4a  11      2.0
+RLSW     3a   9      2.0
+.MODEL RcuTEMP RES (TC1=4e-3) 
+.ENDS csd88584q5dc
+*$
+**********************************************************************
+.SUBCKT n38504   1 2 3
+.PARAM  ptrc1   6.05e-3  
+.PARAM  ptrc2   1.55e-5
+.PARAM  pAA     12.261249
+.PARAM  pwidth  {pAA/0.8*2}
+.PARAM  perim   {2.1*pwidth}
+.PARAM  perp    {1.01*pwidth}
+.PARAM  pRgate  0.62
+M1   10 11 12 12  NMOS W={pwidth} L=0.65u  PD={perim} PS={perim}
+M2   12 11 12 20  PMOSd W={pwidth} L=0.077u PS={perp} PD={perp}
+DDx  20 10	 DD   {pwidth}
+DBD   8  7	 DBD	{pwidth/2}
+RDB   8  7	 8e10
+CGD0  2  7	 310e-12
+CGS0  2  8	 5.77e-10
+CDS0 10 12	 {4.50e-12 * pwidth}
+DGD  14 10	 DD	{pwidth}
+DDG  14 11	 DD	{pwidth}
+RDC  14 11	 1e10
+RGG   2 11	 {0.80 + pRgate}
+RSS  12  8	 RTEMP 0.12e-3
+RSP   8  3	 RTEMP 0.015e-3
+RSUB  1  7	 RSUBT 0.048e-3
+RDD   7 10	 RTEMP 0.330e-3
+*******************************************************************
+.MODEL  NMOS   NMOS (    LEVEL  = 7             Version = 3.2
++ TNOM   = 27            LINT   = 0.065e-6      CAPMOD = 2
++ TOX    = 5.50e-8       NCH    = 1.710e17      NSUB   = 2.0e15
++ AGS    = 0.05          PVAG   = 0.5           VOFFCV = -0.4
++ U0     = 370		 VSAT   = 5.5e4		b0=-1.2e-5
++ A0     = 1.0           A1     = 0.1           A2     = 1.0
++ UA     = 0.35e-9       UB     = 1.5e-18       VBM    = -15.0
++ UA1    = 4.0e-10       UB1    = 1.0e-18       UTE    = -0.80
++ KT1    = -0.86		 KT2    = 0.022         KT1L   = 1.0e-11
++ DVT0   = 2.50          DVT1   = 0.550	      DVT2   = -0.033
++ ETA0   = 0.05          ETAB   = -0.07         XJ     = 3e-7
++ PDIBLC1= 0.10          PDIBLC2= 0.35          NLX    = 1.743e-7
++ PSCBE1 = 4.0e8         PSCBE2 = 2e-7          PCLM   = 2.0
++ VOFF   = -0.34         NFACTOR= 1.15          JS     = 0
++ DROUT  = 0.65          DSUB   = 0.70          DELTA  = 0.06
++ CJ     = 1e-18         CJSW   = 1e-18         CF     = 0
++ CGSO   = 2e-12		 CGDO   = 4.7e-12       CGBO   = 0   )
+*******************************************************************
+.MODEL  PMOSd   PMOS  (  LEVEL  = 7			Version= 3.2
++ TNOM   = 27            CAPMOD = 0	
++ TOX    = 5.50e-8       NCH    = 1.0e16        VTH0   = -1
++ NOFF   = 2.0           VOFFCV = 0.5
++ K1     = 2.00          K2     = -7e-2
++ U0     = 200		 VSAT   = 5.5e4		b0=-1.2e-5
++ A0     = 1.0           A1     = 0.1           A2     = 1.0
++ KT1    = -0.90		 KT2    = 0.022         KT1L   = 1.0e-11
++ VOFF   = -0.245        NFACTOR= 1.20          JS     = 0
++ CJ     = 1e-18         CJSW   = 1e-18         CF     = 0
++ CGSO   = 0             CGDO   = 0             CGBO   = 0   )
+*******************************************************************
+.MODEL DBD D (CJO=555e-12 VJ=0.97 M=1.035 FC=0.5 TT=3e-09 TNOM=27
++  IS=7.0e-12 N=1.064 RS=10.1e-3 TRS1=3.2e-3 TRS2=-3.0e-6 XTI=3.0 
++  BV=43.5 TBV1=9.0e-4 TBV2=-2.3e-6 NR=3.0 ISR=2.8e-10 )
+*******************************************************************
+.MODEL DD  D (CJO=99e-12 VJ=0.60 M=1.72 IS=1e-18 RS=1 TNOM=27 
++  FC=0.90)
+*******************************************************************
+.MODEL RTEMP RES (TC1={ptrc1} TC2={ptrc2})
+.MODEL RSUBT RES (TC1=2.4e-3)
+*******************************************************************
+.ENDS n38504
+***
+*$

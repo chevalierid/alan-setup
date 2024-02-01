@@ -1,0 +1,270 @@
+* LMH3401
+*****************************************************************************
+* (C) Copyright 2012 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: LMH3401
+* Date: 04/12/2016
+* Model Type: All In One
+* Simulator: TINA9
+* Simulator Version: 9.3.50.40 SF-TI
+* EVM Order Number: N/A 
+* EVM Users Guide: N/A
+* Datasheet: SBOS695a - DECEMBER 2014
+*
+* Model Version: 1.1
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 : Release to Web
+* Version 1.1 : Add internal VCM ckts
+* Version 1.2 : Rev Internal VCM connections
+*
+*****************************************************************************
+* Notes: 
+* The model reflects the following published typical parameters for 5V 
+* operation and 25C ambient temperature:
+* Small signal BW, Slew Rate, 
+* Noise, CMRR, Power-Down & Power-Up Delay, 
+* Max Output Swing, Quiescent Current, 
+* HD2 and HD3 over frequency for a 2Vpp output swing & a 200 ohm load resistor
+*
+* The model may not reflect device behavior for 3.3V operation.
+* The model does not reflect device behavior over power supply variations
+* or temperature variations.
+*  
+*****************************************************************************
+*$
+.SUBCKT LMH3401 OUTP OUTN INP INN CM PD VCC VEE
+VCMOFF       CM CMint 0.027
+G_G2         VMID VEE IOUTN VMID 1
+C_C13         N236178 N304715  5p
+C_C10         N226606 N274703  30p 
+E_E8         OUT 0 OUTPINT OUTNINT 1
+X_U5         N109210 N109423 N226606 N226989 N235577 N236178 P1P P1N DIST 
+X_U7         CNTRL_OUT INP INN VCC VEE VMID PD CONTROL 
+X_S2    SHDN VMID N17901 N15575 DEV_SCH_S2 
+X_U10         GBW_INP_X GBW_INP vnse
+E_E6         N15575 N10715 U2_OUTP U2_OUTN 1
+X_U11         SHDN COMP_IN N501608 VMID COMPARATOR 
+X_H1    N17901 OUTPINT IOUTP VMID DEV_SCH_H1 
+E_E9         N72619 VMID CMint VMID 1
+G_G4         LIMITER_INP LIMITER_INN N227376 N227763 1
+R_R12         GBW_INN_X OUTPINT  200 
+R_R16         N109210 N109423  1k
+C_C11         N226989 N274707  30p 
+C_C4         0 N226608  600p
+E_E1         VMID 0 VCC N00961 0.5
+*E_E3         N10018 VMID OUTP N07972 0.5
+E_E3         N10018 VMID OUTPint N07972 0.5
+R_R33         CNTRL_OUT COMP_IN  1k 
+C_C9         N227763 N227376  100p
+G_G3         LIMITER_INP LIMITER_INN N226608 N226991 1
+X_U8         U2_OUTP U2_OUTN LIMITER_INP LIMITER_INN VMID VCC VEE IOUTP IOUTN LIMITER 
+R_R10         N72619 N65800  500 
+G_G1         VCC VMID IOUTP VMID 1
+R_R23         P1P VMID  1 
+E_E2         N00961 0 0 VEE 1
+C_C5         N226991 0  600p
+R_R24         P1P P1N  2 
+R_R15         VEE PD  16k
+R_R30         0 N274707  1 
+R_R29         0 N274703  1
+C_C8         N226991 N226608  300p 
+R_R11         INN GBW_INN_X  12.5
+C_C6         0 N227376  200p 
+R_R25         N226606 N226608  1
+X_U9         U3_OUTP U3_OUTN LIMITER_INP LIMITER_INN VMID VCC VEE IOUTP IOUTN LIMITER 
+R_R19         LIMITER_INN LIMITER_INP  2 
+E_E7         N10715 N15690 U3_OUTP U3_OUTN 1
+C_C1         VMID CMint  1f
+R_R22         VMID P1N  1
+X_H2    N18027 OUTNINT IOUTN VMID DEV_SCH_H2 
+G_G8         LIMITER_INP LIMITER_INN N304727 N304715 1
+X_U6         GBW_OUTP GBW_OUTN GBW_INP GBW_INN SHDN VMID GBW_SLEW_FDA 
+C_C7         N227763 0  200p
+R_R26         N226989 N226991 1  
+*E_E4         N07972 VMID VMID OUTN 1
+E_E4         N07972 VMID VMID OUTNint 1
+R_R14         GBW_INP_X OUTNINT  200
+G_G7         LIMITER_INP LIMITER_INN N274703 N274707 1
+R_R27         N235577 N227376  1
+R_R18         VMID LIMITER_INP  1
+R_R31         0 N304727  1 TC=0,0 
+E_E5         N10715 VMID N65800 N10018 1e4
+R_R28         N236178 N227763  1 
+V_V1         N501608 VMID 0.5
+R_R32         0 N304715  1
+X_S1    SHDN VMID VCC VEE DEV_SCH_S1 
+C_C3         P1P P1N  40p  TC=0,0 
+C_C14         VMID COMP_IN  12p
+R_R1         VMID CMint  119k TC=0,0 
+C_C2         VMID N65800  0.1p 
+G_G5         LIMITER_INP LIMITER_INN P1N P1P 1
+R_R17         LIMITER_INN VMID  1 
+C_C12         N235577 N304727  5p
+R_R13         INP GBW_INP_X  12.5 
+X_S3    SHDN VMID N18027 N15690 DEV_SCH_S3 
+R_R21         NNN OUTN  10 TC=0,0 
+R_R20         NNP OUTP  10
+VOSP          NNP OUTPINT 0.001
+VOSN          OUTNINT NNN 0.001
+E_E10         GBW_INN VMID GBW_INN_X VMID 1.0005
+G_G6         P1N P1P GBW_OUTP GBW_OUTN 1
+.ENDS
+*$
+.subckt DEV_SCH_S2 1 2 3 4  
+S_S2         3 4 1 2 _S2
+RS_S2         1 2 1G
+.MODEL         _S2 VSWITCH Roff=1e6 Ron=1.0 Voff=0.2V Von=0.8V
+.ends DEV_SCH_S2
+*$
+.subckt DEV_SCH_H1 1 2 3 4  
+H_H1         3 4 VH_H1 1
+VH_H1         1 2 0V
+.ends DEV_SCH_H1
+*$
+.subckt DEV_SCH_H2 1 2 3 4  
+H_H2         3 4 VH_H2 -1
+VH_H2         1 2 0V
+.ends DEV_SCH_H2
+*$
+.subckt DEV_SCH_S1 1 2 3 4  
+S_S1         3 4 1 2 _S1
+RS_S1         1 2 1G
+.MODEL         _S1 VSWITCH Roff=1800 Ron=90 Voff=0.2V Von=0.8V
+.ends DEV_SCH_S1
+*$
+.subckt DEV_SCH_S3 1 2 3 4  
+S_S3         3 4 1 2 _S3
+RS_S3         1 2 1G
+.MODEL         _S3 VSWITCH Roff=1e6 Ron=1.0 Voff=0.2V Von=0.8V
+.ends DEV_SCH_S3
+*$
+** Wrapper definitions for AA legacy support **
+.subckt vnse 1 2 
+.param nlf = 9.5 
+.param flw = 100  
+.param nvr = 1.15
+.param glf={pwr(flw,0.25)*nlf/1164}
+.param rnv={1.184*pwr(nvr,2)}
+.MODEL DVN D KF={PWR(FLW,0.5)/1E11} IS=1.0E-16
+i1 0 7 10e-3
+i2 0 8 10e-3
+d1 7 0 dvn
+d2 8 0 dvn
+e1 3 6 7 8 {glf}
+r1 3 0 1e9
+r2 3 0 1e9
+r3 3 6 1e9
+e2 6 4 5 0 10
+r4 5 0 {rnv}
+r5 5 0 {rnv}
+r6 3 4 1e9
+r7 4 0 1e9
+e3 1 2 3 4 1
+c1 1 0 1e-15
+c2 2 0 1e-15
+c3 1 2 1e-15
+.ends
+*$
+.SUBCKT DIST OUT1P OUT1N OUT2P OUT2N OUT3P OUT3N INP INN
+.PARAM a0 = 0
+.PARAM a1 = 1
+.PARAM a2 = 0.012
+.PARAM a3 = 0.007
+.PARAM LL = -1000
+.PARAM UL = 1000
+Eid DIFF_IN 0 VALUE = {V(INP) - V(INN)}
+E1 OUT1P OUT1N VALUE = {MAX(MIN(a1*V(DIFF_IN),UL),LL)}
+E2 OUT2P OUT2N VALUE = {MAX(MIN(a2*PWR(V(DIFF_IN),2),UL),LL)}
+E3 OUT3P OUT3N VALUE = {MAX(MIN(a3*PWRS(V(DIFF_IN),3),UL),LL)}
+RE1+ OUT1P 0 100
+RE1- 0 OUT1N 100
+RE1d OUT1P OUT1N 200
+RE2+ OUT2P 0 100
+RE2- 0 OUT2N 100
+RE2d OUT2P OUT2N 200
+RE3+ OUT3P 0 100
+RE3- 0 OUT3N 100
+RE3d OUT3P OUT3N 200
+.ENDS
+*$
+.SUBCKT CONTROL OUT INP INN VCC VEE GNDF PD 
+.PARAM VS_MAX = 5.5
+.PARAM VIH = 1.4
+.PARAM VIL = 0.8
+.PARAM VIMID = 1.1
+****
+EVSTEST NVSTEST GNDF VALUE = {IF(V(VCC,VEE) > VS_MAX,0,1)}
+EVICM NVICM GNDF VALUE = {0.5*(V(INP,GNDF)+V(INN,GNDF))}
+EVICMMAXTEST NVICMMAXTEST GNDF VALUE = {IF(V(NVICM,GNDF) > V(VCC,GNDF),0,1)}
+EVICMMINTEST NVICMMINTEST GNDF VALUE = {IF(V(NVICM,GNDF) < V(VEE,GNDF),0,1)}
+EPD NPD GNDF VALUE = {1 - MAX(MIN(1000*(V(PD,VEE)-VIMID),1),0)}
+EOUT OUT GNDF VALUE = {V(NVSTEST,GNDF)*V(NVICMMAXTEST,GNDF)
++*V(NVICMMINTEST,GNDF)*V(NPD,GNDF)}
+.ENDS
+*$
+.SUBCKT COMPARATOR OUT IN REF GNDF
+.PARAM VOUT_MAX = 1
+.PARAM VOUT_MIN = 0
+.PARAM GAIN = 1e4
+EOUT OUT GNDF VALUE = {MAX(MIN(GAIN*V(IN,REF),VOUT_MAX),VOUT_MIN)}
+.ENDS
+*$
+.SUBCKT LIMITER OUTP OUTN INP INN GNDF VCC VEE VCP VCN
+.PARAM VHRP0 = 1
+.PARAM VHRN0 = -1
+.PARAM GAIN = 0.5
+.PARAM ROUT = 100
+.PARAM V_ISC = 0.1
+.PARAM V_IOUT1 = 0.06
+.PARAM ROS = 5
+EZ1 NZ1 GNDF VALUE = {V(VCC,GNDF)}
+EZ2 NZ2 GNDF VALUE = {V(VCC,GNDF)-VHRP0}
+EHRK NHRK GNDF VALUE = {((V(VCC,GNDF)-VHRP0)/(V_ISC-V_IOUT1))-ROS}
+EHRP VHRP GNDF VALUE = {MAX(MIN(VHRP0+(V(VCP,GNDF)-V_IOUT1)*V(NHRK,GNDF),V(VCC,GNDF)),VHRP0)}
+EHRN VHRN GNDF VALUE = {MAX(MIN(VHRN0+(V(VCN,GNDF)+V_IOUT1)*V(NHRK,GNDF),VHRN0),V(VEE,GNDF))}
+*EHRN VHRN GNDF VALUE = {VHRN0+(V(VCN,GNDF)+V_IOUT1)*V(NHRK,GNDF)}
+EUL NUL GNDF VALUE = {V(VCC,GNDF) - V(VHRP,GNDF)}
+ELL NLL GNDF VALUE = {V(VEE,GNDF) - V(VHRN,GNDF)}
+RVCP_TERM VCP GNDF 1k
+RVCN_TERM VCN GNDF 1k
+EOUT OUTP OUTN VALUE = {MIN(MAX(GAIN*V(INP,INN),V(NLL,GNDF)),V(NUL,GNDF))}
+ROUT1+ OUTP GNDF {ROUT}
+ROUT1- OUTN GNDF {ROUT}
+.ENDS
+*$
+.SUBCKT GBW_SLEW_FDA OUTP OUTN INP INN SHDN GNDF 
+.PARAM Aol = 75  
+.PARAM GBW = 30e9  
+.PARAM SRP = 20e9  
+.PARAM SRN = 20e9 
+.PARAM IT = 0.001
+.PARAM PI = 3.141592
+.PARAM IP = {IT*MAX(1,SRP/SRN)}
+.PARAM IN = {IT*MIN(-1,-SRN/SRP)}
+.PARAM CC = {IT*MAX(1/SRP,1/SRN)}
+.PARAM FP = {GBW/PWR(10,AOL/20)}
+.PARAM RC = {1/(2*PI*CC*FP)}
+.PARAM GC = {PWR(10,AOL/20)/RC}
+* Loading the VO pin with an external resistor will change the AOL.
+G1p GNDF OUTP VALUE = {MAX(MIN(GC*V(SHDN,GNDF)*V(INP,INN),IP),IN)}
+G1n OUTN GNDF VALUE = {MAX(MIN(GC*V(SHDN,GNDF)*V(INP,INN),IP),IN)}
+RG1p OUTP GNDF {0.5*RC}
+Cg1dp OUTP GNDF {2*CC} IC=0
+RG1n OUTN GNDF {0.5*RC}
+Cg1dn OUTN GNDF {2*CC} IC=0
+.ENDS
+*$
+

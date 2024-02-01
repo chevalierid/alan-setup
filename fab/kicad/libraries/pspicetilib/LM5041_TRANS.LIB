@@ -1,0 +1,373 @@
+* PSpice Model Editor - Version 16.2.0
+*$
+* LM5041 
+*****************************************************************************
+*  (C) Copyright 2013 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: LM5041
+* Date: 10APR2013
+* Model Type: Transient
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: LM5041EVAL 
+* EVM Users Guide: SNVA074–May 2004
+* Datasheet: SNVS248C –MAY 2004–REVISED MAY 2004
+*
+* Model Version: Final 1.00
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*****************************************************************************
+.SUBCKT LM5041_TRAN REF CS FB HD LD RT SS PGND AGND COMP 
++ VCC VIN PULL PUSH TIME UVLO
+R_U1_R13         PGND U1_COMP2  50k TC=0,0 
+G_U1_ABMII3         COMP PGND VALUE { V(U1_VFB_CTL)*1.38m    }
+E_U1_E8         U1_N56910 PGND VALUE { IF(V(OSC_MAX)>2.5 & V(U1_OSC_P)<2.5, 5,
++  0) }
+C_U1_C13         U1_OSC_SLOPE PGND  3p IC=0 TC=0,0 
+C_U1_C2         U1_VCC5 PGND  3p IC=0.77 TC=0,0 
+R_U1_R2         U1_VCC5 PGND  100K TC=0,0 
+G_U1_ABMII1         REF UVLO VALUE { IF(V(U1_UVLO_CTL) >2.5, 20u, 0)    }
+V_U1_V4         COMP U1_N15998 1.4
+D_U1_D7         U1_VMIN_GND COMP D5K 
+R_U1_R7         U1_N056870 U1_UVLO_CTL  500 TC=0,0 
+E_U1_E1         U1_N000480 PGND TABLE { V(VIN, PGND) } 
++ ( (0,0.77) (4.7,0.77) (11.7, 9.6) (20,9.67) )
+R_U1_R21         U1_N570380 U1_OSC_MAXDUTY  500 TC=0,0 
+R_U1_R28         U1_N93602 U1_CTL_0P6  500 TC=0,0 
+R_U1_R20         U1_N56910 U1_OSC_PULSE_50N  500 TC=0,0 
+G_U1_ABMI3         PGND SS VALUE { V(REF)*2u    }
+R_U1_R27         U1_N93133 U1_CTL_0P5  579.71 TC=0,0 
+R_U1_R3         U1_VCC5 U1_VCC4  1 TC=0,0 
+C_U1_C12         U1_OSC_MAXDUTY PGND  3p IC=0 TC=0,0 
+R_U1_R15         PGND U1_VFB_CTL  1 TC=0,0 
+R_U1_R11         U1_N31226 COMP  5k TC=0,0 
+C_U1_C1         U1_VCC1 PGND  3p  TC=0,0 
+C_U1_C5         U1_UVLO_CTL PGND  3p IC=0.77 TC=0,0 
+C_U1_C11         U1_OSC_PULSE_50N PGND  3p IC=0 TC=0,0 
+X_U1_U1         U1_SET U1_RESET U1_Q srlatch1 
+E_U1_E16         U1_SET PGND VALUE { IF(V(OSC_MAX,PGND)>2.5, 5, 0) }
+E_U1_ABM2         U1_N57266 0 VALUE { IF(V(REF)>4.5,
++  (2.5*sin(((6.283185*I(V_U1_VRT))/(364p+235n*I(V_U1_VRT)))*TIME))+2.5, 0)    }
+C_U1_C18         U1_CTL_0P6 PGND  3p IC=0 TC=0,0 
+G_U1_ABMII4         U1_VFB_CTL PGND VALUE { IF(V(REF)>4.5, -(V(FB)-0.75)*40,
++  0)    }
+D_U1_D1         U1_VCC4 U1_N029840 D5K 
+G_U1_ABMII2         U1_VCC_TH PGND VALUE { IF(V(U1_VCC_CTL) >2.5, 37u, 0)    }
+V_U1_V3         U1_VMIN_GND PGND 0.77
+R_U1_R18         U1_OSC_P PGND  1000 TC=0,0 
+C_U1_C17         U1_CTL_0P5 PGND  100p IC=0 TC=0,0 
+R_U1_R1         U1_N000480 U1_VCC1  500 TC=0,0 
+E_U1_ABM5         U1_N1307241 0 VALUE { IF( V(U1_V_U_CTL)<2.5, 5,
++  IF(V(OSC_MAX)<2.5,if( V(U1_Q)>2.5, 0, 5), 5))    }
+E_U1_E12         U1_N887900 PGND VALUE { IF(V(SS, PGND)>0.45, 5, 0) }
+D_U1_D2         U1_VMIN_GND VCC D5K 
+E_U1_ABM1         U1_N107121 0 VALUE { IF( V(U1_UVLO_CTL)>2.5 &
++  V(U1_VCC_CTL)>2.5, 5, 0)    }
+R_U1_R16         U1_N57266 U1_OSC  500 TC=0,0 
+V_U1_V2         U1_N31226 PGND 5
+E_U1_ABM4         U1_N1232641 0 VALUE { IF( V(U1_V_U_CTL)<2.5, 0,
++  IF(V(U1_Q)>2.5 & V(OSC_MAX)<2.5, 5, 0))    }
+E_U1_E5         U1_N17799 PGND VALUE { V(SS, PGND)-0.2 }
+R_U1_R34         U1_OSC_M PGND  1000 TC=0,0 
+R_U1_R25         U1_N887900 U1_ENABLE  500 TC=0,0 
+C_U1_C3         VCC PGND  1n  TC=0,0 
+V_U1_VRT         U1_N57012 RT 0Vdc
+E_U1_E15         U1_N93602 PGND VALUE { IF(V(U1_CS_SLOPE_COMP, PGND)>0.6, 5, 0)
++  }
+E_U1_E13         U1_N91291 PGND VALUE { IF(V(U1_CS_SLOPE_COMP)>V(U1_COMP2), 5,
++  0) }
+R_U1_R26         U1_N91291 U1_CTL_PWM  2.89855k TC=0,0 
+R_U1_R10         U1_N107121 U1_V_U_CTL  500 TC=0,0 
+C_U1_C8         U1_OSC PGND  3p IC=0 TC=0,0 
+E_U1_E4         U1_N078530 PGND VALUE { IF(V(VCC)>V( U1_VCC_TH), 5, 0) }
+E_U1_E14         U1_N93133 PGND VALUE { IF(V(U1_CS_SLOPE_COMP,PGND)>0.5, 5, 0)
++  }
+T_U1_T2         OSC_MAX PGND U1_OSC_P PGND Z0=1000 TD=50n  
+E_U1_E3         U1_N056870 PGND VALUE { IF(V(UVLO, PGND)>2.5, 5, 0) }
+G_U1_G1         PGND U1_VCC5 TABLE { V(U1_VCC1, U1_VCC4) } 
++ ( (0,0) (0.3,0.02) )
+R_U1_R33         U1_N1307241 LD  500 TC=0,0 
+E_U1_ABM3         U1_N1032971 0 VALUE { IF( V(U1_CTL_PWM)>2.5 |
++  V(U1_CTL_0P5)>2.5, 5, 0)    }
+G_U1_ABMI1         PGND U1_CS_SLOPE VALUE { I(V_U1_VRT)*1.292u    }
+D_U1_D5         COMP U1_N17799 D5K 
+R_U1_R12         U1_COMP2 U1_N15998  100k TC=0,0 
+V_U1_V1         U1_N09060 PGND 8.725
+D_U1_D9         SS U1_VMAX D5K 
+R_U1_R8         U1_N078530 U1_VCC_CTL  500 TC=0,0 
+E_U1_E9         U1_N570380 PGND VALUE { IF(V(OSC_MAX, PGND)<2.5, 5, 0) }
+E_U1_E7         U1_N56820 PGND VALUE { IF(V(U1_OSC)>2.5 & V(U1_OSC_M)<2.5, 5,
++  0) }
+C_U1_C24         LD PGND  3p IC=0 TC=0,0 
+C_U1_C20         COMP PGND  0.03n  TC=0,0 
+C_U1_C14         U1_CS_SLOPE PGND  10p  TC=0,0 
+C_U1_C15         U1_ENABLE PGND  3p IC=0 TC=0,0 
+C_U1_C16         U1_CTL_PWM PGND  10p IC=0 TC=0,0 
+G_U1_ABMI2         PGND U1_CS_SLOPE_COMP VALUE { V(U1_CS_SLOPE)    }
+T_U1_T3         U1_OSC PGND U1_OSC_M PGND Z0=1000 TD=240n  
+C_U1_C7         U1_V_U_CTL PGND  3p IC=0 TC=0,0 
+R_U1_R29         U1_N1032971 U1_RESET  500 TC=0,0 
+R_U1_R4         U1_N029840 VCC  1 TC=0,0 
+R_U1_R23         CS U1_CS_SLOPE_COMP  2k TC=0,0 
+D_U1_D8         U1_VMIN_GND U1_VFB_CTL D5K 
+X_U1_S3    U1_CTL_0P6 PGND SS PGND SCHEMATIC1_U1_S3 
+C_U1_C9         U1_VFB_CTL PGND  10u  TC=0,0 
+R_U1_R6         U1_N02331 REF  500 TC=0,0 
+E_U1_E10         U1_N565860 PGND VALUE { IF(V(U1_OSC_PULSE_50N)<2.5 &
++  V(OSC_MAX)<2.5, 0, 5) }
+C_U1_C6         U1_VCC_CTL PGND  3p IC=0 TC=0,0 
+R_U1_R14         FB PGND  100k TC=0,0 
+X_U1_S1    U1_OSC_SLOPE PGND U1_CS_SLOPE PGND SCHEMATIC1_U1_S1 
+C_U1_C19         U1_RESET PGND  3p IC=0 TC=0,0 
+E_U1_E6         U1_N57012 PGND TABLE { V(REF, PGND) } 
++ ( (0,0) (2,2) )
+R_U1_R19         U1_N56820 OSC_MAX  500 TC=0,0 
+R_U1_R32         U1_N1232641 HD  500 TC=0,0 
+C_U1_C4         REF PGND  3p IC=0.77 TC=0,0 
+E_U1_E2         U1_N02331 PGND TABLE { V(VCC, PGND) } 
++ ( (0,0) (5,0) (7,3) (9,5) )
+D_U1_D6         U1_VFB_CTL U1_VMAX D5K 
+X_U1_S2    U1_OSC_PULSE_50N PGND CS PGND SCHEMATIC1_U1_S2 
+C_U1_C23         HD PGND  3p IC=0 TC=0,0 
+C_U1_C10         OSC_MAX PGND  3p IC=0 TC=0,0 
+E_U1_E11         U1_VMAX PGND VALUE { V(REF, PGND) }
+R_U1_R9         U1_N09060 U1_VCC_TH  50k TC=0,0 
+R_U1_R22         U1_N565860 U1_OSC_SLOPE  500 TC=0,0 
+X_U3         VCC REF OSC_MAX PUSH PULL TIME PUSHPULL 
+.ENDS LM5041_TRAN
+*$
+.subckt SCHEMATIC1_U1_S3 1 2 3 4  
+S_U1_S3         3 4 1 2 _U1_S3
+RS_U1_S3         1 2 1G
+.MODEL         _U1_S3 VSWITCH Roff=100e6 Ron=1.0 Voff=2.49 Von=2.51V
+.ends SCHEMATIC1_U1_S3
+*$
+.subckt SCHEMATIC1_U1_S1 1 2 3 4  
+S_U1_S1         3 4 1 2 _U1_S1
+RS_U1_S1         1 2 1G
+.MODEL         _U1_S1 VSWITCH Roff=100e6 Ron=1.0 Voff=2.49 Von=2.51V
+.ends SCHEMATIC1_U1_S1
+*$
+.subckt SCHEMATIC1_U1_S2 1 2 3 4  
+S_U1_S2         3 4 1 2 _U1_S2
+RS_U1_S2         1 2 1G
+.MODEL         _U1_S2 VSWITCH Roff=100e6 Ron=1.0 Voff=2.49 Von=2.51V
+.ends SCHEMATIC1_U1_S2
+*$
+.SUBCKT PUSHPULL VCC REF OSC_MAXDUTY PUSH PULL TIME
+***** PUSH-PULL *****
+*EINV_OSC INV_OSC 0 VALUE={V(REF)-V(OSC)}
+***** Divide by 2, Clock for push pull *****
+*XDFF OSC_1 QB OSC QB DFF
+XDFF OSC_1 QB OSC_MAXDUTY QB DFF
+EOSC5_INV OSC5_INV 0 VALUE={V(REF)-V(OSC_1)}
+*rosc5_inv osc51_inv osc5_inv 500
+*cosc5_inv osc5_inv 0 3p
+***** supply to driver *****
+Evcc1 vccd 0 VALUE={V(VCC)}
+*rvcc1dr vccd_1 vccd 500
+*cvccldr vccd 0 3p
+*EHIGH HIGH 0 VALUE={IF(V(OSC_1)>2.5 & V(OUTH)>2.5, 5, 0)}
+XDEAD OSC_1 OSC5_INV OUTH OUTL TIME REF DEAD_OVER_TIME
+*XHSD HIGH PUSH VCCD 0 HSD
+RDRV1 OUTH OUTH_DEL 500
+CDRV1 OUTH_DEL 0 3p
+*XHSD OUTH PUSH VCCD 0 HSD
+XHSD12 OUTH_DEL PUSH VCCD 0 HSD1
+*ELOW LOW 0 VALUE={IF(V(OSC5_INV)>2.5 & V(OUTL)>2.5, 5, 0)}
+*XLSD LOW PULL VCCD 0 LSD
+*XLSD OUTL PULL VCCD 0 LSD
+XLSD12 OUTL_DEL PULL VCCD 0 LSD1
+RDRV2 OUTL OUTL_DEL 500
+CDRV2 OUTL_DEL 0 3p
+.ENDS
+*$
+.SUBCKT DEAD_OVER_TIME PH PL HIGHDRIVER LOWDRIVER TIME VREF
+v1 1 0 dc=2.5
+rlimit 1 101 1m
+vdummy 101 TIME 
+*** CTL PH , CTL INPUT PL ***
+G1 0 PH1 VALUE={10m/((3.69m*V(TIME)*0.833)/-I(VDUMMY)+21)}
+C1 PH1 0 4P
+S1 PH1 0 PL 0 _SWITCH
+.MODEL _SWITCH VSWITCH RON=1 ROFF=100MEG VON=2.51 VOFF=2.41
+E1 OUTH11 0 VALUE={IF(V(PH1)>2.5, 5, 0)}
+RX3 OUTH11 OUTH1 1
+CX3 OUTH1 0 1n
+*** CTL PL , CTL INPUT PH***
+G2 0 PH2 VALUE={10m/((3.69m*V(TIME))/-I(VDUMMY)+21)}
+C2 PH2 0 4P
+S2 PH2 0 PH 0 _SWITCH
+E2 OUTL11 0 VALUE={IF(V(PH2)>2.5, 5, 0)}
+RX4 OUTL11 OUTL1 1
+CX4 OUTL1 0 1n
+*** CTL PH , CTL INPUT OVER PL ***
+G3 0 PH3 VALUE={10m/((3.66m*V(TIME))/I(VDUMMY)+7)}
+C3 PH3 0 4P
+S3 PH3 0 PL 0 _SWITCH1
+.MODEL _SWITCH1 VSWITCH RON=1 ROFF=100MEG VON=2.49 VOFF=2.51
+E3 OUTH21 0 VALUE={IF(V(PH3)<2.5, 5, 0)}
+RX1 OUTH21 OUTH2 1
+CX1 OUTH2 0 1n
+*** CTL PL , CTL INPUT OVER PH***
+G4 0 PH4 VALUE={10m/((3.66m*V(TIME))/I(VDUMMY)+7)}
+C4 PH4 0 4P
+S4 PH4 0 PH 0 _SWITCH1
+E4 OUTL21 0 VALUE={IF(V(PH4)<2.5, 5, 0)}
+RX2 OUTL21 OUTL2 1
+CX2 OUTL2 0 1n
+E9 HIGHDRIVER 0 VALUE={IF(V(VREF)>3,IF(I(VDUMMY)>0, IF( V(PH)>2.5 | 
++ V(OUTH2)>2.5, 5, 0), IF( V(PH)>2.5 & V(OUTH1)>2.5, 5, 0)),0)}
+*r91 HIGHDRIVER1 HIGHDRIVER 500
+*c91 HIGHDRIVER 0 3p
+E10 LOWDRIVER 0 VALUE={IF(V(VREF)>3,IF(I(VDUMMY)>0, IF( V(PL)>2.5 | 
++ V(OUTL2)>2.5, 5, 0),IF( V(PL)>2.5 & V(OUTL1)>2.5, 5, 0)),0)}
+*r93 lowDRIVER1 lowDRIVER 500
+*c93 lowDRIVER 0 3p
+.ENDS
+*$
+.subckt hsd1 in ho vdd_hs vss_hs
+*xinv in ho_inv vdd_hs vss_hs inv 
+e12 HO_INV 0 value ={if(v(IN)>2.5,0,v(vdd_HS,vss_HS))}
+*XINV IN HO_INV INV_BASIC_GEN 
+*E1 HO_INV 0 VALUE={IF(V(IN)>2.5,0,V(VDD_HS,VSS_HS))}
+r1 ho_inv ho_inv1 500
+c1 ho_inv1 0 3p
+m1 ho ho_inv1 vdd_hs vdd_hs _m1
+m2 ho ho_inv1 vss_hs vss_hs _m2
+.model _m1 pmos w=1100u l=0.6u
+.model _m2 nmos w=1100u l=0.6u
+*epush ho1 0 value={if(v(in)>2.5, v(vdd_hs), v(vss_hs))}
+*rpush ho1 ho 6
+*rgig1 ho 0 10meg
+.ends
+*$
+.subckt lsd1 in lo vdd_ls vss_ls
+*xinv in lo_inv vdd_ls vss_ls inv 
+*e12 LO_INV 0 value ={if(v(IN)>2.5,0,v(vdd_LS,vss_LS))}
+*r1 lo_inv lo_inv1 500
+*c1 lo_inv1 0 3p
+*XINV IN LO_INV INV_BASIC_GEN 
+*m1 lo lo_inv vdd_ls vdd_ls _m1
+*m2 lo lo_inv vss_ls vss_ls _m2
+.model _m1 pmos w=1100u l=0.6u
+.model _m2 nmos w=1100u l=0.6u   
+rvdd_ls vdd_ls 0 100k
+epull lo1 0 value={if(v(in)>2.5, v(vdd_ls), v(vss_ls))}
+rpull lo1 lo 6
+rgig1 lo 0 10meg
+.ends
+*$
+.SUBCKT srlatch1 6 8 2
+*             S R Q Q\
+RD2   20 22 500
+CD2   22 0 5p IC=0
+E2 2 0 VALUE={IF(V(22)>2.5,5,0)}
+EQ    20 0 VALUE={IF(v(6)>2.5 & v(8)<2.5, 5, if(v(8)>2.5 & v(6)<2.5,
++  0 ,IF(v(6)>2.5 & v(8)>2.5, 0,  v(22))))}
+.ENDS 
+*$
+.SUBCKT DFF Q QB CLK D PARAMS: VDD=5 VSS=0 VTHRESH=2.5 
+R1 CLK CLK1 250
+C1 CLK1 0 43.37p
+ECLKINT CLK2 0 VALUE={IF(V(CLK)>2.5 & V(CLK1)<2.5, 5, 0)}
+R2 CLK2 CLKINT 500
+C2 CLKINT 0 3p
+GQ 0 Qint VALUE = {IF(V(CLKint)> 2.5, IF(V(D)> 2.5,1m,-1m),0)}
+CQint Qint 0 2p
+RQint Qint 0 1000MEG
+D_D10 Qint MY5 DD2
+V1 MY5 0 5
+D_D11 0 Qint DD2
+EQ1 Q1 0 VALUE={IF(V(QINT)>2.5, 5, 0)}
+RQ1 Q1 Q 1k
+CQ1 Q 0 36.23p
+EQB QB1 0 VALUE={IF(V(Q)<2.5, 5, 0)}
+RQB1 QB1 QB 500
+CQB1 QB 0 3p
+.MODEL DD2 D
+.ENDS DFF
+*$
+.MODEL D_D1 D ( IS=1e-15 TT=10p Rs=1m N=.1  )
+
+*$
+.SUBCKT INV_DELAY_BASIC_GEN A  Y PARAMS: VDD=5 VSS=0 VTHRESH=2.5 DELAY = 15n 
+E_ABMGATE1    YINT1 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT1 YINT2 1
+CINT YINT2 0 {DELAY*1.3}
+E_ABMGATE2    YINT3 0 VALUE {{IF(V(YINT2) > {VTHRESH} , 
++ {VSS},{VDD})}}
+RINT2 YINT3 Y 1
+CINT2 Y 0 1n
+.ENDS INV_DELAY_BASIC_GEN
+*$
+.SUBCKT BUF_DELAY_BASIC_GEN A  Y PARAMS: VDD=5 VSS=0 VTHRESH=2.5 DELAY = 20n 
+E_ABMGATE1    YINT1 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT1 YINT2 1
+CINT YINT2 0 {DELAY*1.3}
+E_ABMGATE2    Yint3 0 VALUE {{IF(V(YINT2) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT2 YINT3 Y 500
+CINT2 Y 0 2p
+.ENDS BUF_DELAY_BASIC_GEN
+*$
+.SUBCKT AND2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS AND2_BASIC_GEN
+*$
+.SUBCKT RISING_ONESHOT IN OUT PARAMS: PULSE=50n VDD=5 VSS=0 VTHRESH=2.5
+D_D1         INT IN DD 
+C_C1         0 INT  1n  
+X_U22         INT IN_B_DELAYED INV_BASIC_GEN PARAMS: VDD={VDD} VSS={VSS}
++  VTHRESH={VTHRESH}
+R_R1         IN INT  {PULSE/(0.693 * 1E-9)}  
+X_U1         IN IN_B_DELAYED OUT AND2_BASIC_GEN PARAMS: VDD={VDD} VSS={VSS}
++  VTHRESH={VTHRESH}
+.MODEL DD D( IS=1F N=0.01 TT = 10p )
+.ENDS RISING_ONESHOT
+*$
+.SUBCKT INV_BASIC_GEN A  Y PARAMS: VDD=5 VSS=0 VTHRESH=2.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS INV_BASIC_GEN
+*$
+.MODEL Dcomp D IS=1E-20 CJO=0 VJ=1.1
+*$
+.MODEL D5K D IS=1E-14 CJO=0 VJ=1
+*$
+.SUBCKT TX2P2S P1D P1 P2D P2 S1D S1 S2D S2 PARAMS: NP=8 NS=1
+RP1 P1 P11 31.25m
+LP1 P1D1 P11 0.625m
+LPL1 P1D P1D1 0.45u
+RP2 P2D P2D1 31.25m
+LP2 P2D1 P22 0.625m
+LPL2 P22 P2 0.45u
+LS1 S1D S11 9.375u
+RS1 S11 S1 0.455m
+LS2 S22 S2 9.375u
+RS2 S22 S2D 0.455m
+K1 LP1 LP2 LS1 LS2 1
+.ENDS TX2P2S
+*$
+.MODEL Dnom D IS=160n RS=35m N=1.1 BV=100 IBV=2m CJO=2p 
++ VJ=0.7 M=0.33 TT=1n EG=0.69 XTI=2
+*$

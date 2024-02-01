@@ -1,0 +1,106 @@
+* CSD25484F4
+*****************************************************************************
+* (C) Copyright 2020 Texas Instruments Incorporated. All rights reserved.   
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+**
+*
+* Released by: Texas Instruments Inc.
+* Part: CSD25484F4
+* Date: 02/13/2020
+* Model Type:  TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.6.0
+* Datasheet: SLPS551A – MAY 2015 – REVISED AUGUST 2017
+*
+* Model Version: 1.20
+*
+* Update: added ESD diode
+*
+* PSpice Model Editor - Version 16.6.0
+*$
+**********************************************************************
+**********************************************************************
+*                                                                    *
+*  CSD25484F4  -  P-Channel 20/12 FemtoFET  die thk = 8mil                           *
+*                                                                    *
+**********************************************************************
+**********************************************************************
+*   PSpice Model "CSD25484F4"  - case NOM typical
+*
+*   OrCAD PSpice MOS model level 7 = BSIM3 v3.3.2
+*      model updated 12/27/2017, gd
+*
+**********************************************************************
+* SUBCKT Definition:  1=D  2=G  3=S
+**********************************************************************
+.SUBCKT CSD25484F4  1 2 3
+.param  refAA	1.71701
+.param  pitch	1.53
+.param  AA	0.3045
+.PARAM  pWidth	{AA/pitch}
+.PARAM  perim	{pWidth*2.1}
+.PARAM  pSclf	{AA/refAA}
+M1  10 11 12 12 PMOS W={pWidth} L=0.45u PD={perim} PS={perim}
+DBD   7  8	DBD	{pSclf}
+RBD   7  8	5E10
+CBD   7  8	12e-12
+DGD  11 13	DD	{pSclf}
+DDG  10 13	DD	{pSclf}
+CGS   2  8	2E-12
+RG1	2 22	13
+CG1  22  9	5e-12
+RG2  22 23	13
+CG2  23  9	5e-12
+RGG  23 11	9
+RSB  12  9	RTEMP {0.35E-3/pSclf}
+RSS   9  8  RTEMP {6.8e-3/pSclf}
+RSX   8  3	{0.12E-3/pSclf}
+RDD   7 10  RTEMP {1.1e-3/pSclf}
+RDX   1  7	{0.25E-3/pSclf}
+DESD	2  8	ZenerD
+******************************************************************* 
+.MODEL  PMOS   PMOS (    LEVEL   = 7             Version = 3.2
++ TNOM    = 27           CAPMOD  = 2             LINT   = 0.02e-6
++ TOX     = 1.75E-8      NCH     = 1.365e17      NSUB   = 5.0e15
++ A0      = 1.0          A1      = 0.0           A2     = 1.0
++ UA      = 7.3e-9	 UB      = 2E-19         VBM    = -5
++ UA1     = 1.2e-9       UB1     = -2.5e-18      UTE    = -1.40
++ KT1     = -0.59        KT2     = 0.02          KT1L   = 1e-14
++ Dvt0    = 2.3          Dvt1    = 0.55          Dvt2   = -0.03
++ PDIBLC1 = 0.15         PDIBLC2 = 0.025         B0     = 0.02
++ VOFF    = -0.25        NFACTOR = 1.67          NLX    = 1.70e-7
++ ETA0    = 0.03         ETAB    = -0.05         XJ     = 6.0e-7
++ PSCBE1  = 8.0e8        PSCBE2  = 1.0e-3		 U0	  = 285
++ DELTA   = 0.10         DSUB    = 0.9           DROUT  = 0.7
++ CJ      = 1e-18        CJSW    = 1e-18         CF     = 0
++ VOFFCV  = 0.4
++ CGSO    = 132e-12      CGDO    = 3e-12         CGBO   = 0 )
+******************************************************************* 
+.MODEL DBD D ( TNOM = 27
++ CJO= 746E-12	VJ = 0.99	M  = 0.325	 FC = 0.5	TT = 2E-9 
++ RS = 5.25e-3	TRS1=3.0e-3	 TRS2= 1e-7
++ IS = 1.7e-11	N  = 1.12	XTI = 3.5	
++ BV = 21.85     TBV1=6.35e-4	TBV2=-3.5e-7  NR = 3  ISR = 1.15e-8 )
+*******************************************************************
+.MODEL DD D (CJO=284E-12 VJ=0.89 M=0.905 FC=0.5 IS=1E-14 RS=20)
+.MODEL ZenerD D ( TNOM = 27
++ CJO = 35e-12	VJ = 0.7	M  = 0.45	 RS = 0.18  TRS1 = -2e-3
++ FC  =  0.5	TT = 5e-10	IS = 4.47e-15  N = 1.0365  
++ XTI  = 3.5	BV  = 13.43 )
+******************************************************************* 
+.MODEL RTEMP RES (TC1=1.55E-3  TC2=1.45E-6)
+******************************************************************* 
+.ENDS CSD25484F4
+*$

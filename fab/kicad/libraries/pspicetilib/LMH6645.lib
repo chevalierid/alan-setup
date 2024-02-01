@@ -1,0 +1,123 @@
+*//////////////////////////////////////////////////////////////////////
+* (C) National Semiconductor, Corporation.
+* Models developed and under copyright by:
+* National Semiconductor, Corporation.  
+*/////////////////////////////////////////////////////////////////////
+* Legal Notice:  
+* The model may be copied, and distributed without any modifications;
+* however, reselling or licensing the material is illegal.
+* We reserve the right to make changes to the model without prior notice. 
+* Pspice Models are provided "AS IS, WITH NO WARRANTY OF ANY KIND" 
+*////////////////////////////////////////////////////////////////////
+*BEGIN MODEL LMH6645
+*PINOUT ORDER  -IN +IN V+ V- OUT
+*PINOUT ORDER    4  3   5  2  1
+.SUBCKT LMH6645 4 3 5 2 1
+Q1 6 7 8 QIN
+Q2 9 10 11 QIN
+Q3 12 13 14 QN
+Q4 13 13 14 QN
+Q5 15 10 16 QIP
+Q6 17 18 19 QIP
+Q7 20 21 22 QP
+Q12 23 24 25 QP
+Q13 26 26 22 QP
+Q14 27 27 26 QP
+Q15 25 28 22 QP
+Q16 13 29 20 QP
+Q17 1 25 30 QOP
+Q18 31 31 32 QN
+Q19 32 32 33 QN
+Q20 23 34 14 QN
+Q21 1 23 35 QON
+Q22 25 31 23 QN
+R1 12 8 125
+R2 12 11 125
+R3 19 20 125
+R4 16 20 125
+R5 36 37 200
+R7 6 22 300
+R8 14 15 300
+R9 14 17 300
+R10 34 35 100
+R11 28 30 100
+R12 30 5 11.2
+R13 2 35 12
+V3 22 29 1.4
+I1 21 22 4E-6
+I4 24 14 0.85E-3
+I5 22 31 0.85E-3
+I6 22 25 2E-3
+I7 23 14 2E-3
+G1 23 14 38 39 -0.4E-3
+R15 41 10 200
+R16 38 42 50
+C2 42 1 10E-12
+R17 24 27 11.2
+R18 14 33 12
+Q24 43 43 7 QP
+Q25 10 10 43 QP
+Q26 7 7 44 QN
+Q27 44 44 10 QN
+D1 7 22 D1
+D2 10 22 D1
+D3 14 18 D1
+D4 14 10 D1
+D5 1 5 D1
+D6 2 1 D1
+V5 7 18 -0.35E-3
+V6 37 18 -0.1E-3
+D7 45 0 DIN
+D8 46 0 DIN
+I8 0 45 0.1E-3
+I9 0 46 0.1E-3
+E2 14 0 2 0 1
+E3 22 0 5 0 1
+C4 36 0 2E-12
+C5 4 0 2E-12
+D9 47 0 DVN
+D10 48 0 DVN
+I10 0 47 0.1E-3
+I11 0 48 0.1E-3
+E4 41 4 47 48 7.8
+G2 36 41 45 46 2.8E-4
+I12 2 5 0.115E-3
+R22 2 5 97.3E3
+E5 49 0 22 0 1
+E6 50 0 14 0 1
+E7 51 0 52 0 1
+R30 49 53 1E6
+R31 50 54 1E6
+R32 51 55 1E6
+R33 0 53 100
+R34 0 54 100
+R35 0 55 10E3
+E10 56 3 55 0 8E-4
+R36 41 52 1E9
+R37 52 36 1E9
+C6 49 53 1E-12
+C7 50 54 3E-12
+C8 51 55 3E-12
+R6 9 22 300
+E11 57 56 54 0 0.15
+E12 36 57 53 0 0.05
+G3 38 39 9 6 2E-3
+G4 38 39 15 17 2E-3
+R40 38 39 1E6
+E14 39 14 22 14 0.5
+D11 38 22 D1
+D12 14 38 D1
+C9 9 6 3E-12
+C10 15 17 3E-12
+.MODEL D1 D
+.MODEL QN NPN
+.MODEL QP PNP
+.MODEL QON NPN VAF=40 RC=2 RE=3 IKF=0.1
+.MODEL QOP PNP VAF=40 RC=2 RE=3 IKF=0.1
+.MODEL QIN NPN KF=1.25E-15 BF=333
+.MODEL QIP PNP KF=1.25E-15 BF=333
+.MODEL DVN D KF=1.85E-16
+.MODEL DIN D KF=8E-17
+.ENDS
+*END MODEL LMH6645
+

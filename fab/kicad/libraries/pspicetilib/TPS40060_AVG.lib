@@ -1,0 +1,97 @@
+*$
+* TPS40060
+*****************************************************************************
+* (C) Copyright 2009 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.                                             
+** TI and its licensors and suppliers make no warranties, either expressed                                           
+** or implied, with respect to this model, including the warranties of                                                    
+** merchantability or fitness for a particular purpose. The model is                                                      
+** provided solely on an "as is" basis. The entire risk as to its quality                                                    
+** and performance is with the customer                                                                  
+*****************************************************************************
+*
+* This model was developed for Texas Instruments Incorporated by:
+*   AEi Systems, LLC
+*   5777 W. Century Blvd., Suite 876
+*   Los Angeles, California  90045
+*
+* This model is subject to change without notice. Neither Texas Instruments Incorporated 
+* nor AEi Systems is responsible for updating this model.
+* For more information regarding modeling services, model libraries and simulation 
+* products, please call AEi Systems at (310) 216-1144, or contact AEi Systems by email: 
+* info@AENG.com. Or visit AEi Systems on the web at http://www.AENG.com.
+*
+*****************************************************************************
+*
+** Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: TPS40060
+* Date: 03/05/2009
+* Model Type: Average 
+* Simulator: PSpice 
+* Simulator Version: 16.0.0.p001
+* EVM Order Number: TPS40060EVM 
+* EVM Users Guide: SLUU183 - March 2004 
+* Datasheet: SLUS543E–DECEMBER 2002–REVISED JUNE 2006 
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+.SUBCKT TPS40060_AVG VIN KFF GND OUT COMP FB RT
+E1 COMP GND 5 FB 1K
+E3 GND 6 14 2 -1
+V3 5 GND DC=0.7
+X3 8 14 UTD 
+X2 VIN GND 6 OUT 2 FORWARD
+X1 KFF COMP 8 GND 19 RT 40060MOD
+*R2 RT GND 200K
+.ENDS TPS40060_AVG
+*$
+.SUBCKT UTD 1 2
+RIN 1 0 1E15
+E1 3 0 1 0 1.0000 
+T1 3 0 2 0 Z0=1 TD=1.0000U
+R1 2 0 1
+.ENDS
+*$
+.SUBCKT FORWARD VINP RTN VC VOUT DR PARAMS: NP=1 DMAX=.95 TS=0 L=7.8u NC=1 F=250k RB=1u Eff=1
+EBVeff VINp 1 VALUE = {(1-Eff)*( V(VINp) - V(Rtn) )}
+*B1 IS INPUT CURRENT
+GB1 1 Rtn VALUE = {V(Vout)*I(VM1)/(V(1)+.001)}
+*B2 IS PEAK INDUCTOR CURRENT
+EB2 IMAX Rtn VALUE = {IF(V(Vc) > 0 , V(Vc)*NC /(NP * RB) + ((V(1)*NP) - V(Vout))*TS/L , 0)}
+*B3 IS MINIMUM INDUCTOR CURRENT
+EB3 3 Rtn VALUE = {IF(V(IMAX) - ((V(Vout) * (1 - (V(Vout)/(1u+(V(1)*NP)))))/(L*F)) > 0 , 
++ V(IMAX) - ((V(Vout) *(1 - (V(Vout) / (1u+(V(1) * NP)) ))) / (L * F)) , 0)}
+*B4 IS OUTPUT CURRENT
+GB4 Rtn 8 VALUE = {(L*F*(V(IMAX)*V(IMAX) - V(3)*V(3)) / 2) * ((1/(V(Vout)+1U)) + 
++ 1/((V(1) * NP)-V(Vout)))}
+*B5 IS DUTY CYCLE
+EB5 DR Rtn VALUE= {L * F * (V(IMAX) - V(3)) / (((V(1) * NP) - V(Vout)) + .01)}
+DCLAMP 8 80 D
+.MODEL D D IS=1E-6 N=1 RS=.0001; (IS=1E-26 N=.16 RS=.0001)
+EBCLAMP 80 Rtn VALUE = {(V(1)*NP*DMAX) - .25}
+VM1 8 Vout
+.ENDS
+*$
+.SUBCKT 40060MOD KFF COMP DUTY GND FREQ RT
+VKFFM 3 GND DC=3.18
+VKFF KFF 4
+DKFF 4 3 _DMOD
+.MODEL _DMOD D IS=1.0E-9
+EBDUTY DUTY GND VALUE = {V(COMPL,GND)*135P/(I(VKFFM)+1P) * 56.116G / ((2.5/I(VRTM)) +
++ 23000)}
+H1 13 0 VKFFM 1
+VOFST COMP 6 DC=1.5
+Roff 6 GND 1G
+EBFREQ FREQ GND VALUE = {56.116G / ((2.5/I(VRTM))+23000)}
+EACOMP COMPL GND VALUE = {IF(V(6)>2 , 2, IF(V(6)<0 , 0, V(6)))} 
+VRT 11 GND DC=2.5
+VRTM 11 RT
+.ENDS
+*$

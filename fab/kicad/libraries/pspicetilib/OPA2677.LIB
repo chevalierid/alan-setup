@@ -1,0 +1,162 @@
+* OPA2677
+*****************************************************************************
+* (C) Copyright 2011 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: OPA2677
+* Date: 15JUL2011
+* Model Type: ALL IN ONE
+* Simulator: PSPICE
+* Simulator Version: 16.0.0.p001
+* EVM Order Number: N/A
+* EVM Users Guide: N/A
+* Datasheet: SBOS126I – APRIL 2000 – REVISED JULY 2008
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 : 
+* Release to Web
+*
+*****************************************************************************  
+
+* OPA2677 Wideband, Unity Gain Stable, Current Feedback Op Amp with Disable
+* NOTES:
+*   1- Uses a multiple pole-zero topology
+*   2- For better convergence during transient analysis set:
+*        .OPTIONS  ITL4=40
+*   3- This macromodel predicts room temperature performance
+*      (T = 27 deg C) for: DC, small-signal AC, noise, and
+*      transient simulations
+*   4- This macromodel does not predict: distortion
+*      (harmonic, intermod, diff. gain & phase, ...),
+*      temperature effects, board parasitics, differences
+*      between package styles, and process changes
+*   5- F function are .sub circuit for PSpice.  If using in Regular spice
+*      you should change to normal F statements  
+*      F_F(designator)   Node1 Node 2 F(designator) (gain value). 
+*      Insert them in the main subcircuit.
+*
+* CONNECTIONS:
+*               Non-Inverting Input         
+*               | Inverting Input
+*               | | Positive Power Supply    
+*               | | |  Negative Power Supply
+*               | | |  |   Output
+*               | | |  |   |  Disable
+*               | | |  |   |  |
+.SUBCKT OPA2677 + - V+ V- Out DisA 
+R_R1         12 V+  1.0K  
+R_Rp2         2ndpole 0  1k  
+R_R11         29 Out  12.5  
+R_R7         V- 31  5  
+R_R6         27 V+  3  
+C_C7         V+ 0  1P  
+C_C6         V- Out  1P  
+C_C4         0 V-  1P  
+G_G2         0 2ndpole Zo 0 .001
+D_D3         28 29 DX 1
+D_D4         29 30 DX 1
+D_D2         26 2ndpole DX 1
+D_D1         2ndpole 25 DX 1
+R_R2         15 V+  500  
+R_R3         V- 18  500  
+C_C8         0 DisA  1P  
+D_D5         L 10 DX 1
+D_D6         10 H DX 1
+R_R1a         DisA 10  5.625K  
+R_R12         0 13  1436895674  
+V_V6         H 0 2.6222
+V_V5         L 0 2.486
+G_G1         11 0 POLY(1) 10 0 -2.23043026E-04 1.23846602E-04 0 0
+R_R5         V- 24  250  
+R_R4         19 V+  250  
+Q_Q1         13 13 12 PNP8 .5
+Q_Q7         22 22 23 NPN8 .5
+D_D23         0 23a DN1 .5
+D_D22         22a 0 DN1 .5
+I_I22         23a 22a DC 62uA  
+R_Rn         14a 14  .1  
+D_D3a         22b 0 DN3 1
+D_D4a         0 23b DN3 1
+I_I21         23b 22b DC 62ua  
+G_G10a         0 + POLY(2) 22b 0 23b 0 0 8.0M 8.0M
+G_G10         0 - POLY(2) 22a 0 23a 0 0 8.75M 8.75M
+R_Rz         0 Zo  300K  
+C_Cp2         0 2ndpole  425.50f  
+C_Cz         0 Zo  1.15P  
+Q_Q2         16 16 + NPN8 .5
+Q_Q3         17 17 + PNP8 .5
+Q_Q4         21 21 20 PNP8 .5
+Q_Q5         21 16 - NPN8 .5
+Q_Q6         22 17 - PNP8 .5
+X_F1    13 14 15 16 OPA2677_F1 
+X_F3    19 20 V+ Zo OPA2677_F3 
+X_F2    14a 11 17 18 OPA2677_F2 
+X_F4    23 24 Zo V- OPA2677_F4 
+E_E2         27 28 POLY(2) 0 2ndpole  V+ V- -885M 1 .5
+E_E3         30 31 POLY(2) 2ndpole 0  V+ V- -885M 1 .5
+E_E6         25 0 POLY(1) V+ V- -.95 .5 0 0
+E_E7         26 0 POLY(1) V- V+ .95 .5 0 0
+*
+.MODEL DX  d( is=0.18f)
+.MODEL DN1 D(IS=2F AF=1 KF=10.5E-17)
+.MODEL DN3 D( IS=.1F AF=1.0 KF=39.0E-17)
+*
+.MODEL NPN8 NPN
++ IS = 7.604E-18 BF = 1.570E+02 NF = 1.000E+00 VAF= 7.871E+01
++ IKF= 3.975E-02 ISE= 3.219E-14 NE = 2.000E+00 BR = 7.614E-01
++ NR = 1.000E+00 VAR= 1.452E+00 IKR= 8.172E-02 ISC= 7.618E-21
++ NC = 1.847E+00 RB = 1.060E+02 IRB= 0.000E+00 RBM= 2.400E+00
++ RE = 2.520E+00 RC = 1.270E+02 CJE= 1.120E-13 VJE= 7.591E-01
++ MJE= 5.406E-01 TF = 1.213E-11 XTF= 2.049E+00 VTF= 1.813E+00
++ ITF= 4.293E-02 PTF= 0.000E+00 CJC= 8.208E-14 VJC= 6.666E-01
++ MJC= 4.509E-01 XCJC=8.450E-02 TR = 4.000E-11 CJS= 1.160E-13
++ VJS= 5.286E-01 MJS= 4.389E-01 XTB= 1.022E+00 EG = 1.120E+00
++ XTI= 1.780E+00 KF = 3.500E-16 AF = 1.000E+00 FC = 8.273E-01
+*
+.MODEL PNP8 PNP
++ IS = 7.999E-18 BF = 1.418E+02 NF = 1.000E+00 VAF= 4.158E+01
++ IKF= 1.085E-01 ISE= 2.233E-15 NE = 1.505E+00 BR = 3.252E+01
++ NR = 1.050E+00 VAR= 1.093E+00 IKR= 5.000E-05 ISC= 6.621E-16
++ NC = 1.150E+00 RB = 6.246E+01 IRB= 0.000E+00 RBM= 2.240E+00
++ RE = 2.537E+00 RC = 1.260E+02 CJE= 9.502E-14 VJE= 7.320E-01
++ MJE= 4.930E-01 TF = 1.303E-11 XTF= 3.500E+01 VTF= 3.259E+00
++ ITF= 2.639E-01 PTF= 0.000E+00 CJC= 1.080E-13 VJC= 7.743E-01
++ MJC= 5.000E-01 XCJC=8.504E-02 TR = 1.500E-10 CJS= 1.290E-13
++ VJS= 9.058E-01 MJS= 4.931E-01 XTB= 1.732E+00 EG = 1.120E+00
++ XTI= 2.000E+00 KF = 3.500E-16 AF = 1.000E+00 FC = 8.500E-01
+.ENDS    OPA2677
+.subckt OPA2677_F1 1 2 3 4  
+F_F1         3 4 VF_F1 2.130810
+VF_F1         1 2 0V
+.ends OPA2677_F1
+.subckt OPA2677_F3 1 2 3 4  
+F_F3         3 4 VF_F3 574.7237E-03
+VF_F3         1 2 0V
+.ends OPA2677_F3
+.subckt OPA2677_F2 1 2 3 4  
+F_F2         3 4 VF_F2 2.115695
+VF_F2         1 2 0V
+.ends OPA2677_F2
+.subckt OPA2677_F4 1 2 3 4  
+F_F4         3 4 VF_F4 576.9272E-03
+VF_F4         1 2 0V
+.ends OPA2677_F4
+*END OF MODEL OPA2677

@@ -1,0 +1,402 @@
+* PSpice Model Editor - Version 16.0.0
+*$
+* TPS2490
+*****************************************************************************
+* (C) Copyright 2010 Texas Instruments Incorporated. All rights reserved.                                            ******************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warrenties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+****************************************************************************
+*
+* This model was developed for Texas Instruments Incorporated by:
+*   AEi Systems, LLC
+*   5933 W. Century Blvd., Suite 1100
+*   Los Angeles, California  90045
+*
+* This model is subject to change without notice. Neither Texas Instruments Incorporated 
+* nor AEi Systems is responsible for updating this model.
+* For more information regarding modeling services, model libraries and simulation 
+* products, please call AEi Systems at (310) 216-1144, or contact AEi Systems by email: 
+* info@AENG.com. Or visit AEi Systems on the web at http://www.AENG.com.
+*
+*****************************************************************************
+*
+** Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: TPS2490
+* Date: 09/28/10
+* Model Type: Transient 
+* Simulator: PSPICE 
+* Simulator Version: 16.0.0.p001
+* EVM Order Number:  TPS2490EVM - 001  
+* Datasheet: SLVS503B - NOVEMBER 2003 - REVISED MARCH 2010
+*
+* Model Version: Final 1.00
+******************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+.subckt TPS2490 VREF EN PG GATE PROG TIMER VCC SENSE OUT GND
+X_U1_U24          U1_N107251 U1_N168808 INVERTER
+E_U1_E3         U1_ID 0 VCC SENSE 1
+X_U1_U1          FAULT GFAULT U1_N107251 OR
+X_U1_U21          U1_PCOMP FAULT PLIMIT AND_1
+E_U1_MULT1         U1_N168762 0 VALUE {V(U1_N168808)*V(U1_N168798)}
+G_U1_G2         GATE 0 U1_N107251 0 2e-3
+E_U1_SUM1         U1_ID_HYS 0 VALUE {V(U1_ID)+V(U1_N168762)}
+C_U1_C1         0 U1_A2B  1n  
+V_U1_V1         U1_N168798 0 0.001Vdc
+G_U1_G3         GATE OUT TABLE { V(GATE, OUT) } 
++ ( (-0.8,-100m)(-0.7,-1u)(0,0)(13,0.1u)(14,22u)(14.5,1m)(15,10m)(15.5,100m) )
+G_U1_G14         0 GATE TABLE { V(U1_A2B, U1_ID) } 
++ (
++  (-27.19,2.2e-5)(-13.63,2.2e-5)(-12.98,2.2e-5)(-12.4,1.556e-5)
++ (-11.86,3.215e-6)(-11.61,-4.084e-6)
++
++  (-11.37,-1.201e-5)(-11.14,-2.052e-5)(-10.92,-2.962e-5)(-9.761,-9.769e-5)
++ (-7.834,-5.123e-4)(-7.621,-1.106e-3)
++
++  (-7.518,-4.145e-3)(-7.322,-2.712e-2)(-6.874,-0.133)(-6.791,-0.1483)
++ (-3.773,-0.1686)(1m,2.2e-5)
++  )
+R_U1_R2         U1_A2B U1_N107335  1  
+R_U1_R1         0 SENSE  1g  
+E_U1_LIMIT1         INRUSHP 0 VALUE {LIMIT(V(U1_N107431),1e-6,1000)}
+X_U1_S1    U1_N107251 0 PROG 0 CONT_U1_S1 
+X_U1_D5          0 GATE DC_1mV_1A_1V_1nA
+E_U1_ABM1         U1_N107335 0 VALUE { MIN(( V(PROG)/(2*V(INRUSHP)+1f)),0.05)  
++ +0   }
+X_U1_U2          U1_ID_HYS U1_N107335 U1_PCOMP COMPARATOR
+E_U1_E4         U1_N107431 0 SENSE OUT 1
+X_U2_U20          U2_VCCOK U2_POR POWEROK AND
+R_U2_R5         U2_VDS_OK U2_9MS  12.9k  
+X_U2_U18          U2_N50593 U2_N41983 INVERTER
+X_U2_S4    U2_SET0 GND U2_9MS GND HK_U2_S4 
+X_U2_S3    U2_N41983 GND PG GND HK_U2_S3 
+X_U2_U23         U2_VDS_OK U2_NEG U2_N110439 MONONEG_PS PARAMS: PW=100e-6
+X_U2_U17          U2_VCCOK U2_ENABLEOK U2_POR FAULT NAND3
+X_U2_U26         U2_VDS_OK U2_POS U2_N110435 MONOPOS_PS PARAMS: PW=100e-6
+X_U2_U24          POWEROK U2_BUF_OUT U2_N50593 AND
+X_U2_S5    U2_SET1 GND U2_N46276 U2_9MS HK_U2_S5 
+X_U2_U21          U2_CHANGE U2_BUF_OUT U2_SET1 AND
+R_U2_R4         GND U2_N110435  1e8  
+X_U2_U10          INRUSHP U2_COMP_OUT COMP_HYS2_1 PARAMS:  TH=1.975 HYS=1.45 
++  T=10
+X_U2_U12         U2_N55473 U2_POR DELAY PARAMS:  T=4e5  
+R_U2_R6         GND U2_N110439  1e8  
+C_U2_C3         U2_9MS GND  1u  
+X_U2_U25         U2_9MS U2_BUF_OUT BUF_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+X_U2_U22          U2_COMP_OUT POWEROK U2_VDS_OK AND
+X_U2_U11          VCC U2_N55473 COMPARATOR2 PARAMS:  TH=6.0  
+V_U2_V1         U2_N46276 GND 1Vdc
+X_U2_U6          EN U2_ENABLEOK COMP_HYS2 PARAMS:  TH=1.30 HYS=0.1  T=10
+X_U2_U27          U2_POS U2_NEG U2_CHANGE OR
+X_U2_U28          U2_CHANGE U2_BUF_OUT U2_SET0 AND_1
+X_U2_U5          VCC U2_VCCOK COMP_HYS2 PARAMS:  TH=8.35 HYS=0.1  T=10
+R_U3_R1         U3_N12901 U3_N12209  1  
+X_U3_U1          POWEROK U3_N12901 ANALOG_BUFFER PARAMS:  GAIN=4 
+C_U3_C1         0 U3_N12209  1u IC=0 
+X_U3_F1    U3_N12209 U3_N08960 VCC 0 LDO_U3_F1 
+C_U3_C2         VREF U3_N08960  1p IC=0 
+G_U3_G3         U3_N08960 VREF TABLE { V(U3_N08960, VREF) } 
++ ( (-100,-1u)(0,0)(1m,1m)(10,1.1m) )
+V_U4_V1         U4_N10969 0 20V
+X_U4_U19          U4_N61085 GFAULT U4_N34409 AND
+X_U4_U8          TIMER U4_N15257 COMP_HYS2 PARAMS:  TH=2.5 HYS=3.0  T=10 
+R_U4_R3         0 U4_N47305  1  
+I_U4_I1         TIMER 0 DC 2.5e-6  
+R_U4_R2         U4_N51695 GFAULT  1  
+X_U4_U20          U4_N39934 U4_N34409 U4_N1781631 OR
+X_U4_D5          0 TIMER DC_1mV_1A_1V_1nA
+X_U4_U17         U4_N08502 U4_N15257 GFAULT RSFF_RDOM_VAR PARAMS:  T=1000 
+R_U4_R6         0 U4_N180928  1e8  
+X_U4_U23          FAULT U4_N47305 U4_N42951 OR
+G_U4_G1         0 TIMER U4_N1781631 0 27.5e-6
+R_U4_R1         0 TIMER  1G  
+X_U4_U18          VCC U4_N24434 ANALOG_BUFFER PARAMS:  GAIN=1 
+X_U4_S1    U4_N42951 U4_N09606 TIMER_U4_S1 
+X_U4_D3         U4_N09606 U4_N10969 gen_diode PARAMS: 
+X_U4_U14          U4_N09606 U4_N16176 COMPARATOR2 PARAMS:  TH=15.5  
+X_U4_U25         U4_N15257 U4_N48122 U4_N180928 MONONEG_PS PARAMS: PW=100e-6
+C_U4_C1         0 U4_N09606  100u IC=0 
+X_U4_U24          U4_N51695 U4_N45215 INVERTER
+C_U4_C2         0 U4_N51695  10u  
+X_U4_U22          U4_VTPS U4_N15257 U4_N61085 AND_1
+V_U4_V2         U4_VTPS 0 {TPS}
+G_U4_G3         0 U4_N09606 U4_N48122 0 1
+X_U4_U15          U4_N16234 FAULT U4_N08502 OR
+X_U4_U13         U4_N45215 U4_N47305 one_shot PARAMS: PARAMS:  T=10000  
+X_U4_D4          TIMER U4_N24434 DC_1mV_1A_1V_1nA
+X_U4_U21          PLIMIT GFAULT U4_N39934 AND_1
+X_U4_U16          U4_N16176 U4_VTPS U4_N16234 AND
+.param TPS=0
+.ends TPS2490
+*$
+.subckt CONT_U1_S1 1 2 3 4  
+S_U1_S1         3 4 1 2 _U1_S1
+RS_U1_S1         1 2 1G
+.MODEL         _U1_S1 VSWITCH Roff=100e6 Ron=375 Voff=0.25V Von=0.75V
+.ends CONT_U1_S1
+*$
+.subckt HK_U2_S4 1 2 3 4  
+S_U2_S4         3 4 1 2 _U2_S4
+RS_U2_S4         1 2 1G
+.MODEL         _U2_S4 VSWITCH Roff=10e6 Ron=1.0 Voff=0.25V Von=0.75V
+.ends HK_U2_S4
+*$
+.subckt HK_U2_S3 1 2 3 4  
+S_U2_S3         3 4 1 2 _U2_S3
+RS_U2_S3         1 2 1G
+.MODEL         _U2_S3 VSWITCH Roff=1e6 Ron=1.0 Voff=0.25V Von=0.75V
+.ends HK_U2_S3
+*$
+.subckt HK_U2_S5 1 2 3 4  
+S_U2_S5         3 4 1 2 _U2_S5
+RS_U2_S5         1 2 1G
+.MODEL         _U2_S5 VSWITCH Roff=10e6 Ron=1.0 Voff=0.25V Von=0.75V
+.ends HK_U2_S5
+*$
+.subckt LDO_U3_F1 1 2 3 4  
+F_U3_F1         3 4 VF_U3_F1 1
+VF_U3_F1         1 2 0V
+.ends LDO_U3_F1
+*$
+.subckt TIMER_U4_S1 1 3  
+S_U4_S1         3 0 1 0 _U4_S1
+RS_U4_S1         1 0 1G
+.MODEL         _U4_S1 VSWITCH Roff=1g Ron=1e-3 Voff=0.25V Von=0.75V
+.ends TIMER_U4_S1
+*$
+.SUBCKT COMPARATOR INP INM OUT  
+EOUT OUT 0 VALUE { IF( V(INP)>V(INM),1,0) }
+.ends COMPARATOR
+*$
+.SUBCKT AND A B OUT  
+EOUT OUT 0 VALUE { IF( V(A)>0.5 & V(B)>0.5,1,0) }
+.ends AND
+*$
+.SUBCKT OR A B OUT  
+EOUT OUT 0 VALUE { IF( V(A)>0.5 | V(B)>0.5,1,0) }
+.ends OR
+*$
+.SUBCKT DELAY_FIX5 IN OUT PARAMS: T=100  
+S_S1         MEAS 0 RESET2 0 S1
+E_ABM1         CH 0 VALUE { if( V(IN)>0.5,1,0)    }
+E_ABM3         OUT 0 VALUE { if( V(MEAS)>0.5 & V(CH)>0.5,1,0)    }
+R_R1         MEAS CH  {T} 
+C_C1         0 MEAS  1.4427n  
+E_ABM2         RESET 0 VALUE { if(V(CH)<0.5,1,0)    }
+R_R2         RESET2 RESET  0.1  
+C_C2         0 RESET2  1.4427n  
+.MODEL         S1 VSWITCH Roff=1e9 Ron=1.0 Voff=0.25V Von=0.75V
+.ENDS DELAY_FIX5
+*$
+.SUBCKT COMP_HYS2 INP OUT 
++ PARAMs:  TH=1 HYS=0.1 T=10
+EIN INP1 0 INP 0 1 
+EHYS INP1 INP2 VALUE { IF( V(1)>0.5,-(HYS)/2,HYS/2) }
+EOUT OUT 0 VALUE { IF( V(INP2)>TH,1,0) }
+R1 OUT 1 1
+C1 1 0 {T*1e-9}
+RINP1 INP1 0 1K
+.ends COMP_HYS2
+*$
+.SUBCKT NAND3 A B C OUT  
+EOUT OUT 0 VALUE { IF( V(A)>0.5 & V(B)>0.5 & V(C)>0.5,0,1) }
+.ends NAND3
+*$
+.SUBCKT AND_1 A B OUT  
+EOUT OUT 0 VALUE { IF( V(A)>0.5 & V(B)<0.5,1,0) }
+.ends AND_1
+*$
+.SUBCKT INVERTER IN OUT  
+EOUT OUT 0 VALUE { IF( V(IN)<0.5,1,0) }
+.ends INVERTER
+*$
+.SUBCKT COMPARATOR2 INP OUT  
++ PARAMs:  TH=1
+EOUT OUT 0 VALUE { IF( V(INP)>TH,1,0) }
+.ends COMPARATOR2
+*$
+.SUBCKT ANALOG_BUFFER IN OUT  
++ PARAMs:  GAIN=1
+EOUT OUT 0 VALUE { GAIN * V(IN)}
+.ends ANALOG_BUFFER
+*$
+.SUBCKT ONE_SHOT IN OUT
++PARAMs:  T=100
+S_S1         MEAS 0 RESET2 0 S1
+E_ABM1         CH 0 VALUE { if( V(IN)>0.5 | V(OUT)>0.5,1,0)    }
+R_R2         RESET2 RESET  0.1  
+E_ABM3         OUT 0 VALUE { if( V(MEAS)<0.5 & V(CH)>0.5,1,0)    }
+R_R1         MEAS CH  {T} 
+C_C2         0 RESET2  1.4427n  
+C_C1         0 MEAS  1.4427n  
+E_ABM2         RESET 0 VALUE { if(V(CH)<0.5,1,0)    }
+.MODEL         S1 VSWITCH Roff=1e9 Ron=1.0 Voff=0.25V Von=0.75V
+.ENDS ONE_SHOT
+*$
+.SUBCKT RSFF_RDOM_VAR R S Q PARAMs:  T=10
+EABM1  1 0 VALUE { If( V(S)>0.5 | V(Q)>0.5, 1,0)    }
+EABM2  Q  0 VALUE { If( V(2)>0.5 & V(R)<0.5, 1,0)    }
+R1   1 2 1
+C1   2  0 {T*1e-9}
+.ENDS RSFF_RDOM_VAR
+*$
+.subckt GEN_DIODE 1 2 
+D1 1 2 DI2D
+.model DI2D D Is=1e-14 Cjo=.1pF Rs=.1
+.ends GEN_DIODE
+*$
+.SUBCKT COMP_HYS2_1 INP OUT 
++ PARAMs:  TH=1 HYS=0.1 T=10
+EIN INP1 0 INP 0 1 
+EHYS INP1 INP2 VALUE { IF( V(1)>0.5,(HYS)/2,-(HYS)/2) }
+EOUT OUT 0 VALUE { IF( V(INP2)<TH,1,0) }
+R1 OUT 1 1
+C1 1 0 {T*1e-9}
+RINP1 INP1 0 1K
+.ends COMP_HYS2_1
+*$
+.SUBCKT DELAY IN OUT PARAMS: T=100
+E_ABM1         CH 0 VALUE { if( V(IN)>0.5,1,0)    }
+E_ABM3         OUT 0 VALUE { if( V(MEAS)>0.5 & V(CH)>0.5,1,0)    }
+R_R1         MEAS CH  {T} 
+C_C1         0 MEAS  1.4427n  
+E_ABM2         RESET 0 VALUE { if(V(CH)<0.5,1,0)    }
+R_R2         RESET2 RESET  0.1  
+C_C2         0 RESET2  1.4427n  
+.ENDS DELAY
+*$
+.MODEL SMAT70A D
++ IS=40.837E-12
++ N=1.1702
++ RS=67.183E-3
++ IKF=24.188E-3
++ CJO=140.00E-12
++ M=.3333
++ VJ=.75
++ ISR=1.0985E-6
++ BV=99.550
++ IBV=866.04E-6
++ TT=7.2135E-9
+*$
+.MODEL BZT52C16 D
++ IS=1.0219E-9
++ N=1.6660
++ RS=.24457
++ IKF=14.056E-3
++ CJO=1.0000E-12
++ M=.3333
++ VJ=.75
++ ISR=39.560E-9
++ BV=16.083
++ IBV=.13012
++ TT=7.2135E-9
+*$
+.MODEL BAT46W D
++ IS=261.84E-9
++ N=1.4970
++ RS=.36492
++ IKF=6.0309E-3
++ CJO=22.187E-12
++ M=.60701
++ VJ=.83046
++ ISR=5.5932E-9
++ NR=3.1471
++ BV=100
++ IBV=100.00E-6
++ TT=5.0000E-9
+*$
+.SUBCKT CESR IN OUT
++ PARAMs:  C=100u ESR=0.01 X=2 IC=0
+C	IN 1  {C*X} IC={IC}
+RESR	1 OUT {ESR/X}
+.ENDS CESR
+*$
+.subckt DC_1mV_1A_1V_1nA A C
+G1 A C TABLE { V(A, C) } ( (-1,-1n)(0,0)(1m,1) (2m,10) (3m,1000) )
+.ends DC_1mV_1A_1V_1nA 
+*$
+.SUBCKT IRF540NS DRAIN GATE SOURCE
+M1 1 2 3 3 DMOS L=1U W=1U
+RD DRAIN 1 19.9m
+RS 40 3 2.10m
+RG GATE 2 16.8
+*CGS 2 3 19.2n
+CGS 2 3 1.92n
+EGD 12 0 2 1 1
+VFB 14 0 0
+FFB 2 1 VFB 1
+*CGD 13 14 513p
+CGD 13 14 51.3p
+R1 13 0 1.00
+D1 12 13 DLIM
+DDG 15 14 DCGD
+R2 12 15 1.00
+D2 15 0 DLIM
+DSD 3 DRAIN DSUB
+LS SOURCE 40 7.50n
+.MODEL DMOS NMOS LEVEL=1 IS=1e-15
++ VTO=3.608 LAMBDA=0.000888191 KP=28.379
++ CGSO=1.73e-05 CGDO=1.77276e-08
+.MODEL DCGD D (CJO=513p VJ=0.600 M=0.680
+.MODEL DSUB D (IS=137n N=1.50 RS=13.6m BV=100
++ CJO=903p VJ=0.800 M=0.420 TT=115n
+.MODEL DLIM D (IS=100U)
+.ENDS IRF540NS
+*$
+.SUBCKT MONONEG_PS in Q Qn PARAMS: PW=1u 
+VS VSUP 0 DC 1
+GIN VSUP YA VALUE={IF(V(IN)<0.5, V(VSUP)/1000K, 0)}
+GDIS YA 0 VALUE={IF(V(IN)<0.5,0, V(YA)/1m)}
+CIN YA 0 1n IC=0
+RIN YA 0 1e11
+EABM1 YTD 0 VALUE={IF(V(YA)> {PW*1000}, 0, 1)}
+RYTD YTD 0 1e11
+EXOR P 0 VALUE={IF(V(YTD) > 0.5 ^ V(IN) > .5, 1, 0)}
+ROUTpp2 P 0 1e11
+EAND1 Q1 0 VALUE={ IF(V(P)>0.5 & V(YTD)>0.5, 1, 0)}
+Ro1 Q1 Q 1m
+Co1 Q 0 1p IC=0
+ROUT2 Q 0 1e11
+EAND2 Qn1 0 VALUE={ IF(V(Q)>0.5, 0, 1)}
+Ro2 Qn1 Qn 1m
+Co2 Qn 0 1p
+ROUT4 Qn 0 1e11
+.ENDS MONONEG_PS
+*$
+.SUBCKT MONOPOS_PS in Q Qn PARAMS: PW=1u 
+VS VSUP 0 DC 1
+GIN VSUP YA VALUE={IF(V(IN)>0.5, V(VSUP)/1000K, 0)}
+GDIS YA 0 VALUE={IF(V(IN)>0.5,0, V(YA)/1m)}
+CIN YA 0 1n IC=0
+RIN YA 0 1e11
+EABM1 YTD 0 VALUE={IF(V(YA)> {PW*1000}, 1, 0)}
+RYTD YTD 0 1e11
+EXOR P 0 VALUE={IF(V(YTD) > 0.5 ^ V(IN) > .5, 1, 0)}
+ROUTpp2 P 0 1e11
+EAND1 Q1 0 VALUE={ IF(V(P)>0.5 & V(IN)>0.5, 1, 0)}
+Ro1 Q1 Q 1m
+Co1 Q 0 1p
+ROUT2 Q 0 1e11
+EAND2 Qn1 0 VALUE={ IF(V(Q)>0.5, 0, 1)}
+Ro2 Qn1 Qn 1m
+Co2 Qn 0 1p
+ROUT4 Qn 0 1e11
+.ENDS MONOPOS_PS
+*$
+.SUBCKT BUF_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS BUF_BASIC_GEN
+*$

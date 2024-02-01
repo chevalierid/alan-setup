@@ -1,0 +1,443 @@
+***
+*$
+*  TPS65980 Model
+*****************************************************************************
+*  (C) Copyright 2014 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warrenties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+** Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: TPS65980
+* Date: 04/15/2014
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.2
+* EVM Order Number: TPS65980EVM
+* EVM Users Guide: SLVUA50 - April 2014
+* Datasheet: SLVSCK1 - APRIL 2014
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+* 
+* 1. Input and quiescent current of the part have not been modeled.
+* 2. Temperature effects have not been modeled.
+* 3. Noise has not been modeled.
+* 4. The COMP values and SS cap do not effect the simulation.
+* 5. There are no switching waveforms. Model uses average values.
+*
+*****************************************************************************
+***  Subcircuit for cell: input_buffer
+.subckt INPUT_BUFFER EN GND IN OUT
+X_AHDLI0_1 NET10 IN NET9 comp_hys_basic PARAMS: vhys=200e-3 vtol=1e-3 td=0 tt=2e-9
+V0 NET9 GND DC 1.4
+X_AHDLI1 OUT EN NET10 and2_basic PARAMS: td=0 tt=2e-9
+.ends INPUT_BUFFER
+***  Subcircuit for cell: cbl_switch
+.subckt CBL_SWITCH CBL_EN CBL_ILIM CBL_OUT GND TBT_OUT
+C1 ILIM_1 TBT_OUT 1e-9
+C0 ILIM_1 CBL_OUT 1e-9
+C3 CBL_ILIM_SS GND 1e-9
+X_AHDLI3 CBL_OUT ILIM_1 diode_simple PARAMS: vfwd=50e-3 vrev=7 rfwd=10e-3 rrev=1 cjnc=1e-12
+X_AHDLI9 GND NET09 diode_simple PARAMS: vfwd=50e-3 vrev=10 rfwd=10e-3 rrev=1 cjnc=1e-12
+X_AHDLI11 GND CBL_OUT diode_simple PARAMS: vfwd=400e-3 vrev=4 rfwd=10e-3 rrev=1 cjnc=1e-12
+F1 GND NET08 V8  1e-6
+EV0 NET022 CBL_OUT CBL_EN GND 4
+E0 NET023 GND CBL_ILIM GND 1
+X_AHDLI5 CBL_ILIM_ON CBL_EN CBL_ILIM_CURR mult_amp_simple PARAMS: rinp=1e12 cinp=1e-12 rout=10 cout=1e-9 gain=1
+X_AHDLI18 CBL_ENZ CBL_EN inverter_basic PARAMS: td=0 tt=2e-9
+X_AHDLI19 CBL_ILIM_SS GND CBL_ENZ switch_3p_basic PARAMS: voff=500e-3 von=750e-3 ron=1 roff=1e9
+G3 NET08 GND CBL_ILIM_SS GND 1e-6
+G6 GND CBL_ILIM_SS CBL_ILIM_ON GND 1e-6
+X_AHDLI8 NET09 NET09 NET026 nmos_gm_basic PARAMS: vth=0.75 gm=3.33e-3 gmin=1e-12 cgs=100e-15 cgd=100e-15 cds=100e-15
+X_AHDLI7 ILIM_1 NET09 GND nmos_gm_basic PARAMS: vth=0.75 gm=3.33e-3 gmin=1e-12 cgs=100e-15 cgd=100e-15 cds=100e-15
+X_AHDLI0_2 TBT_OUT ILIM_1 NET23 nmos_gm_simple PARAMS: vth=700e-3 gm=1.2 gmin=1e-12
+X_AHDLI4 ILIM_1 CBL_OUT CBL_ENZ GND switch_basic PARAMS: voff=500e-3 von=750e-3 ron=1 roff=1e9
+R3 NET026 GND 100e3
+R4 CBL_ILIM_SS GND 1e6
+R0 NET022 ILIM_1 3e6
+R2 CBL_OUT GND 1e6
+V2 NET08 NET09 DC 0
+V1 CBL_ILIM_CURR NET023 DC 1.2
+V8 NET23 CBL_OUT DC 0
+.ends CBL_SWITCH
+***  Subcircuit for cell: tbt_out_regulator
+.subckt TBT_OUT_REGULATOR EN GND ILIMIT IOUT VOUT
+X_AHDLI1 GND NET16 diode_simple PARAMS: vfwd=50e-3 vrev=3 rfwd=2e-3 rrev=1 cjnc=1e-12
+X_AHDLI0_3 GND VOUT diode_simple PARAMS: vfwd=50e-3 vrev=5 rfwd=1e-3 rrev=1 cjnc=1e-12
+X_AHDLI13 NET17 VOUT diode_simple PARAMS: vfwd=50e-3 vrev=3 rfwd=2e-3 rrev=1 cjnc=1e-12
+X_AHDLI5 GND NET9 diode_simple PARAMS: vfwd=50e-3 vrev=3 rfwd=10e-3 rrev=1 cjnc=1e-12
+X_AHDLI8 GND AA diode_simple PARAMS: vfwd=50e-3 vrev=4 rfwd=1e-3 rrev=1 cjnc=1e-12
+V4 NET16 NET17 DC 0
+F0 0 NET9 V4  1e-6
+X_AHDLI17 ENZ EN inverter_basic PARAMS: td=0 tt=2e-9
+X_AHDLI16 VREG_SS GND ENZ switch_3p_basic PARAMS: voff=500e-3 von=750e-3 ron=1 roff=1e9
+H0 IOUT GND V4  1
+E3 VREG GND EN GND 3.3
+E0 NET16 GND AA GND 1
+G5 0 VREG_SS VREG 0 1e-6
+G2 0 AA VREG_SS 0 1e-3
+G0 AA GND NET9 GND 10e-3
+G1 NET9 GND ILIMIT GND 1e-6
+R3 VREG_SS GND 1e6
+R0 AA GND 1e3
+R1 VOUT GND 1e6
+C0 VREG_SS GND 1e-9
+.ends TBT_OUT_REGULATOR
+***  Subcircuit for cell: tbt_out_current
+.subckt TBT_OUT_CURRENT BUCK_EFF BUCK_MODE CP_MODE GND IOUT TBT_IN TBT_OUT
+X_AHDLI10 NET010 BUCK_MODE TBT_IN mult_amp_simple PARAMS: rinp=1e12 cinp=1e-12 rout=10 cout=1e-9 gain=1
+X_AHDLI9 NET011 BUCK_MODE TBT_OUT mult_amp_simple PARAMS: rinp=1e12 cinp=1e-12 rout=10 cout=1e-9 gain=1
+X_AHDLI6 NET12 CP_MODE I_IN_CP mult_amp_simple PARAMS: rinp=1e12 cinp=1e-12 rout=10 cout=1e-9 gain=1
+X_AHDLI4 I_IN_BUCK POWER_RATIO IOUT_EFF mult_amp_simple PARAMS: rinp=1e12 cinp=1e-12 rout=10 cout=1e-9 gain=1
+X_AHDLI3 IOUT_EFF ONEOVEREFF IOUT mult_amp_simple PARAMS: rinp=1e12 cinp=1e-12 rout=10 cout=1e-9 gain=1
+X_AHDLI5 BUCK_I_IN BUCK_MODE I_IN_BUCK mult_amp_simple PARAMS: rinp=1e12 cinp=1e-12 rout=10 cout=1e-9 gain=1
+G1 TBT_IN GND NET12 GND 1
+G0 TBT_IN GND BUCK_I_IN GND 1
+E0 I_IN_CP GND IOUT GND 2
+V2 TBT_IN_INTERNAL_EN NET010 DC 1e-3
+V1 TBT_OUT_INTERNAL_EN NET011 DC 1e-3
+V0 ONE GND DC 1
+X_AHDLI0_4 POWER_RATIO TBT_OUT_INTERNAL_EN TBT_IN_INTERNAL_EN div_amp_simple PARAMS: rinp=1e12 
++ cinp=1e-12 rout=10 cout=1e-9 gain=1
+X_AHDLI2 ONEOVEREFF ONE BUCK_EFF div_amp_simple PARAMS: rinp=1e12 cinp=1e-12 rout=10 cout=1e-9 gain=1
+.ends TBT_OUT_CURRENT
+***  Subcircuit for cell: mode_selector
+.subckt MODE_SELECTOR BUCK_MODE CP_MODE EN GND HV_MODE HV_OK RESET_N TBT_IN TBT_OUT
+V2 HVOK_THRESHOLD GND DC 4.5
+V3 BUCK_THRESHOLD GND DC 3.35
+V4 RESET_N_THRESHOLD GND DC 3.1
+V5 HV_MODE_THRESHOLD GND DC 9
+V0 UVLO_THRESHOLD GND DC 2.35
+X_AHDLI2 NET25 TBT_IN HVOK_THRESHOLD comp_hys_simple PARAMS: vhys=100e-3 td=0 tt=2e-9
+X_AHDLI5 NET12 TBT_IN BUCK_THRESHOLD comp_hys_simple PARAMS: vhys=20e-3 td=0 tt=2e-9
+X_AHDLI12 RESET_N TBT_OUT RESET_N_THRESHOLD comp_hys_simple PARAMS: vhys=500e-3 td=0 tt=2e-9
+X_AHDLI18 HV_MODE TBT_IN HV_MODE_THRESHOLD comp_hys_simple PARAMS: vhys=5e-3 td=0 tt=2e-9
+X_AHDLI0_5 EN TBT_IN UVLO_THRESHOLD comp_hys_simple PARAMS: vhys=10e-3 td=0 tt=2e-9
+X_AHDLI8 NET24 NET12 inverter_basic PARAMS: td=0 tt=2e-9
+X_AHDLI4 HV_OK EN NET25 and2_basic PARAMS: td=0 tt=2e-9
+X_AHDLI7 BUCK_MODE EN NET12 and2_basic PARAMS: td=0 tt=2e-9
+X_AHDLI9 CP_MODE EN NET24 and2_basic PARAMS: td=0 tt=2e-9
+.ends MODE_SELECTOR
+***  Subcircuit for cell: dev_switch
+.subckt DEV_SWITCH DEV_EN DEV_OUT GND TBT_OUT
+R2 DEV_OUT GND 1e6
+X_AHDLI3 DEV_OUT DEV_GATE diode_simple PARAMS: vfwd=50e-3 vrev=7 rfwd=10e-3 rrev=1 cjnc=1e-12
+X_AHDLI11 GND DEV_OUT diode_simple PARAMS: vfwd=400e-3 vrev=4 rfwd=10e-3 rrev=1 cjnc=1e-12
+GF0 GND DEV_GATE DEV_EN GND 1e-6
+C1 DEV_GATE DEV_OUT 500e-12
+C0 DEV_GATE TBT_OUT 500e-12
+V8 NET23 DEV_OUT DC 0
+X_AHDLI6 DEV_ENZ DEV_EN inverter_basic PARAMS: td=0 tt=2e-9
+X_AHDLI0_6 TBT_OUT DEV_GATE NET23 nmos_gm_simple PARAMS: vth=900e-3 gm=0.8 gmin=1e-12
+X_AHDLI4 DEV_GATE DEV_OUT DEV_ENZ GND switch_basic PARAMS: voff=500e-3 von=750e-3 ron=1 roff=1e9
+.ends DEV_SWITCH
+***  Subcircuit for TPS65980
+.SUBCKT TPS65980 SS GND_0 GND_1 GND_2 HV_OK RESET_N CBL_OUT
++ CBL_LIMIT DEV_ENZ GND_3 TBT_OUT_0 TBT_OUT_1 DEV_OUT_0 DEV_OUT_1
++ CPP CPN PGND_0 PGND_1 SW_0 SW_1 BOOT TBT_IN_0 TBT_IN_1 COMP
+* Multi-Pin support
+R_GND_0 GND_0 GND 1e-3
+R_GND_1 GND_1 GND 1e-3
+R_GND_2 GND_2 GND 1e-3
+R_GND_3 GND_3 GND 1e-3
+R_TBT_OUT_0 TBT_OUT_0 TBT_OUT 1e-3
+R_TBT_OUT_1 TBT_OUT_1 TBT_OUT 1e-3
+R_DEV_OUT_0 DEV_OUT_0 DEV_OUT 1e-3
+R_DEV_OUT_1 DEV_OUT_1 DEV_OUT 1e-3
+R_PGND_0 PGND_0 PGND 1e-3
+R_PGND_1 PGND_1 PGND 1e-3
+R_SW_0 SW_0 SW 1e-3
+R_SW_1 SW_1 SW 1e-3
+R_TBT_IN_0 TBT_IN_0 TBT_IN 1e-3
+R_TBT_IN_1 TBT_IN_1 TBT_IN 1e-3
+* End Multi-Pin support
+XI26 EN GND DEV_ENZ DEV_ENZ_INTERNAL INPUT_BUFFER
+XI27 EN GND CBL_ILIMIT CBL_ILIM_INTERNAL INPUT_BUFFER
+V6 BUCK_EFFICIENCY GND DC 880e-3
+V1 NET38 GND DC 100e-3
+X_AHDLI31 CBL_ON HVOK_DELAY RESET_N_INTERNAL and2_basic PARAMS: td=0 tt=2e-9
+X_AHDLI34 DEV_ON CBL_ON DEV_EN_INTERNAL and2_basic PARAMS: td=0 tt=2e-9
+XI28 CBL_ON CBL_ILIM_INTERNAL CBL_OUT GND TBT_OUT CBL_SWITCH
+X_AHDLI14 RESET_N RESET_N_INTERNAL TBT_OUT GND gate_driver_basic PARAMS: tdr=5e-9 ttr=2e-9 
++ tdf=5e-9 ttf=2e-9 rsrc=150e-3 isrc=1 rsnk=150e-3 isnk=1
+X_AHDLI10 HV_OK HVOK_INTERNAL TBT_OUT GND gate_driver_basic PARAMS: tdr=5e-9 ttr=2e-9 
++ tdf=5e-9 ttf=2e-9 rsrc=150e-3 isrc=1 rsnk=150e-3 isnk=1
+XI16 EN GND ILIMIT_LEVEL IOUT TBT_OUT TBT_OUT_REGULATOR
+E8 NET029 NET026 IOUT GND 500e-3
+E1 NET36 NET38 BUCK_MODE 0 1.9
+E6 NET026 GND BUCK_MODE GND 250e-3
+E0 ILIMIT_LEVEL NET36 HV_MODE 0 4
+E7 NET030 NET44 TBT_OUT GND 1
+E2 NET033 TBT_IN BUCK_MODE GND 6
+XI20 BUCK_EFFICIENCY BUCK_MODE CP_MODE GND IOUT_EN TBT_IN TBT_OUT TBT_OUT_CURRENT
+X_AHDLI24 NET44 CP_MODE TBT_OUT mult_amp_simple PARAMS: rinp=1e12 cinp=1e-12 rout=10 cout=1e-9 gain=1
+X_AHDLI22 NET027 CP_MODE TBT_OUT mult_amp_simple PARAMS: rinp=1e12 cinp=1e-12 rout=10 cout=1e-9 gain=1
+X_AHDLI43 IOUT_EN IOUT EN mult_amp_simple PARAMS: rinp=1e12 cinp=1e-12 rout=10 cout=1e-9 gain=1
+R2 BOOT NET033 1e3
+R3 COMP NET029 1e3
+R4 NET027 CPN 10
+R5 NET030 CPP 10
+R0 TBT_OUT SW 1e-3
+R1 SS TBT_OUT 1e3
+XI25 BUCK_MODE CP_MODE EN GND HV_MODE HVOK_INTERNAL RESET_N_INTERNAL TBT_IN TBT_OUT MODE_SELECTOR
+XI30 DEV_ON DEV_OUT GND TBT_OUT DEV_SWITCH
+X_AHDLI32 HVOK_DELAY HVOK_INTERNAL delay_basic PARAMS: tdr=500e-6 ttr=2e-9 tdf=5e-9 ttf=2e-9
+X_AHDLI33 DEV_EN_INTERNAL DEV_ENZ_INTERNAL inverter_basic PARAMS: td=0 tt=2e-9
+X_AHDLI39 GND RESET_N diode_simple PARAMS: vfwd=400e-3 vrev=4 rfwd=10e-3 rrev=1 cjnc=1e-12
+X_AHDLI38 GND HV_OK diode_simple PARAMS: vfwd=400e-3 vrev=4 rfwd=10e-3 rrev=1 cjnc=1e-12
+X_AHDLI41 PGND GND diode_simple PARAMS: vfwd=400e-3 vrev=30 rfwd=10e-3 rrev=1 cjnc=1e-12
+X_AHDLI40 GND PGND diode_simple PARAMS: vfwd=400e-3 vrev=30 rfwd=10e-3 rrev=1 cjnc=1e-12
+X_AHDLI5 GND BOOT diode_simple PARAMS: vfwd=400e-3 vrev=30 rfwd=10e-3 rrev=1 cjnc=1e-12
+X_AHDLI35 GND COMP diode_simple PARAMS: vfwd=400e-3 vrev=4 rfwd=10e-3 rrev=1 cjnc=1e-12
+X_AHDLI36 GND DEV_ENZ diode_simple PARAMS: vfwd=400e-3 vrev=4 rfwd=10e-3 rrev=1 cjnc=1e-12
+X_AHDLI37 GND CBL_ILIMIT diode_simple PARAMS: vfwd=400e-3 vrev=4 rfwd=10e-3 rrev=1 cjnc=1e-12
+X_AHDLI42 GND TBT_IN diode_simple PARAMS: vfwd=400e-3 vrev=20 rfwd=10e-3 rrev=1 cjnc=1e-12
+.ENDS TPS65980
+
+**** Begin Included libraries ****
+
+*$
+.SUBCKT diode_simple A C PARAMS: 
++  vfwd = 0.7 
++  vrev = 6.4
++  rfwd = 1 
++  rrev = 1
++  cjnc = 1e-12
+GF A C VALUE { (IF(V(A, C) < (vfwd - 0.05), 0,
++ (IF(V(A, C) > (vfwd + 0.05), V(A, C) - vfwd,
++ 5*PWR(V(A, C) - (vfwd - 0.05), 2)))))/rfwd }
+GR C A VALUE { (IF(V(C, A) < (vrev - 0.05), 0,
++ (IF(V(C, A) > (vrev + 0.05), V(C, A) - vrev,
++  5*PWR(V(C, A) - (vrev - 0.05), 2)))))/rrev }
+R1 A C {1/1e-12}
+C1 A C {cjnc}
+.ENDS diode_simple
+*$
+.SUBCKT inverter_basic out inp PARAMS: 
++  td = 0 
++  tt = 2e-9
+E1 n1   0 VALUE { IF(V(inp) < 0.51, 1, 0) }
+R1 n1 out 10
+C1 out  0 { (td + 0.5*tt) / 6.93 }
+.ENDS inverter_basic
+*$
+.SUBCKT delay_basic out inp PARAMS: 
++  tdr = 5e-9 
++  ttr = 2e-9 
++  tdf = 5e-9 
++  ttf = 2e-9 
+V1  n1   0  DC 1
+C1  n2  n5  1n
+R1  n2   0  100G
+G1  n1  n2  VALUE { (V(inp, 0)/MAX(0.1, 1.44e9*tdr))*
++ MIN(1, MAX(0, V(n1, n2))) }
+G2  n2   0  VALUE { ((1 - V(inp, 0))/MAX(0.1, 1.44e9*tdf))*
++ MIN(1, MAX(0, V(n2,  0))) }
+E1  n3   0  VALUE { IF(V(n2) > 0.51, 1, 0) }
+E2  n5   0  n6   0 0.5
+R2  n3  n6  { max(0.1, 7.22e8*(ttr+ttf)) }
+C2  n6   0  0.1n
+G3  n1  n4  VALUE { (V(n6, 0)/MAX(0.1, 7.22e8*ttr))*
++ MIN(1, MAX(0, V(n1, n4))) }
+G4  n4   0  VALUE { ((1 - V(n6, 0))/MAX(0.1, 7.22e8*ttf))*
++ MIN(1, MAX(0, V(n4,  0))) }
+C3  n4   0  1n
+R3  n4   0  100G
+E3 out   0  n4  0 1.0
+.ENDS delay_basic
+*$
+.SUBCKT mult_amp_simple out inp1 inp2 PARAMS: 
++  rinp = 1E+12 
++  cinp = 1E-12 
++  rout = 1E+01 
++  cout = 1E-09 
++  gain = 1 
+R1 inp1 inp2 {rinp}
+C1 inp1 inp2 {cinp}
+E2  n1   0 VALUE { gain*V(inp1)*V(inp2) }
+R2  n1 out {rout}
+C2 out   0 {cout}
+.ENDS mult_amp_simple
+*$
+.SUBCKT gate_driver_basic out inp VDD VSS PARAMS: 
++  tdr  = 5e-9 
++  ttr  = 2e-9 
++  tdf  = 5e-9 
++  ttf  = 2e-9 
++  rsrc = 1e+00 
++  isrc = 1e+00 
++  rsnk = 1e+00 
++  isnk = 1e+00 
+V1  n1   0  DC 1
+C1  n2  n5  1n
+R1  n2   0  100G
+G1  n1  n2  VALUE 
++ { (V(inp, 0)/MAX(0.1, 1.44e9*tdr))*MIN(1, MAX(0, V(n1, n2))) }
+G2  n2   0  VALUE { ((1 - V(inp, 0))/MAX(0.1, 1.44e9*tdf))*
++ MIN(1, MAX(0, V(n2,  0))) }
+E1  n3   0  VALUE { IF(V(n2) > 0.51, 1, 0) }
+E2  n5   0  n6   0 0.5
+R2  n3  n6  { max(0.1, 7.22e8*(ttr+ttf)) }
+C2  n6   0  0.1n
+G3  n1  n4  VALUE 
++ { (V(n6, 0)/MAX(0.1, 7.22e8*ttr))*MIN(1, MAX(0, V(n1, n4))) }
+G4  n4   0  VALUE { ((1 - V(n6, 0))/MAX(0.1, 7.22e8*ttf))*
++ MIN(1, MAX(0, V(n4,  0))) }
+C3  n4   0  1n
+R3  n4   0  100G
+E8  n8   0  VALUE { V(VSS) + V(n4)*(V(VDD)-V(VSS)) } 
+G8 VDD out  VALUE { MAX(0, MIN(V(n8, out)/rsrc, isrc)) }
+G9 out VSS  VALUE { MAX(0, MIN(V(out, n8)/rsnk, isnk)) }
+R8 VDD out  { 1/1e-12 }
+R9 out VSS  { 1/1e-12 }
+.ENDS gate_driver_basic
+*$
+.SUBCKT and2_basic out in1 in2 PARAMS: 
++  td = 0 
++  tt = 2e-9
+E1 n1   0 VALUE { IF(V(in1) > 0.51 & V(in2) > 0.51, 1, 0) }
+R1 n1 out 10
+C1 out  0 { (td + 0.5*tt) / 6.93 }
+.ENDS and2_basic
+*$
+.SUBCKT switch_basic s1 s0 c1 c0 PARAMS: 
++  von  = 0.75 
++  voff = 0.50 
++  ron  = 0.10 
++  roff = 1e10 
+S1 s1  s0  c1 c0 SWX 
+.MODEL SWX VSWITCH Roff={roff} Ron={ron} Voff={voff} Von={von} 
+.ENDS switch_basic
+*$
+.SUBCKT nmos_simple d g s PARAMS: 
++  von  = 3.00 
++  vth  = 0.75 
++  ron  = 50 
++  roff = 1e10 
++  imax = 10e-3 
+E1 vx   0  VALUE { IF(V(g, s)<vth, -5, 
++  IF(V(g, s)>von, 0, 5*((V(g, s)-vth)/(von-vth)-1))) } 
+G1  d   s  VALUE  { MIN(imax,
++ V(d, s)*(1/roff+(pwr(2, V(vx))+6.25e-3*V(vx))/ron)) }
+.ENDS nmos_simple
+*$
+.SUBCKT comp_hys_simple out inp inn 
++ PARAMS: 
++ vhys = 0.05 
++ td   = 0.00
++ tt   = 2e-9
+E1 n1   0 VALUE {IF(V(inp) + V(out)*vhys > V(inn), 1, 0)}
+R1 n1 out 10
+C1 out  0 { (td + 0.5*tt) / 6.93 }
+.ENDS comp_hys_simple
+*$
+.SUBCKT div_amp_simple out inp1 inp2 PARAMS: 
++  rinp = 1E+12 
++  cinp = 1E-12 
++  rout = 1E+01 
++  cout = 1E-09 
++  gain = 1 
+R1 inp1 inp2 {rinp}
+C1 inp1 inp2 {cinp}
+E2  n1   0 VALUE { gain*V(inp1)/V(inp2) }
+R2  n1 out {rout}
+C2 out   0 {cout}
+.ENDS div_amp_simple
+*$
+.SUBCKT switch_3p_basic s1 s0 c1 PARAMS: 
++  von  = 0.75 
++  voff = 0.50 
++  ron  = 1.00 
++  roff = 1e9 
+S1 s1  s0  c1 0 SWX 
+.MODEL SWX VSWITCH Roff={roff} Ron={ron} Voff={voff} Von={von} 
+.ENDS switch_3p_basic
+*$
+.SUBCKT nmos_mos1_basic d g s PARAMS: 
++  vth0   =  0.75
++  kp     =  4.0e-3
++  lambda =  1e-6
++  cgs    =  1e-09
++  cgd    =  1e-08
++  cds    =  5e-08
+C1 g s {cgs} 
+C2 g d {cgd} 
+C3 d s {cds} 
+G1 s d VALUE { MAX(0, kp*(V(s, d) - vth0)) }
+E1 x 0 VALUE { MAX(V(g, s), V(g, d)) - vth0 }
+R1 x 0 1e12
+E2 y 0 VALUE { ABS(V(d, s)) }
+R2 y 0 1e12
+G3 d s d s { 1e-12 }
+G4 d s VALUE {
++    IF( V(x) <= 0,
++       0,
++       IF( V(d, s) > 0,
++          IF( V(y) > V(x),
++             0.5*kp*V(x)*V(x)*(1+lambda*V(y)),
++             kp*(V(x)-0.5*V(y))*V(y)*(1+lambda*V(y))
++          ),
++          IF( V(y) > V(x),
++             -0.5*kp*V(x)*V(x)*(1+lambda*V(y)),
++             -kp*(V(x)-0.5*V(y))*V(y)*(1+lambda*V(y))
++          )
++       )
++    )
++ }
+.ENDS nmos_mos1_basic
+*$
+.SUBCKT comp_hys_basic out inp inn 
++ PARAMS: 
++ vhys = 0.05 
++ vtol = 1e-3
++ td   = 0.00
++ tt   = 2e-9
+E1 n1   0 VALUE {IF(V(inp) + V(out)*vhys > V(inn), 1, 0)}
+R1 n1 out 10
+C1 out  0 { (td + 0.5*tt) / 6.93 }
+.ENDS comp_hys_basic
+*$
+.SUBCKT nmos_gm_basic d g s PARAMS: 
++  vth  = 0.75 
++  gm   = 3.33e-3 
++  gmin = 1e-10 
++  cgs  = 1e-12 
++  cgd  = 1e-12 
++  cds  = 1e-12 
+.FUNC XLIMIT(x,y,z)  {y+((x-y)/pwr(1+pwr((x-y)/z,8),0.125))} 
+E1   x1 0 VALUE {V(g,s)-vth}
+E2   x2 0 VALUE {V(d,s)/vth}
+E3 imax 0 VALUE {gm*MAX(V(x1), XLIMIT(V(x1),0.5,0.5))}
+G1   d  s  VALUE {V(imax)*XLIMIT(V(x2),0,1)} 
+R1   d  s  {1/gmin} 
+C1   d  s  {cds} 
+C2   g  s  {cgs} 
+C3   g  d  {cgd} 
+.ENDS nmos_gm_basic 
+*$
+.SUBCKT nmos_gm_simple d g s PARAMS: 
++  vth  = 0.75 
++  gm   = 3.33e-3 
++  gmin = 1e-10 
+.FUNC XLIMIT(x,y,z)  {y+((x-y)/pwr(1+pwr((x-y)/z,8),0.125))} 
+E0  x  0  VALUE { MAX(0, gm*V(g, s)) } 
+R0  x  0  1e12 
+G1  d  s  VALUE { V(x)*XLIMIT(V(d, s)/vth, 0, 1) } 
+R1  d  s  { 1/gmin } 
+.ENDS nmos_gm_simple

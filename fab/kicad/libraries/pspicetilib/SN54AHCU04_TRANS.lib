@@ -1,0 +1,145 @@
+*$
+* SN54AHCU04
+*****************************************************************************
+* (C) Copyright 2017 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Texas Instruments Inc.
+* Part: SN54AHCU04
+* Date: 12DEC2017
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: NA
+* EVM Users Guide: NA
+* Datasheet: SCLS234K − OCTOBER 1995 − REVISED JULY 2003
+* Topologies Supported: NA
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+* 
+* 1. The following features have been modeled
+*      a. Switching Characteristics of inverters and variation with VCC for VCC= 3.3V to 5V
+*      b. TPHL & TPHL numbers has been modeled for for CL=15p and 50p
+*      c. Quiescent Current and leakage current at room temperature
+* 2. Temperature effects are not modeled. 
+*
+*****************************************************************************
+.SUBCKT SN54AHCU04_TRANS 1A 1Y 2A 2Y 3A 3Y 4A 4Y 5A 5Y 6A 6Y GND VCC  
+X_INV4 4A_INT TPLH TPHL VCC_INT 4Y INVERTER_WD_TPD  
+X_D1 TPLH TPHL VCC TPD_vs_SUPPLY_TABLE  
+X_INV1 1A_INT TPLH TPHL VCC_INT 1Y INVERTER_WD_TPD  
+X_INV3 3A_INT TPLH TPHL VCC_INT 3Y INVERTER_WD_TPD  
+X_IL1 1A 1A_INT 2A 2A_INT 3A 3A_INT 4A 4A_INT 5A 5A_INT 6A 6A_INT GND VCC
++  VCC_INT PIN_LEAKAGE_CURRENTS  
+X_INV6 6A_INT TPLH TPHL VCC_INT 6Y INVERTER_WD_TPD  
+X_INV5 5A_INT TPLH TPHL VCC_INT 5Y INVERTER_WD_TPD  
+X_INV2 2A_INT TPLH TPHL VCC_INT 2Y INVERTER_WD_TPD  
+.ENDS SN54AHCU04_TRANS
+*$ 
+.SUBCKT PIN_LEAKAGE_CURRENTS 1A 1A_int 2A 2A_int 3A 3A_int 4A 4A_int 5A 5A_int
++  6A 6A_int GND VCC VCC_INT  
+E_E7         5A_INT 0 5A 0 1
+E_E3         2A_INT 0 2A 0 1
+E_E5         3A_INT 0 3A 0 1
+G_ABMI7         5A 0 VALUE { 1u    }
+G_ABMI3         2A 0 VALUE { 1u    }
+E_E8         6A_INT 0 6A 0 1
+G_ABMI5         3A 0 VALUE { 1u    }
+E_E6         4A_INT 0 4A 0 1
+E_E2         1A_INT 0 1A 0 1
+E_E1         VCC_INT 0 VCC 0 1
+G_ABMI8         6A 0 VALUE { 1u    }
+G_ABMI6         4A 0 VALUE { 1u    }
+G_ABMI2         1A 0 VALUE { 1u    }
+G_ABMI1         VCC GND VALUE { 20u    }
+.ENDS
+*$ 
+.SUBCKT TPD_vs_SUPPLY_TABLE IN_H_to_L_TPLH IN_L_to_H_TPHL VCC  
+E_TABLE3         IN_L_TO_H_TPHL 0 TABLE {V(VCC)} 2V           3.2nV  
++ 2.5V           3nV  
++ 3.3V           2.2nV  
++ 5V           1.1nV  
++ 5.5V           1.1nV
+E_TABLE2         IN_H_TO_L_TPLH 0 TABLE {V(VCC)} 2V           3.2nV  
++ 2.5V           3nV  
++ 3.3V           2.2nV  
++ 5V           1.1nV  
++ 5.5V           1.1nV
+.ENDS
+*$ 
+.SUBCKT INVERTER_WD_TPD A IN_H_to_L_TPLH IN_L_to_H_TPHL VCC Y  
+C_C2         N43654 INV_IN  0.693p  TC=0,0 
+X_U2         A N43025 IN_H_TO_L_TPLH VOLTAGE_CONTROLLED_RES
+X_U7         INV_OUT Y VARR_RES VOLTAGE_CONTROLLED_RES
+X_U3         N43025 INV_IN IN_L_TO_H_TPHL VOLTAGE_CONTROLLED_RES
+C_C3         0 Y  50p  TC=0,0 
+C_C1         0 N43025  0.693p  TC=0,0 
+X_U4         A N43025 diode_ideal PARAMS:
+X_U5         INV_IN N43025 diode_ideal PARAMS:
+X_U1         INV_IN INV_OUT VCC INV_SAN PARAMS: VSS=0 DELAY=1p
+X_U6         N43654 0 diode_ideal PARAMS:
+E_TABLE2         VARR_RES 0 TABLE {V(VCC)} 2V         110pV  
++ 2.5V       110pV  
++ 3.3V       92pV  
++ 5V          65.5pV  
++ 5.5V       65.5pV
+.ENDS
+*$
+.SUBCKT AND2_SAN IN1 IN2 OUT VCC PARAMS: VSS=0 DELAY = 1p 
+E_vth VTH 0 VALUE={V(VCC)/2}
+E1 OUT1 0 VALUE={if(V(IN1)>V(VTH)&V(IN2)>V(VTH),V(VCC),{VSS})}
+R1 OUT1 OUT2 {{DELAY}*1E12}
+C1 OUT2 0 1.443p
+E2 OUT 0 VALUE={IF(V(OUT2)>V(VTH),V(VCC),{VSS})}
+.ENDS AND2_SAN
+*$
+.SUBCKT OR2_SAN IN1 IN2 OUT VCC PARAMS: VSS=0 DELAY=1N
+E_vth VTH 0 VALUE={V(VCC)/2}
+E1 OUT1 0 VALUE={if(V(IN1)<V(VTH)&V(IN2)<V(VTH),{VSS},V(VCC))}
+R5 OUT1 OUT {{DELAY}*1E9}
+C5 OUT 0 1.443n
+.ENDS OR2_SAN
+*$
+.SUBCKT INV_SAN IN OUT VCC PARAMS: VSS=0 DELAY=1p
+E_vth VTH 0 VALUE={V(VCC)/2}
+E1 OUT1 0 VALUE={IF(V(IN)>V(VTH),{VSS},V(VCC))}
+R1 OUT1 OUT2 {{DELAY}*1E12}
+C1 OUT2 0 1.443p
+E2 OUT 0 VALUE={IF(V(OUT2)>V(VTH),V(VCC),{VSS})}
+.ENDS INV_SAN
+*$
+.subckt Voltage_Controlled_Res VC+ VC- V_delay
+ERES VC+ int Value = {I(vsense)*(V(V_delay))*1e12}
+Vsense int VC- DC 0
+.ends Voltage_Controlled_Res
+*$
+.subckt Controlled_Res VC+ VC- Res_Val
+ERES VC+ int Value = {I(vsense)*(V(Res_Val))}
+Vsense int VC- DC 0
+.ends Controlled_Res
+*$
+.SUBCKT DIODE_Ideal 1 2 
+D1 1 2 ideal
+.model ideal D n=1m is=1e-15 tt=1f 
+.ENDS DIODE_Ideal
+*$

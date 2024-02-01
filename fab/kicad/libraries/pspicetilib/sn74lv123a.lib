@@ -1,0 +1,176 @@
+* SN74LV123A
+*****************************************************************************
+* (C) Copyright 2012 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: SN74LV123A
+* Date: 12/2/2014
+* Model Type: All In One
+* Simulator: Pspice
+* Simulator Version: Pspice 16.2.0.p001
+* EVM Order Number: N/A 
+* EVM Users Guide: N/A
+* Datasheet: SCLS393P - APRIL 1998 - Revised OCTOBER 2013
+*
+* Model Version: 1.1
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 : Release
+* Version 1.1 : Revise model
+* Version 1.2 : Revise model to support a wider range of pulse duration.
+*
+*****************************************************************************
+* Notes: 
+* 1. The MODEL IS INTENDED FOR 5V OPERATION AND REFLECTS THE PULSE DURATION 
+*    AS SHOWN IN FIGURE 6 OF THE DATA SHEET.
+* 2. THE MODEL MAY NOT MEET THE OTHER DEVICE PARAMETERS. 
+* 3. THIS MODEL IS INTENDED FOR USE IN CADENCE V16.2 AND ABOVE WITH 
+*    AUTOCONVERGE ENABLED. IF AUTOCONVERGE IS NOT USED, THE SIMULATION 
+*    WILL LIKELY HAVE CONVERGENCE ERRORS.
+* 4. THE VALUES OF R_EXT AND C_EXT IN THE SCHEMATIC MUST BE ENTERED AS 
+*    PARAMETERS VIA THE PARAMS STATEMENT IN THE .SUBCKT LINE BELOW. 
+*    IF THIS IS NOT DONE, THE MODEL WILL GIVE INCORRECT RESULTS.
+* 
+*****************************************************************************
+*
+*$
+.SUBCKT SN74LV123A Q Qnot Anot B CLRnot Rext_Cext Cext VCC GND PARAMS: C_EXT=0.001u R_EXT=1000
+**
+.PARAM a1 = -2.833260516553875e-05
+.PARAM a2 = -3.216857291258787e-03
+.PARAM a3 = -1.492470445189423e-01
+.PARAM a4 = -3.623990545719572e+00
+.PARAM a5 = -4.859000838098517e+01
+.PARAM a6 = -3.411530751539612e+02
+.PARAM a7 = -9.790177545067897e+02
+**
+**
+.PARAM x = {LOG(C_EXT)}
+**
+.PARAM K = {a1*PWR(x,6)+a2*PWRS(x,5)+a3*PWR(x,4)+a4*PWRS(x,3)
++ +a5*PWR(x,2)+a6*PWRS(x,1)+a7}
+**
+**
+.PARAM y = {0.1*R_EXT*C_EXT*(1+K)}
+******
+******
+E_y Ny 0 VALUE = {y}
+E_x Nx 0 VALUE = {x}
+E_C NC 0 VALUE = {C_EXT*K}
+E_K NK 0 VALUE = {K}
+Caddl         Cext Rext_Cext {C_EXT*K}
+*T_T1         N137948 0 N155944 0 Z0=100 TD=10n  
+T_T1         N137948 0 N155944 0 Z0=100 TD={y}  
+R_R9         Cext GNDF  0.001
+X_U2_U1         U2_INN U2_N00304 VCC GND ST_B GAIN_WLIM 
+R_U2_R1         B U2_N00304  6k
+R_U2_R2         U2_N00304 ST_B  25k
+E_U2_E1         U2_INN GND VCC GND 0.5
+R_R11         0 DELAY  10k
+R_R10         IN1 N137948  100
+X_U13         IN1 IN2 DELAY VCC GND AND 
+X_U3_U1         U3_INN U3_N00304 VCC GND ST_C GAIN_WLIM 
+R_U3_R1         CLRNOT U3_N00304  6k
+R_U3_R2         U3_N00304 ST_C  25k
+E_U3_E1         U3_INN GND VCC GND 0.5
+X_S1    DELAY GND REXT_CEXT GND SN74LV123A_SCH_S1 
+X_U9_U1         U9_INN U9_N00304 VCC GND N194497 GAIN_WLIM 
+R_U9_R1         OUT_COMP U9_N00304  6k
+R_U9_R2         U9_N00304 N194497  25k
+E_U9_E1         U9_INN GND VCC GND 0.5
+R_R8         GND VCC  275k
+X_U14         N205403 IN2 VCC GND INV 
+R_R14         N175778 Qnot  400
+E_E3         IN1 0 SNOT 0 1
+X_U5         ST_A ST_B ST_C SNOT VCC GND AND_3 
+X_S2    CLRNOT GND REXT_CEXT VCC SN74LV123A_SCH_S2 
+X_U6         REXT_CEXT REF VCC GND OUT_COMP GAIN_WLIM 
+R_R12         N205403 N155944  100
+X_U7         QI QIN SNOT RNOT VCC GND GNDF LATCH 
+R_R15         N194497 Q  400 
+R_R6         ST_C RNOT  1k 
+R_R1         QI GND  10k
+E_E2         GNDF GND VCC GND 0.5
+R_R13         0 IN2  10k
+E_E1         REF GND VCC GND 0.425
+R_R2         QIN GND  10k
+R_U1_R2         U1_N01584 ST_A  25k TC=0,0 
+X_U1_U1         ANOT U1_N01584 VCC GND ST_A GAIN_WLIM 
+E_U1_E1         U1_N01929 GND VCC GND 0.5
+R_U1_R1         U1_N01929 U1_N01584  6k 
+R_R4         OUT_COMP GNDF  10k 
+R_U4_R2         U4_N01584 N175778  25k
+X_U4_U1         OUT_COMP U4_N01584 VCC GND N175778 GAIN_WLIM 
+E_U4_E1         U4_N01929 GND VCC GND 0.5
+R_U4_R1         U4_N01929 U4_N01584  6k
+.ENDS
+*$
+.subckt SN74LV123A_SCH_S1 1 2 3 4  
+S_S1         3 4 1 2 _S1
+RS_S1         1 2 1G
+.MODEL         _S1 VSWITCH Roff=1e7 Ron=50 Voff=0.2V Von=1.8V
+.ends SN74LV123A_SCH_S1
+*$
+.subckt SN74LV123A_SCH_S2 1 2 3 4  
+S_S2         3 4 1 2 _S2
+RS_S2         1 2 1G
+.MODEL         _S2 VSWITCH Roff=1e7 Ron=1 Voff=1.8V Von=0.2V
+.ends SN74LV123A_SCH_S2
+*$
+.SUBCKT GAIN_wLIM INN INP VCC VEE OUT
+.PARAM AOL = 1e5
+ET NT VEE VALUE = {0.5*V(VCC,VEE)+V(VEE)}
+ED ND VEE VALUE = {V(INP,INN)}
+EO N1 VEE VALUE = {MAX(MIN(AOL*V(ND,VEE),V(VCC)),V(VEE))}
+ROUT N1 OUT 100
+.ENDS
+*$
+.SUBCKT AND A B Y VCC GND
+ET NT GND VALUE = {0.5*V(VCC,GND)}
+RQ VCC GND 10e6
+EA NA GND VALUE = {0.5*(SGN(V(A,GND) - V(NT,GND)) + 1)}
+EB NB GND VALUE = {0.5*(SGN(V(B,GND) - V(NT,GND)) + 1)}
+EO NO GND VALUE = {V(NA,GND)*V(NB,GND)*V(VCC,GND)}
+RO1 NO NO1 50
+RO2 NO1 Y 50
+CO NO1 GND 0.1f
+.ENDS
+*$
+.SUBCKT INV A Y VCC GND
+ET NT GND VALUE = {0.5*V(VCC,GND)}
+RQ VCC GND 10e6
+EA NO GND VALUE = {V(VCC,GND)*(0.5*(SGN(V(NT,GND) - V(A,GND)) + 1))}
+RO1 NO NO1 50
+RO2 NO1 Y 50
+CO NO1 GND 0.1f
+.ENDS
+*$
+.SUBCKT AND_3 A B C Y VCC GND
+ET NT GND VALUE = {0.5*V(VCC,GND)}
+RQ VCC GND 10e6
+EA NA GND VALUE = {0.5*(SGN(V(A,GND) - V(NT,GND)) + 1)}
+EB NB GND VALUE = {0.5*(SGN(V(B,GND) - V(NT,GND)) + 1)}
+EC NC GND VALUE = {0.5*(SGN(V(C,GND) - V(NT,GND)) + 1)}
+EO NO GND VALUE = {V(NA,GND)*V(NB,GND)*V(NC,GND)*V(VCC,GND)}
+RO1 NO NO1 50
+RO2 NO1 Y 50
+CO NO1 GND 0.1f
+.ENDS
+*$
+.SUBCKT LATCH Q Qn S R VCC VEE GNDF
+EQ Q GNDF VALUE = {IF(SGN(V(S,GNDF)) < 0, V(VEE,GNDF),IF(SGN(V(R,GNDF)) > 0, V(VCC,GNDF), V(VEE,GNDF)))}
+EQn Qn GNDF VALUE = {IF(SGN(V(Q,GNDF)) >= 0, V(VEE,GNDF),V(VCC,GNDF))}
+.ENDS
+*$
+

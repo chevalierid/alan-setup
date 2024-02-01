@@ -1,0 +1,107 @@
+***********************************************************************
+*  (C) Copyright 2014 Texas Instruments Incorporated. All rights reserved.
+***********************************************************************
+***********************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose. The model is
+** provided solely on an "as is" basis. The entire risk as to its quality
+** and performance is with the customer
+********************************************************************************
+*
+* Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: CSD16415Q5
+* Date: 03/14/2014
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.2
+* EVM Order Number: 
+* EVM Users Guide: 
+* Datasheet: SLPS259 - DECEMBER 2011
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+*
+*****************************************************************************
+**********************************************************************
+*                                                                    *
+* CSD16415Q5  -  PSpice Model for use with OrCAD                    *
+*                                                                    *
+**********************************************************************
+* SUBCKT Definition:  1=D  2=G  3=S
+.SUBCKT CSD16415Q5  1 2 3
+* PARAMETER (local) DEFINITIONS SECTION
+ .PARAM  pWidth  4.8236088 	; m, total gate width
+ .PARAM  perim   {2*pWidth}	; m, gate/drain perim (rough est)
+ .PARAM  ptrc1   3.00E-3		; temp co of ext Rd / Rs
+ .PARAM  ptrc2   2.00E-5
+****** MODEL SUBCIRCUIT BEGINS HERE     ******************************
+M1   10 11 12 12  NMOS	W={pWidth} L=0.5u  PS={perim} PD={perim}
+M2   12 11 12 20  PMOSd W={pWidth} L=0.095u PS={perim} PD={perim}
+
+DBD   8  7	 DBD
+DDx  20  10  DDx
+DDG  14  5	 DD
+DGD  14 10	 DD
+
+CBD0  8  7   98e-12
+CGD0  5  7	 1E-12
+CGS0  5  8	 6e-12
+CGS   5 13	 650e-12
+
+RBD0  8  7   1e10
+RGS  13  8	 1e6
+RGG   5 11	 1.60
+RSB  12  9	 RTEMP 0.005e-3
+RSS   9  8 	 RTEMP 0.005e-3
+RSP   8  6 	 0.001E-3
+RSA   6  3   2.0
+RDD   7 10 	 RTEMP 0.48e-3
+RDP   4  7	 0.15e-3
+
+LGG   2  5	 0.78e-9
+LSS   6  3	 0.14E-9
+LDD   1  4	 0.05e-9
+******************************************************************* 
+.MODEL  NMOS   NMOS (    LEVEL  = 7             Version = 3.2  
++ TNOM   = 27            LINT   = 0.056e-6      CAPMOD = 2
++ TOX    = 3.00e-8       NCH    = 1.40e17      NSUB   = 1.0e16
++ AGS    = 0.0           PVAG   = 0.1           VSAT   = 9.5e4
++ A0     = 1.0           A1     = 0.0           A2     = 1.0
++ UA     = 2.30e-9       UB     = 2.5e-18       VBM    = -5
++ UA1    = 0.7e-9        UB1    = -3.0e-18      UTE    = -1.50
++ KT1    = -0.75         KT2    = 0.022         KT1L   = 1.0e-10
++ DVT0   = 2.2           DVT1   = 0.53	      DVT2   = -0.033
++ ETA0   = 0.050         ETAB   = -0.07         XJ     = 3e-7
++ PDIBLC1= 0.020         PDIBLC2= 0.004         NLX    = 1.79e-7
++ PSCBE1 = 5.0e8         PSCBE2 = 1e-7          PCLM   = 5.0
++ VOFF   = -0.44         NFACTOR= 1.6           JS     = 0
++ DROUT  = 0.90          DSUB   = 1.4           DELTA  = 0.018
++ CJ     = 1e-18         CJSW   = 1e-18         CF     = 0
++ CGSO   = 240e-12       CGDO   = 8e-12         CGBO   = 1e-12  )
+******************************************************************* 
+.MODEL  PMOSd   PMOS (   LEVEL  = 1
++ TNOM   = 27            VTO    = -0.3          IS     = 6e-14
++ TOX    = 1.75e-8       NSUB   = 2.2e18		gamma	 = 0.5
++ CJ     = 1e-18         CJSW   = 1e-18
++ CGSO   = 1e-18         CGDO   = 1e-18         CGBO   = 0  )
+*******************************************************************
+.MODEL DBD D (CJO=7565e-12 VJ=0.70 M=0.4115 FC=0.5 TT=5E-09
++ IS=6.65e-12 N=1.022 RS=5.0e-4 TRS1=-3.0e-4 XTI=2.5 BV=27)
+.MODEL DD D (CJO=850E-12 VJ=0.69 M=0.66 FC=0.5 IS=1e-25)
+.MODEL DDx D (CJO=0.1e-09 VJ=0.40 M=0.60 IS=1e-12 RS=1  TNOM=27)
+*******************************************************************
+.MODEL RTEMP RES (TC1={ptrc1} TC2={ptrc2})
+*******************************************************************
+.ENDS CSD16415Q5  
+*$

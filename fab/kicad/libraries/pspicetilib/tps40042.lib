@@ -1,0 +1,373 @@
+﻿*$
+*$
+* TPS40042
+*****************************************************************************
+* (C) Copyright 2009 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.                                             
+** TI and its licensors and suppliers make no warranties, either expressed                                           
+** or implied, with respect to this model, including the warranties of                                                    
+** merchantability or fitness for a particular purpose. The model is                                                      
+** provided solely on an "as is" basis. The entire risk as to its quality                                                    
+** and performance is with the customer                                                                                          
+*****************************************************************************
+*
+* This model was developed for Texas Instruments Incorporated by:
+*   AEi Systems, LLC
+*   5777 W. Century Blvd., Suite 876
+*   Los Angeles, California  90045
+*
+* This model is subject to change without notice. Neither Texas Instruments Incorporated 
+* nor AEi Systems is responsible for updating this model.
+* For more information regarding modeling services, model libraries and simulation 
+* products, please call AEi Systems at (310) 216-1144, or contact AEi Systems by email: 
+* info@AENG.com. Or visit AEi Systems on the web at http://www.AENG.com.
+*
+*****************************************************************************
+*
+** Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: TPS40042
+* Date: 05/28/2009
+* Model Type: Transient 
+* Simulator: PSpice 
+* Simulator Version: 16.0.0.p001
+* EVM Order Number:  
+* EVM Users Guide: 
+* Datasheet: SLUS777 NOVEMBER 2007
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+.SUBCKT TPS40042 EN FB HDRV SW REFIN COMP VDD LDRV BOOT GND
+X_U30_U13          U30_N92982 EN U30_N92972 ENON COMP_HYS
+X_U30_U7          U30_OCRAMP U30_N09461 DC_1mV_1mA_1V_1nA
+V_U30_V10         VDD U30_N92982 1.175
+R_U30_R2         U30_N21703 U30_N21154  1  
+R_U30_R3         VDD EN  100K  
+X_U30_U1          U30_N00394 VDD U30_N00387 UVLO COMP_HYS
+X_U30_U2         OC U30_N01681 one_shot PARAMS: PARAMS:  T=100  
+X_U30_U9          0 U30_OCRAMP DC_1mV_1mA_1V_1nA
+C_U30_C1         0 U30_OCRAMP  1n IC=0 
+X_U30_U3         CLK U30_N07367 one_shot PARAMS: PARAMS:  T=100  
+V_U30_V2         U30_N00387 0 0.13
+G_U30_G2         U30_OCRAMP 0 U30_N07367 0 0.01
+X_U30_S1    U30_N21154 0 U30_OCRAMP 0 HK_U30_S1 
+X_U30_U4          U30_OCRAMP U30_N07841 U30_N07837 OCF COMP_HYS
+V_U30_V4         U30_N07837 0 6
+C_U30_C3         0 U30_N21154  50n IC=0 
+X_U30_U14         OCF U30_N21703 delay PARAMS: PARAMS:  T={40e6 - 39e6*SS}  
+E_U30_E1         VDDBUF 0 VDD 0 1
+G_U30_G1         0 U30_OCRAMP U30_N01681 0 0.02
+V_U30_V6         U30_N09461 0 8
+V_U30_V3         U30_N07841 0 4.5
+V_U30_V9         U30_N92972 0 -0.05
+V_U30_V1         U30_N00394 0 1.985
+E_U20_E1         ILIMREF 0 U20_N72344 0 1
+X_U20_S2    U20_CALSIG 0 U20_N04367 U20_N04129 EASS_U20_S2 
+X_U20_U9          U20_ICAL U20_N68364 U20_N69926 COMPARATOR
+V_U20_V3         U20_N04129 0 1
+X_U20_U10          U20_ICAL U20_N68528 U20_N70094 COMPARATOR
+X_U20_S3    U20_N85848 0 COMP 0 EASS_U20_S3 
+X_U20_U4         U20_VREF FB U20_N58536 op_amp PARAMS: PARAMS:  HLIMIT=2.5
++  RIN=23.3MEG BW=10MEG DC_GAIN=85 ROUT=100 LLIMIT=0.08 SRP=10   SRM=10 
+V_U20_V5         U20_N68528 0 0.042
+C_U20_C1         U20_VREF 0  1n  
+V_U20_V4         U20_N68364 0 0.2
+X_U20_U13          U20_N82228 OCF U20_N62838 AND_1
+G_U20_G2         U20_N58536 U20_N04367 TABLE { V(U20_N58536, U20_N04367) } 
++ ( (-10,-0.0088)(-1m,-0.008)(0,0)(1m,6m)(10,6.6m) )
+X_U20_U5          ENON UVLO U20_N82228 AND_1
+X_U20_U14         U20_CALSIG U20_N85848 one_shot_1 PARAMS: PARAMS:  T=
++ {0.8e6-(0.799e6*SS)}  
+X_U20_U12         U20_N70094 U20_CALSIG U20_12K DLATCH 
+X_U20_H1    U20_N04367 COMP U20_ICAL 0 EASS_U20_H1 
+I_U20_I10         VDDBUF U20_VREF DC {250n + (SS*5u)}  
+X_U20_S1    FAULT 0 U20_VREF 0 EASS_U20_S1 
+C_U20_C2         U20_N58536 U20_N04367  1p  
+G_U20_ABMI3         0 U20_N72344 VALUE { if( V(U20_5K)<0.5 &
++  V(U20_12K)<0.5,0.180,0)    }
+X_U20_U6         U20_N62838 U20_CALSIG one_shot PARAMS: PARAMS:  T=
++ {0.8e6-(SS*0.7e6)}  
+G_U20_ABMI1         0 U20_N72344 VALUE { if( V(U20_5K)>0.5 &
++  V(U20_12K)>0.5,0.105,0)    }
+G_U20_ABMI2         0 U20_N72344 VALUE { if( V(U20_5K)<0.5 &
++  V(U20_12K)>0.5,0.310,0)    }
+X_U20_U7          U20_N62838 U20_N66056 INVERTER
+X_U20_U1          U20_VREF VDDBUF DC_1mV_1mA_1V_1nA
+X_U20_U11         U20_N69926 U20_CALSIG U20_5K DLATCH 
+X_U20_U3          U20_VREF REFIN DC_1mV_1mA_1V_1nA
+X_U20_U15          U20_CALSIG U20_N66056 U20_N85848 FAULT OR3
+R_U20_R1         0 U20_N72344  1  
+X_U10_U23          SW U10_N53472 U10_N57001 COMPARATOR
+X_U10_U24          U10_N126493 SW U10_N78312 COMPARATOR
+C_U10_C5         U10_N62604 LDRV  10p  
+X_U10_U25          N04119 U10_N108081 U10_PWMH2 AND
+D_U10_D5         0 U10_N62604 DIDEAL 
+X_U10_U21          U10_N99158 OC BUFFER
+X_U10_U20          U10_N57038 U10_N57200 U10_N96342 U10_N99010 AND3
+G_U10_G3         U10_N62604 LDRV TABLE { V(U10_N62604, LDRV) } 
++ ( (-20,-2.7)(-1,-2.6)(-10m,-2.5)(0,0)(10m,1)(1,1.1)(20,1.2) )
+X_U10_S3    U10_N62656 0 VDD U10_N62604 DRIVER_U10_S3 
+X_U10_U12         U10_N119118 U10_N119238 delay PARAMS: PARAMS:  T=50  
+R_U10_R4         U10_N99010 U10_N99158  100  
+E_U10_ABM1         U10_N126493 0 VALUE { V(VDD)-V(ILIMREF)    }
+V_U10_V2         U10_N109994 0 0.7
+X_U10_U10         U10_N57001 U10_N57038 delay PARAMS: PARAMS:  T=100  
+X_U10_S2    U10_N60714 0 U10_N60065 SW DRIVER_U10_S2 
+X_U10_U26          N04284 U10_N119238 U10_N62656 AND
+X_U10_S4    U10_N69639 0 U10_N62604 0 DRIVER_U10_S4 
+R_U10_R2         U10_N78312 U10_N57200  100  
+C_U10_C2         U10_N96342 0  200p  
+X_U10_U22          U10_N109994 LDRV U10_N108229 COMPARATOR
+C_U10_C3         U10_N99158 0  200p  
+C_U10_C4         U10_N60065 HDRV  10p  
+X_U10_U28          VDD U10_N11884 DC_1mV_1A_1V_1nA
+R_U10_R3         U10_PWMH2 U10_N96342  100  
+C_U10_C1         U10_N57200 0  200p  
+G_U10_G2         U10_N60065 HDRV TABLE { V(U10_N60065, HDRV) } 
++ ( (-20,-1.7)(-1,-1.6)(-10m,-1.5)(0,0)(10m,1)(1,1.1)(20,1.2) )
+R_U10_R1         U10_N11884 BOOT  40  
+D_U10_D4         U10_N62604 VDD DIDEAL 
+X_U10_U11         U10_N108229 U10_N108081 delay PARAMS: PARAMS:  T=50  
+X_U10_U27          U10_N111581 HDRV U10_N119118 COMPARATOR
+X_U10_S1    U10_PWMH2 0 BOOT U10_N60065 DRIVER_U10_S1 
+X_U10_U29          U10_PWMH2 U10_N60714 INVERTER
+D_U10_D2         U10_N60065 BOOT DIDEAL 
+V_U10_V3         U10_N111581 SW 0.7
+X_U10_U30          U10_N62656 U10_N69639 INVERTER
+V_U10_V1         VDD U10_N53472 1.2
+D_U10_D3         SW U10_N60065 DIDEAL 
+X_U40_U5          U40_N05841 CLK U40_N06495 AND_1
+E_U40_ABM2         U40_N20101 0 VALUE { 1-V(U40_RAMP)    }
+X_U40_U15          U40_N10793 U40_N22100 U40_N24155 U40_N10742 AND3
+V_U40_V2         U40_N29121 0  
++PULSE {SS} 0 0 1u 1u 1u 10
+X_U40_S1    U40_N07554 0 U40_SRAMP 0 PWMOSC_U40_S1 
+X_U40_U22          U40_SRAMP U40_N20101 U40_N09765 COMPARATOR
+X_U40_U17         CLK U40_N25078 one_shot_1 PARAMS: PARAMS:  T=50
+X_U40_U24          U40_N11076 U40_N22100 INVERTER
+X_U40_U1         FAULT U40_RAMP CLK osc PARAMS: PARAMS:  FREQ={FREQ}  TCLK=
++ {TCLK}
+X_U40_U13          OC U40_N15003 U40_N317930 OR
+C_U40_C1         U40_SRAMP 0  1n IC={SS} 
+X_U40_U8          U40_N10742 FAULT N04284 AND_1
+X_U40_U6          U40_N06495 FAULT N04119 AND_1
+X_U40_U16         U40_N25078 U40_N06495 U40_N24155 RSFF_RDOM 
+E_U40_ABM1         U40_N14671 0 VALUE { (V(U40_RAMP) *0.87)+0.4    }
+X_U40_U25          U40_N26443 U40_N07554 INVERTER
+X_U40_U21          U40_N14671 COMP U40_N15003 COMPARATOR
+X_U40_U18         FAULT U40_N30075 U40_N26443 RSFF_RDOM 
+X_U40_U20          U40_N29121 N04119 U40_N30075 OR
+X_U40_U9          U40_SRAMP U40_N07574 DC_1mV_1mA_1V_1nA
+V_U40_V1         U40_N07574 0 1.1
+X_U40_U23          U40_N06495 U40_N10793 INVERTER
+X_U40_U10         U40_N09765 U40_N06495 U40_N11076 RSFF_RDOM 
+X_U40_U4         U40_N317930 CLK U40_N05841 RSFF_RDOM 
+I_U40_I1         U40_N07574 U40_SRAMP DC {1e-9*FREQ/128}  
+R_R1         GND 0  1m  
+.model DIDEAL D Is=1e-14 Cjo=.1pF Rs=.1
+.ENDS
+.PARAM  freq=600e3 tclk=83e-9
+*$
+.model DIDEAL D Is=1e-14 Cjo=.1pF Rs=.1
+*$
+.subckt HK_U30_S1 1 2 3 4  
+S_U30_S1         3 4 1 2 _U30_S1
+RS_U30_S1         1 2 1G
+.MODEL         _U30_S1 VSWITCH Roff=1e9 Ron=10 Voff=0.25V Von=0.75V
+.ends HK_U30_S1
+*$
+.subckt EASS_U20_S2 1 2 3 4  
+S_U20_S2         3 4 1 2 _U20_S2
+RS_U20_S2         1 2 1G
+.MODEL         _U20_S2 VSWITCH Roff=1e9 Ron=1 Voff=0.25V Von=0.75V
+.ends EASS_U20_S2
+*$
+.subckt EASS_U20_S3 1 2 3 4  
+S_U20_S3         3 4 1 2 _U20_S3
+RS_U20_S3         1 2 1G
+.MODEL         _U20_S3 VSWITCH Roff=1e9 Ron=1 Voff=0.25V Von=0.75V
+.ends EASS_U20_S3
+*$
+.subckt EASS_U20_H1 1 2 3 4  
+H_U20_H1         3 4 VH_U20_H1 1000
+VH_U20_H1         1 2 0V
+.ends EASS_U20_H1
+*$
+.subckt EASS_U20_S1 1 2 3 4  
+S_U20_S1         3 4 1 2 _U20_S1
+RS_U20_S1         1 2 1G
+.MODEL         _U20_S1 VSWITCH Roff=1e9 Ron=1 Voff=0.25V Von=0.75V
+.ends EASS_U20_S1
+*$
+.subckt DRIVER_U10_S3 1 2 3 4  
+S_U10_S3         3 4 1 2 _U10_S3
+RS_U10_S3         1 2 1G
+.MODEL         _U10_S3 VSWITCH Roff=1e6 Ron=3 Voff=0.25V Von=0.75V
+.ends DRIVER_U10_S3
+*$
+.subckt DRIVER_U10_S2 1 2 3 4  
+S_U10_S2         3 4 1 2 _U10_S2
+RS_U10_S2         1 2 1G
+.MODEL         _U10_S2 VSWITCH Roff=1e6 Ron=1.5 Voff=0.25V Von=0.75V
+.ends DRIVER_U10_S2
+*$
+.subckt DRIVER_U10_S4 1 2 3 4  
+S_U10_S4         3 4 1 2 _U10_S4
+RS_U10_S4         1 2 1G
+.MODEL         _U10_S4 VSWITCH Roff=1e6 Ron=1.0 Voff=0.25V Von=0.75V
+.ends DRIVER_U10_S4
+*$
+.subckt DRIVER_U10_S1 1 2 3 4  
+S_U10_S1         3 4 1 2 _U10_S1
+RS_U10_S1         1 2 1G
+.MODEL         _U10_S1 VSWITCH Roff=1e6 Ron=3 Voff=0.25V Von=0.75V
+.ends DRIVER_U10_S1
+*$
+.subckt PWMOSC_U40_S1 1 2 3 4  
+S_U40_S1         3 4 1 2 _U40_S1
+RS_U40_S1         1 2 1G
+.MODEL         _U40_S1 VSWITCH Roff=1e9 Ron=1.0 Voff=0.25V Von=0.75V
+.ends PWMOSC_U40_S1
+*$
+.SUBCKT ONE_SHOT IN OUT
++ PARAMs:  T=100
+S_S1         MEAS 0 RESET2 0 S1
+E_ABM1         CH 0 VALUE { if( V(IN)>0.5 | V(OUT)>0.5,1,0)    }
+R_R2         RESET2 RESET  0.1  
+E_ABM3         OUT 0 VALUE { if( V(MEAS)<0.5 & V(CH)>0.5,1,0)    }
+R_R1         MEAS CH  {T} 
+C_C2         0 RESET2  1.4427n  
+C_C1         0 MEAS  1.4427n  
+E_ABM2         RESET 0 VALUE { if(V(CH)<0.5,1,0)    }
+.MODEL         S1 VSWITCH Roff=1e9 Ron=1.0 Voff=0.25V Von=0.75V
+.ENDS ONE_SHOT
+*$
+.SUBCKT ONE_SHOT_1 IN OUT
++ PARAMs:  T=100
+S_S1         MEAS 0 RESET2 0 S1
+E_ABM1         CH 0 VALUE { if( V(IN)<0.5 | V(OUT)>0.5,1,0)    }
+R_R2         RESET2 RESET  0.1  
+E_ABM3         OUT 0 VALUE { if( V(MEAS)<0.5 & V(CH)>0.5,1,0)    }
+R_R1         MEAS CH  {T} 
+C_C2         0 RESET2  1.4427n  
+C_C1         0 MEAS  1.4427n  
+E_ABM2         RESET 0 VALUE { if(V(CH)<0.5,1,0)    }
+.MODEL         S1 VSWITCH Roff=1e9 Ron=1.0 Voff=0.25V Von=0.75V
+.ENDS ONE_SHOT_1
+*$
+.SUBCKT DELAY IN OUT
++ PARAMs:  T=100
+S_S1         MEAS 0 RESET2 0 S1
+E_ABM1         CH 0 VALUE { if( V(IN)>0.5,1,0)    }
+E_ABM3         OUT 0 VALUE { if( V(MEAS)>0.5 & V(CH)>0.5,1,0)    }
+R_R1         MEAS CH  {T} 
+C_C1         0 MEAS  1.4427n  
+E_ABM2         RESET 0 VALUE { if(V(CH)<0.5,1,0)    }
+R_R2         RESET2 RESET  0.1  
+C_C2         0 RESET2  1.4427n  
+.MODEL         S1 VSWITCH Roff=1e9 Ron=1.0 Voff=0.25V Von=0.75V
+.ENDS DELAY
+*$
+.SUBCKT OP_AMP P M OUT 
++ PARAMs:  Hlimit=5 Rin=10Meg BW=18Meg DC_Gain=100 Rout=100 Llimit=0 SRP=1 SRM=1
+R_Rin         P M  {Rin}
+E_E1          5 0 M P {-Gain}
+E_LIMIT2      6 0 VALUE {LIMIT(V(5), {-Abs(SRM)*Ca*1Meg+V(1)/Ra},
++                 {SRP*Ca*1Meg+V(1)/Ra})}
+G_G2          1 0 6 0 -1
+R_Ra          0 1  {Ra} 
+C_Ca          0 1  {Ca}   
+E_LIMIT1      2 0 VALUE {LIMIT(V(1),{Llimit},{Hlimit})}
+V_VL          3 0 {Llimit+200m}
+V_VH          4 0 {Hlimit-200m}
+D_D1          3 1 Dideal 
+D_D2          1 4 Dideal 
+R_Rout        OUT 2  {Rout}
+.model Dideal D Is=1e-10 Cjo=.01pF Rs=1m  N=1
+.PARAM  Ra=1k   Ca={exp(DC_gain*log(10)/20)/(2*3.14159*BW*Ra)} 
++ Gain={exp(DC_gain*log(10)/20)/Ra} 
+.ENDS OP_AMP
+*$
+.SUBCKT OSC FAULT RAMP CLK PARAMS:  FREQ=100E3 TCLK=1E-6
+VCLK         CLK2 0 PULSE 0 1 {TON} 1n 1n {TCLK} {1/FREQ}
+S1    RAMP 0 2 0 S1M 
+EOUT1         2 0 VALUE { if( V(FAULT)>0.5 | V(CLK)>0.5,1,0)    }
+EOUT2         CLK 0 VALUE { if( V(FAULT)<0.5,V(CLK2),0)    }
+ICH         0 RAMP DC {ICHARGE}  
+COSC         0 RAMP  1n IC=0
+.PARAM  ICHARGE={1E-9/TON} RON={TCLK/100/1E-9} TON={(1/FREQ)-TCLK}
+.MODEL         S1M VSWITCH Roff=1G Ron=1m Voff=0.25 Von=0.75 
+.ENDS OSC
+*$
+.subckt DC_1mV_1mA_1V_1nA A C
+G1 A C TABLE { V(A, C) } ( (-1,-1n)(0,0)(1m,1m) (2m,100m) (3m,10) )
+.ends DC_1mV_1mA_1V_1nA 
+*$
+.subckt DC_1mV_1A_1V_1nA A C
+G1 A C TABLE { V(A, C) } ( (-1,-1n)(0,0)(1m,1) (2m,10) (3m,1000) )
+.ends DC_1mV_1A_1V_1nA 
+*$
+.SUBCKT COMPARATOR INP INM OUT  
+EOUT OUT 0 VALUE { IF( V(INP)>V(INM),1,0) }
+.ends COMPARATOR
+*$
+.SUBCKT COMP_HYS INP INM HYS OUT 
+EIN INP1 INM1 INP INM 1 
+EHYS INP1 INP2 VALUE { IF( V(1)>0.5,-V(HYS)/2,V(HYS)/2) }
+EOUT OUT 0 VALUE { IF( V(INP2)>V(INM1),1,0) }
+R1 OUT 1 1
+C1 1 0 5n
+RINP1 INP1 0 1K
+.ends COMP_HYS
+*$
+.SUBCKT AND_1 A B OUT  
+EOUT OUT 0 VALUE { IF( V(A)>0.5 & V(B)<0.5,1,0) }
+.ends AND_1
+*$
+.SUBCKT BUFFER IN OUT  
+EOUT OUT 0 VALUE { IF( V(IN)>0.5,1,0) }
+.ends BUFFER
+*$
+.SUBCKT AND A B OUT  
+EOUT OUT 0 VALUE { IF( V(A)>0.5 & V(B)>0.5,1,0) }
+.ends AND
+*$
+.SUBCKT DLATCH D CLK Q
+EABM1  1 0 VALUE { If( (V(D)>0.5 & V(CLK)>0.5) | V(Q)>0.5, 1,0)    }
+EABM2  Q  0 VALUE { If( V(2)>0.5 & (V(CLK)<0.5 | V(D)>0.5) , 1,0)    }
+R1   1 2 1
+C1   2  0 5n
+.ENDS DLATCH
+*$
+.SUBCKT INVERTER IN OUT  
+EOUT OUT 0 VALUE { IF( V(IN)<0.5,1,0) }
+.ends INVERTER
+*$
+.SUBCKT OR A B OUT  
+EOUT OUT 0 VALUE { IF( V(A)>0.5 | V(B)>0.5,1,0) }
+.ends OR
+*$
+.SUBCKT RSFF_RDOM R S Q
+EABM1  1 0 VALUE { If( V(S)>0.5 | V(Q)>0.5, 1,0)    }
+EABM2  Q  0 VALUE { If( V(2)>0.5 & V(R)<0.5, 1,0)    }
+R1   1 2 1
+C1   2  0 5n
+.ENDS RSFF_RDOM
+*$
+.MODEL D_D1 D( IS=1e-15 TT=10p Rs=0.05 N=.1  )
+*$
+.SUBCKT AND3 A B C OUT  
+EOUT OUT 0 VALUE { IF( V(A)>0.5 & V(B)>0.5 & V(C)>0.5,1,0) }
+.ends AND3
+*$
+.SUBCKT OR3 A B C OUT  
+EOUT OUT 0 VALUE { IF( V(A)>0.5 | V(B)>0.5 | V(C)>0.5,1,0) }
+.ends OR3
+*$
+

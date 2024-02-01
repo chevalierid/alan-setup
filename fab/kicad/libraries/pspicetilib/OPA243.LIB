@@ -1,0 +1,49 @@
+* OPA243 operational amplifier "macromodel" subcircuit
+* created using Parts release 8.0 on 02/13/98 at 12:35
+* Parts is a MicroSim product.
+*
+* connections:   non-inverting input
+*                | inverting input
+*                | | positive power supply
+*                | | | negative power supply
+*                | | | | output
+*                | | | | |
+.subckt OPA243   1 2 3 4 5
+*
+  c1   11 12 4.3301E-12
+  c2    6  7 15.000E-12
+  cee  10 99 3.0000E-12
+  dc    5 53 dy
+  de   54  5 dy
+  dlp  90 91 dx
+  dln  92 90 dx
+  dp    4  3 dx
+  egnd 99  0 poly(2) (3,0) (4,0) 0 .5 .5
+  fb    7 99 poly(5) vb vc ve vlp vln 0 242.52E6 -1E3 1E3 240E6 -240E6
+  ga    6  0 11 12 32.987E-6
+  gcm   0  6 10 99 329.87E-12
+  iee   3 10 dc 1.8200E-6
+  hlim 90  0 vlim 1K
+  q1   11  2 13 qx1
+  q2   12  1 14 qx2
+  r2    6  9 100.00E3
+  rc1   4 11 30.315E3
+  rc2   4 12 30.315E3
+  re1  13 10 1.5599E3
+  re2  14 10 1.5599E3
+  ree  10 99 109.89E6
+  ro1   8  5 50
+  ro2   7 99 25
+  rp    3  4 951.68E3
+  vb    9  0 dc 0
+  vc    3 53 dc 1.4979
+  ve   54  4 dc .99791
+  vlim  7  8 dc 0
+  vlp  91  0 dc 20
+  vln   0 92 dc 20
+.model dx D(Is=800.00E-18)
+.model dy D(Is=800.00E-18 Rs=1m Cjo=10p)
+.model qx1 PNP(Is=800.00E-18 Bf=90)
+.model qx2 PNP(Is=800.0000E-18 Bf=90)
+.ends
+.ENDS OPA243

@@ -1,0 +1,119 @@
+*$
+* TPS65283
+*****************************************************************************
+* (C) Copyright 2014 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: TPS65283
+* Date: 14JUL2014
+* Model Type: AVERAGE
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: TPS65283EVM-646
+* EVM Users Guide: SLVUA70–June 2014
+* Datasheet: SLVSCL3A –JUNE 2014–REVISED JUNE 2014
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+.SUBCKT TPS65283_AVG COMP1 COMP2 FB1 FB2 GND LX1 LX2 VIN1 VIN2 
++ PARAMS: FS=500k L1=4.7U L2=4.7U  
+X_U5         VIN1 LX1 GND COMP1 DC1 CCM PARAMS:  L={L1} FS={FS} RI={1/7.4} SE=0
++  ACS=1
+R_R22         0 DC_1  1k TC=0,0 
+V_V30         N1177709 GND 0.6
+E_E2         DC_2 0 DC2 0 1
+V_V29         N1177017 GND 0.6
+R_R19         GND COMP1  13.3e6 TC=0,0 
+R_R23         0 DC_2  1k TC=0,0 
+V_V28         N1165059 GND 0.6
+X_U3         VIN2 LX2 GND COMP2 DC2 CCM PARAMS:  L={L2} FS={FS} RI={1/7.4} SE=0
++  ACS=1
+E_E1         DC_1 0 DC1 0 1
+G_G3         GND COMP2 N1177017 FB2 300u
+G_G2         GND COMP1 N1165059 FB1 300u
+R_R20         GND COMP2  13.3e6 TC=0,0
+.ENDS TPS65283_AVG
+
+*$
+.SUBCKT CCM a c p vc dc params: L=4.7u Fs=500k Ri={1/7.4} Acs=1 SE=0
+Esa Sa 0 value={V(SL)*{Fs}*{Ri}}
+Eslope SL 0 value={if(V(dc)> 0.1,1.6,0)}
+Edc dcx 0 value = { v(cx,p)/(v(a,p)+1u) }
+Xdc dcx dc limit params: clampH=0.99 clampL=48m
+Ed2 d2X 0 value = {(1 - V(dc))} 
+Xd2 d2X dc d2 limit2
+GIap a p value =  {V(dc)*I(VM)}
+GIpc p cx value = { V(vc)/({Acs}*{Ri}) }
+GImju cx p value = {V(Sa)*V(dc)/({Acs}*{Ri}*{Fs})+(v(cx,p))/({L}*{Fs})*((1-(V(dc))/2)) }
+XC1 cx p mode varicap ; 
+Emode mode 0 Value = { IF ((2*{L}*{Fs}*I(VM)/(V(dc)*V(a,cx)+1u))
++ < 1, {4/({L}*(6.28*{Fs})^2)}, {4/({L}*(6.28*{Fs})^2)}) } ;
+VM cx c
+.ENDS
+*$
+.SUBCKT VARICAP 1 2 CTRL
+R1 1 3 1u
+VC 3 4
+EBC 4 2 Value = { (1/v(ctrl))*v(int) }
+GINT 0 INT Value = { I(VC) }
+CINT INT 0 1
+Rdum INT 0 10E10
+.ENDS
+*$
+.subckt limit d dc params: clampH=0.99 clampL=48m
+Gd 0 dcx VALUE = { V(d)*100u }
+Rdc dcx 0 10k
+V1 clpn 0 {clampL}
+V2 clpp 0 {clampH}
+D1 clpn dcx dclamp
+D2 dcx clpp dclamp
+Edc dc 0 value={ V(dcx) }
+.model dclamp d n=0.01 rs=100m
+.ENDS
+*$
+
+.subckt limit2 d2nc d d2c
+Gd 0 d2cx d2nc 0 100u
+Rdc d2cx 0 10k
+V1 clpn 0 7m
+E2 clpp 0 Value = { 1-V(d) }
+D1 clpn d2cx dclamp
+D2 d2cx clpp dclamp
+Edc d2c 0 value={ V(d2cx) }
+.model dclamp d n=0.01 rs=100m
+.ENDS
+
+*$
+.SUBCKT LDCR IN OUT
++ PARAMs:  L=1u DCR=0.01 
+L             IN 1  {L} 
+RDCR	1 OUT {DCR}
+.ENDS LDCR
+*$
+.SUBCKT CESR IN OUT
++ PARAMs:  C=100u ESR=0.01
+C	IN 1  {C} 
+RESR	1 OUT {ESR}
+.ENDS CESR
+*$

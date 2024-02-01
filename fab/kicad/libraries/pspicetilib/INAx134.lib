@@ -1,0 +1,112 @@
+*$
+* INAx134
+*****************************************************************************
+* (C) Copyright 2023 Texas Instruments Incorporated. All rights reserved.     
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.      
+** TI and its licensors and suppliers make no warranties, either expressed   
+** or implied, with respect to this model, including the warranties of       
+** merchantability or fitness for a particular purpose. The model is        
+** provided solely on an "as is" basis. The entire risk as to its quality   
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Online Design Tools, Texas Instruments Inc.
+* Part: INAx134
+* Date: 24JAN2023
+* Model Type: ALL IN ONE
+* EVM Order Number: N/A 
+* EVM Users Guide:  N/A 
+* Datasheet: SBOS071
+*
+* Model Version: Final 1.1
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.1
+* 1. Updated PSpice symbol
+* 2. Updated Model Name from INA134 to INAx134
+*
+* Final 1.0 : 
+* Release to Web
+*
+*****************************************************************************
+* Model Usage Notes:
+* 1. INAx134 model is available in single core(INA134) and dual core(INA2134)
+*****************************************************************************
+* Connections:          non-inverting input
+*                       |  inverting input
+*		                |  |  positive power supply 
+*                       |  |  |  negative power supply
+*                       |  |  |  |  output 
+*                       |  |  |  |  |  reference
+*                       |  |  |  |  |  |  sense
+*                       |  |  |  |  |  |  |  
+*                       |  |  |  |  |  |  |  
+* PIN CONFIGURATION     1  2  3  4  5  8  9
+*****************************************************************************
+.SUBCKT INAx134	1  2  3  4  5  8  9
+*****************************************************************************
+* Components
+C1CM 4 14 0.05PF 
+CDIF 14 13 1.8PF 
+R1 2 13 25K 
+R2 13 9 24.9985K 
+R3 1 14 25K 
+R4 14 8 25K 
+X1 14 13 3 4 5 A3_134_INAx134
+.ENDS INAx134
+*****************************************************************************
+.SUBCKT A3_134_INAx134 1 2 3 4 5
+*****************************************************************************
+* Models
+.MODEL DX D (IS=800.0E-18)
+.MODEL QX NPN (IS=800.0E-18 BF=336)
+*****************************************************************************
+* Components
+C1 11 12 7.151E-12
+C2 6 7 12.00E-12
+DC 5 53 DX
+DE 54 5 DX
+DLN 92 90 DX
+DLP 90 91 DX
+DP 4 3 DX
+DQ1 20 21 DX 
+DQ2 22 20 DX 
+EGND 99 0 POLY(2) (3,0) (4,0) 0 .5 .5
+FB 7 99 POLY(5) VB VC VE VLP VLN 0 122.8E6 -120E6 120E6 120E6 -120E6
+FQ1 3 0 POLY(1) VQ1 2.1E-3 1
+FQ2 0 4 POLY(1) VQ2 2.1E-3 -1
+FQ3 0 20 POLY(1) VLIM 0 1
+GA 6 0 11 12 271.4E-6
+GCM 0 6 10 99 271.4E-12
+HLIM 90 0 VLIM 1K
+IEE 10 4 DC 168.5E-6
+Q1 11 2 13 QX
+Q2 12 1 14 QX
+R2 6 9 100.0E3
+RC1 3 11 3.684E3
+RC2 3 12 3.684E3
+RE1 13 10 3.366E3
+RE2 14 10 3.366E3
+REE 10 99 1.187E6
+RO1 8 5 15
+RO2 7 99 15
+RQ 3 4 2.8E5 
+VB 9 0 DC 0
+VC 3 53 DC 2.500
+VE 54 4 DC 2.200
+VLIM 7 8 DC 0
+VLN 0 92 DC 70
+VLP 91 0 DC 70
+VQ1 21 0 0
+VQ2 22 0 0
+.ENDS A3_134_INAx134
+*

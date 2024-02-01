@@ -1,0 +1,132 @@
+*$
+* ACF2101
+*****************************************************************************
+* (C) Copyright 2022 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Online Design Tools, Texas Instruments Inc.
+* Part: ACF2101
+* Date: 14NOV2022
+* Model Type: All IN ONE
+* EVM Order Number: N/A 
+* EVM Users Guide:  N/A 
+* Datasheet: SBFS003
+*
+* Model Version: Final 1.2
+*
+*****************************************************************************
+*
+* Final 1.2
+* 1.Updated PSpice symbol.
+* 2.Added .ENDS name as ACF2101.
+*
+* Final 1.1
+* input bias current correction circuitry added
+*
+* Final 1.0
+* Release to Web.
+*
+*****************************************************************************
+* Model Usage Notes:
+* 1. Model file is updated with latest header. We have added D1N1183 diode 
+*    model.
+* 2. The transient time for the input to the switches (HOLD, RESET, and SELECT) 
+*    should be programmed to 6V/usec. Complying with this requirment will  
+*    give you greater success in convergence during transient analysis and
+*    a more accurate simulation of the effect of the 200nsec switching speed  
+*    of the actual switching transistors in the ACF2101.  This is easily imp 
+*    -lemented with the PULSE command in Spice.  If your input signal to the
+*    switches is faster than recommended above, the R-C, low-pass filter on 
+*    the input of the switch will slow the signal down some-what, however not  
+*    enough to comply with the data sheet stated switching speeds of 200nsec.
+* 3. To insure proper operation, always establish the initial bias point for 
+*    the transient analysis with RESET and HOLD equal to the potential at COM      
+*****************************************************************************
+*                COMMON
+*                |  SWITCH IN
+*                |  |  IN
+*                |  |  |  CAPACITOR
+*                |  |  |  |  OUTPUT
+*                |  |  |  |  |  SWITCH OUT
+*                |  |  |  |  |  |  SWITCH COMMON
+*                |  |  |  |  |  |  |  RESET
+*                |  |  |  |  |  |  |  |  HOLD
+*                |  |  |  |  |  |  |  |  |  SELECT
+*                |  |  |  |  |  |  |  |  |  |  POSITIVE SUPPLY
+*                |  |  |  |  |  |  |  |  |  |  |  NEGATIVE SUPPLY
+*                |  |  |  |  |  |  |  |  |  |  |  |  GROUND
+*                |  |  |  |  |  |  |  |  |  |  |  |  |
+.SUBCKT ACF2101  3  31 2  37 6  32 33 36 34 35 7  4  30
+*****************************************************************************
+* Amp input stage (2nd pole @ 35M Hz)
+*
+J11 15 2 14 JX
+J12 16 13 14 JX
+C12 15 16 18.2E-12
+R13 15 7 796
+R14 16 7 796
+ISS 14 4 1.11E-3
+VOS 13 3 0.5E-3
+G1 2 30 POLY(3) (15,2) (14,2) (30,2) 0 1E-12 1E-12 1E-12
+G2 13 30 POLY(3) (16,13) (14,13) (30,13) 0 1E-12 1E-12 1E-12
+* Amp gain stage (130dB) and first pole (@ 4.20K HZ)
+*
+R27 7 21 2.45E9
+R28 4 21 2.45E9
+C22 7 21 100E-12
+C23 4 21 100E-12
+G21 7 21 POLY(1) 15 16 1.751E-3 1.256E-3
+G22 21 4 POLY(1) 16 15 1.751E-3 1.256E-3
+V21 22 3 0.409
+V22 23 4 1.885
+D21 21 22 DX
+D22 23 21 DX
+* Amp correction current and output stage
+*
+IPS 7 30 9E-3
+RPS 7 30 100E3
+R9 7 71 100E3
+R10 4 71 100E3
+D91 21 6 DX
+D92 6 21 DX
+D93 7 94 DX
+D94 7 95 DX
+D95 4 94 DY
+D96 4 95 DY
+G91 7 6 21 7 .020387
+G92 4 6 21 4 .020387
+G95 94 4 6 21 .020387
+G96 95 4 21 6 .020387
+R91 7 6 49.051
+R92 4 6 49.051
+CINT 37 6 CC 100E-12
+* Switches
+*
+SH1 31 2 34 30 SWH
+SH2 31 2 31 30 SWT
+SR 2 6 36 30 SWH
+SS 6 32 35 30 SWS
+SC 3 33 35 30 SWS
+* Models
+*
+.MODEL JX NJF(BETA=.788E-3 VTO=-2 IS=5E-14)
+.MODEL DX D(IS=1E-15)
+.MODEL DY D(IS=1E-15  BV=50)
+.MODEL SWH VSWITCH(RON=1000G ROFF=1.5K VON=2 VOFF=0.8)
+.MODEL SWS VSWITCH(RON=1000G ROFF=250 VON=2 VOFF=0.8)
+.MODEL SWT VSWITCH(RON=1000G ROFF=10 VON=0.45 VOFF=0.55)
+.MODEL CC CAP(VC1=25E-6 TC1=-25E-6)
+.ENDS ACF2101
+*

@@ -1,0 +1,439 @@
+* PSpice Model Editor - Version 16.2.0
+*$
+* LM5025C
+*****************************************************************************
+*  (C) Copyright 2013 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: LM5025C
+* Date: 01JUL2013
+* Model Type: Transient
+* Simulator: PSPICE
+* Simulator Version: 16.0.0.p001
+* EVM Order Number:AN-1345   
+* EVM Users Guide: SNVA097B-November 2004-Revised May 2013
+* Datasheet: SNVS568C -SEPTEMBER 2008-REVISED MARCH 2013
+*
+* Model Version: Final 1.00
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*****************************************************************************
+.SUBCKT LM5025C_TRANS VIN RAMP CS1 CS2 TIMESET REF VCC OUTA OUTB SS COMP RT SYNC UVLO
+.PARAM PART_NUM=3
+Eleb1 F8 0 F9 0 1
+Essbuf SS2 0 VALUE { V(SS) }
+Rsu6 CS22 CS23 500  
+Cq3 F2 0 3E-12 IC=5 
+Ru6 UU4 UU5 500  
+Rq11 F11 F12 500  
+Cu2 UV6 0 3E-12 IC=0 
+Sdiode4 SSINT 5VT SSINT 5VT SWCLAMP
+Sclamp1 CLK_DUTY 0 0 CLK_DUTY SWCLAMP
+Ctt QD 0 1E-9 IC=0 
+Sdiode1 SYNC_COMP SYNC_DOMINENT SYNC_COMP SYNC_DOMINENT SWCLAMP
+Rq8 SET1 ONEND1 500  
+Rcs2f CS2 CS2INT { IF(PART_NUM==0,1,2E3) }  
+Csu7 CS26 0  3E-12 IC=0 
+Rvcc6 0 REF 5E3  
+Rob GOB GOB2 500  
+Csd2 SDIS2 0 3E-12 IC=0 
+Rsd2 SDIS2 SDIS3 500  
+Csu5 ZCS2TRIG 0 3E-12 IC=5 
+Guvlohys 0 UVLO VALUE { if(V(VINUV)>2.5, 20u, 0) }
+Cq1 CLK 0 3E-12 IC=0 
+Evccuv5 UU3 0 VALUE { if(V(REF)<3.5,5,0) }
+Eoffend OFFEND 0 VALUE { if(V(CLK_DUTY)>1 ,5,0) }
+Edrv RESET3 0 VALUE { IF(PART_NUM==0,if(V(rampint)>3.25 |
++  V(rampint)>V(COMP)| v(cs1int)>0.25 |
++  V(Zcs2trig)<2.5,5,0),IF(PART_NUM==1,if(V(rampint)>3.25 | V(rampint)>V(COMP)|
++  v(cs1int)>0.5 | V(Zcs2trig)<2.5,5,0),IF(PART_NUM==2,if(V(rampint)>3.25 |
++  V(rampint)>V(COMP)| v(cs1int)>0.25 | V(Zcs2trig)<2.5,5,0),if(V(rampint)>3.225
++  | V(rampint)>V(COMP)| v(cs1int)>0.5 | V(Zcs2trig)<2.5,5,0)))) }
+Rr2 ZMAXONTRIG R5 500  
+Ric1 SYNC_INT SYNC 1000  
+Evccuv2 UV7 0 VALUE { if(V(VCCINT)>7.48,5,0) }
+Rdum5 TIMESET 0 10E6  
+Ecs21 CS21 0 VALUE { if(V(CS22)>2.5 | V(ZCS2TRIG)>2.5,0,5) }
+Rq10 RESET2 RESET3 500  
+Rvdd2 REF2 REF3 1 
+Evcc3 VCC1 0 TABLE { V(VIN) } ( (0,0)(4.9,0)(5.0,2.2)(10.5,7.6) )
+Evcc4 VCC2 0 VALUE { IF(PART_NUM==0,if(V(VINUV)>2.5, V(VCC1), 0),V(VCC1)) }
+Sssdis1 SSDIS2 0 5VT ZSSDISTRIG SW5K
+Cu3 VCCUV 0 3E-12 IC=0 
+Cu4 UV4 0  3E-12 IC=5 
+Evccuv3 UV1 0 VALUE { if(V(UV2)>2.5 | V(UV4)>2.5,0,5) }
+Evccuv4 UV5 0 VALUE { if(V(VCCUV)>2.5 | V(UV6)>2.5,0,5) }
+Rq5 SYNC_COMP F4 500  
+Ccs2f CS2INT 0 3E-12 IC=0 
+Cof OUTOFF 0 3E-12 IC=0 
+Rsu4 SC4 SC5 500  
+Rq4 SET ONEND 500  
+Ggateloss VIN 0 VALUE { I(VVCC) }
+Rcs2dis1 CS2 CSDIS1  40  
+Eob GOB2 0 VALUE { If(v(outoff)<2.5 & (v(H_Iss)>2.5 | (v(H_Iss)<2.5 & v(Zssdistrig)>2.5)),
++  If(I(VTIME)>0, V(oa), 5-V(oa)),0) }
+Csd3 ZSSDISTRIG 0 3E-12 IC=5 
+Ecs24 CS27 0 VALUE {
++  IF(PART_NUM==0,if(V(CS2INT)>0.25,5,0),if(V(CS2INT)>0.5,5,0)) }
+Eoffend1 OFFEND1 0 VALUE { if(V(SYNC_INT)<1,5,0) }
+Rvcc7 0 VCC4 5E3  
+Cvcc6 VCC4 0 3E-12 IC=0 
+Rvcc4 VCC2 VCC3 1  
+Essdis1 SDIS11 0 VALUE { if(V(ZCS2TRIG)<2.5 | V(OUTOFF)>2.5, 5,0) }
+Cu7 UU2 0 3E-12 IC=0 
+Ru2 UV6 UV7 500  
+Rdum1 0 SYNC_INT 1E6  
+Ru7 UU2 UU3 500  
+Er3 R3 0 VALUE { IF(PART_NUM==3,if(V(RAMPINT)>3.225,5,0),if(V(RAMPINT)>3.25,5,0)) }
+Cr3 R2 0  3E-12 IC=0 
+Csync SYNC_DOMINENT 0 70E-12 IC=0 
+VRT RTN1 RT 0
+Ecs23 CS25 0 VALUE { if(V(CS24)>2.5 | V(CS26)>2.5,0,5) }
+V5VT 5VT 0 5
+Rvdd3 0 REF3 5E3  
+Gramp2 0 CLK_DUTY VALUE { IF(PART_NUM==0,if ( v(clk)>2.5 |
++  v(sync_dominent)>1, 0,-3.1*I(VRT)*5/4/2),IF(PART_NUM==1,if ( v(clk)>2.5 |
++  v(sync_dominent)>1, 0,-3.1*I(VRT)*5/4/2),IF(PART_NUM==2,if ( v(clk)>2.5 |
++  v(sync_dominent)>1, 0,-2.65*I(VRT)*4/3/2),if ( v(clk)>2.5 |
++  v(sync_dominent)>1, 0,-3.2*I(VRT)*10/9/2)))) }
+Rq7 F5 F6 500  
+Eset F3 0 VALUE { if(V(CLK)>2.5 | V(SET)>2.5,0,5) }
+Rrampdis RAMP RAMPDIS2 40  
+Rrampdis2 0 RAMPDIS3 1E3  
+Ruvlodum 0 UVLO 10E6  
+Eset2 F12 0 VALUE { if(V(Q)>2.5 | V(CLK)>2.5,0,5) }
+Rssdis3 SDIS10 SDIS11 500  
+Cvcc7 VCC3 0 3E-12 IC=0 
+Coa GOA 0  3E-12 IC=0 
+VVCC VCC4 VCC5 0
+Rpu REF COMP  { IF(PART_NUM==2,1E6,5E3) }  
+Rdum2 0 SYNC 250E3  
+Eonend1 ONEND1 0 VALUE { if(V(SYNC_INT)>2,5,0) }
+Esu3 SC3 0 VALUE { if(V(ZCS2TRIG)<2.5,5,0) }
+Rsu7 CS26 CS27  500  
+Cu8 UU6 0 3E-12 IC=0 
+Cq2 RESET 0 3E-12 IC=0 
+Csu2 SC2 0 3E-12 IC=0 
+Cu6 UU4 0 3E-12 IC=5 
+Esd1 SDIS1 0 VALUE { if(V(SDIS2)>2.5 | V(ZSSDISTRIG)>2.5,0,5) }
+Scs2dis CSDIS1 0 CSDIS2 0 SW5K
+Scs2dis2 CSDIS4 0 CSDIS2 0 SW5K
+Gdt 0 QD VALUE { if(I(VTIME)>0,if(V(Q1)>2.5
++  ,abs(I(VTIME))/(2.8E-3-1.2*abs(I(VTIME))/2.5),-1*abs(I(VTIME))/(2.8E-3-1.2*abs(I(VTIME))/2.5)),if(V(Q1)>2.5
++  ,abs(I(VTIME))/(2.9E-3+20*abs(I(VTIME))/2.5),-1*abs(I(VTIME))/(2.9E-3+20*abs(I(VTIME))/2.5))) }
+Rsu8 CS24 CS21 500  
+Rr3 R2 R3 500  
+G2 0 REF TABLE { V(REF3, REF) } ( (0,0)(0.3,0.02) )
+Cr4 R6 0 3E-12 IC=0 
+Ert1 RTN1 0 TABLE { V(REF,0) } ( (0,0) (2,2) )
+Ru3 VCCUV UV1 500  
+Cq7 F5 0 3E-12 IC=5 
+Cssdis3 SDIS10 0 3E-12 IC=0 
+Rsu2 SC2 SC3  500  
+VTIME RTIMEN1 TIMESET 0
+Rpd COMP COMPSS  6.74E3  
+Tleb F7 0 F8 0 Z0=1 TD=50E-9  
+Roa GOA GOA2  500  
+Ereset2 F10 0 VALUE { if(V(RESET2)>2.5 | V(F11)>2.5,0,5) }
+Evccuv6 UU7 0 VALUE { if(V(REF)>4,5,0) }
+Csu3 SC6 0 3E-12 IC=0 
+Rdum3 RT 0 10E6  
+Cvdd2 REF3 0 3E-12 IC=0 
+Evcc5 REF2 0 VALUE { IF(PART_NUM==0,if(V(VCCUV)>2.5, V(REF1), 0),V(REF1)) }
+Cr2 ZMAXONTRIG 0 3E-12 IC=5 
+Cq10 RESET2 0 3E-12 IC=0 
+Esd2 SDIS9 0 VALUE { if(V(SDIS7)>2.5 | V(SDIS10)>2.5,0,5) }
+Cq5 SYNC_COMP 0 3E-12 IC=0 
+Evccuv7 UU1 0 VALUE { if(V(UU2)>2.5 | V(UU4)>2.5,0,5) }
+Rvdd4 0 VCC3 1.8E3  
+V1V RAMPINT RAMP 1
+Eor OA 0 VALUE { if(V(QD)>2.5 | V(Q1)>2.5,5,0) }
+Csu8 CS24 0 3E-12 IC=0 
+Csu4 SC4 0 3E-12 IC=5 
+Ru8 UU6 UU7 500  
+Er1 R1 0 VALUE { if(V(R2)>2.5 | V(ZMAXONTRIG)>2.5,0,5) }
+Esd3 SDIS3 0 VALUE { if(V(SSINT)<0.1,5,0) }
+Eoa GOA2 0 VALUE { If(v(outoff)<2.5 & (v(H_Iss)>2.5 | (v(H_Iss)<2.5&v(Zssdistrig)>2.5)),V(ob),0) }
+Rssdis5 SSINT SS 1E3  
+Ert2 RTIMEN1 0 TABLE { V(REF,0) } ( (0,0) (2.5,2.5) )
+Er4 R7 0 VALUE { if(V(CLK)>2.5,5,0) }
+Rq2 RESET OFFEND 500  
+Ecsdis1 CSDIS3 0 VALUE { IF(PART_NUM==0,if(V(outoff)>2.5| V(LEB)>2.5 | V(goa)<2.5, 5,0),if(V(outoff)>2.5, 5,0)) }
+Esu1 SC1 0 VALUE { if(V(SC2)>2.5 | V(SC4)>2.5,0,5) }
+Rcs1dis1 CS1 CSDIS4 40  
+Cssdis4 SSINT 0 3E-12 IC=0 
+Euvlo U1 0 VALUE { if(V(UVLO)>2.5,5,0) }
+Rvindummy1 VIN 0 137E3  
+Rsd1 SDIS7 SDIS1 500  
+Rq9 Q F10 500  
+Evccuv8 UU5 0 VALUE { if(V(REFUV)>2.5 | V(UU6)>2.5,0,5) }
+Eoutoff OF1 0 VALUE { if(V(vinuv)<2.5 | V(vccuv)<2.5 | V(refuv)<2.5,5,0)}
+Rvccint2 VCCINT VCC 10E-3  
+Ereset F1 0 VALUE { if(V(RESET)>2.5 | V(F2)>2.5,0,5) }
+Esu4 SC7 0 VALUE { if(V(goa2)>2.5 | V(OUTOFF)>2.5,5,0) }
+Gramp1 0 CLK_DUTY VALUE { if(V(set1)<4 & V(onend1)>1,-0.4,0) }
+Eset1 F6 0 VALUE { if(V(SYNC_COMP)>2.5 | V(SET1)>2.5,0,5) }
+Rvcc5 VCC6 VCC 1  
+Er2 R5 0 VALUE { if(V(R4)>2.5 | V(R6)>2.5,0,5) }
+Ccs1f CS1INT 0 3E-12 IC=0 
+Rr4 R6 R7 500  
+Sdiode3 VCC5 VCC7 VCC5 VCC7 SWCLAMP
+Gss1 0 SSINT VALUE { IF(PART_NUM==3, if(V(H_ISS) > 2.5, 90E-6, 1E-6 ), if(V(H_ISS)>2.5, 22E-6, 1E-6 ) ) }
+Cq6 RESET1 0 3E-12 IC=0 
+Ru5 VINUV U1 500  
+Rcs2dis CSDIS2 CSDIS3 500  
+Rleb2 F7 0 1  
+Esu2 SC5 0 VALUE { if(V(H_ISS)>2.5 | V(SC6)>2.5,0,5) }
+Ru9 REFUV UU1 500  
+Sdiode2 COMP SS2 COMP SS2 SWCLAMP
+Era1 RAMPDIS4 0 VALUE { if(V(CLK)>2.5 | V(ZMAXONTRIG)>2.5 |
++  V(Zssdistrig)<2.5,5,0) }
+Eand OB 0 VALUE { if(V(QD)>2.5 & V(Q1)>2.5,5,0) }
+Rsu3 SC6 SC7 500  
+Csd1 SDIS7 0 3E-12 IC=0 
+Crampdis1 RAMPDIS3 0 3E-12 IC=0 
+Rvccint1 VCC7 VCCINT  100E-3  
+Ru4 UV4 UV5 500  
+Rq6 RESET1 OFFEND1 500  
+Cq9 Q 0 3E-12 IC=0 
+Cq11 F11 0 3E-12 IC=5 
+Cramp CLK_DUTY 0  1n IC=0 
+Rr1 R4 R1 500
+Rleb F9 goa2 500 
+Sdriverha VCC OUTA GOA 0 SWdriverHa
+Sdriverhb VCC OUTB GOB 0 SWdriverHb
+Cu5 VINUV 0 3E-12 IC=0 
+Cvcc8 REF 0 3E-12 IC=0 
+Givcc1 VCC6 0 TABLE { V(VCC) } ( (0,0) (7.5,0.0042)  )
+G4 0 VCC4 TABLE { IF(PART_NUM==3,V(VCC3,VCC4),0) } ( (0,0)(0.3,0.025) )
+G1 0 VCC4 TABLE { V(VCC3, VCC4) } ( (0,0)(0.3,0.025) )
+Stt2 QD 5VT QD 5VT SWCLAMP
+Ccs2dis CSDIS2 0 3E-12 IC=0 
+Rsu1 H_ISS SC1 500  
+Rof OF1 OUTOFF 500  
+Cssdis5 VCC6 0 3E-12 IC=0 
+Cu9 REFUV 0 3E-12 IC=0 
+Eonend ONEND 0 VALUE { if ( ( V(CLK_DUTY) < 0) | V(SYNC_COMP)>2.5 ,5,0) }
+Rsu5 ZCS2TRIG CS25 500  
+Cssdis6 SSDIS1 0 3E-12 IC=0 
+Rq1 CLK F1 500  
+Cr1 R4 0 3E-12 IC=0 
+Srampdis RAMPDIS2 0 RAMPDIS3 0 SW5K
+Cleb F9 0 3E-12 IC=0 
+Evccuv1 UV3 0 VALUE { if(V(VCCINT)<6.2,5,0) }
+Ea Q1 0 VALUE { if(V(Q)>2.5 & V(CLK)<2.5,5,0) }
+Cob GOB 0 3E-12 IC=0 
+Rsd3 ZSSDISTRIG SDIS9 500  
+Rrampdis1 RAMPDIS3 RAMPDIS4 500  
+Stt QD 0 0 QD SWCLAMP
+Sdriverlb OUTB 0 GOB 0 SWdriverLb
+Eleb LEB 0 VALUE { if(V(F7)<2.5 & V(F9)>2.5,5,0) }
+Cq4 SET 0 3E-12 IC=0 
+Sdriverla OUTA 0 GOA 0 SWdriverLa
+Cu1 UV2 0 3E-12 IC=0 
+Cq8 SET1 0 3E-12 IC=0 
+Cvccint1 0 VCCINT 10E-12 IC=0 
+Rq3 F2 F3 500  
+G3 COMPSS 0 TABLE { V(REF, 0) } ( (0,0)(5,10E-6) )
+Ecs22 CS23 0 VALUE { if(V(ZSSDISTRIG)<2.5 & V(LEB)<2.5,5,0) }
+Csu1 H_ISS 0 3E-12 IC=0 
+Gramp3 0 CLK_DUTY VALUE { IF(PART_NUM==0 , if(v(clk)>2.5,3.1*I(VRT)*5 ,
++  -3.1*I(VRT)*5/4/2) , IF(PART_NUM==1 , if(v(clk)>2.5 , 3.1*I(VRT)*5 ,
++  -3.1*I(VRT)*5/4/2) , IF(PART_NUM==2 , if(v(clk)>2.5 , 2.65*I(VRT)*4 ,
++  -2.65*I(VRT)*4/3/2) , if(v(clk)>2.5 , 3.2*I(VRT)*10 ,
++  -3.2*I(VRT)*10/9/2)))) }
+Csu6 CS22 0 3E-12 IC=0 
+Rssdis2 SS SSDIS1 {IF(PART_NUM==3,40,500)}   
+Rssdis4 SSDIS1 SSDIS2 {IF(PART_NUM==3,40,500)}  
+Evdd1 REF1 0 TABLE { V(VCC) } ( (0,0) (6.2,5) )
+Ru1 UV2 UV3 500  
+Ereset1 F4 0 VALUE { if(V(RESET1)>2.5 | V(F5)>2.5,0,5) }
+Rcs1f CS1 CS1INT  {IF(PART_NUM==0,1,2E3)}  
+Rres1 RES1 RES2 500  
+Rres2 RES3 RES4 500  
+Rres3 ZRESTART RES5 500  
+Rres4 RES6 RES7 500  
+Cres1 RES1 0 3E-12 IC=0 
+Cres2 RES3 0 3E-12 IC=0 
+Cres3 ZRESTART 0 3E-12 IC=5 
+Cres4 RES6 0 3E-12 IC=0 
+Esu5 RES4 0 VALUE { if(V(COMP)<0.05,5,0) }
+Esu6 RES7 0 VALUE { if(V(CLK)>2.5,5,0) }
+Esu8 RES5 0 VALUE { if(V(RES1)>2.5 | V(RES6)>2.5,0,5) }
+Esu7 RES2 0 VALUE { if(V(RES3)>2.5 | V(ZRESTART)>2.5,0,5) }
+RSdiode4 SSINT 5VT 1000E6
+RSdriverla GOA 0 1000E6
+RSdriverlb GOB 0 1000E6
+RStt 0 QD 1000E6
+RSrampdis RAMPDIS3 0 1000E6
+RStt2 QD 5VT 1000E6
+RSdriverha GOA 0 1000E6
+RSdiode2 COMP SS2 1000E6
+RSdiode3 VCC5 VCC7 1000E6
+RScs2dis CSDIS2 0 1000E6
+Rcs2dis2 CSDIS2 0 1000E6
+RSclamp1 0 CLK_DUTY 1000E6
+RSdiode1 SYNC_COMP SYNC_DOMINENT 1000E6
+RSssdis1 5VT ZSSDISTRIG 1000E6
+RSdriverhb GOB 0 1000E6
+Ceric1 vcc5 0 3E-12 IC=0
+Ceric2 vcc7 0 3E-12 IC=0
+.MODEL SW5K VSWITCH RON=1 ROFF=1MEG VON=1V VOFF=0V
+.MODEL SWCLAMP VSWITCH (RON=0.001 ROFF=10E6 VON=0.01 VOFF=0) 
+.MODEL SWdriverHa VSWITCH RON=3 ROFF=1E6 VON=2.6V VOFF=2.4V
+.MODEL SWdriverLa VSWITCH RON=1E6 ROFF=3 VON=2.6V VOFF=2.4V
+.MODEL SWdriverHb VSWITCH RON=6 ROFF=1E6 VON=2.6V VOFF=2.4V
+.MODEL SWdriverLb VSWITCH RON=1E6 ROFF=6 VON=2.6V VOFF=2.4V
+.ENDS LM5025C_TRANS
+*$
+.SUBCKT TX1P1S PDOT P SDOT S PARAMS: NP=1 NS=0.25
+RD PDOT P 1MEG
+CD PDOT P 1E-12
+GS PDOT P VALUE { I(VS) * NS / NP }
+ES SDOT1 S1 VALUE { V(PDOT,P) * NS / NP }
+VS SDOT1 SDOT 0
+RDS S1 S 0.001
+CDS SDOT S 100E-12
+.ENDS TX1P1S
+*$
+.SUBCKT  JumperSw 1 2 3 PARAMS: Set=0
+R10 1 0 {if(Set==1,1E-3,if(Set==0,1E7,1E7))}
+R13 1 3 {if(Set==0,1E-3,if(Set==1,1E7,1E-3))}
+R20 2 0 {if(Set==0,1E-3,if(Set==1,1E7,1E7))}
+R23 2 3 {if(Set==1,1E-3,if(Set==0,1E7,1E-3))}
+.ENDS JumperSW
+*$
+.MODEL SWnom VSWITCH RON=0.001 ROFF=1MEG VON=2.5V VOFF=1V
+*$
+.MODEL Dnom D IS=160n RS=35m N=1.1 BV=100 IBV=2m CJO=2p VJ=0.7 M=0.33 TT=1n EG=0.69 XTI=2
+*$
+.Model NMOSnom NMOS Level=3 Gamma=0 Delta=0 Eta=0 Theta=0 Kappa=0 Vmax=0 Xj=0
++Tox=100n Uo=600 Phi=.6 Rs=2m Kp=20u W=.3 L=2u Vto=2.8 Rd=1m Rds=440K Cbd=80p 
++Pb=.8 Mj=.5 Fc=.5 Cgso=8n Cgdo=80p Rg=14 Is=190E-18 N=1 Tt=290n
+*$
+.MODEL D5K D IS=1E-14 CJO=0 VJ=1
+*$
+.MODEL SWtest VSWITCH RON=0.0001 ROFF=1MEG VON=1V VOFF=0V
+*$
+.SUBCKT POWERMOS G D S PARAMS: RDSON=16m Ciss=1375p Crss=70p Coss=340p VSP=-3.5 RG=1 
+* This is a simple model for Power MOSFET.
+* The parameters modeled are 
+* - RDSon, 
+* - Input Capacitance, 
+* - Reverse capacitance, 
+* - Output capacitance,
+* - Switching point voltage (Gate voltage where the FET starts switching), 
+* - Gate Resistance
+C_C1         S Da  {Coss} IC=0 
+R_R1         Da D  10
+C_C2         Ga D  {Crss}  IC=0
+R_R2         G Ga {RG}
+C_C3         Ga S  {Ciss} IC=0
+D_D1         Db S Dbreak 
+R_R3         Db D 1m
+S_switchM         D S Ga S _switchM
+RS_switchM         Ga S 100Meg
+.MODEL         _switchM VSWITCH Roff=100e6 Ron={RDSON} Voff=-1.1 Von={VSP}
+.model Dbreak D Is=1e-14 Cjo=.1pF Rs=0.1
+.ends POWERMOS
+*$
+.SUBCKT LM124_NS    1   2  99  50  28
+*
+*Features:
+*Eliminates need for dual supplies
+*Large DC voltage gain =             100dB
+*High bandwidth =                     1MHz
+*Low input offset voltage =            2mV
+*Wide supply range =        +-1.5V to +-16V
+*
+*NOTE: Model is for single device only and simulated
+*      supply current is 1/4 of total device current.
+*      Output crossover distortion with dual supplies
+*      is not modeled.
+*
+****************INPUT STAGE**************
+*
+IOS 2 1 3N
+*^Input offset current
+R1 1 3 500K
+R2 3 2 500K
+I1 99 4 100U
+R3 5 50 517
+R4 6 50 517
+Q1 5 2 4 QX
+Q2 6 7 4 QX
+*Fp2=1.2 MHz
+C4 5 6 128.27P
+*
+***********COMMON MODE EFFECT***********
+*
+I2 99 50 75U
+*^Quiescent supply current
+EOS 7 1 POLY(1) 16 49 1E-3 1
+*Input offset voltage.^
+R8 99 49 60K
+R9 49 50 60K
+*
+*********OUTPUT VOLTAGE LIMITING********
+V2 99 8 1.63
+D1 9 8 DX
+D2 10 9 DX
+V3 10 50 0.635
+*
+**************SECOND STAGE**************
+*
+EH 99 98 99 49 1
+G1 98 9 POLY(1) 5 6 0 9.8772E-4 0 .3459
+*Fp1=7.86 Hz
+R5 98 9 101.2433MEG
+C3 98 9 200P
+*
+***************POLE STAGE***************
+*
+*Fp=2 MHz
+G3 98 15 9 49 1E-6
+R12 98 15 1MEG
+C5 98 15 7.9577E-14
+*
+*********COMMON-MODE ZERO STAGE*********
+*
+*Fpcm=10 KHz
+G4 98 16 3 49 5.6234E-8               
+L2 98 17 15.9M
+R13 17 16 1K
+*
+**************OUTPUT STAGE**************
+*
+F6 50 99 POLY(1) V6 300U 1
+E1 99 23 99 15 1
+R16 24 23 17.5
+D5 26 24 DX
+V6 26 22 .63V
+R17 23 25 17.5
+D6 25 27 DX
+V7 22 27 .63V
+V5 22 21 0.27V
+D4 21 15 DX
+V4 20 22 0.27V
+D3 15 20 DX
+L3 22 28 500P
+RL3 22 28 100K
+*
+***************MODELS USED**************
+*
+.MODEL DX D(IS=1E-15)
+.MODEL QX PNP(BF=1.111E3)
+*
+.ENDS LM124_NS
+*$

@@ -1,0 +1,244 @@
+*$
+* INA12x
+*****************************************************************************
+* (C) Copyright 2023 Texas Instruments Incorporated. All rights reserved.     
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.      
+** TI and its licensors and suppliers make no warranties, either expressed   
+** or implied, with respect to this model, including the warranties of       
+** merchantability or fitness for a particular purpose. The model is        
+** provided solely on an "as is" basis. The entire risk as to its quality   
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Online Design Tools, Texas Instruments Inc.
+* Part: INA12x
+* Date: 31JAN2023
+* Model Type: ALL IN ONE
+* EVM Order Number: N/A 
+* EVM Users Guide:  N/A 
+* Datasheet: SBOS051F - OCTOBER 1995 - REVISED MAY 2022
+*
+* Model Version: Final 1.1
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.1
+* 1. Updated PSpice symbol.
+* 2. Updated Model name from INA128 to INA12x.
+*
+* Final 1.0 : 
+* Release to Web
+*
+*****************************************************************************
+* Model Usage Notes:
+* Model is applicable to INA128, INA129, INA128-HT, INA129-HT and INA129-EP.
+*****************************************************************************
+* COMMENTS
+* CONNECTIONS:          NON-INVERTING INPUT
+*                        |  INVERTING INPUT
+*                        |   |  POSITIVE POWER SUPPLY
+*                        |   |   |  NEGATIVE POWER SUPPLY
+*                        |   |   |   |  OUTPUT
+*                        |   |   |   |   |  REFERENCE
+*                        |   |   |   |   |   |  GAIN SENSE 1
+*                        |   |   |   |   |   |   |  GAIN SENSE 2
+*                        |   |   |   |   |   |   |   |
+* PIN CONFIG FOR INA12x  1   2   3   4   5   8   9  10 
+*****************************************************************************
+.SUBCKT INA12x 1 2 3 4 5 8 9 10
+*****************************************************************************
+* Models
+.MODEL DX D (IS=1.0E-24)
+.MODEL QX NPN (IS=800.0E-18 BF=500)
+.MODEL QY PNP (IS=800.0E-18 BF=500)
+.MODEL SM VSWITCH (RON=10 ROFF=100E3 VON=-.7 VOFF=-1)
+.MODEL SP VSWITCH (RON=10 ROFF=100E3 VON=.7 VOFF=1)
+*****************************************************************************
+* Components
+CC1 17 11 5.0000PF 
+CC2 16 12 5.0000PF 
+CG1 9 0 10.0000PF 
+CG2 10 0 8.0000PF 
+CIN 13 14 4.0000PF 
+D1 15 17 DX 
+D2 15 16 DX 
+DI1 43 41 DX
+DI2 47 45 DX
+I1 3 16 DC 20.00E-6
+I2 3 17 DC 20.00E-6
+I11 41 42 .7MA
+I12 4 43 DC .8MA
+I21 45 46 .7MA
+I22 4 47 DC .8MA
+IB1CAN 3 42 DC 40.00E-9
+IB2CAN 3 46 DC 40.00E-9
+IBAL 0 4 DC 6.5E-6
+Q1 16 42 10 QX 
+Q2 17 46 9 QX 
+QSET1 4 40 42 QY
+QSET2 4 44 46 QY
+R1 11 13 40.0000K 
+R1FB 9 11 25.000K 
+R2 13 5 39.996K 
+R2FB 10 12 25.000K 
+R3 12 14 40.0000K 
+R4 14 8 40.0000K 
+RCE 17 9 20G 
+RIN1 1 41 1K
+RIN2 2 45 1K
+S11 41 42 1 41 SP
+S12 4 43 1 41 SM
+S21 45 46 2 45 SP
+S22 4 47 2 45 SM
+V1 3 15 DC 1.700
+VSET1 3 40 DC 2.0
+VSET2 3 44 DC 2.0
+X1 15 17 3 4 11 A1_INA12x
+X2 15 16 3 4 12 A2_INA12x
+X3 14 13 3 4 5 A3_INA12x
+.ENDS INA12x
+*****************************************************************************
+.SUBCKT A1_INA12x 1 2 3 4 5
+*****************************************************************************
+* Models
+.MODEL DX D (IS=800.0E-18)
+.MODEL JX PJF (IS=15.00E-12 BETA=31.58E-3 VTO=-1)
+*****************************************************************************
+* Components
+C1 11 12 2.887E-12
+C2 6 7 10.00E-12
+CSS 10 99 1.000E-30
+DC 5 53 DX
+DE 54 5 DX
+DLN 92 90 DX
+DLP 90 91 DX
+DP 4 3 DX
+DQ1 20 21 DX
+DQ2 22 20 DX
+EGND 99 0 POLY(2) (3,0) (4,0) 0 .5 .5
+FB 7 99 POLY(5) VB VC VE VLP VLN 0 79.58E6 -80E6 80E6 80E6 -80E6
+FQ1 3 0 POLY(1) VQ1 120U 1
+FQ2 0 4 POLY(1) VQ2 120U -1
+FQ3 0 20 POLY(1) VLIM 0 1
+GA 6 0 11 12 1.257E-3
+GCM 0 6 10 99 125.7E-12
+HLIM 90 0 VLIM 1K
+ISS 3 10 DC 50.00E-6
+J1 11 2 10 JX
+J2 12 1 10 JX
+R2 6 9 100.0E3
+RD1 4 11 795.8
+RD2 4 12 795.8
+RO1 8 5 10
+RO2 7 99 10
+RP 3 4 3.00E6
+RSS 10 99 4.000E6
+VB 9 0 DC 0
+VC 3 53 DC 1.5
+VE 54 4 DC .9
+VLIM 7 8 DC 0
+VLN 0 92 DC 14
+VLP 91 0 DC 14
+VQ1 21 0 0
+VQ2 22 0 0
+.ENDS A1_INA12x
+*****************************************************************************
+.SUBCKT A2_INA12x 1 2 3 4 5
+*****************************************************************************
+* Models
+.MODEL DX D (IS=800.0E-18)
+.MODEL JX PJF (IS=15.00E-12 BETA=31.58E-3 VTO=-1)
+*****************************************************************************
+* Components
+C1 11 12 2.887E-12
+C2 6 7 10.00E-12
+CSS 10 99 1.000E-30
+DC 5 53 DX
+DE 54 5 DX
+DLN 92 90 DX
+DLP 90 91 DX
+DP 4 3 DX
+DQ1 20 21 DX
+DQ2 22 20 DX
+EGND 99 0 POLY(2) (3,0) (4,0) 0 .5 .5
+FB 7 99 POLY(5) VB VC VE VLP VLN 0 79.58E6 -80E6 80E6 80E6 -80E6
+FQ1 3 0 POLY(1) VQ1 120U 1
+FQ2 0 4 POLY(1) VQ2 120U -1
+FQ3 0 20 POLY(1) VLIM 0 1
+GA 6 0 11 12 1.257E-3
+GCM 0 6 10 99 125.7E-12
+HLIM 90 0 VLIM 1K
+ISS 3 10 DC 50.00E-6
+J1 11 2 10 JX
+J2 12 1 10 JX
+R2 6 9 100.0E3
+RD1 4 11 795.8
+RD2 4 12 795.8
+RO1 8 5 10
+RO2 7 99 10
+RP 3 4 3.00E6
+RSS 10 99 4.000E6
+VB 9 0 DC 0
+VC 3 53 DC 1.5
+VE 54 4 DC .9
+VLIM 7 8 DC 0
+VLN 0 92 DC 14
+VLP 91 0 DC 14
+VQ1 21 0 0
+VQ2 22 0 0
+.ENDS A2_INA12x
+*****************************************************************************
+.SUBCKT A3_INA12x 1 2 3 4 5
+*****************************************************************************
+* Models
+.MODEL DX D (IS=800.0E-18)
+.MODEL QX NPN (IS=800.0E-18 BF=318.8)
+*****************************************************************************
+* Components
+C1 11 12 2.730E-12
+C2 6 7 15.00E-12
+DC 5 53 DX
+DE 54 5 DX
+DLN 92 90 DX
+DLP 90 91 DX
+DP 4 3 DX
+DQ1 20 21 DX
+DQ2 22 20 DX
+EGND 99 0 POLY(2) (3,0) (4,0) 0 .5 .5
+FB 7 99 POLY(5) VB VC VE VLP VLN 0 163.2E6 -160E6 160E6 160E6 -160E6
+FQ1 3 0 POLY(1) VQ1 206.7E-6 1
+FQ2 0 4 POLY(1) VQ2 206.7E-6 -1
+FQ3 0 20 POLY(1) VLIM 0 1
+GA 6 0 11 12 122.5E-6
+GCM 0 6 10 99 12.25E-12
+HLIM 90 0 VLIM 1K
+IEE 10 4 DC 63.95E-6
+Q1 11 2 13 QX
+Q2 12 1 14 QX
+R2 6 9 100.0E3
+RC1 3 11 8.162E3
+RC2 3 12 8.162E3
+RE1 13 10 7.327E3
+RE2 14 10 7.327E3
+REE 10 99 3.127E6
+RO1 8 5 300
+RO2 7 99 300
+RQ 3 4 1.87E6
+VB 9 0 DC 0
+VC 3 53 DC 1.500
+VE 54 4 DC 1.400
+VLIM 7 8 DC 0
+VLN 0 92 DC 14
+VLP 91 0 DC 5
+VQ1 21 0 0
+VQ2 22 0 0
+.ENDS A3_INA12x
+*

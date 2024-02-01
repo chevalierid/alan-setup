@@ -1,0 +1,289 @@
+*OPA875  Low-Power, Wideband Voltage Feedback Operational Amplifier with Disable
+* REV. A - Created 1/09/07 X-ramus2@ti.com
+*
+*
+* NOTES:
+*   1- This macromodel predicts well: DC, small-signal AC, noise,
+*      , and transient performance under a wide range
+*      of conditions.
+*   2- This macromodel does not predict well: distortion
+*      (harmonic, intermod, diff. gain & phase, ...),
+*      temperature effects, board parasitics, differences
+*      between package styles, and process changes
+*   3- For Spice3F4 users they might need to un-comment the lines for the F 
+*      function and comment out the Lines for PSpice F functions
+*      and subckts. First try the present netlist then comment out lines if 
+*      errors appear.
+*      General form:
+*      FXXXXXXX N+ N- <POLY(ND)> VN1 <VN2 ...> P0 <P1 ...> <IC=...>
+*      Examples:
+*      F1 12 10 VCC 1MA 1.3M
+*   4- For some simulators the subckt for the F statement need to be placed 
+*      inside the ends statement followed by carriage return  
+*   5- Known Problems: - Current noise 4x datasheet spec
+*
+* |-------------------------------------------------------------|
+* |  This macro model is being supplied as an aid to            |
+* |  circuit designs.  While it reflects reasonably close       |
+* |  similarity to the actual device in terms of performance,   |
+* |  it is not suggested as a replacement for breadboarding.    |
+* |  Simulation should be used as a forerunner or a supplement  |
+* |  to traditional lab testing.                                |
+* |                                                             |
+* |  Neither this library nor any part may be copied without    |
+* |  the express written consent of Texas Instruments Corp.     |
+* |-------------------------------------------------------------|
+*
+* CONNECTIONS:
+*
+*                         Ch 0 Input
+*                          |    Ch 1 Input
+*                          |    |     Enable Bar Pin
+*                          |    |     |         Ground
+*                          |    |     |         |    Output
+*                          |    |     |         |     |      Channel Select
+*                          |    |     |         |     |      |    Positive Supply
+*                          |    |     |         |     |      |    |   Negative Supply
+*                          |    |     |         |     |      |    |   |
+.SUBCKT OPA875 Ch0 Ch1 ENbar GND OUT SEL V+ V- 
+
+.PARAM x1 = {1/8}
+.PARAM x2 = {x1*2}
+.PARAM x3 = {x1*3}
+.PARAM x4 = {x1*4}
+.PARAM x5 = {x1*5}
+.PARAM x6 = {x2*3}
+.PARAM x8 = {x2*4}
+.PARAM x10 = {x5*2}
+.PARAM x32 = {x8*4}
+.PARAM x60 = {x10*6}
+
+C_U1_U4_C2         $N_0001 $N_0002  8p  
+Q_U1_U4_Q1         $N_0055 $N_0055 $N_0003 PNP8 {x5}
+Q_U1_U4_Q5         $N_0004 $N_0055 $N_0005 PNP8 {x10}
+R_U1_U4_R13         $N_0007 $N_0006  240  
+R_U1_U4_R9         $N_0007 $N_0002  25  
+D_U1_U4_D3         $N_0008 $N_0007 DX 1
+R_U1_U4_R12         $N_0007 $N_0008  240  
+D_U1_U4_D4         $N_0006 $N_0007 DX 1
+D_U1_U4_D6         $N_0009 $N_0007 DX 1
+Q_U1_U4_Q4         $N_0056 $N_0056 $N_0008 NPN8 {x5}
+Q_U1_U4_Q7         $N_0010 $N_0056 $N_0009 NPN8 {x10}
+Q_U1_U4_Q3         $N_0011 $N_0056 $N_0006 NPN8 {x5}
+Q_U1_U4_Q2         $N_0011 $N_0055 $N_0012 PNP8 {x5}
+R_U1_U4_R8         $N_0001 $N_0013  25  
+R_U1_U4_R10         $N_0003 $N_0013  240  
+D_U1_U4_D1         $N_0013 $N_0003 DX 1
+D_U1_U4_D2         $N_0013 $N_0012 DX 1
+R_U1_U4_R11         $N_0012 $N_0013  240  
+D_U1_U4_D5         $N_0013 $N_0005 DX 1
+R_U1_U4_R7         V- $N_0007  10  
+R_U1_U4_R6         V+ $N_0013  10  
+C_U1_U4_C1         V+ V-  8p  
+R_U1_U4_R16         OUT $N_0014  8  
+R_U1_U4_R17         $N_0015 OUT  8  
+Q_U1_U4_Q8         $N_0013 $N_0011 $N_0010 NPN8 {x32}
+Q_U1_U4_Q6         $N_0007 $N_0011 $N_0004 PNP8 {x32}
+Q_U1_U4_Q9         $N_0013 $N_0015 $N_0011 NPN8 {x2}
+Q_U1_U4_Q10         $N_0007 $N_0014 $N_0011 PNP8 {x2}
+Q_U1_U4_Q11         V- $N_0010 $N_0015 PNP8 {x60}
+Q_U1_U4_Q12         V+ $N_0004 $N_0014 NPN8 {x60}
+R_U1_U4_R15         $N_0007 $N_0009  70  
+R_U1_U4_R14         $N_0005 $N_0013  105  
+C_U1_U3_C1         $N_0016 $N_0017  6.5p  
+R_U1_U3_R13         V- $N_0016  10  
+R_U1_U3_R12         V+ $N_0017  10  
+R_U1_U3_R14         $N_0018 $N_0017  660  
+R_U1_U3_R15         $N_0019 $N_0017  220  
+R_U1_U3_R16         $N_0016 $N_0020  660  
+Q_U1_U3_Q2         $N_0132 $N_0106 $N_0019 PNP8 {x6}
+R_U1_U3_R17         $N_0016 $N_0021  220  
+Q_U1_U3_Q9         $N_0016 $N_0016 $N_0022 PNP8 {x4}
+Q_U1_U3_Q10         $N_0017 $N_0017 $N_0023 NPN8 {x4}
+Q_U1_U3_Q7         $N_0130 $N_0114 $N_0021 NPN8 {x6}
+Q_U1_U3_Q16         $N_0024 $N_0024 $N_0025 NPN8 {x2}
+D_U1_U3_D1         $N_0025 $N_0026 DX 1
+R_U1_U3_R18         $N_0132 $N_0026  100  
+D_U1_U3_D2         $N_0027 $N_0028 DX 1
+R_U1_U3_R19         $N_0028 $N_0130  100  
+Q_U1_U3_Q15         $N_0017 GND $N_0024 NPN8 {x2}
+Q_U1_U3_Q17         $N_0029 $N_0029 $N_0027 PNP8 {x2}
+Q_U1_U3_Q18         $N_0016 GND $N_0029 PNP8 {x2}
+Q_U1_U3_Q12         $N_0049 $N_0049 $N_0030 NPN8 {x4*0.95}
+Q_U1_U3_Q13         $N_0049 $N_0049 $N_0031 PNP8 {x4*0.95}
+Q_U1_U3_Q3         $N_0132 $N_0132 $N_0032 NPN8 {x4*0.95}
+Q_U1_U3_Q6         $N_0130 $N_0130 $N_0033 PNP8 {x4*0.95}
+Q_U1_U3_Q5         $N_0023 $N_0034 $N_0033 NPN8 {x4*0.95}
+Q_U1_U3_Q4         $N_0022 $N_0034 $N_0032 PNP8 {x4*0.95}
+Q_U1_U3_Q11         $N_0055 $N_0132 $N_0031 NPN8 {x4*0.95}
+Q_U1_U3_Q14         $N_0056 $N_0130 $N_0030 PNP8 {x4*0.95}
+R_U1_U3_R20         $N_0034 Ch1  300  
+Q_U1_U3_Q8         $N_0114 $N_0114 $N_0020 NPN8 {x2}
+Q_U1_U3_Q1         $N_0106 $N_0106 $N_0018 PNP8 {x2}
+C_U1_U2_C1         $N_0035 $N_0036  6.5p  
+R_U1_U2_R13         V- $N_0035  10  
+R_U1_U2_R12         V+ $N_0036  10  
+R_U1_U2_R14         $N_0037 $N_0036  660  
+R_U1_U2_R15         $N_0038 $N_0036  220  
+R_U1_U2_R16         $N_0035 $N_0039  660  
+Q_U1_U2_Q2         $N_0133 $N_0111 $N_0038 PNP8 {x6}
+R_U1_U2_R17         $N_0035 $N_0040  220  
+Q_U1_U2_Q9         $N_0035 $N_0035 $N_0041 PNP8 {x4}
+Q_U1_U2_Q10         $N_0036 $N_0036 $N_0042 NPN8 {x4}
+Q_U1_U2_Q7         $N_0129 $N_0112 $N_0040 NPN8 {x6}
+Q_U1_U2_Q16         $N_0043 $N_0043 $N_0044 NPN8 {x2}
+D_U1_U2_D1         $N_0044 $N_0045 DX 1
+R_U1_U2_R18         $N_0133 $N_0045  100  
+D_U1_U2_D2         $N_0046 $N_0047 DX 1
+R_U1_U2_R19         $N_0047 $N_0129  100  
+Q_U1_U2_Q15         $N_0036 GND $N_0043 NPN8 {x2}
+Q_U1_U2_Q17         $N_0048 $N_0048 $N_0046 PNP8 {x2}
+Q_U1_U2_Q18         $N_0035 GND $N_0048 PNP8 {x2}
+Q_U1_U2_Q12         $N_0049 $N_0049 $N_0050 NPN8 {x4*0.95}
+Q_U1_U2_Q13         $N_0049 $N_0049 $N_0051 PNP8 {x4*0.95}
+Q_U1_U2_Q3         $N_0133 $N_0133 $N_0052 NPN8 {x4*0.95}
+Q_U1_U2_Q6         $N_0129 $N_0129 $N_0053 PNP8 {x4*0.95}
+Q_U1_U2_Q5         $N_0042 $N_0054 $N_0053 NPN8 {x4*0.95}
+Q_U1_U2_Q4         $N_0041 $N_0054 $N_0052 PNP8 {x4*0.95}
+Q_U1_U2_Q11         $N_0055 $N_0133 $N_0051 NPN8 {x4*0.95}
+Q_U1_U2_Q14         $N_0056 $N_0129 $N_0050 PNP8 {x4*0.95}
+R_U1_U2_R20         $N_0054 Ch0  300  
+Q_U1_U2_Q8         $N_0112 $N_0112 $N_0039 NPN8 {x2}
+Q_U1_U2_Q1         $N_0111 $N_0111 $N_0037 PNP8 {x2}
+R_U1_U1_R21         ENbar $N_0057  500  
+R_U1_U1_R17         $N_0059 $N_0058  843.5  
+Q_U1_U1_Q10         $N_0059 GND $N_0060 PNP8 {x2}
+D_U1_U1_D2         $N_0061 $N_0062 DX 1
+D_U1_U1_D1         $N_0062 $N_0057 DX 1
+Q_U1_U1_Q7         $N_0063 $N_0062 $N_0064 PNP8 {x2}
+Q_U1_U1_Q11         $N_0059 $N_0065 $N_0062 PNP8 {x2}
+Q_U1_U1_Q12         $N_0059 $N_0065 $N_0064 PNP8 {x2}
+Q_U1_U1_Q4         $N_0067 $N_0066 $N_0058 NPN8 {x8}
+Q_U1_U1_Q3         $N_0068 $N_0063 $N_0067 NPN8 {x2}
+Q_U1_U1_Q5         $N_0063 $N_0063 $N_0066 NPN8 {x8}
+R_U1_U1_R18         $N_0059 $N_0069  4.63k  
+Q_U1_U1_Q13         $N_0070 $N_0070 $N_0071 PNP8 {x2}
+Q_U1_U1_Q17         $N_0072 $N_0071 $N_0073 PNP8 {x10}
+Q_U1_U1_Q15         $N_0064 $N_0070 $N_0072 PNP8 {x2}
+Q_U1_U1_Q18         $N_0074 $N_0071 $N_0075 PNP8 {x5}
+Q_U1_U1_Q19         $N_0076 $N_0071 $N_0077 PNP8 {x2}
+Q_U1_U1_Q16         $N_0065 $N_0070 $N_0074 PNP8 {x5}
+Q_U1_U1_Q20         $N_0062 $N_0070 $N_0076 PNP8 {x2}
+R_U1_U1_R23         $N_0079 $N_0078  8.5k  
+Q_U1_U1_Q9         $N_0079 $N_0079 GND NPN8 {x2}
+R_U1_U1_R24         $N_0060 $N_0070  120k  
+Q_U1_U1_Q8         $N_0080 $N_0079 $N_0061 NPN8 {x4}
+R_U1_U1_R25         $N_0077 $N_0080  1450  
+R_U1_U1_R27         $N_0073 $N_0080  290  
+R_U1_U1_R26         $N_0075 $N_0080  580  
+R_U1_U1_R20         $N_0081 $N_0080  180k  
+Q_U1_U1_Q14         $N_0071 $N_0072 $N_0080 PNP8 {x2}
+R_U1_U1_R29         $N_0082 $N_0080  20k  
+R_U1_U1_R30         $N_0083 $N_0080  1k  
+V_U1_U1_V1         $N_0081 $N_0068   
+Q_U1_U1_Q2         $N_0068 $N_0063 $N_0069 NPN8 {x2}
+R_U1_U1_R31         $N_0059 $N_0084  1k  
+R_U1_U1_R32         $N_0059 $N_0085  20k  
+V_U1_U1_V2         $N_0086 $N_0087   
+R_U1_U1_R28         $N_0088 $N_0080  1k  
+R_U1_U1_R19         $N_0059 $N_0063  150k  
+Q_U1_U1_Q6         $N_0066 $N_0067 $N_0059 NPN8 {x2}
+R_U1_U1_R33         $N_0059 $N_0089  1.628k  
+R_U1_U1_R35         $N_0090 $N_0080  2.1k  
+Q_U1_U1_Q28         $N_0091 $N_0066 $N_0089 NPN8 {x8}
+Q_U1_U1_Q29         $N_0091 $N_0091 $N_0092 PNP8 {x2}
+R_U1_U1_R34         $N_0092 $N_0080  4.2k  
+R_U1_U1_R36         $N_0093 $N_0080  1.25k  
+R_U1_U1_R37         $N_0094 $N_0080  4.2k  
+R_U1_U1_R40         $N_0059 $N_0095  2.5k  
+R_U1_U1_R41         $N_0059 $N_0096  2.5k  
+Q_U1_U1_Q35         $N_0059 $N_0097 $N_0098 PNP8 {x2}
+D_U1_U1_D4         $N_0097 $N_0099 DX 1
+R_U1_U1_R42         $N_0100 $N_0099  5k  
+D_U1_U1_D5         GND $N_0097 DX 1
+Q_U1_U1_Q38         $N_0100 $N_0100 GND NPN8 {x1}
+D_U1_U1_D6         $N_0065 $N_0078 DX 1
+R_U1_U1_R15         V+ $N_0080  5  
+C_U1_U1_C1         $N_0059 $N_0080  5p  
+R_U1_U1_R16         V- $N_0059  5  
+Q_U1_U1_Q33         $N_0101 $N_0098 $N_0102 PNP8 {x2}
+D_U1_U1_D7         $N_0103 $N_0098 DX 1
+Q_U1_U1_Q39         $N_0080 $N_0100 $N_0103 NPN8 {x8}
+D_U1_U1_D8         $N_0098 $N_0104 DX 1
+R_U1_U1_R43         $N_0104 SEL  500  
+Q_U1_U1_Q30         $N_0097 $N_0091 $N_0090 PNP8 {x4}
+Q_U1_U1_Q32         $N_0098 $N_0091 $N_0094 PNP8 {x2}
+R_U1_U1_R44         $N_0059 $N_0105  667  
+R_U1_U1_R38         GND $N_0101  1k  
+Q_U1_U1_Q42         $N_0106 $N_0101 $N_0107 NPN8 {x2}
+Q_U1_U1_Q31         $N_0102 $N_0108 $N_0093 PNP8 {x2}
+Q_U1_U1_Q21         $N_0081 $N_0108 $N_0088 PNP8 {x2}
+Q_U1_U1_Q23         $N_0108 $N_0108 $N_0082 PNP8 {x1}
+Q_U1_U1_Q24         $N_0059 $N_0081 $N_0108 PNP8 {x2}
+Q_U1_U1_Q22         $N_0086 $N_0108 $N_0083 PNP8 {x2}
+R_U1_U1_R45         $N_0109 $N_0080  667  
+Q_U1_U1_Q41         $N_0111 $N_0110 $N_0107 NPN8 {x2}
+Q_U1_U1_Q34         $N_0110 $N_0097 $N_0102 PNP8 {x2}
+R_U1_U1_R39         GND $N_0110  1k  
+Q_U1_U1_Q43         $N_0112 $N_0101 $N_0113 PNP8 {x2}
+Q_U1_U1_Q44         $N_0114 $N_0110 $N_0113 PNP8 {x2}
+Q_U1_U1_Q45         $N_0113 $N_0108 $N_0109 PNP8 {x3}
+R_U1_U1_R46         $N_0115 $N_0080  2k  
+R_U1_U1_R47         $N_0116 $N_0080  2k  
+R_U1_U1_R48         $N_0117 $N_0080  1k  
+R_U1_U1_R49         $N_0118 $N_0080  1k  
+R_U1_U1_R50         $N_0120 $N_0119  560k  
+Q_U1_U1_Q36         $N_0101 $N_0121 $N_0095 NPN8 {x1}
+Q_U1_U1_Q37         $N_0110 $N_0121 $N_0096 NPN8 {x1}
+Q_U1_U1_Q26         $N_0121 $N_0121 $N_0085 NPN8 {x1}
+Q_U1_U1_Q25         $N_0080 $N_0087 $N_0121 NPN8 {x2}
+Q_U1_U1_Q27         $N_0087 $N_0121 $N_0084 NPN8 {x2}
+Q_U1_U1_Q40         $N_0107 $N_0121 $N_0105 NPN8 {x3}
+R_U1_U1_R51         $N_0059 $N_0122  2k  
+R_U1_U1_R52         $N_0059 $N_0123  2k  
+R_U1_U1_R53         $N_0059 $N_0124  1k  
+R_U1_U1_R54         $N_0059 $N_0125  1k  
+Q_U1_U1_Q57         $N_0119 $N_0119 $N_0126 PNP8 {x1}
+Q_U1_U1_Q55         $N_0120 $N_0120 $N_0127 NPN8 {x1}
+Q_U1_U1_Q50         $N_0128 $N_0121 $N_0122 NPN8 {x1}
+Q_U1_U1_Q49         $N_0128 $N_0128 $N_0116 PNP8 {x1}
+Q_U1_U1_Q47         $N_0129 $N_0128 $N_0117 PNP8 {x2}
+Q_U1_U1_Q48         $N_0130 $N_0128 $N_0118 PNP8 {x2}
+Q_U1_U1_Q56         $N_0126 $N_0126 $N_0128 PNP8 {x1}
+Q_U1_U1_Q46         $N_0131 $N_0108 $N_0115 PNP8 {x1}
+Q_U1_U1_Q53         $N_0131 $N_0131 $N_0123 NPN8 {x1}
+Q_U1_U1_Q54         $N_0127 $N_0127 $N_0131 NPN8 {x1}
+Q_U1_U1_Q52         $N_0132 $N_0131 $N_0125 NPN8 {x2}
+Q_U1_U1_Q51         $N_0133 $N_0131 $N_0124 NPN8 {x2}
+R_R2         GND $N_0049  390  
+R_R1         $N_0049 OUT  402  
+
+.MODEL DX D
++ IS=1.0000E-15  
+
+.MODEL NPN8 NPN
++ IS = 7.604E-18 BF = 1.570E+02 NF = 1.000E+00 VAF= 7.871E+01
++ IKF= 3.975E-02 ISE= 3.219E-14 NE = 2.000E+00 BR = 7.614E-01
++ NR = 1.000E+00 VAR= 1.452E+00 IKR= 8.172E-02 ISC= 7.618E-21
++ NC = 1.847E+00 RB = 1.060E+02 IRB= 0.000E+00 RBM= 2.400E+00
++ RE = 2.520E+00 RC = 1.270E+02 CJE= 1.120E-13 VJE= 7.591E-01
++ MJE= 5.406E-01 TF = 1.213E-11 XTF= 2.049E+00 VTF= 1.813E+00
++ ITF= 4.293E-02 PTF= 0.000E+00 CJC= 8.208E-14 VJC= 6.666E-01
++ MJC= 4.509E-01 XCJC=8.450E-02 TR = 4.000E-11 CJS= 1.160E-13
++ VJS= 5.286E-01 MJS= 4.389E-01 XTB= 1.022E+00 EG = 1.120E+00
++ XTI= 1.780E+00 KF = 3.500E-16 AF = 1.000E+00 FC = 8.273E-01
+
+
+.MODEL PNP8 PNP
++ IS = 7.999E-18 BF = 1.418E+02 NF = 1.000E+00 VAF= 4.158E+01
++ IKF= 1.085E-01 ISE= 2.233E-15 NE = 1.505E+00 BR = 3.252E+01
++ NR = 1.050E+00 VAR= 1.093E+00 IKR= 5.000E-05 ISC= 6.621E-16
++ NC = 1.150E+00 RB = 6.246E+01 IRB= 0.000E+00 RBM= 2.240E+00
++ RE = 2.537E+00 RC = 1.260E+02 CJE= 9.502E-14 VJE= 7.320E-01
++ MJE= 4.930E-01 TF = 1.303E-11 XTF= 3.500E+01 VTF= 3.259E+00
++ ITF= 2.639E-01 PTF= 0.000E+00 CJC= 1.080E-13 VJC= 7.743E-01
++ MJC= 5.000E-01 XCJC=8.504E-02 TR = 1.500E-10 CJS= 1.290E-13
++ VJS= 9.058E-01 MJS= 4.931E-01 XTB= 1.732E+00 EG = 1.120E+00
++ XTI= 2.000E+00 KF = 3.500E-16 AF = 1.000E+00 FC = 8.500E-01
+
+.ENDS    OPA875

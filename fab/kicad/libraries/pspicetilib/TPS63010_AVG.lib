@@ -1,0 +1,108 @@
+*$
+*TPS63010
+*****************************************************************************
+* (C) Copyright 2009 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.                                             
+** TI and its licensors and suppliers make no warranties, either expressed                                           
+** or implied, with respect to this model, including the warranties of                                                    
+** merchantability or fitness for a particular purpose. The model is                                                      
+** provided solely on an "as is" basis. The entire risk as to its quality                                                    
+** and performance is with the customer                                                                                          
+*****************************************************************************
+*
+* This model was developed for Texas Instruments Incorporated by:
+*   AEi Systems, LLC
+*   5777 W. Century Blvd., Suite 876
+*   Los Angeles, California  90045
+*
+* This model is subject to change without notice. Neither Texas Instruments Incorporated 
+* nor AEi Systems is responsible for updating this model.
+* For more information regarding modeling services, model libraries and simulation 
+* products, please call AEi Systems at (310) 216-1144, or contact AEi Systems by email: 
+* info@AENG.com. Or visit AEi Systems on the web at http://www.AENG.com.
+*
+*****************************************************************************
+*
+** Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: TPS63010
+* Date: 09/17/2009
+* Model Type: Average 
+* Simulator: PSpice 
+* Simulator Version: 16.0.0.p001
+* EVM Order Number: TPS63010EVM-235 
+* EVM Users Guide: SLVU255, August 2008 
+* Datasheet: SLVS653A, June 2008 - Revised August 2009
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+.SUBCKT TPS63010_AVG L1 VIN FB VOUT L2
+RZV 11 16 500K
+EB2 DUTY 0 VALUE = {(V(VC)-0)*2/V(VIN)}
+CCV 16 0 100P
+C5 11 0 10F
+EB1 DUTY2 0 VALUE = {(V(VC)-V(VIN)/2)*V(VOUT)/2}
+R7 11 0 1000G
+X3 VIN 0 2 0 DUTY PWMBCK
+V_IS 2 L1
+GMV 0 11 13 FB 8U
+F1 0 9 V_IS 1
+RSX10 9 0 0.5
+RZI VC 12 250K
+VREF 13 0 DC=0.5
+CCI 12 0 20P
+C3 VC 0 10F
+R5 VC 0 1000G
+GM 0 VC 11 9 16U
+X2 L2 0 VOUT 0 DUTY2 PWMBST
+.ENDS TPS63010_AVG
+*$
+.SUBCKT PWMBCK 1 2 3 4 5
+* BUCK STEP-DOWN TRANSFORMER MODEL
+* NODES 1 & 2 ARE THE INPUT ; 3 & 4 ARE THE OUTPUT ; 5 THE DUTY CYCLE
+* N=1 IS THE TRANSFORMER TURNS RATIO
+* 1:N*D IS THE EFFECTIVE TURNS RATIO
+RD 5 0 1MEG
+RO 6 3 10M
+* RO IS THE OUTPUT RESISTANCE
+G1 1 2 POLY(2) 6 3 5 0 0 0 0 0 100.0
+*Value = { V(6,3) * V(5,0) *100}
+*POLY(2) 6 3 5 0 0 0 0 0 100.0
+* G1 GAIN = N/RO
+E2 6 4 POLY(2) 1 2 5 0 0 0 0 0 1.0
+*Value = { V(6,3) * V(4,5)}
+*POLY(2) 1 2 5 0 0 0 0 0 1.0
+* E2 GAIN = N , THE TRANSFORMER TURNS RATIO
+.ENDS PWMBCK
+*$
+.SUBCKT PWMBST 1 2 3 4 5
+* BOOST STEP-UP TRANSFORMER MODEL
+* NODES 1&2 ARE THE INPUT ; 3&4 ARE THE OUTPUT ; 5 IS THE DUTY CYCLE
+* N=1 IS THE TRANSFORMER TURNS RATIO
+* (1-D):N IS THE EFFECTIVE TURNS RATIO
+RD 5 0 1MEG
+RI 1 6 10M
+* RI IS THE INPUT RESISTANCE
+RO 3 4 100MEG
+G2 4 3 POLY(2) 1 6 8 0 0 0 0 0 100.0
+*Value =  { V(1,6) * V(8,0) *100}
+*POLY(2) 1 6 8 0 0 0 0 0 100.0
+* G2=1/(RI*N)
+E1 6 2 POLY(2) 3 4 8 0 0 0 0 0 1.0
+*Value =  { V(3,4) * V(8,0)} 
+*POLY(2) 3 4 8 0 0 0 0 0 1.0
+* E1=1/N
+RD1 8 0 1MEG
+VD1 8 7 DC 1
+ED1 7 0 5 0 -1.0
+.ENDS PWMBST
+*R; T=0.01/0.06 15:42:59
+*$
+
+

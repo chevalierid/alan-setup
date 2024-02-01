@@ -1,0 +1,220 @@
+*TS5A3359
+*****************************************************************************
+* (C) Copyright 2013 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: TS5A3359
+* Date: 07/17/2014
+* Model Type: All In One
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: N/A
+* EVM Users Guide: N/A
+* Datasheet: SCDS214C
+* 
+* Model Version: 1.0
+* 
+*****************************************************************************
+* 
+* Updates: 
+* 
+* Version 1.0 : Release to Web
+* 
+*****************************************************************************
+* 
+* Notes: The following parameters are being modeled for 5 Volt supply voltage and room temp : 
+*Function Table on page 1 of datasheet. Ron, Bandwidth, Harmonic distortion, 
+*leakage current,turn off/on time of 3.7n, VIH, VIL,  Charge injection via a cap for delta_V=5 and 3.4pC ,Supply current.  
+*COM off and on capacitance, inputs (NO0, NO1, NO2) ON and Off capacitance.
+* 
+*****************************************************************************
+*$
+.SUBCKT TS5A3359 IN1 IN2 COM VDD NO0 NO1 NO2 GND
+C_C2         0 19  78p  TC=0,0 
+X_U8         IN2 VDD 21 VI_HL_0 
+X_U7         IN1 VDD 22 VI_HL_0 
+C_U11_C5         NO2 T2  1.47f  TC=0,0 
+C_U11_C2         0 U11_N68940  18p  TC=0,0 
+X_U11_S1    T2 0 NO2 COM ONE_CHANNEL_TS5A3359_U11_S1 
+I_U11_I1         U11_N69110 0 DC 1uAdc  
+R_U11_R4         VDD 0  1e9 TC=0,0 
+X_U11_SW4    T2 0 U11_N68850 NO2 ONE_CHANNEL_TS5A3359_U11_SW4 
+D_U11_D1         NO2 U11_N69110 D_1N1183_1 
+C_U11_C1         0 U11_N68850  78p  TC=0,0 
+D_U11_D2         COM U11_N69110 D_1N1183_1 
+X_U11_SW7    T2 0 U11_N68940 NO2 ONE_CHANNEL_TS5A3359_U11_SW7 
+X_U13         T2Z T1Z T0Z VDD 0 TTT AN310_0 PARAMS:  RDRV=10K RDLY=10K
++  CDLY=0.1PF DIV=2
+X_U999         22 17 DELAY_LINE 
+X_U4         T2 T2Z VDD 0 IV110_0 PARAMS:  RDRV=10K RDLY=10K CDLY=0.1PF DIV=2
+X_S1    20 COM TTT 0 TS5A3359_SCH_S1 
+X_U2         T0 T0Z VDD 0 IV110_0 PARAMS:  RDRV=10K RDLY=10K CDLY=0.1PF DIV=2
+C_U10_C5         NO1 T1  1.47f  TC=0,0 
+C_U10_C2         0 U10_N68940  18p  TC=0,0 
+X_U10_S1    T1 0 NO1 COM ONE_CHANNEL_TS5A3359_U10_S1 
+I_U10_I1         U10_N69110 0 DC 1uAdc  
+R_U10_R4         VDD 0  1e9 TC=0,0 
+X_U10_SW4    T1 0 U10_N68850 NO1 ONE_CHANNEL_TS5A3359_U10_SW4 
+D_U10_D1         NO1 U10_N69110 D_1N1183_1 
+C_U10_C1         0 U10_N68850  78p  TC=0,0 
+D_U10_D2         COM U10_N69110 D_1N1183_1 
+X_U10_SW7    T1 0 U10_N68940 NO1 ONE_CHANNEL_TS5A3359_U10_SW7 
+R_R1         0 20  1G TC=0,0 
+I_I1         VDD 0 DC 16nAdc  
+X_U1         T1 T1Z VDD 0 IV110_0 PARAMS:  RDRV=10K RDLY=10K CDLY=0.1PF DIV=2
+R_R2         0 VDD  10K TC=0,0 
+C_C1         0 20  54p  TC=0,0 
+X_S2    19 COM TTT_Z 0 TS5A3359_SCH_S2 
+X_U3         17 18 T0 T1 T2 VDD 2TO3DECODER_0 PARAMS:  VTHRESH=0.5
+R_R3         0 19  1G TC=0,0 
+X_U12         TTT TTT_Z VDD 0 IV110_0 PARAMS:  RDRV=10K RDLY=10K CDLY=0.1PF
++  DIV=2
+X_U888         21 18 DELAY_LINE 
+C_U14_C5         NO0 T0  1.47f  TC=0,0 
+C_U14_C2         0 U14_N68940  18p  TC=0,0 
+X_U14_S1    T0 0 NO0 COM ONE_CHANNEL_TS5A3359_U14_S1 
+I_U14_I1         U14_N69110 0 DC 1uAdc  
+R_U14_R4         VDD 0  1e9 TC=0,0 
+X_U14_SW4    T0 0 U14_N68850 NO0 ONE_CHANNEL_TS5A3359_U14_SW4 
+D_U14_D1         NO0 U14_N69110 D_1N1183_1 
+C_U14_C1         0 U14_N68850  78p  TC=0,0 
+D_U14_D2         COM U14_N69110 D_1N1183_1 
+X_U14_SW7    T0 0 U14_N68940 NO0 ONE_CHANNEL_TS5A3359_U14_SW7 
+.ENDS
+*$
+.SUBCKT IV110_0  A Y DVDD DVSS PARAMS: RDRV=10K RDLY=10K CDLY=0.1PF DIV=2
+RA A DVSS 1E11
+CA A DVSS 0.01PF
+EINV YI 0 VALUE={IF(V(A,DVSS) > (V(DVDD,DVSS)/{DIV}), V(DVSS), V(DVDD))}
+RD YI YP {RDLY}
+CD YP DVSS {CDLY}
+EOUT YPP DVSS YP DVSS 1
+RDR YPP Y {RDRV}
+RO Y DVSS 1E11
+.ENDS IV110_0 
+*$
+.SUBCKT AN310_0  A B C DVDD DVSS Y PARAMS: RDRV=10K RDLY=10K CDLY=0.1PF DIV=2
+RA A DVSS 1E11
+CA A DVSS 0.01PF
+RB B DVSS 1E11
+CB B DVSS 0.01PF
+RC C DVSS 1E11
+CC C DVSS 0.01PF
+E1 Y2 0 VALUE={IF(V(A,DVSS) > (V(DVDD,DVSS)/{DIV}) & V(B,DVSS) > (V(DVDD,DVSS)/{DIV}), V(DVDD), V(DVSS))}
+E3 YI 0 VALUE={IF(V(Y2,DVSS) > (V(DVDD,DVSS)/{DIV})  & V(C,DVSS) > (V(DVDD,DVSS)/{DIV}), V(DVDD), V(DVSS))}
+RM YI YP   {RDLY}
+CM YP DVSS {CDLY}
+EOUT YPP DVSS YP DVSS 1
+RDR YPP Y {RDRV}
+RO Y DVSS 1E11
+.ENDS AN310_0  
+*$
+.SUBCKT VI_HL_0  VIN VDD VOUT 
+E_OUT  VOUT 0 VALUE = {IF ( V(VIN) > V(VDD)*0.7, V(VDD),
++ IF ( V(VIN) < V(VDD)*0.3, 0 , V(Vin) ))} 
+.ENDS  
+*$
+.SUBCKT DELAY_LINE VI VO 
+E1 VIX 0 VI 0 1 
+T1 VIX 0 VOX 0 Z0 = 75 TD = 3.7nS
+RL VOX 0 75
+E2 VO 0 VOX 0 1
+.ENDS DELAY_LINE
+*$
+.SUBCKT 2TO3DECODER_0     A B OUT0 OUT1 OUT2 VDD PARAMS:  VTHRESH=0.5 
+E_OUT0    OUT0 0 VALUE = {IF ( V(A) > {VTHRESH} & V(B) < {VTHRESH}, V(VDD) , 0  )  }
+E_OUT1    OUT1 0 VALUE = {IF ( V(A) < {VTHRESH} & V(B) > {VTHRESH}, V(VDD) , 0  )  }
+E_OUT2    OUT2 0 VALUE = {IF ( V(A) > {VTHRESH} & V(B) > {VTHRESH}, V(VDD) , 0  )  }
+.ENDS 2TO3DECODER_0 
+*$
+.subckt ONE_CHANNEL_TS5A3359_U11_S1 1 2 3 4  
+S_U11_S1         3 4 1 2 _U11_S1
+RS_U11_S1         1 2 1G
+.MODEL         _U11_S1 VSWITCH Roff=1e6 Ron=0.7 Voff=0.0V Von=1.0V
+.ends ONE_CHANNEL_TS5A3359_U11_S1
+*$
+.subckt ONE_CHANNEL_TS5A3359_U11_SW4 1 2 3 4  
+S_U11_SW4         3 4 1 2 _U11_SW4
+RS_U11_SW4         1 2 1G
+.MODEL         _U11_SW4 VSWITCH Roff=1e6 Ron=1.0 Voff=0.0V Von=1.0V
+.ends ONE_CHANNEL_TS5A3359_U11_SW4
+*$
+.subckt ONE_CHANNEL_TS5A3359_U11_SW7 1 2 3 4  
+S_U11_SW7         3 4 1 2 _U11_SW7
+RS_U11_SW7         1 2 1G
+.MODEL         _U11_SW7 VSWITCH Roff=1e6 Ron=1.0 Voff=1.0V Von=0.0V
+.ends ONE_CHANNEL_TS5A3359_U11_SW7
+*$
+.subckt TS5A3359_SCH_S1 1 2 3 4  
+S_S1         3 4 1 2 _S1
+RS_S1         1 2 1G
+.MODEL         _S1 VSWITCH Roff=1e6 Ron=1 Voff=1.0V Von=0.2V
+.ends TS5A3359_SCH_S1
+*$
+.subckt ONE_CHANNEL_TS5A3359_U10_S1 1 2 3 4  
+S_U10_S1         3 4 1 2 _U10_S1
+RS_U10_S1         1 2 1G
+.MODEL         _U10_S1 VSWITCH Roff=1e6 Ron=0.7 Voff=0.0V Von=1.0V
+.ends ONE_CHANNEL_TS5A3359_U10_S1
+*$
+.subckt ONE_CHANNEL_TS5A3359_U10_SW4 1 2 3 4  
+S_U10_SW4         3 4 1 2 _U10_SW4
+RS_U10_SW4         1 2 1G
+.MODEL         _U10_SW4 VSWITCH Roff=1e6 Ron=1.0 Voff=0.0V Von=1.0V
+.ends ONE_CHANNEL_TS5A3359_U10_SW4
+*$
+.subckt ONE_CHANNEL_TS5A3359_U10_SW7 1 2 3 4  
+S_U10_SW7         3 4 1 2 _U10_SW7
+RS_U10_SW7         1 2 1G
+.MODEL         _U10_SW7 VSWITCH Roff=1e6 Ron=1.0 Voff=1.0V Von=0.0V
+.ends ONE_CHANNEL_TS5A3359_U10_SW7
+*$
+.subckt TS5A3359_SCH_S2 1 2 3 4  
+S_S2         3 4 1 2 _S2
+RS_S2         1 2 1G
+.MODEL         _S2 VSWITCH Roff=1e6 Ron=1 Voff=0.2V Von=1.0V
+.ends TS5A3359_SCH_S2
+*$
+.subckt ONE_CHANNEL_TS5A3359_U14_S1 1 2 3 4  
+S_U14_S1         3 4 1 2 _U14_S1
+RS_U14_S1         1 2 1G
+.MODEL         _U14_S1 VSWITCH Roff=1e6 Ron=0.7 Voff=0.0V Von=1.0V
+.ends ONE_CHANNEL_TS5A3359_U14_S1
+*$
+.subckt ONE_CHANNEL_TS5A3359_U14_SW4 1 2 3 4  
+S_U14_SW4         3 4 1 2 _U14_SW4
+RS_U14_SW4         1 2 1G
+.MODEL         _U14_SW4 VSWITCH Roff=1e6 Ron=1.0 Voff=0.0V Von=1.0V
+.ends ONE_CHANNEL_TS5A3359_U14_SW4
+*$
+.subckt ONE_CHANNEL_TS5A3359_U14_SW7 1 2 3 4  
+S_U14_SW7         3 4 1 2 _U14_SW7
+RS_U14_SW7         1 2 1G
+.MODEL         _U14_SW7 VSWITCH Roff=1e6 Ron=1.0 Voff=1.0V Von=0.0V
+.ends ONE_CHANNEL_TS5A3359_U14_SW7
+*$
+** Wrapper definitions for AA legacy support **
+.model D_1N1183_1 d
++ is=3.6e-008
++ n=1.6
++ bv=50
++ ibv=0.005
++ rs=0.002
++ cjo=4.6e-010
++ vj=0.55
++ m=0.44
++ fc=0.5
++ tt=4.347e-007
++ eg=1.11
++ xti=3
++ kf=0
++ af=1
+*$

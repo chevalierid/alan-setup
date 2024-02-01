@@ -1,0 +1,430 @@
+
+* LM48556
+*****************************************************************************
+* (C) Copyright 2012 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: LM48556
+* Date: 7/24/2012
+* Model Type: All In One
+* Simulator: Pspice
+* Simulator Version: Pspice 16.2
+* EVM Order Number: N/A
+* EVM Users Guide: N/A
+* Datasheet: SNAS452A
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 : Release to Web
+*
+*****************************************************************************
+* Notes: This is a fully differential opamp with the following parameters:
+Gain, BW, SR, IQQ, I off, Vos, Voltage swing, Noise, VLH, VLL, PSRR, CMRR (Limits),
+Wake up time and shut down option.
+ 
+*****************************************************************************
+.subckt LM48556 INP INN SDB C1N C1P SVDD SVSS PVDD CPVSS PGND OUTP OUTM
+
+T_T1         N14937933 PGND N14937967 PGND Z0=75 TD=0.5m  
+R_R12         PGND N14937967  75 TC=0,0 
+E_E3         N14943304 0 SVSS 0 1
+X_U1         SDB N14937933 SVDD PGND LOGIC_HL PARAMS:  LOGICL=0.45 LOGICH=1.2
+R_RCM1         N14943342 N14943230  10G TC=0,0 
+X_CPump_U1         SDZ CPump_SD INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+E_CPump_E4         NC 0 CPump_N14908081 0 1
+R_CPump_RCM1         CPump_N14908081 CPump_N14907937  10G TC=0,0 
+E_CPump_E1         CPVSS 0 CPump_N14907541 0 -1
+R_CPump_RCM2         CPump_N14908011 CPump_N14908081  10G TC=0,0 
+X_CPump_S1    CPump_SD 0 CPump_N14907541 PGND Charge_pump_CPump_S1 
+E_CPump_E2         CPump_N14907937 0 PVDD 0 1
+X_CPump_S2    SDZ 0 CPump_N14907541 PVDD Charge_pump_CPump_S2 
+E_CPump_E3         CPump_N14908011 0 CPVSS 0 1
+E_E4         VOCM 0 N14943342 0 1
+X_U2         N14937933 N14937967 SDZ AND2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+C_UAMP_Cinn         UAMP_GND_FLOAT UAMP_GND_FLOAT  200f  TC=0,0 
+E_UAMP_E2         UAMP_VEE_BUF UAMP_GND_FLOAT SVSS UAMP_GND_FLOAT 1
+X_UAMP_U32         UAMP_N15059900 UAMP_N150598701 OUT_CURRENT_CLAMP PARAMS: 
++  RSER=1 IMAX=10 IMIN=10
+X_UAMP_U26         UAMP_N15076724 UAMP_N14890609 UAMP_GND_FLOAT CMRR PARAMS: 
++  CMRR=110 FCMRR=1.6K
+X_UAMP_Ud2         UAMP_N14890609 SVDD d_ideal PARAMS:
+I_UAMP_I3         UAMP_N14890609 SVSS DC 90nAdc  
+X_UAMP_U29         UAMP_N14891597 UAMP_N14892585 UAMP_N14973626 UAMP_CMV SDZ
++  GBW_SLEW_SE_EN PARAMS:  AOL=100 GBW=2.5MEG SRP=9MEG SRN=9MEG IT=1 VON=0.5
++  RSC=1M
+X_UAMP_U28         UAMP_N14892585 UAMP_N14891597 UAMP_N14890511 UAMP_CMV SDZ
++  GBW_SLEW_SE_EN PARAMS:  AOL=100 GBW=2.5MEG SRP=9MEG SRN=9MEG IT=1 VON=0.5
++  RSC=1M
+X_UAMP_U27         SVDD SVSS INN UAMP_N15076724 UAMP_GND_FLOAT PSRR PARAMS: 
++  PSRR=110 FPSRR=1k
+X_UAMP_Ud3         SVSS UAMP_INP_CMRR d_ideal PARAMS:
+X_UAMP_U34         UAMP_N150598701 OUTP UAMP_VIMON1 AMETER PARAMS: GAIN=1
+X_UAMP_U14         INP UAMP_INP2 vnse PARAMS:
+X_UAMP_Ud4         SVSS UAMP_N14890609 d_ideal PARAMS:
+X_UAMP_U30         SVDD SVSS SDZ IQ_EN PARAMS:  VON=0.5 IQQ=6.5e-3 IOFF=0.1e-6
+I_UAMP_I4         UAMP_INP_CMRR SVDD DC 90nAdc  
+X_UAMP_U39         SVDD SVSS UAMP_INP_CMRR UAMP_N14890609 UAMP_N14892585
++  UAMP_N14891597 UAMP_GND_FLOAT CMR PARAMS:  VMAX=0 VMIN=0
+E_UAMP_ucm_E2         UAMP_ucm_N15101113 0 OUTM 0 1
+V_UAMP_ucm_Vos_cm         UAMP_ucm_VOCM UAMP_ucm_NET2 1.6uVdc
+E_UAMP_ucm_E5         UAMP_ucm_N15101187 0 OUTP 0 1
+R_UAMP_ucm_R8         0 UAMP_CMV  1e9 TC=0,0 
+R_UAMP_ucm_RCM1         UAMP_ucm_N15101229 UAMP_ucm_N15101113  10G TC=0,0 
+R_UAMP_ucm_Rfilt         VOCM UAMP_ucm_NET1  1 TC=0,0 
+E_UAMP_ucm_E4         UAMP_ucm_VOCM 0 UAMP_ucm_N15101229 0 1
+C_UAMP_ucm_Cfilt         SVSS UAMP_ucm_NET1  5p  TC=0,0 
+R_UAMP_ucm_RCM2         UAMP_ucm_N15101187 UAMP_ucm_N15101229  10G TC=0,0 
+E_UAMP_ucm_E3         UAMP_CMV 0 UAMP_ucm_NET1 UAMP_ucm_NET2 1
+V_UAMP_Vos         UAMP_INP2 UAMP_INP_CMRR 0.6mVdc
+X_UAMP_U33         UAMP_N15063345 UAMP_N150633770 OUT_CURRENT_CLAMP PARAMS: 
++  RSER=1 IMAX=10 IMIN=10
+X_UAMP_U37         UAMP_N150633770 OUTM UAMP_VIMON2 AMETER PARAMS: GAIN=1
+X_UAMP_Ud10         UAMP_N14892145 UAMP_GND_FLOAT d_ideal PARAMS:
+X_UAMP_U13         SVDD SVSS UAMP_VIMON2 UAMP_GND_FLOAT tran_iout PARAMS:
+C_UAMP_Cinp         UAMP_GND_FLOAT UAMP_GND_FLOAT  200f  TC=0,0 
+X_UAMP_Ud11         UAMP_N14892125 UAMP_GND_FLOAT d_ideal PARAMS:
+X_UAMP_U42         SVDD SVSS UAMP_N14973626 UAMP_N15063345 UAMP_VIMON2
++  UAMP_GND_FLOAT VCLAMP_W_CLAW PARAMS: VMAXIO=0.125 VMINIO=0.125 SLOPE=0
+V_UAMP_Vos4         UAMP_N14892145 SVSS 1Vdc
+E_UAMP_E1         UAMP_VCC_BUF UAMP_GND_FLOAT SVDD UAMP_GND_FLOAT 1
+X_UAMP_U40         SVDD SVSS UAMP_GND_FLOAT GND_FLOAT 
+X_UAMP_U41         SVDD SVSS UAMP_N14890511 UAMP_N15059900 UAMP_VIMON1
++  UAMP_GND_FLOAT VCLAMP_W_CLAW PARAMS: VMAXIO=0.125 VMINIO=0.125 SLOPE=0
+X_UAMP_Ud1         UAMP_INP_CMRR SVDD d_ideal PARAMS:
+V_UAMP_Vos5         UAMP_N14892125 SVSS 1Vdc
+X_UAMP_U11         SVDD SVSS UAMP_VIMON1 UAMP_GND_FLOAT tran_iout PARAMS:
+R_R14         0 C1P  1 TC=0,0 
+R_RCM2         N14943304 N14943342  10G TC=0,0 
+E_E2         N14943230 0 PVDD 0 1
+R_R13         C1N CPVSS  1 TC=0,0 
+
+
+
+
+
+
+
+
+
+
+.ends LM48556
+************************************************************
+************************************************************
+
+.subckt Charge_pump_CPump_S1 1 2 3 4  
+S_CPump_S1         3 4 1 2 CPump_S1
+RS_CPump_S1         1 2 1G
+.MODEL     CPump_S1 VSWITCH Roff=1e6 Ron=1.0 Voff=0.0V Von=0.1V
+.ends Charge_pump_CPump_S1
+
+.subckt Charge_pump_CPump_S2 1 2 3 4  
+S_CPump_S2         3 4 1 2 CPump_S2
+RS_CPump_S2         1 2 1G
+.MODEL      CPump_S2 VSWITCH Roff=1e6 Ron=1.0 Voff=0.0V Von=0.1V
+.ends Charge_pump_CPump_S2
+
+
+.SUBCKT AMETER   VI  VO VIMON
++ PARAMS: GAIN = 1
+VSENSE VI VO DC = 0
+EMETER VIMON 0 VALUE = {I(VSENSE)*GAIN}
+.ENDS
+
+
+
+.SUBCKT CMRR   VI  VO  GNDF PARAMS: CMRR = 130 FCMRR = 1.6K
+.PARAM PI = 3.141592
+.PARAM RCMRR = 1
+.PARAM GCMRR = {PWR(10,-CMRR/20)/RCMRR}
+.PARAM LCMRR = {RCMRR/(2*PI*FCMRR)}
+G1  GNDF 1 VI GNDF {GCMRR}
+R1  1 2 {RCMRR}
+L1  2 GNDF {LCMRR}
+E1  VI VO 1 GNDF 1
+.ENDS
+
+.SUBCKT OUT_CURRENT_CLAMP  IN  OUT  
++PARAMS: RSER = 1 IMAX = 10M  IMIN = 10M
+GRESP  IN OUT VALUE = {LIMIT(V(IN,OUT)/RSER,IMAX,-IMIN)}
+*GRESP  OUTx OUT VALUE = {LIMIT(V(OUTx,OUT)/RSER,IMAX,-IMIN)}
+*GRESN  IN OUTx VALUE = {-V(IN,OUTx)/RSER}
+.ENDS
+
+
+.SUBCKT OUT_CURRENT_CLAMP_EN  IN  OUT  EN 
++PARAMS: RSER = 1 ROFF = 1G   VON = 0.5 IMAX = 10M  IMIN = 10M
+GRES  IN OUT VALUE = {LIMIT(IF(V(EN) >= VON,1,0)*V(IN,OUT)/RSER
++ + IF(V(EN) >= VON,0,1)*V(IN,OUT)/ROFF,IMAX,-IMIN)}
+.ENDS
+
+*$
+.subckt D_ideal A C
+D1 A C DNOM
+.MODEL DNOM D (TT=10P CJO=1e-18 IS=1e-15 RS=1e-3 N=1e-3)
+.ENDS D_ideal
+*
+*$
+
+
+* PSpice Model Editor - Version 16.2.0
+*$
+.SUBCKT GBW_SLEW_SE_EN   VIP  VIM  VO  GNDF  EN
++ PARAMS: AOL = 100  GBW = 1MEG  SRP = 1MEG  SRN = 1MEG IT = 1M  
++ VON = 0.5 RSC = 1M
+.PARAM PI = 3.141592
+.PARAM IP = {IF(SRP <= SRN,IT,IT*(SRP/SRN))}
+.PARAM IN = {IF(SRN <= SRP,-IT,-IT*(SRN/SRP))}
+.PARAM CC = {IF(SRP <= SRN,IT/SRP,IT/SRN)}
+.PARAM FP = {GBW/PWR(10,AOL/20)}
+.PARAM RC = {1/(2*PI*CC*FP)}
+.PARAM GC = {PWR(10,AOL/20)/RC}
+G1          GNDF VO VALUE = {IF(V(EN) >= VON,LIMIT(GC*V(VIP,VIM),IP,IN),0)}
+C1          VO GNDF {CC}
+GR1         VO GNDF VALUE =  {IF(V(EN) >= VON,V(VO,GNDF)/RC,V(VO,GNDF)/RSC)}
+GR11        VO GNDF VALUE =  {V(VO,GNDF)/(RC*1000)}
+.ENDS
+*$
+
+.SUBCKT GND_FLOAT  VDD VSS GNDF 
+EGNDF  GNDF 0 VALUE = {(V(VDD)+V(VSS))*0.5}
+.ENDS
+
+
+
+
+*$
+.SUBCKT IQ_EN  VDD VSS EN 
++ PARAMS: VON = 0.5 IQQ = 1M  IOFF = 1P
+G1 VDD VSS VALUE = {IF(V(EN) >= VON,IQQ,IOFF)}
+.ENDS
+
+
+* PSpice Model Editor - Version 16.2.0
+*$
+.SUBCKT Logic_HL IN OUT VDD VSS PARAMS:  LogicL=0.45 LogicH=1.2
+EVCO OUT 0 VALUE={if ( V(IN) < {LogicL}, V(VSS) , 
++ if (V(IN) > {LogicH}, V(VDD), V(IN) ))}
+.ENDS 
+*$
+
+.SUBCKT PSRR   VDD  VSS  VI  VO  GNDF PARAMS: PSRR = 130 FPSRR = 1.6
+.PARAM PI = 3.141592
+.PARAM RPSRR = 1
+.PARAM GPSRR = {PWR(10,-PSRR/20)/RPSRR}
+.PARAM LPSRR = {RPSRR/(2*PI*FPSRR)}
+G1  GNDF 1 VDD VSS {GPSRR}
+R1  1 2 {RPSRR}
+L1  2 GNDF {LPSRR}
+E1  VO VI 1 GNDF 1
+C2  VDD VSS 10P
+.ENDS
+
+*$
+.subckt rnoiseless a b PARAMS: R=1k
+ERES a 3 VALUE = { I(VSENSE) * R }
+Rdummy 30 3 1
+VSENSE 30 b DC 0V
+.ends
+*$
+
+
+* PSpice Model Editor - Version 16.0.0
+*$
+.SUBCKT Tran_Iout VCC VEE VIMON AGND 
+SW4 NET11 AGND VIMON NET19 Sm1 
+SW1 NET11 AGND VIMON NET10 Sm2 
+R61 VIMON NET11 10 
+R59 NET19 AGND  10e3 
+R58 NET10 AGND  10e3 
+G8  VCC   AGND NET19 AGND 1e-3
+G7  VEE   AGND NET10 AGND 1e-3
+C15 NET11 AGND 10e-12
+.MODEL   Sm1  VSWITCH RON=1e-3 ROFF=1e6 VON=+100e-3 VOFF=-100e-3
+.MODEL   Sm2  VSWITCH RON=1e-3 ROFF=1e6 VON=-100e-3 VOFF=+100e-3
+.ENDS Tran_Iout
+*$
+
+
+*$
+*       Voltage-Controlled Current Source with Limits
+.subckt VCCS_Limit VCP VCN IOUTP IOUTN PARAMS: Gain = 1.0e-3
++ Ipos = 0.100 Ineg = -0.100
+G1 IOUTP IOUTN VALUE={LIMIT(Gain*V(VCP,VCN),Ipos,Ineg)}
+.ends VCCS_Limit
+*$
+
+.SUBCKT VCLAMP   VDD  VSS  VI  VO  GNDF PARAMS: VMAX = 0.1 VMIN = 0.1
+ECLAMP  VO GNDF VALUE = {LIMIT(V(VI,GNDF),V(VDD,GNDF) - VMAX, V(VSS,GNDF) + VMIN)}
+.ENDS
+
+
+.SUBCKT VCLAMP_W_CLAW   VDD  VSS  VI  VO VIMON  GNDF
++ PARAMS: VMAXIO = 0 VMINIO = 0 SLOPE = 0
+EPCLIP  VDD_CLP 0 VALUE = {V(VDD,GNDF) - SLOPE*V(VIMON) - VMAXIO}
+ENCLIP  VSS_CLP 0 VALUE = {V(VSS,GNDF) - SLOPE*V(VIMON) + VMINIO}
+ECLAMP  VO GNDF VALUE = {LIMIT(V(VI,GNDF), V(VDD_CLP), V(VSS_CLP))}
+.ENDS
+
+
+*       Voltage-Controlled Voltage Source with Limits
+.subckt VCVS_Limit VCP VCN VOUTP VOUTN PARAMS: Gain = -1
++ Vpos = 20m Vneg = -20m
+E1 VOUTP VOUTN VALUE={LIMIT(Gain*V(VCP,VCN),Vpos,Vneg)}
+.ends VCVS_Limit
+
+
+
+* PSpice Model Editor - Version 16.0.0
+*$
+.SUBCKT VNSE 1 2 
+**************************
+* BEGIN SETUP OF NOISE GEN - NANOVOLT/RT-HZ
+* INPUT THREE VARIABLES
+* NLF - NV/RHZ AT (1/F) FREQ
+* FLW - FREQ FOR (1/F) VAL
+* NVR - NV/RHZ FLATBAND
+**************************
+* START CALC VALS
+.PARAM NLF=4
+.PARAM FLW=2
+.PARAM NVR=8000
+.PARAM GLF={PWR(FLW,0.25)*NLF/1164}
+.PARAM RNV={1.184*PWR(NVR,2)}
+.MODEL DVN D KF={PWR(FLW,0.5)/1E11} IS=1.0E-16
+* END CALC VALS
+I1 0 7 10E-3
+I2 0 8 10E-3
+D1 7 0 DVN
+D2 8 0 DVN
+E1 3 6 7 8 {GLF}
+R1 3 0 1E9
+R2 3 0 1E9
+R3 3 6 1E9
+E2 6 4 5 0 10
+R4 5 0 {RNV}
+R5 5 0 {RNV}
+R6 3 4 1E9
+R7 4 0 1E9
+E3 1 2 3 4 1
+C1 1 0 1E-15
+C2 2 0 1E-15
+C3 1 2 1E-15
+.ENDS VNSE
+*$
+
+
+
+.SUBCKT ZOUT   VI VO  GNDF
++ PARAMS: FZ1 = 1.4 FZ2 = 4.7E6  FZ3 = 91E6
++ FP1 = 212K FP2 = 3.5K FEQ = 1.4 RO = 5K
+.PARAM GM = 1M
+.PARAM RX = {1/GM}
+.PARAM PI = 3.141592
+
+GRI  GNDF VEQ VALUE = {V(GNDF,VEQ)/10MEG}
+GRF  VIZ  VEQ VALUE = {V(VIZ,VEQ)/10MEG}
+CF  VIZ  VEQ {1/(2*PI*10E6*FEQ)}
+EQ  VIZ GNDF VI VEQ 100K
+
+E0  VP0 GNDF VIZ VO 1N
+
+GZ1  GNDF VZ1 VP0 GNDF {GM}
+GRZ1  VZ1 VX1 VALUE =  {V(VZ1,VX1)/RX}
+LZ1  VX1 GNDF {RX/(2*PI*FZ1)}
+
+EP1  VP1 GNDF VZ1 GNDF 1
+GRP1  VP1 VP1X VALUE =  {V(VP1,VP1X)/RX}
+CP1  VP1X GNDF {1/(2*PI*RX*FP1)}
+
+GZ2  GNDF VZ2 VP1X GNDF {GM}
+GRZ2  VZ2 VX2 VALUE =  {V(VZ2,VX2)/RX}
+LZ2  VX2 GNDF {RX/(2*PI*FZ2)}
+
+EP2  VP2 GNDF  VZ2 GNDF 1
+GRP2  VP2 VP2X VALUE =  {V(VP2,VP2X)/RX}
+CP2  VP2X GNDF {1/(2*PI*RX*FP2)}
+
+GZ3  GNDF VZ3 VP2X GNDF {GM}
+GRZ3  VZ3 VX3 VALUE =  {V(VZ3,VX3)/RX}
+LZ3  VX3 GNDF {RX/(2*PI*FZ3)}
+
+E1   VOX GNDF VZ3 GNDF 1G
+
+GR1   VOX VO VALUE = {V(VOX,VO)/RO}
+
+.ENDS
+
+
+* PSpice Model Editor - Version 16.2.0
+
+*$
+* 
+.SUBCKT FEMT 1 2 
+**************************
+* BEGIN SETUP OF NOISE GEN - FEMPTOAMPS/RT-HZ
+* INPUT THREE VARIABLES
+* NLFF - SET UP INSE 1/F
+* FLWF - FA/RHZ AT 1/F FREQ
+* NVRF - FA/RHZ FLATBAND
+**************************
+* START CALC VALS
+.PARAM NLFF=800 
+.PARAM FLWF=2 
+.PARAM NVRF=200
+.PARAM GLFF={PWR(FLWF,0.25)*NLFF/1164}
+.PARAM RNVF={1.184*PWR(NVRF,2)}
+.MODEL DVNF D KF={PWR(FLWF,0.5)/1E11} IS=1.0E-16
+* END CALC VALS
+I1 0 7 10E-3
+I2 0 8 10E-3
+D1 7 0 DVNF
+D2 8 0 DVNF
+E1 3 6 7 8 {GLFF}
+R1 3 0 1E9
+R2 3 0 1E9
+R3 3 6 1E9
+E2 6 4 5 0 10
+R4 5 0 {RNVF}
+R5 5 0 {RNVF}
+R6 3 4 1E9
+R7 4 0 1E9
+G1 1 2 3 4 1E-6
+C1 1 0 1E-15
+C2 2 0 1E-15
+C3 1 2 1E-15
+.ENDS FEMT
+*$
+
+.SUBCKT CMR   VDD  VSS  VIP  VIM  VOP VOM  GNDF 
++ PARAMS: VMAX = 0 VMIN = 0
+ECLAMPP  VOP GNDF VALUE = {LIMIT(V(VIP,GNDF),V(VDD,GNDF) - VMAX, V(VSS,GNDF) + VMIN)}
+ECLAMPM  VOM GNDF VALUE = {LIMIT(V(VIM,GNDF),V(VDD,GNDF) - VMAX, V(VSS,GNDF) + VMIN)}
+.ENDS
+
+.SUBCKT AND2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS AND2_BASIC_GEN
+
+.SUBCKT INV_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS INV_BASIC_GEN

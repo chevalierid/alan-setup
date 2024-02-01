@@ -1,0 +1,76 @@
+*$
+* LM3691
+*****************************************************************************
+* (C) Copyright 2015 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: LM3691
+* Date: 26FEB2016
+* Model Type: AVERAGE
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: AN-1772 LM3691
+* EVM User's Guide: SNVA312B-May 2008-Revised April 2013
+* Datasheet: SNVS506I -MAY 2008-REVISED MAY 2013
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+* Model Usage Notes:
+*
+* 1. The following features have been modelled
+*      a. This model is common for all fixed voltage versions (0.75V, 1V, 1.2V, 1.5V, 1.8V, 2.5V, 3.3V) 
+*         of LM3691 family of devices by passing parameter 'VOUT'. For Example:'VOUT=0.75' for LM3691-0.75.
+*      b. Error Amplifier gain and phase are modelled.
+*
+* 2. The following features have have not been modelled
+*      a. EN and MODE pins are not modelled since this is an average model used for AC analysis, 
+*         only the pins affecting AC analysis are modelled.
+*      b. Operating Current, Shut-down Current and Temperature effects are not modelled. 
+*
+*****************************************************************************
+.SUBCKT LM3691_AVG VIN EN SW GND MODE FB PARAMS: VOUT=1.5
+R_R1         FB_INT FB  172k TC=0,0 
+C_C2         GND FB_INT  700f  TC=0,0 
+E_E1         CX GND VALUE { V(D, GND)*V(VIN) }
+R_R2         GND FB_INT  172k TC=0,0 
+R_R4         GND MODE  1E6 TC=0,0 
+V_V1         CX C 0Vdc
+C_C1         FB_INT FB  1p  TC=0,0 
+R_U1_R3         U1_N00748 U1_N01062  300 TC=0,0 
+V_U1_V2         U1_VREF 0 {VOUT/2}
+R_U1_R4         U1_N01846 0  70E6 TC=0,0 
+C_U1_C4         0 U1_N01846  32p  TC=0,0 
+G_U1_ABMII1         U1_N01846 0 VALUE { V(U1_N00748)*30u    }
+G_U1_ABMII2         U1_N02226 0 VALUE { V(U1_N00748)*3m    }
+E_U1_ABM1         U1_N01062 0 VALUE { ( V(FB_INT)-  
++ V(U1_VREF) )    }
+C_U1_CFF         U1_N02226 EA_OUT  4p  TC=0,0 
+R_U1_R6         U1_N02226 0  8k TC=0,0 
+R_U1_R5         EA_OUT U1_N01846  33k TC=0,0 
+C_U1_C3         0 U1_N00748  100p  TC=0,0 
+G_ABMII3         VIN CX VALUE { V(D)*I(V_V1)    }
+R_R5         EN VIN  1E9 TC=0,0 
+E_ABM2         D 0 VALUE { {IF(((VOUT==0.75) | (VOUT==1.0) | (VOUT==1.2) |
++  (VOUT==1.5) | (VOUT==1.8) | (VOUT==2.5) | (VOUT==3.3)) ,
++  (V(EA_OUT)-1.5)/(V(VIN)*0.18-0.1), 0)}    }
+R_R3         MODE VIN  1E9 TC=0,0 
+R_R6         GND EN  1E6 TC=0,0 
+R_R7         SW C  150m TC=0,0 
+.ENDS LM3691_AVG
+*$

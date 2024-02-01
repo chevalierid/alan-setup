@@ -1,0 +1,8 @@
+STATUS: PSpice Schematics to Capture translator (17.4.0.d001)
+STATUS:  
+STATUS: Translator started at Tuesday, August 30, 2022 21:57:55
+STATUS: C:\Cadence\SPB_17.4\tools\bin\sch2cap -f "C:\Workspace\Bryce_Xun\Simulation\PSpice\Bryce\TPS55289\Unencrypted\Lib_File\Encrypted\TPS55289.LIB" -o "C:\Workspace\Bryce_Xun\Simulation\PSpice\Bryce\TPS55289\Unencrypted\Lib_File\Encrypted\TPS55289.olb" -i C:\Users\a0497752\AppData\Roaming\SPB_Data\.\cdssetup\OrCAD_PSpice/17.4.0/PSpice.ini
+INFO(ORSCH-1029): Using existing library 'C:\Cadence\SPB_17.4\tools\Capture\Library\PSpice\modeled.etc'.
+INFO(ORSCH-1031): Created new library 'C:\Workspace\Bryce_Xun\Simulation\PSpice\Bryce\TPS55289\Unencrypted\Lib_File\Encrypted\TPS55289.olb'.
+STATUS: Translator stopped at Tuesday, August 30, 2022 21:57:55
+STATUS: 0 Error messages, 0 Warning messages

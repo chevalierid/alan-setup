@@ -1,0 +1,158 @@
+*LMV761
+*****************************************************************************
+* (C) Copyright 2012 Texas Instruments Incorporated. All rights reserved.    
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: LMV761
+* Date: 16FEB2012
+* Model Type: ALL IN ONE
+* Simulator:        PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: N/A
+* EVM Users Guide: N/A
+* Datasheet:  SNOS998E – DECEMBER 15, 2010
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 : 
+* Release to Web
+*
+*****************************************************************************
+* THIS COMPARATOR MODEL FEATURES :
+* LOW AND HIGH LEVEL OUTPUT VOLTAGE, QUIESCENT CURRENT VARIATION WITH POWER-SUPPLY, 
+* INPUT COMMON MODE RANGE, INPUT OFFSET VOLTAGE, PROPAGATION, DELAY TIME 
+* CHARACTERISTICS FOR OVERDRIVE VOLTAGE EQUAL TO 100mV,  RISING AND FALLING TIME 
+* 
+* NOTE: THE SHORT-CIRCUIT SOURCING AND SINKING CURRENT LIMITS HAVE SOME CONVERGENCE
+* PROBLEMS. 
+*****************************************************************************
+
+.SUBCKT LMV761 INP INN VCC VEE OUT
+X_IV2        N5   VDD   FGND N6 INV_TANH PARAMS: VTH=0.5
+R_Rinn       INN  INN1  1  
+E_Ecmrr2     NT2  INN   INP  INN 0.5
+X_UVCLP      VCC  FGND  N8   N9 VIMON FGND VCLAMP_W_SENSE PARAMS: VMAXIO=0.1
++  VMINIO=0.1 SLOPE=0
+X_UCDT       N6A  CDT   DELAY_LINE
+X_Upsrr      NT3  FGND  INN1 INN2 VCVS_LIMIT PARAMS: GAIN=-1 VPOS=20M
++  VNEG=-20M
+X_U4         N4   INN3  Ddefault 
+X_U8         N10  OUT   VIMON FGND AMETER PARAMS: GAIN=1
+C_Cinp       FGND INP1  200f   
+R_Rcdt       FGND CDT   75  
+V_Vi3        VDD  0     1Vdc
+C_Cinn       FGND INN1  200f   
+R_Ra         NT2  NT1   1  
+X_IV3        CDT  VCC   FGND N7 INV_TANH PARAMS: VTH=0.5
+X_U2         INN3 N3    Ddefault 
+V_Vi1        VCC  N3    1.89Vdc
+X_IV4        N7   VCC   FGND N8 INV_TANH PARAMS: VTH=0.5
+C_C1         FGND N6A   1n   
+X_UIQ        VCC  VEE   VCC_BUF VEE_BUF VCCS_IQ
+V_Vi2        N4   VEE   0.4Vdc
+R_R1         N6   N6A   14  
+X_Ug2        AV1  FGND  FGND AV2 VCCS_LIMIT PARAMS: GAIN=1e-3 IPOS=100m
++  INEG=-100m
+X_UICL       N9   N10   CURLIM PARAMS: RX=1e-3 IMAX=25M IMIN=-18M
+V_Vos        INP1 INP_CMRR 221uVdc
+R_Rpsr       NT3  N1    1  
+V_Vgnd       FGND 0     0uVdc
+R_Rgain2     FGND AV2   1G  
+L_Lpsr       N1   FGND  2uH  
+X_U3         N4   INP_CMRR Ddefault 
+I_IIB+       VCC  INP_CMRR DC 1.3pAdc  
+I_IIB+1      INN1 VEE   DC 1.3pAdc  
+E_E1         VCC_BUF   FGND VCC FGND 1
+G_G2         FGND NT3   VCC  VEE 3.2u
+X_IV1        AV2  VDD   FGND N5  INV_TANH PARAMS: VTH=0.5
+X_U1         INP_CMRR   N3   Ddefault 
+E_Ecmrr1     INN2 INN3  NT1  FGND 10u
+R_Rinp       INP  INP1  1  
+E_E2         VEE_BUF    FGND VEE  FGND 1
+X_Ug1        INP_CMRR   INN3 FGND AV1 VCCS_LIMIT PARAMS: GAIN=10 IPOS=0.5
++  INEG=-0.5
+R_Rgain1     FGND AV1   1e8  
+.ENDS LMV761
+*$
+*
+.subckt Ddefault A C
+D1 A C DNOM
+.MODEL DNOM D IS=8.000E-16   RS=1e-3  BV=16
+.ENDS Ddefault
+*$
+*
+.subckt VCVS_Limit VCP VCN VOUTP VOUTN PARAMS: Gain = -1
++ Vpos = 20m Vneg = -20m
+E1 VOUTP VOUTN VALUE={LIMIT(Gain*V(VCP,VCN),Vpos,Vneg)}
+.ends VCVS_Limit
+*$
+*
+.subckt VCCS_Limit VCP VCN IOUTP IOUTN PARAMS: Gain = 1.0e-3
++ Ipos = 0.100 Ineg = -0.100
+G1 IOUTP IOUTN VALUE={LIMIT(Gain*V(VCP,VCN),Ipos,Ineg)}
+.ends VCCS_Limit
+*$
+*
+.SUBCKT VCCS_IQ  VCP VCN IOUTP IOUTN              
+.PARAM GAIN = 0.5
+* SLOPE IN UA/V
+.PARAM SLOPE_IQVSVS = -21.7
+.PARAM VSK = 1
+.PARAM IQK = 275
+.PARAM C = {IQK}
+.PARAM SLOPE_IQVST = 0.2857
+E1 1   2   VALUE={SLOPE_IQVSVS*(V(VCP,VCN)-2.7) + C}
+E2 2   3   VALUE={SLOPE_IQVST*(TEMP-27)}
+R  3   0   1G
+G1 VCP VCN 1 3 1E-6
+.ENDS VCCS_IQ
+*
+.SUBCKT INV_TANH  IN VDD VEE Y PARAMS:  VTH=0.5 
+E_ABM Y 0 VALUE = {((V(VDD)+V(VEE))/2)-((V(VDD)-V(VEE))/2)*TANH(10E12*(V(IN)-VTH))}
+.ENDS INV_TANH
+*$
+*
+.SUBCKT DELAY_LINE VI VO 
+E1 VIX 0 VI  0 1 
+T1 VIX 0 VOX 0 Z0 = 75 TD = 120NS
+RL VOX 0 75
+E2 VO  0 VOX 0 1
+.ENDS DELAY_LINE
+*$
+*
+.SUBCKT VCLAMP_W_SENSE   VCC  VEE  VI  VO VIMON  GNDF
++ PARAMS: VMAXIO = 0.1 VMINIO = 0.1 SLOPE = 20
+EPCLIP  VCC_CLP 0 VALUE = {V(VCC,GNDF) - SLOPE*V(VIMON,GNDF) - VMAXIO}
+ENCLIP  VEE_CLP 0 VALUE = {V(VEE,GNDF) - SLOPE*V(VIMON,GNDF) + VMINIO}
+ECLAMP  VO GNDF VALUE = {LIMIT(V(VI,GNDF), V(VCC_CLP), V(VEE_CLP))}
+.ENDS VCLAMP_W_SENSE
+*$
+*
+.SUBCKT CURLIM  P  N  PARAMS: Rx = 1K  IMAX = 10M  IMIN = -10M
+GRES  P N VALUE = {LIMIT(V(P,N)/Rx, IMAX, IMIN)}
+.ENDS CURLIM
+*$
+*
+.SUBCKT AMETER   VI  VO VIMON GNDF
++ PARAMS: GAIN = 1
+VSENSE VI    VO   DC = 0
+EMETER VIMON GNDF VALUE = {I(VSENSE)*GAIN}
+.ENDS AMETER
+*$

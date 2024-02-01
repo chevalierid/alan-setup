@@ -1,0 +1,568 @@
+*$
+* TPS61163
+*****************************************************************************
+* (C) Copyright 2013 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: TPS61163
+* Date: 24JAN2014
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number:N/A
+* EVM Users Guide: N/A
+* Datasheet: SLVSBQ2C –JANUARY 2013–REVISED AUGUST 2013
+*
+* Model Version: Final 1.01
+*
+*****************************************************************************
+* Updates:
+*
+* Final 1.01
+* Release to Web.
+* PARAMS ADDED TO SUBCKT TPS61163_TRANS model changed
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+.SUBCKT TPS61163_TRANS COMP EN GND IFB1 IFB2 ISET PWM SW VIN  PARAMS: Code=511 EasyScale=1
+E_U5_ABM4         U5_N14620735 0 VALUE { IF(V(EN) >1.2 ,1,0)    }
+E_U5_ABM24         U5_N16775832 0 VALUE { IF( {EasyScale} >0.5,
++  V(U5_N16775774),IF( V(U5_DUTY)<0.125,  
++ V(U5_DUTY)*8*V(U5_N16775774),IF( V(U5_DUTY)<0.25,
++  V(U5_DUTY)*4*V(U5_N16775774),  
++ IF( V(U5_DUTY)<0.5,
++  V(U5_DUTY)*2*V(U5_N16775774),V(U5_DUTY)*V(U5_N16775774)))))  }
+X_U5_U7         U5_N14620735 U5_N14620596 d_d1 PARAMS:
+X_U5_U8         U5_N14621349 U5_N14621143 d_d1 PARAMS:
+X_U5_U9         U5_N14620596 U5_N14621143 U5_UVLO ENABLE AND3_BASIC_GEN PARAMS:
++  VDD=1 VSS=0 VTHRESH=500E-3
+C_U5_C3         0 U5_N14621143  1u  TC=0,0 
+V_U5_V1         U5_N14622570 0 2.3
+E_U5_ABM25         U5_N16775826 0 VALUE ={ IF( {EasyScale} >0.5, V(IFB_FULL)*
++ {CODE}/511, IF( V(U5_DUTY)<0.125, 0.125*V(IFB_FULL),IF( V(U5_DUTY)<0.25,
++  0.25*V(IFB_FULL),IF( V(U5_DUTY)<0.5, 0.5*V(IFB_FULL),V(IFB_FULL)))))  }
+L_U5_L1         U5_N14620338 U5_DUTY  100uH  
+R_U5_R2         U5_N14621349 U5_N14621143  28.86k  
+R_U5_R21         U5_N16775826 U5_N16775882  1  
+V_U5_V2         U5_N146228453 0 100m
+C_U5_C2         0 U5_N14620596  1u  TC=0,0 
+R_U5_R3         U5_N14623220 U5_UVLO  1  
+C_U5_C1         0 U5_DUTY  100u  TC=0,0 
+X_U5_U5         PWM U5_N14619715 INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+C_U5_C20         0 U5_N16775882  1n  TC=0,0 
+X_U5_U6         U5_N14619715 U5_N14620338 INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+X_U5_U10         VIN U5_N14622570 U5_N146228453 U5_N14623220 COMPHYS_BASIC_GEN
++  PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+R_U5_R1         U5_N14620735 U5_N14620596  3.6k  
+E_U5_ABM22         N16835062 0 VALUE { LIMIT(V(U5_N16775882),30m,0)     }
+E_U5_ABM5         U5_N14621349 0 VALUE { IF(V(PWM) >1.2 ,1,0)    }
+E_U5_ABM23         U5_N16775774 0 VALUE { IF(V(ENABLE) >0.5,1.229,0)     }
+C_U5_C4         0 U5_UVLO  1n  TC=0,0 
+X_U5_H3    U5_N16775832 ISET IFB_FULL 0 Control_En_Duty_U5_H3 
+X_S1    N16831906 0 SW N16831833 TPS61163_TRANS_S1 
+X_U8         SW N16832422 N16832448 COMP_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+V_V5         N168321583 0 3
+X_H1    N16831833 GND N16831909 GND TPS61163_TRANS_H1 
+V_V2         N16832422 0 37.5
+E_ABM1         IFB12 0 VALUE { IF( V(IFB1) > V(IFB2), V(IFB2),V(IFB1))    }
+E_ABM9         N16832201 0 VALUE { IF( V(DIS_IFB2_SINK) > 0.5,0, V(IFB2))    }
+R_R3         N16831465 N16831485  28.86k  
+X_U9         N16831814 N16831467 N16831731 IFB2_ENABLE srlatchshp_basic_gen
++  PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+X_U23         DIS_IFB1_SINK LATCH_OFF START_UP N16831806 OR3_BASIC_GEN PARAMS:
++  VDD=1 VSS=0 VTHRESH=500E-3
+V_V6         N16832184 0 4.5
+X_U10         N16832448 N16832477 d_d1 PARAMS:
+X_U27         N16831485 N16859460 N16854684 AND2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+C_C4         0 ENABLE_NOT  1n  TC=0,0 
+E_ABM10         IFBX 0 VALUE { LIMIT(V(N16831782)*10, 4,0)    }
+C_C3         0 N16831485  1n  TC=0,0 
+R_R1         N16832448 N16832477  1298.7  
+X_U24         DIS_IFB2_SINK LATCH_OFF START_UP N16831785 OR3_BASIC_GEN PARAMS:
++  VDD=1 VSS=0 VTHRESH=500E-3
+V_V1         CLK 0  
++PULSE 0 1 0 1n 1n 20n 833.333n
+R_R5         N16832268 N16832116  28.86k  
+X_U15         N16831485 N16831465 d_d1 PARAMS:
+E_ABM3         N16831467 0 VALUE { IF(V(IFB2) >0.2,1,0)    }
+C_C1         0 N16832477  1n  TC=0,0 
+X_U48         ENABLE 60UA_SOURCE one_shot PARAMS:  T=4000  
+E_ABM4         N16831782 0 VALUE { IF( V(IFB1_ENABLE) >0.5 & V(IFB2_ENABLE)
++  >0.5, V(IFB12),IF( V(IFB1_ENABLE) >0.5, V(IFB1),IF( V(IFB2_ENABLE) >0.5,
++  V(IFB2),1)))    }
+X_U6         ENABLE ENABLE_NOT INV_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=500E-3
+X_U26         N16832116 N16832268 d_d1 PARAMS:
+X_U22         N16831485 LATCH_OFF N16832116 DIS_BOOST OR3_BASIC_GEN PARAMS:
++  VDD=1 VSS=0 VTHRESH=500E-3
+V_V3         N16831678 0 4.5
+X_U45         N16854684 ENABLE_NOT DIS_IFB2_SINK N16854667 srlatchrhp_basic_gen
++  PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+X_U16         IFB1_ENABLE IFB2_ENABLE 2STRING_EN AND2_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=500E-3
+X_U53         ENABLE_NOT DIS_IFB1_SINK N16831788 OR2_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=500E-3
+R_R2         N16832507 N16832531  19.24k  
+X_U17         2STRING_EN 2string_EN_B INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+C_C2         0 N16832531  1n  TC=0,0 
+X_U54         ENABLE_NOT DIS_IFB2_SINK N16831814 OR2_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=500E-3
+X_U2         N16831833 SW d_d1 PARAMS:
+X_U50         DIS_BOOST START_UP N16832347 OR2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+E_ABM6         N16832732 0 VALUE { IF( V(DIS_IFB1_SINK) > 0.5,0, V(IFB1))    }
+X_U11         N16832531 N16832507 d_d1 PARAMS:
+E_ABM2         N16831691 0 VALUE { IF(V(IFB1) >0.2,1,0)    }
+C_C6         0 N16832116  1n  TC=0,0 
+G_G1         0 IFB2 60UA_SOURCE 0 60u
+R_R4         N16836266 CREF  1k  
+X_U46         N16832347 N16831695 INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+X_U49         ENABLE_NOT 60UA_SOURCE START_UP OR2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+X_U12         CLK N16832477 N16832509 N16832507 srlatchrhp_basic_gen PARAMS:
++  VDD=1 VSS=0 VTHRESH=0.5
+C_C5         0 CREF  1n  TC=0,0 
+X_U14         N16832732 N16831678 N168316333 N16831465 COMPHYS_BASIC_GEN
++  PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+E_ABM5         SW_OVP 0 VALUE { IF(V(N16832531) > 0.5,1,0)    }
+E_ABM11         N16836266 0 VALUE { IF( V(START_UP) >0.5, 0,V(N16835062))    }
+X_U47         N16859828 ENABLE_NOT DIS_IFB1_SINK N16859826 srlatchrhp_basic_gen
++  PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+G_G2         0 IFB1 60UA_SOURCE 0 60u
+X_U13         ENABLE_NOT SW_OVP N16832634 LATCH_OFF srlatchrhp_basic_gen
++  PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+X_U7         N16831788 N16831691 N16831683 IFB1_ENABLE srlatchshp_basic_gen
++  PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+X_U1_S1    CLK 0 U1_N14692918 0 Boost_U1_S1 
+X_U1_U76         U1_1_D U1_N16767145 U1_N16767201 U1_DUTYG500M
++  COMPHYS_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+X_U1_U35         U1_N14693042 U1_N14693790 N14693508 U1_N14692872
++  srlatchshp_basic_gen PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+V_U1_V6         U1_N16767145 0 0.5
+X_U1_U45         U1_N14694090 U1_N14694090 U1_N14693010 OR2_BASIC_GEN PARAMS:
++  VDD=1 VSS=0 VTHRESH=500E-3
+R_U1_R1         U1_N14692872 U1_N14692982  1  
+X_U1_U48         U1_N14693210 U1_N14693452 d_d1 PARAMS:
+L_U1_L1         U1_N14693538 U1_N14693638  10uH  
+C_U1_C1         0 U1_N14692982  1n  TC=0,0 
+X_U1_U55         U1_N14692982 N16831695 N16831906 AND2_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=500E-3
+V_U1_Vref         U1_N14693120 0 0.9
+X_U1_U49         0 U1_N14693210 d_d1 PARAMS:
+V_U1_V7         U1_N16767201 0 0.01
+C_U1_C3         0 U1_N14693638  50u  TC=0,0 
+R_U1_R4         U1_N14693210 COMP  1k  
+E_U1_ABM3         U1_N14692978 0 VALUE { IF(V(U1_N14693174) >0.5,75m, 35m)    }
+X_U1_U50         U1_N14692918 U1_N14693884 d_d1 PARAMS:
+E_U1_ABM2         U1_1_D 0 VALUE { LIMIT(V(U1_N14693638),0.1,0.9)     }
+G_U1_ABM3I1         0 U1_N14693210 VALUE { IF( V(N16831695) > 0.5,
++  LIMIT((V(U1_N14693120) - V(IFBX))*55u,1000m,-1000m),0)    }
+V_U1_V1         U1_N14693452 0 1.5
+R_U1_R16         0 U1_DUTYG500M  1k  
+V_U1_V2         U1_N14693884 0 1.5
+X_U1_U52         N16831909 U1_N14692978 U1_CURR_LIM COMP_BASIC_GEN PARAMS:
++  VDD=1 VSS=0 VTHRESH=0.5
+X_U1_U51         N16831906 U1_N14693538 INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+I_U1_I1         0 U1_N14692918 DC 50u  
+E_U1_ABM1         U1_RAMP 0 VALUE { LIMIT(
++  V(U1_N14692918)*(1+1/V(U1_1_D))+V(N16831909),3,0)    }
+C_U1_C2         0 U1_N14692918  1n  TC=0,0 
+R_U1_R2         N16831695 U1_N14693174  1k  
+R_U1_R3         U1_N14693210 0  45.5meg  
+C_U1_C4         0 U1_N14693174  7.12u  TC=0,0 
+X_U1_U46         CLK N16831695 U1_N14693790 AND2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+X_U1_U53         U1_N14693010 U1_CURR_LIM U1_N14693042 OR2_BASIC_GEN PARAMS:
++  VDD=1 VSS=0 VTHRESH=500E-3
+X_U1_U36         U1_RAMP U1_N14693210 U1_N14694090 COMP_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=0.5
+X_U1_U54         U1_N14693174 N16831695 d_d1 PARAMS:
+X_U28         N16832116 N16859882 N16859828 AND2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+V_V4         N168316333 0 3
+V_U3_V4         IFB1 U3_N167634190 55m
+V_U3_V2         U3_N14617434 0 2.7
+C_U3_C1         U3_N14610993 IFB1  10f  TC=0,0 
+V_U3_V3         U3_N16764412 0 7
+G_U3_G1         U3_N14610955 GND CREF U3_N14610993 -1
+R_U3_R3         U3_N14610993 IFB1  10meg  
+X_U3_U4         IFB1 U3_N16764412 d_d1 PARAMS:
+R_U3_R1         GND U3_N14610993  1  
+R_U3_R2         GND U3_N14610955  100k  
+X_U3_S3    N16831806 GND U3_N14610955 GND CurrentSink_U3_S3 
+C_U3_C2         GND U3_N14610955  10p  TC=0,0 
+X_U3_U3         U3_N14610993 U3_N167634190 d_d1 PARAMS:
+X_U3_U2         U3_N14610955 U3_N14617434 d_d1 PARAMS:
+I_U3_I1         IFB1 U3_N14610993 DC 10u  
+M_U3_M1         IFB1 U3_N14610955 U3_N14610993 U3_N14610993 NMOS01           
+V_U4_V4         IFB2 U4_N167634190 55m
+V_U4_V2         U4_N14617434 0 2.7
+C_U4_C1         U4_N14610993 IFB2  10f  TC=0,0 
+V_U4_V3         U4_N16764412 0 7
+G_U4_G1         U4_N14610955 GND CREF U4_N14610993 -1
+R_U4_R3         U4_N14610993 IFB2  10meg  
+X_U4_U4         IFB2 U4_N16764412 d_d1 PARAMS:
+R_U4_R1         GND U4_N14610993  1  
+R_U4_R2         GND U4_N14610955  100k  
+X_U4_S3    N16831785 GND U4_N14610955 GND CurrentSink_U4_S3 
+C_U4_C2         GND U4_N14610955  10p  TC=0,0 
+X_U4_U3         U4_N14610993 U4_N167634190 d_d1 PARAMS:
+X_U4_U2         U4_N14610955 U4_N14617434 d_d1 PARAMS:
+I_U4_I1         IFB2 U4_N14610993 DC 10u  
+M_U4_M1         IFB2 U4_N14610955 U4_N14610993 U4_N14610993 NMOS01           
+X_U25         N16832201 N16832184 N168321583 N16832268 COMPHYS_BASIC_GEN
++  PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+E_ABM12         N16859460 0 VALUE { IF(V(IFB2) < 0.5 ,1,0)    }
+E_ABM13         N16859882 0 VALUE { IF(V(IFB1) < 0.5 ,1,0)    }
+.ENDS TPS61163_TRANS
+*$
+.subckt Control_En_Duty_U5_H3 1 2 3 4  
+H_U5_H3         3 4 VH_U5_H3 1030
+VH_U5_H3         1 2 0V
+.ends Control_En_Duty_U5_H3
+*$
+.subckt TPS61163_TRANS_S1 1 2 3 4  
+S_S1         3 4 1 2 _S1
+RS_S1         1 2 1G
+.MODEL         _S1 VSWITCH Roff=1e6 Ron=250m Voff=0.2 Von=0.5
+.ends TPS61163_TRANS_S1
+*$
+.subckt TPS61163_TRANS_H1 1 2 3 4  
+H_H1         3 4 VH_H1 50m
+VH_H1         1 2 0V
+.ends TPS61163_TRANS_H1
+*$
+.subckt Boost_U1_S1 1 2 3 4  
+S_U1_S1         3 4 1 2 _U1_S1
+RS_U1_S1         1 2 1G
+.MODEL         _U1_S1 VSWITCH Roff=1e6 Ron=10m Voff=0.0V Von=1.0V
+.ends Boost_U1_S1
+*$
+.subckt CurrentSink_U3_S3 1 2 3 4  
+S_U3_S3         3 4 1 2 _U3_S3
+RS_U3_S3         1 2 1G
+.MODEL         _U3_S3 VSWITCH Roff=1e9 Ron=10m Voff=0.2 Von=0.8
+.ends CurrentSink_U3_S3
+*$
+.subckt CurrentSink_U4_S3 1 2 3 4  
+S_U4_S3         3 4 1 2 _U4_S3
+RS_U4_S3         1 2 1G
+.MODEL         _U4_S3 VSWITCH Roff=1e9 Ron=10m Voff=0.2 Von=0.8
+.ends CurrentSink_U4_S3
+*$
+.subckt d_d1 1 2
+d1 1 2 dd1
+.model dd1 d
++ is=1e-015
++ tt=1e-011
++ rs=0.05
++ n=0.1
+.ends d_d1
+*$
+.subckt srlatchshp_basic_gen s r q qb params: vdd=1 vss=0 vthresh=0.5 
+gq 0 qint value = {if(v(s) > {vthresh},5,if(v(r)>{vthresh},-5, 0))}
+cqint qint 0 1n
+rqint qint 0 1000meg
+d_d10 qint my5 d_d1
+v1 my5 0 {vdd}
+d_d11 myvss qint d_d1
+v2 myvss 0 {vss} 
+eq qqq 0 qint 0 1
+x3 qqq qqqd1 buf_basic_gen params: vdd={vdd} vss={vss} vthresh={vthresh}
+rqq qqqd1 q 1
+eqb qbr 0 value = {if( v(q) > {vthresh}, {vss},{vdd})}
+rqb qbr qb 1 
+cdummy1 q 0 1n 
+cdummy2 qb 0 1n 
+.ic v(qint) {vss}
+.model d_d1 d
++ is=1e-015
++ tt=1e-011
++ rs=0.05
++ n=0.1
+.ends srlatchshp_basic_gen
+*$
+.subckt one_shot in out
++ params:  t=100
+s_s1         meas 0 reset2 0 s1
+e_abm1         ch 0 value { if( v(in)>0.5 | v(out)>0.5,1,0)    }
+r_r2         reset2 reset  0.1  
+e_abm3         out 0 value { if( v(meas)<0.5 & v(ch)>0.5,1,0)    }
+r_r1         meas ch  {t} 
+c_c2         0 reset2  1.4427n  
+c_c1         0 meas  1.4427n  
+e_abm2         reset 0 value { if(v(ch)<0.5,1,0)    }
+.model s1 vswitch
++ roff=1e+009
++ ron=1
++ voff=0.25
++ von=0.75
+.ends one_shot
+*$
+.subckt srlatchrhp_basic_gen s r q qb params: vdd=1 vss=0 vthresh=0.5 
+gq 0 qint value = {if(v(r) > {vthresh},-5,if(v(s)>{vthresh},5, 0))}
+cqint qint 0 1n
+rqint qint 0 1000meg
+d_d10 qint my5 d_d1
+v1 my5 0 {vdd}
+d_d11 myvss qint d_d1
+v2 myvss 0 {vss} 
+eq qqq 0 qint 0 1
+x3 qqq qqqd1 buf_basic_gen params: vdd={vdd} vss={vss} vthresh={vthresh}
+rqq qqqd1 q 1
+eqb qbr 0 value = {if( v(q) > {vthresh}, {vss},{vdd})}
+rqb qbr qb 1 
+cdummy1 q 0 1n 
+cdummy2 qb 0 1n
+.ic v(qint) {vss}
+.model d_d1 d
++ is=1e-015
++ tt=1e-011
++ rs=0.05
++ n=0.1
+.ends srlatchrhp_basic_gen
+*$
+.model NMOS01 nmos
++ vto=0.5
++ kp =7.5
++ lambda=0
+*$
+.SUBCKT D_DLED 1 2
+D1 1 2 wled
+.model wled d 
++is=26.745E-18  
++n=3.8257
++rs=11.848    
++eg=2.6000    
++m=0.26598       
++vj=1.7784      
++bv=5.5360           
++ibv=10        
++tt=5.0000E-9
+.ENDS D_DLED
+*$
+.SUBCKT CESR IN OUT
++ PARAMs:  C=100u ESR=0.01 X=2 IC=0
+C	IN 1  {C*X} IC={IC}
+RESR	1 OUT {ESR/X}
+.ENDS CESR
+*$
+.SUBCKT LDCR IN OUT
++ PARAMs:  L=1u DCR=0.01 IC=0
+L	IN 1  {L} IC={IC}
+RDCR	1 OUT {DCR}
+.ENDS LDCR
+*$
+.SUBCKT AND2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS AND2_BASIC_GEN
+*$
+.SUBCKT AND3_BASIC_GEN A B C Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH} &
++ V(C) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS AND3_BASIC_GEN
+*$
+.SUBCKT AND4_BASIC_GEN A B C D Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH} &
++ V(C) > {VTHRESH} &
++ V(D) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS AND4_BASIC_GEN
+*$
+.SUBCKT NAND2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH},{VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS NAND2_BASIC_GEN
+*$
+.SUBCKT NAND3_BASIC_GEN A B C Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH} &
++ V(C) > {VTHRESH},{VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS NAND3_BASIC_GEN
+*$
+.SUBCKT NAND4_BASIC_GEN A B C D Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH} &
++ V(C) > {VTHRESH} &
++ V(D) > {VTHRESH},{VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS NAND4_BASIC_GEN
+*$
+.SUBCKT OR2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  |  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS OR2_BASIC_GEN
+*$
+.SUBCKT OR3_BASIC_GEN A B C Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  |  
++ V(B) > {VTHRESH} |
++ V(C) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS OR3_BASIC_GEN
+*$
+.SUBCKT OR4_BASIC_GEN A B C D Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  |  
++ V(B) > {VTHRESH} |
++ V(C) > {VTHRESH} |
++ V(D) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS OR4_BASIC_GEN
+*$
+.SUBCKT NOR2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  |  
++ V(B) > {VTHRESH},{VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS NOR2_BASIC_GEN
+*$
+.SUBCKT NOR3_BASIC_GEN A B C Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  |  
++ V(B) > {VTHRESH} |
++ V(C) > {VTHRESH},{VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS NOR3_BASIC_GEN
+*$
+.SUBCKT NOR4_BASIC_GEN A B C D Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  |  
++ V(B) > {VTHRESH} |
++ V(C) > {VTHRESH} |
++ V(D) > {VTHRESH},{VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS NOR4_BASIC_GEN
+*$
+.SUBCKT NOR5_BASIC_GEN A B C D E Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE YINT 0 VALUE {{IF(V(A) > {VTHRESH}  |  
++ V(B) > {VTHRESH} |
++ V(C) > {VTHRESH} |
++ V(D) > {VTHRESH} |
++ V(E) > {VTHRESH},{VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS NOR5_BASIC_GEN
+*$
+.SUBCKT NOR6_BASIC_GEN A B C D E F Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE YINT 0 VALUE {{IF(V(A) > {VTHRESH}  |  
++ V(B) > {VTHRESH} |
++ V(C) > {VTHRESH} |
++ V(D) > {VTHRESH} |
++ V(E) > {VTHRESH} |
++ V(F) > {VTHRESH},{VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS NOR6_BASIC_GEN
+*$
+.SUBCKT INV_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS INV_BASIC_GEN
+*$
+.SUBCKT XOR2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE  YINT 0 VALUE {{IF(V(A) > {VTHRESH}  ^  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS XOR2_BASIC_GEN
+*$
+.SUBCKT XNOR2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE  YINT 0 VALUE {{IF(V(A) > {VTHRESH}  ^  
++ V(B) > {VTHRESH},{VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS XNOR2_BASIC_GEN
+*$
+.SUBCKT MUX2_BASIC_GEN A B S Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE  YINT 0 VALUE {{IF(V(S) > {VTHRESH},  
++ V(B),V(A))}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS MUX2_BASIC_GEN
+*$
+.SUBCKT INV_DELAY_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 DELAY = 10n 
+E_ABMGATE1    YINT1 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT1 YINT2 1
+CINT YINT2 0 {DELAY*1.3}
+E_ABMGATE2    YINT3 0 VALUE {{IF(V(YINT2) > {VTHRESH} , 
++ {VSS},{VDD})}}
+RINT2 YINT3 Y 1
+CINT2 Y 0 1n
+.ENDS INV_DELAY_BASIC_GEN
+*$
+.SUBCKT BUF_DELAY_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 DELAY = 10n 
+E_ABMGATE1    YINT1 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT1 YINT2 1
+CINT YINT2 0 {DELAY*1.3}
+E_ABMGATE2    YINT3 0 VALUE {{IF(V(YINT2) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT2 YINT3 Y 1
+CINT2 Y 0 1n
+.ENDS BUF_DELAY_BASIC_GEN
+*$
+.SUBCKT BUF_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS BUF_BASIC_GEN
+*$
+.SUBCKT COMP_BASIC_GEN INP INM Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5	
+E_ABM Yint 0 VALUE {IF (V(INP) > 
++ V(INM), {VDD},{VSS})}
+R1 Yint Y 1
+C1 Y 0 1n
+.ENDS COMP_BASIC_GEN
+*$
+.SUBCKT COMPHYS_BASIC_GEN INP INM HYS OUT PARAMS: VDD=1 VSS=0 VTHRESH=0.5	
+EIN INP1 INM1 INP INM 1 
+EHYS INP1 INP2 VALUE { IF( V(1) > {VTHRESH},-V(HYS),0) }
+EOUT OUT 0 VALUE { IF( V(INP2)>V(INM1), {VDD} ,{VSS}) }
+R1 OUT 1 1
+C1 1 0 5n
+RINP1 INP1 0 1K
+.ENDS COMPHYS_BASIC_GEN
+*$

@@ -1,0 +1,155 @@
+* THS4271
+*****************************************************************************
+* (C) Copyright 2011 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: THS4271
+* Date: 08JUL2011
+* Model Type: ALL IN ONE
+* Simulator: PSPICE
+* Simulator Version: 16.0.0.p001
+* EVM Order Number: N/A
+* EVM Users Guide: N/A
+* Datasheet: SLOS397F – JULY 2002 – REVISED OCTOBER 2009
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+* 
+* Updates:
+*
+* Version 1.0 : 
+* Release to Web
+*
+*****************************************************************************
+*
+* THIS MODEL IS APPLICABLE TO THS4271 & THS4275
+*
+* connections:   non-inverting input
+*                | inverting input
+*                | | positive power supply
+*                | | | negative power supply
+*                | | | | output
+*                | | | | |
+*****************************************************************************
+.subckt THS4271  1 2 3 4 5
+
+*Offset and CMRR
+  Vos  1a  9  .005
+  Ios  1  2  .5u
+
+* upper Vic range limit
+  drc1 16 17 dx
+  drc2 16 18 dx
+  Vcp   3 16 dc -0.4
+
+* input stage
+  rc1  17 11 176.8
+  rc2  18 12 176.8
+  L-    2 2a .8n
+  q1   11 2a 13 qx1
+  L+    1 1a .8n
+  q2   12  9 14 qx1
+  re1  13 10 159.07
+  re2  14 10 159.07
+  Cdif  1  1c  0.8p
+  Rcdf  1c 2   50
+  Ccm   2  2b  0.4p
+  Rccm  2b 99  50
+
+* lower Vic range limit
+  d10  15 10 dx
+  v10  15  4 dc 1.2
+  Iee  10  4 dc 3e-3
+  Icc   3  4  15m
+  Rcc   3  4  2500
+
+* gain stage and dominant pole
+  ga   21 99 value = {(limit(V(11,12),-.447,.447))*-35.6m}
+  ra   21 99 158k
+  ca   21 99 15.9E-12
+
+* GAIN STAGE SWING LIMIT
+  DPC  21 23 dx
+  VPC   3 23 1.7
+  DNC  24 21 dx
+  VNC  24 4  1.74
+
+* zero
+  ez   26  99  21  99 10
+  rz1  26  27  900
+  cz   26  27  .2p
+  rz2  27  99  100
+
+* phase shift stage
+  gps   25 99 27 99 -100.0E-6
+  rps   25 99 10.0E3
+  cps   25 99 10E-15
+
+  egnd  99  0  poly(2)  3  0  4  0  0 .5  .5
+  X_OP  25 99  3  4  5a THS4271_OP
+  Ro    5a 5b  .1
+  Lo    5b 5  .2n
+  Rco   5c 99  10
+  Co    5  5c .8p
+
+.ends THS4271
+*$
+
+* Output stage
+* connections:      non-inverting input
+*                   | inverting input
+*                   | | positive power supply
+*                   | | | negative power supply
+*                   | | | | output
+*                   | | | | |
+.subckt THS4271_OP  1 2 3 4 5
+* GAIN STAGE SWING LIMIT
+  DOPC   1 38  dx
+  VOPC   3 38  1.
+  DONC  48  1  dx
+  VONC  48  4  1.
+
+* UPPER DRIVE STAGE
+  ROP   3  34  8.5
+  HLP2 34  33  VLP 30
+  VOP  33  32  0
+  HLP1 35   0  VOP  8
+  RLP  35  36  8
+  DLP  36  37  dx
+  VLP  37   0  0
+  EOP  32  31  Poly(2)   2  1  3  4  -.8  1  .5
+  DOP  31   5  dx
+
+* LOWER DRIVE STAGE
+  DON   5  41  dx
+  EON  41  42  Poly(2)   1  2  3  4  -.8  1  .5
+  VON  42  43  0
+  HLN1 45   0  VON  15
+  RLN  45  46  8
+  DLN  46  47  dx
+  VLN  47   0  0
+  HLN2 43  44  VLN 45
+  RON  44   4  12
+
+.ends
+*$
+*DIODE MODELS
+.model dx D(Is=800.00E-18)
+*$
+.model qx1 NPN(Is=800.00E-18 Bf=272.73 af=0 kf=9e-22)
+*.model qx1 NPN(Is=800.00E-18 Bf=272.73 af=2 kf=8e-8)
+*$

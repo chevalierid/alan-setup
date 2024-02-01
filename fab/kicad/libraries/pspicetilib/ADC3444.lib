@@ -1,0 +1,108 @@
+* ADC34444
+*****************************************************************************
+* (C) Copyright 2012 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: ADC3444
+* Date: 09/20/14
+* Model Type: All In One
+* Simulator: Cadence Allegro 
+* Simulator Version:  16.2.0.p001
+* EVM Order Number: N/A 
+* EVM Users Guide: N/A
+* Datasheet: SBAS670 –JULY 2014
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 : Release to Web 
+*
+*****************************************************************************
+* Notes: 
+* This is a transient model of the ADC34J45 analog inputs.
+* 
+*****************************************************************************
+.SUBCKT ADC3444 INP INN VCM CLKP CLKN GRND
+R_Resr5         GRND N43167  47  
+R_Resr6         N43187 N2P  10k  
+X_S4    N44169 GRND CLK GRND ADC3444_SCH_S4 
+R_R4         N43351 N43303  20  
+R_Resr4         N43345 GRND  47  
+R_Resr7         N2N N43187  10k  
+V_V2         N43133 GRND 5Vdc
+R_R5         GRND N43311  100  
+C_Cpad         N43151 N1P  1pF   
+R_RSW1         N1P N2P  10  
+R_R10         N43133 CLK  5k  
+C_Cpad1         N1N N43279  1pF   
+R_RSW8         N1N N2N  10  
+R_R6         GRND N43335  100  
+E_E1         N44169 GRND N43351 N43381 1
+C_Cpad7         N43167 N2P  420fF   
+L_L1         INP N1P  2nH  
+R_R1         GRND VCM  10k 
+V_VCM        VCM GRND 0.95V 
+C_Ceq1         N3N N4N  3.75pF   
+R_R7         N43327 N43381  20  
+X_S1    CLK GRND N3P N2P ADC3444_SCH_S1 
+L_L2         INN N1N  2nH  
+R_Resr         GRND N43151  200  
+R_R8         N43393 N43351  5k  
+C_C4         GRND N43351  2p   
+X_S2    CLK GRND N2N N3N ADC3444_SCH_S2 
+C_Cpad5         N2N GRND  1.734pF   
+R_Resr1         N43279 GRND  200  
+C_C5         N43381 GRND  2p   
+R_R9         N43381 N43393  5k  
+C_Cpad4         GRND N2P  1.734pF   
+R_Resr9         GRND N1P  5k  
+X_S3    CLK GRND N4N N4P ADC3444_SCH_S3 
+C_C1         N43311 N43303  1p   
+C_Cpad8         GRND N3P  600fF   
+R_Resr8         N1N GRND  5k  
+R_R2         N4N 0  1e9  
+C_C2         N43335 N43327  1p   
+C_Cpad6         N2N N43345  420fF   
+C_C3         GRND N43393  2p   
+R_R3         N4P 0  1e9  
+C_Ceq         N3P N4P  3.75pF   
+L_L3         CLKP N43303  2nH  
+V_V1         N43393 GRND 1.4Vdc
+C_Cpad9         N3N GRND  600fF   
+L_L4         CLKN N43327  2nH  
+.ENDS
+
+.subckt ADC3444_SCH_S4 1 2 3 4  
+S_S4         3 4 1 2 _S4
+RS_S4         1 2 1G
+.MODEL         _S4 VSWITCH Roff=1e6 Ron=1.0 Voff=0.0V Von=1.0V
+.ends ADC3444_SCH_S4
+
+.subckt ADC3444_SCH_S1 1 2 3 4  
+S_S1         3 4 1 2 _S1
+RS_S1         1 2 1G
+.MODEL         _S1 VSWITCH Roff=1e6 Ron=4.6 Voff=0.0V Von=1.0V
+.ends ADC3444_SCH_S1
+
+.subckt ADC3444_SCH_S2 1 2 3 4  
+S_S2         3 4 1 2 _S2
+RS_S2         1 2 1G
+.MODEL         _S2 VSWITCH Roff=1e6 Ron=4.6 Voff=0.0V Von=1.0V
+.ends ADC3444_SCH_S2
+
+.subckt ADC3444_SCH_S3 1 2 3 4  
+S_S3         3 4 1 2 _S3
+RS_S3         1 2 1G
+.MODEL         _S3 VSWITCH Roff=1e6 Ron=17.0 Voff=0.0V Von=1.0V
+.ends ADC3444_SCH_S3

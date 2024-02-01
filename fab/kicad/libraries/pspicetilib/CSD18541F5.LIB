@@ -1,0 +1,116 @@
+
+* CSD18541F5
+*****************************************************************************
+* (C) Copyright 2020 Texas Instruments Incorporated. All rights reserved.   
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+* Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: CSD18541F5
+* Date: 02/17/2020
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 17.2
+* EVM Order Number: 
+* EVM Users Guide: 
+* Datasheet: SLPS571A AUG 2017
+* Model Version: Final 1.00
+*
+**********************************************************************
+**********************************************************************
+*                                                                    *
+* CSD18541F5   -  PSpice Model for use with OrCAD      	             *
+*                                                                    *
+**********************************************************************
+**********************************************************************
+* Characteristics:
+*   Technology:   NCH 60/20
+*
+**********************************************************************
+* Model History
+*   tr, 05/10/2016
+*   gd, 02/17/2020  updated dc model & tweaked ac
+*    
+**********************************************************************
+* SUBCKT Definition:  1=D  2=G  3=S
+.SUBCKT CSD18541F5  D G S
+* PARAMETER (local) DEFINITIONS SECTION
+ .PARAM  ptrc1    4.85e-3  
+ .PARAM  ptrc2    7.25e-6
+ .PARAM  pwidthP  {0.6335/0.8*2}
+ .PARAM  perimP   {2.1*0.6335/0.8*2}
+****** MODEL SUBCIRCUIT BEGINS HERE     ******************************
+M1   10 11 12 12  NMOS	W={pwidthP} L=0.5u  PS={perimP} PD={perimP}
+
+DBD   8  7	 DBD	0.056765
+DDG1  D 101 DD	0.056765
+DDG2  G 101 DD	0.056765
+DZ1   G 102 DD	0.056765
+DZ2   S 102 DD	0.056765
+
+CBD0  8  7  11e-12
+cgd   D  G  2.0e-12
+
+Rgg1	  G   21  277
+Cgs1	 21   12  350e-12
+Rgg2	 21   11  12
+Cgs2	 11   12  400e-12
+Rgg3	 11   22  12
+Cgs3	 22   12  350e-12
+Rgg4	 22    G  277
+
+RBD0  8  7  1e10
+RSB  12  9	 RTEMP 5.00e-5
+RSS   9  8  RTEMP 5.00e-5
+RSP   8  S  RTEMP {5.5e-4+0.03e-6}
+RDD   7 10  RTEMP {0.43e-3*16.61642+44.3e-3}
+RDP   D  7	 RTEMP 0.05e-3
+
+******************************************************************* 
+.MODEL  NMOS   NMOS (
+* CONTROL PARAMETERS
++ LEVEL  = 7             VERSION = 3.2         CAPMOD = 2
+* DC PARAMETERS
++ NLX    = 1.74E-7       VBM    = -5           DVT0   = 2.2
++ DVT1   = 0.53          DVT2   = -0.032       U0     = 450
++ UA     = 3.6e-9        UB     = 8.0e-19      A0     = 1.0
++ AGS    = 0.0           A1     = 0.0          A2     = 1.0
++ LINT   = 0.055e-6      VOFF   = -0.228       NFACTOR= 1.2
++ ETA0   = 0.005         ETAB   = -0.07        DSUB   = 1.2
++ PCLM   = 1.3           PDIBLC1= 0.02         PDIBLC2= 0.004
++ DROUT  = 0.90          PSCBE1 = 3.0e8        PSCBE2 = 1e-6
++ PVAG   = 0.1           DELTA  = 0.0650       JS     = 0
++ CGSO   = 20e-12	    CGDO   = 10e-12       CGBO   = 1e-18
++ CJ     = 1e-18         CJSW   = 1e-18        CF     = 0
++ VSAT   = 4.5e4
+* TEMPERATURE PARAMETERS
++ TNOM   = 25            UTE    = -1.5         KT1    = -0.88
++ KT1L   = 5.0e-13       KT2    = 0.022        UA1    = -1.40e-9
++ UB1    = -1.0e-19      
+* PROCESS PARAMETERS
+* NCH = 1.170e17 f/1.8Vth;  1.037e17 f/1.3Vth
++ TOX    = 4.00e-8       XJ     = 3e-7         NCH    = 1.170e17
++ NSUB   = 1.0e16 )
+****************************************************************
+.MODEL DBD D (CJO=5500e-12 VJ=0.99 M=0.87 TNOM=25
++ FC=0.5 TT=2e-09 XTI=3.3 BV=63.35 TBV1=1.02e-3 TBV2=-7.5e-7 
++ IS=4.0e-11 N=1.07 RS=1.50e-3 TRS1=1.7e-3)
+*******************************************************************
+.MODEL DD  D (CJO=20e-10 VJ=0.38 M=0.99 IS=1e-13 RS=0.01 TNOM=25)
+*******************************************************************
+.MODEL DZ  D (CJO=8.0e-10 VJ=0.9 M=0.4 IS=1e-13 RS=0.1 TNOM=25)
+*******************************************************************
+.MODEL RTEMP RES (TC1={ptrc1} TC2={ptrc2})
+*******************************************************************
+.ENDS CSD18541F5  
+*$

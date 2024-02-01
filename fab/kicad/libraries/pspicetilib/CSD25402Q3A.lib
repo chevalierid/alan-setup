@@ -1,0 +1,101 @@
+***********************************************************************
+*  (C) Copyright 2013 Texas Instruments Incorporated. All rights reserved.
+***********************************************************************
+***********************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose. The model is
+** provided solely on an "as is" basis. The entire risk as to its quality
+** and performance is with the customer
+********************************************************************************
+*
+* Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: CSD25402Q3A
+* Date: 12/12/2013
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.2
+* EVM Order Number: 
+* EVM Users Guide: 
+* Datasheet: SLPS454 - DECEMBER 2013
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+*
+*****************************************************************************
+**********************************************************************
+**********************************************************************
+*                                                                    *
+*  CSD25402Q3A  -  P-Channel 20/12 QFN            *
+*                                                                    *
+**********************************************************************
+**********************************************************************
+* SUBCKT Definition:  1=D  2=G  3=S
+*******************************************************************
+.SUBCKT CSD25402Q3A  1 2 3
+ .PARAM  pWidth 1.95
+ .PARAM  perim  6.00
+M1  10 11 12 12 PMOS W={pWidth} L=0.45u PD={perim} PS={perim}
+DBD  7  8	DBD
+RBD  7  8	1E9
+CBD  7  8	12e-12
+*CGD  5  7	2e-12
+ccc 11 10	35e-12
+DGD 11 13	DGD
+DDG 10 13	DDG
+*M2   12 11 12 10  NMOSd W={pwidth} L=0.045u  PS={perim} PD={perim}
+CGSR  5  99 200E-9
+RGSRG	99	8	4000
+LGG  2  5	0.87e-9
+RGG  5 11	0.6
+RSB 12  9	RTEMP 1.4E-3
+RSS  9  8   RTEMP 0.6e-3
+RSX  8  6	0.25E-6
+LSS  6  3	0.08E-9
+RDD  7 10   RTEMP 2.80e-3
+RDX  4  7	0.50E-3
+LDD  1  4	0.43E-9
+******************************************************************* 
+.MODEL  PMOS   PMOS (    LEVEL   = 7            Version = 3.2
++ TNOM    = 27           CAPMOD  = 2             LINT   = 0.02e-6
++ TOX     = 2.00E-8      NCH     = 1.30e17      NSUB   = 5.0e15
++ A0      = 1.0          A1      = 0.0           A2     = 1.0
++ UA      = 2.00E-09     UB      = 2.0E-19       VBM    = -5
++ UA1     = 0.00e-9      UB1     = -0.0e-18      UTE    = -1.50
++ KT1     = -0.64        KT2     = 0.02          KT1L   = 1e-14
++ Dvt0    = 2.3          Dvt1    = 0.55          Dvt2   = -0.03
++ PDIBLC1 = 0.05         PDIBLC2 = 0.015         B0     = 0.02
++ VOFF    = -0.06        NFACTOR = 2.10          NLX    = 1.70e-7
++ ETA0    = 0.03         ETAB    = -0.05         XJ     = 6.0e-7
++ PSCBE1  = 8.0e8        PSCBE2  = 3.0e-4		 U0		= 500	
++ DELTA   = 1.0         DSUB    = 1.0           DROUT  = 0.7
++ CJ      = 1e-18        CJSW    = 1e-18         CF     = 0
++ CGSO    = 225e-12       CGDO    = 1e-18        CGBO   = 0 )
+******************************************************************* 
+.MODEL  NMOSd   NMOS (  LEVEL  = 7         Version = 3.2
++ TNOM = 27              CAPMOD = 2
++ JS     = 0             VBM    = -10
++ TOX    = 2e-8          NCH    = 1.6e17        NSUB   = 1e16
++ CJ     = 1e-18         CJSW   = 1e-18         CF     = 0
++ CGSO   = 0             CGDO   = 0             CGBO   = 0 )
+*******************************************************************
+.MODEL DBD D (CJO=1800E-12 VJ=0.85 M=0.37 RS=1.25e-3 TRS1=5e-3 
++ TRS2=1e-7 FC=0.5 TT=3E-9 IS=1.50e-12 N=1.01 XTI=3.5 BV=22.0)
+*******************************************************************
+.MODEL DGD D (CJO=0.6e-10 VJ=0.40 M=0.90 FC=0.5 IS=1E-14 RS=0.1)
+.MODEL DDG D (CJO=0.6E-10 VJ=0.40 M=0.90 FC=0.5 IS=1E-14 RS=0.1)
+******************************************************************* 
+.MODEL RTEMP RES (TC1=2.75E-3  TC2=-3.2E-09)
+******************************************************************* 
+.ENDS CSD25402Q3A
+*$

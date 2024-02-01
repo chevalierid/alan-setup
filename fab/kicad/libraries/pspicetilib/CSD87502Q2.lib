@@ -1,0 +1,142 @@
+*$
+* CSD87502Q2
+***********************************************************************
+* (C) Copyright 2015 Texas Instruments Incorporated. All rights reserved.
+***********************************************************************
+***********************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose. The model is
+** provided solely on an "as is" basis. The entire risk as to its quality
+** and performance is with the customer
+********************************************************************************
+**Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: CSD87502Q2
+* Date: 12/17/2015
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number:
+* EVM Users Guide:
+* Datasheet: SLPS560 �DECEMBER 2015
+* Model Version: Final 1.0
+**
+*****************************************************************************
+*
+*
+* Final 1.0
+* Release to Web
+*
+**********************************************************************
+**********************************************************************
+**********************************************************************
+*                                                                    *
+* CSD87502Q2	-  PSpice Model for use with OrCAD                   *
+*                                                                    *
+**********************************************************************
+**********************************************************************
+* Characteristics:
+*   Technology:   NCH 30/20
+*
+**********************************************************************
+* Model History
+*   tr, 9:02 AM 12/16/2015
+*    
+**********************************************************************
+*
+* SUBCKT Definition:	1=S1	2=G1	3=D2	4=S2	5=G2	6=D1
+.SUBCKT	CSD87502Q2	1	2	3	4	5	6
+X1	6	2	1	N87502
+X2	3	5	4	N87502
+.ends	CSD87502Q2	
+*
+* SUBCKT Definition:	1=D	2=G	3=S
+.SUBCKT	N87502	1	2	3
+* PARAMETER (local) DEFINITIONS SECTION
+.param	AA87502	0.2517
+.param	AA17579	0.75062
+.PARAM	ptrc1	3.75e-3  
+.PARAM	ptrc2	1.50e-5
+.PARAM	pwidthP	{AA87502/0.8*2}
+.PARAM	pwidth	{pwidthP*1e6}
+.PARAM	perimP	{2.1*pwidthP}
+.PARAM	perim	{perimP*1e6}
+*
+*MOSFET
+M1	10	11	12	12	NMOS	W={pwidthP}	L=0.5u	PS={perimP}	PD={perimP}
+*
+* Body diode
+DBD		8	7	DBD	{AA87502/AA17579}
+CBD0	8	7	3e-12
+RBD0	8	7	1e10
+*
+* Miller capacitance
+DDG1	10	101	DD	{AA87502/AA17579}
+DDG2	11	101	DD	{AA87502/AA17579}
+*
+*Gate network
+LGG	2	5	2.1e-9
+cgg	5	11	1e-10
+RGG	5	11	7.0
+*
+*source network
+RSB	12	9	RTEMP	1.00e-6
+RSS	9	8	RTEMP	1.00e-6
+RSP	8	6	{4.9997e-4+0.03e-6}
+LSS	6	3	0.47e-9
+RSL	6	3	0.5
+*
+*drain network
+RDD	7	10	RTEMP	{0.43e-3*AA17579/AA87502+23.6e-3}
+RDP	4	7	0.05e-3
+LDD	1	4	0.05e-9
+*ESD network
+DGS		110	2	DDZ
+DSG		110	120	DDZ
+RESD	120	8	50
+******************************************************************* 
+.MODEL	NMOS	NMOS	(
+* CONTROL PARAMETERS
++ LEVEL=7		VERSION=3.2		CAPMOD = 2
+* DC PARAMETERS
++ NLX=1.74E-7	VBM=-5			DVT0=2.2
++ DVT1=0.53		DVT2=-0.032		U0=550
++ UA=3.0e-9		UB=0.0e-19		A0=0.9
++ AGS=0.0		A1=0.0			A2=0.9
++ LINT=0.055e-6	VOFF=-0.45		NFACTOR=1.7
++ ETA0=0.005	ETAB=-0.07		DSUB=1.4
++ PCLM=3.00		PDIBLC1=0.02	PDIBLC2=0.004
++ DROUT=0.90	PSCBE1=3.0e8	PSCBE2=1e-6
++ PVAG=0.1		DELTA=0.0220	JS=0
+* AC AND CAPACITANCE PARAMETERS
++ CGSO=5.00e-11	CGDO=1e-18	CGBO=1e-18
++ CJ=1e-18		CJSW=1e-18	CF=0
+* TEMPERATURE PARAMETERS
++ TNOM=25		UTE=-1.5	KT1=-0.80
++ KT1L=1.0e-15	KT2=0.022	UA1=-01.00e-9
++ UB1=-0.0e-17      
+* PROCESS PARAMETERS
++ TOX=3.00e-8	XJ=3e-7		NCH=1.390e17
++ NSUB=1.0e16)
+*******************************************************************
+.MODEL	DBD	D	(
++ CJO=200e-12	VJ=1.0	M=0.625		TNOM=25
++ FC=0.5		TT=2e-9	XTI=3.3		BV=31
++ IS=4.0e-12	N=1.07	RS=3.5e-3 	TRS1=4.0e-3)
+.MODEL	DD	D	(
++ CJO=5.0e-10	VJ=0.7	M=0.625		IS=1e-13
++ RS=0.1		TNOM=25)
+.MODEL	DDx	D	(
++ CJO=1e-09	VJ=0.9	M=0.9		IS=1e-13
++ RS=1.0	TNOM=25)
+*******************************************************************
+.MODEL	RTEMP	RES	(
++ TC1={ptrc1}	TC2={ptrc2})
+*******************************************************************
+.MODEL	DDZ	D	(
++ CJO=1e-018	VJ=0.9	M=0.9		IS=1e-13
++ RS=1.0e-3		TNOM=25 bv=22.00)
+*******************************************************************
+.ENDS N87502
+*$

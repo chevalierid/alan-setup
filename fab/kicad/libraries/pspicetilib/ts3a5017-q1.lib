@@ -1,0 +1,641 @@
+* PSpice Model Editor - Version 16.2.0
+
+*$
+* TS3A5017-Q1
+*****************************************************************************
+* (C) Copyright 2018 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Texas Instruments Inc.
+* Part: TS3A5017-Q1
+* Date: 21SEPT2018
+* Model Type: ALL IN ONE
+* Simulator: PSPICE
+* Simulator Version: <16.2.0.p001>
+* EVM Order Number: 
+* EVM Users Guide: 
+* Datasheet: SCDS387
+* 
+*
+* Model Version: Final 1.10
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+* 
+* 1. The following features have been modeled
+*      a. RON versus VCOM
+*      b. Bandwidth
+*      c. Isolation/Crosstalk
+*      d. CD_OFF, CS_OFF
+*      e. IS_ON, IS_OFF
+*      f. ID_ON, ID_OFF
+*      g. Turn-on Time
+*      h. I+
+* 2. CD_ON is smaller than reported in the data sheet.
+*    CS_ON is slightly larger than reported in the data sheet.
+*    The Turn-Off time is much larger than reported in the data sheet.
+*****************************************************************************
+**
+.SUBCKT TS3A5017-Q1 IN2 IN1 1ENZ 2ENZ 1S1 1S2 1S3 1S4 2S1 2S2 2S3 2S4 1D 2D VDD GND
+C_C2         IN2 GND  2p  TC=0,0 
+R_U12_R5         U12_N349504 U12_RC_IN  10 TC=0,0 
+D_U12_D3         U12_RC_OUT U12_N349504 Dbreak 
+C_U12_C3         GND U12_RC_OUT  100p  TC=0,0 
+E_U12_E2         U12_RC_IN GND CNTRL3 GND 10
+R_U12_R4         U12_RC_IN U12_N345841  40 TC=0,0 
+V_U12_V1         U12_N345775 GND 5Vdc
+D_U12_D2         U12_N345841 U12_RC_OUT Dbreak 
+X_U12_U9         U12_RC_OUT U12_N345775 CNTRL3_DELAY GND COMPARATOR 
+C_C3         1ENZ GND  2p  TC=0,0 
+R_R1         0 EN_INT1  1e6 TC=0,0 
+X_U20         1S2 GND VCC_MON ILEAK_OFF 
+X_U6_S1    CNTRL6_DELAY GND 2S2 U6_N06857 SCH_PORT1_U6_S1 
+C_U6_C6         GND U6_N92436  3.5p  TC=0,0 
+R_U6_R4         U6_N48395 U6_N46475  100 TC=0,0 
+X_U6_S2    CNTRL6_DELAY GND U6_N46475 2D SCH_PORT1_U6_S2 
+R_U6_R1         GND U6_NISO  10e6 TC=0,0 
+C_U6_C1         GND U6_N89560  3.3p  TC=0,0 
+L_U6_L3         U6_N48395 U6_N46475  26.25nH  
+X_U6_U1         U6_N06210 U6_N48395 2D GND RON_VS_VCC 
+C_U6_C5         U6_N13923 U6_NISO  2.5p  TC=0,0 
+X_U6_S3    CNTRL6_DELAY GND 2S2 U6_N12958 SCH_PORT1_U6_S3 
+X_U6_S6    CNTRL6_DELAY GND 2D U6_N92436 SCH_PORT1_U6_S6 
+C_U6_C4         U6_NISO U6_N12958  2.5p  TC=0,0 
+X_U6_S5    CNTRL6_DELAY GND 2S2 U6_N89560 SCH_PORT1_U6_S5 
+R_U6_R3         U6_N06857 U6_N06210  100 TC=0,0 
+X_U6_S4    CNTRL6_DELAY GND 2D U6_N13923 SCH_PORT1_U6_S4 
+L_U6_L1         U6_N06857 U6_N06210  26.25nH  
+C_C1         IN1 GND  2p  TC=0,0 
+X_U21         1S3 GND VCC_MON ILEAK_OFF 
+R_U13_R5         U13_N349504 U13_RC_IN  10 TC=0,0 
+D_U13_D3         U13_RC_OUT U13_N349504 Dbreak 
+C_U13_C3         GND U13_RC_OUT  100p  TC=0,0 
+E_U13_E2         U13_RC_IN GND CNTRL4 GND 10
+R_U13_R4         U13_RC_IN U13_N345841  40 TC=0,0 
+V_U13_V1         U13_N345775 GND 5Vdc
+D_U13_D2         U13_N345841 U13_RC_OUT Dbreak 
+X_U13_U9         U13_RC_OUT U13_N345775 CNTRL4_DELAY GND COMPARATOR 
+X_U22         1S4 GND VCC_MON ILEAK_OFF 
+X_U2_S1    CNTRL2_DELAY GND 1S2 U2_N06857 SCH_PORT1_U2_S1 
+C_U2_C6         GND U2_N92436  3.5p  TC=0,0 
+R_U2_R4         U2_N48395 U2_N46475  100 TC=0,0 
+X_U2_S2    CNTRL2_DELAY GND U2_N46475 1D SCH_PORT1_U2_S2 
+R_U2_R1         GND U2_NISO  10e6 TC=0,0 
+C_U2_C1         GND U2_N89560  3.3p  TC=0,0 
+L_U2_L3         U2_N48395 U2_N46475  26.25nH  
+X_U2_U1         U2_N06210 U2_N48395 1D GND RON_VS_VCC 
+C_U2_C5         U2_N13923 U2_NISO  2.5p  TC=0,0 
+X_U2_S3    CNTRL2_DELAY GND 1S2 U2_N12958 SCH_PORT1_U2_S3 
+X_U2_S6    CNTRL2_DELAY GND 1D U2_N92436 SCH_PORT1_U2_S6 
+C_U2_C4         U2_NISO U2_N12958  2.5p  TC=0,0 
+X_U2_S5    CNTRL2_DELAY GND 1S2 U2_N89560 SCH_PORT1_U2_S5 
+R_U2_R3         U2_N06857 U2_N06210  100 TC=0,0 
+X_U2_S4    CNTRL2_DELAY GND 1D U2_N13923 SCH_PORT1_U2_S4 
+L_U2_L1         U2_N06857 U2_N06210  26.25nH  
+R_U14_R5         U14_N349504 U14_RC_IN  10 TC=0,0 
+D_U14_D3         U14_RC_OUT U14_N349504 Dbreak 
+C_U14_C3         GND U14_RC_OUT  100p  TC=0,0 
+E_U14_E2         U14_RC_IN GND CNTRL5 GND 10
+R_U14_R4         U14_RC_IN U14_N345841  40 TC=0,0 
+V_U14_V1         U14_N345775 GND 5Vdc
+D_U14_D2         U14_N345841 U14_RC_OUT Dbreak 
+X_U14_U9         U14_RC_OUT U14_N345775 CNTRL5_DELAY GND COMPARATOR 
+X_U7_S1    CNTRL7_DELAY GND 2S3 U7_N06857 SCH_PORT1_U7_S1 
+C_U7_C6         GND U7_N92436  3.5p  TC=0,0 
+R_U7_R4         U7_N48395 U7_N46475  100 TC=0,0 
+X_U7_S2    CNTRL7_DELAY GND U7_N46475 2D SCH_PORT1_U7_S2 
+R_U7_R1         GND U7_NISO  10e6 TC=0,0 
+C_U7_C1         GND U7_N89560  3.3p  TC=0,0 
+L_U7_L3         U7_N48395 U7_N46475  26.25nH  
+X_U7_U1         U7_N06210 U7_N48395 2D GND RON_VS_VCC 
+C_U7_C5         U7_N13923 U7_NISO  2.5p  TC=0,0 
+X_U7_S3    CNTRL7_DELAY GND 2S3 U7_N12958 SCH_PORT1_U7_S3 
+X_U7_S6    CNTRL7_DELAY GND 2D U7_N92436 SCH_PORT1_U7_S6 
+C_U7_C4         U7_NISO U7_N12958  2.5p  TC=0,0 
+X_U7_S5    CNTRL7_DELAY GND 2S3 U7_N89560 SCH_PORT1_U7_S5 
+R_U7_R3         U7_N06857 U7_N06210  100 TC=0,0 
+X_U7_S4    CNTRL7_DELAY GND 2D U7_N13923 SCH_PORT1_U7_S4 
+L_U7_L1         U7_N06857 U7_N06210  26.25nH  
+X_U23         2S1 GND VCC_MON ILEAK_OFF 
+R_R2         0 EN_INT2  1e6 TC=0,0 
+R_U15_R5         U15_N349504 U15_RC_IN  10 TC=0,0 
+D_U15_D3         U15_RC_OUT U15_N349504 Dbreak 
+C_U15_C3         GND U15_RC_OUT  100p  TC=0,0 
+E_U15_E2         U15_RC_IN GND CNTRL6 GND 10
+R_U15_R4         U15_RC_IN U15_N345841  40 TC=0,0 
+V_U15_V1         U15_N345775 GND 5Vdc
+D_U15_D2         U15_N345841 U15_RC_OUT Dbreak 
+X_U15_U9         U15_RC_OUT U15_N345775 CNTRL6_DELAY GND COMPARATOR 
+X_U28         IN2 IN1 1ENZ 2ENZ VDD GND EN_INT1 EN_INT2 VCC_MON CNTRL1 CNTRL2
++  CNTRL3 CNTRL4 CNTRL5 CNTRL6 CNTRL7 CNTRL8 TS3A5017Q1_DIGITAL 
+X_U3_S1    CNTRL3_DELAY GND 1S3 U3_N06857 SCH_PORT1_U3_S1 
+C_U3_C6         GND U3_N92436  3.5p  TC=0,0 
+R_U3_R4         U3_N48395 U3_N46475  100 TC=0,0 
+X_U3_S2    CNTRL3_DELAY GND U3_N46475 1D SCH_PORT1_U3_S2 
+R_U3_R1         GND U3_NISO  10e6 TC=0,0 
+C_U3_C1         GND U3_N89560  3.3p  TC=0,0 
+L_U3_L3         U3_N48395 U3_N46475  26.25nH  
+X_U3_U1         U3_N06210 U3_N48395 1D GND RON_VS_VCC 
+C_U3_C5         U3_N13923 U3_NISO  2.5p  TC=0,0 
+X_U3_S3    CNTRL3_DELAY GND 1S3 U3_N12958 SCH_PORT1_U3_S3 
+X_U3_S6    CNTRL3_DELAY GND 1D U3_N92436 SCH_PORT1_U3_S6 
+C_U3_C4         U3_NISO U3_N12958  2.5p  TC=0,0 
+X_U3_S5    CNTRL3_DELAY GND 1S3 U3_N89560 SCH_PORT1_U3_S5 
+R_U3_R3         U3_N06857 U3_N06210  100 TC=0,0 
+X_U3_S4    CNTRL3_DELAY GND 1D U3_N13923 SCH_PORT1_U3_S4 
+L_U3_L1         U3_N06857 U3_N06210  26.25nH  
+X_U24         2S2 GND VCC_MON ILEAK_OFF 
+X_U8_S1    CNTRL8_DELAY GND 2S4 U8_N06857 SCH_PORT1_U8_S1 
+C_U8_C6         GND U8_N92436  3.5p  TC=0,0 
+R_U8_R4         U8_N48395 U8_N46475  100 TC=0,0 
+X_U8_S2    CNTRL8_DELAY GND U8_N46475 2D SCH_PORT1_U8_S2 
+R_U8_R1         GND U8_NISO  10e6 TC=0,0 
+C_U8_C1         GND U8_N89560  3.3p  TC=0,0 
+L_U8_L3         U8_N48395 U8_N46475  26.25nH  
+X_U8_U1         U8_N06210 U8_N48395 2D GND RON_VS_VCC 
+C_U8_C5         U8_N13923 U8_NISO  2.5p  TC=0,0 
+X_U8_S3    CNTRL8_DELAY GND 2S4 U8_N12958 SCH_PORT1_U8_S3 
+X_U8_S6    CNTRL8_DELAY GND 2D U8_N92436 SCH_PORT1_U8_S6 
+C_U8_C4         U8_NISO U8_N12958  2.5p  TC=0,0 
+X_U8_S5    CNTRL8_DELAY GND 2S4 U8_N89560 SCH_PORT1_U8_S5 
+R_U8_R3         U8_N06857 U8_N06210  100 TC=0,0 
+X_U8_S4    CNTRL8_DELAY GND 2D U8_N13923 SCH_PORT1_U8_S4 
+L_U8_L1         U8_N06857 U8_N06210  26.25nH  
+R_U16_R5         U16_N349504 U16_RC_IN  10 TC=0,0 
+D_U16_D3         U16_RC_OUT U16_N349504 Dbreak 
+C_U16_C3         GND U16_RC_OUT  100p  TC=0,0 
+E_U16_E2         U16_RC_IN GND CNTRL7 GND 10
+R_U16_R4         U16_RC_IN U16_N345841  40 TC=0,0 
+V_U16_V1         U16_N345775 GND 5Vdc
+D_U16_D2         U16_N345841 U16_RC_OUT Dbreak 
+X_U16_U9         U16_RC_OUT U16_N345775 CNTRL7_DELAY GND COMPARATOR 
+X_U25         2S3 GND VCC_MON ILEAK_OFF 
+X_U4_S1    CNTRL4_DELAY GND 1S4 U4_N06857 SCH_PORT1_U4_S1 
+C_U4_C6         GND U4_N92436  3.5p  TC=0,0 
+R_U4_R4         U4_N48395 U4_N46475  100 TC=0,0 
+X_U4_S2    CNTRL4_DELAY GND U4_N46475 1D SCH_PORT1_U4_S2 
+R_U4_R1         GND U4_NISO  10e6 TC=0,0 
+C_U4_C1         GND U4_N89560  3.3p  TC=0,0 
+L_U4_L3         U4_N48395 U4_N46475  26.25nH  
+X_U4_U1         U4_N06210 U4_N48395 1D GND RON_VS_VCC 
+C_U4_C5         U4_N13923 U4_NISO  2.5p  TC=0,0 
+X_U4_S3    CNTRL4_DELAY GND 1S4 U4_N12958 SCH_PORT1_U4_S3 
+X_U4_S6    CNTRL4_DELAY GND 1D U4_N92436 SCH_PORT1_U4_S6 
+C_U4_C4         U4_NISO U4_N12958  2.5p  TC=0,0 
+X_U4_S5    CNTRL4_DELAY GND 1S4 U4_N89560 SCH_PORT1_U4_S5 
+R_U4_R3         U4_N06857 U4_N06210  100 TC=0,0 
+X_U4_S4    CNTRL4_DELAY GND 1D U4_N13923 SCH_PORT1_U4_S4 
+L_U4_L1         U4_N06857 U4_N06210  26.25nH  
+R_U17_R5         U17_N349504 U17_RC_IN  10 TC=0,0 
+D_U17_D3         U17_RC_OUT U17_N349504 Dbreak 
+C_U17_C3         GND U17_RC_OUT  100p  TC=0,0 
+E_U17_E2         U17_RC_IN GND CNTRL8 GND 10
+R_U17_R4         U17_RC_IN U17_N345841  40 TC=0,0 
+V_U17_V1         U17_N345775 GND 5Vdc
+D_U17_D2         U17_N345841 U17_RC_OUT Dbreak 
+X_U17_U9         U17_RC_OUT U17_N345775 CNTRL8_DELAY GND COMPARATOR 
+X_U26         2S4 GND VCC_MON ILEAK_OFF 
+R_U10_R5         U10_N349504 U10_RC_IN  10 TC=0,0 
+D_U10_D3         U10_RC_OUT U10_N349504 Dbreak 
+C_U10_C3         GND U10_RC_OUT  100p  TC=0,0 
+E_U10_E2         U10_RC_IN GND CNTRL1 GND 10
+R_U10_R4         U10_RC_IN U10_N345841  40 TC=0,0 
+V_U10_V1         U10_N345775 GND 5Vdc
+D_U10_D2         U10_N345841 U10_RC_OUT Dbreak 
+X_U10_U9         U10_RC_OUT U10_N345775 CNTRL1_DELAY GND COMPARATOR 
+X_U5_S1    CNTRL5_DELAY GND 2S1 U5_N06857 SCH_PORT1_U5_S1 
+C_U5_C6         GND U5_N92436  3.5p  TC=0,0 
+R_U5_R4         U5_N48395 U5_N46475  100 TC=0,0 
+X_U5_S2    CNTRL5_DELAY GND U5_N46475 2D SCH_PORT1_U5_S2 
+R_U5_R1         GND U5_NISO  10e6 TC=0,0 
+C_U5_C1         GND U5_N89560  3.3p  TC=0,0 
+L_U5_L3         U5_N48395 U5_N46475  26.25nH  
+X_U5_U1         U5_N06210 U5_N48395 2D GND RON_VS_VCC 
+C_U5_C5         U5_N13923 U5_NISO  2.5p  TC=0,0 
+X_U5_S3    CNTRL5_DELAY GND 2S1 U5_N12958 SCH_PORT1_U5_S3 
+X_U5_S6    CNTRL5_DELAY GND 2D U5_N92436 SCH_PORT1_U5_S6 
+C_U5_C4         U5_NISO U5_N12958  2.5p  TC=0,0 
+X_U5_S5    CNTRL5_DELAY GND 2S1 U5_N89560 SCH_PORT1_U5_S5 
+R_U5_R3         U5_N06857 U5_N06210  100 TC=0,0 
+X_U5_S4    CNTRL5_DELAY GND 2D U5_N13923 SCH_PORT1_U5_S4 
+L_U5_L1         U5_N06857 U5_N06210  26.25nH  
+R_U11_R5         U11_N349504 U11_RC_IN  10 TC=0,0 
+D_U11_D3         U11_RC_OUT U11_N349504 Dbreak 
+C_U11_C3         GND U11_RC_OUT  100p  TC=0,0 
+E_U11_E2         U11_RC_IN GND CNTRL2 GND 10
+R_U11_R4         U11_RC_IN U11_N345841  40 TC=0,0 
+V_U11_V1         U11_N345775 GND 5Vdc
+D_U11_D2         U11_N345841 U11_RC_OUT Dbreak 
+X_U11_U9         U11_RC_OUT U11_N345775 CNTRL2_DELAY GND COMPARATOR 
+C_C4         2ENZ GND  2p  TC=0,0 
+X_U19         1S1 GND VCC_MON ILEAK_OFF 
+X_U1_S1    CNTRL1_DELAY GND 1S1 U1_N06857 SCH_PORT1_U1_S1 
+C_U1_C6         GND U1_N92436  3.5p  TC=0,0 
+R_U1_R4         U1_N48395 U1_N46475  100 TC=0,0 
+X_U1_S2    CNTRL1_DELAY GND U1_N46475 1D SCH_PORT1_U1_S2 
+R_U1_R1         GND U1_NISO  10e6 TC=0,0 
+C_U1_C1         GND U1_N89560  3.3p  TC=0,0 
+L_U1_L3         U1_N48395 U1_N46475  26.25nH  
+X_U1_U1         U1_N06210 U1_N48395 1D GND RON_VS_VCC 
+C_U1_C5         U1_N13923 U1_NISO  2.5p  TC=0,0 
+X_U1_S3    CNTRL1_DELAY GND 1S1 U1_N12958 SCH_PORT1_U1_S3 
+X_U1_S6    CNTRL1_DELAY GND 1D U1_N92436 SCH_PORT1_U1_S6 
+C_U1_C4         U1_NISO U1_N12958  2.5p  TC=0,0 
+X_U1_S5    CNTRL1_DELAY GND 1S1 U1_N89560 SCH_PORT1_U1_S5 
+R_U1_R3         U1_N06857 U1_N06210  100 TC=0,0 
+X_U1_S4    CNTRL1_DELAY GND 1D U1_N13923 SCH_PORT1_U1_S4 
+L_U1_L1         U1_N06857 U1_N06210  26.25nH  
+.MODEL Dbreak D N=0.001 RS=0.001
+.ENDS
+*$
+**
+**
+.SUBCKT COMPARATOR  INP INN OUT GND
+.PARAM VHI = 1
+.PARAM VLOW = 0
+EOUT OUT GND VALUE = {VHI*0.5*(1+ (SGN(V(INP,INN)) - ABS(SGN(V(INP,INN))) + 1))}
+.ENDS
+*$
+**
+**
+.SUBCKT ILEAK_OFF OUT GND EN
+.PARAM I_LEAK_ON = 0.05u
+.PARAM I_LEAK_OFF = 0.5u
+G1 OUT GND VALUE = {(1 - V(EN,GND))*V(OUT,GND)*I_LEAK_OFF}
+E1 N1 GND VALUE = {IF(V(OUT,GND) < 1, 1,0)}
+G2 OUT GND VALUE = {I_LEAK_ON*V(EN,GND)*(V(N1,GND)*V(OUT,GND)+(1-V(N1,GND)))}
+*G1 OUT GND VALUE = {(1 - V(EN,GND))*I_LEAK_OFF}
+*G2 OUT GND VALUE = {V(EN,GND)*I_LEAK_ON}
+.ENDS
+*$
+**
+**
+.SUBCKT TS3A5017Q1_DIGITAL IN2 IN1 1ENZ 2ENZ VCC GND EN_INT1 EN_INT2 VCC_MON 
++ CNTRL1 CNTRL2 CNTRL3 CNTRL4 CNTRL5 CNTRL6 CNTRL7 CNTRL8
+** Digital Threshold
+.PARAM	VTHR = 1.4
+.PARAM VCC_MAX = 3.6
+.PARAM VCC_MIN = 2.3
+**
+** Convert ENZ pin to '1' or '0'
+EEN1 N1ENZ 0 VALUE = {1 - 0.5*(SGN(V(1ENZ,GND)-VTHR) + ABS(SGN(V(1ENZ,GND)-VTHR)))}
+EEN2 N2ENZ 0 VALUE = {1 - 0.5*(SGN(V(2ENZ,GND)-VTHR) + ABS(SGN(V(2ENZ,GND)-VTHR)))}
+**
+** Test for Min and Max power supplies
+E1 N1 0 VALUE = {0.5*(SGN(VCC_MAX - V(VCC,GND))+ ABS(SGN(VCC_MAX - V(VCC,GND))))}
+E2 N2 0 VALUE = {0.5*(SGN(V(VCC,GND) - VCC_MIN)+ ABS(SGN(V(VCC,GND) - VCC_MIN)))}
+***
+** Convert digital input voltages to '1' and '0'
+EIN1 NIN1 0 VALUE = {0.5*(SGN(V(IN1,GND)-VTHR) + ABS(SGN(V(IN1,GND)-VTHR)))}
+EIN2 NIN2 0 VALUE = {0.5*(SGN(V(IN2,GND)-VTHR) + ABS(SGN(V(IN2,GND)-VTHR)))}
+**
+E1S1 CNTRL1 GND VALUE = {V(N1)*V(N2)*V(N1ENZ)*(1-V(NIN2))*(1-V(NIN1))}
+E1S2 CNTRL2 GND VALUE = {V(N1)*V(N2)*V(N1ENZ)*(1-V(NIN2))*(V(NIN1))}
+E1S3 CNTRL3 GND VALUE = {V(N1)*V(N2)*V(N1ENZ)*(V(NIN2))*(1-V(NIN1))}
+E1S4 CNTRL4 GND VALUE = {V(N1)*V(N2)*V(N1ENZ)*(V(NIN2))*(V(NIN1))}
+*
+E2S1 CNTRL5 GND VALUE = {V(N1)*V(N2)*V(N2ENZ)*(1-V(NIN2))*(1-V(NIN1))}
+E2S2 CNTRL6 GND VALUE = {V(N1)*V(N2)*V(N2ENZ)*(1-V(NIN2))*(V(NIN1))}
+E2S3 CNTRL7 GND VALUE = {V(N1)*V(N2)*V(N2ENZ)*(V(NIN2))*(1-V(NIN1))}
+E2S4 CNTRL8 GND VALUE = {V(N1)*V(N2)*V(N2ENZ)*(V(NIN2))*(V(NIN1))}
+**
+** Current Drain at 5V
+GVCC VCC GND VALUE = {V(N1)*V(N2)*2.5u}
+**
+EEN_INT1 EN_INT1 GND VALUE = {V(N1ENZ)}
+EEN_INT2 EN_INT2 GND VALUE = {V(N2ENZ)}
+**
+** TRUE if VCC__MIN < VCC < VCC_MAX
+*EENOUT EN_OUT GND VALUE = {V(N1)*V(N2)*V(NENZ)}
+EVCCMON VCC_MON GND VALUE = {V(N1)*V(N2)}
+.ENDS
+*$
+**
+**
+.SUBCKT RON_VS_VCC 1 2 VCC GND
+.PARAM a1 = 0.7634940759342080
+.PARAM a2 = -1.648330158447727
+.PARAM a3 = 1.933795738776751
+.PARAM a4 = 3.978756768441335
+.PARAM b1 = 1.146909103018322
+.PARAM b2 = -9.026158668701621
+.PARAM b3 = 24.64077754237034
+* Functions below are valid only for 0V <= VCC <= 3.3V
+EV NVCC 0 VALUE = {V(VCC,GND)}
+E1 N1 0 VALUE = {a1*PWR(V(NVCC),3)+a2*PWR(V(NVCC),2)+a3*V(NVCC)+a4}
+E2 N2 0 VALUE = {b1*PWR(V(NVCC),2)+b2*V(NVCC)+b3}
+E4 N4 0 VALUE = {ABS(MIN(V(N1),V(N2)) ) + 1u}
+G1 1  2 VALUE = {V(1,2)/V(N4)}
+*
+.ENDS
+*$
+**
+**
+.subckt SCH_PORT1_U6_S1 1 2 3 4  
+S_U6_S1         3 4 1 2 _U6_S1
+RS_U6_S1         1 2 1G
+.MODEL         _U6_S1 VSWITCH Roff=10G Ron=1m Voff=0.25V Von=0.75V
+.ends SCH_PORT1_U6_S1
+*$
+.subckt SCH_PORT1_U6_S2 1 2 3 4  
+S_U6_S2         3 4 1 2 _U6_S2
+RS_U6_S2         1 2 1G
+.MODEL         _U6_S2 VSWITCH Roff=10G Ron=1m Voff=0.25V Von=0.75V
+.ends SCH_PORT1_U6_S2
+*$
+.subckt SCH_PORT1_U6_S3 1 2 3 4  
+S_U6_S3         3 4 1 2 _U6_S3
+RS_U6_S3         1 2 1G
+.MODEL         _U6_S3 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends SCH_PORT1_U6_S3
+*$
+.subckt SCH_PORT1_U6_S6 1 2 3 4  
+S_U6_S6         3 4 1 2 _U6_S6
+RS_U6_S6         1 2 1G
+.MODEL         _U6_S6 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends SCH_PORT1_U6_S6
+*$
+.subckt SCH_PORT1_U6_S5 1 2 3 4  
+S_U6_S5         3 4 1 2 _U6_S5
+RS_U6_S5         1 2 1G
+.MODEL         _U6_S5 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends SCH_PORT1_U6_S5
+*$
+.subckt SCH_PORT1_U6_S4 1 2 3 4  
+S_U6_S4         3 4 1 2 _U6_S4
+RS_U6_S4         1 2 1G
+.MODEL         _U6_S4 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends SCH_PORT1_U6_S4
+*$
+.subckt SCH_PORT1_U2_S1 1 2 3 4  
+S_U2_S1         3 4 1 2 _U2_S1
+RS_U2_S1         1 2 1G
+.MODEL         _U2_S1 VSWITCH Roff=10G Ron=1m Voff=0.25V Von=0.75V
+.ends SCH_PORT1_U2_S1
+*$
+.subckt SCH_PORT1_U2_S2 1 2 3 4  
+S_U2_S2         3 4 1 2 _U2_S2
+RS_U2_S2         1 2 1G
+.MODEL         _U2_S2 VSWITCH Roff=10G Ron=1m Voff=0.25V Von=0.75V
+.ends SCH_PORT1_U2_S2
+*$
+.subckt SCH_PORT1_U2_S3 1 2 3 4  
+S_U2_S3         3 4 1 2 _U2_S3
+RS_U2_S3         1 2 1G
+.MODEL         _U2_S3 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends SCH_PORT1_U2_S3
+*$
+.subckt SCH_PORT1_U2_S6 1 2 3 4  
+S_U2_S6         3 4 1 2 _U2_S6
+RS_U2_S6         1 2 1G
+.MODEL         _U2_S6 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends SCH_PORT1_U2_S6
+*$
+.subckt SCH_PORT1_U2_S5 1 2 3 4  
+S_U2_S5         3 4 1 2 _U2_S5
+RS_U2_S5         1 2 1G
+.MODEL         _U2_S5 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends SCH_PORT1_U2_S5
+*$
+.subckt SCH_PORT1_U2_S4 1 2 3 4  
+S_U2_S4         3 4 1 2 _U2_S4
+RS_U2_S4         1 2 1G
+.MODEL         _U2_S4 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends SCH_PORT1_U2_S4
+*$
+.subckt SCH_PORT1_U7_S1 1 2 3 4  
+S_U7_S1         3 4 1 2 _U7_S1
+RS_U7_S1         1 2 1G
+.MODEL         _U7_S1 VSWITCH Roff=10G Ron=1m Voff=0.25V Von=0.75V
+.ends SCH_PORT1_U7_S1
+*$
+.subckt SCH_PORT1_U7_S2 1 2 3 4  
+S_U7_S2         3 4 1 2 _U7_S2
+RS_U7_S2         1 2 1G
+.MODEL         _U7_S2 VSWITCH Roff=10G Ron=1m Voff=0.25V Von=0.75V
+.ends SCH_PORT1_U7_S2
+*$
+.subckt SCH_PORT1_U7_S3 1 2 3 4  
+S_U7_S3         3 4 1 2 _U7_S3
+RS_U7_S3         1 2 1G
+.MODEL         _U7_S3 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends SCH_PORT1_U7_S3
+*$
+.subckt SCH_PORT1_U7_S6 1 2 3 4  
+S_U7_S6         3 4 1 2 _U7_S6
+RS_U7_S6         1 2 1G
+.MODEL         _U7_S6 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends SCH_PORT1_U7_S6
+*$
+.subckt SCH_PORT1_U7_S5 1 2 3 4  
+S_U7_S5         3 4 1 2 _U7_S5
+RS_U7_S5         1 2 1G
+.MODEL         _U7_S5 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends SCH_PORT1_U7_S5
+*$
+.subckt SCH_PORT1_U7_S4 1 2 3 4  
+S_U7_S4         3 4 1 2 _U7_S4
+RS_U7_S4         1 2 1G
+.MODEL         _U7_S4 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends SCH_PORT1_U7_S4
+*$
+.subckt SCH_PORT1_U3_S1 1 2 3 4  
+S_U3_S1         3 4 1 2 _U3_S1
+RS_U3_S1         1 2 1G
+.MODEL         _U3_S1 VSWITCH Roff=10G Ron=1m Voff=0.25V Von=0.75V
+.ends SCH_PORT1_U3_S1
+*$
+.subckt SCH_PORT1_U3_S2 1 2 3 4  
+S_U3_S2         3 4 1 2 _U3_S2
+RS_U3_S2         1 2 1G
+.MODEL         _U3_S2 VSWITCH Roff=10G Ron=1m Voff=0.25V Von=0.75V
+.ends SCH_PORT1_U3_S2
+*$
+.subckt SCH_PORT1_U3_S3 1 2 3 4  
+S_U3_S3         3 4 1 2 _U3_S3
+RS_U3_S3         1 2 1G
+.MODEL         _U3_S3 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends SCH_PORT1_U3_S3
+*$
+.subckt SCH_PORT1_U3_S6 1 2 3 4  
+S_U3_S6         3 4 1 2 _U3_S6
+RS_U3_S6         1 2 1G
+.MODEL         _U3_S6 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends SCH_PORT1_U3_S6
+*$
+.subckt SCH_PORT1_U3_S5 1 2 3 4  
+S_U3_S5         3 4 1 2 _U3_S5
+RS_U3_S5         1 2 1G
+.MODEL         _U3_S5 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends SCH_PORT1_U3_S5
+*$
+.subckt SCH_PORT1_U3_S4 1 2 3 4  
+S_U3_S4         3 4 1 2 _U3_S4
+RS_U3_S4         1 2 1G
+.MODEL         _U3_S4 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends SCH_PORT1_U3_S4
+*$
+.subckt SCH_PORT1_U8_S1 1 2 3 4  
+S_U8_S1         3 4 1 2 _U8_S1
+RS_U8_S1         1 2 1G
+.MODEL         _U8_S1 VSWITCH Roff=10G Ron=1m Voff=0.25V Von=0.75V
+.ends SCH_PORT1_U8_S1
+*$
+.subckt SCH_PORT1_U8_S2 1 2 3 4  
+S_U8_S2         3 4 1 2 _U8_S2
+RS_U8_S2         1 2 1G
+.MODEL         _U8_S2 VSWITCH Roff=10G Ron=1m Voff=0.25V Von=0.75V
+.ends SCH_PORT1_U8_S2
+*$
+.subckt SCH_PORT1_U8_S3 1 2 3 4  
+S_U8_S3         3 4 1 2 _U8_S3
+RS_U8_S3         1 2 1G
+.MODEL         _U8_S3 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends SCH_PORT1_U8_S3
+*$
+.subckt SCH_PORT1_U8_S6 1 2 3 4  
+S_U8_S6         3 4 1 2 _U8_S6
+RS_U8_S6         1 2 1G
+.MODEL         _U8_S6 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends SCH_PORT1_U8_S6
+*$
+.subckt SCH_PORT1_U8_S5 1 2 3 4  
+S_U8_S5         3 4 1 2 _U8_S5
+RS_U8_S5         1 2 1G
+.MODEL         _U8_S5 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends SCH_PORT1_U8_S5
+*$
+.subckt SCH_PORT1_U8_S4 1 2 3 4  
+S_U8_S4         3 4 1 2 _U8_S4
+RS_U8_S4         1 2 1G
+.MODEL         _U8_S4 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends SCH_PORT1_U8_S4
+*$
+.subckt SCH_PORT1_U4_S1 1 2 3 4  
+S_U4_S1         3 4 1 2 _U4_S1
+RS_U4_S1         1 2 1G
+.MODEL         _U4_S1 VSWITCH Roff=10G Ron=1m Voff=0.25V Von=0.75V
+.ends SCH_PORT1_U4_S1
+*$
+.subckt SCH_PORT1_U4_S2 1 2 3 4  
+S_U4_S2         3 4 1 2 _U4_S2
+RS_U4_S2         1 2 1G
+.MODEL         _U4_S2 VSWITCH Roff=10G Ron=1m Voff=0.25V Von=0.75V
+.ends SCH_PORT1_U4_S2
+*$
+.subckt SCH_PORT1_U4_S3 1 2 3 4  
+S_U4_S3         3 4 1 2 _U4_S3
+RS_U4_S3         1 2 1G
+.MODEL         _U4_S3 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends SCH_PORT1_U4_S3
+*$
+.subckt SCH_PORT1_U4_S6 1 2 3 4  
+S_U4_S6         3 4 1 2 _U4_S6
+RS_U4_S6         1 2 1G
+.MODEL         _U4_S6 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends SCH_PORT1_U4_S6
+*$
+.subckt SCH_PORT1_U4_S5 1 2 3 4  
+S_U4_S5         3 4 1 2 _U4_S5
+RS_U4_S5         1 2 1G
+.MODEL         _U4_S5 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends SCH_PORT1_U4_S5
+*$
+.subckt SCH_PORT1_U4_S4 1 2 3 4  
+S_U4_S4         3 4 1 2 _U4_S4
+RS_U4_S4         1 2 1G
+.MODEL         _U4_S4 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends SCH_PORT1_U4_S4
+*$
+.subckt SCH_PORT1_U5_S1 1 2 3 4  
+S_U5_S1         3 4 1 2 _U5_S1
+RS_U5_S1         1 2 1G
+.MODEL         _U5_S1 VSWITCH Roff=10G Ron=1m Voff=0.25V Von=0.75V
+.ends SCH_PORT1_U5_S1
+*$
+.subckt SCH_PORT1_U5_S2 1 2 3 4  
+S_U5_S2         3 4 1 2 _U5_S2
+RS_U5_S2         1 2 1G
+.MODEL         _U5_S2 VSWITCH Roff=10G Ron=1m Voff=0.25V Von=0.75V
+.ends SCH_PORT1_U5_S2
+*$
+.subckt SCH_PORT1_U5_S3 1 2 3 4  
+S_U5_S3         3 4 1 2 _U5_S3
+RS_U5_S3         1 2 1G
+.MODEL         _U5_S3 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends SCH_PORT1_U5_S3
+*$
+.subckt SCH_PORT1_U5_S6 1 2 3 4  
+S_U5_S6         3 4 1 2 _U5_S6
+RS_U5_S6         1 2 1G
+.MODEL         _U5_S6 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends SCH_PORT1_U5_S6
+*$
+.subckt SCH_PORT1_U5_S5 1 2 3 4  
+S_U5_S5         3 4 1 2 _U5_S5
+RS_U5_S5         1 2 1G
+.MODEL         _U5_S5 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends SCH_PORT1_U5_S5
+*$
+.subckt SCH_PORT1_U5_S4 1 2 3 4  
+S_U5_S4         3 4 1 2 _U5_S4
+RS_U5_S4         1 2 1G
+.MODEL         _U5_S4 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends SCH_PORT1_U5_S4
+*$
+.subckt SCH_PORT1_U1_S1 1 2 3 4  
+S_U1_S1         3 4 1 2 _U1_S1
+RS_U1_S1         1 2 1G
+.MODEL         _U1_S1 VSWITCH Roff=10G Ron=1m Voff=0.25V Von=0.75V
+.ends SCH_PORT1_U1_S1
+*$
+.subckt SCH_PORT1_U1_S2 1 2 3 4  
+S_U1_S2         3 4 1 2 _U1_S2
+RS_U1_S2         1 2 1G
+.MODEL         _U1_S2 VSWITCH Roff=10G Ron=1m Voff=0.25V Von=0.75V
+.ends SCH_PORT1_U1_S2
+*$
+.subckt SCH_PORT1_U1_S3 1 2 3 4  
+S_U1_S3         3 4 1 2 _U1_S3
+RS_U1_S3         1 2 1G
+.MODEL         _U1_S3 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends SCH_PORT1_U1_S3
+*$
+.subckt SCH_PORT1_U1_S6 1 2 3 4  
+S_U1_S6         3 4 1 2 _U1_S6
+RS_U1_S6         1 2 1G
+.MODEL         _U1_S6 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends SCH_PORT1_U1_S6
+*$
+.subckt SCH_PORT1_U1_S5 1 2 3 4  
+S_U1_S5         3 4 1 2 _U1_S5
+RS_U1_S5         1 2 1G
+.MODEL         _U1_S5 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends SCH_PORT1_U1_S5
+*$
+.subckt SCH_PORT1_U1_S4 1 2 3 4  
+S_U1_S4         3 4 1 2 _U1_S4
+RS_U1_S4         1 2 1G
+.MODEL         _U1_S4 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends SCH_PORT1_U1_S4
+*$

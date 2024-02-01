@@ -1,0 +1,252 @@
+PSPICE WORKING MODEL TPS25961
+* ---------------------------------------------------------------------------------------
+* PSPICE SCRIPTING ML Weights
+*$
+* ------------------------------------------------------------------------------------------------- *
+* ------------------------ PSpice Model Including Time Step Logic Input --------------------------- *
+* ------------------------------------------------------------------------------------------------- *
+* ------------------------------------------------------------------------------------------------- *
+* ------------------------------------------ Model 1 ---------------------------------------------- *
+* ------------------------------------------------------------------------------------------------- *
+.SUBCKT M1_LAYER_1 EN_UVLO OVLO VIN VOUT I1_f I2_f I3_f I4_f
+EI1 I1 0 POLY(3) (EN_UVLO,0) (OVLO,0) (VIN,0) -0.20500742 -0.46241519 0.09899422 -0.66808367
+EI2 I2 0 POLY(3) (EN_UVLO,0) (OVLO,0) (VIN,0) -3.3952153 2.2679632 -41.149063  0.50053215 
+EI3 I3 0 POLY(3) (EN_UVLO,0) (OVLO,0) (VIN,0) 5.8443727 -2.5777504 0.0072367089 -0.20521374
+EI4 I4 0 POLY(3) (EN_UVLO,0) (OVLO,0) (VIN,0) 4.4332027 1.1235228 -5.3107033 -0.00020074419
+EI1_f I1_f 0 Value={if(V(I1) > 0,V(I1), 0)}
+EI2_f I2_f 0 Value={if(V(I2) > 0,V(I2), 0)}
+EI3_f I3_f 0 Value={if(V(I3) > 0,V(I3), 0)}
+EI4_f I4_f 0 Value={if(V(I4) > 0,V(I4), 0)}
+
+*VDC VOUT VOUT_INT 0
+*RTEMP VOUT_INT 0 100
+G_IN VIN 0 Value={V(VOUT)}
+.ENDS
+
+*G_IN VIN 0 Value={V(VOUT)/R_LOAD + C_LOAD*DDT(V(VOUT))}
+*$
+.SUBCKT M1_LAYER_2 I1_f I2_f I3_f I4_f L1_f L2_f L3_f L4_f
+EL1 L1 0 POLY(4) (I1_f,0) (I2_f,0) (I3_f,0) (I4_f,0) -0.47761065 0.03015858 -3.3448594 2.1136785 2.0641265 
+EL2 L2 0 POLY(4) (I1_f,0) (I2_f,0) (I3_f,0) (I4_f,0) -0.00327131 -0.5004866 -4.04395  2.3119519  2.5014951
+EL3 L3 0 POLY(4) (I1_f,0) (I2_f,0) (I3_f,0) (I4_f,0) 0.0439238 0.43239334 0.00829163 2.46835 -0.01383804
+EL4 L4 0 POLY(4) (I1_f,0) (I2_f,0) (I3_f,0) (I4_f,0) -0.22436117 0.46616584 -0.5712718  -0.16346419 -0.0334283
+EL1_f L1_f 0 Value={if(V(L1) > 0,V(L1), 0)}
+EL2_f L2_f 0 Value={if(V(L2) > 0,V(L2), 0)}
+EL3_f L3_f 0 Value={if(V(L3) > 0,V(L3), 0)}
+EL4_f L4_f 0 Value={if(V(L4) > 0,V(L4), 0)}
+.ENDS
+*$
+.SUBCKT M1_LAYER_3 O1_f O2_f O3_f O4_f OVLO_INT
+EOVLO_INT OVLO_INT 0 POLY(4) (O1_f,0) (O2_f,0) (O3_f,0) (O4_f,0) 2.4948237 5.2509418 -4.3218346 -0.44493958 -0.40317133
+.ENDS
+*$
+* ------------------------------------------------------------------------------------------------- *
+* ------------------------------------------ Model 2 ---------------------------------------------- *
+* ------------------------------------------------------------------------------------------------- *
+.SUBCKT M2_LAYER_1 EN_UVLO OVLO VIN OVLO_INT I1_f I2_f I3_f I4_f
+EI1 I1 0 POLY(4) (EN_UVLO,0) (OVLO,0) (VIN,0) (OVLO_INT,0) 0.21339315 -0.16519473 -0.02031934 0.277523 -9.607449
+EI2 I2 0 POLY(4) (EN_UVLO,0) (OVLO,0) (VIN,0) (OVLO_INT,0) 0.10465043 -0.29466555 -0.07256038 1.1486391 -3.9126697
+EI3 I3 0 POLY(4) (EN_UVLO,0) (OVLO,0) (VIN,0) (OVLO_INT,0) 1.7515484 -4.0122743 -0.04389662 0.71785027 -0.06342825
+EI4 I4 0 POLY(4) (EN_UVLO,0) (OVLO,0) (VIN,0) (OVLO_INT,0) 3.4380274 -5.095357 -0.01313604 0.22088258 0.9611548
+EI1_f I1_f 0 Value={if(V(I1) > 0,V(I1), 0)}
+EI2_f I2_f 0 Value={if(V(I2) > 0,V(I2), 0)}
+EI3_f I3_f 0 Value={if(V(I3) > 0,V(I3), 0)}
+EI4_f I4_f 0 Value={if(V(I4) > 0,V(I4), 0)}
+.ENDS
+*$
+.SUBCKT M2_LAYER_2 I1_f I2_f I3_f I4_f L1_f L2_f L3_f L4_f
+EL1 L1 0 POLY(4) (I1_f,0) (I2_f,0) (I3_f,0) (I4_f,0) 2.6244643 -0.00697667 -0.95885444 2.0080287 -1.5140322
+EL2 L2 0 POLY(4) (I1_f,0) (I2_f,0) (I3_f,0) (I4_f,0) 2.749164 -2.9843376 -0.75800776 1.9161114 -2.007425
+EL3 L3 0 POLY(4) (I1_f,0) (I2_f,0) (I3_f,0) (I4_f,0) -0.2512658 0.32160994 -0.15649194 -0.34551844 -0.4856258
+EL4 L4 0 POLY(4) (I1_f,0) (I2_f,0) (I3_f,0) (I4_f,0) -0.3618205 -0.95484465 -0.36472383 0.17723821 -0.56832606
+EL1_f L1_f 0 Value={if(V(L1) > 0,V(L1), 0)}
+EL2_f L2_f 0 Value={if(V(L2) > 0,V(L2), 0)}
+EL3_f L3_f 0 Value={if(V(L3) > 0,V(L3), 0)}
+EL4_f L4_f 0 Value={if(V(L4) > 0,V(L4), 0)}
+.ENDS
+*$
+.SUBCKT M2_LAYER_3 O1_f O2_f O3_f O4_f SWEN
+ESWEN SWEN 0 POLY(4) (O1_f,0) (O2_f,0) (O3_f,0) (O4_f,0) 2.4872828 -3.0406623 2.0012093 -0.03692732 0.7097523
+.ENDS
+*$
+* ------------------------------------------------------------------------------------------------- *
+* -------------------------------- Intermediate DT calculation ------------------------------------ *
+* ------------------------------------------------------------------------------------------------- *
+.SUBCKT DT_CALC SWEN DT
+EDT DT 0 Value = {if(STP(V(SWEN)-2.4) > 0.5, STATE(1,V(DT))+DELTA(1) , 0 )}
+*EDT DT 0 Value = {if(STP(V(SWEN)-2.4) > 0.5, STATE(1,V(DT))+ 1u , 0 )}
+.ENDS
+*$
+* ------------------------------------------------------------------------------------------------- *
+* ------------------------------------------------------------------------------------------------- *
+* ------------------------------------------ Model 3 ---------------------------------------------- *
+* ------------------------------------------------------------------------------------------------- *
+.SUBCKT M3_LAYER_1 EN_UVLO OVLO VIN SWEN OVLO_INT DT I1_f I2_f I3_f I4_f I5_f I6_f
+EI1 I1 0 POLY(6) (EN_UVLO,0) (OVLO,0) (VIN,0) (SWEN,0) (OVLO_INT,0) (DT,0) -0.35568786 0.057671510 -0.90231186 -0.32610783 0.43151930 0.27537885 -3.6125819
+EI2 I2 0 POLY(6) (EN_UVLO,0) (OVLO,0) (VIN,0) (SWEN,0) (OVLO_INT,0) (DT,0) -0.03679568 -0.76789486 -1.0686883 -0.046097662  -0.45736015 0.10761101 -4055.6235
+EI3 I3 0 POLY(6) (EN_UVLO,0) (OVLO,0) (VIN,0) (SWEN,0) (OVLO_INT,0) (DT,0) -0.4817888 -0.022672784 0.013855890 4.9182072 -0.33369437 -1.0026073 -0.68035396
+EI4 I4 0 POLY(6) (EN_UVLO,0) (OVLO,0) (VIN,0) (SWEN,0) (OVLO_INT,0) (DT,0) 3.1511748 -0.38666743 0.031419475 0.26463190 -1.9275752 0.43530563 -3079.9432
+EI5 I5 0 POLY(6) (EN_UVLO,0) (OVLO,0) (VIN,0) (SWEN,0) (OVLO_INT,0) (DT,0) -0.65376997 -0.45548651 -0.082715742 -0.0060334057 -1.0720558 -0.036504731 -1278.3866
+EI6 I6 0 POLY(6) (EN_UVLO,0) (OVLO,0) (VIN,0) (SWEN,0) (OVLO_INT,0) (DT,0) 2.449263 0.023480026 0.28655824 1.2201439 2.0332575 0.40269694 -6456.6588
+EI1_f I1_f 0 Value={if(V(I1) > 0,V(I1), 0)}
+EI2_f I2_f 0 Value={if(V(I2) > 0,V(I2), 0)}
+EI3_f I3_f 0 Value={if(V(I3) > 0,V(I3), 0)}
+EI4_f I4_f 0 Value={if(V(I4) > 0,V(I4), 0)}
+EI5_f I5_f 0 Value={if(V(I5) > 0,V(I5), 0)}
+EI6_f I6_f 0 Value={if(V(I6) > 0,V(I6), 0)}
+.ENDS
+*$
+.SUBCKT M3_LAYER_2 I1_f I2_f I3_f I4_f I5_f I6_f L1_f L2_f L3_f L4_f L5_f L6_f
+EL1 L1 0 POLY(6) (I1_f,0) (I2_f,0) (I3_f,0) (I4_f,0) (I5_f,0) (I6_f,0) 0.13213897 -0.15058137 -1.2477452 -0.18378139 -0.21665953 0.47459927 -0.67833066
+EL2 L2 0 POLY(6) (I1_f,0) (I2_f,0) (I3_f,0) (I4_f,0) (I5_f,0) (I6_f,0) -0.20985475 -1.0188423 -0.9732266 -0.21761523 -0.02329452 -0.8445068 -0.7791926
+EL3 L3 0 POLY(6) (I1_f,0) (I2_f,0) (I3_f,0) (I4_f,0) (I5_f,0) (I6_f,0) 0.08185627 0.4445112 -0.6713223 -0.02225946 -3.8114798 -0.11220261 -1.6860224
+EL4 L4 0 POLY(6) (I1_f,0) (I2_f,0) (I3_f,0) (I4_f,0) (I5_f,0) (I6_f,0) -0.50652933 0.20670028 0.6114485 -0.13119057 0.10688233 0.37249216 -0.42501903
+EL5 L5 0 POLY(6) (I1_f,0) (I2_f,0) (I3_f,0) (I4_f,0) (I5_f,0) (I6_f,0) -0.11989052 0.07948413 0.3963496 -0.31067485 -0.5865363 -0.65135324 -0.3989721
+EL6 L6 0 POLY(6) (I1_f,0) (I2_f,0) (I3_f,0) (I4_f,0) (I5_f,0) (I6_f,0) 0.66845924 -0.1160257 -0.21625343 0.5142579 -0.63784194 0.04417467 -2.0284808 
+EL1_f L1_f 0 Value={if(V(L1) > 0,V(L1), 0)}
+EL2_f L2_f 0 Value={if(V(L2) > 0,V(L2), 0)}
+EL3_f L3_f 0 Value={if(V(L3) > 0,V(L3), 0)}
+EL4_f L4_f 0 Value={if(V(L4) > 0,V(L4), 0)}
+EL5_f L5_f 0 Value={if(V(L5) > 0,V(L5), 0)}
+EL6_f L6_f 0 Value={if(V(L6) > 0,V(L6), 0)}
+.ENDS
+*$
+.SUBCKT M3_LAYER_3 O1_f O2_f O3_f O4_f O5_f O6_f VOUT
+EOUT VOUT 0 POLY(6) (O1_f,0) (O2_f,0) (O3_f,0) (O4_f,0) (O5_f,0) (O6_f,0) 0.00776624 -0.00789828 -0.08837368 -0.00515205 0.02199247 0.03104009 0.39517763
+.ENDS
+*$
+.SUBCKT TSD_COMP TEMP TSD
+*E_TSD TSD 0 Value = {if(V(TEMP) > 150, 5, if(V(TEMP) > 148 & V(TEMP) < 150 & STATE(1,V(TEMP)) > V(TEMP), 5, 0))}
+E_TSD TSD 0 Value = {if(V(TEMP) > 150, 2.5, 0)}
+.ENDS
+*$
+* PSpice Model Editor - Version 17.4.0
+** ----------------------------------------------------------------------------------------------- **
+** ------------------------ PSPICE SCRIPT FOR AUTO RETRY FUNCTIONALITY --------------------------- **
+** ----------------------------------------------------------------------------------------------- **
+.SUBCKT Retry TSD TMR CNT TEMP_NODE AR EN FLT
+ETEMP_NODE TEMP_NODE 0 Value = {if(STP(V(TSD)-1.5) < 0.5 & V(TSD) < STATE(1, V(TSD)) & V(EN) > 0.6 , 1 , 0)}
+R_INT TMR_INT TEMP_INT 1n
+R_TEMP_INT TEMP_INT 0 10000000
+ETMR_INT TMR_INT 0 Value = {if(V(TEMP_NODE) > 0.5 | STATE(1,V(TMR))>0, STATE(1,V(TMR))+DELTA(1) , 0)}
+.PARAM AR_dly = 0.110
+ETMR TMR 0 Value = {if(V(TMR_INT) < AR_dly & V(EN)>0.6, V(TMR_INT), 0)}
+EAR AR 0 Value = {if((V(TMR)>0 & V(EN)>0.6), 2.5,if(state(1,V(CNT))>3, 2.5, 0))}
+ECNT CNT 0 Value = {if(V(AR) < 0.5 & V(AR) < STATE(1, V(AR)) , state(1,V(CNT))+1 , if(V(EN)<0.6 | V(FLT)> AR_dly, 0, state(1,V(CNT))) )}
+*E_DT FLT 0 Value = {V(TMR_INT)}
+** ----------------------------------------------------------------------------------------------- **
+*RAR AR 0 1n
+*RFLT FLT 0 1n
+*RCNT CNT 0 1n
+*ETMR TMR 0 Value = {V(TMR_INT)}
+*EAR_INT AR_INT 0 Value = {if(V(TMR)>0 & V(EN)>0.5, 1,0)}
+*RAR1 AR1 0 1n
+*RAR2 AR2 0 1n
+*RAR3 AR3 0 1n
+*RAR4 AR4 0 1n
+*RAR5 AR5 0 1n
+*EAR1 AR1 0 Value = {if(STP(V(TSD)-1.5) < 0.5 & V(TSD) < STATE(1, V(TSD)) & V(EN) > 0.6, DELAYT1(V(AR),10e-3), 0)}
+*EAR2 AR2 0 Value = {if(STP(V(TSD)-1.5) < 0.5 & V(TSD) < STATE(1, V(TSD)) & V(EN) > 0.6, DELAYT1(V(AR),20e-3), 0)}
+*EAR3 AR3 0 Value = {if(STP(V(TSD)-1.5) < 0.5 & V(TSD) < STATE(1, V(TSD)) & V(EN) > 0.6, DELAYT1(V(AR),30e-3), 0)}
+*EAR4 AR4 0 Value = {if(STP(V(TSD)-1.5) < 0.5 & V(TSD) < STATE(1, V(TSD)) & V(EN) > 0.6, DELAYT1(V(AR),40e-3), 0)}
+*EAR5 AR5 0 Value = {if(STP(V(TSD)-1.5) < 0.5 & V(TSD) < STATE(1, V(TSD)) & V(EN) > 0.6, DELAYT1(V(AR),7*5e-3), 0)}
+*R_CINT CNT_INT CNT_TEMP 1n
+*R_CNT_TEMP CNT_TEMP 0 10000000
+*ECNT_INT CNT_INT 0 Value = {if(V(EN)<0.5 ,0,V(AR1)+V(AR2)+V(AR3)+V(AR4))}
+*ECNT CNT 0 Value = {V(CNT_INT)}
+*EFLT FLT 0 Value = {if(V(EN)>0.5,V(AR_INT)+STATE(1,V(AR5)),0)}
+*E_AR_FLT AR 0 Value = {if(V(FLT)>0.5, 2.5, 0)}
+.ENDS
+*$
+* ------------------------------------------------------------------------------------------------- *
+.Subckt Power VIN VOUT POWER Current_VOUT
+*E_PD POWER 0 Value = {(V(VIN)-V(VOUT))*(V(VOUT)/R_LOAD + C_LOAD*DDT(V(VOUT)))}
+E_PD POWER 0 Value = {(V(VIN)-V(VOUT))*V(Current_VOUT)}
+.ends
+*$
+*$
+* ------------------------------------------------------------------------------------------------- *
+.Subckt FAULT_INT OVLO_INT TSD AR FAULT_INT
+E_FAULT FAULT_INT 0 Value = {if(V(OVLO_INT)>1 | V(TSD)>1 | V(AR)>1, 2.5, 0)}
+.ends
+*$
+.subckt OV OVLO TSD AR OV_Final
+E_OV OV_Final 0 Value = {if(V(TSD)>1 | V(AR)>1, 1.5, V(OVLO))}
+.ends
+*$
+
+
+
+
+
+
+.subckt ILIM VOUT OUTPUT Current_VOUT ILIM_current
+* V_LIM LIM_int ILIM_current 0
+* V_Fixed LIM_int 0 1
+*V_LIM 0 ILIM_current 1
+*Rlm LIM_int ILIM_current 1
+V_LIM ILIM_current 0 1
+*E_OUT OUTPUT 0 Value= {(I(V_LIM))}
+E_Internal1 Internal_I_V 0 Value ={if(V(OUTPUT) <1p , 0, abs(V(Current_VOUT)/V(OUTPUT)) )}
+E_Internal2 Internal_V_I 0 Value ={if(abs(V(Current_VOUT)) <1p , 0, abs(V(OUTPUT)/V(Current_VOUT)) )}
+E_Internal4 Internal_VOUT 0 Value ={if(V(VOUT) <10m , 0, V(VOUT) )}
+
+E_OUT OUTPUT 0 Value= {if(abs(I(V_LIM))< 0.05u,
++ if( (V(Internal_VOUT)*V(Internal_I_V)) > (100m)- 1u, (0.1)*(V(Internal_V_I)),  V(Internal_VOUT) ),
++ if( abs(I(V_LIM)) < 4u, if( (V(Internal_VOUT)*V(Internal_I_V))> (50000*(abs(I(V_LIM))+0.000002)) - 1u,
++ (50000*(abs(I(V_LIM))+0.000002))*(V(Internal_V_I)), V(Internal_VOUT)),
++ if( (V(Internal_VOUT)*V(Internal_I_V))> 50000*abs(I(V_LIM))- 1u , (50000*abs(I(V_LIM)))*(V(Internal_V_I)), V(Internal_VOUT) ) ))} 
+.ENDS
+
+
+
+*.subckt ILIM VOUT OUTPUT Current_VOUT ILIM_current
+* V_LIM LIM_int ILIM_current 0
+* V_Fixed LIM_int 0 1
+*V_LIM 0 ILIM_current 1
+
+*Rlm LIM_int ILIM_current 1
+*V_LIM ILIM_current 0 1
+
+*E_OUT OUTPUT 0 Value= {(I(V_LIM))}
+
+*E_OUT OUTPUT 0 Value= {if(abs(I(V_LIM))< 0.5u,
+*+ if( V(Current_VOUT)> (100m), (abs(I(V_LIM)))*state(3,V(OUTPUT))/state(3,(V(Current_VOUT))),  state(1,V(VOUT)) ),
+*+ if( abs(I(V_LIM)) < 4u, if( V(Current_VOUT)> (50000*(abs(I(V_LIM))+0.000002)),
+*+ (50000*(abs(I(V_LIM))+0.000002))*state(3,V(OUTPUT))/state(3,(V(Current_VOUT))), state(1,V(VOUT))),
+*+ if( V(Current_VOUT)> 50000*abs(I(V_LIM)) , (50000*abs(I(V_LIM)))*state(3,V(OUTPUT))/state(3,(V(Current_VOUT))), state(1,V(VOUT)) ) ))} 
+
+*.ENDS
+
+
+
+
+
+
+
+*E_OUT OUTPUT 0 Value= {if(I(V_LIM)< 0.5u,
+*+ if( V(Current_VOUT)> (100m), (100m)*state(3,V(OUTPUT))/state(3,(V(Current_VOUT))),  state(1,V(VOUT)) ),
+*+ if( I(V_LIM) < 4u, if( V(Current_VOUT)> (50000*(I(V_LIM)+0.000002)),
+*+ (50000*(I(V_LIM)+0.000002))*state(3,V(OUTPUT))/state(3,(V(Current_VOUT))), state(1,V(VOUT))),
+*+ if( V(Current_VOUT)> 50000*I(V_LIM) , (50000*I(V_LIM))*state(3,V(OUTPUT))/state(3,(V(Current_VOUT))), state(1,V(VOUT)) ) ))} 
+
+* E_LIM_th ILIM_threshold 0 Value={if(I(V_LIM)<0.5u, 100m , if(I(V_LIM)<4u, (50000*(I(V_LIM)+0.000002)), 50000*I(V_LIM)) )}
+
+* E_OUT OUTPUT 0 Value = {if(V(Current_VOUT)>V(ILIM_threshold), (V(ILIM_threshold))*V(VOUT)/(V(Current_VOUT)), state(1, V(VOUT)) )}
+
+
+
+*E_OUT OUTPUT 0 Value={if(1/I(V_LIM) > 250000, if(V(Current_VOUT)> (50000*(I(V_LIM)+0.000002)), 
+*+ (50000*(I(V_LIM)+0.000002))*V(VOUT)/(V(Current_VOUT)+ 1u), (state(1, V(VOUT)))) , 
+*+ if( V(Current_VOUT)> 50000*I(V_LIM) , (50000*I(V_LIM))*V(VOUT)/(V(Current_VOUT)+1u), 
+*+ state(1, (V(VOUT))) ) )}
+*.ENDS
+
+
+
+*.subckt CurrentSense pos neg final_value
+*Vsense pos neg1 1u
+*Rsense neg1 neg 10
+*Evalue final_value 0 Value = {V(pos)}
+*.ends
+*$

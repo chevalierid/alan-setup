@@ -1,0 +1,108 @@
+***********************************************************************
+*  (C) Copyright 2013 Texas Instruments Incorporated. All rights reserved.
+***********************************************************************
+***********************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose. The model is
+** provided solely on an "as is" basis. The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: CSD13303W1015
+* Date: 11/08/2013
+* Model Type: Transient
+* Simulator: PSpice
+* Simulator Version: 16.2
+* EVM Order Number: 
+* EVM Users Guide: 
+* Datasheet: SLPS298A - MAY 2012 - REVISED MAY 2012
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+*
+*****************************************************************************
+**********************************************************************
+**********************************************************************
+*                                                                    *
+* csd13303w1015   -  PSpice Model for use with OrCAD/Allegro           *
+*                                                                    *
+**********************************************************************
+**********************************************************************    
+* SUBCKT Definition:  1=D  2=G  3=S
+**********************************************************************
+.SUBCKT CSD13303W1015   1 2 3
+.PARAM  ptrc1   3.25e-3  
+.PARAM  ptrc2   7.00e-6
+.PARAM  pwidthP 0.64992307692307692307692307692308
+.PARAM  pwidth  {pwidthP*1e6}
+.PARAM  perimP  {2.1*pwidthP}
+.PARAM  perim   {perimP*1e6}
+.PARAM  Rgate  0
+M1   10 11 12 12  NMOS	W={pwidthP} L=0.4u  PD={perimP} PS={perimP}
+DBD   8  7	 DBD
+RDB   8  7   1e10
+CGD0  5  7	 1E-12
+CGS0  5  8	 2e-12
+CDS0 10 12	 5e-12
+M2   12 11 12 20  PMOSd W={pwidthP} L=0.15u  PD={perimP} PS={perimP}
+DDx  20 10   DDx
+DDG  14  5   DD
+DGD  14 10   DD
+* Note:  gate oxide capacitance included in NMOS below
+CGS   5 13	 105E-12
+RGS  13  8	 47.50
+LGG   2  5	 0.1e-9
+RGG   5 11	 {3.0+ Rgate}
+RSB  12  9	 RTEMP 3.05e-3
+RSS   9  8 	 RTEMP 2.05e-3
+RSP   8  6 	 1.75e-3
+LSS   6  3	 0.05E-9
+RDP   4  7	 3.30e-3
+RDD   7 10 	 RTEMP 4.00e-3
+LDD   1  4	 0.05E-9
+******************************************************************* 
+.MODEL  NMOS   NMOS (    LEVEL  = 7             Version = 3.2
++ TNOM   = 27            LINT   = 0.055e-6      CAPMOD = 2
++ TOX    = 1.20e-8       NCH    = 1.675e17      NSUB   = 1.0e16
++ AGS    = 0.0           PVAG   = 0.2           U0     = 400
++ A0     = 1.10          A1     = 0.0           A2     = 0.9
++ UA     = 0.6e-9        UB     = 2.5e-18       VBM    = -5.0
++ UA1    = 1.0e-9        UB1    = -1.0e-18      UTE    = -1.50
++ KT1    = -0.45         KT2    = 0.022         KT1L   = 1.0e-12
++ DVT0   = 2.5           DVT1   = 0.62	      DVT2   = -0.033
++ ETA0   = 0.045         ETAB   = -0.07         XJ     = 4e-7
++ PDIBLC1= 0.08          PDIBLC2= 0.025         NLX    = 1.78e-7
++ PSCBE1 = 4.0e8         PSCBE2 = 1e-7          PCLM   = 7.5
++ VOFF   = -0.15         NFACTOR= 1.9           JS     = 0
++ DROUT  = 0.8           DSUB   = 1.2           DELTA  = 0.015
++ CJ     = 1e-18         CJSW   = 1e-18         CF     = 0
++ CGSO   = 249e-12        CGDO   = 5e-12         CGBO   = 0    )
+******************************************************************* 
+.MODEL  PMOSd   PMOS (   LEVEL  = 1
++ TNOM   = 27            VTO    = -0.3		IS     = 5.0e-14
++ TOX    = 1.20e-8       NSUB   = 1.0e18		gamma	= 0.75
++ CJ     = 1e-18         CJSW   = 1e-18
++ CGSO   = 1e-18         CGDO   = 1e-18         CGBO   = 1e-18 )
+******************************************************************* 
+.MODEL DBD D (CJO=654e-12 VJ=1.0 M=0.30 FC=0.5 TT=3e-09 TNOM=27
++  IS=5.0e-11 N=1.05  RS=20.0e-3 TRS1=3.9e-3 XTI=-2.0 BV=14)
+.MODEL DDx D (CJO=15e-12 VJ=0.40 M=0.40 IS=1e-12 RS=0.1 TNOM=27)
+.MODEL DD  D (CJO=75e-12 VJ=0.40 M=0.39 IS=1e-13 RS=1 TNOM=27 BV=13)
+.MODEL DCLAMP  D (CJO=1.0e-12 VJ=0.50 M=0.45 IS=1.5e-12 RS=1.0
++  TRS1=5e-4 XTI=2.8 TNOM=27 BV=6.5 TBV1=-2.5e-5)
+******************************************************************* 
+.MODEL RTEMP RES (TC1={ptrc1} TC2={ptrc2})
+*******************************************************************
+.ENDS CSD13303W1015

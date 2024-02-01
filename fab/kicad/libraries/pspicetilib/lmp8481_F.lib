@@ -1,0 +1,405 @@
+*  LMP8480_F
+*****************************************************************************
+* (C) Copyright 2012 Texas Instruments Incorporated. All rights reserved.    
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: WEBENCH (R) Design Center, Texas Instruments Inc.
+* Date:             2012-02-17
+* Model Type:       ALL IN ONE
+* Simulator:        PSPICE
+* Simulator Version: 16.2.0.p001
+* Datasheet:        SNVS829E –MARCH 1999–REVISED FEBRUARY 2017
+* EVM Order Number: N/A 
+* EVM Users Guide:  N/A
+* Model Version:    2.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 : Release to Web
+* Version 2.0 : Revise model for large IQ at low VCC
+*
+*****************************************************************************
+* Notes:
+* The LMP8481_X Pspice model represents the following parameters:
+* ICC(q), Vsense(max), Bandwidth, Slew Rate, and Input Referred Noise Voltage
+* at 1kHz or higher
+*****************************************************************************
+*$
+.SUBCKT LMP8481_F  RSP VCC NC GND OUT REFB REFA RSN
+***
+EVCCTEST VCCINT GND VALUE = {IF(V(VCC,GND) > 4.4,V(VCC,GND),0)}
+G_IQ GND VCC VALUE = {IF(V(VCC,GND) > 4.5,88u,0)}
+***
+R_R42      N90   ON1   393.52k  
+X_U8       GND   RSN   d_76v 
+V_Vsh1     NT    GND   0Vdc
+***X_U6       VCC   N60   GND N7  HPA_BUF
+X_U6       VCCINT   N60   GND N7  HPA_BUF
+G_Gcmrr    GND   N5    INP GND 798n
+***X_U4       GND   VCC   d_76v 
+X_U4       GND   VCCINT   d_76v 
+X_U7       OUT   N7    OUT1 NMOST
+*  PARAMS: W1=80U L1=2U
+R_Rfb      OUT1  ON1   1.9676e6
+***Ez         VDD   VDDu2 VALUE = {MAX(14 - V(VCC),0)}  
+Ez         VDD   VDDu2 VALUE = {MAX(14 - V(VCCINT),0)} 
+X_U2       OP1   ON1   VDDu2 NT OUT1 opampP_fc2  
+*X_U2       OP1   ON1   VDD NT OUT1 opampP_fc2
+X_U5       GND   RSP   d_76v 
+X_U1       INP   INN   NCM GND OP1 ON1 v21_amp2_fc0 
+R_R1       OPP   OP1   1.9676e6  
+R_R1A      OPP   REFA  100e3 
+R_R1B      OPP   REFB  100e3 
+X_U3       NET01 INP   VNSE 
+V_V1       VDD   N1    14.1Vdc
+R_Rin1     N3    RSP   39.352k  
+R_Rpsr     N2    N50   1  
+V_Vcm2     N90   GND   0Vdc
+R_Rin2     N6    RSN   39.352k  
+L_Lpsr     N50   GND   500nH  
+V_V2       N60   VDD   0.5Vdc
+R_Rbias1   NCM   RSP   196.76k  
+R_Rcm2     GND   N90   1e9  
+E_Epsrr    INN   N4    N2  GND -1
+***G_G2       GND   N2    VCC GND 631n
+G_G2       GND   N2    VCCINT GND 631n
+R_Rbias2   NCM   RSN   196.76k  
+E_Ecmrr    N4    N6    N5  GND 1
+***X_F1       N1    GND   VCC GND LMP8480_macro_F1 
+X_F1       N1    GND   VCCINT GND LMP8480_macro_F1  
+***R_Rn       GND   VCC   1G  
+R_Rn       GND   VCCINT   1G 
+R_Rcmr     N5    N70   1  
+V_Vos      N3    NET01 0mVdc
+R_R41      N90   OP1   393.52k  
+L_Lcmr     N70   GND   560nH 
+.MODEL NMOST1 NMOS  LEVEL=3 VTO=0.4  KP=1E-3 
+.MODEL diodeideal D (IS=1e-15 RS=1e-3)
+.MODEL Zener1     D (BV=5    IBV=4e-6)
+.ENDS LMP8481_F
+*$
+*
+.subckt LMP8480_macro_F1 1 2 3 4  
+F_F1         3 4  VF_F1 1
+VF_F1        1 2  0V
+.ends LMP8480_macro_F1
+*$
+*
+.subckt d_76v a c
+dz1 a  c diodo1
+.model diodo1 d
++ bv=85
++ is=1e-016
++ rs=0.001
+.ends d_76v
+*$
+.subckt V21_amp2_fc0 INP INN ICM GND OUTP OUTN
+D2A INN  P2   diodeideal 
+D1A INP  P1   diodeideal
+Q1  T1   P1   ICM PNP
+Q2  T2   P2   ICM PNP
+MP1 OUTP T1   INP ICM PMOS W=23e-6 L=3.5e-6
+MP2 OUTN T2   INN ICM PMOS W=23e-6 L=3.5e-6
+I0  P1   N0   DC  1e-6
+I3  P2   N3   DC  1e-6
+V0  N0   GND  DC  0
+V3  N3   GND  DC  0
+VR  R1   GND  DC  5
+IR  R1   R2   DC  1e-6
+MN0 R2   R2   GND GND NMOS W=2e-6 L=10e-6
+MN1 T1   R2   GND GND NMOS W=2e-6 L=10e-6
+MN2 T2   R2   GND GND NMOS W=2e-6 L=10e-6
+DZ1 GND  OUTP Zener1
+DZ2 GND  OUTN Zener1
+.MODEL diodeideal D (IS=1e-15 RS=1e-3)
+.MODEL Zener1     D (BV=5    IBV=4e-6)
+.MODEL PMOS   PMOS  LEVEL=3 VTO=-0.9 KP=0.3E-4
+.MODEL NMOS   NMOS  LEVEL=3 VTO=0.7  KP=1E-4
+.MODEL NPN    NPN
++ IS=6.2039E-18    BF=190   VAF=84
+.MODEL PNP    PNP
++ IS=6.2039E-18    BF=190   VAF=84
+.ends V21_amp2_fc0
+*$
+*
+.SUBCKT NMOST ND NG NS 
+.PARAM W1=80u
+.PARAM L1=2u
+m1 ND NG NS NB nm L={L1} W={W1}
+R1 NS NB 1e-3
+.model nm nmos LEVEL=3 VTO=0.4  KP=1E-3
+.ends NMOST
+*$
+.SUBCKT HPA_BUF A VDD VSS Y 
+Ca    A VSS  10f
+E1    3 0 VALUE = { IF( (V(A)>= 4.5 & V(A)<= 76), V(VDD), V(VSS) ) }
+R1    3 Y 1
+Cy    Y VSS  150p
+.ENDS
+*
+*$
+.SUBCKT opampP_fc2 INP INN VCC VEE OUT
+Cpwr          VCC        VEE        10P  
+Rgn1          0          FGND       100MEG 
+EVCVSgn1      FGND       0          32    0  1
+EVCVSgn2      33         0          VCC   0  1
+EVCVSgn3      31         0          VEE   0  1
+Cgn1          32         0          1   
+GRgn2         32         33         VALUE { V(32,33)/ 1E6}
+GRgnd3        31         32         VALUE { V(31,32)/ 1E6}
+*
+X_U9          VCC  VEE   PD   VIMON FGND INP2 INN1 HPA_PD_I 
+*+   PARAMS:  VTH=1.4IMAX=73U   IMIN=3n IIBP=1f IIBN=1f
+V_Vos         INP2       INP_CMRR  -0Vdc
+C_Cinp        FGND       INP1       600f   
+C_Cinn        FGND       INN1       600f   
+Cdiff         INP        INN        10F  
+R_Rinp        INP        INP1       1      
+R_Rinn        INN        INN1       1      
+*X_U12        INP1       INP2       VNSE 
+R_VNSE        INP1       INP2       1E-3
+E_E1          VCC_BUF    FGND  VCC  FGND 1
+E_E2          VEE_BUF    FGND  VEE  FGND 1
+X_Ug0         INP_CMRR   INN3  FGND AV1     VCCS_LIMIT1
+*+   PARAMS:  GAIN=10e-6  IPOS=0.5   INEG=-0.5
+X_Ug4         AV1   FGND FGND  OVER_CLAMP   VCCS_LIMIT2
+*+   PARAMS:  GAIN=61.84u IPOS=126u   INEG=-126u
+GRU1          FGND       AV1        VALUE ={ V(FGND,AV1)/ 1e6}
+GRU2          FGND       OVER_CLAMP VALUE ={ V(FGND,AV1)/ 2e9}
+C_Cc1         FGND       OVER_CLAMP 100p          
+C_Cc2         P0ZP1      FGND       39.8e-15   
+C_Cc3         CLAW_CLAMP FGND       8e-12      
+C_Cc4         FGND       FGND       4.11f       
+R_R4          VCC        PD         1e-3        
+G_G3          FGND       VSENSE     OVER_CLAMP FGND 1u
+G_G4          FGND       P0Z        VSENSE     FGND 1u
+G_G5          FGND       P0ZP1      P0Z        FGND 1u
+G_G6          FGND       CLAW_CLAMP P0ZP1      FGND 1m
+G_G7          FGND       CL_CLAMP   CLAW_CLAMP FGND 1m
+GRU3          VSENSE     FGND       VALUE ={ V(VSENSE,FGND) / 1e6}
+GRU5          FGND       P0Z        VALUE ={ V(FGND,P0Z) / 1e6}
+GRU6          P0ZP1      FGND       VALUE ={ V(P0ZP1,FGND) / 1e6}
+GRU7          CLAW_CLAMP FGND       VALUE ={ V(CLAW_CLAMP,FGND) / 1e3}
+GRU8          CL_CLAMP   FGND       VALUE ={ V(CL_CLAMP,FGND) / 1e3}
+*
+R_cmrr        INN2       INN3       1E-3
+*
+R_psrr        INN1       INN2       1E-3
+*
+C_Ucl_Ccl2    FGND       Ucl_N01226 1p   
+C_Ucl_Ccl1    Ucl_N01131 FGND       1p   
+V_Ucl_Vclp    Ucl_N00774 FGND       10Vdc
+V_Ucl_Vcln    Ucl_N00760 FGND      -10Vdc
+X_Ucl_Ucl1    Ucl_N50037 Ucl_N01131 D_ideal
+X_Ucl_Ucl2    Ucl_N01226 Ucl_N50037 D_ideal
+E_Ucl_E1      Ucl_N01131 FGND       Ucl_N00774 VIMON 100
+E_Ucl_E2      Ucl_N01226 FGND       Ucl_N00760 VIMON 100
+R_Ucl_Rcl1    Ucl_N01131 SC_p       1  
+R_Ucl_Rcl2    SC_n       Ucl_N01226 1  
+R_Ucl_Rcl3    Ucl_N50037 CL_CLAMP   0.01
+*  
+V_Uvcl_Vclo1  VCC        Uvcl_N498A 1.25Vdc
+V_Uvcl_Vclo2  Uvcl_N508A VEE        0.885Vdc
+X_Uvcl_Uvcl1  OVER_CLAMP Uvcl_N498A D_ideal
+X_Uvcl_Uvcl2  Uvcl_N508A OVER_CLAMP D_ideal
+R_R3          FGND       SC_p       1G    
+R_R3A         FGND       SC_n       1G    
+*
+R_Uz_Rm       Uz_VZO_3   Uz_VZO_4   10  
+X_Uz_Uamp1    VCLP       Uz_N36964  Uz_VZO_1 FGND VCVS_LIMIT 
+*+   PARAMS:  GAIN=1e6   VPOS=6e4   VNEG=-6e4
+X_Uz_Uamp2    FGND       Uz_N37614  Uz_VZO_3 FGND VCVS_LIMIT 
+*+   PARAMS:  GAIN=1e6   VPOS=6e4   VNEG=-6e4
+E_Uz_E1       Uz_VZO_2   FGND       Uz_VZO_1 Uz_VZO_4 -1
+GRUz_Rg1      FGND       Uz_N36964  VALUE = { V(FGND,Uz_N36964)/10e6 }
+GRUz_Rf1      Uz_N36964  Uz_VZO_1   VALUE = { V(Uz_N36964,Uz_VZO_1)/10e6 }
+GRUz_Rg2      Uz_VZO_2   Uz_N37614  VALUE = { V(Uz_VZO_2,Uz_N37614)/1e6 }
+GRUz_Rf2      Uz_N37614  Uz_VZO_3   VALUE = { V(Uz_N37614,Uz_VZO_3)/1e6 }
+X_Uz_H1       Uz_VZO_4   OUT   VIMON  FGND Zout_Uz_H1 
+X_Uthd        N3309236   FGND  VCLP FGND EPOLY1 
+X_U10         CL_CLAMP   FGND  PD N3309236 FGND VCC VEE HPA_PD_SGNL
+X_U11         VCC        VEE   VIMON       FGND Tran_Iout 
+.ENDS opampP_fc2
+*$
+.subckt Zout_Uz_S2 1 2 3 4  
+S_Uz_S2         3 4 1 2 _Uz_S2
+RS_Uz_S2        1 2 1G
+.MODEL         _Uz_S2 VSWITCH Roff=10e6 Ron=1.0 Voff=0.1V Von=-0.1V
+.ends Zout_Uz_S2
+*$
+.subckt Zout_Uz_S1 1 2 3 4  
+S_Uz_S1         3 4 1 2 _Uz_S1
+RS_Uz_S1        1 2 1G
+.MODEL         _Uz_S1 VSWITCH Roff=10e6 Ron=1.0 Voff=-0.1V Von=0.1V
+.ends Zout_Uz_S1
+*$
+.subckt Zout_Uz_H1 1 2 3 4  
+H_Uz_H1         3 4 VH_Uz_H1 1e3
+VH_Uz_H1        1 2 0V
+.ends Zout_Uz_H1
+*$
+*
+.subckt D_ideal A C
+D1 A C DNOM
+.MODEL DNOM D (TT=10p CJO=1e-18 IS=1e-16 RS=1e-3)
+.ENDS D_ideal
+*
+*$
+.SUBCKT VNSE 1 2 
+**************************
+* BEGIN SETUP OF NOISE GEN - NANOVOLT/RT-HZ
+* INPUT THREE VARIABLES
+* NLF - NV/RHZ AT (1/F) FREQ
+* FLW - FREQ FOR (1/F) VAL
+* NVR - NV/RHZ FLATBAND
+**************************
+* START CALC VALS
+.PARAM NLF=215
+.PARAM FLW=10 
+.PARAM NVR=54
+.PARAM GLF={PWR(FLW,0.25)*NLF/1164}
+.PARAM RNV={1.184*PWR(NVR,2)}
+.MODEL DVN D KF={PWR(FLW,0.5)/1E11} IS=1.0E-16
+* END CALC VALS
+I1 0 7 10E-3
+I2 0 8 10E-3
+D1 7 0 DVN
+D2 8 0 DVN
+E1 3 6 7 8 {GLF}
+R1 3 0 1E9
+R2 3 0 1E9
+R3 3 6 1E9
+E2 6 4 5 0 10
+R4 5 0 {RNV}
+R5 5 0 {RNV}
+R6 3 4 1E9
+R7 4 0 1E9
+E3 1 2 3 4 1
+C1 1 0 1E-15
+C2 2 0 1E-15
+C3 1 2 1E-15
+.ENDS VNSE
+*$
+.SUBCKT FEMT 1 2 
+**************************
+* BEGIN SETUP OF NOISE GEN - FEMPTOAMPS/RT-HZ
+* INPUT THREE VARIABLES
+* NLFF - SET UP INSE 1/F
+* FLWF - FA/RHZ AT 1/F FREQ
+* NVRF - FA/RHZ FLATBAND
+**************************
+* START CALC VALS
+.PARAM NLFF=3.1e3
+.PARAM FLWF=7.5 
+.PARAM NVRF=1.6e3
+.PARAM GLFF={PWR(FLWF,0.25)*NLFF/1164}
+.PARAM RNVF={1.184*PWR(NVRF,2)}
+.MODEL DVNF D KF={PWR(FLWF,0.5)/1E11} IS=1.0E-16
+* END CALC VALS
+I1 0 7 10E-3
+I2 0 8 10E-3
+D1 7 0 DVNF
+D2 8 0 DVNF
+E1 3 6 7 8 {GLFF}
+R1 3 0 1E9
+R2 3 0 1E9
+R3 3 6 1E9
+E2 6 4 5 0 10
+R4 5 0 {RNVF}
+R5 5 0 {RNVF}
+R6 3 4 1E9
+R7 4 0 1E9
+G1 1 2 3 4 1E-6
+C1 1 0 1E-15
+C2 2 0 1E-15
+C3 1 2 1E-15
+.ENDS FEMT
+*
+*$
+.SUBCKT Tran_Iout VCC VEE VIMON AGND 
+X_Siq1         N1   FGND   VIMON N2 Amp_Dyn_Iout_Siq1 
+X_Siq2         N1   FGND   VIMON N3 Amp_Dyn_Iout_Siq2 
+C_Ciq1         N1   FGND   10e-12    
+R_Riq1         N1   VIMON  10        
+R_Riq2         N2   FGND   10e3      
+R_Riq3         FGND N3     10e3      
+G_Gsourcing    VCC  FGND   N3 FGND  0.001
+G_Gsinking     VEE  FGND   N2 FGND  0.001
+.ENDS Tran_Iout
+*$
+.subckt Amp_Dyn_Iout_Siq1 1 2 3 4  
+S_Siq1         3 4 1 2 _Siq1
+RS_Siq1        1 2 1G
+.MODEL        _Siq1 VSWITCH Roff=1e6 Ron=1.0 Voff=0.0V Von=-0.10V
+.ends Amp_Dyn_Iout_Siq1
+*$
+.subckt Amp_Dyn_Iout_Siq2 1 2 3 4  
+S_Siq2         3 4 1 2 _Siq2
+RS_Siq2        1 2 1G
+.MODEL        _Siq2 VSWITCH Roff=1e6 Ron=1.0 Voff=0.0V Von=0.10V
+.ends Amp_Dyn_Iout_Siq2
+*$
+*
+.subckt VCCS_Limit1 VCP VCN IOUTP IOUTN 
+.PARAM   GAIN=10e-6
+.PARAM   IPOS=0.5
+.PARAM   INEG=-0.5
+G1 IOUTP IOUTN VALUE={LIMIT(Gain*V(VCP,VCN),Ipos,Ineg)}
+.ends VCCS_Limit1
+*$
+*
+.subckt VCCS_Limit2 VCP VCN IOUTP IOUTN 
+.PARAM    GAIN=61.84u
+.PARAM    IPOS=126u
+.PARAM    INEG=-126u
+G1 IOUTP IOUTN VALUE={LIMIT(Gain*V(VCP,VCN),Ipos,Ineg)}
+.ends VCCS_Limit2
+*$
+*
+.subckt VCVS_Limit VCP VCN VOUTP VOUTN
+.PARAM   GAIN=1e6
+.PARAM   VPOS=+6e4
+.PARAM   VNEG=-6e4
+E1 VOUTP VOUTN VALUE={LIMIT(Gain*V(VCP,VCN),Vpos,Vneg)}
+.ends VCVS_Limit
+*$
+*
+.SUBCKT HPA_PD_I VCC VEE PD Vimon AGND Ninp Ninn
+.PARAM   VTH=1.4 
+.PARAM   IMAX=73U
+.PARAM   IMIN=3n
+.PARAM   IIBP=1f
+.PARAM   IIBN=1f
+*GBIAS    VCC  VEE    VALUE = {IF(V(PD)   >= (V(VEE)+Vth),Imax,Imin)}
+GBIAS     VCC  VEE    VALUE = {IF(V(PD)   >= V(VCC),Imax,Imin)}
+Ebuf      VDD  0      VCC  0   1
+Ginp      VDD  Ninp   VALUE = {IF(V(PD)   >= V(VCC),IIBP,0)}
+Ginn      VDD  Ninn   VALUE = {IF(V(PD)   >= V(VCC),IIBN,0)}
+.ENDS
+*$
+.SUBCKT HPA_PD_Sgnl  CP  CN  DIS  VP  VN  VCC VEE
+.PARAM   GAIN = 1
+EVCVS  VP  VN  VALUE = {IF(V(DIS,VEE) >= 1.4,V(CP,CN)*GAIN,0)}
+.ENDS HPA_PD_Sgnl
+*$
+*
+.SUBCKT EPOLY2 1 2 3 4 7 8 
+EINT 7 8 POLY(2) (1,2) (3,4) (0 0.5 0.5)
+.ENDS EPOLY2 
+*$
+*
+.SUBCKT EPOLY1 1 2 3 4 
+*For distortion purpose
+EINT 3 4 POLY(1) (1,2) (0 1 8.5e-5 14.26e-4)
+.ENDS EPOLY1 
+*$
+

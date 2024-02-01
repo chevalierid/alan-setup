@@ -1,0 +1,144 @@
+
+* THS7530
+*****************************************************************************
+* (C) Copyright 2011 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: THS7530
+* Date: 15JUL2011
+* Model Type: ALL IN ONE
+* Simulator: PSPICE
+* Simulator Version: 16.0.0.p001
+* EVM Order Number: N/A
+* EVM Users Guide: N/A
+* Datasheet: SLOS405C-DECEMBER 2002-REVISED FEBRUARY 2010
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+* 
+* Updates:
+*
+* Version 1.0 : 
+* Release to Web
+*
+*****************************************************************************
+** THS7530 SUBCIRCUIT Rev-
+* HIGH SPEED FULLY DIFFERENTIAL VARIABLE AMPLIFIER  
+* WRITTEN 11/26/02
+* THE GAIN REFERENCE PIN IS TIED TO VS- IN THIS MODEL
+* CONNECTIONS:      NON-INVERTING INPUT
+*  		    | INVERTING INPUT
+*     		    |  | POSITIVE POWER SUPPLY
+*      		    |  |  | NEGATIVE POWER SUPPLY
+*             	    |  |  |  | NEGATIVE OUTPUT
+*		    |  |  |  |  |  POSITIVE OUTPUT
+*	            |  |  |  |  |  |  VOCM INPUT
+* 	            |  |  |  |  |  |  |  GAIN INPUT
+* 	            |  |  |  |  |  |  |  | 
+* 	            |  |  |  |  |  |  |  | 
+* 	            |  |  |  |  |  |  |  | 
+.SUBCKT THS7530     1  2  3  4  5  6  7  8 
+*
+*INPUT*
+Q1         122 1 101 NPN_IN  16
+Q2         123 2 102 NPN_IN  16
+R1         102 101  25  
+I1         101 4 DC 4.85e-3  
+I2         102 4 DC 4.85e-3  
+
+*QUAD*
+Q3         132 120 122 NPN  16
+Q4         121 119 122 NPN  16
+Q5         132 119 123 NPN  16
+Q6         121 120 123 NPN  16
+R2         132 3  250  
+R3         121 3  250  
+
+*CURRENT AMP*
+F1         128 129 VF1 6
+VF1       132 121 0V
+
+*Z NODE*
+R4         128 129  2k 
+I3           129 4 DC 0.75e-3  
+I4           128 4 DC 0.75e-3  
+V9	      128 328 0.7
+V10	      129 329 0.7
+
+
+*FREQUENCY SHAPING* 
+E3         131 0 329 0 1
+R5         131 140  30  
+L3         140 133  10n  
+C6         133 0  27p  
+E4         130 0 328 0 1
+R9         130 141  30  
+L4         141 125  10n  
+C7         125 0  27p  
+
+*OUTPUT BUFFER*
+Q9              4 133 117 PNP  5.12
+Q10            3 133 127 NPN  5.12
+Q11            3 117 134 NPN  81.92
+Q12            4 127 135 PNP  81.92
+Q13            4 125 116 PNP  5.12
+Q14            3 125 126 NPN  5.12
+Q15            3 116 136 NPN  81.92
+Q16            4 126 137 PNP  81.92
+R6           138 134  5  
+R7           135 138  5  
+R10         139 136  5  
+R11         137 139  5  
+I5                  3 117 DC 0.4e-3  
+I6              127 4 DC 0.4e-3  
+I7                  3 116 DC 0.4e-3  
+I8              126 4 DC 0.4e-3  
+
+*OUTPUT Z*
+R8           113 138  2.25 
+R12         115 139  2.25 
+L1            113 5  4n  
+L2            115 6  4n  
+C1                6 5  2p  
+
+*VOCM
+Rcm1         115 114  8k  
+Ccm1         115 114  0.1p  
+Rcm2         114 113  8k  
+Ccm2         114 113  0.1p  
+E1               118 0 114 7 1e3
+Rtop               3 7  50k  
+Rbot               4 7  50k  
+Q7               128 118 3 PNP  16
+Q8               129 118 3 PNP  16
+
+*GAIN CONTROL*
+V8         235 8 0.454
+E5         231 0 235 4 0.51
+E6        232 0 POLY(1) 231 0 0.0 1 1 0.5 3.5 
+E7         233 0 232 0 0.115
+E8         234 0 POLY(1) 233 0 0.0 0 1 0 0.333 
+E9         120 119 234 0 0.42
+V7         3 120 1.6
+
+Rsupply 3 4 310
+
+.MODEL NPN_IN NPN  KF=1E-12
+.MODEL NPN NPN
+.MODEL PNP PNP
+.ENDS
+*$

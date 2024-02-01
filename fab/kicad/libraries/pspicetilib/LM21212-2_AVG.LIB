@@ -1,0 +1,124 @@
+*$
+*LM21212-2
+*****************************************************************************
+* (C) Copyright 2013 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: LM21212-2
+* Date: 14MAR2013
+* Model Type: AVERAGE
+* Simulator: PSPICE
+* Simulator Version:16.2.0.p001
+* EVM Order Number: AN-2140 LM21212-2
+* EVM Users Guide: SNVA480–May 2011
+* Datasheet: SNVS715 –MARCH 2011
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+
+.SUBCKT LM21212-2_AVG VINP GND FB COMP SW  PARAMS: L=47u FSW=925k
+X2 FB 18 COMP VSUPPLY GND OPAMPL_0
+VSUPPLY VSUPPLY GND DC=5
+E_BLIM VC VLIM value = {V(VSUPPLY) - 100.0U*15.0}
+RPS VSW SW 10M
+E_BAVERAGE IL GND value = { {L} * {FSW} *(V(IP)**2-V(IV)**2)/2*(1/V(VSW) + 1/V(VON))}
+E_BRAMP VLIM VR value = {1*V(D)}
+X3 COMP VC UTD_0
+E_BPEAKX IPX GND value = { V(VR)/100.0U}
+E_BVALLEY IV GND value = {V(IVX)}
+E_BDUTY D GND value = { IF(V(DX) < 0 , 0 , V(DX))}
+E_BDUTYX DX GND value = { IF(( {L} * {FSW} *(V(IP)-V(IV))/V(VON)) > 950.0M , 950.0M , 
++ ( {L} * {FSW}
++	 *(V(IP)-V(IV))/V(VON)))}
+E_BPEAK IP GND value = { IF(V(IPX) > 0 , V(IPX) , 0)}
+E_BVALLEYX IVX GND value = {(V(IP)-V(VSW)*(1-V(VSW)/V(VIN))/( {L} * {FSW} ))}
+RIN VINP VIN 10M
+V2 18 0 DC=0.6
+G_BIN VIN GND value = {V(VSW)*I(VIL1)/(V(VIN))}
+VIL1 VSWX VSW DC=0
+D1X VSWX VIN MUR105RL
+.MODEL MUR105RL D AF=1 BV=50 CJO=5.37397E-11 EG=0.849639  FC=0.5 IBV=0.000002 
++ IS=9.82502E-09 KF=0 M=0.515449  N=1.57715
++	 RS=0.0304421 TT=1.63843E-08 VJ=1.24876 XTI=0.5
+G_BOUT GND VSWX value = {V(IL)}
+E_BON VON GND value = {V(VIN,VSW)}
+.ENDS
+*$
+.SUBCKT Cout 2 4
+R1 2 3 0.0020
+C1 3 4 9.619586815118204E-5 IC=1.2
+R3 5 4 5; 
+R2 2 4 1.0395456886239579E7
+R4 3 26 444444.44444444444
+R6 3 7 444.44444444444446
+C5 7 1 2.8858760445354613E-6 IC=1.2
+R7 3 10 44.44444444444444
+C6 10 1 2.8858760445354613E-6 IC=1.2
+R8 3 13 4.444444444444445
+C7 13 1 2.8858760445354613E-6 IC=1.2
+C2 26 1 2.8858760445354613E-6 IC=1.2
+R9 3 28 44444.444444444445
+C3 28 1 2.8858760445354613E-6 IC=1.2
+R10 3 29 4444.444444444444
+C4 29 1 2.8858760445354613E-6 IC=1.2
+L8 1 5 15p
+R24 1 5 0.0060
+L12 5 4 1n
+.ENDS
+*$
+.SUBCKT LDCR IN OUT PARAMS:  L=1u DCR=0.01 
+L1 IN 1 {L}
+RDCR 1 OUT {DCR}
+.ENDS
+*$
+.SUBCKT OPAMPL_0 2    3  6   7   4
+RP 4 7 10K
+RXX 4 0 10MEG
+IBP 3 0 17.0N
+RIP 3 0 10MEG
+CIP 3 0 1.4PF
+IBN 2 0 17.0N
+RIN 2 0 10MEG
+CIN 2 0 1.4PF
+VOFST 2 10 0
+RID 10 3 200K
+EA 11 0 10 3 1
+R1 11 12 5K
+R2 12 13 50K
+C1 12 0 1.181818PPP
+GA 0 14 0 13 702.0
+C2 13 14 245.4545F
+RO 14 0 75
+L 14 6 2.727273U
+RL 14 6 1000
+CL 6 0 3PF
+.ENDS
+*$
+.SUBCKT UTD_0 1 2
+RIN 1 0 1E15
+E1 3 0 1 0 1.0
+T1 3 0 2 0 Z0=1 TD=65.0N
+R1 2 0 1
+.ENDS
+*$

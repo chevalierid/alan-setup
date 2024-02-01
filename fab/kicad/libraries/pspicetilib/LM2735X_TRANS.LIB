@@ -1,0 +1,239 @@
+* LM2735X
+*****************************************************************************
+* (C) Copyright 2013 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: LM2735X
+* Date: 23JAN2013
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: AN-1658 LM2735
+* EVM Users Guide: SNVA255–June 2007
+* Datasheet: SNVS485E-REVISED OCTOBER 2012
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+.SUBCKT LM2735X_TRANS VIN EN SW FB GND
+RISN ISN GND 15K
+IISN GND ISN DC=5.5U
+XICL ICL GND 58 ISN CCVS_0
+RVINSUB GND VIN 1K
+RDRSUB GND SW 1K
+E_BISN NODE1SUB 0 value = { IF(V(ISN) > V(OPAMPOUT) , 1 , 0)}
+E_BPWM PWM 0 value = { IF(V(BLANK) < 0.5 & V(NODE2SUB) > 0.5 , 1 , 0)}
+E_BN2 NODE2SUB 0 value = { IF(V(NODE1SUB)>0.5,1,IF( V(OC) > 0.5,1,0))}
+E_BRESET RESET 0 value = { IF(V(PWM) > 0.5 , 1 , IF( V(FAULT) > 0.5,1,0))}
+E_BNONE NODEONE 0 value = { IF(V(CLK) > 0.5 , 1 , IF(  V(QP) > 0.5,1,0))}
+E_BQP QP 0 value = { IF(V(RESET) < 0.5 & V(NODEONE) > 0.5 , 1 , 0)}
+CQ Q 0 100P
+E_BDRIVE INPUT 0 value = { IF(V(CLK) < 0.5 & V(Q) > 0.5 , 1 , 0)}
+RQPQ QP Q 1
+E_BOSC 33 GND value = { IF(V(CLK) > 0.5 , 1 , IF( V(FAULT) > 0.5 , 1 ,
++ 0))}
+IOSC GND RAMP DC=850U
+COSC RAMP GND 1.6N IC=0
+ROSC CLK GND 1K
+VD1 SW 53 DC=0
+E_BFAULT2 FAULT2 GND value = { IF(V(NODE01) > 0.5 & V(FAULT) < 0.5 , 1 ,
++ 0)}
+XSSFA FB2 REF FAULT2 GND SSWITCH_0
+XAMP INTER GND FAULT2 GND SSWITCH_1
+XMEASS MEASSHOT 0 RESET2SHOT 0 SSWITCH_2
+VFB2 FB2 NODE80 DC=0
+XDRIVER 53 19 20 NationalFET2A 
+E_BRAMP 34 0 value = {V(RAMP, GND)}
+XISNA 34 GND ISN V2ITABLEX3_0
+EFB2 NODE80 GND FB GND 1
+CAMP INTER 41 0.044U
+RAMP 41 GND 283
+C2AMP INTER GND 1.25N
+GAMP GND OPAMPOUT INTER GND 122U
+E_BAMP 42 GND value = {0.15+0.0606*V(VIN)}
+DCLAMPN 43 INTER DCLAMP
+.MODEL DCLAMP D
+DCLAMPP INTER 42 DCLAMP
+VCLAMP 43 GND DC=0.613
+ISS GND REF DC=12.5U
+VREF NODE4 GND DC=1.255
+E_BFB 44 0 value = {V(FB,REF)}
+XFB 44 INTER GND V2ITABLEX1_0
+CSS GND REF 42N IC=-1.255
+E_BRESHOT RESETSHOT 0 value = { IF(V(CHSHOT)<0.5 , 1 , 0)}
+E_BCHSHOT CHSHOT 0 value = { IF(V(CLK)<0.5 , 1 , IF( V(BLANK)>0.5 , 1 ,
++ 0))}
+E_BLANK BLANK 0 value = { IF(V(MEASSHOT) < 0.5 & V(CHSHOT) > 0.5 , 1 ,
++ 0)}
+RRES RESET2SHOT RESETSHOT 0.1
+RCHS MEASSHOT CHSHOT 45
+RAMP_EXT OPAMPOUT GND 15K
+CCHS 0 MEASSHOT 1.4427N
+CRES 0 RESET2SHOT 1.4427N
+R27 RAMP GND 1G
+RCONTROL NODE1 GND 10K
+SEN ONEVOLT NODE1 EN GND _S1_MOD
+.MODEL _S1_MOD vswitch VT=1.1 VH=0.7 RON=1 ROFF=1MEG
+EEN 30 GND NODE1 GND 1
+REN 30 ENABLE 10
+CEN ENABLE GND 100P IC=0
+E_BCONTROL 31 GND value = { IF(V(NODE1,GND) > 0.99 , 0 , 1)}
+RENN 31 ENABLENOT 10
+CENN ENABLENOT GND 10P IC=0
+SUVLO ONEVOLT NODE2 VIN GND _S2_MOD
+.MODEL _S2_MOD vswitch VT=2.1 VH=0.2 ROFF=1E6
+RUV NODE2 GND 10K
+RUVLO 32 UVLO 10
+CUVLO UVLO GND 10P IC=0
+E_BUVLO 32 GND value = { IF(V(NODE2,GND) > 0.99 , 0 , 1)}
+RISS VIN GND 62.5E6
+RICL ICL GND 100K
+V6P9 NODE3 GND DC=6.9
+V1V ONEVOLT GND DC=1
+E_BICL OC 0 value = { IF(V(ICL) > V(NODE3) , 1 , 0)}
+E_BFAULT FAULT 0 value = { IF(V(UVLO) > 0.5 , 1 , IF( V(ENABLENOT) > 0.5 ,
++ 1 , 0))}
+XOSC RAMP GND 33 GND SSWITCH_4
+VCLK CLK GND PULSE 0 1 0 1N 1N 25N 0.625U
+XCCCS GND 18 20 GND CCCS_0
+E_BDRIVER 17 GND value = { IF(V(INPUT)>0.5 & V(FAULT)<0.5 , 5 , 0)}
+RDRIVER 17 19 10
+CDRIVER 19 GND 10P
+VISN 18 58
+XSS 63 REF NODE4 V2ITABLEX10_0
+E_BSS 63 0 value = {V(REF, NODE4)}
+E_BRSHOTAMP RESETSHOTAMP 0 value = { IF(V(CHAMP)<0.5 , 1 , 0)}
+E_BCSHOTAMP CHAMP 0 value = { IF(V(FAULT)<0.5 , 1 , IF(  V(NODE01)>0.5 ,
++ 1 , 0))}
+E_BMSHOTAMP NODE01 0 value = { IF(V(MEASSHOTAMP) < 0.5 & V(CHAMP) > 0.5 ,
++ 1 , 0)}
+RSHOTAMP RESETSHOT2AMP RESETSHOTAMP 0.1
+R2SHOTAMP MEASSHOTAMP CHAMP 1600E3
+C2SHOTAMP MEASSHOTAMP 0 50P IC=1
+CSHOTAMP RESETSHOT2AMP 0 50P IC=1
+XSHOTAMP MEASSHOTAMP 0 RESETSHOT2AMP 0 SSWITCH_5
+.ENDS LM2735X_TRANS
+*$
+.SUBCKT CCCS_0 1    2    3   4
+F1 1 2 V1 23.000U
+V1 3 4
+.ENDS
+*$
+.SUBCKT CCVS_0 1    2    3   4
+H1 1 2 V1 100.000K
+V1 3 4
+.ENDS
+*$
+.SUBCKT SSWITCH_0 1 2 3   4
+S_A1 1 2 3 4 SMOOTH
+.MODEL SMOOTH VSWITCH RON=1.0000M ROFF=1.0000G VON=750.00M VOFF=250.00M
+.ENDS
+*$
+.SUBCKT SSWITCH_1 1 2 3   4
+S_A1 1 2 3 4 SMOOTH
+.MODEL SMOOTH VSWITCH RON=1.0000M ROFF=500.00MEG VON=750.00M VOFF=250.00M
+.ENDS
+*$
+.SUBCKT SSWITCH_2 1 2 3   4
+S_A1 1 2 3 4 SMOOTH
+.MODEL SMOOTH VSWITCH RON=1.0000  ROFF=1.0000MEG VON=750.00M VOFF=250.00M
+.ENDS
+*$
+.SUBCKT SSWITCH_3 1 2 3   4
+S_A1 1 2 3 4 SMOOTH
+.MODEL SMOOTH VSWITCH RON=170.00M ROFF=1.0000MEG VON=750.00M VOFF=250.00M
+.ENDS
+*$
+.SUBCKT SSWITCH_4 1 2 3   4
+S_A1 1 2 3 4 SMOOTH
+.MODEL SMOOTH VSWITCH RON=1.0000  ROFF=1.0000G VON=750.00M VOFF=250.00M
+.ENDS
+*$
+.SUBCKT SSWITCH_5 1 2 3   4
+S_A1 1 2 3 4 SMOOTH
+.MODEL SMOOTH VSWITCH RON=1.0000  ROFF=1.0000G VON=750.00M VOFF=250.00M
+.ENDS
+*$
+.SUBCKT V2ITABLEX1_0 1 2 3
+G1 2 3 TABLE { V(1, 0) } ( (-200,-197U) (-10,-197U)(-196M,-196U)(0,0) 
++(196M,196U) (10,197U) (200,197U) )
+.ENDS
+*$
+.SUBCKT V2ITABLEX3_0 1 2 3
+G1 2 3 TABLE { V(1, 0) } ( (-200,0) (0,0)(0.75,15U)(1,22.5U) (200, 22.5U) )
+.ENDS
+*$
+.SUBCKT V2ITABLEX10_0 1 2 3
+G1 2 3 TABLE { V(1, 0) } ( (-200,10N) (-10,10N) (0,0) (1M,1M) (2M,10M) 
++ (3M,500M) (200,500M) )
+.ENDS
+*$
+.SUBCKT NationalFET2A 10 20 30
+M1   1  2  3  3  DMOS L=1U W=1U
+RD  10  1  84.5m
+RS  30  3  5.50m
+RG  20  2  50
+CGS  2  3  55.4p
+EGD 12  0  2  1  1
+VFB 14  0  0
+FFB  2  1  VFB  1
+CGD 13 14  59.0p
+R1  13  0  1.00
+D1  12 13  DLIM
+DDG 15 14  DCGD
+R2  12 15  1.00
+D2  15  0  DLIM
+DSD  3 10  DSUB
+.MODEL DMOS NMOS(LEVEL=3 VMAX=52.1k THETA=58.1m ETA=2.00m VTO=3.10 
++KP=10.69
+.MODEL DCGD D (CJO=59.0p VJ=0.600 M=0.680
+.MODEL DSUB D (IS=10.4n N=1.50 RS=0.100 BV=25.0  
++CJO=217p VJ=0.800 M=0.420 TT=86n
+.MODEL DLIM D (IS=100U)
+.ENDS
+*$
+.MODEL myD30880 D BV=200 CJO=470E-12 EG=0.69 IBV=1E-6 
++IS=9E-6 M=0.8 N=1.442 RS=60E-3 VJ=1 XTI=2
+*$
+.SUBCKT CESR 1 2 PARAMS: C=10u ESR=2m
+C1 1 INT1 {C}
+R1 INT1 2 {ESR}
+.ENDS CESR
+*$
+.SUBCKT LDCR IN OUT
++ PARAMS:  L=1u DCR=0.01 
+L	1 OUT  {L} 
+RDCR	IN 1 {DCR}
+.ENDS LDCR
+*$
+.SUBCKT CESR1 1 2 PARAMS: C=10u ESR=4.6m IC=12
+C1 1 INT1 {C} IC={IC}
+R1 INT1 2 {ESR}
+.ENDS CESR1
+*$
+.SUBCKT LDCR1 IN OUT
++ PARAMS:  L=1u DCR=0.01 IC=0
+L	1 OUT  {L} IC={IC}
+RDCR	IN 1 {DCR}
+.ENDS LDCR1
+*$

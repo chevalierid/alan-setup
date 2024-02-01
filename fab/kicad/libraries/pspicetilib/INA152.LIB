@@ -1,0 +1,185 @@
+*$
+* INA152
+*****************************************************************************
+* (C) Copyright 2023 Texas Instruments Incorporated. All rights reserved.     
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.      
+** TI and its licensors and suppliers make no warranties, either expressed   
+** or implied, with respect to this model, including the warranties of       
+** merchantability or fitness for a particular purpose. The model is        
+** provided solely on an "as is" basis. The entire risk as to its quality   
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Online Design Tools, Texas Instruments Inc.
+* Part: INA152
+* Date: 07FEB2023
+* Model Type: ALL IN ONE
+* EVM Order Number: N/A 
+* EVM Users Guide:  N/A 
+* Datasheet: SBOS184
+*
+* Model Version: Final 1.1
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.1
+* Updated PSpice symbol.
+*
+* Final 1.0 : 
+* Release to Web
+*
+*****************************************************************************
+* PINOUT ORDER VIN+ VIN- +V -V OUT REF SENSE 
+* PINOUT ORDER   3   2    7  4  6   1   5    
+*****************************************************************************
+.SUBCKT INA152 3 2 7 4 6 1 5
+*****************************************************************************
+C6 34 38 0.2E-12 
+C7 35 39 1E-12 
+C8 36 40 1E-12 
+C12 20 6 21.8E-12 
+C13 51 53 9E-12 
+C14 32 0 1E-12 
+C15 30 0 1E-12 
+C16 6 0 1E-12 
+C21 32 30 0.5E-12 
+C23 57 45 5E-12 
+D5 6 7 DD 
+D6 4 6 DD 
+D7 24 0 DIN 
+D8 25 0 DIN 
+D9 26 27 DVN 
+D10 28 29 DVN 
+D11 19 22 DD 
+D12 10 19 DD 
+D13 47 8 DD 
+D14 58 49 DD 
+D17 66 63 DD 
+D18 64 65 DD 
+D19 68 0 DD 
+E2 10 0 4 0 1
+E3 22 0 7 0 1
+E4 30 31 26 28 0.3
+E5 34 0 22 0 1
+E6 35 0 10 0 1
+E7 36 0 37 0 1
+E10 41 33 40 0 0.07
+E11 44 41 39 0 -0.03
+E12 32 44 38 0 0.03
+E14 45 10 22 10 0.5
+E17 43 0 32 0 1
+E18 42 0 31 0 1
+E20 62 45 53 51 1
+E23 22 55 22 66 1
+E24 56 10 65 10 1
+E25 16 22 7 17 -5.5
+E26 14 10 18 4 3.1
+G2 32 31 24 25 1.2E-7
+G3 19 45 57 45 0.2E-3
+G7 63 45 19 45 -1E-3
+G8 45 64 19 45 1E-3
+G9 45 65 54 10 1E-3
+G10 66 45 22 50 1E-3
+G11 7 4 67 0 -800E-6
+I8 0 24 0.1E-3
+I9 0 25 0.1E-3
+I10 0 26 0.2E-6
+I11 0 28 0.2E-6
+I14 50 54 40E-6
+I15 60 10 24.7E-6
+I19 0 68 1E-3
+I20 7 4 355E-6
+I21 30 0 0.2E-12
+I22 32 0 0.2E-12
+J1 22 32 22 JX 
+J2 22 30 22 JX 
+J3 30 61 30 JX 
+J4 32 61 32 JX 
+M1 46 47 18 18 NOUT L=3U W=120U
+M2 48 49 17 17 POUT L=3U W=50U
+M3 50 50 21 21 POUT L=3U W=50U
+M4 51 52 11 11 PIN L=3U W=90U
+M5 53 30 13 13 PIN L=3U W=90U
+M8 54 54 23 23 NOUT L=3U W=120U
+M19 59 60 22 22 PIN L=6U W=500U
+M23 60 60 22 22 PIN L=6U W=500U
+Q15 58 15 22 QPL 
+Q20 8 9 10 QNL 
+R3 11 12 2 
+R4 13 12 2 
+R10 9 14 100 
+R11 15 16 100 
+R12 17 7 20 
+R13 4 18 20 
+R16 19 20 1.5E3 
+R17 21 22 20 
+R18 10 23 20 
+R22 4 7 5E5 
+R28 33 3 40E3 
+R30 34 38 1E6 
+R31 35 39 1E9 
+R32 36 40 1E6 
+R33 0 38 100 
+R34 0 39 1E5 
+R35 0 40 100 
+R36 42 37 1E3 
+R37 37 43 1E3 
+R43 55 49 100 
+R44 56 47 100 
+R45 45 19 90E6 
+R46 10 51 2E3 
+R47 10 53 2E3 
+R59 6 48 200 
+R60 46 6 180 
+R62 62 57 10E3 
+R66 63 66 100E6 
+R67 65 64 100E6 
+R68 66 22 1E3 
+R69 10 65 1E3 
+R70 64 45 1E6 
+R71 65 45 1E6 
+R72 45 66 1E6 
+R73 45 63 1E6 
+R74 0 67 1E6 
+R75 44 32 1E9 
+R76 41 44 1E9 
+R77 33 41 1E9 
+R78 31 30 1E9 
+R79 45 57 1E9 
+R81 55 22 1E9 
+R82 10 56 1E9 
+R83 37 0 1E9 
+R86 31 5 40.004E3 
+R143 2 31 40E3 
+R146 1 33 40.004E3 
+R147 10 54 1E11 
+R148 50 22 1E11 
+R149 17 49 1E11 
+R150 18 47 1E11 
+R151 19 6 2E9 
+R152 0 27 150E3 
+R153 0 29 150E3 
+V18 32 52 120E-6
+V20 59 12 0.2
+V23 68 67 0.71
+V31 61 10 0.55
+.MODEL JX NJF IS=1E-17
+.MODEL DVN D KF=7E-18 IS=1E-16
+.MODEL DIN D
+.MODEL DD D
+.MODEL QPL PNP
+.MODEL QNL NPN
+.MODEL POUT PMOS KP=200U VTO=-0.7
+.MODEL NOUT NMOS KP=200U VTO=0.7
+.MODEL PIN PMOS KP=200U VTO=-0.7
+.MODEL NIN NMOS KP=200U VTO=0.7
+.ENDS INA152
+*

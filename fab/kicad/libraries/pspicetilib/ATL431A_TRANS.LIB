@@ -1,0 +1,142 @@
+*$
+*  ATL431A
+*****************************************************************************
+* (C) Copyright 2018 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Texas Instruments Inc.
+* Part: ATL431A
+* Date: 15JAN2019
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: ATL431EVM
+* EVM Users Guide: SLVUAE7 – April 2015
+* Datasheet: SLVSCV5D –MARCH 2015–REVISED OCTOBER 2016
+*
+* Model Version: Final 1.40
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+* Final 1.10
+* Reference voltage kept at 2.5V DC
+* Changed the Cathode reverse voltage from 2V to 1.5V
+*
+* Final 1.20
+* AC Response modeled as per new datasheet
+* Reference Input current modeled
+*
+* Final 1.30
+* The IKA v/s VKA modeling changed
+*
+* Final 1.40
+* 1. The main loop is kept same as TL431A
+* 2. Model changes done to fix issue in Line transient
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+* 1. The following features have been modeled and Validated.
+*      a. Maximum Cathode Voltage.
+*      b. Minimum Cathode current for regulation.
+*      c. OFF STATE CATHODE CURRENT
+*      d. CATHODE VOLTAGE v/s CATHODE CURRENT
+*      e. PULSE RESPONSE
+*      f. Noise Analysis
+*      g. Reference Input Current
+*      h. Input Transient
+*      i. Regulation for negative supply
+*      j. Dynamic Impedance
+*      k. Open Loop Response
+*      l. Shunt Regulation behaviour
+* 2. Temperature effects are not modeled. 
+* 3. AC analysis or loop behaviour is not modeled.
+*
+*****************************************************************************
+.SUBCKT ATL431A_TRANS CATHODE REF ANODE   
+R_R1         6 2  15.6  
+E_E27         REF_INT 0 VALUE { IF(V(FB_INT,0)<2.45,V(FB_INT,0),V(1)) }
+R_R10         E1 6  1  
+E_E1         N23666 6 2 6 1
+E_ABM45         N15048350 0 VALUE { if(V(REF)>0,LIMIT(((V(B1)-V(E1))*7.2),2.5,
++  0),0.004625)    }
+D_D11         5 8 DCLAMP 
+E_E28         FB_INT 0 REF 6 1
+E_E31         1 0 N15048350 0 1
+D_D12         7 8 DCLAMP 
+X_U6         REF N17052054 vnse
+V_V1         N17052054 11 0Vdc
+V_V2         5 6 2
+R_R8         N15048182 N15048218  10  
+G_G4         6 2 REF_INT 11 110m
+V_V3         7 CATHODE 0Vdc
+V_V6         N15048182 6 100
+V_V4         6 ANODE 0Vdc
+R_R9         B1 REF  54Meg  
+C_C1         6 2  0.5u  TC=0,0 
+G_ABM2I4         6 8 VALUE { LIMIT(IF((V(N23666)-V(6))< 0 ,
++  1.73*(V(N23666)-V(6)) -0.037u, -0.037u),-100m,-8u*V(1,6))    }
+X_U9         N15048218 B1 E1 bjt PARAMS:
+.ENDS ATL431A_TRANS
+*$
+.model DCLAMP d
++ is=1.35e-008
++ rs=0.025
++ n=1.59
++ cjo=4.5e-011
++ vj=0.75
++ m=0.302
++ tt=5.04e-008
++ bv=34
++ ibv=0.001
+*$
+.subckt vnse 1 2
+.PARAM NLF=1000
+.PARAM FLW=13
+.PARAM NVR=200
+.PARAM GLF={PWR(FLW,0.25)*NLF/1164}
+.PARAM RNV={1.184*PWR(NVR,2)}
+.MODEL DVN D KF={15*PWR(FLW,0.2)/1E11} IS=1.0E-16
+I1 0 7 10E-3
+I2 0 8 10E-3
+D1 7 0 DVN
+D2 8 0 DVN
+E1 3 6 7 8 {GLF}
+R1 3 0 1E9
+R2 3 0 1E9
+R3 3 6 1E9
+E2 6 4 5 0 10
+R4 5 0 {RNV}
+R5 5 0 {RNV}
+R6 3 4 1E9
+R7 4 0 1E9
+E3 1 2 3 4 1
+C1 1 0 1E-15
+C2 2 0 1E-15
+C3 1 2 1E-15
+.ends vnse
+*$
+.subckt bjt 3 2 1
+q1 3 2 1 npn_1 
+.model npn_1 npn
++ bf=450
++ is=1e-019
+.ends bjt
+*$

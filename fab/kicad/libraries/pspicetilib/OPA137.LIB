@@ -1,0 +1,83 @@
+* OPA137
+*$
+*****************************************************************************
+* (C) Copyright 2011 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: OPA137
+* Date: 31MAY2011
+* Model Type: ALL IN ONE
+* Simulator: PSPICE
+* Simulator Version: 16.0.0.p001
+* EVM Order Number: N/A 
+* EVM Users Guide: N/A
+* Datasheet: SBOS089
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 : 
+* Release to Web
+*
+*****************************************************************************
+* CONNECTIONS:		 NON-INVERTING INPUT
+*	                 | INVERTING INPUT
+*       	         | | POSITIVE POWER SUPPLY
+*               	 | | | NEGATIVE POWER SUPPLY
+*	        	 | | | | OUTPUT
+*       	         | | | | |
+* PIN CONFIG FOR OPA137 :1 2 3 4 5
+*****************************************************************************
+.subckt OPA137   1 2 3 4 5
+*
+  c1   11 12 1.6246E-12
+  c2    6  7 10.000E-12
+  css  10 99 1.0000E-30
+  dc    5 53 dy
+  de   54  5 dy
+  dlp  90 91 dx
+  dln  92 90 dx
+  dp    4  3 dx
+  egnd 99  0 poly(2) (3,0) (4,0) 0 .5 .5
+  fb    7 99 poly(5) vb vc ve vlp vln 0 31.831E6 -1E3 1E3 32E6 -32E6
+  ga    6  0 11 12 62.832E-6
+  gcm   0  6 10 99 3.1416E-9
+  iss   3 10 dc 35.000E-6
+  hlim 90  0 vlim 1K
+  j1   11  2 10 jx1
+  j2   12  1 10 jx2
+  r2    6  9 100.00E3
+  rd1   4 11 15.915E3
+  rd2   4 12 15.915E3
+  ro1   8  5 50
+  ro2   7 99 25
+  rp    3  4 14.851E3
+  rss  10 99 5.7143E6
+  vb    9  0 dc 0
+  vc    3 53 dc 1.9037
+  ve   54  4 dc 2.0037
+  vlim  7  8 dc 0
+  vlp  91  0 dc 25
+  vln   0 92 dc 25
+.model dx D(Is=800.00E-18)
+.model dy D(Is=800.00E-18 Rs=1m Cjo=10p)
+.model jx1 PJF(Is=2.5000E-12 Beta=112.80E-6 Vto=-1)
+.model jx2 PJF(Is=2.5000E-12 Beta=112.80E-6 Vto=-1)
+.ends OPA137
+*$

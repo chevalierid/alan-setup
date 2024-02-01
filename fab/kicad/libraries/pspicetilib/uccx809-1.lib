@@ -1,0 +1,396 @@
+* PSpice Model Editor - Version 16.0.0
+*$
+* UCCx809-1
+*****************************************************************************
+* (C) Copyright 2009 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.                                             
+** TI and its licensors and suppliers make no warranties, either expressed                                           
+** or implied, with respect to this model, including the warranties of                                                    
+** merchantability or fitness for a particular purpose. The model is                                                      
+** provided solely on an "as is" basis. The entire risk as to its quality                                                    
+** and performance is with the customer                                                                                          
+*****************************************************************************
+*
+* This model was developed for Texas Instruments Incorporated by:
+*   AEi Systems, LLC
+*   5777 W. Century Blvd., Suite 876
+*   Los Angeles, California  90045
+*
+* This model is subject to change without notice. Neither Texas Instruments Incorporated 
+* nor AEi Systems is responsible for updating this model.
+* For more information regarding modeling services, model libraries and simulation 
+* products, please call AEi Systems at (310) 216-1144, or contact AEi Systems by email: 
+* info@AENG.com. Or visit AEi Systems on the web at http://www.AENG.com.
+*
+*****************************************************************************
+*
+** Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: UCC1809-1, UCC2809-1, and UCC3809-1, 
+* Date: 08/28/2009
+* Model Type: Transient 
+* Simulator: PSpice 
+* Simulator Version: 16.0.0.p001
+* Reference Design: Based on PMP665 
+* Datasheet: SLUS166B - NOVEMBER 1999 - REVISED NOVEMBER 2004
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+.SUBCKT UCCx809_1 FB SS RT1 RT2 Gnd Out Vdd Ref
+*****************************************
+*X1 gnd gnd 7 8 2 clk FFLOPTI
+X1 8 7 clk 2 SRNANDLATCHRHP_BASIC 
+*****************************************
+*X2 gnd gnd 18 clk 17 PWMQ FFLOPTI
+X2 clk 18 PWMQ 17 SRNANDLATCHRHP_BASIC
+*****************************************
+MRT2 RT2 clk gnd gnd _M1_mod 
+.MODEL _M1_mod NMOS KP=1 RD=250 VTO=2.5
+*** Changed from ref5Vint to Ref ***
+*MRT1 RT1 clk ref5vint ref5vint _QP 
+MRT1 RT1 clk Ref Ref _QP
+************************************
+.MODEL _QP PMOS KP=1 RD=250 VTO=-2.5
+DSS SS 13 _DN 
+.MODEL _DN D
+************************************
+X_U1234 VDD N00173 N00192 UVLO_INT COMPHYS_BASIC_GEN 
++ PARAMS: VDD=5 VSS=0 VTHRESH=2.5
+V_V1234         N00173 0 10
+V_V2345         N00192 0 2
+X_U2345 UVLO_INT UVLO INV_BASIC_GEN PARAMS: 
++ VDD=5 VSS=0 VTHRESH=2.5
+************************************
+EBclkR 7 gnd Value= { IF ( v(clk) > 2.51 & 
++ v(RT1) < 1.67 , 5 , 0 ) }
+EBclkS 8 gnd Value= { IF ( V(Clk) < 2.5 & 
++ V(RT2) > 3.33 , 5 , 0 ) }
+*IUV VDD uvlo DC=80u
+DVdd gnd VDD _DZ 
+.MODEL _DZ D BV=17.5 IBV=10m
+ISS ref5vint SS DC=7U
+MUVLO SS uvlo gnd gnd _QN 
+.MODEL _QN NMOS KP=1 RD=500 VTO=2.5
+*********************************************
+*** Changed from 1.3V to 0.5V to make sure 
+*** SS is clampled to 5V not 4.2V 
+*VSS ref5vint 13 DC=1.3
+VSS ref5vint 13 DC=0.5
+*********************************************
+EBref ref5vint gnd Value= { IF ( V(Vdd) - 1 > 5 , 5 , 
++ IF ( V(Vdd) - 1 < 0 , 0 , V(Vdd) - 1 ) ) }
+EBRegate 20 gnd Value= { IF ( V(UVLO) < 2.5 & 
++ V(SS) > 0.48 , V(Ref5vint) , 0 ) }
+MClk FB clk gnd gnd _QN 
+EBout 24 out Value= { IF ( V(DriveIn) > 3 , 10 , -10 ) }
+EBReset 18 gnd Value= { IF ( V(FB) + 1 > V(SS) , 5 , 
++ IF ( V(FB) > 1 , 5 , 0 ) ) }
+EBLogic drivein gnd Value= { IF ( V(PWMq) > 2.5 & V(UVLO) 
++ < 2.5 & V(Clk) < 2.5 & V(SS) > 0.48 , 10 , 0 ) }
+Ridd 21 gnd 150k
+VMRef 21 20
+Rloadreg 21 ref .2
+F1 VDD 0 VMRef -1
+MBF gnd 22 out out _OUTP 
+.MODEL _OUTP PMOS KP=1 RD=20 VTO=-2.5
+Rout 22 24 100
+Cout 22 gnd 10p
+MTF VDD 22 out out _OUTN 
+.MODEL _OUTN NMOS KP=1 RD=10 VTO=2.5
+.ENDS UCCx809_1
+*$
+.SUBCKT COMPHYS_BASIC_GEN INP INM HYS OUT 
++ PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+EIN INP1 INM1 INP INM 1 
+EHYS INP1 INP2 VALUE { IF( V(1) > {VTHRESH},-V(HYS),0) }
+EOUT OUT 0 VALUE { IF( V(INP2)>V(INM1), {VDD} ,{VSS}) }
+R1 OUT 1 1
+C1 1 0 5n
+RINP1 INP1 0 1K
+.ENDS COMPHYS_BASIC_GEN
+*$
+.SUBCKT INV_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS INV_BASIC_GEN
+*$
+.SUBCKT SRNANDLATCHRHP_BASIC S R Q QB
+GQ 0 Qint VALUE = {IF(V(R) > 2.5,-5,IF(V(S)>2.5,5, 0))}
+CQint Qint 0 1n
+RQint Qint 0 1000MEG
+D_D10 Qint MY5 D_D1
+V1 MY5 0 5
+D_D11 0 Qint D_D1 
+EQ Qqq 0 Qint 0 1
+X3 Qqq Qqqd1 BUF_BASIC
+RQq Qqqd1 Q 1
+EQb Qbr 0 VALUE = {IF( V(Q) > 2.5, 0,5)}
+RQb Qbr QB 1 
+Cdummy1 Q 0 1n IC={5}
+Cdummy2 QB 0 1n IC={0}
+.ENDS SRNANDLATCHRHP_BASIC
+*$
+.SUBCKT BUF_BASIC A  Y 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > 2.5 , 
++ 5,0)}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS BUF_BASIC
+*$
+.MODEL D_D1 D( IS=1e-15 TT=10p Rs=0.05 N=.1  )
+*$
+.SUBCKT G027270 100 2 110 12 210 22 31 32 
++ PARAMS: N1=1 N2=0.43668 N3=0.208 N4=0.125 LMAG=304u
+RT1 100 1 0.285
+RT2 110 11 0.445
+RT3 210 21 0.2
+LMag 100 2 304u
+*N1
+RP1 1 2 1MEG
+E1 5 0 1 2 1
+F1 1 2 VM1 1
+RS1 6 3 1U
+VM1 5 6 
+*N2
+RP2 11 12 1MEG
+E2 15 0 11 12 2.29
+F2 11 12 VM2 2.29
+RS2 16 3 1U
+VM2 15 16 
+*N3
+RP3 21 22 1MEG
+E3 25 0 21 22 4.8
+F3 21 22 VM3 4.8
+RS3 26 3 1U
+VM3 25 26 
+*N4
+RP4 31 32 1MEG
+E4 35 0 31 32 8
+F4 31 32 VM4 8
+RS4 36 3 1U
+VM4 35 36
+.ENDS G027270
+*$
+.MODEL MURS120T3 d
++ IS=8.496155e-008 RS=0.0132507 N=1.83419 EG=0.866621
++ XTI=0.5 BV=200 IBV=0.0001 CJO=4.5038e-011 IKF=1.6933 
++ VJ=1.39715 M=0.5336849 FC=0.5 TT=3.9436e-08
++ KF=0 AF=1
+*$
+.SUBCKT ZEN6_8 1 2
+D1 1 2 DZEN
+.MODEL DZEN D(RS=3.7207 BV=6.7256 CJO=320.85P TT=50N 
++ M=.33 VJ=.75 IS=1E-11 N=1.27 IBV=20MA)
+.ENDS ZEN6_8 
+*$
+.SUBCKT ZEN18 1 2
+D1 1 2 DZEN
+.MODEL DZEN D(RS=11.607 BV=17.919 CJO=512.05P TT=20N 
++ N=2 IS=1E-9 IBV=6.9444M)
+.ENDS ZEN18
+*$
+.SUBCKT H11A817 An Ca Col Emit
+* A C COL EMITTER
+G1 Col Base 8 0 1
+H1 7 0 VLED 14.56m; 7.56m set peak CTR at 170%
+Rpd 7 8 1k
+Cpd 8 0 1.54n
+RLeak An Ca 1G
+Q1 Col Base Emit BJTH11A817
+.MODEL BJTH11A817 NPN (IS=3.31E-016 NF=1.05 BF=1550 VAF=13.2
++ IKF=22.2m ISE=5.24p NE=2.03 BR=2.80 NR=1.00
++ VAR=16.0 IKR=45.0m RE=1.5 RC=18.6 RB=7.208E+02 
++ IRB=6.890E-04 RBM=1.077E+02
++ XTB=1.5 CJE=7.56p VJE=1.10 MJE=0.500 CJC=2.21p VJC=0.300
++ MJC=0.300 TF=92.0p TR=44.6n EG=1.176
++ NC=2.88 ISC=2.21E-9)
+D3 6 Ca DLedH11A817
+.MODEL DLedH11A817 D EG=1.424
++ CJO=17.242E-12 M=.2933 VJ=.55 BV=5.2978 IBV=10u TT=432n
++ IS=8.613904116691e-010 N=2.915874028267 RS=0.55238
+* IS=15.474E-12 N=1.6579 RS=0.55238 IKF=47.947E-9 ISR=499.32E-12
+VLED An 6
+c_1 An 70 .4p
+r_1 An 70 .12T
+c_2 Ca 70 .4p
+r_2 Ca 70 .12T
+c_4 Col 70 .4p
+r_4 Col 70 .12T
+c_5 Base 70 .4p
+r_5 Base 70 .12T
+c_6 Emit 70 .4p
+r_6 Emit 70 .12T
+.ENDS H11A817
+*$
+.SUBCKT Si4840DY_IS 10 20 30
+* TERMINALS: D G S
+M1 1 2 3 3 DMOS L=1U W=1U
+RD 10 1 3.04m
+RS 40 3 1.21m
+RG 20 2 10.7
+CGS 2 3 1.53n
+EGD 12 0 2 1 1
+VFB 14 0 0
+FFB 2 1 VFB 1
+CGD 13 14 1.54n
+R1 13 0 1.00
+D1 12 13 DLIM
+DDG 15 14 DCGD
+R2 12 15 1.00
+D2 15 0 DLIM
+DSD 3 10 DSUB
+LS 30 40 2.50n
+.MODEL DMOS NMOS(LEVEL=3 VMAX=83.3k THETA=80.0m
++ ETA=2.00m VTO=2.10 KP=297
+.MODEL DCGD D (CJO=1.54n VJ=0.600 M=0.680
+.MODEL DSUB D (IS=58.1n N=1.50 RS=7.14m BV=40.0
++ CJO=1.42n VJ=0.800 M=0.420 TT=30.0n
+.MODEL DLIM D (IS=100U)
+.ENDS Si4840DY_IS 
+*$
+.SUBCKT CAPRLC 1 2 Params: ESR=1M ESL=20N RLEAK=100MEG C=1u
+*Parameters: C Capacitance in Farads, ESR ESR in Ohms
+* ESL ESL in Henries, RLEAK Leakage resistance in Ohms
+C1 1 3 {C}
+R1 3 4 {ESR}
+L1 4 2 {ESL}
+RL 1 2 {RLEAK}
+.ENDS
+*$
+.SUBCKT CAPRLCIC 1 2 Params: ESR=1M ESL=20N RLEAK=100MEG C=1u
+*Parameters: C Capacitance in Farads, ESR ESR in Ohms
+* ESL ESL in Henries, RLEAK Leakage resistance in Ohms
+C1 1 3 {C} IC=3.3
+R1 3 4 {ESR}
+L1 4 2 {ESL}
+RL 1 2 {RLEAK}
+.ENDS CAPRLCIC 
+*$
+.SUBCKT AlKME 2 4 Params: ESR=34 Cnom=330u VIC=3.3
+*ESR AT 120HZ FOR A 330U CAPACITOR
+R1 2 3 343.00M
+C1 3 1 329.86U 
+R3 5 4 150
+R2 2 4 3.0316MEG
+R4 3 26 42.875G
+R6 3 7 42.875K
+C5 7 1 131.95U  
+R7 3 10 428.75 
+C6 10 1 131.95U  
+R8 3 13 4.2875 
+C7 13 1 131.95U  
+C2 26 1 131.95U  
+R9 3 28 428.75MEG
+C3 28 1 131.95U  
+R10 3 29 4.2875MEG
+C4 29 1 131.95U  
+L8 1 5 2.0000N
+R24 1 5 1.0290 
+L12 5 4 10.0000N
+.ENDS AlKME 
+*$
+.SUBCKT AlKMEIC 2 4 Params: ESR=34 Cnom=330u VIC=3.3
+*ESR AT 120HZ FOR A 330U CAPACITOR
+R1 2 3 343.00M
+C1 3 1 329.86U IC = 3.3000 
+R3 5 4 150
+R2 2 4 3.0316MEG
+R4 3 26 42.875G
+R6 3 7 42.875K
+C5 7 1 131.95U IC = 3.3000 
+R7 3 10 428.75 
+C6 10 1 131.95U IC = 3.3000 
+R8 3 13 4.2875 
+C7 13 1 131.95U IC = 3.3000 
+C2 26 1 131.95U IC = 3.3000 
+R9 3 28 428.75MEG
+C3 28 1 131.95U IC = 3.3000 
+R10 3 29 4.2875MEG
+C4 29 1 131.95U IC = 3.3000 
+L8 1 5 2.0000N
+R24 1 5 1.0290 
+L12 5 4 10.0000N
+.ENDS AlKMEIC 
+*$
+.SUBCKT SI4848DY 4 1 2
+M1  3 1 2 2 NMOS W=1939816u L=0.50u
+M2  2 1 2 4 PMOS W=1939816u L=0.65u
+R1  4 3     RTEMP 57E-3 
+CGS 1 2     500E-12
+DBD 2 4     DBD
+.MODEL  NMOS         NMOS (LEVEL  = 3        TOX    = 10E-8
++ RS     = 1E-3            RD     = 0        NSUB   = 1.11E17   
++ KP     = 6E-6            UO     = 650             
++ VMAX   = 0               XJ     = 5E-7     KAPPA  = 10E-2
++ ETA    = 1E-4            TPG    = 1  
++ IS     = 0               LD     = 0                             
++ CGSO   = 0               CGDO   = 0        CGBO   = 0 
++ NFS    = 0.8E12          DELTA  = 0.1)
+.MODEL  PMOS         PMOS (LEVEL  = 3        TOX    = 10E-8
++ NSUB    = 0.5E16          TPG    = -1)   
+.MODEL DBD D (CJO=300E-12 VJ=0.38  M=0.33
++ RS=0.01 FC=0.1 IS=1E-12 TT=3.1E-8 N=1 BV=150.5)
+.MODEL RTEMP RES (TC1=8.5E-3   TC2=5.5E-6)
+.ENDS SI4848DY 
+*$
+.SUBCKT SI4840DY 4 1 2
+M1  3 1 2 2 NMOS W=3292404u L=0.50u 
+M2  2 1 2 4 PMOS W=3292404u L=0.60u
+R1  4 3     RTEMP 35E-4 
+CGS 1 2     870E-12
+DBD 2 4     DBD
+.MODEL  NMOS       NMOS (  LEVEL  = 3               TOX    = 7E-8
++ RS     = 19E-4           RD     = 0               NSUB   = 0.9E17   
++ kp     = 1.65E-5         UO     = 650             
++ VMAX   = 0               XJ     = 5E-7            KAPPA  = 35E-2
++ ETA    = 1E-4            TPG    = 1  
++ IS     = 0               LD     = 0                             
++ CGSO   = 0               CGDO   = 0               CGBO   = 0 
++ NFS    = 0.8E12          DELTA  = 0.1)
+.MODEL  PMOS       PMOS (LEVEL    = 3               TOX    = 7E-8
++ NSUB    = 1.8E16          TPG    = -1)   
+.MODEL DBD D (CJO=1200e-12 VJ=.38    M=0.38 
++ FC=0.1 IS=1E-12 TT=9.3E-8 N=1 BV=40.5)
+.MODEL RTEMP RES (TC1=6E-3   TC2=5.5E-6)
+.ENDS SI4840DY 
+*$
+.SUBCKT AEITL431AILP 7 6 11
+*Simplified TL431 model
+V1 1 6 2.495
+R1 6 2 15.6
+C1 2 6 .5U
+R2 2 3 100
+C2 3 4 .08U
+R3 4 6 10
+G2 6 8 3 6 1.73
+D1 5 8 DCLAMP
+D2 7 8 DCLAMP
+V4 5 6 2
+G1 6 2 1 11 0.11
+.MODEL DCLAMP D (IS=13.5N RS=25M N=1.59
++ CJO=45P VJ=.75 M=.302 TT=50.4N BV=34V IBV=1MA)
+.ENDS AEITL431AILP 
+*$
+.MODEL BAS16L D
++ IS=3.4990E-9 N=1.8224 RS=1.1638 CJO=616.62E-15 M=.1 VJ=1.7279
++ ISR=827.65E-12 NR=2.4090 BV=75.417 IBV=10 TT=8.6562E-9
+*$
+.MODEL mmbt3904tt1 npn AF=1 BF=206.302 BR=20.6302
++ CJC=3.76961e-12 CJE=4.64214e-12 CJS=0 EG=1.05 FC=0.512134
++ IKF=0.0272221 IKR=0.272221 IRB=50.3624 IS=1.26532e-10
++ ISC=2.30771e-09 ISE=2.30771e-09 ITF=0.0105823 KF=0
++ MJC=0.238109 MJE=0.256227 MJS=0.5 NC=1.9876 NE=3.31052
++ NF=1.5 NR=2.89609 PTF=0 RB=5.8376 RBM=0.634251 RC=2.65711
++ RE=0.0001 TF=4.19578e-10 TR=6.82023e-08 VAF=1000
++ VAR=9.39809 VJC=0.4 VJE=0.4 VJS=0.75 VTF=8.75418 XCJC=0.8
++ XTB=0.1 XTF=0.906167 XTI=1
+*$
+

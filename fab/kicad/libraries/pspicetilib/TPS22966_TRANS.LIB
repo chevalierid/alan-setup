@@ -1,0 +1,283 @@
+*$
+* TPS22966 
+*****************************************************************************
+* (C) Copyright 2016 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose. The model is
+** provided solely on an "as is" basis. The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: TPS22966
+* Date: 20DEC2016
+* Model Type: Transient
+* Simulator: PSpice
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: TPS22966EVM-007
+* EVM Users Guide: SLVU757A–August 2012–Revised March 2013
+* Datasheet: SLVSBH4F –JUNE 2012–REVISED JULY 2016
+* Model Version: Final 1.10
+*
+*****************************************************************************
+
+* Updates:
+*
+*
+* Final 1.10
+* <Made these changes to the model>
+* 1. Issue with RPD has been fixed.
+* 2. Updated model to revised Datasheet.
+*
+* Final 1.00
+* Release to Web
+*
+*****************************************************************************
+.SUBCKT TPS22966_TRANS CT1 CT2 VOUT1_1 VOUT1_2 VOUT2_1 VOUT2_2 ON1 ON2 
++ VIN1_1 VIN1_2 VBIAS VIN2_1 VIN2_2 GND
+R_R3         VIN2_1 VIN2_2  1m TC=0,0 
+V_V2         VOUT1_INT VOUT1_1 0Vdc
+X_U2_U1_S1    U2_U1_N427964 0 U2_U1_N427858 0 CONTROL_U2_U1_S1 
+E_U2_U1_E16         U2_U1_VB_5P5 0 TABLE { V(VIN2, 0) } 
++ ( (0,0) (0.8,2.9u) (5, 100u) )
+D_U2_U1_D3         U2_U1_N427858 U2_U1_N14507001 DD 
+X_U2_U1_U43         U2_U1_N427858 U2_N02574 BUF_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+V_U2_U1_V5         U2_U1_N14507001 0 2
+C_U2_U1_C1         0 U2_U1_N427858  1n  
+V_U2_U1_V4         U2_U1_N427908 0 1
+G_U2_U1_ABM2I4         U2_U1_N14507001 U2_U1_N427858 VALUE { IF (V(ON_INT_PRE2)
++  > 0.5, (100)*1u, 0)    }
+V_U2_U1_V2         U2_U1_N00271 0 0.3
+X_U2_U1_U46         U2_N02574 ON_INT_PRE2 U2_U1_N427964 NOR2_BASIC_GEN PARAMS:
++  VDD=1 VSS=0 VTHRESH=500E-3
+G_U2_U1_ABM2I2         U2_U1_N427858 0 VALUE { IF(V(ON_INT_PRE2) <
++  0.5,IF(V(VBIAS)>2.5,V(U2_U1_VB_5P5),V(U2_U1_VB_2P5)),0)    }
+E_U2_U1_E14         U2_U1_VB_2P5 0 TABLE { V(VIN2, 0) } 
++ ( (0,0)(0.8,3.8u) (2.5,120u) )
+X_U2_U1_S2    U2_U1_N427944 0 U2_U1_N427908 U2_U1_N427858 CONTROL_U2_U1_S2 
+X_U2_U1_U44         ON_INT_PRE2 U2_N02574 U2_U1_N427944 AND2_BASIC_GEN PARAMS:
++  VDD=1 VSS=0 VTHRESH=500E-3
+E_U2_U1_E17         U2_U1_N00239 0 TABLE { V(VBIAS, 0) } 
++ ( (2.5,0.65) (3.3,0.7) (3.6,0.71) (4.2,0.75) (5,0.8) (5.5,0.85) )
+X_U2_U1_U1         ON2 U2_U1_N00239 U2_U1_N00271 ON_INT_PRE2 COMPHYS_BASIC_GEN
++  PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+E_U2_U2_E10         U2_U2_IRTB 0 TABLE { V(VIN2, 0) } 
++ ( (0.8,2.65u) (5,2.76u) )
+E_U2_U2_ABM2         U2_U2_VGATE_CLAMP 0 VALUE { MIN( V(VIN2)+6.4,
++  V(VBIAS)*2.88 )    }
+E_U2_U2_E5         U2_U2_IDT 0 TABLE { V(VIN2, 0) } 
++ ( (0.8,1.72u) (2.5,2.2u) )
+X_U2_U2_U10         U2_U2_N16488650 GND U2_U2_N16488774 0 RVAR PARAMS:  RREF=1
+X_U2_U2_S2    U2_N02574 0 CT2 VOUT2_INT DRIVER_U2_U2_S2 
+X_U2_U2_U11         VIN2 U2_U2_N16487844 U2_U2_N16490509 0 RVAR PARAMS:  RREF=1
+E_U2_U2_E6         U2_U2_IRT 0 TABLE { V(VIN2, 0) } 
++ ( (0.8,0.980u) (2.5,1.066u) )
+E_U2_U2_ABM4         U2_U2_N16490509 0 VALUE { IF(V(VBIAS)<=2.5,
++  V(U2_U2_VBIAS1),V(U2_U2_VBIAS2))    }
+C_U2_U2_C4         VOUT2_INT CT2  140p IC=0 
+E_U2_U2_E4         U2_U2_VBIAS2 0 TABLE { V(VIN2, 0) } 
++ ( (0,-1.4m) (1.2,-1.4m) (5,-1.4m) )
+D_U2_U2_D3         CT2 U2_U2_VGATE_CLAMP DD 
+C_U2_U2_C5         CT2 U2_U2_N16487844  120p  
+E_U2_U2_E7         U2_U2_VBIAS1 0 TABLE { V(VIN2, 0) } 
++ ( (0,-100u) (1.2,580u) (1.5,-500u) (1.8,100u) (2.5,600u) )
+E_U2_U2_E9         U2_U2_IDTB 0 TABLE { V(VIN2, 0) } 
++ ( (0.8,3.7u) (5,5.8u) )
+M_U2_U2_M1         U2_U2_N16487844 CT2 VOUT2_INT VOUT2_INT NMOS01           
+X_U2_U2_S1    U2_N02574 0 VOUT2_INT U2_U2_N16488650 DRIVER_U2_U2_S1 
+G_U2_U2_ABM2I4         U2_U2_VGATE_CLAMP CT2 VALUE { IF (V(VBIAS)>2.51,IF(
++  V(U2_N02574) > 0.5 & V(CT2) < 1.18, V(U2_U2_IDTB),IF ( V(U2_N02574) > 0.5 &
++  V(CT2) > 1.05, V(U2_U2_IRTB),0)),  
++ +IF(V(U2_N02574) > 0.5 & V(CT2) < 1.18, V(U2_U2_IDT),IF ( V(U2_N02574) > 0.5
++  & V(CT2) > 1.18, V(U2_U2_IRT),0)))   }
+D_U2_U2_D4         VOUT2_INT U2_U2_N16487844 DD 
+E_U2_U2_ABM3         U2_U2_N16488774 0 VALUE { IF(V(VBIAS)>2.5,220,260)    }
+V_V3         VIN2_2 VIN2 0Vdc
+G_ABMII2         N14516690 GND VALUE { IF(V(EITHER_ON)>0.5,V(IQ)-1u,V(ISD))   
++  }
+X_U4         ON_INT_PRE1 ON_INT_PRE2 BOTH_ON AND2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+X_U3         ON_INT_PRE1 ON_INT_PRE2 EITHER_ON OR2_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=500E-3
+E_E2         ISD 0 TABLE { V(VBIAS, 0) } 
++ ( (2.5,0.39u) (5.5,0.95u) )
+R_R1         VIN1_1 VIN1_2  1m TC=0,0 
+X_U1_U1_S1    U1_U1_N427964 0 U1_U1_N427858 0 CONTROL_U1_U1_S1 
+E_U1_U1_E16         U1_U1_VB_5P5 0 TABLE { V(VIN1, 0) } 
++ ( (0,0) (0.8,2.9u) (5, 100u) )
+D_U1_U1_D3         U1_U1_N427858 U1_U1_N14507001 DD 
+X_U1_U1_U43         U1_U1_N427858 U1_N02574 BUF_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+V_U1_U1_V5         U1_U1_N14507001 0 2
+C_U1_U1_C1         0 U1_U1_N427858  1n  
+V_U1_U1_V4         U1_U1_N427908 0 1
+G_U1_U1_ABM2I4         U1_U1_N14507001 U1_U1_N427858 VALUE { IF (V(ON_INT_PRE1)
++  > 0.5, (100)*1u, 0)    }
+V_U1_U1_V2         U1_U1_N00271 0 0.3
+X_U1_U1_U46         U1_N02574 ON_INT_PRE1 U1_U1_N427964 NOR2_BASIC_GEN PARAMS:
++  VDD=1 VSS=0 VTHRESH=500E-3
+G_U1_U1_ABM2I2         U1_U1_N427858 0 VALUE { IF(V(ON_INT_PRE1) <
++  0.5,IF(V(VBIAS)>2.5,V(U1_U1_VB_5P5),V(U1_U1_VB_2P5)),0)    }
+E_U1_U1_E14         U1_U1_VB_2P5 0 TABLE { V(VIN1, 0) } 
++ ( (0,0)(0.8,3.8u) (2.5,120u) )
+X_U1_U1_S2    U1_U1_N427944 0 U1_U1_N427908 U1_U1_N427858 CONTROL_U1_U1_S2 
+X_U1_U1_U44         ON_INT_PRE1 U1_N02574 U1_U1_N427944 AND2_BASIC_GEN PARAMS:
++  VDD=1 VSS=0 VTHRESH=500E-3
+E_U1_U1_E17         U1_U1_N00239 0 TABLE { V(VBIAS, 0) } 
++ ( (2.5,0.65) (3.3,0.7) (3.6,0.71) (4.2,0.75) (5,0.8) (5.5,0.85) )
+X_U1_U1_U1         ON1 U1_U1_N00239 U1_U1_N00271 ON_INT_PRE1 COMPHYS_BASIC_GEN
++  PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+E_U1_U2_E10         U1_U2_IRTB 0 TABLE { V(VIN1, 0) } 
++ ( (0.8,2.65u) (5,2.76u) )
+E_U1_U2_ABM2         U1_U2_VGATE_CLAMP 0 VALUE { MIN( V(VIN1)+6.4,
++  V(VBIAS)*2.88 )    }
+E_U1_U2_E5         U1_U2_IDT 0 TABLE { V(VIN1, 0) } 
++ ( (0.8,1.72u) (2.5,2.2u) )
+X_U1_U2_U10         U1_U2_N16488650 GND U1_U2_N16488774 0 RVAR PARAMS:  RREF=1
+X_U1_U2_S2    U1_N02574 0 CT1 VOUT1_INT DRIVER_U1_U2_S2 
+X_U1_U2_U11         VIN1 U1_U2_N16487844 U1_U2_N16490509 0 RVAR PARAMS:  RREF=1
+E_U1_U2_E6         U1_U2_IRT 0 TABLE { V(VIN1, 0) } 
++ ( (0.8,0.980u) (2.5,1.066u) )
+E_U1_U2_ABM4         U1_U2_N16490509 0 VALUE { IF(V(VBIAS)<=2.5,
++  V(U1_U2_VBIAS1),V(U1_U2_VBIAS2))    }
+C_U1_U2_C4         VOUT1_INT CT1  140p IC=0 
+E_U1_U2_E4         U1_U2_VBIAS2 0 TABLE { V(VIN1, 0) } 
++ ( (0,-1.4m) (1.2,-1.4m) (5,-1.4m) )
+D_U1_U2_D3         CT1 U1_U2_VGATE_CLAMP DD 
+C_U1_U2_C5         CT1 U1_U2_N16487844  120p  
+E_U1_U2_E7         U1_U2_VBIAS1 0 TABLE { V(VIN1, 0) } 
++ ( (0,-100u) (1.2,580u) (1.5,-500u) (1.8,100u) (2.5,600u) )
+E_U1_U2_E9         U1_U2_IDTB 0 TABLE { V(VIN1, 0) } 
++ ( (0.8,3.7u) (5,5.8u) )
+M_U1_U2_M1         U1_U2_N16487844 CT1 VOUT1_INT VOUT1_INT NMOS01           
+X_U1_U2_S1    U1_N02574 0 VOUT1_INT U1_U2_N16488650 DRIVER_U1_U2_S1 
+G_U1_U2_ABM2I4         U1_U2_VGATE_CLAMP CT1 VALUE { IF (V(VBIAS)>2.51,IF(
++  V(U1_N02574) > 0.5 & V(CT1) < 1.18, V(U1_U2_IDTB),IF ( V(U1_N02574) > 0.5 &
++  V(CT1) > 1.05, V(U1_U2_IRTB),0)),  
++ +IF(V(U1_N02574) > 0.5 & V(CT1) < 1.18, V(U1_U2_IDT),IF ( V(U1_N02574) > 0.5
++  & V(CT1) > 1.18, V(U1_U2_IRT),0)))   }
+D_U1_U2_D4         VOUT1_INT U1_U2_N16487844 DD 
+E_U1_U2_ABM3         U1_U2_N16488774 0 VALUE { IF(V(VBIAS)>2.5,220,260)    }
+R_R4         VOUT2_1 VOUT2_2  1m TC=0,0 
+V_V1         VIN1_2 VIN1 0Vdc
+E_E1         IQ 0 TABLE { V(VBIAS, 0) } 
++ ( (2.5,29.60u) (4.25,56.5u) (5.5,80.82u) )
+V_V5         N14516690 0 1Vdc
+V_V4         VOUT2_INT VOUT2_1 0Vdc
+R_R2         VOUT1_1 VOUT1_2  1m TC=0,0 
+.ENDS TPS22966_TRANS
+*$
+.subckt CONTROL_U2_U1_S1 1 2 3 4  
+S_U2_U1_S1         3 4 1 2 _U2_U1_S1
+RS_U2_U1_S1         1 2 1G
+.MODEL         _U2_U1_S1 VSWITCH Roff=100e6 Ron=1m Voff=0.2 Von=0.8
+.ends CONTROL_U2_U1_S1
+*$
+.subckt CONTROL_U2_U1_S2 1 2 3 4  
+S_U2_U1_S2         3 4 1 2 _U2_U1_S2
+RS_U2_U1_S2         1 2 1G
+.MODEL         _U2_U1_S2 VSWITCH Roff=100e6 Ron=1m Voff=0.2 Von=0.8
+.ends CONTROL_U2_U1_S2
+*$
+.subckt DRIVER_U2_U2_S2 1 2 3 4  
+S_U2_U2_S2         3 4 1 2 _U2_U2_S2
+RS_U2_U2_S2         1 2 1G
+.MODEL         _U2_U2_S2 VSWITCH Roff=1e9 Ron=1 Voff=0.8 Von=0.2
+.ends DRIVER_U2_U2_S2
+*$
+.subckt DRIVER_U2_U2_S1 1 2 3 4  
+S_U2_U2_S1         3 4 1 2 _U2_U2_S1
+RS_U2_U2_S1         1 2 1G
+.MODEL         _U2_U2_S1 VSWITCH Roff=10e6 Ron=1m Voff=0.8 Von=0.2
+.ends DRIVER_U2_U2_S1
+*$
+.subckt CONTROL_U1_U1_S1 1 2 3 4  
+S_U1_U1_S1         3 4 1 2 _U1_U1_S1
+RS_U1_U1_S1         1 2 1G
+.MODEL         _U1_U1_S1 VSWITCH Roff=100e6 Ron=1m Voff=0.2 Von=0.8
+.ends CONTROL_U1_U1_S1
+*$
+.subckt CONTROL_U1_U1_S2 1 2 3 4  
+S_U1_U1_S2         3 4 1 2 _U1_U1_S2
+RS_U1_U1_S2         1 2 1G
+.MODEL         _U1_U1_S2 VSWITCH Roff=100e6 Ron=1m Voff=0.2 Von=0.8
+.ends CONTROL_U1_U1_S2
+*$
+.subckt DRIVER_U1_U2_S2 1 2 3 4  
+S_U1_U2_S2         3 4 1 2 _U1_U2_S2
+RS_U1_U2_S2         1 2 1G
+.MODEL         _U1_U2_S2 VSWITCH Roff=1e9 Ron=1 Voff=0.8 Von=0.2
+.ends DRIVER_U1_U2_S2
+*$
+.subckt DRIVER_U1_U2_S1 1 2 3 4  
+S_U1_U2_S1         3 4 1 2 _U1_U2_S1
+RS_U1_U2_S1         1 2 1G
+.MODEL         _U1_U2_S1 VSWITCH Roff=10e6 Ron=1m Voff=0.8 Von=0.2
+.ends DRIVER_U1_U2_S1
+*$
+.SUBCKT COMPHYS_BASIC_GEN INP INM HYS OUT PARAMS: VDD=1 VSS=0 VTHRESH=0.5	
+EIN INP1 INM1 INP INM 1 
+EHYS INP1 INP2 VALUE { IF( V(1) > {VTHRESH},-V(HYS),0) }
+EOUT OUT 0 VALUE { IF( V(INP2)>V(INM1), {VDD} ,{VSS}) }
+R1 OUT 1 1
+C1 1 0 5n
+RINP1 INP1 0 1K
+.ENDS COMPHYS_BASIC_GEN
+*$
+.MODEL DD D( IS=1F N=0.01 TT = 10p )
+*$
+.model NMOS01 NMOS
++ VTO     = 1.05
++ KP      = 8.4
++ LAMBDA  = 0.001
+*$
+.SUBCKT AND2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS AND2_BASIC_GEN
+*$
+.SUBCKT OR2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  |  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS OR2_BASIC_GEN
+*$
+.SUBCKT INV_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS INV_BASIC_GEN
+*$
+.SUBCKT BUF_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS BUF_BASIC_GEN
+*$
+.SUBCKT NOR2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  |  
++ V(B) > {VTHRESH},{VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS NOR2_BASIC_GEN
+*$
+.SUBCKT RVAR 101 102 201 202 Params: Rref=1
+* nodes : 101 102 : nodes between which variable resistance is placed
+* 201 202 : nodes to whose voltage the resistance is proportional
+* parameters : rref : reference value of the resistance
+rin 201 202 1G; input resistance
+r 301 0 {rref}
+fcopy 0 301 vsense 1; copy output current thru Z
+eout 101 106 poly(2) 201 202 301 0 0 0 0 0 1; multiply VoverZ with Vctrl
+vsense 106 102 0; sense iout
+.ENDS RVAR
+*$

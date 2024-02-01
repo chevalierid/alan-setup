@@ -1,0 +1,419 @@
+* INA225
+*****************************************************************************
+* (C) Copyright 2015 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: INA225
+* Date: 03/30/2017
+* Model Type: All In One
+* Simulator: TINA
+* Simulator Version:  9.3.80.273 SF
+* EVM Order Number: INA225EVM 
+* EVM Users Guide: SBOU140,07 Mar 2014
+* Datasheet: SBOS612,11 Mar 2014
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 0.0 : For validation
+*
+*****************************************************************************
+* Notes: 
+* This model conforms with data sheet specs & plots for the following:
+* 1. AC Response, BW and Slew Rate
+* 2. Common-mode input range, CMRR
+* 3. VOS, IIB, IOS over the specified common-mode input range 
+*    and temperature range
+* 4. Power supply range, quiescent current vs power supply, PSRR
+* 5. Output voltage swing versus output current
+*****************************************************************************
+*$
+.SUBCKT INA225 IN+ IN- VS GND REF GS1 GS0 OUT
+C_C1         GNDF GS1  3p  TC=0,0 
+E_E3         OUT_CMRR GNDF VICM GNDF -1e-6
+X_U19        VS GND SHDN GS1 GS0 VIMON GNDF IQ_SW 
+X_U10        VS GND INN N01067 GNDF PSRR 
+X_U20        GNDF INN VICM VS GND GNDF IIBN 
+X_U11        VS GND GNDF GND_FLOAT 
+X_U18        VS GND IN_VCLAMP IN_VIMON VIMON GNDF VCLAMP_W_SENSE 
+R_R1         IN+ INP  5k TC=0,0 
+X_U17        INP_GBW INN_GBW IN_VCLAMP SHDN GNDF VS GND GS0 GS1 GBW_SLEW_SW 
+R_R6         INN_ICMR INN_GBW  1 TC=0,0 
+R_R2         IN- INN  5k TC=0,0 
+X_U16        GS1 GS0 INN OUT GNDF R_SW 
+R_R3         N00617 OUT  1 TC=0,0 
+X_U15        GS1 GS0 INP REF GNDF R_SW 
+R_R4         OUT_CMRR GNDF  1 TC=0,0 
+X_U9         IN_VIMON N00617 VIMON GNDF AMETER 
+X_U3         VICM IN- IN+ GNDF VICM 
+R_R5         INP_ICMR INP_GBW  1 TC=0,0 
+C_C2         GS0 GNDF  3p  TC=0,0 
+E_E1         N96873 INP_ICMR OUT_CMRR GNDF 0.5
+E_E2         N01067 INN_ICMR OUT_CMRR GNDF -0.5
+X_U21        GNDF INP VICM VS GND GNDF IIBP 
+X_U14        IN+ IN- REF GS0 GS1 OUT VS GND GNDF SHDN ABSMAXLIM 
+X_U5         N96873 INP VICM VS GND GNDF VOS 
+.ENDS INA225
+*$
+.SUBCKT IQ_SW VCC VEE SHDN GS1 GS0 VIMON GNDF
+.PARAM GL = 1000
+.PARAM VTHR = 1
+.PARAM VSR1 = 2.68
+.PARAM VSR2 = 12
+.PARAM VSR3 = 15
+.PARAM VSR4 = 36
+.PARAM IQG1 = 225e-6
+.PARAM IQG2 = 240e-6
+.PARAM IQG3 = 250e-6
+.PARAM IQG4 = 270e-6
+.PARAM Gv2 = 33.33e-6
+.PARAM Gv3 = 0.476e-6
+**
+.PARAM IQ_NOM = 300e-6
+.PARAM IQ_SHDN = 0.1u
+.PARAM Geq = 18.75u
+**
+*RVCC VCC GNDF 1e9
+*RVEE VEE GNDF 1e9
+* convert gain-control voltages to 1's and 0's
+*ES0 NS0 0 VALUE = {MAX(MIN(GL*(V(GS0)-VTHR),1),0)}
+*ES1 NS1 0 VALUE = {MAX(MIN(GL*(V(GS1)-VTHR),1),0)}
+ES0 NS0 0 VALUE = {0.5*(1 + SGN(V(GS0)-VTHR))}
+ES1 NS1 0 VALUE = {0.5*(1 + SGN(V(GS1)-VTHR))}
+**
+* Select VCC-VEE region of operation
+* TRUE if VCC-VEE > VSR1
+ER1 NR1 0 VALUE = {0.5*(1 + SGN(V(VCC,VEE)-VSR1))}
+* TRUE if VCC-VEE > VSR2
+ER2 NR2 0 VALUE = {0.5*(1 + SGN(V(VCC,VEE)-VSR2))}
+* TRUE if VCC-VEE > VSR3
+ER3 NR3 0 VALUE = {0.5*(1 + SGN(V(VCC,VEE)-VSR3))}
+*ER1 NR1 0 VALUE = {MAX(MIN(GL*(V(VCC,VEE)-VSR1),1),0)}
+*ER2 NR2 0 VALUE = {MAX(MIN(GL*(V(VCC,VEE)-VSR2),1),0)}
+*ER3 NR3 0 VALUE = {MAX(MIN(GL*(V(VCC,VEE)-VSR3),1),0)}
+**
+* Flags for gain selection
+EGS0 NGS0 0 VALUE = {(1-V(NS1))*(1-V(NS0))}
+EGS1 NGS1 0 VALUE = {(1-V(NS1))*(V(NS0))}
+EGS2 NGS2 0 VALUE = {(V(NS1))*(1-V(NS0))}
+EGS3 NGS3 0 VALUE = {(V(NS1))*(V(NS0))}
+**
+* Flags for region of VCC-VEE operation
+* Region 1: VSR1 < VCC-VEE < VSR2
+EV1 NV1 0 VALUE = {V(NR1)*(1-V(NR2))*(1-V(NR3))}
+* Region 2: VSR1,VSR2 < VCC-VEE < VSR3
+EV2 NV2 0 VALUE = {V(NR1)*V(NR2)*(1-V(NR3))}
+* Region 3: VSR1,VSR2,VSR3 < VCC-VEE
+EV3 NV3 0 VALUE = {V(NR1)*V(NR2)*V(NR3)}
+**
+* Assumes: V(SHDN,GNDF) = 1 when device is enabled
+*          V(SHDN,GNDF) = 0 when device is disabled
+*
+G1 VCC VEE VALUE = {V(SHDN,GNDF)*V(NGS0)
++ *(V(NV1)*IQG1
++ + V(NV2)*(IQG1+Gv2*(V(VCC,VEE)-VSR2))
++ + V(NV3)*((IQG1+100e-6) + Gv3*(V(VCC,VEE)-VSR3)))}
+*
+G2 VCC VEE VALUE = {V(SHDN,GNDF)*V(NGS1)
++ *(V(NV1)*IQG2
++ + V(NV2)*(IQG2+Gv2*(V(VCC,VEE)-VSR2))
++ + V(NV3)*((IQG2+100e-6) + Gv3*(V(VCC,VEE)-VSR3)))}
+*
+G3 VCC VEE VALUE = {V(SHDN,GNDF)*V(NGS2)
++ *(V(NV1)*IQG3
++ + V(NV2)*(IQG3+Gv2*(V(VCC,VEE)-VSR2))
++ + V(NV3)*((IQG3+100e-6) + Gv3*(V(VCC,VEE)-VSR3)))}
+*
+G4 VCC VEE VALUE = {V(SHDN,GNDF)*V(NGS3)
++ *(V(NV1)*IQG4
++ + V(NV2)*(IQG4+Gv2*(V(VCC,VEE)-VSR2))
++ + V(NV3)*((IQG4+100e-6) + Gv3*(V(VCC,VEE)-VSR3)))}
+**
+* Add'l current drain due to output current
+GOUTP VCC GNDF VALUE = {0.5*(1 + SGN(V(VIMON,GNDF)))*V(VIMON,GNDF)*V(SHDN,GNDF)}
+GOUTN VEE GNDF VALUE = {-0.5*(1 - SGN(V(VIMON,GNDF)))*V(VIMON,GNDF)*V(SHDN,GNDF)}
+*GOUTP VCC GNDF VALUE = {IF(V(VIMON,GNDF) > 0, V(VIMON,GNDF)*V(SHDN,GNDF),0)}
+*GOUTN GNDF VEE VALUE = {IF(V(VIMON,GNDF) <= 0, V(VIMON,GNDF)*V(SHDN,GNDF),0)}
+.ENDS IQ_SW
+*$
+.SUBCKT PSRR  VDD  VSS  VI  VO  GNDF 
+.PARAM PSRR = 140 
+.PARAM fpsrr = 1000
+.PARAM PI = 3.141592
+.PARAM RPSRR = 1
+.PARAM GPSRR = {PWR(10,-PSRR/20)/RPSRR}
+.PARAM LPSRR = {RPSRR/(2*PI*fpsrr)}
+G1  GNDF 1 VDD VSS {GPSRR}
+R1  1 2 {RPSRR}
+L1  2 GNDF {LPSRR} 
+E1  VO VI 1 GNDF 1
+C2  VDD VSS 10P 
+.ENDS PSRR
+*$
+.SUBCKT IIBN OUT IN VICM VCC VEE GNDF
+*** OUT and IN are for IIB current flow **
+*** INN is for voltage monitoring of the amp inverting 
+*** input or for VICM 
+***
+**** Units for I are in uA ****
+.PARAM GL = 1e6
+.PARAM VICMMIN = 0
+.PARAM VICMMAX = 40
+.PARAM VICM0 = 0
+.PARAM VICM1 = 4
+.PARAM VICM2 = 5
+.PARAM VICM3 = 40
+.PARAM IIB0 = -5u
+.PARAM IIB1 = 5u
+.PARAM IIB2 = 60u
+.PARAM IIB3 = 130u
+.PARAM GEQ12 = 2.5u
+.PARAM GEQ23 = 55u
+.PARAM GEQ34 = 1u
+* Select region of VCM operation
+* TRUE if VICM0 < VICM < VICM1
+E1 N1 0 VALUE = {0.5*(1 + SGN((V(VICM)-VICM0)*(VICM1-V(VICM))))}
+* TRUE if VICM1 < VICM < VICM2
+E2 N2 0 VALUE = {0.5*(1 + SGN((V(VICM)-VICM1)*(VICM2-V(VICM))))}
+* TRUE if VICM2 < VICM < VICM3
+E3 N3 0 VALUE = {0.5*(1 + SGN((V(VICM)-VICM2)*(VICM3-V(VICM))))}
+**
+G12 IN OUT VALUE = {SGN(V(VCC)-V(VEE))*
++ (V(N1)*(GEQ12*(V(VICM)-VICM0)+IIB0)
++ + V(N2)*(GEQ23*(V(VICM)-VICM1)+IIB1)
++ + V(N3)*(GEQ34*(V(VICM)-VICM2)+IIB2))}
+*E1 N1 0 VALUE = {MAX(MIN(GL*(V(VICM)-VICM0)*(VICM1-V(VICM)),1),0)}
+*E2 N2 0 VALUE = {MAX(MIN(GL*(V(VICM)-VICM1)*(VICM2-V(VICM)),1),0)}
+*E3 N3 0 VALUE = {MAX(MIN(GL*(V(VICM)-VICM2)*(VICM3-V(VICM)),1),0)}
+.ENDS IIBN
+*$
+.SUBCKT GND_FLOAT VDD VSS GNDF
+EGNDF  GNDF 0 VALUE = {(V(VDD)+V(VSS))*0.5}
+*EGNDF  GNDFx 0 VALUE = {(V(VDD)+V(VSS))*0.5}
+*GGNDF  GNDFx GNDF VALUE = {V(GNDFx,GNDF)*1U}
+*CGNDF  GNDF  0    1
+.ENDS GND_FLOAT
+*$
+.SUBCKT VCLAMP_W_SENSE VDD VSS VI VO VIMON GNDF
+** Unlike previous versions of thsi subcircuit, this version
+** contains the series output resistance ROS
+** RHR is the equiv R to give the proper (negative) output
+** headroom into ROS for output swing at low current.
+.PARAM SCALEP = 1
+.PARAM SCALEN = 1
+** params at nominal temp 25C **
+.PARAM ISC = 0.016
+.PARAM ROS = 3500
+.PARAM Rm1 = 143
+.PARAM RHR = {ROS-Rm1*(1+TCRm1*(TEMP-25))}
+** TCs for -40C to 125C
+.PARAM TCISC = -0.00379
+.PARAM TCROS = 0.01u
+.PARAM TCRm1 = 0.00471
+**
+EHRPOS HRPOS GNDF VALUE = {MIN(V(VIMON,GNDF)*RHR,
++  ISC*(1+TCISC*(TEMP-25))*ROS*(1+TCROS*(TEMP-25))-V(VDD,GNDF))}
+EHRNEG HRNEG GNDF VALUE = {MAX(V(VIMON,GNDF)*RHR,
++  -ISC*(1+TCISC*(TEMP-25))*ROS*(1+TCROS*(TEMP-25))-V(VSS,GNDF))}
+*EHRPOS HRPOS GNDF VALUE = {MIN(V(VIMON,GNDF)*RHR,ISC*ROS-V(VDD,GNDF))}
+*EHRNEG HRNEG GNDF VALUE = {MAX(V(VIMON,GNDF)*RHR,-ISC*ROS-V(VSS,GNDF))}
+EPCLIP  VDD_CLP GNDF VALUE = {V(VDD,GNDF) + V(HRPOS,GNDF)}
+ENCLIP  VSS_CLP GNDF VALUE = {V(VSS,GNDF) + V(HRNEG,GNDF)}
+ECLAMP  NVO GNDF VALUE = {LIMIT(V(VI,GNDF), V(VDD_CLP,GNDF), V(VSS_CLP,GNDF))}
+ROUT NVO VO {ROS*(1+TCROS*(TEMP-25))}
+.ENDS VCLAMP_W_SENSE
+*$
+.SUBCKT GBW_SLEW_SW  VIP  VIM  VO  SHDN GNDF VCC VEE GS0 GS1
+.PARAM Aol = 120  
+.PARAM GBW = 12e6  
+.PARAM SRP = 0.4e6  
+.PARAM SRN = 0.4e6 
+.PARAM IT = 0.001
+.PARAM PI = 3.141592
+.PARAM IP = {IT*MAX(1,SRP/SRN)}
+.PARAM IN = {IT*MIN(-1,-SRN/SRP)}
+.PARAM CC = {IT*MAX(1/SRP,1/SRN)}
+.PARAM FP = {GBW/PWR(10,AOL/20)}
+.PARAM RC = {1/(2*PI*CC*FP)}
+.PARAM GC = {PWR(10,AOL/20)/RC}
+.PARAM GL = 1000
+.PARAM VTHR = 1
+**
+** Convert digital inputs to 1's and 0's
+ES0 NS0 0 VALUE = {MAX(MIN(GL*(V(GS0,VEE)-VTHR),1),0)}
+ES1 NS1 0 VALUE = {MAX(MIN(GL*(V(GS1,VEE)-VTHR),1),0)}
+** Flag functions dependent on digital input combinations
+* Gain1 {GS1,GS0} = {0,0}
+E00 N00 0 VALUE = {(1-V(NS1))*(1-V(NS0))}
+* Gain2: {GS1,GS0} = {0,1}
+E01 N01 0 VALUE = {(1-V(NS1))*(V(NS0))}
+* Gain3: {GS1,GS0} = {1,0}
+E10 N10 0 VALUE = {(V(NS1))*(1-V(NS0))}
+* Gain4: {GS1,GS0} = {1,1}
+E11 N11 0 VALUE = {(V(NS1))*(V(NS0))}
+* Use flags and coefficients to give GBW/AOL dependent on 
+* gain setting {GS1,GS0}. 
+ESW N1 0 VALUE = {0.33*V(N00) + 0.65*V(N01) + 0.85*V(N10) + V(N11)}
+**
+G1p GNDF OUTG1p VALUE = {MAX(MIN(GC*V(N1)*V(SHDN,GNDF)*V(VIP,VIM),IP),IN)}
+G1n OUTG1n GNDF VALUE = {MAX(MIN(GC*V(N1)*V(SHDN,GNDF)*V(VIP,VIM),IP),IN)}
+RG1p OUTG1p GNDF {0.5*RC}
+Cg1dp OUTG1p GNDF {2*CC} IC=0
+RG1n OUTG1n GNDF {0.5*RC}
+Cg1dn OUTG1n GNDF {2*CC} IC=0
+**
+G1OUT GNDF VO VALUE = {V(SHDN,GNDF)*V(OUTG1p,OUTG1n)}
+*G1OUT GNDF VO VALUE = {V(SHDN,GNDF)*MAX(MIN(V(OUTG1p,OUTG1n),V(VCC,GNDF)),V(VEE,GNDF))}
+ROUT VO GNDF 1
+.ENDS GBW_SLEW_SW
+*$
+.SUBCKT R_SW GS1 GS0 OUT1 OUT2 GNDF
+.PARAM VTHR = 1
+.PARAM GL = 1e3
+.PARAM RMAX = 1e6
+.PARAM GET1 = 3e-6
+.PARAM GET2 = 5e-6
+* Temp coeffs
+EGET1 NGET1 0 VALUE = {1 + GET1*(TEMP-27)}
+EGET2 NGET2 0 VALUE = {1 + GET2*(TEMP-27)}
+* convert digital input voltages to 1's and 0's
+ES0 NS0 0 VALUE = {MAX(MIN(GL*(V(GS0)-VTHR),1),0)}
+ES1 NS1 0 VALUE = {MAX(MIN(GL*(V(GS1)-VTHR),1),0)}
+** Flag functions dependent on digital input combinations
+* Gain1 {GS1,GS0} = {0,0}
+E00 N00 0 VALUE = {(1-V(NS1))*(1-V(NS0))}
+* Gain2: {GS1,GS0} = {0,1}
+E01 N01 0 VALUE = {(1-V(NS1))*(V(NS0))}
+* Gain3: {GS1,GS0} = {1,0}
+E10 N10 0 VALUE = {(V(NS1))*(1-V(NS0))}
+* Gain4: {GS1,GS0} = {1,1}
+E11 N11 0 VALUE = {(V(NS1))*(V(NS0))}
+* Use flags & coeffs to select equiv RF w/tempco
+ESW NSW 0 VALUE = {V(NGET1)*(8*V(N00) + 4*V(N01) + 2*V(N10))
++  + V(NGET2)*V(N11)}
+G1 OUT2 OUT1 VALUE = {V(NSW)*(V(OUT2,OUT1)/RMAX)}}
+.ENDS R_SW
+*$
+.SUBCKT AMETER  VI  VO VIMON GNDF
+.PARAM GAIN = 1
+VSENSE VI VO DC = 0
+EMETER VIMON GNDF VALUE = {I(VSENSE)*GAIN}
+.ENDS AMETER
+*$
+.SUBCKT VICM OUT INP INN GNDF
+EOUT OUT GNDF VALUE = {0.5*(V(INP,GNDF) + V(INN,GNDF))}
+.ENDS VICM
+*$
+.SUBCKT IIBP OUT IN VICM VCC VEE GNDF
+*** OUT and IN are for IIB current flow **
+*** INN is for voltage monitoring of the amp inverting 
+*** input or for VICM 
+***
+**** Units for I are in uA ****
+.PARAM GL = 1e6
+.PARAM VICMMIN = 0
+.PARAM VICMMAX = 40
+.PARAM VICM0 = 0
+.PARAM VICM1 = 4
+.PARAM VICM2 = 5
+.PARAM VICM3 = 40
+.PARAM IOS = 0.02u
+.PARAM IIB0 = {-5u+IOS}
+.PARAM IIB1 = {5u+IOS}
+.PARAM IIB2 = {60u+IOS}
+.PARAM IIB3 = 130u
+.PARAM GEQ12 = 2.5u
+.PARAM GEQ23 = 55u
+.PARAM GEQ34 = 1u
+* Select region of VCM operation
+* TRUE if VICM0 < VICM < VICM1
+E1 N1 0 VALUE = {0.5*(1 + SGN((V(VICM)-VICM0)*(VICM1-V(VICM))))}
+* TRUE if VICM1 < VICM < VICM2
+E2 N2 0 VALUE = {0.5*(1 + SGN((V(VICM)-VICM1)*(VICM2-V(VICM))))}
+* TRUE if VICM2 < VICM < VICM3
+E3 N3 0 VALUE = {0.5*(1 + SGN((V(VICM)-VICM2)*(VICM3-V(VICM))))}
+**
+G12 IN OUT VALUE = {SGN(V(VCC)-V(VEE))*
++ (V(N1)*(GEQ12*(V(VICM)-VICM0)+IIB0)
++ + V(N2)*(GEQ23*(V(VICM)-VICM1)+IIB1)
++ + V(N3)*(GEQ34*(V(VICM)-VICM2)+IIB2))}
+*E1 N1 0 VALUE = {MAX(MIN(GL*(V(VICM)-VICM0)*(VICM1-V(VICM)),1),0)}
+*E2 N2 0 VALUE = {MAX(MIN(GL*(V(VICM)-VICM1)*(VICM2-V(VICM)),1),0)}
+*E3 N3 0 VALUE = {MAX(MIN(GL*(V(VICM)-VICM2)*(VICM3-V(VICM)),1),0)}
+.ENDS IIBP
+*$
+**********.SUBCKT ABSMAXLIM IN+ IN- REF GS0 GS1 OUT VCC VEE GNDF OUT_CNTRL 
+.SUBCKT ABSMAXLIM IN+ IN- REF GS0 GS1 OUT VCC VEE GNDF OUT_CNTRL 
+* Test pin voltages per ABS MAX limts and shut down forward gain if
+* out of limits.
+* IN+ thru GNDF are inputs, OUT_CNTRL is the subcircuit output
+* to control enable/disable state of model.
+.PARAM GL = 1000
+.PARAM VSmax = 40
+.PARAM VSmin = 2.69
+.PARAM VCMmax = 40
+.PARAM VCMmin = -0.3
+.PARAM VinDiffMax = 40
+.PARAM VpinDelta = 0.3
+** Test VCC & Input pin for ABS MAX Ranges
+** '1' if within ABS MAX Ratings, '0' if not
+** Test for VCC Max & MIN values
+EVCCMAX NVCCMAX GNDF VALUE = {MAX(MIN(GL*(VSmax-V(VCC,VEE)),1),0)}
+EVCCMIN NVCCMIN GNDF VALUE = {MAX(MIN(GL*(V(VCC,VEE)-VSmin),1),0)}
+** Test for VICM Max & Min values
+EVCMMAX NVCMMAX GNDF VALUE = {MAX(MIN(GL*(VCMmax-0.5*(V(IN+,VEE)+V(IN-,VEE))),1),0)}
+EVCMMIN NVCMMIN GNDF VALUE = {MAX(MIN(GL*(0.5*(V(IN+,VEE)+V(IN-,VEE))-VCMmin),1),0)}
+** Test for VIdiff Max Values
+EVINDIFFMAX NVINDIFFMAX GNDF VALUE = {MAX(MIN(GL*(VinDiffMax-ABS(V(IN+,IN-))),1),0)}
+** 
+** Test Digital Input, REF and Output pins
+** MAX Limit
+EGS0MAX NGS0MAX GNDF VALUE = {MAX(MIN(GL*(VpinDelta-V(GS0,VCC)),1),0)}
+EGS1MAX NGS1MAX GNDF VALUE = {MAX(MIN(GL*(VpinDelta-V(GS1,VCC)),1),0)}
+EREFMAX NREFMAX GNDF VALUE = {MAX(MIN(GL*(VpinDelta-V(REF,VCC)),1),0)}
+EOUTMAX NOUTMAX GNDF VALUE = {MAX(MIN(GL*(VpinDelta-V(OUT,VCC)),1),0)}
+** MIN Limit
+EGS0MIN NGS0MIN GNDF VALUE = {MAX(MIN(GL*(VpinDelta+V(GS0,VEE)),1),0)}
+EGS1MIN NGS1MIN GNDF VALUE = {MAX(MIN(GL*(VpinDelta+V(GS1,VEE)),1),0)}
+EREFMIN NREFMIN GNDF VALUE = {MAX(MIN(GL*(VpinDelta+V(REF,VEE)),1),0)}
+EOUTMIN NOUTMIN GNDF VALUE = {MAX(MIN(GL*(VpinDelta+V(OUT,VEE)),1),0)}
+**
+EVCC NVCC GNDF VALUE = {V(NVCCMAX,GNDF)*V(NVCCMIN,GNDF)}
+EVCM NVIN GNDF VALUE = {V(NVCMMAX,GNDF)*V(NVCMMIN,GNDF)*V(NVINDIFFMAX,GNDF)}
+EVGS NGS  GNDF VALUE = {V(NGS0MAX,GNDF)*V(NGS1MAX,GNDF)*V(NGS0MIN,GNDF)
++                      *V(NGS1MIN,GNDF)}
+ERO  NRO  GNDF VALUE = {V(NREFMAX,GNDF)*V(NOUTMAX,GNDF)*V(NREFMIN,GNDF)
++                      *V(NOUTMIN,GNDF)}
+EOUTCNTRL OUT_CNTRL GNDF VALUE = {V(NVCC,GNDF)*V(NVIN,GNDF)*V(NGS,GNDF)
++                      *V(NRO,GNDF)}
+.ENDS ABSMAXLIM
+*$
+.SUBCKT VOS OUT IN VICM VCC VEE GNDF
+*** Units are in uV ***
+.PARAM SCALE = 1e-6
+.PARAM DRIFT = 0.2
+.PARAM VICM_SHIFT = 1u
+.PARAM VCC_SHIFT = 1u
+.PARAM VOS_TYP = 165
+*.PARAM VOS_TYP = 75
+EDRIFT NDRIFT 0 VALUE = {DRIFT*(TEMP - 27)}
+ESHIFT NSHIFT 0 VALUE = {VICM_SHIFT*V(VICM,GNDF)}
+EVCC NVCC 0 VALUE = {V(VCC,VEE)}
+EVCCSHIFT NVCCSHIFT 0 VALUE = {VCC_SHIFT*(V(NVCC) - 15)}
+* Assumes temp drift, VOS shift from VICM & VCC are indepndent and additive
+*EVOS OUT IN VALUE = {SCALE*(VOS_TYP + V(NDRIFT) + V(NSHIFT) + V(NVCCSHIFT))}
+ETF NTF 0 VALUE = {1 + (0.5*(1 + SGN(TEMP-100))*(TEMP-100)/80)}
+EVOS OUT IN VALUE = {SCALE*(VOS_TYP*V(NTF) + V(NDRIFT) + V(NSHIFT) + V(NVCCSHIFT))}
+.ENDS VOS
+*$

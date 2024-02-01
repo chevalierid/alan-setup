@@ -1,0 +1,101 @@
+*$
+* TPS55383
+*****************************************************************************
+* (C) Copyright 2009 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This�model�is designed as an aid for customers of Texas Instruments.                                             
+**�TI and its�licensors and suppliers make�no warranties, either expressed                                           
+** or implied, with respect to this�model, including the�warranties of                                                    
+** merchantability or fitness for�a particular purpose. The model is                                                      
+** provided solely on an "as is" basis. The entire�risk as to its quality                                                    
+** and performance is with the customer�                                   �                                                      �� 
+*****************************************************************************
+*
+* This model was developed for Texas Instruments Incorporated by:
+*   AEi Systems, LLC
+*   5777 W. Century Blvd., Suite 876
+*   Los Angeles, California  90045
+*
+* This model is subject to change without notice. Neither Texas Instruments Incorporated 
+* nor AEi Systems is responsible for updating this model.
+* For more information regarding modeling services, model libraries and simulation 
+* products, please call AEi Systems at (310) 216-1144, or contact AEi Systems by email: 
+* info@AENG.com. Or visit AEi Systems on the web at http://www.AENG.com.
+*
+*****************************************************************************
+*
+** Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: TPS55383 
+* Date: September 17, 2009 
+* Model Type: Average 
+* Simulator:  PSPICE
+* Simulator Version: PSpice Plugin 16.0.0.p001
+* EVM Order Number: TPS55386EVM-363 
+* EVM Users Guide: SLVU273 September 2008 
+* Datasheet: SLUS818 - SEPTEMBER 2008     
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+.SUBCKT TPS55383_AVG COMP FB VIN OUT GND
+X_U5         N3006140 COMP diode PARAMS:
+X_U3         VIN GND N3006256 OUT N3006286 forward_tps55x8xavg PARAMS: 
++  L=22U NC=18182 NP=1 RB=11500 F=310K EFF=1 TS=0 DMAX=.95
+R_R91         GND COMP  10meg  
+C_C7         GND COMP  0.9p  
+X_U4         COMP N3006266 UTD_TPS55X8XAVG PARAMS:  K=2 TD=0.5U
+V_V1         N3006140 GND 0.5
+V_V3         N3006000 GND 0.8
+G_G1         GND COMP N3006000 FB 315u
+E_E2         N3006266 N3006256 N3006440 GND 1
+E_E1         N3006440 GND VALUE { V(N3006286, GND)*83m*( exp(2.46*V(N3006286,
++  GND)) -1)  }
+.ENDS
+*$
+.SUBCKT FORWARD_TPS55X8Xavg VINp Rtn Vc Vout Dr PARAMS: L=100U NC=50 NP=1 RB=13 F=200k EFF=1 TS=0 DMAX=.95
+* VINp RTN VC VOUT Dr
+*Used for voltage or current mode forward converters
+*{L} Output inductance in Henries
+*{NC} Current transformer turns ratio
+*{NP} Power transformer turns ratio
+*{F} Switching frequency in Hz
+*{DMAX} Duty Cycle
+*{EFF} efficiency
+*{RB} Current transformer burden resistor in ohms
+*{TS} Propagation delay time in the current loop
+*
+EBVeff VINp 1 Value={ (1-Eff)*( V(VINp) - V(Rtn) ) }
+*B1 IS INPUT CURRENT
+GB1 1 Rtn Value={ V(Vout)*I(VM1)/(V(1)+.001) }
+*B2 IS PEAK INDUCTOR CURRENT
+EB2 2 Rtn Value={ IF ( V(Vc) > 0 , ((V(Vc) * NC / (NP * RB)) + (((V(1) * NP) - V(Vout)) * TS / L)) , 0 ) }
+*B3 IS MINIMUM INDUCTOR CURRENT
+EB3 3 Rtn Value={ IF ( V(2) - ((V(Vout) * (1 - (V(Vout) / (1u+(V(1) * NP)) ))) / (L * F)) > 0 , 
++ V(2) - ((V(Vout) *(1 - (V(Vout) / (1u+(V(1) * NP)) ))) / (L * F)) , 0 ) }
+*B4 IS OUTPUT CURRENT
+GB4 Rtn 8 Value={ (L * F * ((V(2)*V(2)) - (V(3)*V(3))) / 2) * ((1 / (V(Vout)+1U) ) + (1 / ((V(1) * NP + 1u) - V(Vout)))) }
+*B5 IS DUTY CYCLE
+EB5 Dr Rtn Value={ L * F * (V(2) - V(3)) / (((V(1) * NP) - V(Vout)) + .01) }
+DCLAMP 8 80 D
+.MODEL D D IS=1E-6 N=1 RS=.0001
+EBCLAMP 80 Rtn Value={ (V(1) * NP * DMAX) - .25 }
+VM1 8 Vout
+.ENDS
+*$
+.SUBCKT UTD_TPS55X8Xavg 1 2 PARAMS: K=1 TD=0.225U
+RIN 1 0 1E15
+E1 3 0 1 0 {K}
+T1 3 0 2 0 Z0=1 TD={TD}
+R1 2 0 1
+.ENDS
+*$
+.SUBCKT DIODE  1 2
+D1 1 2 DD
+.MODEL DD D IS=1F N=1.16 CJO=1p TT=10p
+.ENDS DIODE
+*$

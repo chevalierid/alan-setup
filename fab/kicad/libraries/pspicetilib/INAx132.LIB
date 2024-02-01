@@ -1,0 +1,113 @@
+*$
+* INAx132
+*****************************************************************************
+* (C) Copyright 2023 Texas Instruments Incorporated. All rights reserved.     
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.      
+** TI and its licensors and suppliers make no warranties, either expressed   
+** or implied, with respect to this model, including the warranties of       
+** merchantability or fitness for a particular purpose. The model is        
+** provided solely on an "as is" basis. The entire risk as to its quality   
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Online Design Tools, Texas Instruments Inc.
+* Part: INAx132
+* Date: 09FEB2023
+* Model Type: ALL IN ONE
+* EVM Order Number: N/A 
+* EVM Users Guide:  N/A 
+* Datasheet: SBOS059
+*
+* Model Version: Final 1.1
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.1
+* 1. Updated PSpice symbol.
+* 2. Updated Model name from INA132 to INAx132.
+*
+* Final 1.0 : 
+* Release to Web
+*
+*****************************************************************************
+* Model Usage Notes:
+* Model is applicable to INA132(single core) and INA2132(dual core).
+*****************************************************************************
+* CONNECTIONS:           NON-INVERTING INPUT
+*                         |  INVERTING INPUT
+*                         |   |  POSITIVE POWER SUPPLY
+*                         |   |   |  NEGATIVE POWER SUPPLY
+*                         |   |   |   |  OUTPUT
+*                         |   |   |   |   |  REFERENCE
+*                         |   |   |   |   |   |  SENSE
+*                         |   |   |   |   |   |   |
+* PIN CONFIG FOR INA132   1   2   3   4   5   8   9
+*****************************************************************************
+.SUBCKT INAx132 1 2 3 4 5 8 9
+*****************************************************************************
+* Components
+C2 13 9 .15P
+R1 2 13 40000
+R2 13 9 39997   
+R3 1 14 40000
+R4 14 8 40000
+X1 14 13 3 4 5 A3_132E
+.ENDS INAx132
+*****************************************************************************
+.SUBCKT A3_132E_INAx132 1 2 3 4 5
+*****************************************************************************
+.MODEL DX D (IS=800.0E-18)
+.MODEL DY D (IS=1.9E-16 AF=1 KF=2.258E-17)
+.MODEL QX PNP (IS=800.0E-18 BF=300)
+C1 11 12 7.279E-12
+C2 6 7 40.00E-12
+DC 5 53 DX
+DE 54 5 DX
+DLN 92 90 DX
+DLP 90 91 DX
+DN1 61 63 DY
+DN2 63 62 DY
+DP 4 3 DX
+DQ1 20 21 DX
+DQ2 22 20 DX
+EGND 99 0 POLY(2) (3,0) (4,0) 0 .5 .5
+EN 64 1 63 0 .6
+FB 7 99 POLY(5) VB VC VE VLP VLN 0 1.326E9 -1E9 1E9 1E9 -1E9
+FQ1 3 0 POLY(1) VQ1 149U 1
+FQ2 0 4 POLY(1) VQ2 149U -1
+FQ3 0 20 POLY(1) VLIM 0 1
+GA 6 0 11 12 75.40E-6
+GCM 0 6 10 99 377.0E-12
+HLIM 90 0 VLIM 1K
+IEE 3 10 DC 4.730E-6
+Q1 11 2 13 QX
+Q2 12 64 14 QX
+R2 6 9 100.0E3
+RC1 4 11 13.26E3
+RC2 4 12 13.26E3
+RE1 13 10 .9K
+RE2 14 10 .9K
+REE 10 99 42.28E6
+RO1 8 5 200
+RO2 7 99 200
+RP 3 4 5E6
+VB 9 0 DC 0
+VC 3 53 DC 1.350
+VE 54 4 DC .80
+VLIM 7 8 DC 0
+VLN 0 92 DC 12
+VLP 91 0 DC 12
+VN1 61 0 .6
+VN2 0 62 .6
+VQ1 21 0 0
+VQ2 22 0 0
+.ENDS A3_132E_INAx132
+*

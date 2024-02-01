@@ -1,0 +1,877 @@
+*$
+* INA188
+*****************************************************************************
+* (C) Copyright 2022 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: INA188
+* Date: 18JUL2022
+* EVM Order Number: N/A 
+* EVM Users Guide:  N/A 
+* Datasheet: SBOS632 -SEPTEMBER 2015
+*
+*
+* Model Version: Final 1.1
+*
+*****************************************************************************
+*
+*
+* Updates:
+*
+* Final 1.1
+* 1. Updated PSpice Symbol.
+* 2. Added .ENDS name as INA188.
+* 3. Changed the pin order.
+* 4. Updated with unique subckt name.
+*
+* Final 1.0
+* Release to Web
+*
+*****************************************************************************
+* Model Usage Notes:
+* 1. This macromodel has been optimized to model the AC, DC, noise, and  
+*    transient response performance within the device data sheet specified 
+*    limits. 
+* 2. This macromodel is based on the Green-Lis Macro-model Architecture
+*    Green-Lis Macro-Model Simulated Features:
+*    OPEN LOOP GAIN AND PHASE VS FREQUENCY WITH RL AND CL EFFECTS
+*    INPUT COMMON MODE REJECTION WITH FREQUENCY
+*    POWER SUPPLY REJECTION WITH FREQUENCY
+*    INPUT IMPEDANCE VS FREQUENCY 
+*    UNLOADED OUTPUT IMPEDANCE
+*    INPUT VOLTAGE NOISE VS FREQUENCY
+*    INPUT CURRENT NOISE VS FREQUENCY 
+*    OUTPUT VOLTAGE SWING VS OUTPUT CURRENT
+*    SHORT-CIRCUIT OUTPUT CURRENT
+*    QUIESCENT CURRENT VS SUPPLY VOLTAGE
+*    SETTLING TIME VS CAPACITIVE LOAD
+*    SLEW RATE
+*    SMALL SIGNAL OVERSHOOT VS CAPACITIVE LOAD
+*    LARGE SIGNAL RESPONSE
+*    OVERLOAD RECOVERY TIME
+*    INPUT BIAS CURRENT
+*    INPUT VOLTAGE OFFSET
+*    INPUT COMMON MODE RANGE
+*    OUTPUT CURRENT COMING THROUGH THE SUPPLY RAILS
+*****************************************************************************
+* CONNECTIONS: NON-INVERTING INPUT 
+*              |    INVERTING INPUT
+*              |    |    POSITIVE POWER SUPPLY
+*              |    |    |   NEGATIVE POWER SUPPLY
+*              |    |    |   |   OUTPUT
+*              |    |    |   |   |   REFERENCE
+*              |    |    |   |   |   |   GAIN SET 1
+*              |    |    |   |   |   |   |   GAIN SET 2
+*              |    |    |   |   |   |   |   |
+.SUBCKT INA188 VIN+ VIN- V+  V- VOUT REF RG1 RG2
+*****************************************************************************
+XU3         VIN- RG1 V+ V- Vout_s_11 INA188_OPA188_TG_0
+XU2         VIN+ RG2 V+ V- Vout_s INA188_OPA188_TG_1
+XU1         +IN_x -IN_x V+ V- VOUT INA188_OPA188_TG_2
+C1          +IN_x REF 2P 
+C4          RG2 Vout_s 30P 
+C3          RG1 Vout_s_11 30P 
+C2          -IN_x VOUT 2P 
+R6          +IN_x REF 50K 
+R5          Vout_s +IN_x 50K 
+R4          Vout_s_11 -IN_x 50K 
+R3          -IN_x VOUT 50K 
+R2          RG2 Vout_s 25K 
+R1          RG1 Vout_s_11 25K 
+.ENDS INA188
+*
+.SUBCKT INA188_OPA188_TG_0 +IN -IN V+ V- Vout
+V1          55 Vee_B_31 0
+VscNeg      MID_15 82 100M
+V3          MID_15 80 250
+V2          81 MID_15 250
+V12         MID_15 75 18
+V8          74 MID_15 16
+V7          Vcc_B_21 56 1.5
+IS2         +PSR_32 V- -160P
+Vos         +IN_F_19 47 -41U
+VscPos      83 MID_15 100M
+VoldPos     84 MID_15 900M
+VoldNeg     MID_15 91 900M
+Iq          V+ V- 450U
+IS3         92 V- 160P
+C23         41 MID_15 4P 
+R74         41 Vimon_17 100 
+C16         MID_15 OLD_SW_16 4N 
+R22         OLD_SW_16 42 13K 
+SW2         43 44 OLD_SW_16 MID_15  S_VSWITCH_1
+C22         MID_15 Vclp_40 4P 
+R13         Zo_in_35 Vclp_40 10 
+C5          MID_15 45 4P 
+D2          Vout V+  D_1N4148_1 59M 
+D1          V- Vout  D_1N4148_1 59M 
+C7          MID_15 46 4P 
+R73         Vout 46 10 
+CcmNeg      MID_15 -IN_F_18 520F 
+CcmPos      47 MID_15 520F 
+Cdiff       -IN_F_18 47 5.48P 
+XVn11       48 47 INA188_VNSE_0
+D8          +IN_F_19 -IN_F_18  D_1N4148_1 59M 
+D7          -IN_F_18 +IN_F_19  D_1N4148_1 59M 
+C21         V- 49 4.7P 
+R72         49 +IN_F_19 10 
+D6          V- +IN_F_19  D_1N4148_2 59M 
+C20         V- 50 4.7P 
+R71         50 -IN_F_18 10 
+D5          V- -IN_F_18  D_1N4148_1 59M 
+C19         +IN_F_19 51 4.7P 
+R70         51 V+ 10 
+D4          +IN_F_19 V+  D_1N4148_2 59M 
+C18         -IN_F_18 52 4.7P 
+R69         52 V+ 10 
+D3          -IN_F_18 V+  D_1N4148_1 59M 
+C17         V- 53 4.7P 
+R68         53 Vout 1M 
+C12         Vout 54 4.7P 
+R23         54 V+ 1M 
+R76         MID_15 55 1G 
+R75         56 MID_15 1G 
+R67         57 MID_15 1G 
+R66         58 59 1G 
+R65         60 61 1G 
+R64         62 63 1G 
+R63         44 43 1G 
+R62         64 65 1G 
+R61         66 Zo_out_20 1G 
+R60         +IN_F_19 +CMR_22 1G 
+R59         67 Vee_B_31 1G 
+R58         68 69 1G 
+R57         70 Vcc_B_21 1G 
+R53         Vee_B_31 71 1G 
+R52         71 Vcc_B_21 1G 
+R51         72 73 1G 
+R50         MID_15 SC-_30 1G 
+R49         MID_15 SC+_29 1G 
+R48         MID_15 74 1G 
+R47         MID_15 75 1G 
+R46         MID_15 Vimon_17 1G 
+R45         MID_15 76 1G 
+R44         MID_15 77 1G 
+R43         VCC_CLP_36 MID_15 1G 
+R42         MID_15 VEE_CLP_37 1G 
+R41         78 MID_15 1G 
+R40         MID_15 79 1G 
+R39         MID_15 80 1G 
+R38         81 MID_15 1G 
+R37         MID_15 Zo_in_35 1G 
+R36         82 MID_15 1G 
+R35         MID_15 OL-_34 1G 
+R34         MID_15 OL+_24 1G 
+R33         MID_15 OVLD-_25 1G 
+R32         MID_15 OVLD+_23 1G 
+R31         83 MID_15 1G 
+R30         84 MID_15 1G 
+R56         MID_15 85 1G 
+XU12        78 79 Over_clamp_26 MID_15 INA188_VCCS_LIMIT_0
+GVCCS20     MID_15 85 MID_15 85  1U
+R55         Over_clamp_26 MID_15 1G 
+GVCCS19     MID_15 Over_clamp_26 MID_15 Over_clamp_26  300U
+R54         Vsense_27 MID_15 1G 
+GVCCS18     MID_15 Vsense_27 MID_15 Vsense_27  1U
+GVCCS17     MID_15 Jaol_39 MID_15 Jaol_39  100U
+R28         Jaol_39 MID_15 1G 
+R27         CLAW_clamp_28 MID_15 1G 
+GVCCS16     MID_15 CLAW_clamp_28 MID_15 CLAW_clamp_28  1M
+R26         CL_clamp_38 MID_15 1G 
+GVCCS14     MID_15 CL_clamp_38 MID_15 CL_clamp_38  1M
+R25         Vee_B_31 VEE_CLP_37 1G 
+R24         VCC_CLP_36 Vcc_B_21 1G 
+SW1         61 60 OLD_SW_16 MID_15  S_VSWITCH_2
+R11         Zo_out_20 MID_15 1G 
+R10         65 MID_15 1G 
+R9          43 MID_15 1G 
+R7          63 MID_15 1G 
+R6          61 MID_15 1G 
+R5          59 MID_15 1G 
+GR2N        Zo_out_20 Zo_in_35 Zo_out_20 Zo_in_35  1U
+SW13        59 58 OLD_SW_16 MID_15  S_VSWITCH_3
+GR3N        63 86 63 86  100U
+GR3N_2      61 87 61 87  100U
+GR2N_2      59 MID_15 59 MID_15  284.233M
+GR2N_3      65 MID_15 65 MID_15  4.9M
+GR2N_4      Zo_out_20 MID_15 Zo_out_20 MID_15  10U
+GR2N_5      43 MID_15 43 MID_15  525U
+GR2N_6      61 60 61 60  1.42U
+GR2N_7      63 62 63 62  47U
+GR4N        43 44 43 44  100U
+GR3N_3      65 64 65 64  100U
+GR2N_8      59 58 59 58  100U
+GR1N        Zo_out_20 66 Zo_out_20 66  1U
+XStage5     65 MID_15 66 MID_15 INA188_VCVS_LIMIT_0
+EStage4     64 MID_15 43 MID_15  6.25
+EStage3     44 MID_15 63 MID_15  1
+C11         44 43 39.78874P 
+C9          MID_15 86 63.66198P 
+R_A         86 MID_15 1G
+EStage2     62 MID_15 61 MID_15  1
+C4          MID_15 87 63.66198P 
+R_B         87 MID_15 1G
+C1          58 59 53.05165U 
+EStage1     60 MID_15 59 MID_15  2.843333K
+EVCVS1      58 MID_15 Zo_in_35 Zo_out_20  99
+R29         MID_15 42 1G 
+R19         MID_15 67 1G 
+R17         MID_15 68 1G 
+R14         MID_15 70 1G 
+R12         MID_15 72 1G 
+GVCCS13     68 MID_15 68 MID_15  39.9999
+C15         69 68 3.183099N 
+GVCCS11     68 69 68 69  100U
+EVCVS5      88 MID_15 68 MID_15  63.2M
+GVCCS10     70 MID_15 70 MID_15  1.369597
+C8          Vcc_B_21 70 964.5754N 
+GVCCS9      70 Vcc_B_21 70 Vcc_B_21  100U
+EVCVS4      69 MID_15 70 MID_15  13.69697K
+GVCCS12     67 MID_15 67 MID_15  666.6667K
+C14         Vee_B_31 67 53.05165U 
+GVCCS8      67 Vee_B_31 67 Vee_B_31  100U
+GVCCS4      72 73 72 73  100U
+GVCCS3      MID_15 72 MID_15 72  1.274K
+EVCVS2      +CMR_22 +IN_F_19 72 MID_15  12.73885MEG
+C3          73 72 101.3726N 
+C13         CLAW_clamp_28 MID_15 5.18P 
+R2          Vimon_17 45 10 
+C10         MID_15 89 4P 
+R21         Vimon_17 89 10 
+EVCVS8      73 MID_15 +IN MID_15  158N
+R16         MID_15 90 1MEG 
+R15         88 MID_15 1MEG 
+C2          Jaol_39 MID_15 1.66P 
+XU7         MID_15 OVLD-_25 91 Vclp_40 82 SC-_30 INA188_OVLD_THRES_0
+XU2         MID_15 OVLD+_23 84 Vclp_40 83 SC+_29 INA188_OVLD_THRES_0
+XU16        MID_15 42 OL+_24 OL-_34 INA188_OL_CNTL_0
+XU15        89 MID_15 V- MID_15 INA188_VCCS_LIMIT_1
+XU14        89 MID_15 V+ MID_15 INA188_VCCS_LIMIT_2
+XU3         OVLD+_23 OVLD-_25 Vsense_27 MID_15 OL+_24 OL-_34 INA188_CLMP_AMP_0
+XU1         OL+_24 OL-_34 Over_clamp_26 MID_15 INA188_VCCS_LIMIT_3
+XU13        81 80 Vsense_27 MID_15 78 79 INA188_CLMP_AMP_1
+R4          -IN_F_18 92 1M 
+XU11        VCC_CLP_36 VEE_CLP_37 46 MID_15 77 76 INA188_CLMP_AMP_1
+XU10        77 76 CLAW_clamp_28 MID_15 INA188_VCCS_LIMIT_4
+XU9         74 75 45 MID_15 SC+_29 SC-_30 INA188_CLMP_AMP_1
+XU8         SC+_29 SC-_30 CL_clamp_38 MID_15 INA188_VCCS_LIMIT_4
+XVcm        +PSR_32 57 56 55 INA188_VCVS_EXT_LIMIT_0
+R8          +CMR_22 -PSR_33 1M 
+R1          +PSR_32 -PSR_33 1G 
+EGadjustNeg 90 MID_15 67 MID_15  1.053333K
+EVCVS7      +PSR_32 -PSR_33 88 90  1
+R3          0 71 1G 
+GVCCS7      71 Vee_B_31 71 Vee_B_31  1U
+GVCCS2      71 Vcc_B_21 71 Vcc_B_21  1U
+VCCVS1_in   Zo_out_20 Vout
+HCCVS1      Vimon_17 MID_15 VCCVS1_in   1K
+XU5         41 MID_15 Vcc_B_21 VCC_CLP_36 INA188_VCVS_LIMIT_1
+XU6         MID_15 41 VEE_CLP_37 Vee_B_31 INA188_VCVS_LIMIT_2
+GVCCS1      MID_15 CLAW_clamp_28 Jaol_39 MID_15  1M
+XU26        57 92 MID_15 85 INA188_VCCS_LIMIT_5
+XU4         85 MID_15 MID_15 Over_clamp_26 INA188_VCCS_LIMIT_6
+GVCCS15     MID_15 CL_clamp_38 CLAW_clamp_28 MID_15  1M
+R20         +IN 48 1 
+R18         -IN -IN_F_18 100M 
+GVCCS6      MID_15 Jaol_39 Vsense_27 MID_15  100U
+C6          71 0 1 
+EVCVS34     MID_15 0 71 0  1
+EVCVS29     Vcc_B_21 0 V+ 0  1
+EVCVS28     Vee_B_31 0 V- 0  1
+GVCCS5      MID_15 Vsense_27 Over_clamp_26 MID_15  1U
+Ccc         Over_clamp_26 MID_15 150U 
+EVCVS3      Zo_in_35 MID_15 CL_clamp_38 MID_15  1
+.MODEL D_1N4148_1 D( IS=1N N=1.7 BV=75 IBV=5U RS=2M 
++      CJO=4P VJ=750M M=330M FC=500M TT=5.9N 
++      EG=1.11 XTI=3 KF=0 AF=1 )
+.MODEL D_1N4148_2 D( IS=1N N=1.7 BV=75 IBV=5U RS=2M 
++      CJO=4P VJ=750M M=330M FC=500M TT=5.9N 
++      EG=1.11 XTI=3 KF=0 AF=1 )
+.MODEL S_VSWITCH_1 VSWITCH (RON=1 ROFF=1G VON=900M VOFF=10M)
+.MODEL S_VSWITCH_2 VSWITCH (RON=1 ROFF=1G VON=900M VOFF=10M)
+.MODEL S_VSWITCH_3 VSWITCH (RON=1 ROFF=1G VON=900M VOFF=10M)
+.ENDS INA188_OPA188_TG_0
+*
+.SUBCKT INA188_OPA188_TG_1 +IN -IN V+ V- Vout
+V1          139 Vee_B_115 0
+VscNeg      MID_99 166 100M
+V3          MID_99 164 250
+V2          165 MID_99 250
+V12         MID_99 159 18
+V8          158 MID_99 16
+V7          Vcc_B_105 140 1.5
+IS2         +PSR_116 V- -160P
+Vos         +IN_F_103 131 24U
+VscPos      167 MID_99 100M
+VoldPos     168 MID_99 900M
+VoldNeg     MID_99 175 900M
+Iq          V+ V- 450U
+IS3         176 V- 160P
+C23         125 MID_99 4P 
+R74         125 Vimon_101 100 
+C16         MID_99 OLD_SW_100 4N 
+R22         OLD_SW_100 126 13K 
+SW2         127 128 OLD_SW_100 MID_99  S_VSWITCH_1
+C22         MID_99 Vclp_124 4P 
+R13         Zo_in_119 Vclp_124 10 
+C5          MID_99 129 4P 
+D2          Vout V+  D_1N4148_1 59M 
+D1          V- Vout  D_1N4148_1 59M 
+C7          MID_99 130 4P 
+R73         Vout 130 10 
+CcmNeg      MID_99 -IN_F_102 520F 
+CcmPos      131 MID_99 520F 
+Cdiff       -IN_F_102 131 5.48P 
+XVn11       132 131 INA188_VNSE_0
+D8          +IN_F_103 -IN_F_102  D_1N4148_1 59M 
+D7          -IN_F_102 +IN_F_103  D_1N4148_1 59M 
+C21         V- 133 4.7P 
+R72         133 +IN_F_103 10 
+D6          V- +IN_F_103  D_1N4148_2 59M 
+C20         V- 134 4.7P 
+R71         134 -IN_F_102 10 
+D5          V- -IN_F_102  D_1N4148_1 59M 
+C19         +IN_F_103 135 4.7P 
+R70         135 V+ 10 
+D4          +IN_F_103 V+  D_1N4148_2 59M 
+C18         -IN_F_102 136 4.7P 
+R69         136 V+ 10 
+D3          -IN_F_102 V+  D_1N4148_1 59M 
+C17         V- 137 4.7P 
+R68         137 Vout 1M 
+C12         Vout 138 4.7P 
+R23         138 V+ 1M 
+R76         MID_99 139 1G 
+R75         140 MID_99 1G 
+R67         141 MID_99 1G 
+R66         142 143 1G 
+R65         144 145 1G 
+R64         146 147 1G 
+R63         128 127 1G 
+R62         148 149 1G 
+R61         150 Zo_out_104 1G 
+R60         +IN_F_103 +CMR_106 1G 
+R59         151 Vee_B_115 1G 
+R58         152 153 1G 
+R57         154 Vcc_B_105 1G 
+R53         Vee_B_115 155 1G 
+R52         155 Vcc_B_105 1G 
+R51         156 157 1G 
+R50         MID_99 SC-_114 1G 
+R49         MID_99 SC+_113 1G 
+R48         MID_99 158 1G 
+R47         MID_99 159 1G 
+R46         MID_99 Vimon_101 1G 
+R45         MID_99 160 1G 
+R44         MID_99 161 1G 
+R43         VCC_CLP_120 MID_99 1G 
+R42         MID_99 VEE_CLP_121 1G 
+R41         162 MID_99 1G 
+R40         MID_99 163 1G 
+R39         MID_99 164 1G 
+R38         165 MID_99 1G 
+R37         MID_99 Zo_in_119 1G 
+R36         166 MID_99 1G 
+R35         MID_99 OL-_118 1G 
+R34         MID_99 OL+_108 1G 
+R33         MID_99 OVLD-_109 1G 
+R32         MID_99 OVLD+_107 1G 
+R31         167 MID_99 1G 
+R30         168 MID_99 1G 
+R56         MID_99 169 1G 
+XU12        162 163 Over_clamp_110 MID_99 INA188_VCCS_LIMIT_0
+GVCCS20     MID_99 169 MID_99 169  1U
+R55         Over_clamp_110 MID_99 1G 
+GVCCS19     MID_99 Over_clamp_110 MID_99 Over_clamp_110  300U
+R54         Vsense_111 MID_99 1G 
+GVCCS18     MID_99 Vsense_111 MID_99 Vsense_111  1U
+GVCCS17     MID_99 Jaol_123 MID_99 Jaol_123  100U
+R28         Jaol_123 MID_99 1G 
+R27         CLAW_clamp_112 MID_99 1G 
+GVCCS16     MID_99 CLAW_clamp_112 MID_99 CLAW_clamp_112  1M
+R26         CL_clamp_122 MID_99 1G 
+GVCCS14     MID_99 CL_clamp_122 MID_99 CL_clamp_122  1M
+R25         Vee_B_115 VEE_CLP_121 1G 
+R24         VCC_CLP_120 Vcc_B_105 1G 
+SW1         145 144 OLD_SW_100 MID_99  S_VSWITCH_2
+R11         Zo_out_104 MID_99 1G 
+R10         149 MID_99 1G 
+R9          127 MID_99 1G 
+R7          147 MID_99 1G 
+R6          145 MID_99 1G 
+R5          143 MID_99 1G 
+GR2N        Zo_out_104 Zo_in_119 Zo_out_104 Zo_in_119  1U
+SW13        143 142 OLD_SW_100 MID_99  S_VSWITCH_3
+GR3N        147 170 147 170  100U
+GR3N_2      145 171 145 171  100U
+GR2N_2      143 MID_99 143 MID_99  284.233M
+GR2N_3      149 MID_99 149 MID_99  4.9M
+GR2N_4      Zo_out_104 MID_99 Zo_out_104 MID_99  10U
+GR2N_5      127 MID_99 127 MID_99  525U
+GR2N_6      145 144 145 144  1.42U
+GR2N_7      147 146 147 146  47U
+GR4N        127 128 127 128  100U
+GR3N_3      149 148 149 148  100U
+GR2N_8      143 142 143 142  100U
+GR1N        Zo_out_104 150 Zo_out_104 150  1U
+XStage5     149 MID_99 150 MID_99 INA188_VCVS_LIMIT_0
+EStage4     148 MID_99 127 MID_99  6.25
+EStage3     128 MID_99 147 MID_99  1
+C11         128 127 39.78874P 
+C9          MID_99 170 63.66198P
+R_C         170 MID_99 1G 
+EStage2     146 MID_99 145 MID_99  1
+C4          MID_99 171 63.66198P 
+R_D         171 MID_99 1G
+C1          142 143 53.05165U 
+EStage1     144 MID_99 143 MID_99  2.843333K
+EVCVS1      142 MID_99 Zo_in_119 Zo_out_104  99
+R29         MID_99 126 1G 
+R19         MID_99 151 1G 
+R17         MID_99 152 1G 
+R14         MID_99 154 1G 
+R12         MID_99 156 1G 
+GVCCS13     152 MID_99 152 MID_99  39.9999
+C15         153 152 3.183099N 
+GVCCS11     152 153 152 153  100U
+EVCVS5      172 MID_99 152 MID_99  63.2M
+GVCCS10     154 MID_99 154 MID_99  1.369597
+C8          Vcc_B_105 154 964.5754N 
+GVCCS9      154 Vcc_B_105 154 Vcc_B_105  100U
+EVCVS4      153 MID_99 154 MID_99  13.69697K
+GVCCS12     151 MID_99 151 MID_99  666.6667K
+C14         Vee_B_115 151 53.05165U 
+GVCCS8      151 Vee_B_115 151 Vee_B_115  100U
+GVCCS4      156 157 156 157  100U
+GVCCS3      MID_99 156 MID_99 156  1.274K
+EVCVS2      +CMR_106 +IN_F_103 156 MID_99  12.73885MEG
+C3          157 156 101.3726N 
+C13         CLAW_clamp_112 MID_99 5.18P 
+R2          Vimon_101 129 10 
+C10         MID_99 173 4P 
+R21         Vimon_101 173 10 
+EVCVS8      157 MID_99 +IN MID_99  158N
+R16         MID_99 174 1MEG 
+R15         172 MID_99 1MEG 
+C2          Jaol_123 MID_99 1.66P 
+XU7         MID_99 OVLD-_109 175 Vclp_124 166 SC-_114 INA188_OVLD_THRES_0
+XU2         MID_99 OVLD+_107 168 Vclp_124 167 SC+_113 INA188_OVLD_THRES_0
+XU16        MID_99 126 OL+_108 OL-_118 INA188_OL_CNTL_0
+XU15        173 MID_99 V- MID_99 INA188_VCCS_LIMIT_1
+XU14        173 MID_99 V+ MID_99 INA188_VCCS_LIMIT_2
+XU3         OVLD+_107 OVLD-_109 Vsense_111 MID_99 OL+_108 OL-_118 INA188_CLMP_AMP_0
+XU1         OL+_108 OL-_118 Over_clamp_110 MID_99 INA188_VCCS_LIMIT_3
+XU13        165 164 Vsense_111 MID_99 162 163 INA188_CLMP_AMP_1
+R4          -IN_F_102 176 1M 
+XU11        VCC_CLP_120 VEE_CLP_121 130 MID_99 161 160 INA188_CLMP_AMP_1
+XU10        161 160 CLAW_clamp_112 MID_99 INA188_VCCS_LIMIT_4
+XU9         158 159 129 MID_99 SC+_113 SC-_114 INA188_CLMP_AMP_1
+XU8         SC+_113 SC-_114 CL_clamp_122 MID_99 INA188_VCCS_LIMIT_4
+XVcm        +PSR_116 141 140 139 INA188_VCVS_EXT_LIMIT_0
+R8          +CMR_106 -PSR_117 1M 
+R1          +PSR_116 -PSR_117 1G 
+EGadjustNeg 174 MID_99 151 MID_99  1.053333K
+EVCVS7      +PSR_116 -PSR_117 172 174  1
+R3          0 155 1G 
+GVCCS7      155 Vee_B_115 155 Vee_B_115  1U
+GVCCS2      155 Vcc_B_105 155 Vcc_B_105  1U
+VCCVS1_in   Zo_out_104 Vout
+HCCVS1      Vimon_101 MID_99 VCCVS1_in   1K
+XU5         125 MID_99 Vcc_B_105 VCC_CLP_120 INA188_VCVS_LIMIT_1
+XU6         MID_99 125 VEE_CLP_121 Vee_B_115 INA188_VCVS_LIMIT_2
+GVCCS1      MID_99 CLAW_clamp_112 Jaol_123 MID_99  1M
+XU26        141 176 MID_99 169 INA188_VCCS_LIMIT_5
+XU4         169 MID_99 MID_99 Over_clamp_110 INA188_VCCS_LIMIT_6
+GVCCS15     MID_99 CL_clamp_122 CLAW_clamp_112 MID_99  1M
+R20         +IN 132 1 
+R18         -IN -IN_F_102 100M 
+GVCCS6      MID_99 Jaol_123 Vsense_111 MID_99  100U
+C6          155 0 1 
+EVCVS34     MID_99 0 155 0  1
+EVCVS29     Vcc_B_105 0 V+ 0  1
+EVCVS28     Vee_B_115 0 V- 0  1
+GVCCS5      MID_99 Vsense_111 Over_clamp_110 MID_99  1U
+Ccc         Over_clamp_110 MID_99 150U 
+EVCVS3      Zo_in_119 MID_99 CL_clamp_122 MID_99  1
+.MODEL D_1N4148_1 D( IS=1N N=1.7 BV=75 IBV=5U RS=2M 
++      CJO=4P VJ=750M M=330M FC=500M TT=5.9N 
++      EG=1.11 XTI=3 KF=0 AF=1 )
+.MODEL D_1N4148_2 D( IS=1N N=1.7 BV=75 IBV=5U RS=2M 
++      CJO=4P VJ=750M M=330M FC=500M TT=5.9N 
++      EG=1.11 XTI=3 KF=0 AF=1 )
+.MODEL S_VSWITCH_1 VSWITCH (RON=1 ROFF=1G VON=900M VOFF=10M)
+.MODEL S_VSWITCH_2 VSWITCH (RON=1 ROFF=1G VON=900M VOFF=10M)
+.MODEL S_VSWITCH_3 VSWITCH (RON=1 ROFF=1G VON=900M VOFF=10M)
+.ENDS INA188_OPA188_TG_1
+*
+.SUBCKT INA188_OPA188_TG_2 +IN -IN V+ V- Vout
+V1          223 Vee_B 0
+VscNeg      MID 250 100M
+V3          MID 248 250
+V2          249 MID 250
+V12         MID 243 18
+V8          242 MID 16
+V7          Vcc_B 224 1.5
+IS2         +PSR V- -160P
+Vos         +IN_F 215 77.3U
+VscPos      251 MID 100M
+VoldPos     252 MID 900M
+VoldNeg     MID 259 900M
+Iq          V+ V- 450U
+IS3         260 V- 160P
+C23         209 MID 4P 
+R74         209 Vimon 100 
+C16         MID OLD_SW 4N 
+R22         OLD_SW 210 13K 
+SW2         211 212 OLD_SW MID  S_VSWITCH_1
+C22         MID Vclp 4P 
+R13         Zo_in Vclp 10 
+C5          MID 213 4P 
+D2          Vout V+  D_1N4148_1 59M 
+D1          V- Vout  D_1N4148_1 59M 
+C7          MID 214 4P 
+R73         Vout 214 10 
+CcmNeg      MID -IN_F 520F 
+CcmPos      215 MID 520F 
+Cdiff       -IN_F 215 5.48P 
+XVn11       216 215 INA188_VNSE_0
+D8          +IN_F -IN_F  D_1N4148_1 59M 
+D7          -IN_F +IN_F  D_1N4148_1 59M 
+C21         V- 217 4.7P 
+R72         217 +IN_F 10 
+D6          V- +IN_F  D_1N4148_2 59M 
+C20         V- 218 4.7P 
+R71         218 -IN_F 10 
+D5          V- -IN_F  D_1N4148_1 59M 
+C19         +IN_F 219 4.7P 
+R70         219 V+ 10 
+D4          +IN_F V+  D_1N4148_2 59M 
+C18         -IN_F 220 4.7P 
+R69         220 V+ 10 
+D3          -IN_F V+  D_1N4148_1 59M 
+C17         V- 221 4.7P 
+R68         221 Vout 1M 
+C12         Vout 222 4.7P 
+R23         222 V+ 1M 
+R76         MID 223 1G 
+R75         224 MID 1G 
+R67         225 MID 1G 
+R66         226 227 1G 
+R65         228 229 1G 
+R64         230 231 1G 
+R63         212 211 1G 
+R62         232 233 1G 
+R61         234 Zo_out 1G 
+R60         +IN_F +CMR 1G 
+R59         235 Vee_B 1G 
+R58         236 237 1G 
+R57         238 Vcc_B 1G 
+R53         Vee_B 239 1G 
+R52         239 Vcc_B 1G 
+R51         240 241 1G 
+R50         MID SC- 1G 
+R49         MID SC+ 1G 
+R48         MID 242 1G 
+R47         MID 243 1G 
+R46         MID Vimon 1G 
+R45         MID 244 1G 
+R44         MID 245 1G 
+R43         VCC_CLP MID 1G 
+R42         MID VEE_CLP 1G 
+R41         246 MID 1G 
+R40         MID 247 1G 
+R39         MID 248 1G 
+R38         249 MID 1G 
+R37         MID Zo_in 1G 
+R36         250 MID 1G 
+R35         MID OL- 1G 
+R34         MID OL+ 1G 
+R33         MID OVLD- 1G 
+R32         MID OVLD+ 1G 
+R31         251 MID 1G 
+R30         252 MID 1G 
+R56         MID 253 1G 
+XU12        246 247 Over_clamp MID INA188_VCCS_LIMIT_0
+GVCCS20     MID 253 MID 253  1U
+R55         Over_clamp MID 1G 
+GVCCS19     MID Over_clamp MID Over_clamp  300U
+R54         Vsense MID 1G 
+GVCCS18     MID Vsense MID Vsense  1U
+GVCCS17     MID Jaol MID Jaol  100U
+R28         Jaol MID 1G 
+R27         CLAW_clamp MID 1G 
+GVCCS16     MID CLAW_clamp MID CLAW_clamp  1M
+R26         CL_clamp MID 1G 
+GVCCS14     MID CL_clamp MID CL_clamp  1M
+R25         Vee_B VEE_CLP 1G 
+R24         VCC_CLP Vcc_B 1G 
+SW1         229 228 OLD_SW MID  S_VSWITCH_2
+R11         Zo_out MID 1G 
+R10         233 MID 1G 
+R9          211 MID 1G 
+R7          231 MID 1G 
+R6          229 MID 1G 
+R5          227 MID 1G 
+GR2N        Zo_out Zo_in Zo_out Zo_in  1U
+SW13        227 226 OLD_SW MID  S_VSWITCH_3
+GR3N        231 254 231 254  100U
+GR3N_2      229 255 229 255  100U
+GR2N_2      227 MID 227 MID  284.233M
+GR2N_3      233 MID 233 MID  4.9M
+GR2N_4      Zo_out MID Zo_out MID  10U
+GR2N_5      211 MID 211 MID  525U
+GR2N_6      229 228 229 228  1.42U
+GR2N_7      231 230 231 230  47U
+GR4N        211 212 211 212  100U
+GR3N_3      233 232 233 232  100U
+GR2N_8      227 226 227 226  100U
+GR1N        Zo_out 234 Zo_out 234  1U
+XStage5     233 MID 234 MID INA188_VCVS_LIMIT_0
+EStage4     232 MID 211 MID  6.25
+EStage3     212 MID 231 MID  1
+C11         212 211 39.78874P 
+C9          MID 254 63.66198P 
+R_E         254 MID 1G 
+EStage2     230 MID 229 MID  1
+C4          MID 255 63.66198P 
+R_F         255 MID 1G
+C1          226 227 53.05165U 
+EStage1     228 MID 227 MID  2.843333K
+EVCVS1      226 MID Zo_in Zo_out  99
+R29         MID 210 1G 
+R19         MID 235 1G 
+R17         MID 236 1G 
+R14         MID 238 1G 
+R12         MID 240 1G 
+GVCCS13     236 MID 236 MID  39.9999
+C15         237 236 3.183099N 
+GVCCS11     236 237 236 237  100U
+EVCVS5      256 MID 236 MID  63.2M
+GVCCS10     238 MID 238 MID  1.369597
+C8          Vcc_B 238 964.5754N 
+GVCCS9      238 Vcc_B 238 Vcc_B  100U
+EVCVS4      237 MID 238 MID  13.69697K
+GVCCS12     235 MID 235 MID  666.6667K
+C14         Vee_B 235 53.05165U 
+GVCCS8      235 Vee_B 235 Vee_B  100U
+GVCCS4      240 241 240 241  100U
+GVCCS3      MID 240 MID 240  1.274K
+EVCVS2      +CMR +IN_F 240 MID  12.73885MEG
+C3          241 240 101.3726N 
+C13         CLAW_clamp MID 5.18P 
+R2          Vimon 213 10 
+C10         MID 257 4P 
+R21         Vimon 257 10 
+EVCVS8      241 MID +IN MID  158N
+R16         MID 258 1MEG 
+R15         256 MID 1MEG 
+C2          Jaol MID 1.66P 
+XU7         MID OVLD- 259 Vclp 250 SC- INA188_OVLD_THRES_0
+XU2         MID OVLD+ 252 Vclp 251 SC+ INA188_OVLD_THRES_0
+XU16        MID 210 OL+ OL- INA188_OL_CNTL_0
+XU15        257 MID V- MID INA188_VCCS_LIMIT_1
+XU14        257 MID V+ MID INA188_VCCS_LIMIT_2
+XU3         OVLD+ OVLD- Vsense MID OL+ OL- INA188_CLMP_AMP_0
+XU1         OL+ OL- Over_clamp MID INA188_VCCS_LIMIT_3
+XU13        249 248 Vsense MID 246 247 INA188_CLMP_AMP_1
+R4          -IN_F 260 1M 
+XU11        VCC_CLP VEE_CLP 214 MID 245 244 INA188_CLMP_AMP_1
+XU10        245 244 CLAW_clamp MID INA188_VCCS_LIMIT_4
+XU9         242 243 213 MID SC+ SC- INA188_CLMP_AMP_1
+XU8         SC+ SC- CL_clamp MID INA188_VCCS_LIMIT_4
+XVcm        +PSR 225 224 223 INA188_VCVS_EXT_LIMIT_0
+R8          +CMR -PSR 1M 
+R1          +PSR -PSR 1G 
+EGadjustNeg 258 MID 235 MID  1.053333K
+EVCVS7      +PSR -PSR 256 258  1
+R3          0 239 1G 
+GVCCS7      239 Vee_B 239 Vee_B  1U
+GVCCS2      239 Vcc_B 239 Vcc_B  1U
+VCCVS1_in   Zo_out Vout
+HCCVS1      Vimon MID VCCVS1_in   1K
+XU5         209 MID Vcc_B VCC_CLP INA188_VCVS_LIMIT_1
+XU6         MID 209 VEE_CLP Vee_B INA188_VCVS_LIMIT_2
+GVCCS1      MID CLAW_clamp Jaol MID  1M
+XU26        225 260 MID 253 INA188_VCCS_LIMIT_5
+XU4         253 MID MID Over_clamp INA188_VCCS_LIMIT_6
+GVCCS15     MID CL_clamp CLAW_clamp MID  1M
+R20         +IN 216 1 
+R18         -IN -IN_F 100M 
+GVCCS6      MID Jaol Vsense MID  100U
+C6          239 0 1 
+EVCVS34     MID 0 239 0  1
+EVCVS29     Vcc_B 0 V+ 0  1
+EVCVS28     Vee_B 0 V- 0  1
+GVCCS5      MID Vsense Over_clamp MID  1U
+Ccc         Over_clamp MID 150U 
+EVCVS3      Zo_in MID CL_clamp MID  1
+.MODEL D_1N4148_1 D( IS=1N N=1.7 BV=75 IBV=5U RS=2M 
++      CJO=4P VJ=750M M=330M FC=500M TT=5.9N 
++      EG=1.11 XTI=3 KF=0 AF=1 )
+.MODEL D_1N4148_2 D( IS=1N N=1.7 BV=75 IBV=5U RS=2M 
++      CJO=4P VJ=750M M=330M FC=500M TT=5.9N 
++      EG=1.11 XTI=3 KF=0 AF=1 )
+.MODEL S_VSWITCH_1 VSWITCH (RON=1 ROFF=1G VON=900M VOFF=10M)
+.MODEL S_VSWITCH_2 VSWITCH (RON=1 ROFF=1G VON=900M VOFF=10M)
+.MODEL S_VSWITCH_3 VSWITCH (RON=1 ROFF=1G VON=900M VOFF=10M)
+.ENDS INA188_OPA188_TG_2
+*
+* BEGIN PROG NSE NANO VOLT/RT-HZ
+.SUBCKT INA188_VNSE_0  1 2
+* BEGIN SETUP OF NOISE GEN - NANOVOLT/RT-HZ
+* INPUT THREE VARIABLES
+* SET UP VNSE 1/F
+* NV/RHZ AT 1/F FREQ
+.PARAM NLF=8
+* FREQ FOR 1/F VAL
+.PARAM FLW=.00001
+* SET UP VNSE FB
+* NV/RHZ FLATBAND
+.PARAM NVR=8.88
+* END USER INPUT
+* START CALC VALS
+.PARAM GLF={PWR(FLW,0.25)*NLF/1164}
+.PARAM RNV={1.184*PWR(NVR,2)}
+.MODEL DVN D KF={PWR(FLW,0.5)/1E11} IS=1.0E-16
+* END CALC VALS
+I1 0 7 10E-3
+I2 0 8 10E-3
+D1 7 0 DVN
+D2 8 0 DVN
+E1 3 6 7 8 {GLF}
+R1 3 0 1E9
+R2 3 0 1E9
+R3 3 6 1E9
+E2 6 4 5 0 10
+R4 5 0 {RNV}
+R5 5 0 {RNV}
+R6 3 4 1E9
+R7 4 0 1E9
+E3 1 2 3 4 1
+.ENDS INA188_VNSE_0
+* END PROG NSE NANOV/RT-HZ
+*
+*VOLTAGE CONTROLLED SOURCE WITH LIMITS
+.SUBCKT INA188_VCCS_LIMIT_0  VC+ VC- IOUT+ IOUT-         
+.PARAM GAIN = 1
+.PARAM IPOS = 240
+.PARAM INEG = -240
+G1 IOUT+ IOUT- VALUE={LIMIT(GAIN*V(VC+,VC-),INEG,IPOS)}
+.ENDS INA188_VCCS_LIMIT_0 
+*
+*VOLTAGE CONTROLLED SOURCE WITH LIMITS
+.SUBCKT INA188_VCVS_LIMIT_0  VC+ VC- VOUT+ VOUT-           
+.PARAM GAIN = 50
+.PARAM VPOS =20.5K
+.PARAM VNEG = -20.5K
+E1 VOUT+ VOUT- VALUE={LIMIT(GAIN*V(VC+,VC-),VNEG,VPOS)}
+.ENDS INA188_VCVS_LIMIT_0 
+*
+* OVERLOAD THRESHOLD CONTROL FOR GL MACRO MODEL
+.SUBCKT INA188_OVLD_THRES_0  1   2    3    4    5  6 
+*PINS             COM OVLD VOLD VCLP VSC SC
+ESW 2 1 VALUE = {IF( (V(6,1)>100M),(V(4,1)+V(5,1)), (V(4,1)+V(3,1)) )}
+.ENDS INA188_OVLD_THRES_0 
+*
+* CLAMP AMP FOR CONTROL OF EXTERNAL VCCS
+.SUBCKT INA188_OL_CNTL_0  1   2  3    4 
+*PINS          COM SW OLD+ OLD-
+ESW 2 1 VALUE = {IF((V(3,1)>100M | V(4,1)>100M),1,0)}
+.ENDS INA188_OL_CNTL_0 
+*
+*VOLTAGE CONTROLLED SOURCE WITH LIMITS
+.SUBCKT INA188_VCCS_LIMIT_1  VC+ VC- IOUT+ IOUT-             
+.PARAM GAIN = 1M
+*.PARAM IPOS = 50M
+*.PARAM INEG = 0
+G1 IOUT+ IOUT- VALUE={IF( (V(VC+,VC-)>=0),0,GAIN*V(VC+,VC-) )}
+*G1 IOUT+ IOUT- VALUE={LIMIT(GAIN*V(VC+,VC-),INEG,IPOS)}
+*ESW 2 1 VALUE = {IF( (V(6,1)>100M),(V(4,1)+V(5,1)), (V(4,1)+V(3,1)) )}
+.ENDS INA188_VCCS_LIMIT_1 
+*
+*VOLTAGE CONTROLLED SOURCE WITH LIMITS
+.SUBCKT INA188_VCCS_LIMIT_2  VC+ VC- IOUT+ IOUT-           
+.PARAM GAIN = 1M
+*.PARAM IPOS = 50M
+*.PARAM INEG = 0
+G1 IOUT+ IOUT- VALUE={IF( (V(VC+,VC-)<=0),0,GAIN*V(VC+,VC-) )}
+*G1 IOUT+ IOUT- VALUE={LIMIT(GAIN*V(VC+,VC-),INEG,IPOS)}
+*ESW 2 1 VALUE = {IF( (V(6,1)>100M),(V(4,1)+V(5,1)), (V(4,1)+V(3,1)) )}
+.ENDS INA188_VCCS_LIMIT_2 
+*
+* CLAMP AMP FOR CONTROL OF EXTERNAL VCCS
+.SUBCKT INA188_CLMP_AMP_0  VC+ VC- VIN COM VO+ VO-
+*  TERMINALS     CLAMP V+  CLAMP V-  VIN  VOUT+  VOUT-
+.PARAM G=1000
+EVO+ VO+ COM VALUE = {IF(V(VIN,COM)>V(VC+,COM),((V(VIN,COM)-V(VC+,COM))*G),0)}
+EVO- VO- COM VALUE = {IF(V(VIN,COM)<V(VC-,COM),((V(VC-,COM)-V(VIN,COM))*G),0)}
+.ENDS INA188_CLMP_AMP_0 
+*
+*VOLTAGE CONTROLLED SOURCE WITH LIMITS
+.SUBCKT INA188_VCCS_LIMIT_3  VC+ VC- IOUT+ IOUT-        
+.PARAM GAIN = 1
+.PARAM IPOS = 480
+.PARAM INEG = -480
+G1 IOUT+ IOUT- VALUE={LIMIT(GAIN*V(VC+,VC-),INEG,IPOS)}
+.ENDS INA188_VCCS_LIMIT_3 
+*
+* CLAMP AMP FOR CONTROL OF EXTERNAL VCCS
+.SUBCKT INA188_CLMP_AMP_1  VC+ VC- VIN COM VO+ VO-
+*  TERMINALS     CLAMP V+  CLAMP V-  VIN  VOUT+  VOUT-
+.PARAM G=100
+EVO+ VO+ COM VALUE = {IF(V(VIN,COM)>V(VC+,COM),((V(VIN,COM)-V(VC+,COM))*G),0)}
+EVO- VO- COM VALUE = {IF(V(VIN,COM)<V(VC-,COM),((V(VC-,COM)-V(VIN,COM))*G),0)}
+.ENDS INA188_CLMP_AMP_1 
+*
+*VOLTAGE CONTROLLED SOURCE WITH LIMITS
+.SUBCKT INA188_VCCS_LIMIT_4  VC+ VC- IOUT+ IOUT-          
+.PARAM GAIN = 1M
+.PARAM IPOS = 500M
+.PARAM INEG = -500M
+G1 IOUT+ IOUT- VALUE={LIMIT(GAIN*V(VC+,VC-),INEG,IPOS)}
+.ENDS INA188_VCCS_LIMIT_4 
+*
+*VOLTAGE CONTROLLED SOURCE WITH LIMITS
+.SUBCKT INA188_VCVS_EXT_LIMIT_0  VIN VOUT VP+ VP-             
+.PARAM GAIN = 1
+E1 VOUT 0 VALUE={LIMIT(GAIN*V(VIN,0),V(VP+,0),V(VP-,0))}
+.ENDS INA188_VCVS_EXT_LIMIT_0 
+*
+*VOLTAGE CONTROLLED SOURCE WITH LIMITS
+.SUBCKT INA188_VCVS_LIMIT_1  VC+ VC- VOUT+ VOUT-
+E1 VOUT+ VOUT- TABLE {ABS(V(VC+,VC-))} = (0,0.02) (5,0.6) (7.7,0.92) (9.8,1.37) (12.6,1.905) (14.7, 2.45) (15.9, 3.0)
+.ENDS INA188_VCVS_LIMIT_1 
+*
+*VOLTAGE CONTROLLED SOURCE WITH LIMITS
+.SUBCKT INA188_VCVS_LIMIT_2  VC+ VC- VOUT+ VOUT-             
+E1 VOUT+ VOUT- TABLE {ABS(V(VC+,VC-))} = (0, 0.02) (4.9, 0.5) (7.7, 0.92) (9.8, 1.2) (12.6, 1.6) (14.7, 1.95) (17.9, 2.7)
+.ENDS INA188_VCVS_LIMIT_2 
+*
+*VOLTAGE CONTROLLED SOURCE WITH LIMITS
+.SUBCKT INA188_VCCS_LIMIT_5  VC+ VC- IOUT+ IOUT-              
+.PARAM GAIN = 1M
+.PARAM IPOS = .5
+.PARAM INEG = -.5
+G1 IOUT+ IOUT- VALUE={LIMIT(GAIN*V(VC+,VC-),INEG,IPOS)}
+.ENDS INA188_VCCS_LIMIT_5 
+*
+*VOLTAGE CONTROLLED SOURCE WITH LIMITS
+.SUBCKT INA188_VCCS_LIMIT_6  VC+ VC- IOUT+ IOUT-              
+.PARAM GAIN = 2
+.PARAM IPOS = 120
+.PARAM INEG = -120
+G1 IOUT+ IOUT- VALUE={LIMIT(GAIN*V(VC+,VC-),INEG,IPOS)}
+.ENDS INA188_VCCS_LIMIT_6 

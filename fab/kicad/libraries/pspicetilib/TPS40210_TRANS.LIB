@@ -1,0 +1,371 @@
+﻿
+*****************************************************************************
+* TPS40210
+*****************************************************************************
+* (C) Copyright 2017 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Texas Instruments Inc.
+* Part: TPS40210
+* Date: 11DEC2017
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: TPS40210EVM
+* EVM Users Guide: SLUU308–April 2008
+* Datasheet: SLUS772F –MARCH 2008–REVISED MARCH 2015
+* Topologies supported: BOOST
+*
+* Model Version: Final 1.10
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.10
+* Min off time block was added.
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+* 
+* 1. The following features have been modeled
+*      a. Switching characteristics
+*      b. Minimum off time
+*      c. Soft start, UVLO and leading edge blanking
+* 2. Temperature effects are not modeled. 
+*
+*****************************************************************************
+.SUBCKT TPS40210_TRANS BP COMP DIS_EN_N EP FB GDRV GND ISNS RC SS VDD PARAMS: SS=0  
+E_SS_COMP_ABM1         SS_COMP_N16736260 0 VALUE { { IF (V(SS_EAMP) <
++  V(N00702), V(SS_EAMP), V(N00702) )}    }
+E_SS_COMP_ABM8         OUT 0 VALUE { IF({SS} > 0.5, 0.7, V(SS_COMP_N16736208)) 
++    }
+R_SS_COMP_R4         SS_COMP_N16736260 SS_COMP_N16736208  200 TC=0,0 
+C_SS_COMP_C2         0 SS_COMP_N16736208  20p  TC=0,0 
+R_LEB_R2         0 LEB_N00459  100 TC=0,0 
+R_LEB_R3         LEB_N01169 ISEN_LEB  100 TC=0,0 
+X_LEB_S1    GDRV 0 LEB_N00165 LEB_N00348 LEB_LEB_S1 
+C_LEB_C1         0 LEB_N00459  100p  TC=0,0 
+C_LEB_C2         ISEN_LEB 0  1n  TC=0,0 
+E_LEB_ABM1         LEB_N00989 0 VALUE { { IF (V(ISNS) < 0, 0, V(ISNS))}    }
+E_LEB_ABM2         LEB_N01169 0 VALUE { { IF (V(LEB_N00459) > 0.240,
++  V(LEB_N00989), 0)}    }
+V_LEB_V1         LEB_N00165 0 5
+R_LEB_R1         LEB_N00459 LEB_N00348  1k TC=0,0 
+C_OSC_C3         0 OSC_N02790  1000p  TC=0,0 
+R_OSC_R1         OSC_RAMP_PEAK VDD  337k TC=0,0 
+X_OSC_U29         RC GND OSC_ABCDE GND swhyste PARAMS:  RON=100m ROFF=1e8
++  VT=2.5 VH=0.025
+R_OSC_R2         GND OSC_RAMP_PEAK  17.75k TC=0,0 
+E_OSC_ABM1         OSC_N02727 0 VALUE { { IF(V(RC) > V(OSC_RAMP_PEAK), V(BP),
++  0)}    }
+R_OSC_R3         OSC_N16737867 GND  1000k TC=0,0 
+R_OSC_R4         OSC_N02727 OSC_N02766  100 TC=0,0 
+C_OSC_C1         GND OSC_RAMP_PEAK  1p  TC=0,0 
+E_OSC_ABM5         MIN_TOFF 0 VALUE { { IF(V(RC) > V(OSC_RAMP_PEAK)-2.2m,
++  V(BP), 0)}    }
+R_OSC_R6         OSC_N16782223 OSC_N16811661  14.43k TC=0,0 
+E_OSC_ABM2         OSC_N02746 0 VALUE { { IF(V(N01176) > V(RC), V(BP), 0)}    }
+R_OSC_R5         OSC_N02746 OSC_N02790  100 TC=0,0 
+E_OSC_ABM3         OSC_ABCDE 0 VALUE { { IF(V(OSC_N16790112) > 4, V(N16765294),
++  5)}    }
+D_OSC_D1T         OSC_N16811661 OSC_N16782223 D_D1 
+X_OSC_U30         OSC_N02766 OSC_N02790 N16765294 OSC_N16737867
++  SRLATCHRHP_BASIC_GEN PARAMS: VDD=5 VSS=0.0 VTHRESH=2.5
+E_OSC_ABM4         OSC_N16782223 0 VALUE { IF(V(OUT) > (V(OSC_N16780994)), 8,
++  0)    }
+C_OSC_C2         0 OSC_N02766  1000p  TC=0,0 
+C_OSC_C5         0 OSC_N16811661  1n  TC=0,0 
+X_OSC_U32         OSC_N16811661 0 OSC_N16790112 OSC_OPEN SRLATCHRHP_BASIC_GEN
++  PARAMS: VDD=8 VSS=0.0 VTHRESH=4
+C_OSC_C4         GND RC  15p  TC=0,0 
+E_OSC_ABM8         OSC_N16780994 0 VALUE { {IF(V(FB) <
++  0,(0+0.1u),(V(FB)+0.1u))}    }
+X_S1    N16748485 GND COMP GND TPS40210_TRANS_S1 
+R_R1         N01765 GND  1000k TC=0,0 
+E_SOFTSTART_ABM2         SOFTSTART_N16736508 0 VALUE { { IF(V(ISEN_LEB) >
++  V(N01176), V(BP), 0)}    }
+E_SOFTSTART_ABM1         SOFTSTART_N16736278 0 VALUE { { IF(V(N01176) > V(SS),
++  V(BP), 0)}    }
+R_SOFTSTART_R5         SOFTSTART_N16736508 SOFTSTART_N16736512  100 TC=0,0 
+R_SOFTSTART_R4         SOFTSTART_N16736278 SOFTSTART_N16736282  100 TC=0,0 
+C_SOFTSTART_C3         0 SOFTSTART_N16736512  20p  TC=0,0 
+X_SOFTSTART_U563         SOFTSTART_OR_ISEN SOFTSTART_AND_SS SOFTSTART_N16760923
++  N16748485 SRLATCHRHP_BASIC_GEN PARAMS: VDD=8 VSS=0.0 VTHRESH=4
+C_SOFTSTART_C2         0 SOFTSTART_N16736282  20p  TC=0,0 
+X_SOFTSTART_U577         SOFTSTART_N16736282 RUN SOFTSTART_AND_SS
++  AND2_BASIC_GEN PARAMS: VDD=8 VSS=0 VTHRESH=4
+X_SOFTSTART_S1    SOFTSTART_N16760923 0 SS GND SOFTSTART_SOFTSTART_S1 
+E_SOFTSTART_ABM3         SS_EAMP 0 VALUE { MAX(0,(V(SOFTSTART_N16748387)-0.7)) 
++    }
+R_SOFTSTART_R6         GND SS_EAMP  300k TC=0,0 
+X_SOFTSTART_S2    N16748485 0 BP SS SOFTSTART_SOFTSTART_S2 
+X_SOFTSTART_U613         RUN SOFTSTART_RUN_BAR INV_BASIC_GEN PARAMS: VDD=5
++  VSS=0 VTHRESH=2.5
+E_SOFTSTART_E1         SOFTSTART_N16748387 GND SS GND 1
+X_SOFTSTART_U612         SOFTSTART_N16736512 SOFTSTART_RUN_BAR
++  SOFTSTART_OR_ISEN OR2_BASIC_GEN PARAMS: VDD=8 VSS=0 VTHRESH=4
+V_V1         ABC RC 1
+R_R3         EP GND  1m  
+X_ERROR_AMP_U1         OUT FB COMP GND erramp PARAMS:  ISINK=2.5M ISOURCE=250U
++  VHIGH=8 VLOW=100M POLE=200 GAIN=10000
+X_UVLO_SW_U29         BP RUN VDD 0 swhyste PARAMS:  RON=1 ROFF=1e9 VT=4.25
++  VH=0.195
+R_UVLO_SW_R1         0 RUN  1000k TC=0,0 
+X_PWM_COMP_RK_U35         N16765294 PWM_COMP_RK_N16769832 PWM_COMP_RK_N16762448
++  PWM_COMP_RK_PWMB SRLATCHRHP_BASIC_GEN PARAMS: VDD=8 VSS=0.0 VTHRESH=1.75
+X_PWM_COMP_RK_U823         PWM_COMP_RK_N16762448 RUN PWM_COMP_RK_N16755862
++  AND2_BASIC_GEN PARAMS: VDD=8 VSS=0 VTHRESH=4
+E_PWM_COMP_RK_ABM1         PWM_COMP_RK_N16732266 0 VALUE { { IF(V(ABC) >
++  V(N16749177), V(BP), 0)}    }
+E_PWM_COMP_RK_U_min_on_off_VCR_ABM1         PWM_COMP_RK_U_min_on_off_VCR_N00169
++  0 VALUE { ( V(PWM_COMP_RK_U_min_on_off_AA)  
++ -V(PWM_COMP_RK_U_min_on_off_N16735915))  
++ /V(PWM_COMP_RK_U_min_on_off_N16839157)  }
+R_PWM_COMP_RK_U_min_on_off_VCR_R1         PWM_COMP_RK_U_min_on_off_N16735915
++  PWM_COMP_RK_U_min_on_off_AA  10Meg  
+G_PWM_COMP_RK_U_min_on_off_VCR_G1         PWM_COMP_RK_U_min_on_off_AA
++  PWM_COMP_RK_U_min_on_off_N16735915 PWM_COMP_RK_U_min_on_off_VCR_N00169 0 1
+E_PWM_COMP_RK_U_min_on_off_ABM2         PWM_COMP_RK_U_min_on_off_N16839078 0
++  VALUE { IF((V(VDD)>30),90,  
++ (-1.0211062591E+01*V(VDD)  
++ + 3.9660480349E+02))  }
+X_PWM_COMP_RK_U_min_on_off_U822         PWM_COMP_RK_N16755862
++  PWM_COMP_RK_U_min_on_off_N16735833 INV_DELAY_BASIC_GEN PARAMS: VDD=8 VSS=0
++  VTHRESH=4 DELAY=15n
+X_PWM_COMP_RK_U_min_on_off_U828         PWM_COMP_RK_U_min_on_off_AA
++  PWM_COMP_RK_U_min_on_off_N16735915 PWM_COMP_RK_N16755862 N16752873
++  OR3_BASIC_GEN PARAMS: VDD=8 VSS=0 VTHRESH=4
+E_PWM_COMP_RK_U_min_on_off_ABM3         PWM_COMP_RK_U_min_on_off_N16839157 0
++  VALUE { (V(PWM_COMP_RK_U_min_on_off_N16839078)/0.693)    }
+X_PWM_COMP_RK_U_min_on_off_U577         PWM_COMP_RK_U_min_on_off_N16735833
++  PWM_COMP_RK_N16755862 PWM_COMP_RK_U_min_on_off_AA AND2_BASIC_GEN PARAMS: VDD=8
++  VSS=0 VTHRESH=4
+C_PWM_COMP_RK_U_min_on_off_C172         0 PWM_COMP_RK_U_min_on_off_N16735915 
++  1n IC=0 
+D_PWM_COMP_RK_U_min_on_off_D1T         PWM_COMP_RK_U_min_on_off_AA
++  PWM_COMP_RK_U_min_on_off_N16735915 D_D1 
+R_PWM_COMP_RK_R4         PWM_COMP_RK_N16732266 PWM_COMP_RK_N16732270  100
++  TC=0,0 
+C_PWM_COMP_RK_C2         0 PWM_COMP_RK_N16732270  10p  TC=0,0 
+X_PWM_COMP_RK_U612         MIN_TOFF PWM_COMP_RK_N16732270 PWM_COMP_RK_N16769832
++  OR2_BASIC_GEN PARAMS: VDD=8 VSS=0 VTHRESH=4
+R_LDO_BGTest_R2         LDO_BGTest_N00502 N01176  10 TC=0,0 
+E_LDO_BGTest_ABM1         BP 0 VALUE { { IF(V(0) > V(LDO_BGTest_N02047),
++  V(LDO_BGTest_VDD_INT), 0)}    }
+E_LDO_BGTest_ABM2         LDO_BGTest_N00392 0 VALUE { {
++  IF(V(LDO_BGTest_VDD_INT) < 0.7, V(LDO_BGTest_VDD_INT), 0.7)}    }
+R_LDO_BGTest_R3         LDO_BGTest_N00392 N00702  10 TC=0,0 
+E_LDO_BGTest_ABM3         LDO_BGTest_N00881 0 VALUE { {
++  IF(V(LDO_BGTest_VDD_INT) < 0.25, V(LDO_BGTest_VDD_INT), 0.25)}    }
+E_LDO_BGTest_ABM4         LDO_BGTest_N00502 0 VALUE { {
++  IF(V(LDO_BGTest_VDD_INT) < 0.15, V(LDO_BGTest_VDD_INT), 0.15)}    }
+C_LDO_BGTest_C1         0 N00702  10p  TC=0,0 
+E_LDO_BGTest_ABM5         LDO_BGTest_N01104 0 VALUE { { IF(V(VDD) < 8, V(VDD),
++  8})    }
+R_LDO_BGTest_R5         0 DIS_EN_N  1100k TC=0,0 
+C_LDO_BGTest_C2         0 N01176  10p  TC=0,0 
+V_LDO_BGTest_V1         DIS_EN_N LDO_BGTest_N02047 1.0
+R_LDO_BGTest_R1         LDO_BGTest_N01104 LDO_BGTest_VDD_INT  1m TC=0,0 
+R_LDO_BGTest_R4         LDO_BGTest_N00881 N01765  10 TC=0,0 
+C_LDO_BGTest_C3         0 N01765  10p  TC=0,0 
+C_CSA_C1         GND CSA_N00276  10p  TC=0,0 
+E_CSA_E1         CSA_N00225 GND ISEN_LEB GND 1
+G_CSA_G1         N16749177 GND CSA_N00276 GND 290u
+R_CSA_R1         CSA_N00225 CSA_N00276  10k TC=0,0 
+X_S3    N16752873 GND GDRV GND TPS40210_TRANS_S3 
+R_R2         COMP N16749177  20k TC=0,0 
+X_S2    N16752873 GND BP GDRV TPS40210_TRANS_S2 
+.ENDS TPS40210_TRANS
+*$
+.subckt LEB_LEB_S1 1 2 3 4  
+S_LEB_S1         3 4 1 2 _LEB_S1
+RS_LEB_S1         1 2 1G
+.MODEL         _LEB_S1 VSWITCH Roff=1e9 Ron=1e-6 Voff=1 Von=3
+.ends LEB_LEB_S1
+*$
+.subckt TPS40210_TRANS_S1 1 2 3 4  
+S_S1         3 4 1 2 _S1
+RS_S1         1 2 1G
+.MODEL         _S1 VSWITCH Roff=10 Ron=1e9 Voff=0 Von=2.5
+.ends TPS40210_TRANS_S1
+*$
+.subckt SOFTSTART_SOFTSTART_S1 1 2 3 4  
+S_SOFTSTART_S1         3 4 1 2 _SOFTSTART_S1
+RS_SOFTSTART_S1         1 2 1G
+.MODEL         _SOFTSTART_S1 VSWITCH Roff=1e9 Ron=1500k Voff=1 Von=3
+.ends SOFTSTART_SOFTSTART_S1
+*$
+.subckt SOFTSTART_SOFTSTART_S2 1 2 3 4  
+S_SOFTSTART_S2         3 4 1 2 _SOFTSTART_S2
+RS_SOFTSTART_S2         1 2 1G
+.MODEL         _SOFTSTART_S2 VSWITCH Roff=1e9 Ron=500k Voff=1 Von=3
+.ends SOFTSTART_SOFTSTART_S2
+*$
+.subckt TPS40210_TRANS_S3 1 2 3 4  
+S_S3         3 4 1 2 _S3
+RS_S3         1 2 1G
+.MODEL         _S3 VSWITCH Roff=5 Ron=1e9 Voff=1 Von=3
+.ends TPS40210_TRANS_S3
+*$
+.subckt TPS40210_TRANS_S2 1 2 3 4  
+S_S2         3 4 1 2 _S2
+RS_S2         1 2 1G
+.MODEL         _S2 VSWITCH Roff=1e9 Ron=5 Voff=1 Von=3
+.ends TPS40210_TRANS_S2
+*$
+.subckt swhyste nodeminus nodeplus plus minus params: ron=1 roff=1meg vt=5 vh=2
+s5 nodeplus nodeminus 8 0 smoothsw
+ebcrtl 8 0 value = { if ( v(plus)-v(minus) > v(ref), 1, 0 ) }
+ebref ref1 0 value = { if ( v(8) > 0.5, {vt-vh}, {vt+vh} ) }
+rdel ref1 ref 100
+cdel ref 0 100p  ic={vt+vh}
+rconv1 8 0 10meg
+rconv2 plus 0 10meg
+rconv3 minus 0 10meg
+.model smoothsw vswitch
++ von=1
++ voff=0
+.ends swhyste
+*$
+.model D_D1 d
++ is=1e-015
++ n=0.5
++ cjo=1e-012
++ tt=1e-011
+*$
+.subckt erramp in_p in_m  out  gnd params: isink= 1m isource=150u vhigh=8
++  vlow=100m pole=200 gain=5000
+rin in_p in_m 8meg
+cp1 11 gnd {1/(6.28*(gain/100u)*pole)}
+e1 5 gnd 11 gnd 1
+r9 5 2 5
+d14 2 13 dmod
+is 13 gnd {isink/100}
+q1 gnd 13 16 qpmod
+isrc 7 out {isource}
+d12 out 7 dmod
+d15 gnd 11 dclamp
+g1 gnd 11 in_p in_m 100u
+v1 7 gnd {vhigh-0.6v}
+v4 out 16 {vlow-38mv}
+rp1 11 gnd {gain/100u}
+.model dclamp d
++ rs=10
++ bv=10
++ ibv=0.01
+.model dmod d
++ tt=1e-009
++ cjo=1e-011
+.ends erramp
+*$
+.SUBCKT CESR IN OUT
++ PARAMs:  C=100u ESR=0.01 X=2 IC=0
+C	IN 1  {C*X} IC={IC}
+RESR	1 OUT {ESR/X}
+.ENDS CESR
+*$
+.SUBCKT LDCR IN OUT
++ PARAMs:  L=1u DCR=0.01 IC=0
+L	IN 1  {L} IC={IC}
+RDCR	1 OUT {DCR}
+.ENDS LDCR
+*$
+.SUBCKT SRLATCHRHP_BASIC_GEN S R Q QB PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+GQ 0 Qint VALUE = {IF(V(R) > {VTHRESH},-1,IF(V(S)>{VTHRESH},1, 0))}
+CQint Qint 0 1n
+RQint Qint 0 1000MEG
+D_D10 Qint MY5 D_D1
+V1 MY5 0 {VDD}
+D_D11 MYVSS Qint D_D1
+V2 MYVSS 0 {VSS} 
+EQ Qqq 0 Qint 0 1
+X3 Qqq Qqqd1 BUF_BASIC_GEN PARAMS: VDD={VDD} VSS={VSS} VTHRESH={VTHRESH}
+RQq Qqqd1 Q 1
+EQb Qbr 0 VALUE = {IF( V(Q) > {VTHRESH}, {VSS},{VDD})}
+RQb Qbr QB 1 
+Cdummy1 Q 0 1n 
+Cdummy2 QB 0 1n
+.IC V(Qint) {VSS}
+.MODEL D_D1 D( IS=1e-15 TT=10p Rs=0.05 N=.1 )
+.ENDS SRLATCHRHP_BASIC_GEN
+*$
+.SUBCKT AND2_BASIC_GEN A B Y PARAMS: VDD=8 VSS=0 VTHRESH=4 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS AND2_BASIC_GEN
+*$
+.SUBCKT INV_BASIC_GEN A  Y PARAMS: VDD=8 VSS=0 VTHRESH=4 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS INV_BASIC_GEN
+*$
+.SUBCKT BUF_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS BUF_BASIC_GEN
+*$
+.MODEL QPMOD PNP
+*$
+.SUBCKT OR2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  |  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS OR2_BASIC_GEN
+*$
+.SUBCKT OR3_BASIC_GEN A B C Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  |  
++ V(B) > {VTHRESH} |
++ V(C) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS OR3_BASIC_GEN
+*$
+.SUBCKT INV_DELAY_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 DELAY = 10n 
+E_ABMGATE1    YINT1 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT1 YINT2 1
+CINT YINT2 0 {DELAY*1.3}
+E_ABMGATE2    YINT3 0 VALUE {{IF(V(YINT2) > {VTHRESH} , 
++ {VSS},{VDD})}}
+RINT2 YINT3 Y 1
+CINT2 Y 0 1n
+.ENDS INV_DELAY_BASIC_GEN
+*$
+.SUBCKT POWERMOS G D S PARAMS: RDSON=16m Ciss=1375p Crss=70p Coss=340p VSP=3.5 RG=1 
+C_C1         S Da  {Coss} IC=0 
+R_R1         Da D  10
+C_C2         Ga D  {Crss}  IC=0
+R_R2         G Ga {RG}
+C_C3         Ga S  {Ciss} IC=0
+D_D1         S Db Dbreak 
+R_R3         Db D 1m
+S_switchM         D S Ga S _switchM
+RS_switchM         Ga S 100Meg
+.MODEL         _switchM VSWITCH Roff=100e6 Ron={RDSON} Voff=1.1 Von={VSP}
+.model Dbreak D Is=1e-14 Cjo=.1pF Rs=.1
+.ends POWERMOS
+*$

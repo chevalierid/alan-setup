@@ -1,0 +1,271 @@
+*$
+*****************************************************************************
+* (C) Copyright 2019 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose. The model is
+** provided solely on an "as is" basis. The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: TPS3899P_PSPICE_TRANS
+* Date: 03MAY2021
+* Model Type: Transient
+* Simulator: PSpice
+* Simulator Version: 16.2.0.s003
+* EVM Order Number: 
+* EVM User's Guide: 
+* Datasheet: SLVSFM0A – DECEMBER 2020
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+*
+* 1. The following features have been modelled
+*      a. VDD THRESHOLD RESPONSE
+*      b. SENSE THRESHOLD RESPONSE
+*      c. CTR RESET TIME DELAY
+*      d. CTS SENSE TIME DELAY
+*      
+*      
+*      
+* 2. Temperature effects are note been modelled.
+* 3. This model is immune to voltage transients on VDD and SENSE as long as the duration of the voltage transient is less than the CTS delay time.
+* 4. Slew rates of 1V/us or greater were used to validate model functionality.
+*
+*****************************************************************************
+* source TPS3899P_PSPICE_TRANS
+.subckt TPS3899P_TRANS CTR CTS GND RESET_B SENSE VDD PARAMS: VTH=1.5 VSEL=1
+X_U91         N17957087 VDD_OK N17954467 AND2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+V_V21         N17913113 0 {VITP-VITN}
+X_U10         SENSE N17913039 N17913113 SENSE_OK COMPHYS_BASIC_GEN PARAMS:
++  VDD=1 VSS=0 VTHRESH=0.5
+X_U83         CTR_OK SENSE_OV CTR_OK_SENSE AND2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+V_V25         N17913235 0 1.5
+X_U84         CTS_OK N17957482 CTS_OK_SENSE AND2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+E_ABM13         SENSE_OV 0 VALUE { IF(V(OVDRIVE_VCC_NEG)>0.5 ,1,V(N17913485))  
++   }
+X_U63         POR_OK SR_OK DRIVE_SIG OR2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+X_U6         SENSE N17913365 OUT1 COMP_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+D_D11         SENSE_OK N17913485 D_D1 
+X_U82         SENSE_OV N17957087 INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+C_C3         0 N17913485  1u  TC=0,0 
+G_G1         VDD 0 TABLE { V(N17913693, 0) } 
++ ( (0,0)(1,0.17u)(2,0.13u)(3,0.14u)(4,0.155u)(6,0.17u) )
+R_R7         0 GND  1m TC=0,0 
+X_U34         CTR_OK_SENSE CTS_OK_SENSE SR_Q SR_QB SRLATCHRHP_BASIC_GEN PARAMS:
++  VDD=1 VSS=0 VTHRESH=0.5
+X_U26         TIMER_RAMP OVDRIVE_VCC_NEG INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+X_U93         VDD_OK SR_Q SR_OK AND2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+X_U65         VDD_STARTUP VDD_OK BUF_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+C_C12         0 TIMER_RAMP  1n  
+V_V24         N17913201 0 1m
+V_V7         N17912998 0 1.0V
+X_U92         SENSE_OV VDD_OK SENSE_CT AND2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+V_U2_V12         U2_N16765815 0 1.23Vdc
+V_U2_V11         U2_N16765435 0 1.23Vdc
+C_U2_C1         CTS 0  45p  
+G_U2_ABMI2         0 CTS VALUE { IF(V(N17954467)>0.5,1.98727u,0)    }
+X_U2_U18         N17954467 U2_CTS_SENSE_BAR INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+X_U2_U8         CTS U2_N16765815 CTS_OK COMP_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+D_U2_D13         CTS U2_N16765435 D_D1 
+X_U2_S4    U2_CTS_SENSE_BAR 0 CTS 0 CTSDELAY_U2_S4 
+C_C1         0 VDD_STARTUP  1u  TC=0,0 
+E_E4         N17913693 0 VDD 0 1
+V_V20         N17913039 0 {VITP}
+D_D14         TIMER_RAMP N17912998 D_D1 
+E_ABM14         HYST_S 0 VALUE { VITP-VITN    }
+G_ABMI1         N17912998 TIMER_RAMP VALUE { IF(V(OUT1) < 0.5, 50u, 0)    }
+X_U37         N17944254 VDD POR_OK COMP_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+D_D10         VDD_STARTUP VDD_VALID D_D1 
+X_S5    N18259 0 RESET_B_1 0 TPS3899P_S5 
+E_ABM2         N17913365 0 VALUE { ((V(OUT1)*-V(HYST_S)) + VITN+V(HYST_S))    }
+R_R1         VDD_VALID VDD_STARTUP  317.4 TC=0,0 
+X_U11         VDD N17913235 N17913201 VDD_VALID COMPHYS_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=0.5
+R_R3         SENSE_OK N17913485  21.64 TC=0,0 
+V_U1_V12         U1_N16765815 0 1.23Vdc
+X_U1_U8         CTR U1_N16765815 CTR_OK COMP_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+C_U1_C1         CTR 0  129.253p  
+X_U1_U18         SENSE_CT U1_CTR_SENSE_BAR INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+V_U1_V11         U1_N16765435 0 1.23Vdc
+G_U1_ABMI2         0 CTR VALUE { IF(V(SENSE_CT)>0.5,1.98727u,0)    }
+D_U1_D13         CTR U1_N16765435 D_D1 
+X_U1_S4    U1_CTR_SENSE_BAR 0 CTR 0 CTRDELAY_U1_S4 
+V_V23         N17944254 0 0.3
+X_U85         SENSE_OV N17957482 INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+X_S6    OUT1 0 TIMER_RAMP 0 TPS3899P_S6 
+X_S7    DRIVE_SIG 0 VDD1 RESET_B_1 TPS3899P_S7 
+E_ABM15         VDD1 0 VALUE { (V(VDD)*1)    }
+X_U94         DRIVE_SIG N18259 INV_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=500E-3
+X_U97         DRIVE_SIG N20243 INV_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=500E-3
+X_S8    N20243 0 VDD1 RESET_1 TPS3899P_S8 
+X_U95         N19904 VDD POR_OK COMP_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+X_U96         POR_OK SR_OK DRIVE_SIG OR2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+X_S9    DRIVE_SIG 0 RESET_1 0 TPS3899P_S9 
+V_V26         N19904 0 0.3
+X_U98         RESET_B_1 RESET_1 N20479 RESET_B 2to1MUX PARAMS: VTHRESH=0.5
+V_V27         N20479 0 {VSEL}
+.PARAM  vitp={vth*1.05} vitn={vth}
+.ENDS TPS3899P_TRANS
+
+.subckt CTSDELAY_U2_S4 1 2 3 4  
+S_U2_S4         3 4 1 2 _U2_S4
+RS_U2_S4         1 2 1G
+.MODEL         _U2_S4 VSWITCH Roff=2.3E8 Ron=1 Voff=0.1V Von=0.5V
+.ends CTSDELAY_U2_S4
+
+.subckt TPS3899P_S5 1 2 3 4  
+S_S5         3 4 1 2 _S5
+RS_S5         1 2 1G
+.MODEL         _S5 VSWITCH Roff=1E6 Ron=50 Voff=0.8V Von=0.1V
+.ends TPS3899P_S5
+
+.subckt CTRDELAY_U1_S4 1 2 3 4  
+S_U1_S4         3 4 1 2 _U1_S4
+RS_U1_S4         1 2 1G
+.MODEL         _U1_S4 VSWITCH Roff=2.3E8 Ron=1 Voff=0.1V Von=0.5V
+.ends CTRDELAY_U1_S4
+
+.subckt TPS3899P_S6 1 2 3 4  
+S_S6         3 4 1 2 _S6
+RS_S6         1 2 1G
+.MODEL         _S6 VSWITCH Roff=100e6 Ron=1 Voff=0.2 Von=0.8
+.ends TPS3899P_S6
+
+.subckt TPS3899P_S7 1 2 3 4  
+S_S7         3 4 1 2 _S7
+RS_S7         1 2 1G
+.MODEL         _S7 VSWITCH Roff=1E6 Ron=50 Voff=0.8V Von=0.1V
+.ends TPS3899P_S7
+
+.subckt TPS3899P_S8 1 2 3 4  
+S_S8         3 4 1 2 _S8
+RS_S8         1 2 1G
+.MODEL         _S8 VSWITCH Roff=1E6 Ron=50 Voff=0.8V Von=0.1V
+.ends TPS3899P_S8
+
+.subckt TPS3899P_S9 1 2 3 4  
+S_S9         3 4 1 2 _S9
+RS_S9         1 2 1G
+.MODEL         _S9 VSWITCH Roff=1E6 Ron=50 Voff=0.8V Von=0.1V
+.ends TPS3899P_S9
+
+.SUBCKT COMP_BASIC_GEN INP INM Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5	
+E_ABM Yint 0 VALUE {IF (V(INP) > 
++ V(INM), {VDD},{VSS})}
+R1 Yint Y 1
+C1 Y 0 1n
+.ENDS COMP_BASIC_GEN
+*$
+.SUBCKT AND2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS AND2_BASIC_GEN
+*$
+.SUBCKT INV_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS INV_BASIC_GEN
+*$
+.MODEL D_D1 D( IS=1e-15 TT=10p Rs=0.05 N=.1  )
+*$
+.SUBCKT BUF_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS BUF_BASIC_GEN
+*$
+.SUBCKT COMPHYS_BASIC_GEN INP INM HYS OUT PARAMS: VDD=1 VSS=0 VTHRESH=0.5	
+EIN INP1 INM1 INP INM 1 
+EHYS INP1 INP2 VALUE { IF( V(1) > {VTHRESH},-V(HYS),0) }
+EOUT OUT 0 VALUE { IF( V(INP2)>V(INM1), {VDD} ,{VSS}) }
+R1 OUT 1 1
+C1 1 0 5n
+RINP1 INP1 0 1K
+.ENDS COMPHYS_BASIC_GEN
+*$
+.SUBCKT OR2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  |  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS OR2_BASIC_GEN
+*$
+.SUBCKT AND3_BASIC_GEN A B C Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH} &
++ V(C) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS AND3_BASIC_GEN
+*$
+.SUBCKT SRLATCHRHP_BASIC_GEN S R Q QB PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+GQ 0 Qint VALUE = {IF(V(R) > {VTHRESH},-5,IF(V(S)>{VTHRESH},5, 0))}
+CQint Qint 0 10n
+RQint Qint 0 1000MEG
+D_D10 Qint MY5 D_D1
+V1 MY5 0 {VDD}
+D_D11 MYVSS Qint D_D1
+V2 MYVSS 0 {VSS} 
+EQ Qqq 0 Qint 0 1
+X3 Qqq Qqqd1 BUF_BASIC_GEN PARAMS: VDD={VDD} VSS={VSS} VTHRESH={VTHRESH}
+RQq Qqqd1 Q 1
+EQb Qbr 0 VALUE = {IF( V(Q) > {VTHRESH}, {VSS},{VDD})}
+RQb Qbr QB 1 
+Cdummy1 Q 0 1n 
+Cdummy2 QB 0 1n
+.IC V(Qint) {VSS}
+.ENDS SRLATCHRHP_BASIC_GEN
+*$
+.SUBCKT INV_DELAY_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 DELAY = 10n 
+E_ABMGATE1    YINT1 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT1 YINT2 1
+CINT YINT2 0 {DELAY*1.443}
+E_ABMGATE2    YINT3 0 VALUE {{IF(V(YINT2) > {VTHRESH} , 
++ {VSS},{VDD})}}
+RINT2 YINT3 Y 1
+CINT2 Y 0 1n
+.ENDS INV_DELAY_BASIC_GEN
+*$
+.SUBCKT NOR2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  |  
++ V(B) > {VTHRESH},{VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS NOR2_BASIC_GEN
+*$

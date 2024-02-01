@@ -1,0 +1,157 @@
+*$
+* TPS40200
+*****************************************************************************
+* (C) Copyright 2012 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: TPS40200
+* Date: 28AUG2012
+* Model Type: AVERAGE
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: TPS40200EVM-001
+* EVM Users Guide: SLVU147C
+* Datasheet: SLUS659F FEBRUARY 2006 REVISED MARCH 2012
+*
+* Model Version: Final 2.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Revision B, 8/16/07
+* Revision C, 10/16/07 - Updated average model
+* Revision D, 11/06/08 - Model updated for discretes.
+* Revision E, 10/12/2009 - model updated to add parameters
+*
+* Final 2.00
+* Fixed model to use parameters passed externally.
+*
+*****************************************************************************
+.SUBCKT TPS40200_AVG VDD Out FB Comp gnd PARAMS: L=33u NC=1 NP=1 RB=10m F=300k EFF=1 TS=0 DMAX=0.95
+V5 NINV gnd DC=0.7
+V6 23 gnd DC=5
+R7 20 1 1e6
+D3 gnd 1 _DZ 
+.MODEL _DZ D BV=6.95 IBV=1u RS=40k
+V2 VDD 20 DC=0.7
+D2 gnd 1 _D1_mod 
+.MODEL _D1_mod D BV=8.3 IBV=10u N=1 RS=0
+X3 VDD gnd 11 Out Duty FORWARD PARAMS: L={L} NC={NC} NP={NP} RB={RB} F={F} Eff={Eff} TS={TS} DMAX={DMAX}
+X7 3 VDD 5 DIVIDE40200 
+E3 gnd 11 Duty 5 100
+V8 Comp 7 DC=0.6
+X8 7 3 GAIN40200
+E2 ref8 gnd 1 gnd 1
+EA1 2 gnd Value={Limit(V(5),0, 1)}
+*X1 5 2 LIMIT PARAMS: K=1 PLIM=1 NLIM=0
+X6 ref8 gnd NINV FB Comp 23 TPS402AMP 
+*R10 gnd gnd1 1n
+.ENDS TPS40200_AVG 
+*$
+.SUBCKT FORWARD VINp Rtn Vc Vout Dr PARAMS: L=33u NC=1 NP=1 RB=10m F=1e6 EFF=0.95 TS=0 DMAX=0.95
+* VINp RTN VC VOUT Dr
+*Used for voltage or current mode forward converters
+*{L} Output inductance in Henries
+*{NC} Current transformer turns ratio
+*{NP} Power transformer turns ratio
+*{F} Switching frequency in Hz
+*{DMAX} Duty Cycle
+*{EFF} efficiency
+*{RB} Current transformer burden resistor in ohms
+*{TS} Propagation delay time in the current loop
+*
+EBVeff VINp 1 Value={ (1-Eff)*( V(VINp) - V(Rtn) ) }
+*B1 IS INPUT CURRENT
+GB1 1 Rtn Value={ V(Vout)*I(VM1)/(V(1)+.001) }
+*B2 IS PEAK INDUCTOR CURRENT
+EB2 2 Rtn Value={ IF ( V(Vc) > 0 , ((V(Vc) * NC / (NP * RB)) + (((V(1) * NP) - V(Vout)) * TS / L)) , 0 ) }
+*B3 IS MINIMUM INDUCTOR CURRENT
+EB3 3 Rtn Value={ IF ( V(2) - ((V(Vout) * (1 - (V(Vout) / (1u+(V(1) * NP)) ))) / (L * F)) > 0 , 
++ V(2) - ((V(Vout) *(1 - (V(Vout) / (1u+(V(1) * NP)) ))) / (L * F)) , 0 ) }
+*B4 IS OUTPUT CURRENT
+GB4 Rtn 8 Value={ (L * F * ((V(2)*V(2)) - (V(3)*V(3))) / 2) * ((1 / (V(Vout)+1U) ) + (1 / ((V(1) * NP + 1u) - V(Vout)))) }
+*B5 IS DUTY CYCLE
+EB5 Dr Rtn Value={ L * F * (V(2) - V(3)) / (((V(1) * NP) - V(Vout)) + .01) }
+DCLAMP 8 80 D
+.MODEL D D IS=1E-6 N=1 RS=.0001
+EBCLAMP 80 Rtn Value={ (V(1) * NP * DMAX) - .25 }
+VM1 8 Vout
+.ENDS
+*$
+.SUBCKT DIVIDE40200 10   8   3
+*Connections:  InN InD Out
+* V4 = V1 / V2
+* EB1 4 0 Value = { V(1) / V(2) }
+GI1 0 1 10 0 100
+RR3 0 1 100e6 TC=0 0
+GI3 1 0 POLY(2) 1 0 8 0 0 0 0 0 100 0 0 0 0 0
+EV1 3 0 1 0 1
+RR1 0 3 1.0K TC=0 0
+.ENDS
+*$
+.SUBCKT GAIN40200  1 2 
+*Connections: In Out
+E1 2 0 1 0 10
+.ENDS
+*$
+.SUBCKT TPS402AMP  REF8 GND NINV FB  COMP ENABLE
+*                  REF8 GND NINV INV OUT  ENABLE
+* Q1 5 NINV 6 _Q1_MOD
+Q4 39 NINV 40 _Q4_MOD
+.MODEL _Q4_MOD PNP BF=72 IS=1E-18 RE=0
+Q5 41 42 40 _Q1_MOD
+.MODEL _Q1_MOD PNP BF=72 IS=1E-18 RE=0
+R16 39 GND 200K
+R17 41 GND 100K
+Q6 COMP 39 43 _QN
+.MODEL _QN NPN BF=300 IS=1E-14
+R18 43 GND 100
+I1 REF8 COMP DC=250U
+D6 COMP 32 _DN
+.MODEL _DN D
+V14 REF8 32 DC=.7
+C4 39 COMP 7.65P
+V15 FB 42 DC=13M
+R19 COMP 39 140e6
+GB10 REF8 40 Value={ IF ( V(ENABLE) > 2 , 20U , 0 ) }
+R20 45 39 200K
+EB11 45 GND Value={ IF ( V(ENABLE) < 2 , 5 , 0 ) }
+D7 46 COMP DN5819
+.MODEL DN5819 D BV=40 CJO=1.1E-10 EG=1.19 IBV=6E-4 IS=1.95E-05 
++ M=.5 N=1.41 RS=4.47E-2 TT=500E-9 VJ=0.46 XTI=2
+V17 46 GND DC=.5
+.ENDS
+*$
+.SUBCKT LDCR IN OUT
++ PARAMs:  L=1u DCR=0.01 RPAR=0.01
+R_RL1         N547658 IN  {RPAR}
+L_L1         IN N547658  {L}  
+R_RL2         OUT N547658  {DCR}
+
+*L             IN 1  {L} 
+*RPAR          IN 1  {RPAR}     
+*RDCR	      1 OUT {DCR}
+.ENDS LDCR
+*$
+.SUBCKT CESR IN OUT
++ PARAMs:  C=100u ESR=0.01 X=2 ESL=1n
+C	IN 1  {C*X} 
+RESR	1 2 {ESR/X}
+LESL    2 OUT {ESL/X} 
+.ENDS CESR
+*$
+.END

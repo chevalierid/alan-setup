@@ -1,0 +1,761 @@
+* TPS7H1101A-SP Worst Case Analysis (WCA) Model
+*****************************************************************************
+* (C) Copyright 2021 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose. The model is
+** provided solely on an "as is" basis. The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+* Released by: Texas Instruments Inc.
+* Part: TPS7H1101A-SP
+* Date: 17NOV2021 
+* Model Type: Worst Case Analysis
+* Simulator: PSpice
+* Simulator Version: 17.4.0
+* EVM Order Number: TPS7H1101SPEVM
+* EVM User's Guide: SLVU944B – REVISED OCTOBER 2020
+* Data sheet: SLVSDW6C – REVISED APRIL 2021
+* Model User Guide: SLVUBT7A - REVISED APRIL 2021
+*
+* Model Version: Rev C
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web
+*
+* Rev A/B - April 2021
+* 	1. Changed file to Windows CRLF instead of Unix LF and added TPS7H1101A-SP_WCA 
+*	   subcircuit name to the .ENDS statement to avoid potential error messages related 
+*	   to the .ENDS statement
+* 	2. Added missing TI header to the lib file
+* 	3. Updated device subcircuit name to "TPS7H1101A-SP_WCA" instead of "TPS7H1101A-SP"
+*	4. Updated device subcircuit pin order to make the part symbol more convenient
+*	5. Updated model to use GND pin instead of directly connecting to 0V node where it
+* 	   is relevent to do so 
+*
+* Rev C
+* Temporary re-release of original revision.
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+*
+* A. Modeled features
+*	1. Frequency response (phase margin, crossover frequency) including variation from:
+*		- TID 
+*		- Load 
+*		- Temperature
+*		- Process (device-to-device variability from manufacturing differences)
+*	2. Reference voltage including variation from:
+*		- Temperature
+*		- Process (device-to-device variability from manufacturing differences)
+*	3. Load regulation
+*	4. Maximum quiescent current (datasheet, 10mA)
+*	5. Nominal "keep-alive" load current (datasheet block diagram, 2mA)
+*
+* B. Unmodeled features
+*       1. EN, CS, PCL, SS, and PG pins and their associated functions
+*       2. Thermal shutdown
+*	3. PSRR
+*
+* C. VIN is used to determine the frequency response of the device and model quiescent 
+*    current, but other device behaviors impacted by this pin are not otherwise modelled or
+*    validated. Output is set by a current source inside the model and goes to the set 
+*    value regardless of the input voltage.
+*
+*****************************************************************************
+
+.SUBCKT TPS7H1101A-SP_WCA VIN COMP VOUT FB GND PARAMS: tid=0 tol_vref=0.41 tol_gmps=4.28
+X_H1    VOUT2 VOUT VIOC 0 TPS7H1101A-SP_H1 
+R_R1         VIOC VIOC_FILT  100 TC=0,0 
+C_C1         0 VIOC_FILT  100m  TC=0,0 
+R_R2         FB VSENSE  1n TC=0,0
+X_F1    VIN NET053 VIN COMP TPS7H1101A-SP_F1 
+X_F2    VIN NET056 VIN NET011 TPS7H1101A-SP_F2 
+C_C2         0 NET043  25f  TC=0,0 
+C_C3         NET044 0  25f  TC=0,0 
+C_C5         COMP3 0  25f  TC=0,0 
+C_C4         0 NET030  25f  TC=0,0 
+I_I1         NET054 0 DC 40u  
+R_R6         0 NET054  1MEG TC=0,0 
+E_E1         NET012 0 OTA_OUT 0 1
+C_C10         0 NET0126  100p  TC=0,0 
+C_C11         0 NET0126  3n  TC=0,0 
+C_C12         NET0126 NET049  100p  TC=0,0 
+V_V2         VOUT2 NET049 0
+R_R21         0 COMP3  1e12 TC=0,0 
+R_R22         NET030 0  1e12 TC=0,0 
+E_E3         N72528 0 VSENSE NET054 1 
+R_R47         GM_I19_MN39 0  1k TC=0,0 
+G_ABM2I2         NET044 COMP3 VALUE { (V(GM_I19_MN21) * V(N116646))    }
+G_ABM2I3         COMP3 NET054 VALUE {  (V(GM_I19_MP9) * V(N72528))}
+X_U8          NET049 0 GMDS_I21_MP4 VCR_G
+G_ABM2I5         NET049 0 VALUE {  (V(NET0126) * V(GM_I21_MP4))    }
+R_R34         GMDS_I19_MP21 0  1k TC=0,0 
+R_R44         GMDS_I21_MP4 0  1k TC=0,0 
+X_U7         N108584 0 GM_I21_MN1 GMDS_I21_MN1 GMDS_I21_MN0 VCR_G3
+X_U5_U1         U5_N93137 0 GMDS_I19_MN43 VCR_G200
+R_U5_R24         0 U5_N111115  300 TC=0,0 
+R_U5_R16         U5_COMP2 OTA_OUT  1k TC=0,0 
+C_U5_C7         U5_COMP2 COMP3  30p  TC=0,0 
+R_U5_R19         U5_N93137 NET011  1 TC=0,0 
+R_U5_R18         U5_N100115 NET011  1 TC=0,0 
+E_U5_E1         U5_N103446 0 NET011 0 1
+C_U5_C10         U5_N111115 U5_N103821  50n  TC=0,0 
+G_U5_ABM2I1         OTA_OUT 0 VALUE { (V(U5_N103821) * V(GM_I19_MN19))    }
+C_U5_C6         0 COMP  25f  TC=0,0 
+C_U5_C9         0 NET011  25f  TC=0,0 
+R_U5_R20         U5_N103446 U5_N103821  1k TC=0,0 
+C_U5_C8         NET011 U5_COMP2  30p  TC=0,0 
+X_U5_U5          U5_N100115 0 GMDS_I19_MP21 VCR_G
+X_U5_U6         COMP U5_NET041 GM_I19_MN39 VCR_G200
+X_U5_F3    U5_NET041 0 NET011 0 Error_Amplifier_U5_F3 
+E_E5         N116646 0 0 COMP3 1
+R_R39         N99544 OTA_OUT  1m TC=0,0 
+R_R46         GM_I19_MN21 0  1k TC=0,0 
+R_R45         GM_I19_MN19 0  1k TC=0,0 
+R_R51         GM_I21_MP4 0  1k TC=0,0 
+R_R32         GMDS_I19_MN19 0  1k TC=0,0 
+R_R35         GMDS_I19_MP24 0  1k TC=0,0 
+R_R40         GM_I21_MN1 0  1k TC=0,0 
+X_U5          N99544 0 GMDS_I19_MN19 VCR_G
+R_R49         GM_I19_MP9 0  1k TC=0,0 
+E_E2         N125249 0 VREF NET054 1
+R_R33         GMDS_I19_MN43 0  1k TC=0,0 
+X_U11          NET012 NET0126 GM_I20_MN2 VCR_G
+R_U4_R25         U4_VPG U4_VCL  240k TC=0,0 
+E_U4_ABM1         U4_N114258 0 VALUE { {TEMP}    }
+C_U4_C15         0 U4_VCL  80p  TC=0,0 
+R_U4_R27         0 U4_ISC  150k TC=0,0 
+C_U4_C14         0 U4_VPG  80p  TC=0,0 
+C_U4_C13         0 U4_VREF_INT  80p  TC=0,0 
+C_U4_C17         VOUT2 U4_VCL  1.9p  TC=0,0 
+E_U4_TABLE26         U4_N114293 0 TABLE {V(U4_N114258)} -55V          0.997950V
++   
++ -35V          0.999950V  
++ -15V          1.000617V  
++ 0V             1.000783V  
++ 15V           1.000617V  
++ 35V           1.000117V  
++ 55V           0.999283V  
++ 70V           0.998450V  
++ 90V           0.997116V  
++ 110V         0.995783V  
++ 125V         0.994616V
+C_U4_C16         0 U4_ISC  80p  TC=0,0 
+R_U4_R29         U4_N114938 U4_N114724 R_U4_R29 1 TC=0,0 
+.model        R_U4_R29 RES R=1 DEV={Tol_Vref*0.01} TC1=0 TC2=0
+E_U4_ABM2         U4_N114724 0 VALUE { ( V(U4_VREF_INT) * V(U4_N114293))    }
+R_U4_R23         U4_NET0138 U4_VREF_INT  600k TC=0,0 
+R_U4_R26         U4_ISC U4_VCL  150k TC=0,0 
+X_U4_H1    U4_N114938 0 VREF 0 VREF_Schematic_U4_H1 
+V_U4_V3         U4_NET0138 0 {VBG}
+R_U4_R24         U4_VREF_INT U4_VPG  60k TC=0,0 
+R_R36         GM_I19_MP28 0  1k TC=0,0 
+X_U6         N106604 0 GM_I19_MP28 GMDS_I19_MP28 GMDS_I19_MP24 VCR_G3
+G_ABM2I1         NET043 NET030 VALUE { (V(GM_I19_MN21) * V(N114157))    }
+X_U9          NET053 NET044 GM_I19_MP19 VCR_G
+V_U3_V14         U3_N07192 0 156u
+E_U3_TABLE22         U3_N05236 0 TABLE {V(U3_N05298)} -55V          1.210533V  
++ -35V          1.146480V  
++ -15V          1.092306V  
++ 0V             1.056578V  
++ 15V           1.024097V  
++ 35V           0.984712V  
++ 55V           0.948779V  
++ 70V           0.923598V  
++ 90V           0.891908V  
++ 110V         0.861970V  
++ 125V         0.840483V
+V_U3_V4         U3_N02220 0 8.123u
+E_U3_TABLE16         U3_N03908 0 TABLE {V(U3_N04094)} -55V          0.917683V  
++ -35V          0.928866V  
++ -15V          0.945078V  
++ 0V             0.961239V  
++ 15V           0.981181V  
++ 35V           1.014003V  
++ 55V           1.054220V  
++ 70V           1.089327V  
++ 90V           1.142726V  
++ 110V         1.203515V  
++ 125V         1.253772V
+E_U3_ABM26         U3_N06680 0 VALUE { {TEMP}    }
+E_U3_ABM12         U3_N02688 0 VALUE { {TEMP}    }
+E_U3_TABLE14         U3_N03882 0 TABLE {V(VIOC_FILT)} 0.1V          1.001822V  
++ 0.3V          1.001416V  
++ 0.5V          1.001010V  
++ 0.75V        1.000502V  
++ 1.5V          0.999003V  
++ 2V             0.998007V  
++ 2.5V          0.997017V  
++ 3V             0.996034V
+V_U3_V12         U3_N05623 0 288.2u
+E_U3_TABLE4         U3_N01055 0 TABLE {V(U3_N01117)} -55V          1.286503V  
++ -35V          1.202848V  
++ -15V          1.129352V  
++ 0V             1.079723V  
++ 15V           1.034057V  
++ 35V           0.978387V  
++ 55V           0.927756V  
++ 70V           0.892594V  
++ 90V           0.848936V  
++ 110V         0.808496V  
++ 125V         0.780041V
+E_U3_ABM23         U3_N05703 0 VALUE { ( V(U3_N05623) * V(U3_N05699) *
++  V(U3_N05709))    }
+E_U3_ABM17         U3_N04102 0 VALUE { {TEMP}    }
+X_U3_H4    U3_N16485 0 GM_I19_MP9 0 Parameters_U3_H4 
+E_U3_TABLE29         U3_N07939 0 TABLE {V(VIOC_FILT)} 0.1V          0.999963V  
++ 0.3V          0.999971V  
++ 0.5V          0.999980V  
++ 0.75V        0.999992V  
++ 1.5V          1.000016V  
++ 2V             1.000037V  
++ 2.5V          1.000057V  
++ 3V             1.000073V
+E_U3_ABM20         U3_N04829 0 VALUE { {TEMP}    }
+V_U3_V1         U3_N00391 0 2.301u
+E_U3_TABLE28         U3_N07278 0 TABLE {V(U3_N07340)} -55V          1.211895V  
++ -35V          1.149370V  
++ -15V          1.094682V  
++ 0V             1.058059V  
++ 15V           1.024665V  
++ 35V           0.984466V  
++ 55V           0.948478V  
++ 70V           0.923825V  
++ 90V           0.893604V  
++ 110V         0.865959V  
++ 125V         0.846676V
+V_U3_V16         U3_N08548 0 42.08m
+V_U3_V8         U3_N03654 0 145.5u
+E_U3_ABM14         U3_N03886 0 VALUE { ( V(U3_N03654) * V(U3_N03882) *
++  V(U3_N03916))    }
+E_U3_ABM31         U3_N08628 0 VALUE { ( V(U3_N08548) * V(U3_N08624) *
++  V(U3_N08634))    }
+X_U3_H11    U3_N20803 0 GMDS_I19_MP28 0 Parameters_U3_H11 
+R_U3_R16         U3_N03870 U3_N23767 R_U3_R16 1 TC=0,0 
+.model        R_U3_R16 RES R=1 DEV={Tol_gmDS_I21_MN0} TC1=0 TC2=0
+E_U3_TABLE18         U3_N03924 0 TABLE {V(U3_N04110)} -55V          1.221581V  
++ -35V          1.154303V  
++ -15V          1.097118V  
++ 0V             1.059410V  
++ 15V           1.025234V  
++ 35V           0.984064V  
++ 55V           0.946858V  
++ 70V           0.921020V  
++ 90V           0.888809V  
++ 110V         0.858695V  
++ 125V         0.837256V
+E_U3_ABM35         U3_N25218 0 VALUE { V(U3_N25214) * ( 1 - ( ({TID}/100) *
++  0.03 ) )    }
+R_U3_R10         U3_N01049 U3_N20469 R_U3_R10 1 TC=0,0 
+.model        R_U3_R10 RES R=1 DEV={Tol_gmDS_I19_MN43} TC1=0 TC2=0
+X_U3_H15    U3_N23388 0 GMDS_I19_MP24 0 Parameters_U3_H15 
+X_U3_H8    U3_N18373 0 GM_I21_MN1 0 Parameters_U3_H8 
+E_U3_TABLE33         U3_N09317 0 TABLE {V(VIOC_FILT)} 0.05V        0.030404V  
++ 0.1V          0.120404V  
++ 0.3V          0.218139V  
++ 0.5V          0.257719V  
++ 0.75V        0.280316V  
++ 1.5V          0.291778V  
++ 2V             0.309175V  
++ 2.5V          0.352859V  
++ 3V             0.402885V
+E_U3_ABM2         U3_N00212 0 VALUE { {TEMP}    }
+E_U3_ABM21         U3_N05230 0 VALUE { ( V(U3_N05150) * V(U3_N05226) *
++  V(U3_N05236))    }
+X_U3_H12    U3_N21145 0 GMDS_I21_MN1 0 Parameters_U3_H12 
+E_U3_TABLE5         U3_N01481 0 TABLE {V(VIOC_FILT)} 0.1V          0.991652V  
++ 0.3V          0.993520V  
++ 0.5V          0.995372V  
++ 0.75V        0.997683V  
++ 1.5V          1.004658V  
++ 2V             1.009349V  
++ 2.5V          1.014077V  
++ 3V             1.018845V
+X_U3_H3    U3_N16147 0 GM_I19_MP19 0 Parameters_U3_H3 
+X_U3_H7    U3_N18068 0 GM_I19_MP28 0 Parameters_U3_H7 
+V_U3_V11         U3_N05150 0 1.364m
+E_U3_ABM7         U3_N02448 0 VALUE { ( V(U3_N02220) * V(U3_N02444) *
++  V(U3_N02486))    }
+R_U3_R9         U3_N05703 U3_N18686 R_U3_R9 1 TC=0,0 
+.model        R_U3_R9 RES R=1 DEV={Tol_gm_I19_MN21} TC1=0 TC2=0
+R_U3_R1         U3_N25218 U3_N15197 R_U3_R1 1 TC=0,0 
+.model        R_U3_R1 RES R=1 DEV={Tol_gmps*0.01} TC1=0 TC2=0
+E_U3_ABM3         U3_N01049 0 VALUE { ( V(U3_N00969) * V(U3_N01045) *
++  V(U3_N01055))    }
+E_U3_ABM30         U3_N08011 0 VALUE { {TEMP}    }
+E_U3_TABLE26         U3_N06618 0 TABLE {V(U3_N06680)} -55V          1.204163V  
++ -35V          1.142138V  
++ -15V          1.089593V  
++ 0V             1.054921V  
++ 15V           1.023393V  
++ 35V           0.985165V  
++ 55V           0.950279V  
++ 70V           0.925818V  
++ 90V           0.895009V  
++ 110V         0.865875V  
++ 125V         0.844942V
+E_U3_ABM15         U3_N03902 0 VALUE { ( V(U3_N03666) * V(U3_N03898) *
++  V(U3_N03924))    }
+E_U3_TABLE23         U3_N05699 0 TABLE {V(VIOC_FILT)} 0.1V          1.000028V  
++ 0.3V          1.000021V  
++ 0.5V          1.000014V  
++ 0.75V        1.000007V  
++ 1.5V          0.999986V  
++ 2V             0.999972V  
++ 2.5V          0.999958V  
++ 3V             0.999944V
+E_U3_TABLE10         U3_N02486 0 TABLE {V(U3_N02672)} -55V          1.094692V  
++ -35V          1.066569V  
++ -15V          1.042284V  
++ 0V             1.026066V  
++ 15V           1.011168V  
++ 35V           0.992852V  
++ 55V           0.975776V  
++ 70V           0.963501V  
++ 90V           0.947548V  
++ 110V         0.931809V  
++ 125V         0.920020V
+E_U3_ABM27         U3_N07272 0 VALUE { ( V(U3_N07192) * V(U3_N07268) *
++  V(U3_N07278))    }
+E_U3_ABM34         U3_N09389 0 VALUE { {TEMP}    }
+E_U3_ABM1         U3_N00324 0 VALUE { ( V(U3_N00391) * V(U3_N00275) *
++  V(U3_N00566))    }
+R_U3_R5         U3_N08628 U3_N16766 R_U3_R5 1 TC=0,0 
+.model        R_U3_R5 RES R=1 DEV={Tol_gm_I20_MN2} TC1=0 TC2=0
+R_U3_R14         U3_N00324 U3_N22240 R_U3_R14 1 TC=0,0 
+.model        R_U3_R14 RES R=1 DEV={Tol_gmDS_I19_MN19} TC1=0 TC2=0
+R_U3_R2         U3_N06612 U3_N15882 R_U3_R2 1 TC=0,0 
+.model        R_U3_R2 RES R=1 DEV={Tol_gm_I19_MN39} TC1=0 TC2=0
+E_U3_TABLE31         U3_N08624 0 TABLE {V(VIOC_FILT)} 0.1V          0.998833V  
++ 0.3V          0.999365V  
++ 0.5V          0.999625V  
++ 0.75V        0.999841V  
++ 1.5V          1.000233V  
++ 2V             1.000390V  
++ 2.5V          1.000480V  
++ 3V             1.000468V
+E_U3_TABLE2         U3_N00275 0 TABLE {V(VIOC_FILT)} 0.1V          0.991564V  
++ 0.3V          0.994645V  
++ 0.5V          0.996540V  
++ 0.75V        0.998401V  
++ 1.5V          1.002799V  
++ 2V             1.005324V  
++ 2.5V          1.007706V  
++ 3V             1.010005V
+V_U3_V5         U3_N02232 0 3.8u
+E_U3_TABLE8         U3_N02460 0 TABLE {V(VIOC_FILT)} 0.1V          1.581583V  
++ 0.3V          1.214442V  
++ 0.5V          1.110141V  
++ 0.75V        1.042525V  
++ 1.5V          0.945214V  
++ 2V             0.908726V  
++ 2.5V          0.881212V  
++ 3V             0.858977V
+E_U3_TABLE20         U3_N04767 0 TABLE {V(U3_N04829)} -55V          1.318510V  
++ -35V          1.226472V  
++ -15V          1.144385V  
++ 0V             1.088798V  
++ 15V           1.037807V  
++ 35V           0.976145V  
++ 55V           0.920794V  
++ 70V           0.882892V  
++ 90V           0.836558V  
++ 110V         0.794474V  
++ 125V         0.765403V
+E_U3_ABM6         U3_N01553 0 VALUE { {TEMP}    }
+X_U3_H16    U3_N23767 0 GMDS_I21_MN0 0 Parameters_U3_H16 
+X_U3_H1    U3_N15197 0 GM_I21_MP4 0 Parameters_U3_H1 
+X_U3_H10    U3_N20469 0 GMDS_I19_MN43 0 Parameters_U3_H10 
+E_U3_ABM8         U3_N02464 0 VALUE { ( V(U3_N02232) * V(U3_N02460) *
++  V(U3_N02494))    }
+R_U3_R6         U3_N01485 U3_N17703 R_U3_R6 1 TC=0,0 
+.model        R_U3_R6 RES R=1 DEV={Tol_gmDS_I19_MP21} TC1=0 TC2=0
+E_U3_ABM11         U3_N02680 0 VALUE { {TEMP}    }
+E_U3_TABLE12         U3_N02502 0 TABLE {V(U3_N02688)} -55V          1.207284V  
++ -35V          1.149755V  
++ -15V          1.097300V  
++ 0V             1.060742V  
++ 15V           1.026254V  
++ 35V           0.983100V  
++ 55V           0.942826V  
++ 70V           0.914286V  
++ 90V           0.878222V  
++ 110V         0.844197V  
++ 125V         0.819874V
+E_U3_TABLE21         U3_N05226 0 TABLE {V(VIOC_FILT)} 0.1V          1.000315V  
++ 0.3V          1.000198V  
++ 0.5V          1.000125V  
++ 0.75V        1.000051V  
++ 1.5V          0.999897V  
++ 2V             0.999817V  
++ 2.5V          0.999736V  
++ 3V             0.999663V
+R_U3_R13         U3_N05230 U3_N21495 R_U3_R13 1 TC=0,0 
+.model        R_U3_R13 RES R=1 DEV={Tol_gm_I19_MN19} TC1=0 TC2=0
+V_U3_V13         U3_N06532 0 84.66u
+E_U3_ABM24         U3_N05771 0 VALUE { {TEMP}    }
+E_U3_TABLE1         U3_N00566 0 TABLE {V(U3_N00212)} -55V          1.376649V  
++ -35V          1.264740V  
++ -15V          1.167425V  
++ 0V             1.102495V  
++ 15V           1.043476V  
++ 35V           0.972675V  
++ 55V           0.909544V  
++ 70V           0.866494V  
++ 90V           0.814012V  
++ 110V         0.766385V  
++ 125V         0.733431V
+E_U3_ABM25         U3_N06612 0 VALUE { ( V(U3_N06532) * V(U3_N06608) *
++  V(U3_N06618))    }
+V_U3_V9         U3_N03666 0 30.33m
+E_U3_TABLE15         U3_N03898 0 TABLE {V(VIOC_FILT)} 0.1V          0.999805V  
++ 0.3V          0.999848V  
++ 0.5V          0.999891V  
++ 0.75V        0.999944V  
++ 1.5V          1.000109V  
++ 2V             1.000218V  
++ 2.5V          1.000323V  
++ 3V             1.000432V
+E_U3_ABM16         U3_N04094 0 VALUE { {TEMP}    }
+E_U3_TABLE3         U3_N01045 0 TABLE {V(VIOC_FILT)} 0.1V          1.000172V  
++ 0.3V          1.000110V  
++ 0.5V          1.000068V  
++ 0.75V        1.000031V  
++ 1.5V          0.999943V  
++ 2V             0.999896V  
++ 2.5V          0.999854V  
++ 3V             0.999812V
+E_U3_TABLE30         U3_N07949 0 TABLE {V(U3_N08011)} -55V          1.202913V  
++ -35V          1.143730V  
++ -15V          1.091895V  
++ 0V             1.056807V  
++ 15V           1.024352V  
++ 35V           0.984459V  
++ 55V           0.947737V  
++ 70V           0.921913V  
++ 90V           0.889385V  
++ 110V         0.858650V  
++ 125V         0.836544V
+E_U3_TABLE13         U3_N03866 0 TABLE {V(VIOC_FILT)} 0.1V          1.000679V  
++ 0.3V          1.000528V  
++ 0.5V          1.000377V  
++ 0.75V        1.000188V  
++ 1.5V          0.999623V  
++ 2V             0.999248V  
++ 2.5V          0.998873V  
++ 3V             0.998500V
+E_U3_ABM32         U3_N08696 0 VALUE { {TEMP}    }
+V_U3_V3         U3_N01405 0 54.04n
+E_U3_TABLE17         U3_N03916 0 TABLE {V(U3_N04102)} -55V          1.294866V  
++ -35V          1.210231V  
++ -15V          1.134710V  
++ 0V             1.083233V  
++ 15V           1.035612V  
++ 35V           0.977379V  
++ 55V           0.924355V  
++ 70V           0.887561V  
++ 90V           0.841968V  
++ 110V         0.799839V  
++ 125V         0.770234V
+X_U3_H9    U3_N18686 0 GM_I19_MN21 0 Parameters_U3_H9 
+X_U3_H14    U3_N22240 0 GMDS_I19_MN19 0 Parameters_U3_H14 
+X_U3_H2    U3_N15882 0 GM_I19_MN39 0 Parameters_U3_H2 
+V_U3_V10         U3_N04681 0 242m
+E_U3_ABM19         U3_N04761 0 VALUE { ( V(U3_N04681) * V(U3_N04757) *
++  V(U3_N04767))    }
+E_U3_TABLE27         U3_N07268 0 TABLE {V(VIOC_FILT)} 0.1V          0.999974V  
++ 0.3V          0.999981V  
++ 0.5V          0.999987V  
++ 0.75V        0.999994V  
++ 1.5V          1.000013V  
++ 2V             1.000032V  
++ 2.5V          1.000045V  
++ 3V             1.000058V
+E_U3_TABLE34         U3_N09327 0 TABLE {V(U3_N09389)} -55V          1.274299V  
++ -35V          1.189144V  
++ -15V          1.117610V  
++ 0V             1.071180V  
++ 15V           1.029877V  
++ 35V           0.981459V  
++ 55V           0.939307V  
++ 70V           0.911092V  
++ 90V           0.877241V  
++ 110V         0.846992V  
++ 125V         0.826294V
+R_U3_R17         U3_N04761 U3_N24149 R_U3_R17 1 TC=0,0 
+.model        R_U3_R17 RES R=1 DEV={Tol_gmDS_I21_MP4} TC1=0 TC2=0
+E_U3_ABM9         U3_N02480 0 VALUE { ( V(U3_N02244) * V(U3_N02476) *
++  V(U3_N02502))    }
+X_U3_H5    U3_N16766 0 GM_I20_MN2 0 Parameters_U3_H5 
+E_U3_TABLE6         U3_N01491 0 TABLE {V(U3_N01553)} -55V          0.887057V  
++ -35V          0.919477V  
++ -15V          0.948712V  
++ 0V             0.968591V  
++ 15V           0.986730V  
++ 35V           1.008240V  
++ 55V           1.026740V  
++ 70V           1.038677V  
++ 90V           1.052062V  
++ 110V         1.062628V  
++ 125V         1.068772V
+E_U3_ABM18         U3_N04110 0 VALUE { {TEMP}    }
+V_U3_V7         U3_N03642 0 437.3u
+E_U3_ABM22         U3_N05298 0 VALUE { {TEMP}    }
+X_U3_H6    U3_N17703 0 GMDS_I19_MP21 0 Parameters_U3_H6 
+E_U3_ABM4         U3_N01117 0 VALUE { {TEMP}    }
+E_U3_ABM29         U3_N07943 0 VALUE { ( V(U3_N07863) * V(U3_N07939) *
++  V(U3_N07949))    }
+E_U3_TABLE25         U3_N06608 0 TABLE {V(VIOC_FILT)} 0.1V          1.000005V  
++ 0.3V          1.000002V  
++ 0.5V          1.000001V  
++ 0.75V        1.000001V  
++ 1.5V          1.000000V  
++ 2V             0.999999V  
++ 2.5V          0.999999V  
++ 3V             0.999999V
+E_U3_ABM28         U3_N07340 0 VALUE { {TEMP}    }
+R_U3_R11         U3_N02464 U3_N20803 R_U3_R11 1 TC=0,0 
+.model        R_U3_R11 RES R=1 DEV={Tol_gmDS_I19_MP28} TC1=0 TC2=0
+V_U3_V6         U3_N02244 0 1.295m
+X_U3_H13    U3_N21495 0 GM_I19_MN19 0 Parameters_U3_H13 
+V_U3_V15         U3_N07863 0 245.4u
+E_U3_TABLE24         U3_N05709 0 TABLE {V(U3_N05771)} -55V          1.220211V  
++ -35V          1.153159V  
++ -15V          1.096187V  
++ 0V             1.058724V  
++ 15V           1.024887V  
++ 35V           0.984333V  
++ 55V           0.947900V  
++ 70V           0.922735V  
++ 90V           0.891480V  
++ 110V         0.862373V  
++ 125V         0.841702V
+R_U3_R4         U3_N07943 U3_N16485 R_U3_R4 1 TC=0,0 
+.model        R_U3_R4 RES R=1 DEV={Tol_gm_I19_MP9} TC1=0 TC2=0
+R_U3_R15         U3_N02448 U3_N23388 R_U3_R15 1 TC=0,0 
+.model        R_U3_R15 RES R=1 DEV={Tol_gmDS_I19_MP24} TC1=0 TC2=0
+V_U3_V17         U3_N09241 0 8.89
+R_U3_R8         U3_N03902 U3_N18373 R_U3_R8 1 TC=0,0 
+.model        R_U3_R8 RES R=1 DEV={Tol_gm_I21_MN1} TC1=0 TC2=0
+E_U3_ABM33         U3_N25214 0 VALUE { ( V(U3_N09241) * V(U3_N09317) *
++  V(U3_N09327))    }
+E_U3_TABLE32         U3_N08634 0 TABLE {V(U3_N08696)} -55V          1.153363V  
++ -35V          1.104959V  
++ -15V          1.066218V  
++ 0V             1.041042V  
++ 15V           1.017790V  
++ 35V           0.988377V  
++ 55V           0.959724V  
++ 70V           0.938354V  
++ 90V           0.909761V  
++ 110V         0.880834V  
++ 125V         0.858769V
+E_U3_TABLE9         U3_N02476 0 TABLE {V(VIOC_FILT)} 0.1V          0.997065V  
++ 0.3V          0.998532V  
++ 0.5V          0.999143V  
++ 0.75V        0.999629V  
++ 1.5V          1.000556V  
++ 2V             1.000996V  
++ 2.5V          1.001367V  
++ 3V             1.001692V
+E_U3_ABM10         U3_N02672 0 VALUE { {TEMP}    }
+X_U3_H17    U3_N24149 0 GMDS_I21_MP4 0 Parameters_U3_H17 
+R_U3_R12         U3_N03886 U3_N21145 R_U3_R12 1 TC=0,0 
+.model        R_U3_R12 RES R=1 DEV={Tol_gmDS_I21_MN1} TC1=0 TC2=0
+E_U3_TABLE7         U3_N02444 0 TABLE {V(VIOC_FILT)} 0.1V          1.006903V  
++ 0.3V          1.003794V  
++ 0.5V          1.002294V  
++ 0.75V        1.001001V  
++ 1.5V          0.998428V  
++ 2V             0.997162V  
++ 2.5V          0.996074V  
++ 3V             0.995100V
+E_U3_ABM5         U3_N01485 0 VALUE { ( V(U3_N01405) * V(U3_N01481) *
++  V(U3_N01491))    }
+V_U3_V2         U3_N00969 0 191.7n
+E_U3_ABM13         U3_N03870 0 VALUE { ( V(U3_N03642) * V(U3_N03866) *
++  V(U3_N03908))    }
+R_U3_R3         U3_N07272 U3_N16147 R_U3_R3 1 TC=0,0 
+.model        R_U3_R3 RES R=1 DEV={Tol_gm_I19_MP19} TC1=0 TC2=0
+R_U3_R7         U3_N02480 U3_N18068 R_U3_R7 1 TC=0,0 
+.model        R_U3_R7 RES R=1 DEV={Tol_gm_I19_MP28} TC1=0 TC2=0
+E_U3_TABLE11         U3_N02494 0 TABLE {V(U3_N02680)} -55V          1.385818V  
++ -35V          1.267838V  
++ -15V          1.165569V  
++ 0V             1.099069V  
++ 15V           1.040862V  
++ 35V           0.975486V  
++ 55V           0.923584V  
++ 70V           0.893481V  
++ 90V           0.865664V  
++ 110V         0.853419V  
++ 125V         0.856106V
+E_U3_TABLE19         U3_N04757 0 TABLE {V(VIOC_FILT)} 0.1V          0.126713V  
++ 0.3V          0.338071V  
++ 0.5V          0.532228V  
++ 0.75V        0.766660V  
++ 1.5V          1.481849V  
++ 2V             2.004877V  
++ 2.5V          2.591633V  
++ 3V             3.267131V
+R_R50         GM_I20_MN2 0  1k TC=0,0 
+R_R41         GMDS_I21_MN1 0  1k TC=0,0 
+E_E4         N114157 0 0 NET030 1
+R_R43         N108584 NET049  1m TC=0,0 
+R_R48         GM_I19_MP19 0  1k TC=0,0 
+R_R38         N106604 OTA_OUT  1 TC=0,0 
+G_ABM2I4         NET030 NET054 VALUE { (V(GM_I19_MP9) * V(N125249))    }
+R_R37         GMDS_I19_MP28 0  1k TC=0,0 
+R_R42         GMDS_I21_MN0 0  1k TC=0,0 
+X_U10          NET056 NET043 GM_I19_MP19 VCR_G
+.ENDS TPS7H1101A-SP_WCA
+*$
+.PARAM  tol_gm_i19_mp9=0.0394 tol_gmds_i19_mp28=0.12
++  tol_gmds_i21_mn0=0.4907 tol_gmds_i21_mn1=0.1025 vbg=1.206
++  tol_gmds_i19_mp24=0.404 tol_gmds_i19_mn43=0.0575 tol_gm_i19_mn19=0.0415
++  tol_gm_i19_mn39=0.0422 tol_gm_i19_mp19=0.0337
++  tol_gm_i21_mn1=0.0491 tol_gmds_i19_mp21=0.0731 tol_gm_i19_mp28=0.0456
++  tol_gm_i20_mn2=0.0453 tol_gmds_i21_mp4=0.09 tol_gmds_i19_mn19=0.0495
++  tol_gm_i19_mn21=0.039
+
+*****************************************************************************
+
+.subckt TPS7H1101A-SP_H1 1 2 3 4  
+H_H1         3 4 VH_H1 1
+VH_H1         1 2 0V
+.ends TPS7H1101A-SP_H1
+*$
+.subckt TPS7H1101A-SP_F1 1 2 3 4  
+F_F1         3 4 VF_F1 1
+VF_F1         1 2 0V
+.ends TPS7H1101A-SP_F1
+*$
+.subckt TPS7H1101A-SP_F2 1 2 3 4  
+F_F2         3 4 VF_F2 1
+VF_F2         1 2 0V
+.ends TPS7H1101A-SP_F2
+*$
+.subckt Error_Amplifier_U5_F3 1 2 3 4  
+F_U5_F3         3 4 VF_U5_F3 1
+VF_U5_F3         1 2 0V
+.ends Error_Amplifier_U5_F3
+*$
+.subckt VREF_Schematic_U4_H1 1 2 3 4  
+H_U4_H1         3 4 VH_U4_H1 1
+VH_U4_H1         1 2 0V
+.ends VREF_Schematic_U4_H1
+*$
+.subckt Parameters_U3_H4 1 2 3 4  
+H_U3_H4         3 4 VH_U3_H4 1
+VH_U3_H4         1 2 0V
+.ends Parameters_U3_H4
+*$
+.subckt Parameters_U3_H11 1 2 3 4  
+H_U3_H11         3 4 VH_U3_H11 1
+VH_U3_H11         1 2 0V
+.ends Parameters_U3_H11
+*$
+.subckt Parameters_U3_H15 1 2 3 4  
+H_U3_H15         3 4 VH_U3_H15 1
+VH_U3_H15         1 2 0V
+.ends Parameters_U3_H15
+*$
+.subckt Parameters_U3_H8 1 2 3 4  
+H_U3_H8         3 4 VH_U3_H8 1
+VH_U3_H8         1 2 0V
+.ends Parameters_U3_H8
+*$
+.subckt Parameters_U3_H12 1 2 3 4  
+H_U3_H12         3 4 VH_U3_H12 1
+VH_U3_H12         1 2 0V
+.ends Parameters_U3_H12
+*$
+.subckt Parameters_U3_H3 1 2 3 4  
+H_U3_H3         3 4 VH_U3_H3 1
+VH_U3_H3         1 2 0V
+.ends Parameters_U3_H3
+*$
+.subckt Parameters_U3_H7 1 2 3 4  
+H_U3_H7         3 4 VH_U3_H7 1
+VH_U3_H7         1 2 0V
+.ends Parameters_U3_H7
+*$
+.subckt Parameters_U3_H16 1 2 3 4  
+H_U3_H16         3 4 VH_U3_H16 1
+VH_U3_H16         1 2 0V
+.ends Parameters_U3_H16
+*$
+.subckt Parameters_U3_H1 1 2 3 4  
+H_U3_H1         3 4 VH_U3_H1 1
+VH_U3_H1         1 2 0V
+.ends Parameters_U3_H1
+*$
+.subckt Parameters_U3_H10 1 2 3 4  
+H_U3_H10         3 4 VH_U3_H10 1
+VH_U3_H10         1 2 0V
+.ends Parameters_U3_H10
+*$
+.subckt Parameters_U3_H9 1 2 3 4  
+H_U3_H9         3 4 VH_U3_H9 1
+VH_U3_H9         1 2 0V
+.ends Parameters_U3_H9
+*$
+.subckt Parameters_U3_H14 1 2 3 4  
+H_U3_H14         3 4 VH_U3_H14 1
+VH_U3_H14         1 2 0V
+.ends Parameters_U3_H14
+*$
+.subckt Parameters_U3_H2 1 2 3 4  
+H_U3_H2         3 4 VH_U3_H2 1
+VH_U3_H2         1 2 0V
+.ends Parameters_U3_H2
+*$
+.subckt Parameters_U3_H5 1 2 3 4  
+H_U3_H5         3 4 VH_U3_H5 1
+VH_U3_H5         1 2 0V
+.ends Parameters_U3_H5
+*$
+.subckt Parameters_U3_H6 1 2 3 4  
+H_U3_H6         3 4 VH_U3_H6 1
+VH_U3_H6         1 2 0V
+.ends Parameters_U3_H6
+*$
+.subckt Parameters_U3_H13 1 2 3 4  
+H_U3_H13         3 4 VH_U3_H13 1
+VH_U3_H13         1 2 0V
+.ends Parameters_U3_H13
+*$
+.subckt Parameters_U3_H17 1 2 3 4  
+H_U3_H17         3 4 VH_U3_H17 1
+VH_U3_H17         1 2 0V
+.ends Parameters_U3_H17
+*$
+.SUBCKT VCR_G 1 2 CTRL
+V_MEAS 1 3 0
+E_VCR 3 2 VALUE = { I(V_MEAS) / V(CTRL) }
+.ENDS
+*$
+.SUBCKT VCR_G200 1 2 CTRL
+V_MEAS 1 3 0
+E_VCR 3 2 VALUE = { I(V_MEAS)* ( ( (1 / V(CTRL)) + 200 ) / 4 ) }
+.ENDS
+*$
+.SUBCKT VCR_G3 1 2 CTRL1 CTRL2 CTRL3
+V_MEAS 1 3 0
+E_VCR 3 2 VALUE = { I(V_MEAS) * ( V(CTRL1) / (V(CTRL2) * V(CTRL3)) ) }
+.ENDS
+*$

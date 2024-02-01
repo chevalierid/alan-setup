@@ -1,0 +1,217 @@
+***********************************************************************
+*  (C) Copyright 2013 Texas Instruments Incorporated. All rights reserved.
+***********************************************************************
+***********************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose. The model is
+** provided solely on an "as is" basis. The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: CSD15571Q2
+* Date: 09/24/2013
+* Model Type: Transient
+* Simulator: PSpice
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: 
+* EVM Users Guide: 
+* Datasheet: SLPS435 - AUGUST 2013
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+*
+*****************************************************************************
+ *$
+**********************************************************************
+**********************************************************************
+*                                                                    *
+* CSD15571Q2    -  PSpice Model for use with OrCAD                   *
+*                                                                    *
+**********************************************************************
+**********************************************************************
+.subckt	cgd	1	2	3	4
+e1	5	0	value	{abs(v(3,4))}
+r1	5	0	1e6
+e2	6	0	table	{v(5,0)}=
++	(	0	9.66E-11	)
++	(	0.5	8.69E-11	)
++	(	1	7.35E-11	)
++	(	1.5	6.59E-11	)
++	(	2	6.09E-11	)
++	(	2.5	5.71E-11	)
++	(	3	5.39E-11	)
++	(	3.5	5.12E-11	)
++	(	4	4.88E-11	)
++	(	4.5	4.67E-11	)
++	(	5	4.49E-11	)
++	(	5.5	4.32E-11	)
++	(	6	4.16E-11	)
++	(	6.5	4.02E-11	)
++	(	7	3.90E-11	)
++	(	7.5	3.78E-11	)
++	(	8	3.67E-11	)
++	(	8.5	3.56E-11	)
++	(	9	3.47E-11	)
++	(	9.5	3.37E-11	)
++	(	10	3.29E-11	)
++	(	10.5	3.20E-11	)
++	(	11	3.12E-11	)
++	(	11.5	3.04E-11	)
++	(	12	2.96E-11	)
++	(	12.5	2.89E-11	)
++	(	13	2.82E-11	)
++	(	13.5	2.75E-11	)
++	(	14	2.68E-11	)
++	(	14.5	2.61E-11	)
++	(	15	2.55E-11	)
++	(	15.5	2.49E-11	)
++	(	16	2.43E-11	)
++	(	16.5	2.38E-11	)
++	(	17	2.32E-11	)
++	(	17.5	2.27E-11	)
++	(	18	2.22E-11	)
++	(	18.5	2.17E-11	)
++	(	19	2.13E-11	)
++	(	19.5	2.08E-11	)
++	(	20	2.04E-11	)
+r2	6	0	1e6
+c1	3	7	1e-15
+v1	7	0	DC	0.0V
+e3	8	0	value	{1*I(v1)}
+r3	8	0	1e6
+g1	1	2	value	{-1e15*v(6,0)*v(8,0)}
+.ends cgd
+.subckt	cds	1	2	3	4
+e1	5	0	value	{abs(v(3,4))}
+r1	5	0	1e6
+e2	6	0	table	{v(5,0)}=
++	(	0	4.23E-10	)
++	(	0.5	3.87E-10	)
++	(	1	3.49E-10	)
++	(	1.5	3.20E-10	)
++	(	2	2.98E-10	)
++	(	2.5	2.80E-10	)
++	(	3	2.65E-10	)
++	(	3.5	2.51E-10	)
++	(	4	2.39E-10	)
++	(	4.5	2.28E-10	)
++	(	5	2.19E-10	)
++	(	5.5	2.10E-10	)
++	(	6	2.01E-10	)
++	(	6.5	1.94E-10	)
++	(	7	1.87E-10	)
++	(	7.5	1.80E-10	)
++	(	8	1.73E-10	)
++	(	8.5	1.67E-10	)
++	(	9	1.61E-10	)
++	(	9.5	1.55E-10	)
++	(	10	1.50E-10	)
++	(	10.5	1.44E-10	)
++	(	11	1.39E-10	)
++	(	11.5	1.34E-10	)
++	(	12	1.30E-10	)
++	(	12.5	1.26E-10	)
++	(	13	1.22E-10	)
++	(	13.5	1.19E-10	)
++	(	14	1.16E-10	)
++	(	14.5	1.14E-10	)
++	(	15	1.11E-10	)
++	(	15.5	1.09E-10	)
++	(	16	1.07E-10	)
++	(	16.5	1.04E-10	)
++	(	17	1.02E-10	)
++	(	17.5	1.01E-10	)
++	(	18	9.89E-11	)
++	(	18.5	9.72E-11	)
++	(	19	9.56E-11	)
++	(	19.5	9.41E-11	)
++	(	20	9.25E-11	)
+r2	6	0	1e6
+c1	3	7	1e-15
+v1	7	0	DC	0.0V
+e3	8	0	value	{1*I(v1)}
+r3	8	0	1e6
+g1	1	2	value	{-1e15*v(6,0)*v(8,0)}
+.ends cds
+* SUBCKT Definition:  1=D  2=G  3=S
+.SUBCKT CSD15571Q2  1 2 3
+* PARAMETER (local) DEFINITIONS SECTION
+ .PARAM  ptrc1    4.00e-3  
+ .PARAM  ptrc2    {10.00e-6*1}
+ .PARAM  pwidthP  {0.6884/1.2}
+ .PARAM  pwidth   {pwidthP*1e6}
+ .PARAM  perimP   {2.1*pwidthP}
+ .PARAM  perim    {perimP*1e6}
+****** MODEL SUBCIRCUIT BEGINS HERE     ******************************
+M1   10 11 12 12  NMOS	W={pwidthP} L=0.5u  PS={perimP} PD={perimP}
+DBD   8  7	 DBD
+CBD0  8  7   3e-12
+RBD0  8  7   1e10
+*CGD0  5  7	 100E-12
+xcgd	5	10	1	3	cgd
+*xcgs	8	5	1	3	cgs
+xcds	8	10	1	3	cds
+* Note:  gate oxide capacitance included in NMOS below
+LGG   2  5	 2.1e-9
+RGG   5 11	 4.0
+RSB  12  9	 RTEMP 0.02e-3
+RSS   9  8 	 RTEMP 0.1e-3
+RSP   8  6 	 0.1e-3
+LSS   6  3	 0.47e-9
+RSL   6  3   0.5
+RDD   7 10 	 RTEMP 9.65e-3
+RDP   4  7	 0.10e-3
+LDD   1  4	 0.05e-9
+******************************************************************* 
+.MODEL  NMOS   NMOS (
+* CONTROL PARAMETERS
++ LEVEL  = 7             VERSION = 3.2         CAPMOD = 2
+* DC PARAMETERS
++ NLX    = 1.74E-7       VBM    = -5           DVT0   = 2.2
++ DVT1   = 0.53          DVT2   = -0.032       U0     = 670
++ UA     = 3.0e-9        UB     = 0.0e-19      A0     = 0.9
++ AGS    = 0.0           A1     = 0.0          A2     = 0.9
++ LINT   = 0.055e-6      VOFF   = -0.40        NFACTOR= 1.7
++ ETA0   = 0.005         ETAB   = -0.07        DSUB   = 1.4
++ PCLM   = 5.00          PDIBLC1= 0.02         PDIBLC2= 0.004
++ DROUT  = 0.90          PSCBE1 = 3.0e8        PSCBE2 = 1e-6
++ PVAG   = 0.1           DELTA  = 0.0220       JS     = 0
+* AC AND CAPACITANCE PARAMETERS
++ CGSO   = 130.00e-12		CGDO   = 1e-18        CGBO   = 1e-18
++ CJ     = 1e-18         CJSW   = 1e-18        CF     = 0
+* TEMPERATURE PARAMETERS
++ TNOM   = 25            UTE    = -1.5         KT1    = -0.70
++ KT1L   = 1.0e-15       KT2    = 0.022        UA1    = 00.00e-9
++ UB1    = -0.0e-17      
+* PROCESS PARAMETERS
++ TOX    = 3.00e-8       XJ     = 3e-7          NCH    = 1.33e17
++ NSUB   = 1.0e16)
+******************************************************************* 
+.MODEL  PMOSd   PMOS (   LEVEL  = 1
++ TNOM   = 25            VTO    = -1.0          IS     = 6.0e-14
++ TOX    = 3.0e-8        NSUB   = 2.0e17		GAMMA  = 0
++ CJ     = 1e-18         CJSW   = 1e-18
++ CGSO   = 1e-18         CGDO   = 1e-18         CGBO   = 0  )
+*******************************************************************
+.MODEL DBD D (CJO=7e-15 VJ=1.0 M=0.6 TNOM=25
++ FC=0.5 TT=2e-09 XTI=2.5 BV=21
++ IS=2.0e-12 N=1.045 RS=5.5e-3 TRS1=0.0e-3)
+.MODEL DD  D (CJO=0.30e-09 VJ=0.9 M=0.9 IS=1e-13 RS=0.1 TNOM=25)
+.MODEL DDx D (CJO=0.0001e-09 VJ=0.9 M=0.9 IS=1e-13 RS=1.0 TNOM=25)
+*******************************************************************
+.MODEL RTEMP RES (TC1={ptrc1} TC2={ptrc2})
+*******************************************************************
+.ENDS CSD15571Q2
+*$

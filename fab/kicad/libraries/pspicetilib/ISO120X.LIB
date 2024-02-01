@@ -1,0 +1,211 @@
+*  ISO120X SPICE MACROMODEL-- Copyright 1990 Burr-Brown Corp.
+
+*
+
+* REV.B   6/11/92 BCB, adjusted Iq to PDS typ, added Vos, adjusted output
+
+*                      swing to PDS typ, adjusted barrier impedance
+
+*
+
+*-----------------------------------------------------------------------------
+
+* This library of models is being supplied to users as an aid to circuit
+
+* designs.  While it reflects reasonably close similarity to the actual device
+
+* in terms of performance, it is not suggested as a replacement for
+
+* breadboarding.  Simulation should be used as a forerunner or a supplement to
+
+* traditional lab testing.
+
+*
+
+* Users should very carefully note the following factors regarding this
+
+* model:
+
+*
+
+*      To help designers working with the IS0120 isolation amplifiers, 
+
+*      a Spice listing for an equivalent circuit was developed (the listing 
+
+*      for the actual circuit is extremely long). Also, owing to the digital 
+
+*      transmission of the signal across the barrier, the listing for the 
+
+*      actual circuit could only be run with transient analysis, which would 
+
+*      be impractical for an application circuit. The equivalent circuit 
+
+*      listing, though, should be helpful.
+
+
+
+*      The equivalent circuit simulates both quiescent and output loading. 
+
+*      The model includes the output voltage swing and current limit, the 
+
+*      bandwidth, and the input and output impedance limits. It doesn't 
+
+*      simulate synchronization, though, nor the notched response. The macro 
+
+*      circuit may be run with ac, dc, or transient analysis.
+
+*
+
+*	While reasonable care has been taken in their preparation, we cannot
+
+*	be responsible for correct application on any and all computer
+
+*	systems.
+
+*
+
+*	Model users are hereby notified that these models are supplied
+
+*	"as is", with no direct or implied responsibility on the part of
+
+*	Burr-Brown for their operation within a customer circuit or system.
+
+*	Further, Burr-Brown Corporation reserves the right to change these
+
+*	models without prior notice.
+
+*
+
+*	In all cases, the current data sheet information for a given real
+
+*	device is your final design guideline, and is the only actual
+
+*	performance guarantee.
+
+*
+
+*-----------------------------------------------------------------------------
+
+* CONNECTIONS:
+
+*               +VS1
+
+*               |  -VS1
+
+*               |  |  COM2
+
+*               |  |  |  VOUT
+
+*               |  |  |  |  VOUT SENSE
+
+*               |  |  |  |  |  GND2
+
+*               |  |  |  |  |  |  C2H
+
+*               |  |  |  |  |  |  |  C2L
+
+*               |  |  |  |  |  |  |  |  +VS2
+
+*               |  |  |  |  |  |  |  |  |  -VS2
+
+*               |  |  |  |  |  |  |  |  |  |  COM1
+
+*               |  |  |  |  |  |  |  |  |  |  |  VIN
+
+*               |  |  |  |  |  |  |  |  |  |  |  |  GND1
+
+*               |  |  |  |  |  |  |  |  |  |  |  |  |
+
+.SUBCKT ISO120X 3  4  9 10 11 12 13 14 15 16 21 23 24
+
+*
+
+* NOTE PINS 1, 2, AND 22 (C1H. C1L AND EXT OSC ARE NOT USED
+
+* POWER SUPPLY OUIESCENT CURRENTS
+
+*
+
+I1 3 24 4.0E-3
+
+I2 24 4 4.0E-3
+
+I3 15 12 4.5E-3
+
+I4 12 16 4.5E-3
+
+*
+
+*INPUT SECTION
+
+*
+
+VOS 23 60 5E-3
+
+R1 60 50 200E3
+
+R2 50 51 200E3
+
+E1 51 21 21 50 100E3
+
+E2 52 9 51 21 1
+
+*
+
+*OUTPUT SECTION
+
+*
+
+R3 52 13 200E3
+
+R4 13 11 200E3
+
+R5 10 12 20E3
+
+C1 13 14 150E-12
+
+E3 14 12 9 13 1.6E3
+
+E4 54 12 14 12 6.28
+
+Q1 55 55 54 N
+
+Q2 56 56 54 P
+
+Q3 57 55 10 N
+
+Q4 58 56 10 P
+
+.MODEL N NPN BF=100
+
+.MODEL P PNP BF=100
+
+V1 15 57 2.5
+
+V2 58 16 2.5
+
+I5 15 55 250E-6
+
+I6 56 16 250E-6
+
+*
+
+*BARRIER IMPEDANCE
+
+*
+
+R6 24 12 100E12
+
+C2 24 12 2E-12
+
+*
+
+*REFERENCE TO NODE 0 NEEDED BY SOME VERSIONS OF SPICE
+
+*
+
+R7 23 0 100E9
+
+.ENDS
+
+

@@ -1,0 +1,251 @@
+* DRV603
+*****************************************************************************
+* (C) Copyright 2012 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: DRV603
+* Date: 7/11/2012
+* Model Type: All In One
+* Simulator: Pspice
+* Simulator Version: Pspice 16.0.0.p001
+* EVM Order Number: N/A
+* EVM Users Guide: N/A
+* Datasheet: SLOS617C - January 2009 - REVISED November 2009
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 : Release to web
+* Version 2.0 : Improved UVP circuitry
+*
+*****************************************************************************
+* Notes: 
+* 1. The following parameters are being modeled: Ao, f-3dB, Slew Rate
+*    Max/Min voltage/Current, noise, input voltage offset, current consumption
+*    Under voltage protection with hysteresis, Mute.
+* 3. The following parameters are not being modeled: PSRR and CMRR
+* 4. Charge pump is being modeled using ideal Voltage controlled voltage source
+*****************************************************************************
+.SUBCKT DRV603 OUT_L -INL GND VSS EN +INL -INR +INR OUT_R VDD UVP
+V5          30 31 1M
+Vos         37 38 1M
+V10         39 GND 3.3
+V8          32 GND 1.25
+V4          33 GND 3.3
+V2          41 GND 500M
+V6          40 GND 3.3
+V1          34 GND 5.5
+XU5         29 VDDx VSSx -INR 30 MUTExx DRV_AMP_EN_0
+XVn12       +INR 31 VNSE_0
+XU13        33 UVP 32 Comp_Out GND STD_OPA_SE_0
+XU3         35 34 VDDx SCLAMP_0
+XU2         36 VDDx VSSx -INL 37 MUTExx DRV_AMP_EN_0
+R16         29 OUT_R 70M
+R15         36 OUT_L 70M
+XVn11       +INL 38 VNSE_0
+XU7         39 MUTEx MUTExx GND NOT_0
+XU8         40 Comp_Out EN MUTEx GND AND_2_0
+XU9         40 UVP Comp_Out GND VCVS_2
+C7          GND -INR 500F
+C3          GND -INL 500F
+C2          GND +INR 500F
+C1          GND +INL 500F
+R4          VSS VSSx 1
+XU12        VDD 41 35 SCLAMP_1
+R36         EN GND 100K
+XU6         GND VSSx VDDx GND VCVS_3
+XU1         VSSx VDDx MUTEx GND VCVS_4
+XU4         GND_FLT GND VDDx VSSx VCVS_5
+.ENDS
+
+.SUBCKT DRV_AMP_EN_0 Vout V+ V- -IN +IN EN
+V2          GND_FLOAT_42 55 20
+V4          56 GND_FLOAT_42 20
+XU8         Max_Current_43 GND_FLOAT_42 EN 46 GND_FLOAT_42 VCTRL_VCVS_0
+R4          47 48 10
+R3          49 50 10
+R2          51 52 10
+R1          53 54 10
+XU6         52 Max_Current_43 IDEAL_D_0
+EVCVS4      51 GND_FLOAT_42 55 Vimon_44  100K
+XU2         Max_Current_43 54 IDEAL_D_0
+EVCVS3      53 GND_FLOAT_42 56 Vimon_44  100K
+XU9         V+ 57 V+ 0 VCVS_6
+XU7         58 V- 0 V- VCVS_6
+XU3         48 Over_clamp_45 IDEAL_D_0
+EVCVS5      47 GND_FLOAT_42 58 Over_clamp_45  100K
+XU1         Over_clamp_45 50 IDEAL_D_0
+EVCVS2      49 GND_FLOAT_42 57 Over_clamp_45  100K
+XR108       Max_Current_43 GND_FLOAT_42 RNOISE_FREE_0
+GVCCS12     GND_FLOAT_42 Max_Current_43 59 GND_FLOAT_42  1M
+C2          Max_Current_43 GND_FLOAT_42 1P
+XU5         GND_FLOAT_42 0 V+ V- VCVS_7
+C1          GND_FLOAT_42 Over_clamp_45 100U
+XU26        -IN +IN GND_FLOAT_42 60 VCCS_LIMIT_0
+XU4         60 GND_FLOAT_42 GND_FLOAT_42 Over_clamp_45 VCCS_LIMIT_1
+XR107       59 GND_FLOAT_42 RNOISE_FREE_1
+C11         59 GND_FLOAT_42 1F
+GVCCS10     GND_FLOAT_42 59 Over_clamp_45 GND_FLOAT_42  -1U
+XR104       Over_clamp_45 GND_FLOAT_42 RNOISE_FREE_2
+XR103       GND_FLOAT_42 60 RNOISE_FREE_1
+VCCVS1_in   46 Vout
+HCCVS1      Vimon_44 GND_FLOAT_42 VCCVS1_in   1K
+.ENDS
+
+
+.SUBCKT VNSE_0  1 2
+R4 3 0 400E3
+E3 1 2 3 0 1
+.ENDS
+
+.SUBCKT VCVS_5  VP VN CP CN PARAMS: G = 0.5
+
+E1 VP VN VALUE = {(V(CP) + V(CN))*G}
+
+.ENDS VCVS_5
+
+.SUBCKT STD_OPA_SE_0  VDD VIP VIN VO VSS
+
+.PARAM GAIN = 100E3
+
+EGAIN VO 0 VALUE = {LIMIT(V(VIP,VIN)*GAIN,V(VDD),V(VSS))}
+
+.ENDS STD_OPA_SE_0
+
+
+
+.SUBCKT SCLAMP_0   VIN VLIM VOUT
+
+ES1  VIN  VOUT  VALUE = { IF(V(VIN,0)>V(VLIM,0),V(VIN) - V(VLIM),0) }
+
+.ENDS SCLAMP_0
+
+
+.SUBCKT NOT_0  VDD VI VO VSS
+
+ESLICE VO 0  VALUE = {IF(V(VI)>=V(VCM),V(VSS),V(VDD))}
+ECM  VCM  0  VALUE = {(V(VDD,0)+V(VSS,0))*0.5}
+
+.ENDS NOT_0
+
+
+.SUBCKT AND_2_0  VDD A B Y VSS
+
+ECM  VCM  0  VALUE = {(V(VDD,0)+V(VSS,0))*0.5}
+EA  VA  0  VALUE = {IF(V(A)>=V(VCM),1,0)}
+EB  VB  0  VALUE = {IF(V(B)>=V(VCM),1,0)}
+
+EY  Y  0  VALUE = {IF(V(VA)*V(VB)>0.5,V(VDD),V(VSS))}
+
+.ENDS AND_2_0
+
+
+.SUBCKT VCVS_2  VP VN CP CN PARAMS: G = 0.5
+
+G VP VN VALUE = {IF(V(CP,CN) >= 1.65,5U,1N)}
+
+.ENDS VCVS_2
+
+
+.SUBCKT SCLAMP_1   VIN VLIM VOUT
+
+ES1  VIN  VOUT  VALUE = { IF(V(VIN,0)<= V(VLIM,0),V(VIN) - V(VLIM),0) }
+
+.ENDS SCLAMP_1
+
+
+.SUBCKT VCVS_3  VP VN CP CN
+
+E VP VN VALUE = {V(CP,CN)}
+
+.ENDS VCVS_3
+
+
+.SUBCKT VCVS_4  VP VN CP CN PARAMS: G = 0.5
+
+G VP VN VALUE = {IF(V(CP,CN) >= 1.65,-18M,-2M)}
+
+.ENDS VCVS_4
+
+
+
+
+.SUBCKT VCTRL_VCVS_0   CP  CN  DIS  VP  VN PARAMS: VDD = 3.3  GAIN = 1
+
+EVCVS  VP  VN  VALUE = {IF(V(DIS,0) >= VDD/2,0,V(CP,CN)*GAIN)}
+
+.ENDS VCTRL_VCVS_0
+
+
+
+.SUBCKT IDEAL_D_0  A C
+D1 A C DNOM
+.MODEL DNOM D (TT=10P CJO=1E-18 IS=1E-15 RS=1E-3)
+.ENDS IDEAL_D_0
+
+
+.SUBCKT VCVS_6  VP VN CP CN
+
+E VP VN VALUE = {IF(V(CP,CN) >= 3,(V(CP,CN)+0.1)/6.8,0.5)}
+
+.ENDS VCVS_6
+
+
+
+.SUBCKT RNOISE_FREE_0  1 2
+.PARAM ROHMS=1E3
+ERES 1 3 VALUE = { I(VSENSE) * ROHMS }
+RDUMMY 30 3 1
+VSENSE 30 2 DC 0V
+.ENDS RNOISE_FREE_0
+
+
+.SUBCKT VCVS_7  VP VN CP CN PARAMS: G = 0.5
+
+E1 VP VN VALUE = {(V(CP) + V(CN))*G}
+
+.ENDS VCVS_7
+
+
+.SUBCKT VCCS_LIMIT_0  VC+ VC- IOUT+ IOUT-
+.PARAM GAIN = 1E-3
+.PARAM IPOS = .5
+.PARAM INEG = -.5
+G1 IOUT+ IOUT- VALUE={LIMIT(GAIN*V(VC+,VC-),IPOS,INEG)}
+.ENDS VCCS_LIMIT_0
+
+
+.SUBCKT VCCS_LIMIT_1  VC+ VC- IOUT+ IOUT-
+*
+.PARAM GAIN = 5
+.PARAM IPOS = 450
+.PARAM INEG = -450
+G1 IOUT+ IOUT- VALUE={LIMIT(GAIN*V(VC+,VC-),IPOS,INEG)}
+.ENDS VCCS_LIMIT_1
+
+
+.SUBCKT RNOISE_FREE_1  1 2
+
+.PARAM ROHMS=1E6
+ERES 1 3 VALUE = { I(VSENSE) * ROHMS }
+RDUMMY 30 3 1
+VSENSE 30 2 DC 0V
+.ENDS RNOISE_FREE_1
+
+.SUBCKT RNOISE_FREE_2  1 2
+.PARAM ROHMS=1E4
+ERES 1 3 VALUE = { I(VSENSE) * ROHMS }
+RDUMMY 30 3 1
+VSENSE 30 2 DC 0V
+.ENDS RNOISE_FREE_2

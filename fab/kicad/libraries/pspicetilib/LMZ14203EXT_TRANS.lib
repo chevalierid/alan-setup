@@ -1,0 +1,445 @@
+*$
+* LMZ14203EXT
+*****************************************************************************
+* (C) Copyright 2013 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: LMZ14203EXT
+* Date: 09JAN2013
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: AN-2084 LMZ1420xEXT / LMZ1200xEXT
+* EVM Users Guide: SNVA456, August 2010
+* Datasheet: SNVS666D, REVISED JULY 2012
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+****************************************************************************
+.SUBCKT LMZ14203EXT_TRANS  VIN RON EN GND SS FB VOUT
+V4 EN GND 2V
+VL 1 GND
+EBILIM VILIM 0 VALUE = { IF ( V(LFD) > 3 & I(VIL) > 0 , I(VIL)*17.5M , 0 ) }
+VIL SW SWITCH
+VLF SW 57
+EBFB VREFI GND VALUE = { IF ( V(SS) < V(REF1) , V(SS) , IF( V(LFD) > 1 , V(REF1)-2.6M*I(VIL) , V(REF1) ) ) }
+RL1 60 VOUT 45M
+EBREF1 REF1 GND VALUE = { IF ( V(ENON) > 1 , 0.8 , 0 ) }
+VISS 76 SS
+XFETHS 12 UFD SW NATFET3100HSX2_0
+D1 0 57 _D1_MOD
+.MODEL _D1_MOD D AF=1 BV=40 CJO=1.58826E-10 EG=0.550697
++ FC=0.5 IBV=0.002 IS=0.008 KF=0 M=0.513246 N=2.34207
++ RS=0.0274675 TT=0 VJ=1.5 XTI=3.03417
+X10 57 LFD 0 NATFET3100LSX10_0
+EBD1 56 0 VALUE = { IF ( V(UVLO) > 1 & V(DH) > .1 & I(VLF) < -1 , 5 , -1 ) }
+D2 LFD 56 _D2_MOD
+.MODEL _D2_MOD D RS=20
+Q1 VCC 56 LFD _QMOD
+.MODEL _QMOD NPN
+X22 50 54 QLATCH QN LATCHNAND_0
+EBREF REF GND VALUE = { IF  ( V(VCC) > 2.5 , 2.5 , V(VCC) ) }
+XDT DRIVE DH 63 DL NEWDT_0
+EBUVD 66 GND VALUE = { IF ( V(UVRC) > 4.75 & V(ONT) > 1 , 5 , 0 ) }
+X7 3 CL QLATCH 47 NAND3B_0
+X6 47 2 DRVNOT DRIVE LATCHNAND_0
+V5 69 GND PULSE 0 5 0 1N 1N 1U
+XUVD 66 69 UVLO 68 SRLATCHD_0
+D8 GND 52 _D8_MOD
+.MODEL _D8_MOD D BV=1 IBV=10U N=2
+CON 14 GND 100P
+COFF 8 GND 4.45P
+VSENSE VIN 12
+R37 GND 0 1U
+GTON GND 14 VALUE = { IF ( V(ENON) < 1 , 0 , IF ( V(VIN) < 12 , 147.45P * V(REF) / ( ( ( 1.4E-10 * (
++ ( (V(VIN)-V(RON)) / I(V17) ) ) ) / (V(VIN)) ) ) , IF ( V(VIN) <15 , 147.45P * V(REF)
++ /
++ ( ( ( 1.2E-10 * ( ( (V(VIN)-V(RON)) / I(V17) ) ) ) / (V(VIN)) ) ) , 147.45P *
++ V(REF) / ( ( ( 1.3E-10 * ( ( (V(VIN)-V(RON)) / I(V17) ) ) ) / (V(VIN)) ) ) ) ) ) }
+XFB VREFI FB 3 COMPWDEL_0
+XCL VILIM 11 20 COMPWDEL_1
+EBUVLO 24 GND VALUE = { IF ( V(VIN) > 6.3 , 5.7 , IF ( V(VIN)-0.5< 0 , 0 , V(VIN)-0.5 ) ) }
+EBD 25 SW VALUE = { IF ( V(UVLO) > 1 & V(GATEUVLO) > 1 & V(DL) > 1 , V(BST,SW) , -1 ) }
+D20 VCC BST _D
+.MODEL _D D
+C8 VCC GND 1U IC=5
+R55 EN 48 100K
+CSH 48 GND 20P
+SGUV 13 GATEUVLO BST SW _S9_MODX
+.MODEL _S9_MODX VSWITCH VT=2.99985 VH=0.15M
+R56 GATEUVLO GND 1MEG
+V38 13 GND DC=5
+SEN ENON EOND 31 GND _S11_MOD
+.MODEL _S11_MOD VSWITCH VT=3.63 VH=70M
+R57 EOND GND 1MEG
+SSD 37 ENON 48 GND _S12_MOD
+.MODEL _S12_MOD VSWITCH VT=1.21 VH=40M
+R58 ENON GND 1MEG
+V39 37 GND DC=5
+C4 BST SW 47N
+D21 24 38 _D6_MODX
+.MODEL _D6_MODX D RS=140
+IREG 38 VCC DC=50M
+D22 VCC 38 _D
+EBOVER OV GND VALUE = { IF ( V(FB) > 0.92 , 5 , 0 )  }
+GBTOFF GND 8 VALUE = { IF ( V(ENON) < 1 , 0 , 38U ) }
+V17 RON 52
+XSOFF 8 GND QLATCH GND SSWITCH_0
+X61 14 GND DRIVE GND SSWITCH_0
+D24 UFD 25 _D24_MODX
+.MODEL _D24_MODX D RS=20
+Q11 BST 25 UFD _QMOD
+RUV 44 UVRC 1K
+CUV UVRC GND 1N
+SR61 31 GND ENON GND SWR61
+.MODEL SWR61 VSWITCH VON = 970M VOFF=1 RON=480K ROFF=96K
+V43 VCC 31
+EUV 44 GND EOND GND 1
+VCL 11 GND DC=73.5M
+L1 SWITCH 60 6.8U IC=0
+MSS SS VSDN GND GND _M
+.MODEL _M NMOS VTO=1
+EBSSEN VSDN GND VALUE = { IF ( V(ENON) < 1 , 5 , 0 ) }
+QSS1 45 45 21 QP
+.MODEL QP PNP
+QSS2 76 45 21 QP
+R63 45 1 607K
+X64 ONT 47 49 AND2B_0
+X65 OFFT VSDN 50 NOR2B_0
+X66 49 VSDN 51 OV 2 NOR4B_0
+X67 53 51 INVB_0
+VHSLIMIT 53 0 DC=5
+X68 20 CL INVB_0
+X69 14 REF ONT QLATCH COMPWDELEN_0
+XOFF 8 REF OFFT QN COMPWDELEN_1
+X71 ONT 51 54 NOR2B_0
+EBSSV 21 GND VALUE = { IF ( ( V(VCC)-0.7 ) > 4.7 , 4.7 , V(VCC) ) }
+.ENDS LMZ14203EXT_TRANS 
+*****************************************************************************************
+**************************** END OF MAIN SUB CIRCUIT ************************************
+*****************************************************************************************
+
+
+*****************************************************************************************
+**************************** START OF MOSFET CIRCUIT ************************************
+*****************************************************************************************
+.SUBCKT NATFET3100HSX2_0 10 20 30
+M1 1 2 3 3 DMOS L=1U W=1U
+RD 10 1 215M
+RS 40 3 20M
+RG 20 2 60.0
+CGS 2 3 228P
+EGD 12 0 2 1 1
+VFB 14 0 0
+FFB 2 1 VFB 1
+CGD 13 14 239P
+R1 13 0 1.00
+D1 12 13 DLIM
+DDG 15 14 DCGD
+R2 12 15 1.00
+D2 15 0 DLIM
+DSD 3 10 DSUB
+LS 30 40 100P
+.MODEL DMOS NMOS(LEVEL=3 VMAX=104K THETA=80.0M
++ ETA=4.00M VTO=1.28 KP=17.5
+.MODEL DCGD D (CJO=239P VJ=0.600 M=0.680
+.MODEL DSUB D (IS=10.4N N=1.50 RS=20.0M BV=50.0
++ CJO=387P VJ=0.800 M=0.420 TT=5N
+.MODEL DLIM D (IS=100U)
+.MODEL _D1_MOD D AF=1 BV=40 CJO=1.58826E-10 EG=0.550697
++ FC=0.5 IBV=0.002 IS=0.008 KF=0 M=0.513246 N=2.34207
++ RS=0.0274675 TT=0 VJ=1.5 XTI=3.03417
+.MODEL _D2_MOD D RS=20
+.MODEL _QMOD NPN
+.MODEL _D8_MOD D BV=1 IBV=10U N=2
+.MODEL _D D
+.MODEL _S9_MODX VSWITCH VT=2.99985 VH=0.15M
+.MODEL _S11_MOD VSWITCH VT=3.63 VH=70M
+.MODEL _S12_MOD VSWITCH VT=1.21 VH=40M
+.MODEL _D6_MODX D RS=140
+.MODEL _D24_MODX D RS=20
+.MODEL _M NMOS VTO=1
+.MODEL QP PNP
+.ENDS
+*$
+.SUBCKT NATFET3100LSX10_0 10 20 30
+M1 1 2 3 3 DMOS L=1U W=1U
+RD 10 1 0.127
+RS 40 3 7.75M
+RG 20 2 60.0
+CGS 2 3 90P
+EGD 12 0 2 1 1
+VFB 14 0 0
+FFB 2 1 VFB 1
+CGD 13 14 98P
+R1 13 0 1.00
+D1 12 13 DLIM
+DDG 15 14 DCGD
+R2 12 15 1.00
+D2 15 0 DLIM
+DSD 3 10 DSUB
+LS 30 40 100P
+.MODEL _D1_MOD D AF=1 BV=40 CJO=1.58826E-10 EG=0.550697
++ FC=0.5 IBV=0.002 IS=0.008 KF=0 M=0.513246 N=2.34207
++ RS=0.0274675 TT=0 VJ=1.5 XTI=3.03417
+.MODEL DMOS NMOS(LEVEL=3 VMAX=104K THETA=80.0M
++ ETA=3.20M VTO=1.28 KP=34.1
+.MODEL DCGD D (CJO=98P VJ=0.600 M=0.680
+.MODEL DSUB D (IS=10.4N N=1.50 RS=29.3 BV=50.0
++ CJO=138P VJ=0.800 M=0.420 TT=5N
+.MODEL DLIM D (IS=100U)
+.MODEL _D2_MOD D RS=20
+.MODEL _QMOD NPN
+.MODEL _D8_MOD D BV=1 IBV=10U N=2
+.MODEL _D D
+.MODEL _S9_MODX VSWITCH VT=2.99985 VH=0.15M
+.MODEL _S11_MOD VSWITCH VT=3.63 VH=70M
+.MODEL _S12_MOD VSWITCH VT=1.21 VH=40M
+.MODEL _D6_MODX D RS=140
+.MODEL _D24_MODX D RS=20
+.MODEL _M NMOS VTO=1
+.MODEL QP PNP
+.ENDS
+
+*****************************************************************************************
+****************************  END OF MOSFET CIRCUIT  ************************************
+*****************************************************************************************
+
+
+
+*****************************************************************************************
+**************************** START OF LOGIC GATES    ************************************
+*****************************************************************************************
+*$
+.SUBCKT LATCHNAND_0 3 4 1 2
+X1 3 2 1 NAND2B_0
+X2 4 1 2 NAND2B_0
+.ENDS
+*$
+.SUBCKT NAND2B_0 1 2 3
+EB1 4 0 VALUE = { IF(V(1) > 1.5 & V(2) >1.5 ,0.3, 3.5) }
+RD 4 3 1
+CD 3 0 0.087NF
+.ENDS
+*$
+.SUBCKT INV_0 1 2
+EB1 4 0 VALUE = { IF ( V(1)>800M , 0 , 5V ) }
+RD 4 2 100
+CD 2 0 10P
+.ENDS
+*$
+.SUBCKT NAND3B_0 1 2 3 4
+EB1 5 0 VALUE = { IF( V(1) > 1.5 & V(2) > 1.5 & V(3)>1.5, 0.3, 3.5) }
+RD 5 4 1
+CD 4 0 0.087NF
+.ENDS
+*$
+.SUBCKT NOR2B_0 1 2 3
+EB1 4 0 VALUE = { IF( V(1) > 1.5 | V(2) >1.5 , 0.3, 3.5)}
+RD 4 3 1
+CD 3 0 0.087NF
+.ENDS
+*$
+.SUBCKT NOR4B_0 1 2 3 4 5
+EB1 6 0 VALUE = { IF( V(1) > 1.5 | V(2) >1.5 |V(3)>1.5 |V(4)>1.5, 0.3, 3.5)}
+RD 6 5 1
+CD 5 0 0.087NF
+.ENDS
+*$
+.SUBCKT INVB_0 1 2
+EB1 3 0 VALUE = { IF ( V(1) >1.5, 0.3, 3.5)}
+RD 3 2 1
+CD 2 0 0.087NF
+.ENDS
+*$
+.SUBCKT AND2B_0 1 2 3
+EB1 4 0 VALUE = { IF( V(1) > 1.5 & V(2) >1.5 , 3.5, 0.3)}
+RD 4 3 1
+CD 3 0 0.087NF
+.ENDS
+*****************************************************************************************
+****************************   END OF LOGIC GATES    ************************************
+*****************************************************************************************
+
+
+
+*****************************************************************************************
+****************************     START OF LATCHES    ************************************
+*****************************************************************************************
+.SUBCKT SRLATCHD_0 6 8 2 1
+EQB 10 0 VALUE = { IF ( V(8)< 1.5  & V(2)>1.5,  0.3, 3.5V ) }
+EQBVSEC 110 0 VALUE = {100*V(10) }
+RQBVSEC 110 0 10MEG
+EQ 20 0 VALUE = { IF (V(6)<1.5  & V(1)>1.5,  0.3,  3.5V) }
+EQVVSEC 120 0 VALUE ={  100*V(20) }
+RBQVVSEC 120 0 1MEG
+RD1 10 1 100
+CD1 1 0 10P IC=3.5
+RD2 20 2 100
+CD2 2 0 10P IC=0.3
+.ENDS
+*****************************************************************************************
+****************************     END OF LATCHES      ************************************
+*****************************************************************************************
+
+
+
+*****************************************************************************************
+****************************     START OF COMPARATORS   *********************************
+*****************************************************************************************
+*$
+.SUBCKT COMPWDEL_0 1 2 3
+EB1 4 0 VALUE = { IF ( V(1) > V(2) , 5 , 0 )}
+T1 4 0 5 0 Z0=1 TD=25.000N
+R1 5 0 1
+EB2 3 0 VALUE = { IF ( V(5) < 0 , 0 , V(5) ) }
+.ENDS
+*$
+.SUBCKT COMPWDEL_1 1 2 3
+EB1 4 0 VALUE = { IF ( V(1) > V(2) , 5 , 0 ) }
+T1 4 0 5 0 Z0=1 TD=125.00N
+R1 5 0 1
+EB2 3 0 VALUE = { IF ( V(5) < 0 , 0 , V(5) )}
+.ENDS
+*$
+.SUBCKT COMPWDELEN_0 1 2 3 EN
+EB1 4 0 VALUE = { IF ( V(EN) < 1 , 0 , IF( V(1) > V(2) , 5 , 0) )}
+T1 4 0 5 0 Z0=1 TD=25.000N
+R1 5 0 1
+EB2 3 0 VALUE = { IF ( V(5) < 0 , 0 , V(5) ) }
+.ENDS
+*$
+.SUBCKT COMPWDELEN_1 1 2 3 EN
+EB1 4 0 VALUE = { IF ( V(EN) < 1 , 0 , IF( V(1) > V(2) , 5 , 0) )}
+T1 4 0 5 0 Z0=1 TD=25.000N
+R1 5 0 1
+EB2 3 0 VALUE = { IF ( V(5) < 0 , 0 , V(5) ) }
+.ENDS
+
+*****************************************************************************************
+****************************     END OF COMPARATORS     *********************************
+*****************************************************************************************
+
+
+*****************************************************************************************
+****************************     START OF DELAY BLOCKS  *********************************
+*****************************************************************************************
+*$
+.SUBCKT NEWDT_0 CLK GU SU QL
+EBU1 1 0 VALUE = { IF (V(CLK)>800M & V(TD1)>800M,  10.0000  , 100.000M )}
+EBU2 4 SU VALUE = { V(1) }
+RSU 4 GU 2.0000
+RFLO SU 0 1G
+EBL 2 0 VALUE = { IF ( V(CLKB)>800M & V(TD2)>800M, 10.0000, 100.000M ) }
+RSL 2 QL 2.0000
+X1 CLK TD1 UTD_0
+X2 CLKB TD2 UTD_0
+X3 CLK CLKB INV_0
+.ENDS
+*$
+.SUBCKT UTD_0 1 2
+RIN 1 0 1E15
+E1 3 0 1 0 1
+T1 3 0 2 0 Z0=1 TD=30.000N
+R1 2 0 1
+.ENDS
+
+*****************************************************************************************
+****************************     END OF DELAY BLOCKS    *********************************
+*****************************************************************************************
+
+
+*****************************************************************************************
+****************************     START OF SWITCH MODELS  ********************************
+*****************************************************************************************
+.SUBCKT SSWITCH_0 1 2 3 4
+SA1 1 2 3 4 SMOOTH
+.MODEL SMOOTH VSWITCH RON=100.000M ROFF=10.0000MEG VON=2.0000  VOFF=0
+.ENDS
+*****************************************************************************************
+****************************     END OF SWITCH MODELS    ********************************
+*****************************************************************************************
+
+*****************************************************************************************
+****************************     START OF DATA CONVERTERS  ******************************
+*****************************************************************************************
+.SUBCKT D2AG_0 IN OUT PARAMS: OUT_LOW=0.1 OUT_HIGH=5 OUT_UNDEF=1.80
+EA1 1 0 VALUE = { IF ( V(IN) < 0.5,  {OUT_LOW} , IF ( V(IN) > 3.0 , {OUT_HIGH} , {OUT_UNDEF} ) }
+R1 1 OUT 15
+.ENDS
+*****************************************************************************************
+****************************    END OF DATA CONVERTERS      *****************************
+*****************************************************************************************
+
+
+*****************************************************************************************
+****************************     START OF CAPACITOR MODELS ******************************
+*****************************************************************************************
+*$
+.SUBCKT COUT 2 4 PARAMS: IC=0
+R1 2 3 0.002
+C1 3 1 9.995847750865053E-5 IC={IC}
+R3 5 4 150; "free space" reduced by sqrt(dielectric constant)
+R2 2 4 1.0004153973968428E7
+R4 3 26 444444.44444444444
+R6 3 7 444.44444444444446
+C5 7 1 2.998754325259516E-6 IC={IC}
+R7 3 10 44.44444444444444
+C6 10 1 2.998754325259516E-6 IC={IC}
+R8 3 13 4.444444444444445
+C7 13 1 2.998754325259516E-6 IC={IC}
+C2 26 1 2.998754325259516E-6 IC={IC}
+R9 3 28 44444.444444444445
+C3 28 1 2.998754325259516E-6 IC={IC}
+R10 3 29 4444.444444444444
+C4 29 1 2.998754325259516E-6 IC={IC}
+L8 1 5 15p
+R24 1 5 0.006
+L12 5 4 1n
+.ENDS
+*$
+.SUBCKT COUT1 2 4 PARAMS: IC=0
+*FAMILY = ANALOG
+*FAMILY = ANALOG
+R1 2 3 0.002
+C1 3 1 8.524803490023462E-5 IC= {IC}
+R3 5 4 150; "free space" reduced by sqrt(dielectric constant)
+R2 2 4 1.173047567806455E7
+R4 3 26 444444.44444444444
+R6 3 7 444.44444444444446
+C5 7 1 2.5574410470070386E-6 IC={IC}
+R7 3 10 44.44444444444444
+C6 10 1 2.5574410470070386E-6 IC={IC}
+R8 3 13 4.444444444444445
+C7 13 1 2.5574410470070386E-6 IC={IC}
+C2 26 1 2.5574410470070386E-6 IC={IC}
+R9 3 28 44444.444444444445
+C3 28 1 2.5574410470070386E-6 IC={IC}
+R10 3 29 4444.444444444444
+C4 29 1 2.5574410470070386E-6 IC={IC}
+L8 1 5 15p
+R24 1 5 0.006
+L12 5 4 1n
+.ENDS
+*$
+

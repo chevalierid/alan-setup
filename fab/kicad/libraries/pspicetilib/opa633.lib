@@ -1,0 +1,412 @@
+* OPA633
+*****************************************************************************
+* (C) Copyright 2013 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: OPA633
+* Date: 03/12/2013
+* Model Type: All In One
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: N/A
+* EVM Users Guide: N/A
+* Datasheet: SBOS150
+* 
+* Model Version: 1.0
+* 
+*****************************************************************************
+* 
+* Updates: 
+* 
+* Version 1.0 : Release to Web
+* 
+*****************************************************************************
+* 
+* Notes: This macro conforms to the data sheet specs for the following:
+* Small Signal Bandwidth, Output Noise, Slew Rate, Output Resistance
+* Input Resistance and Capacitance, Offset Voltage, Bias Current, 
+* Power Supply Quiescent Current, Nominal Gain
+* 
+* The macromodel behavior conforms to the following plots with the 
+* appropriate test circuits:
+* Max VOUT versus Load Resistance, 
+* Gain versus Load Resistance
+* 
+* An AC response plot based on the macromodel will show less peaking 
+* and bandwidth than the data sheet plot for a signal source resistance 
+* of 50 ohms. It will show more peaking & bandwidth for a source 
+* impedance of 300 ohms.
+* 
+*****************************************************************************
+*.SUBCKT OPA633 VIP VIN VDD VSS VO
+*$
+.SUBCKT OPA633 OUT IN VDD VSS
+RIN        IN GNDF 1.5e6
+CIN        IN GNDF 1.5p
+RF         OUTz VIN 500
+C_VIN      VIN GNDF 1.5p
+XU1        IN VIN 23 22 GNDF  INPUT
++ PARAMS: RICM = 1G RIDM = 1.5G CICM = 100f CIDM = 1.6f
+XU2        23 20  VNOISE
++ PARAMS: NLF = 10 FLW = 4 NVR = 3
+XU3        20 22  INOISE
++ PARAMS: NLFF = 0.1 FLWF = 0.001 NVRF = 0.1
+XU4        12 20  VOFFS
++ PARAMS: VOFF = 5m
+XU5        VDD VSS 22 21 GNDF  PSRR
++ PARAMS: PSRRP = 72 FPSRRP = 300K PSRRN = 72 FPSRRN = 300K
+XU6        21 13 GNDF  CMRR
++ PARAMS: CMRR = 72 FCMRR = 300K
+XU7        12 13 VDD VSS  ESD_DIODES
++ PARAMS: EMCO = 0.01 BRKV = 100 IBRKV = 10m
+XU8        12 13 VDD VSS  IBIAS
++ PARAMS: IBIASP = 15u IBIASN = 15U
+XU9        VDD VSS  IQ
++ PARAMS: IQQ = 21m
+XU10        VDD VSS 12 13 14 15 GNDF  CMR
++ PARAMS: VMAXIO = 2 VMINIO = 2
+XU11        14 15 11 GNDF  GBW_SLEW_SE
++ PARAMS: AOL = 120 GBW = 140e6 SRP = 2500MEG SRN = 2500MEG
+XU12        11 10 GNDF  TF
++ PARAMS: A = 1 FP1 = 1000e6
+XU13        VDD VSS 10 9 VIMON GNDF  VCLAMP_W_CLAW
++ PARAMS: VMAXIO = 1.25 VMINIO = 1.25
+XU14        9 7 GNDF  ZOUT
++ PARAMS: RO = 1
+XU15        7 OUTz VIMON  OUT_CURRENT_CLAMP
++ PARAMS: IMAX = 440m IMIN = 440m
+ROUTz      OUTz OUT 5
+XU16        VDD VSS VIMON  ILOAD
+XU0        VDD VSS GNDF GND_FLOAT
+.ENDS
+*$
+**************************************
+**                                  **
+**                                  ** 
+**                                  **          
+**                                  **
+**************************************
+.SUBCKT INPUT   VIP  VIN  VOP  VON  GNDF 
++ PARAMS: RICM = 1G RIDM = 10K CICM = 100F  CIDM = 100F
+V1          VIP VOP 0
+V2          VIN VON 0
+C1          VOP GNDF {CICM} 
+C2          VON GNDF {CICM}
+C3          VOP VON {CIDM}
+G1          VOP GNDF VALUE =  {V(VOP,GNDF)/RICM}
+G2          VON GNDF VALUE = {V(VON,GNDF)/RICM} 
+G3          VOP VON VALUE = {V(VOP,VON)/RIDM} 
+.ENDS
+*$
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+* BEGIN PROG NSE NANO VOLT/RT-HZ
+.SUBCKT VNOISE  1 2 PARAMS: NLF = 10 FLW = 4  NVR = 4.6
+* BEGIN SETUP OF NOISE GEN - NANOVOLT/RT-HZ
+* INPUT THREE VARIABLES
+* SET UP VNSE 1/F
+********************
+* NV/RHZ AT 1/F FREQ
+* NLF
+********************
+* FREQ FOR 1/F VAL
+* FLW
+********************
+* SET UP VNSE FB
+* NV/RHZ FLATBAND
+* NVR
+********************
+* END USER INPUT
+* START CALC VALS
+.PARAM GLF={PWR(FLW,0.25)*NLF/1164}
+.PARAM RNV={1.184*PWR(NVR,2)}
+.MODEL DVN D KF={PWR(FLW,0.5)/1E11} IS=1.0E-16
+* END CALC VALS
+I1 0 7 10E-3
+I2 0 8 10E-3
+D1 7 0 DVN
+D2 8 0 DVN
+E1 3 6 7 8 {GLF}
+R1 3 0 1E9
+R2 3 0 1E9
+R3 3 6 1E9
+E2 6 4 5 0 10
+R4 5 0 {RNV}
+R5 5 0 {RNV}
+R6 3 4 1E9
+R7 4 0 1E9
+E3 1 2 3 4 1
+C1 1 0 1E-15
+C2 2 0 1E-15
+C3 1 2 1E-15
+.ENDS
+*$
+* END PROG NSE NANOV/RT-HZ
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+* BEGIN PROG NSE FEMTO AMP/RT-HZ 
+.SUBCKT INOISE  1 2 PARAMS: NLFF = 0.1 FLWF = 0.001 NVRF = 0.1
+* BEGIN SETUP OF NOISE GEN - FEMPTOAMPS/RT-HZ
+* INPUT THREE VARIABLES
+* SET UP INSE 1/F
+********************
+* FA/RHZ AT 1/F FREQ
+* NLFF
+********************
+* FREQ FOR 1/F VAL
+* FLWF
+********************
+* SET UP INSE FB
+* FA/RHZ FLATBAND
+* NVRF
+********************
+* END USER INPUT
+* START CALC VALS
+.PARAM GLFF={PWR(FLWF,0.25)*NLFF/1164}
+.PARAM RNVF={1.184*PWR(NVRF,2)}
+.MODEL DVNF D KF={PWR(FLWF,0.5)/1E11} IS=1.0E-16
+* END CALC VALS
+I1 0 7 10E-3
+I2 0 8 10E-3
+D1 7 0 DVNF
+D2 8 0 DVNF
+E1 3 6 7 8 {GLFF}
+R1 3 0 1E9
+R2 3 0 1E9
+R3 3 6 1E9
+E2 6 4 5 0 10
+R4 5 0 {RNVF}
+R5 5 0 {RNVF}
+R6 3 4 1E9
+R7 4 0 1E9
+G1 1 2 3 4 1E-6
+C1 1 0 1E-15
+C2 2 0 1E-15
+C3 1 2 1E-15
+.ENDS
+*$
+* END PROG NSE FEMTO AMP/RT-HZ
+**************************************
+**                                  **
+**                                  ** 
+**                                  **          
+**                                  **
+**************************************
+.SUBCKT VOFFS VP  VN 
++ PARAMS: VOFF = 0
+V1  VP  VN {VOFF}
+.ENDS
+*$
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+.SUBCKT PSRR   VDD  VSS  VI  VO  GNDF 
++ PARAMS: PSRRP = 130 FPSRRP = 1.6
++ PSRRN = 130 FPSRRN = 1.6
+.PARAM PI = 3.141592
+.PARAM RPSRRP = 1
+.PARAM GPSRRP = {PWR(10,-PSRRP/20)/RPSRRP}
+.PARAM LPSRRP = {RPSRRP/(2*PI*FPSRRP)}
+.PARAM RPSRRN = 1
+.PARAM GPSRRN = {PWR(10,-PSRRN/20)/RPSRRN}
+.PARAM LPSRRN = {RPSRRN/(2*PI*FPSRRN)}
+G1  GNDF 1 VDD GNDF {GPSRRP}
+R1  1 2 {RPSRRP}
+L1  2 GNDF {LPSRRP}
+G2  GNDF 3 VSS GNDF {GPSRRN}
+R2  3 4 {RPSRRN}
+L2  4 GNDF {LPSRRN}
+E1  VO VI VALUE = {V(1,GNDF) + V(3,GNDF)}
+C3  VDD VSS 10P
+.ENDS
+*$
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+.SUBCKT CMRR   VI  VO  GNDF PARAMS: CMRR = 130 FCMRR = 1.6K
+.PARAM PI = 3.141592
+.PARAM RCMRR = 1
+.PARAM GCMRR = {PWR(10,-CMRR/20)/RCMRR}
+.PARAM LCMRR = {RCMRR/(2*PI*FCMRR)}
+G1  GNDF 1 VI GNDF {GCMRR}
+R1  1 2 {RCMRR}
+L1  2 GNDF {LCMRR}
+E1  VI VO 1 GNDF 1
+.ENDS
+*$
+**************************************
+**                                  **
+**                                  ** 
+**                                  **          
+**                                  **
+**************************************
+.SUBCKT ESD_DIODES VIP  VIM  VDD  VSS
++PARAMS: EMCO = 0.01 BRKV = 60 IBRKV = 1M
+D1 VIP VDD IDIODE
+D2 VSS VIP IDIODE
+D3 VIM VDD IDIODE
+D4 VSS VIM IDIODE
+.MODEL IDIODE D(N = {EMCO} BV = {BRKV} IBV = {IBRKV})
+.ENDS
+*$
+**************************************
+**                                  **
+**                                  ** 
+**                                  **          
+**                                  **
+**************************************
+.SUBCKT IBIAS VIP  VIM  VDD  VSS
++ PARAMS: IBIASP = 1e-12 IBIASN = 1e-12
+IBP  VDD  VIP  {IBIASP}
+IBN  VSS  VIM  {IBIASN}
+.ENDS
+*$
+**************************************
+**  				    **
+**         		            ** 
+**      			    **          
+**     		             	    **
+**************************************
+.SUBCKT IQ  VDD VSS
++ PARAMS: IQQ = 1M  IOFF = 1P
+G1 VDD VSS VALUE = {IQQ + IOFF*0}
+.ENDS
+*$
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+.SUBCKT CMR   VDD  VSS  VIP  VIM  VOP VOM  GNDF 
++ PARAMS: VMAX = 0 VMIN = 0
+ECLAMPP  VOP GNDF VALUE = {LIMIT(V(VIP,GNDF),V(VDD,GNDF) - VMAX, V(VSS,GNDF) + VMIN)}
+ECLAMPM  VOM GNDF VALUE = {LIMIT(V(VIM,GNDF),V(VDD,GNDF) - VMAX, V(VSS,GNDF) + VMIN)}
+.ENDS
+*$
+**************************************
+**                                  **
+**                                  ** 
+**                                  **          
+**                                  **
+**************************************
+.SUBCKT GBW_SLEW_SE   VIP  VIM  VO  GNDF 
++ PARAMS: AOL = 100  GBW = 1MEG  SRP = 1MEG  SRN = 1MEG IT = 1M
+.PARAM PI = 3.141592
+.PARAM IP = {IF(SRP <= SRN,IT,IT*(SRP/SRN))}
+.PARAM IN = {IF(SRN <= SRP,-IT,-IT*(SRN/SRP))}
+.PARAM CC = {IF(SRP <= SRN,IT/SRP,IT/SRN)}
+.PARAM FP = {GBW/PWR(10,AOL/20)}
+.PARAM RC = {1/(2*PI*CC*FP)}
+.PARAM GC = {PWR(10,AOL/20)/RC}
+G1          GNDF VO VALUE = {LIMIT(GC*V(VIP,VIM),IP,IN)}
+C1          VO GNDF {CC} 
+GR1          VO GNDF VALUE =  {V(VO,GNDF)/RC}
+.ENDS
+*$
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+.SUBCKT  TF  VI  VO  GNDF
++ PARAMS: A = 1
++ FP1 = 1MEG
+.PARAM DPI = 6.283185307
+E1    1  GNDF   VI  GNDF  {1/A}
+G1    GNDF  2  1  GNDF  1M
+G2    2  GNDF  VALUE = {V(2,GNDF)*1M}
+C1    2  GNDF  {1/(1K*DPI*FP1)}
+E2    VO  GNDF  1  GNDF {A}
+.ENDS
+*$
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+.SUBCKT VCLAMP_W_CLAW  VDD  VSS  VI  VO VIMON  GNDF
++ PARAMS: VMAXIO = 0 VMINIO = 0
+EPCLIP	VDD_CLP 0  VALUE = {IF(0 <= V(VIMON) & V(VIMON) <= 60M,V(VDD,GNDF) - 1.5*V(VIMON) - VMAXIO,
++  IF(60M < V(VIMON) & V(VIMON) <= 100M,V(VDD,GNDF) - 0.1*V(VIMON) - VMAXIO,
++  IF(100M < V(VIMON) & V(VIMON) <= 400M,V(VDD,GNDF) - 0.1*V(VIMON) - VMAXIO,
++  IF(400M < V(VIMON),V(VDD,GNDF),V(VDD,GNDF) - VMAXIO))))}
+ENCLIP	VSS_CLP 0  VALUE = {IF(0 >= V(VIMON) & V(VIMON) >= -60M,V(VSS,GNDF) - 1.5*V(VIMON) + VMINIO,
++  IF(-60M > V(VIMON) & V(VIMON) >= -100M,V(VSS,GNDF) - 0.1*V(VIMON) + VMINIO,
++  IF(-100M > V(VIMON) & V(VIMON) >= -400M,V(VSS,GNDF) - 0.1*V(VIMON) + VMINIO,
++  IF(-400M > V(VIMON),V(VSS,GNDF),V(VSS,GNDF) + VMINIO))))}
+ECLAMP  VO GNDF VALUE = {LIMIT(V(VI,GNDF), V(VDD_CLP), V(VSS_CLP))}
+.ENDS VCLAMP_W_CLAW
+*$
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+.SUBCKT  ZOUT  VI  VO  GNDF
++ PARAMS: RO = 5
+G1    GNDF  VO  VI  GNDF  {1/RO}
+G2    VO  GNDF  VALUE = {V(VO,GNDF)/RO}
+.ENDS
+*$
+**************************************
+**                                  **
+**                                  ** 
+**                                  **          
+**                                  **
+**************************************
+.SUBCKT OUT_CURRENT_CLAMP  IN  OUT  VIMON
++PARAMS: RSER = 1 IMAX = 10M  IMIN = 10M
+HSENS  VIMON 0 VSENS 1
+VSENS  OUTy OUT  0
+GRESP  OUTx OUTy VALUE = {LIMIT(V(OUTx,OUT)/RSER,IMAX,-IMIN)}
+GRESN  IN OUTx VALUE = {-V(IN,OUTx)/RSER}
+.ENDS
+*$
+**************************************
+**  				    **
+**         		            ** 
+**      			    **          
+**     		             	    **
+**************************************
+.SUBCKT ILOAD  VDD VSS VIMON
+G1 VDD 0 VALUE = {IF(V(VIMON) >= 0,V(VIMON),0)}
+G2 0 VSS VALUE = {IF(V(VIMON) < 0,V(VIMON),0)}
+.ENDS
+*$
+**************************************
+**                                  **
+**                                  ** 
+**                                  **          
+**                                  **
+**************************************
+.SUBCKT GND_FLOAT  VDD VSS GNDF 
+EGNDF  GNDF 0 VALUE = {(V(VDD)+V(VSS))*0.5}
+.ENDS
+*$
+

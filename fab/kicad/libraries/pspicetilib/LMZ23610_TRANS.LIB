@@ -1,0 +1,233 @@
+*$
+*  LMZ23610
+*****************************************************************************
+*  (C) Copyright 2012 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: LMZ23610
+* Date: 05SEP2012
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: LMZ23610EVM
+* EVM Users Guide: SNVA460A June 7, 2011
+* Datasheet: SNVS707C May 3, 2011
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+.SUBCKT LMZ23610_TRANS VIN SYNC EN AGND FB SS VOUT 
+X2 SW LSsense GateLs AGND SSWITCH PARAMS: RON=10m ROFF=1e9 VON=1.75 VOFF=1.7
+RSS1 SS 0 100Meg
+XA1 ZeroXssingDetect SSCapDis ZeroXSense 30 NOR3A1
+L1 SW VOUTresr 2.2u
+X3 LSsense 2 GAIN  PARAMS: K=-40
+R6xx 63 EmuRamp 3Meg
+C5x EmuRamp AGND 15p
+XA4 PWM 30 ZeroXssingDetect NOR2A4
+XA2 CLK START OscClk AND2A2
+RsenseHs VIN HSsense 0.5m
+X25 75 FB VoutOvp CompHyst PARAMS: VH=-10m
+RsenseLs LSsense AGND 0.5m
+EB3 GateHs AGND VALUE = {IF(V(PWM) > 1.75 & V(PWMdelay) > 1.75 , 3.5 , 0)}
+XA3 PWMbar ZeroXssingDetect GateLsZero XNORA3
+EB6 PWMCOMP AGND VALUE  {IF((V(EmuRamp) + 0.51) > v(Comp)  , 3.5 , 0)}
+EB5 GateLs AGND VALUE  {IF(V(PWM) < 1.75 & V(PWMdelay) < 1.75 & V(SSCapDis) < 1.75 & V(GateLsZero) < 1.75 , 3.5 , 0)}
+XA10 PWM PWMbar INVERTERA10
+R18 GateLs GateLsDelay 251.8K
+R3 PWM PWMdelay 4.26K
+C4 PWMdelay AGND 1p
+EB2 ILimHS AGND VALUE {IF((V(HSsense) < (V(VIN) - 8m)) & (V(GateHsDelay) > 1.75) & (V(GateHs) > 1.75) , 3.5 , 0)}
+X5 EmuRamp 2 GateLs AGND SSWITCH PARAMS: RON=1 ROFF=1e12 VON=1.75 VOFF=1.7
+D4 LSsense SW _D4_mod 1E5
+.MODEL _D4_mod D RS=0 M=1 IBV=1E-3
+Gm1 AGND Comp REFSS FB 500u
+RESR VOUTresr VOUT 2m
+C6 GateLsZero AGND 1f
+R20 19 START 1.44Meg
+EB1 IlimLs AGND VALUE  {IF((V(LSsense) < -6.5m) & (V(GateLsDelay) > 1.75) & (V(GateLs) > 1.75) , 3.5 , 0)}
+EB4 ZeroXSense AGND VALUE {IF(V(LSsense) > 100u , 3.5 ,0)}
+R11 GateHs GateHsDelay 309.5K
+D11 SW HSsense _D4_mod 1E5
+R19 SW AGND 5Meg
+C10 GateHsDelay AGND 1p
+C13 GateLsDelay AGND 1p
+C14 START AGND 200p
+Cc3 27 AGND 60p
+Rc4 Comp 27 2Meg
+Xbuff1 27 31 GAIN PARAMS: K=1
+R8 Comp 31 10k
+X15 Comp AGND VoutOvp AGND SSWITCH PARAMS: RON=1 ROFF=1G VON=1.75 VOFF=1.7 
+C3 Comp AGND 250p
+XA21 OscClk PWM 66 NOR2A21
+XA22 66 67 PWM NOR2A21
+XA23 ILimHS LSOc PWMCOMP SSCapDis 67 OR4A23
+XA25 START 68 INVERTERA10
+X22 HSsense SW GateHs AGND SSWITCH PARAMS: RON=18m ROFF=1e9 VON=1.75 VOFF=1.7
+VX23 CLK 0 PULSE 0.3 3.5 0 0.5n 0.5n 55.6964n 2.78652u
+VSyncHi 75 AGND DC=0.86V
+X27 VIN 63 GateHs AGND SSWITCH PARAMS: RON=1 ROFF=1e12 VON=1.75 VOFF=1.7 
+I1 VIN 79 DC=50u
+R16 63 AGND 300k
+C1 80 AGND 100n
+I2 VIN 81 DC=50u
+V1 82 AGND DC=0.8V
+EX33 REFSS AGND 79 81 1e5
+D3 81 REFSS _D1_mod 1
+.MODEL _D1_mod D TT=0.1ns VJ=0.6 IBV=1E-3 M=1
+D6 79 82 _D1_mod 1
+D7 79 80 _D1_mod 1
+X35 EN 74 START AGND SSWITCH PARAMS: RON=1 ROFF=1G VON=1.75 VOFF=1.7
+Vref_uvlox 23 AGND DC=4V
+D5 79 ss _D1_mod 1
+V13 V3p5 AGND DC=3.5V
+X37 91 92 LSOc CompareTTL 
+X17 91 AGND 115 AGND SSWITCH PARAMS: RON=1 ROFF=1G VON=1.75 VOFF=1.7
+D1 91 V3p5 _D1_mod 1
+C11 91 AGND 100p
+X21 VIN 23 VinUvlo CompHyst PARAMS: VH=0.2
+I4 V3p5 91 DC=4u
+Vref_enx 99 AGND DC=1.279V
+R9 VIN EN 2Meg
+I3 VIN 74 DC=21u
+V16 101 AGND DC=5V
+XA24 68 0 VinUvlo SSCapDis OR3A24
+D8 74 101 _D1_mod 1
+D9 74 VIN _D1_mod 1
+X45 80 AGND SSCapDis AGND SSWITCH PARAMS: RON=1 ROFF=10G VON=1.75 VOFF=1.7
+X49 99 EN 19 CompareTTL
+C8 74 AGND 10f
+XA30 IlimLs SSCapDis 115 OR2A30
+V27 92 AGND DC=1.75
+R12 SYNC AGND 10k
+.ENDS LMZ23610_TRANS 
+*$
+.SUBCKT SSWITCH 1 2 3 4 PARAMS: RON=1 ROFF=1MEG VON=1 VOFF=0
+*Connections    + - NC+ NC-
+*Parameters: Ron On Resistance in Ohms, Roff Off Resistance in Ohms
+* VON On Current in Amps, VOFF Off Current in Amps
+* IF V(3,4) > VON THEN RSwitch=RON, IF V(3,4) < VOFF THEN RSwitch=ROFF, ELSE
+* RSwitch will smoothly transistion between the on and off states
+SA1 1 2 3 4 SMOOTH
+.MODEL SMOOTH VSWITCH RON={RON} ROFF={ROFF} VON={VON} VOFF={VOFF}
+.ENDS SSWITCH
+*$
+.SUBCKT GAIN  1  2 PARAMS:K=-40
+*Connections: In Out
+*Parameters: K Gain
+E1 2 0 1 0 {K}
+.ENDS GAIN
+*$
+.SUBCKT CompHyst INM INP OUT PARAMS: VH=-10m
+VTHRESH THRESH 0 1.5
+VDD1 DDV 0 3.5
+VSS SSV 0 0.3
+EIN INP1 INM1 INP INM 1 
+EHYS INP1 INP2 VALUE { IF( V(1) > V(THRESH),-{VH},0) }
+EOUT OUT 0 VALUE { IF( V(INP2)>V(INM1), V(DDV) ,V(SSV)) }
+R1 OUT 1 1
+C1 1 0 5n
+RINP1 INP1 0 1K
+.ENDS CompHyst
+*$
+.SUBCKT CompareTTL LO HI Out
+*FAMILY = ANALOG
+*FAMILY = ANALOG
+*FAMILY = ANALOG
+EB1 Out 0 VALUE {IF(V(HI) > v(LO) , 3.5 , 0.1)}
+.ENDS CompareTTL
+*$
+.SUBCKT NOR3A1 1 2 3 4 
+* *** VSECTOL NORMALIZATION ***
+EB2 6 0 4 0 100
+EB1 5 0  VALUE {IF(V(1) > 1.5 | V(2) > 1.5 | V(3) > 1.5, 0.3, 3.5)}
+R1 5 4 100
+C1 4 0 10P 
+.ENDS NOR3A1
+*$
+.SUBCKT NOR2A4 1 2  4 
+* *** VSECTOL NORMALIZATION ***
+EB2 6 0 4 0 100
+EB1 5 0  VALUE {IF(V(1) > 1.5 | V(2) > 1.5, 0.3, 3.5)}
+R1 5 4 100
+C1 4 0 10P 
+.ENDS NOR2A4
+*$
+.SUBCKT AND2A2 1 2 4 
+* *** VSECTOL NORMALIZATION ***
+EB2 6 0 4 0 100
+EB1 5 0  VALUE {IF(V(1) > 1.5 & V(2) > 1.5, 3.5, 0.3)}
+R1 5 4 100
+C1 4 0 10P 
+.ENDS AND2A2
+*$
+.SUBCKT XNORA3 1 2 4 
+* *** VSECTOL NORMALIZATION ***
+EB2 6 0 4 0 100
+EB1 5 0  VALUE {IF((V(1) > 1.5 & V(2) > 1.5) | (V(1) < 1.5 & V(2) < 1.5),3.5,0.3)}
+R1 5 4 100
+C1 4 0 10P 
+.ENDS XNORA3
+*$
+.SUBCKT INVERTERA10 1 2 
+*INPUT_LOAD NOT IMPLEMENTED
+EB1 3 0 VALUE {IF( V(1) > 1.5, 0.3, 3.5)}
+R1 3 2 100
+C1 2 0 10P 
+.ENDS INVERTERA10
+*$
+.SUBCKT NOR2A21 1 2  4 
+* *** VSECTOL NORMALIZATION ***
+EB2 6 0 4 0 100
+EB1 5 0  VALUE {IF(V(1) > 1.5 | V(2) > 1.5, 0.3, 3.5)}
+R1 5 4 100
+C1 4 0 10P 
+.ENDS NOR2A21
+*$
+.SUBCKT OR4A23 1 2 3 4 5
+* *** VSECTOL NORMALIZATION ***
+EB2 7 0 4 0 100
+EB1 6 0  VALUE {IF(V(1) > 1.5 | V(2) > 1.5 | V(3) > 1.5 | V(4) > 1.5, 3.5, 0.3)}
+R1 6 5 100
+C1 5 0 10P 
+.ENDS OR4A23
+*$
+.SUBCKT OR3A24 1 2 3 4 
+* *** VSECTOL NORMALIZATION ***
+EB2 6 0 4 0 100
+EB1 5 0  VALUE {IF(V(1) > 1.5 | V(2) > 1.5 | V(3) > 1.5, 3.5, 0.3)}
+R1 5 4 100
+C1 4 0 10P 
+.ENDS OR3A24
+*$
+.SUBCKT OR2A30 1 2 4 
+* *** VSECTOL NORMALIZATION ***
+EB2 6 0 4 0 100
+EB1 5 0  VALUE {IF(V(1) > 1.5 | V(2) > 1.5, 3.5, 0.3)}
+R1 5 4 100
+C1 4 0 10P 
+.ENDS OR2A30
+*$
+.SUBCKT CESR IN OUT
++ PARAMs:  C=100u ESR=0.01 X=1 IC=0
+C	1 OUT  {C*X} IC={IC}
+RESR	IN 1 {ESR/X}
+.ENDS CESR
+*$
+.MODEL D_D1 D( IS=1e-15 TT=10p Rs=0.05 N=.1  )
+*$

@@ -1,0 +1,525 @@
+* OPA626 PSpice simulation model
+*****************************************************************************
+* (C) Copyright 2016 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: OPA626
+* Date: 06/08/16
+* Model Type: All In One
+* Simulators: TINA-TI 9.3.100.244 SF-TI, and Penzar TopSPICE 8, version 8.39
+* EVM Order Number: N/A 
+* EVM Users Guide: N/A
+* Datasheet: SBOS690
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version: 1.0
+*
+*****************************************************************************
+* Notes: 
+* 
+*****************************************************************************
+*$
+.SUBCKT OPA626 INP INN VCC VEE OUT
+VZZ           VEE MODE 0.0 
+X_U41         EN IN_COMP N278677 GNDF COMPARATOR 
+C_C4         INN INP  0.775p  TC=0,0 
+E_E2         N61051 0 VEE 0 1
+X_U4         VCC VEE INPUT_VCLAMP OUTPUT_CLAMP VIMON GNDF VOUTVSIOUT 
+E_E5         INPUTP_CMRR INPUTP_ICMR OUT_CMRR GNDF 0.5
+X_U39         VCC VEE INPUT_OUTN INPUTN_CMRR GNDF PSRR 
+X_U35         VICM INP INN GNDF VICM 
+R_R10         GNDF EN  10k TC=0,0 
+X_U37         INPUT_OUTP INPUT_VOS vnse 
+X_U38         INPUT_VOS INPUT_OUTN femt 
+X_U54         GNDF INPUTN_ICMR VICM VCC VEE MODE_EN GNDF IIBN 
+X_U59         INPUT_TF INPUT_VCLAMP VCC VEE EN MODE_EN GNDF TF_HI 
+X_U46         OUTPUT_ZOUT OUT VIMON GNDF AMETER 
+V_V4         N278677 GNDF 0.69Vdc
+R_R13         GNDF INPUT_VCLAMP  1 TC=0,0 
+X_U48         INPUTP_GBW INPUTN_GBW INPUT_TF EN MODE_EN GNDF GBW_SLEW_L 
+G_G1         OUT_CMRR GNDF VICM GNDF 7e-7
+R_R6         OUT_CNTRL N278435  100 TC=0,0 
+X_U49         VCC VEE EN VIMON MODE_EN GNDF IQ_MODE 
+R_R1         N61125 N61045  1e6 TC=0,0 
+D_D1         IN_COMP N278435 Dbreak 
+X_U55         INPUTP_ICMR GNDF VICM VCC VEE MODE_EN GNDF IIBP 
+R_R4         INN INPUT_OUTN  1 TC=0,0 
+R_R2         N61051 N61125  1e6 TC=0,0 
+E_U5_E7         U5_N03233 GNDF INPUT_ZOUT GNDF 1e3
+R_U5_R12         U5_N109725 U5_N110857  1e6 TC=0,0 
+E_U5_E8         U5_FILT2_OUT GNDF U5_LPF2_OUT GNDF 1
+R_U5_R4         GNDF U5_HPF2  1k TC=0,0 
+R_U5_R10         GNDF U5_DC_PATH_2  1 TC=0,0 
+E_U5_E9         U5_N109725 GNDF U5_DC_PATH_1 GNDF 1
+E_U5_E6         U5_EZO_OUT GNDF U5_I_SRC_OUT GNDF 1
+E_U5_E1         U5_DC_PATH_1 GNDF U5_N03233 GNDF 4e3
+R_U5_R9         GNDF OUTPUT_ZOUT  4.4e5 TC=0,0 
+E_U5_E5         U5_N19285 GNDF U5_HPF2 GNDF 1
+E_U5_E2         U5_N39011 GNDF U5_HPF1 GNDF 1
+C_U5_C5         GNDF U5_N110857  400  TC=0,0 
+R_U5_R6         U5_LPF2_OUT U5_N19285  1k TC=0,0 
+E_U5_E3         U5_FILT1_OUT GNDF U5_LPF1 GNDF 1
+R_U5_R5         GNDF U5_I_SRC_OUT  1 TC=0,0 
+G_U5_G3         GNDF U5_I_SRC_OUT U5_DC_PATH_2 GNDF 1
+E_U5_E4         U5_N02139 GNDF U5_N03233 GNDF 350
+C_U5_C1         U5_DC_PATH_1 U5_HPF1  11.5n  TC=0,0 
+R_U5_R11         U5_VIMON GNDF  1k TC=0,0 
+G_U5_G1         GNDF U5_I_SRC_OUT U5_FILT2_OUT GNDF 1
+R_U5_R8         U5_EZO_OUT OUTPUT_ZOUT  4.4e6 TC=0,0 
+C_U5_C2         GNDF U5_LPF1  43p  TC=0,0 
+C_U5_C3         U5_N02139 U5_HPF2  6.5p  TC=0,0 
+G_U5_G2         GNDF U5_I_SRC_OUT U5_FILT1_OUT GNDF 1
+R_U5_R1         GNDF U5_HPF1  1e3 TC=0,0 
+G_U5_G4         GNDF U5_I_SRC_OUT U5_N110857 GNDF 1
+R_U5_R2         U5_N39011 U5_LPF1  1k TC=0,0 
+C_U5_C4         GNDF U5_LPF2_OUT  0.4p  TC=0,0 
+X_U5_U1         U5_DC_PATH_2 U5_DC_PATH_1 U5_VIMON GNDF GVSIOUT 
+*X_U60         INPUTP_GBW INPUTN_GBW INPUT_TF EN MODE_EN GNDF GBW_SLEW_H_SB 
+X_U60         INPUTP_GBW INPUTN_GBW INPUT_TF EN MODE_EN GNDF GBW_SLEW_H
+X_U53         INPUTP_GBW INPUTN_GBW VCC VEE INPUTP_ICMR INPUTN_ICMR EN GNDF ICMR 
+X_U50         MODE MODE_EN VCC VEE GNDF MODE_CNTRL 
+R_R9         OUT_CNTRL IN_COMP  1k TC=0,0 
+C_C1         0 N61125  1m  TC=0,0 
+E_E8         INPUT_ZOUT GNDF OUTPUT_CLAMP OUTPUT_ZOUT 1
+C_C6         GNDF IN_COMP  18n  TC=0,0 
+R_R3         INP INPUT_OUTP  1 TC=0,0 
+X_U57         INPUT_TF INPUT_VCLAMP VCC VEE EN MODE_EN GNDF TF_LOW 
+X_U51         INPUTP_CMRR INPUT_VOS VICM VCC VEE MODE_EN GNDF VOS_MODE 
+E_E3         GNDF 0 N61125 0 1
+R_R5         N114739 GNDF  1 TC=0,0 
+C_C2         INN GNDF  0.45p  TC=0,0 
+E_E1         N61045 0 VCC 0 1
+L_L1         OUT_CMRR N114739  8uH  
+R_R12         GNDF INPUT_TF  1 TC=0,0 
+C_C3         GNDF INP  0.45p  TC=0,0 
+X_U52         OUT_CNTRL VICM VCC VEE GNDF dev_dis 
+E_E4         INPUTN_CMRR INPUTN_ICMR OUT_CMRR GNDF -0.5
+.MODEL Dbreak D 
+.ENDS
+*$
+************
+************
+.SUBCKT FEMT 1 2 
+.PARAM NLFF = 500 
+.PARAM FLWF = 1000 
+.PARAM NVRF = 250
+* BEGIN SETUP OF NOISE GEN - FEMPTOAMPS/RT-HZ
+* INPUT THREE VARIABLES
+* SET UP INSE 1/F
+********************
+* FA/RHZ AT 1/F FREQ
+* NLFF
+********************
+* FREQ FOR 1/F VAL
+* FLWF
+********************
+* SET UP INSE FB
+* FA/RHZ FLATBAND
+* NVRF
+********************
+* END USER INPUT
+* START CALC VALS
+.PARAM GLFF={PWR(FLWF,0.25)*NLFF/1164}
+.PARAM RNVF={1.184*PWR(NVRF,2)}
+.MODEL DVNF D KF={PWR(FLWF,0.5)/1E11} IS=1.0E-16
+* END CALC VALS
+I1 0 7 10E-3
+I2 0 8 10E-3
+D1 7 0 DVNF
+D2 8 0 DVNF
+E1 3 6 7 8 {GLFF}
+R1 3 0 1E9
+R2 3 0 1E9
+R3 3 6 1E9
+E2 6 4 5 0 10
+R4 5 0 {RNVF}
+R5 5 0 {RNVF}
+R6 3 4 1E9
+R7 4 0 1E9
+G1 1 2 3 4 1E-6
+C1 1 0 1E-15
+C2 2 0 1E-15
+C3 1 2 1E-15
+.ends
+*$
+***********
+***********
+.SUBCKT VNSE 1 2 
+.PARAM NLF = 2.1 
+.PARAM FLW = 1000  
+.PARAM NVR = 2.5
+* BEGIN SETUP OF NOISE GEN - NANOVOLT/RT-HZ
+* INPUT THREE VARIABLES
+* SET UP VNSE 1/F
+********************
+* NV/RHZ AT 1/F FREQ
+* NLF
+********************
+* FREQ FOR 1/F VAL
+* FLW
+********************
+* SET UP VNSE FB
+* NV/RHZ FLATBAND
+* NVR
+********************
+* END USER INPUT
+* START CALC VALS
+.PARAM GLF={PWR(FLW,0.25)*NLF/1164}
+.PARAM RNV={1.184*PWR(NVR,2)}
+.MODEL DVN D KF={PWR(FLW,0.5)/1E11} IS=1.0E-16
+* END CALC VALS
+I1 0 7 10E-3
+I2 0 8 10E-3
+D1 7 0 DVN
+D2 8 0 DVN
+E1 3 6 7 8 {GLF}
+R1 3 0 1E9
+R2 3 0 1E9
+R3 3 6 1E9
+E2 6 4 5 0 10
+R4 5 0 {RNV}
+R5 5 0 {RNV}
+R6 3 4 1E9
+R7 4 0 1E9
+E3 1 2 3 4 1
+C1 1 0 1E-15
+C2 2 0 1E-15
+C3 1 2 1E-15
+.ends
+*$
+***********
+***********
+.SUBCKT COMPARATOR OUT IN REF GNDF
+.PARAM VOUT_MAX = 1
+.PARAM VOUT_MIN = 0
+.PARAM GAIN = 1e4
+EOUT OUT GNDF VALUE = {MAX(MIN(GAIN*V(IN,REF),VOUT_MAX),VOUT_MIN)}
+.ENDS
+*$
+***********
+***********
+.SUBCKT VOUTvsIOUT  VCC  VEE  VI  VO VIMON  GNDF
+.PARAM VCCmax = 2.75
+.PARAM VEEmax = -2.75
+.PARAM m1p = -8.75
+.PARAM m2p = -39.474
+.PARAM m3p = -375
+.PARAM b1p = 2.7
+.PARAM b2p = 6.79
+.PARAM b3p = 56.6
+**
+.PARAM m1n = -3.25
+.PARAM m2n = -37.5
+.PARAM m3n = -166.67
+.PARAM b1n = -2.7
+.PARAM b2n = -7.05
+.PARAM b3n = -27
+**
+.PARAM b1pp = {b1p - VCCmax}
+.PARAM b2pp = {b2p - VCCmax}
+.PARAM b3pp = {b3p - VCCmax}
+.PARAM b1nn = {b1n - VEEmax}
+.PARAM b2nn = {b2n - VEEmax}
+.PARAM b3nn = {b3n - VEEmax}
+**
+EVCC NVCC 0 VALUE = {V(VCC,GNDF)}
+EVEE NVEE 0 VALUE = {V(VEE,GNDF)}
+**
+EV1P NV1P 0 VALUE = {(V(NVCC)+b1pp) + V(VIMON,GNDF)*m1p}
+EV2P NV2P 0 VALUE = {(V(NVCC)+b2pp) + V(VIMON,GNDF)*m2p}
+EV3P NV3P 0 VALUE = {(V(NVCC)+b3pp) + V(VIMON,GNDF)*m3p}
+**
+EV1N NV1N 0 VALUE = {(V(NVEE)+b1nn) + V(VIMON,GNDF)*m1n}
+EV2N NV2N 0 VALUE = {(V(NVEE)+b2nn) + V(VIMON,GNDF)*m2n}
+EV3N NV3N 0 VALUE = {(V(NVEE)+b3nn) + V(VIMON,GNDF)*m3n}
+**
+ECLPP NCLPP GNDF VALUE = {MIN(MIN(V(NV1P),V(NV2P)),V(NV3P))}
+ECLPN NCLPN GNDF VALUE = {MAX(MAX(V(NV1N),V(NV2N)),V(NV3N))}
+**
+ECLAMP VO GNDF VALUE = {MAX(MIN(V(VI,GNDF),V(NCLPP,GNDF)),V(NCLPN,GNDF))}
+**
+**
+.ENDS
+*$
+*********
+*********
+.SUBCKT PSRR  VDD  VSS  VI  VO  GNDF 
+.PARAM PSRR = 130 
+.PARAM fpsrr = 1
+.PARAM PI = 3.141592
+.PARAM RPSRR = 1
+.PARAM GPSRR = {PWR(10,-PSRR/20)/RPSRR}
+.PARAM LPSRR = {RPSRR/(2*PI*fpsrr)}
+G1  GNDF 1 VDD VSS {GPSRR}
+R1  1 2 {RPSRR}
+L1  2 GNDF {LPSRR} 
+E1  VO VI 1 GNDF 1
+C2  VDD VSS 10P 
+.ENDS
+*$
+**********
+**********
+.SUBCKT VICM OUT INP INN GNDF
+EOUT OUT GNDF VALUE = {0.5*(V(INP,GNDF) + V(INN,GNDF))}
+.ENDS
+*$
+**********
+**********
+.SUBCKT IIBN OUT IN INN VCC VEE MODE GNDF
+*** OUT and IN are for IIB current flow **
+*** INN is for voltage monitoring of the amp inverting 
+***
+**** Units for I are in nA ****
+.PARAM SCALE = 1n
+.PARAM IIB_HI = 1990
+.PARAM IIB_LOW = 78.5
+.PARAM MAX_IIB_HI = 5000
+.PARAM MAX_IIB_LOW = 500
+.PARAM DRIFT_HI = 15
+.PARAM DRIFT_LOW = 0.9
+**
+**
+*EDRIFT NDRIFT 0 VALUE = {(1-V(MODE,GNDF))*DRIFT_LOW + V(MODE,GNDF)*DRIFT_HI)*(TEMP - 27)}
+EIIB_HI NIIB_HI 0 VALUE = {MAX(MIN((IIB_HI + DRIFT_HI*(TEMP - 27)),MAX_IIB_HI),-MAX_IIB_HI)}
+EIIB_LOW NIIB_LOW 0 VALUE = {MAX(MIN((IIB_LOW + DRIFT_LOW*(TEMP - 27)),MAX_IIB_LOW),-MAX_IIB_LOW)}
+****
+GOUT OUT IN VALUE = {SCALE*((1-V(MODE,GNDF))*V(NIIB_LOW) + V(MODE,GNDF)*V(NIIB_HI))}
+**
+.ENDS
+*$
+**********
+**********
+.SUBCKT TF_HI  VI  VO  VCC VEE SHDN MODE GNDF
+.PARAM fp_HI = 200e6 
+.PARAM fp2 = 10G 
+.PARAM Gm = 1M
+.PARAM Ro = {1/Gm}
+.PARAM PI = 3.141592
+**
+Gp1  GNDF Vp1 VI GNDF {Gm}
+Rp1  Vp1 GNDF {Ro}
+Cp1  Vp1 GNDF {1/(2*PI*Ro*fp_HI)} IC = 0
+**
+Gp2  GNDF Vp2 Vp1 GNDF {Gm}
+Rp2  Vp2 GNDF {Ro}
+Cp2  Vp2 GNDF {1/(2*PI*Ro*fp2)} IC = 0
+**
+GOUT GNDF VO VALUE = {V(MODE,GNDF)*V(Vp2,GNDF)}
+**
+.ENDS
+*$
+************
+************
+.SUBCKT AMETER  VI  VO VIMON GNDF
+.PARAM GAIN = 1
+VSENSE VI VO DC = 0
+EMETER VIMON GNDF VALUE = {I(VSENSE)*GAIN}
+.ENDS
+*$
+************
+************
+.SUBCKT GBW_SLEW_L  VIP  VIM  VO SHDN MODE GNDF 
+.PARAM Aol = 100  
+.PARAM GBW = 1e6  
+.PARAM SRP = 10e6  
+.PARAM SRN = 10e6 
+.PARAM IT = 0.001
+.PARAM PI = 3.141592
+.PARAM IP = {IT*MAX(1,SRP/SRN)}
+.PARAM IN = {IT*MIN(-1,-SRN/SRP)}
+.PARAM CC = {IT*MAX(1/SRP,1/SRN)}
+.PARAM FP = {GBW/PWR(10,AOL/20)}
+.PARAM RC = {1/(2*PI*CC*FP)}
+.PARAM GC = {PWR(10,AOL/20)/RC}
+* THIS SUBCKT MUST HAVE AN EXTERNAL LOAD RESISTOR = 1
+EMS NMS 0 VALUE = {V(SHDN,GNDF)*(1-V(MODE,GNDF))}
+G1p GNDF OUTG1p VALUE = {MAX(MIN(GC*V(NMS)*V(VIP,VIM),IP),IN)}
+G1n OUTG1n GNDF VALUE = {MAX(MIN(GC*V(NMS)*V(VIP,VIM),IP),IN)}
+G1OUT GNDF VO VALUE = {V(SHDN,GNDF)*V(OUTG1p,OUTG1n)}
+RG1p OUTG1p GNDF {0.5*RC}
+Cg1dp OUTG1p GNDF {2*CC} IC=0
+RG1n OUTG1n GNDF {0.5*RC}
+Cg1dn OUTG1n GNDF {2*CC} IC=0
+*ROUT VO GNDF 1
+.ENDS
+*$
+***********
+***********
+.SUBCKT IQ_MODE VCC VEE SHDN VIMON MODE GNDF
+.PARAM IQ_HI = 0.002
+.PARAM IQ_LOW = 0.00027
+* Assumes: V(SHDN,GNDF) = 1 when device is enabled
+*          V(SHDN,GNDF) = 0 when device is disabled
+*  	     V(MODE,GNDF) = 1 when device is in high power mode
+*  	     V(MODE,GNDF) = 0 when device is in low power mode
+GIQ VCC VEE VALUE = {(1 - V(MODE,GNDF))*IQ_LOW + V(MODE,GNDF)*IQ_HI}
+GOUTP VCC GNDF VALUE = {IF(V(VIMON,GNDF) > 0, V(VIMON,GNDF)*V(SHDN,GNDF),0)}
+GOUTN GNDF VEE VALUE = {IF(V(VIMON,GNDF) <= 0, V(VIMON,GNDF)*V(SHDN,GNDF),0)}
+.ENDS
+*$
+***********
+***********
+.SUBCKT IIBP OUT IN INP VCC VEE MODE GNDF
+*** OUT and IN are for IIB current flow **
+*** INP is for voltage monitoring of the amp inverting 
+***
+**** Units for I are in nA ****
+.PARAM SCALE = 1n
+.PARAM IIB_HI = 2010
+.PARAM IIB_LOW = 81.5
+.PARAM MAX_IIB_HI = 5000
+.PARAM MAX_IIB_LOW = 500
+.PARAM DRIFT_HI = 15
+.PARAM DRIFT_LOW = 0.9
+**
+**
+*EDRIFT NDRIFT 0 VALUE = {(1-V(MODE,GNDF))*DRIFT_LOW + V(MODE,GNDF)*DRIFT_HI)*(TEMP - 27)}
+EIIB_HI NIIB_HI 0 VALUE = {MAX(MIN((IIB_HI + DRIFT_HI*(TEMP - 27)),MAX_IIB_HI),-MAX_IIB_HI)}
+EIIB_LOW NIIB_LOW 0 VALUE = {MAX(MIN((IIB_LOW + DRIFT_LOW*(TEMP - 27)),MAX_IIB_LOW),-MAX_IIB_LOW)}
+****
+GOUT OUT IN VALUE = {SCALE*((1-V(MODE,GNDF))*V(NIIB_LOW) + V(MODE,GNDF)*V(NIIB_HI))}
+**
+.ENDS
+*$
+***********
+***********
+.SUBCKT GvsIOUT OUT IN VIMON GNDF
+.PARAM a = 70
+.PARAM b = 2.1e-5
+.PARAM C = 1.0
+*G1 GNDF OUT VALUE = {V(IN,GNDF)*b*exp(a*PWR(ABS(V(VIMON,GNDF)),C))}
+G1 GNDF OUT VALUE = {V(IN,GNDF)*b*exp(a*PWR((V(VIMON,GNDF)),C))}
+.ENDS
+*$
+***********
+***********
+.SUBCKT GBW_SLEW_H  VIP  VIM  VO  SHDN MODE GNDF 
+.PARAM Aol = 140
+.PARAM GBW = 130e6  
+.PARAM SRP = {115e6}  
+.PARAM SRN = {115e6} 
+.PARAM IT = 0.001
+.PARAM PI = 3.141592
+.PARAM IP = {IT*MAX(1,SRP/SRN)}
+.PARAM IN = {IT*MIN(-1,-SRN/SRP)}
+.PARAM CC = {IT*MAX(1/SRP,1/SRN)}
+.PARAM FP = {GBW/PWR(10,AOL/20)}
+.PARAM RC = {1/(2*PI*CC*FP)}
+.PARAM GC = {PWR(10,AOL/20)/RC}
+.PARAM VMAX = 1
+*****
+EMS NMS 0 VALUE = {V(SHDN,GNDF)*V(MODE,GNDF)}
+G1p GNDF OUTG1p VALUE = {MAX(MIN(GC*V(NMS)*V(VIP,VIM),IP),IN)}
+G1n OUTG1n GNDF VALUE = {MAX(MIN(GC*V(NMS)*V(VIP,VIM),IP),IN)}
+*
+G1OUT GNDF VO VALUE = {v(NMS)*V(OUTG1p,OUTG1n)}
+RG1p OUTG1p GNDF {0.5*RC}
+Cg1dp OUTG1p GNDF {2*CC} IC=0
+RG1n OUTG1n GNDF {0.5*RC}
+Cg1dn OUTG1n GNDF {2*CC} IC=0
+*ROUT VO GNDF 1
+.ENDS
+*$
+***********
+***********
+.SUBCKT ICMR   VOP VOM VDD VSS VIP VIM SHDN GNDF 
+.PARAM VMAX = 1.15
+.PARAM VMIN = -0.01
+*ECLAMPP  VOP GNDF VALUE = {LIMIT(V(VIP,GNDF),V(VDD,GNDF) - VMAX, V(VSS,GNDF) + VMIN)}
+*ECLAMPM  VOM GNDF VALUE = {LIMIT(V(VIM,GNDF),V(VDD,GNDF) - VMAX, V(VSS,GNDF) - VMIN)}
+ECM NCM 0 VALUE = {0.5*(V(VIP,GNDF) + V(VIM,GNDF))}
+ED ND 0 VALUE = {V(VIP,VIM)}
+ECLAMPP  VOP GNDF VALUE = {MAX(MIN(V(NCM)+0.5*V(ND),V(VDD,GNDF)-VMAX),V(VSS,GNDF)-VMIN)}
+ECLAMPM  VOM GNDF VALUE = {MAX(MIN(V(NCM)-0.5*V(ND),V(VDD,GNDF)-VMAX),V(VSS,GNDF)-VMIN)}
+.ENDS
+*$
+***********
+***********
+.SUBCKT MODE_CNTRL IN OUT VCC VEE GNDF
+.PARAM VTHR = 0.9
+EOUT OUT GNDF VALUE = {0.5*(1 - SGN(v(IN,VEE) - VTHR))}
+.ENDS
+*$
+***********
+***********
+.SUBCKT TF_LOW  VI  VO  VCC VEE SHDN MODE GNDF
+.PARAM fp_LOW = 2.66e6 
+.PARAM fp2 = 10G 
+.PARAM Gm = 1M
+.PARAM Ro = {1/Gm}
+.PARAM PI = 3.141592
+**
+Gp1  GNDF Vp1 VI GNDF {Gm}
+Rp1  Vp1 GNDF {Ro}
+Cp1  Vp1 GNDF {1/(2*PI*Ro*fp_LOW)} IC = 0
+**
+Gp2  GNDF Vp2 Vp1 GNDF {Gm}
+Rp2  Vp2 GNDF {Ro}
+Cp2  Vp2 GNDF {1/(2*PI*Ro*fp2)} IC = 0
+**
+GOUT GNDF VO VALUE = {(1 - V(MODE,GNDF))*V(Vp2,GNDF)}
+**
+.ENDS
+*$
+***********
+***********
+.SUBCKT VOS_MODE OUT IN VICM VCC VEE MODE GNDF
+*** Units are in uV ***
+.PARAM SCALE = 1e-6
+.PARAM VOS_HI = 35
+.PARAM VOS_LOW = -600
+.PARAM MAX_VOS_HI = 400
+.PARAM MAX_VOS_LOW = 40
+.PARAM DRIFT_HI = 1
+.PARAM DRIFT_LOW = 0.1
+**
+*EDRIFT NDRIFT 0 VALUE = {(1-V(MODE,GNDF))*DRIFT_LOW + V(MODE,GNDF)*DRIFT_HI)*(TEMP - 27)}
+*EVOS NVOS 0 VALUE = {(1-V(MODE,GNDF))*VOS_LOW + V(MODE,GNDF)*VOS_HI}
+EVOS_HI NVOS_HI 0 VALUE = {MAX(MIN((VOS_HI + DRIFT_HI*(TEMP - 27)),MAX_VOS_HI),-MAX_VOS_HI)}
+EVOS_LOW NVOS_LOW 0 VALUE = {MAX(MIN((VOS_LOW + DRIFT_LOW*(TEMP - 27)),MAX_VOS_LOW),-MAX_VOS_LOW)}
+**
+EVOS OUT IN VALUE = {SCALE*((1-V(MODE,GNDF))*V(NVOS_LOW) + V(MODE,GNDF)*V(NVOS_HI))}
+.ENDS
+*$
+***********
+***********
+.SUBCKT dev_dis OUT_CNTRL IN VCC VEE GNDF
+* Shutdown pin bias current is modeled for VIH & VIL
+* Shutdown threshold is actually VMID
+.PARAM VSmax = 6
+.PARAM VSmin = 2.5
+.PARAM VINmin = 0
+.PARAM VINmax = 1.5
+.PARAM VD = 0.3
+*
+EIN1 NIN1 0 VALUE = {V(VCC,IN)}
+EIN2 NIN2 0 VALUE = {V(IN,VEE)}
+EVCC NVCC 0 VALUE = {V(VCC,VEE)}
+*
+* Set over & undervoltage flags for VCC-VEE
+EN1 N1 GNDF VALUE = {0.5*(1 + SGN(VSmax - V(NVCC)))}
+EN2 N2 GNDF VALUE = {0.5*(1 + SGN(V(NVCC) - VSmin))}
+** Set over & undervoltage flags for IN pin
+EN3 N3 GNDF VALUE = {0.5*(1 + SGN(V(NIN1) + VD))}
+EN4 N4 GNDF VALUE = {0.5*(1 + SGN(V(NIN2) + VD))}
+EOUT OUT_CNTRL GNDF VALUE = {V(N1,GNDF)*V(N2,GNDF)*V(N3,GNDF)*V(N4,GNDF)}
+*
+*
+.ENDS
+***********
+***********
+*$
+

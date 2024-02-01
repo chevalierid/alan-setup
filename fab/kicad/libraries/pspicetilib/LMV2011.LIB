@@ -1,0 +1,218 @@
+*$ 
+* LMV2011
+*****************************************************************************
+* (C) Copyright 2022 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Online Design Tools, Texas Instruments Inc.
+* Part: LMV2011
+* Date: 20JUL2022
+* EVM Order Number: NA
+* EVM Users Guide:  NA
+* Datasheet: SNOSA32C -AUGUST 2003-REVISED MARCH 2013
+* 
+* Model Version: Final 1.1
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.1
+* 1. Updated PSpice Symbol.
+* 2. Added .ENDS name as LMV2011.
+*
+* Final 1.0
+* Release to Web.
+* 
+*****************************************************************************
+* Model Usage Notes:
+* 1. Model file is updated with latest header.
+*****************************************************************************
+* PINOUT IS FOR SOT23
+* PINOUT ORDER +IN -IN +V -V OUT
+* PINOUT ORDER  3   4   5  2  1
+.SUBCKT LMV2011 3 4 5 2 1
+*****************************************************************************
+* BEGIN NOTES
+* IF YOU ARE DOING TIME DOMAIN ANALYSIS AND ARE
+* NOT INTERESTED IN THE EFFECTS OF THE CHOPPER
+* THEN COMMENT OUT THE NEXT FOUR LINES AS SHOWN
+* IMMEDIATELY BELOW FOR FASTER EXECUTION
+* NOTE ALSO THAT WHEN THESE GENERATORS ARE TURNED ON
+* THE MODEL SHOULD BE ALLOWED TO RUN AND SETTLE FOR
+* AT LEAST 40 MICROSECONDS BEFORE ANY DATA IS TAKEN
+* BEGIN FOUR CHOPPER TIME DOMAIN NOISE LINES
+V123 69 0 0 PULSE -10E-6 10E-6 0 18E-6 18E-6 2E-6 40E-6
+V124 70 0 0 PULSE -150E-3 150E-3 0 1E-6 1E-6 18E-6 20E-6
+V125 71 0 0 PULSE -150E-3 150E-3 10E-6 1E-6 1E-6 18E-6 20E-6
+I126 4 28 0 SIN 0 300E-12 25E3
+* END FOUR CHOPPER TIME DOMAIN NOISE LINES
+* BEGIN EXAMPLE AS COMMENTED
+*V123 69 0 0 PULSE -10E-6 10E-6 0 18E-6 18E-6 2E-6 40E-6
+*V124 70 0 0 PULSE -150E-3 150E-3 0 1E-6 1E-6 18E-6 20E-6
+*V125 71 0 0 PULSE -150E-3 150E-3 10E-6 1E-6 1E-6 18E-6 20E-6
+*I126 4 28 0 SIN 0 300E-12 25E3
+* END EXAMPLE AS COMMENTED
+* END NOTES
+Q23 6 7 8 QLN
+R227 9 10 1
+R228 11 10 1
+R229 7 12 1E3
+R230 13 14 1E3
+R231 15 5 15
+R232 2 16 15
+R234 17 18 150
+R235 19 20 15
+R236 8 21 15
+D31 22 5 DD
+D32 2 22 DD
+D33 23 0 DIN
+D34 24 0 DIN
+I32 0 23 0.1E-3
+I33 0 24 0.1E-3
+E73 8 0 2 0 1
+E74 20 0 5 0 1
+D35 25 0 DVN
+D36 26 0 DVN
+I34 0 25 0.1E-3
+I35 0 26 0.1E-3
+E75 27 4 25 26 5.7E-6
+G25 28 4 23 24 5E-7
+R237 2 5 31.3E3
+E76 29 0 20 0 1
+E77 30 0 8 0 1
+E78 31 0 32 0 1
+R239 29 33 1E4
+R240 30 34 1E5
+R241 31 35 1E5
+R242 0 33 1
+R243 0 34 10
+R244 0 35 10
+E79 36 37 35 0 0.00155
+R245 38 32 1E3
+R246 32 39 1E3
+C50 29 33 0.2E-12
+C51 30 34 0.2E-12
+C52 31 35 50N
+E80 40 36 34 0 -0.013
+E81 28 40 33 0 0.013
+E82 41 8 20 8 0.5
+D37 17 20 DD
+D38 8 17 DD
+M63 42 43 16 16 NOUT L=3U W=450U
+M64 44 45 15 15 POUT L=3U W=170U
+M65 46 46 19 19 POUT L=3U W=170U
+M66 47 48 9 9 PIN L=3U W=150U
+M67 49 50 11 11 PIN L=3U W=150U
+M68 51 51 21 21 NOUT L=3U W=450U
+R247 52 45 100
+R248 53 43 100
+G26 17 41 54 41 0.2E-3
+R249 41 17 8E6
+C53 18 22 35E-12
+R250 8 47 2E3
+R251 8 49 2E3
+C54 47 49 4.8E-12
+C55 28 0 6E-12
+C56 27 0 6E-12
+C57 22 0 0.5E-12
+D39 43 6 DD
+D40 55 45 DD
+Q24 55 14 20 QLP
+V99 28 56 7E-6
+M69 57 58 20 20 PIN L=6U W=500U
+E83 39 0 28 0 1
+E84 38 0 4 0 1
+M70 58 58 20 20 PIN L=6U W=500U
+V100 57 10 1
+R252 22 44 70
+R253 42 22 25
+J9 59 28 59 JNC
+J10 59 27 59 JNC
+J11 27 60 27 JNC
+J12 28 60 28 JNC
+C58 28 61 9E-12
+E85 62 41 49 47 1
+R254 62 54 1E4
+C59 54 41 1.8E-12
+G27 63 41 17 41 -1E-3
+G28 41 64 17 41 1E-3
+G29 41 65 51 8 1E-3
+G30 66 41 20 46 1E-3
+D41 66 63 DD
+D42 64 65 DD
+R255 63 66 100E6
+R256 65 64 100E6
+R257 66 20 1E3
+R258 8 65 1E3
+E86 20 52 20 66 1
+E87 53 8 65 8 1
+R259 64 41 1E6
+R260 65 41 1E6
+R261 41 66 1E6
+R262 41 63 1E6
+R263 40 28 1E9
+R264 36 40 1E9
+R265 37 36 1E9
+R266 4 27 1E9
+R267 41 54 1E9
+R268 52 20 1E9
+R269 8 53 1E9
+R270 32 0 1E9
+I37 5 2 580E-6
+L4 22 1 4E-9
+R280 22 1 400
+V107 20 59 0.9
+V108 60 8 -0.2
+R284 46 20 1E6
+R285 8 51 1E6
+R286 16 43 1E6
+R287 15 45 1E6
+R289 61 27 100
+R291 50 27 36E3
+R292 48 56 36E3
+E98 20 13 5 15 3
+E99 12 8 16 2 3
+I49 27 0 120E-12
+I51 28 0 120E-12
+I57 46 51 220E-6
+I58 58 8 360E-6
+C60 28 67 0.01E-12
+C61 4 68 0.01E-12
+R313 37 3 1E9
+R314 0 67 1E9
+R315 0 68 1E9
+E103 3 37 72 0 1
+R317 0 69 1E9
+R318 72 69 10
+C62 72 0 200E-9
+R319 67 70 10
+R320 68 71 10
+C63 67 0 20E-9
+C64 68 0 20E-9
+R323 41 22 100E3
+R324 70 0 1E9
+R325 71 0 1E9
+.MODEL DVN D KF=2E-11 IS=1E-16
+.MODEL DD D
+.MODEL DIN D
+.MODEL QLN NPN
+.MODEL QLP PNP
+.MODEL JNC NJF
+.MODEL POUT PMOS KP=200U VTO=-0.7
+.MODEL NOUT NMOS KP=200U VTO=0.7
+.MODEL PIN PMOS KP=200U VTO=-0.7
+.MODEL NIN NMOS KP=200U VTO=0.7
+.ENDS LMV2011

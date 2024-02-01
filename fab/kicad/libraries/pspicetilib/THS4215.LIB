@@ -1,0 +1,187 @@
+* THS4215
+*****************************************************************************
+* (C) Copyright 2012 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: THS4215
+* Date: 7/16/2012
+* Model Type: All In One
+* Simulator: Pspice
+* Simulator Version: Pspice 16.0.0.p001
+* EVM Order Number: N/A
+* EVM Users Guide: N/A
+* Datasheet: SLOS400E –SEPTEMBER 2002–REVISED SEPTEMBER 2009
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 : Release to Web
+*
+*****************************************************************************
+* Notes:
+*****************************************************************************
+.subckt THS4215 inp inn out vcc vee pd ref
+* The Model Editor is a PSpice product.
+RB1     vcc ref 1G
+RB2     ref 0   1G
+gpdp    inp 0 VALUE = {V(inp)*IF(V(ref) <= 0,
++ IF(V(pd) >= V(ref) + 1.8,1N,1K),
++ IF(V(pd) > V(ref) - 1.5,1N,1K))}
+gpdn    inn 0 VALUE = {V(inn)*IF(V(ref) <= 0,
++ IF(V(pd) >= V(ref) + 1.8,1N,1K),
++ IF(V(pd) > V(ref) - 1.5,1N,1K))}
+.MODEL pnp_bc2 PNP
++ IS=10.000E-15
++ BF=112.33
++ VAF=100
++ IKF=10.025E-3
++ ISE=14.614E-15
++ NE=1.3804
++ VAR=100
++ IKR=10.000E-3
++ NK=.78839
++ RE=1
++ RB=30
++ RC=60
++ CJE=40.000E-15
++ VJE=.65
++ MJE=.23
++ CJC=50.000E-15
++ VJC=.95
++ MJC=.23
++ TF=44.136E-12
++ XTF=7.3687
++ VTF=15.631
++ ITF=.49092
++ TR=10.000E-9
+* The Model Editor is a PSpice product.
+.MODEL npn_bc2 NPN
++ IS=10.000E-18
++ BF=227.40
++ VAF=100
++ IKF=10.010E-3
++ ISE=128.92E-18
++ NE=1.5434
++ VAR=100
++ IKR=10.000E-3
++ NK=.44803
++ RE=1
++ RB=30
++ RC=60
++ CJE=30.000E-15
++ VJE=.85
++ MJE=.13
++ CJC=40.000E-15
++ MJC=.53
++ TF=30.331E-12
++ XTF=145.11
++ VTF=71.634
++ ITF=3.3583
++ TR=10.000E-9
++ KF=25e-17
++ AF=0.28
+.MODEL D_break D
++ RS=1.0000E-1
++ CJO=1.0000E-13
++ IS=100e-15
+
+* source THS4211
+*R_R201    VEE VEE1 60
+*C_C201    VEE VEE1 2p
+*C_C202    VCC VCC1 2p
+*R_R202    VCC VCC1 60
+R_R101    N1 0 5k
+C_C101    N1 0 30p
+E_E105    inp1 int1 N1 0 1
+R_R102    N2 0 25k
+C_C102    N2 0 100p
+E_E106    int1 int2 N2 0 1
+R_R103    N3 0 20k
+C_C103    N3 0 2n
+E_E107    int2 int3 N3 0 1
+R_R104    N4 0 2k
+C_C104    N4 0 1f
+E_E108    int3 inp2 N4 0 1
+E_E101      avg 0 vcc vee 0.5
+E_E102      lll top avg dio 1
+E_E103      lll bot avg dio -1
+E_E104      refx vee avg 0 1
+V_V101       dio 0 0.65Vdc
+E_E2         N021692 N02256 bot refx 1
+R_R5         N02722 N025740  10
+I_I2         N00635 VEE DC 850uAdc
+X_F4    VCC N01658 VCC AMP SCHEMATIC1_F4
+C_C2         N79919 OU_T  3.2p
+L_L29         VEE N02256  16.45n
+L_L6         IN_P N16231  0.2n
+R_R13         0 N06478  5
+R_R6         N026131 N02722  10
+C_C25         N57891 N57812  0.600f
+L_L19         N57891 N01607  10n
+L_L3         A inn  1n
+E_E6         INP1 IN_P refx CM -1
+Q_Q2         CMP INP2 N00603 NPN_BC2 1
+R_R4         N02064 AMP  1.3e6
+E_E3         N09661 refx AMP refx 1
+L_L17         CM N50270  1u
+L_L23         N00603 N62722  10n
+C_C1         N02050 AMP  3.75p
+Q_Q3         CMN IN_N N00635 NPN_BC2 1
+G_G1         CM refx N49615 refx 100u
+R_R27         0 N79919  18.2
+L_L13         N09807 LLL  10n
+R_R1         N62722 N00635  400
+L_L1         N02722 OU_T  10p
+L_L27         N64179 VCC  16.45n
+E_E4         N49615 IN_N INP2 IN_N 0.5
+R_R31         refx N50270  15
+R_R12         N09661 N09807  1550
+L_L21         N57812 N01658  10n
+C_C20         N16231 0  40f
+R_R2         N00911 N57891  60
+C_C5         refx LLL  0.26p
+R_R23         IN_N N20125  20m
+L_L25         refx N02064  2n
+L_L11         N16231 inp  0.2n
+D_D1         N021393 N025740 D_BREAK 2
+R_R3         N00940 N57812  60
+L_L5         out OU_T  1n
+R_R11         N02064 N02050  100
+C_C3         N06478 A  160f
+Q_Q4         CMP CMP N00911 PNP_BC2 1
+D_D2         N026131 N021692 D_BREAK 2
+*V_V1         LLL N02358 4.35Vdc
+E_E1         N64179 N021393 top refx -1
+X_F3    VCC N01607 VCC AMP SCHEMATIC1_F3
+Q_Q5         CMN CMN N00940 PNP_BC2 1
+I_I1         N00603 VEE DC 850uAdc
+*V_V2         LLL N02281 -4.35Vdc
+L_L9         N20125 A  1n
+D_D101   amp clampH D_BREAK 0.5
+V_V103   clampH vcc -1.4Vdc
+D_D102   clampL amp D_BREAK 0.5
+V_V104   clampL vee 1.4Vdc
+.ends THS4215
+*$
+
+.subckt SCHEMATIC1_F4 1 2 3 4
+F_F4         3 4 VF_F4 -2
+VF_F4         1 2 0V
+.ends SCHEMATIC1_F4
+*$
+
+.subckt SCHEMATIC1_F3 1 2 3 4
+F_F3         3 4 VF_F3 2
+VF_F3         1 2 0V
+.ends SCHEMATIC1_F3

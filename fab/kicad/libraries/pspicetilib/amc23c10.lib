@@ -1,0 +1,552 @@
+*****************************************************************************
+* (C) Copyright 2022 Texas Instruments Incorporated. All rights reserved.     
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.      
+** TI and its licensors and suppliers make no warranties, either expressed   
+** or implied, with respect to this model, including the warranties of       
+** merchantability or fitness for a particular purpose. The model is        
+** provided solely on an "as is" basis. The entire risk as to its quality   
+** and performance is with the customer                                    
+*****************************************************************************
+* Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: AMC23C10
+* Fast Response, Reinforced Isolated Comparator with Dual Output
+* Date: 03/17/2023
+* Model Type: Transient
+* Simulator: PSpice
+* Simulator Version: 17.4-2020
+* Datasheet: SBASAD0 - JULY 2021
+*
+*****************************************************************************
+* version 1.1:
+*
+*****************************************************************************
+* AMC23C10 SUBCIRCUIT
+* Fast Response, Reinforced Isolated Window Comparator with Adjustable Threshold and Latch Function
+* source AMC23C10
+
+.SUBCKT AMC23C10 VDD1 INP INN GND1 GND2 OUT1 OUT2 VDD2
+.PARAM tDg= {2u}
+.PARAM tHSEL= {10u}
+.PARAM tDIS13= {10u}
+.PARAM tEN13= {100u}
+.PARAM tLSSTA= {50u}
+.PARAM tHSSTA= {50u}
+.PARAM tHSBLK= {200u}
+.PARAM tHSFLT= {100u}
+.PARAM Vhys1= {4m}
+.PARAM Vhys2= {25m}
+.PARAM Tdellh= {290n -12n}
+.PARAM Tdelhl= {290n -12n}
+XComp1S     Out VDD1 INP INN GND1 IGND POR Comparator1S_0
++ PARAMS: Vhys1_={Vhys2}
+XOutPP Fault Neg Bias IAVDD_13 OUT2 VDD2 Neg GND2 Vt0p Vt0 UVLO Plus OutputPP_0 
+XOutput Fault Neg Bias IAVDD_13 OUT1 VDD2 Neg GND2 Vt0p Vt0 UVLO Plus Output_0 
+XPower Bias Fault UVLO VDD2 Vt0p Vt0 IAVDD_13 PORH UVLOH IGND GND2 Neg Power_0 
++ PARAMS: tDG_={tDG},tLSSTA_={tLSSTA},tHSFLT_={tHSFLT}
+XPor        PORH UVLOH VDD1 GND1 IGND POR POR_0
++ PARAMS: tHSSTA_={tHSSTA},tHSBLK_={tHSBLK},tHSFLT_={tHSFLT}
+R3          GND2 GND1 2T 
+C1          GND2 GND1  500F IC=0
+RIO         VDD2 VDD1 2T 
+CIO         VDD2 VDD1  500F IC=0
+XTXRX       Plus Out IGND Neg TXRX_0
++ PARAMS: Tdlh={Tdellh},Tdhl={Tdelhl}
+.ENDS
+
+.SUBCKT Comparator1S_0 Out VDD1 VINP VINN GND1 IGND POR
++ PARAMS: Vhys1_={Vhys2}
+.PARAM Vinmin= {10u}
+.PARAM Vind= {5m}
+XD2         VDD1 22 D_LIMINH_0
+XD29        GND1 22 D_CURR_100U_0
+XD3         GND1 VINN D_ZR_6V5_0
+XU_1        VINN GND1 VDD1 GND1 IIB_0
+C1          VINN GND1  2P
+GVCCS2      IGND Out VALUE = {IF(V(POR,IGND)>2.5,
++  IF(V(24,IGND)>2.5,5,0)
++  ,0)}
+R1          Out IGND 1 
+XCmp1       VINP 23 24 IGND HYSTCOMPG_THLRF_0_9_G_0
++ PARAMS: ROUT=100 VOUTH=5 VOUTL=0 VTHRES=0 VHYST={VHYS1_} TRISE=1N TFALL=1N
++ TDEL=10N VIND={VIND} VINMIN={VINMIN}
+XD1         25 GND1 D_ZR_5V5_0
+XD5         25 VINP D_ZR_5V0_0
+GVCCS1      GND1 23 VALUE = {V(VINN,GND1)+V(VOS,0)}
+R4          23 GND1 1 
+XU_2        VINP GND1 VDD1 GND1 IIB_0
+C3          VINP GND1  2P
+XU5         0 VOS VOST_0
+.ENDS
+
+.SUBCKT OutputPP_0 Fault IGND Bias IAVDD OUT VDD2 Neg GND2 Vt0p Vt0 UVLO Plus
+.PARAM KPN= {388.479u}
+.PARAM MN= {1}
+.PARAM WN= {53.442u}
+.PARAM L_N= {1u}
+.PARAM LAMBDAN= {0}
+.PARAM VTHN= {1}
+.PARAM RDN= {2.065}
+.PARAM VGSmaxN= {2.7}
+.PARAM TCRN= {0}
+.PARAM Vbias= {2.613}
+.PARAM DT= {750p}
+.PARAM Rcg= {703.687}
+.PARAM Vgdth= {1}
+.PARAM Ion= {1.953m}
+.PARAM Ioff= {1.953m}
+.PARAM CGSN= {1.938p}
+.PARAM CGDN= {162.705f}
+.PARAM CDSN= {1p}
+.PARAM RDSN= {10MEG}
+.PARAM LAMBDAP= {0}
+.PARAM VTHP= {-1}
+.PARAM MP= {1}
+.PARAM WP= {53.442433u}
+.PARAM KPP= {388.478677u}
+.PARAM RDP= {13.315118}
+.PARAM LP= {1u}
+.PARAM VGSmaxP= {2.7}
+.PARAM TCRP= {0}
+.PARAM CGDP= {162.705f}
+.PARAM CGSP= {1.938p}
+.PARAM CDSP= {1p}
+R3          29 0 1 
+GVCCS3      0 29 VALUE = {IF(V(UVLO,Neg)<2.5,0,IF(V(Fault,Neg) <2.5,1,IF(V(Plus,Neg)<2.5,0,5)))}
+XQ1         OUT VhgB_ VDD2 VDD2 VDD2 GND2 MOSP1_0
++ PARAMS: VTH={VTHP} KP={KPP} M={MP} W={WP} L={LP} LAMBDA={LAMBDAP} RD={RDP}
++ CGD={CGDP} CGS={CGSP} RDS=100MEG CDS={CDSP}
+GVSVghmx    GND2 Vghmx VALUE = {V(VDD2,GND2)-V(32,0)}
+R10         Vghmx GND2 1 TC=273.15U,1.367U
+XD5         Vghmx VhgB_ D_LIM01_0
+R15         VhgB_ VDD2 1MEG 
+XD7         VhgB_ VDD2 D_LIM01_0
+GIhonB      VhgB_ Vghmx VALUE = {IF(V(29,0)>0.5,V(34,0),0)}
+GIhoffB     VDD2 VhgB_ VALUE = {IF(V(29,0)<0.5,2*V(34,0),0)}
+XD2         GND2 OUT D_LIMINH_1
+R2          31 0 1 
+GVCCS2      0 31 VALUE = {IF(V(UVLO,Neg)<2.5,0,IF(V(Fault,Neg) <2.5,0,IF(V(Plus,Neg)<2.5,5,0)))}
+XD1         OUT VDD2 D_LIMINH_1
+R1          32 0 1 
+GVCCS1      0 32 VALUE = {LIMIT(V(Vt0,GND2)*VBIAS,0,2*VBIAS)}
+R9          VDD2 Vglmx_28 1 TC=273.15U,1.367U
+GVSVglmx    Vglmx_28 VDD2 VALUE = {V(VDD2,GND2)-V(32,0)}
+R21         33 0 1 
+GVCCS6      0 33 VALUE = {V(Bias,Neg)*IOFF}
+R20         34 0 1 
+GVCCS5      0 34 VALUE = {V(Bias,Neg)*ION}
+XQ2         OUT 35 GND2 GND2 VDD2 GND2 MOSN1_0
++ PARAMS: VTH={VTHN} KP={KPN} M={MN} W={WN} L={L_N} LAMBDA={LAMBDAN} RD={RDN}
++ CGD={CGDN} CGS={CGSN} CDS={CDSN} RDS={RDSN}
+XD4         GND2 35 D_LIM01_0
+XD3         35 Vglmx_28 D_LIM01_0
+GIlonB      Vglmx_28 35 VALUE = {IF(V(31,0)>0.5,V(33,0),0)}
+GIloffB     35 GND2 VALUE = {IF(V(31,0)<0.5,2*V(33,0),0)}
+Rp          35 GND2 1MEG 
+.ENDS
+
+.SUBCKT Output_0 Fault IGND Bias IAVDD OUT VDD2 Neg GND2 Vt0p Vt0 UVLO Plus
+.PARAM KPN= {388.479u}
+.PARAM MN= {1}
+.PARAM WN= {53.442u}
+.PARAM L_N= {1u}
+.PARAM LAMBDAN= {0}
+.PARAM VTHN= {1}
+.PARAM RDN= {2.065}
+.PARAM VGSmaxN= {2.7}
+.PARAM TCRN= {0}
+.PARAM Vbias= {2.613}
+.PARAM DT= {750p}
+.PARAM Rcg= {703.687}
+.PARAM Vgdth= {1}
+.PARAM Ion= {1.953m}
+.PARAM Ioff= {1.953m}
+.PARAM CGSN= {1.938p}
+.PARAM CGDN= {162.705f}
+.PARAM CDSN= {1p}
+.PARAM RDSN= {16.667MEG}
+XD2         GND2 OUT D_LIMINH_1
+R2          37 0 1 
+GVCCS2      0 37 VALUE = {IF((V(Plus,Neg)>2.5|V(Fault,Neg) <2.5)&V(UVLO,Neg)>2.5,5,0)}
+XD1         OUT VDD2 D_LIMINH_1
+R1          38 0 1 
+GVCCS1      0 38 VALUE = {LIMIT(V(Vt0,GND2)*VBIAS,0,2*VBIAS)}
+R9          VDD2 Vglmx_36 1 TC=273.15U,1.367U
+GVSVglmx    Vglmx_36 VDD2 VALUE = {V(VDD2,GND2)-V(38,0)}
+R21         39 0 1 
+GVCCS6      0 39 VALUE = {V(Bias,Neg)*IOFF}
+R20         40 0 1 
+GVCCS5      0 40 VALUE = {V(Bias,Neg)*ION}
+XQ2         OUT 41 GND2 GND2 VDD2 GND2 MOSN1_0
++ PARAMS: VTH={VTHN} KP={KPN} M={MN} W={WN} L={L_N} LAMBDA={LAMBDAN} RD={RDN}
++ CGD={CGDN} CGS={CGSN} CDS={CDSN} RDS={RDSN}
+XD4         GND2 41 D_LIM01_0
+XD3         41 Vglmx_36 D_LIM01_0
+GIlonB      Vglmx_36 41 VALUE = {IF(V(37,0)>0.5,V(39,0),0)}
+GIloffB     41 GND2 VALUE = {IF(V(37,0)<0.5,2*V(39,0),0)}
+Rp          41 GND2 1G 
+.ENDS
+
+.SUBCKT Power_0 Bias Fault UVLO VDD2 Vt0p Vt0 IAVDD PORH UVLOH IGND1 GND2 IGND
++ PARAMS: tDG_={tDG},tLSSTA_={tLSSTA},tHSFLT_={tHSFLT}
+GVCCS5      IGND UVLO VALUE = {IF((V(Fault,0)<2.5),IF((V(42,IGND)<2.5),0,5),
++ IF((V(43,IGND)<2.5),0,5))}
+R7          IGND UVLO R_RES_1 1 
+GVCCS4      IGND Fault VALUE = {IF(V(43,IGND)>2.5&(V(UVLOH,IGND1)<2.5|V(PORH,IGND1)<2.5),0,5)}
+R6          Fault IGND 1 
+XUVLOS      VDD2 GND2 43 IGND HYSTCOMPG_THLRF_0_9_SIN1_0
++ PARAMS: ROUT=100 VOUTH=5 VOUTL=0 VTHRES=2.3 VHYST=400M TDLH={TLSSTA_}
++ TDHL=100N TRISE=1N TFALL=1N
+XUVLOF      43 IGND 42 IGND HYSTCOMPG_THLRF_0_9_0
++ PARAMS: ROUT=100 VOUTH=5 VOUTL=0 VTHRES=2.5 VHYST=100M TDLH={THSFLT_}
++ TDHL=100N TRISE=1N TFALL=1N
+XBias       IAVDD VDD2 IGND GND2 Bias Vt0p Vt0 UVLO Bias_0
+
+.MODEL R_RES_1 RES ( TCE=0 T_ABS=-273.15)
+
+.ENDS
+
+.SUBCKT Bias_0 IAVDD VDD2 IGND GND2 Bias Vt0p Vt0 SHTDN
+VS1         IGND 0 0
+XD1         Vt0p 44 D_LIM1_0
+R1          IAVDD IGND 1K 
+C2          VDD2 Vt0p  100F
+C1          Vt0 GND2  100F
+GIb2        IGND Bias VALUE = {(1M*V(VDD2,GND2)+995M)}
+Rb3         Bias IGND 1 TC=970U,-77N
+R3          Vt0 GND2 1MEG 
+R2          VDD2 Vt0p 10MEG 
+EAVDD       IAVDD IGND VALUE = {5*V(Bias,IGND)}
+EBMG        46 GND2 Vt0 GND2 1
+XT4         Vt0p Vt0p VDD2 VDD2 MOSP0_0
++ PARAMS: M=10 W=100U L=1U VTH=-1 KP=388U LAMBDA=0 RDS=1000MEG
+XT1         VT1 46 GND2 GND2 MOSN0_0
++ PARAMS: M=16 W=10000U L=1U VTH=1 KP=388U LAMBDA=100M RDS=100MEG
+XT3         Vt0 Vt0 GND2 GND2 MOSN0_0
++ PARAMS: M=10 W=100U L=1U VTH=1 KP=388U LAMBDA=0 RDS=1000MEG
+XD2         Vt0 44 D_LIM1_0
+Rsp1        VDD2 VT1 1.061453K 
+GIb1        44 Vt0 Bias IGND  10U
+Rpsrr1      44 Vt0 100MEG 
+.ENDS
+
+.SUBCKT POR_0 POR UVLO VDD1 GND1 IGND POR0
++ PARAMS: tHSSTA_={tHSSTA},tHSBLK_={tHSBLK},tHSFLT_={tHSFLT},tHSEL_={tHSEL},tDIS13_={tDIS13},tEN13_={tEN13}
+.PARAM tDIS13m= {Max(tDIS13_ - tHSEL_, 100n)}
+.PARAM tEN13m= {Max(tEN13_ - tHSEL_, 100n)}
+.PARAM tHS_SBLK= {tHSSTA_+tHSBLK_}
+XPORF       POR0 IGND POR IGND HYSTCOMPG_THLRF_0_9_0
++ PARAMS: ROUT=100 VOUTH=5 VOUTL=0 VTHRES=2.5 VHYST=100M TDLH=1U TDHL={THSFLT_}
++ TRISE=1N TFALL=1N
+XPORB       VDD1 GND1 POR0 IGND HYSTCOMPG_THLRF_0_9_SIN1_0
++ PARAMS: ROUT=100 VOUTH=5 VOUTL=0 VTHRES=2.5 VHYST=500M TDLH={THS_SBLK} TDHL=1U
++ TRISE=1N TFALL=1N
+XUVLO       VDD1 GND1 UVLO IGND HYSTCOMPG_THLRF_0_9_SIN1_0
++ PARAMS: ROUT=100 VOUTH=5 VOUTL=0 VTHRES=2.95 VHYST=50M TDLH=100N
++ TDHL={THSFLT_} TRISE=1N TFALL=1N
+XBias       GND1 IGND IAVDD_47 VDD1 POR Bias_1
+.ENDS
+
+.SUBCKT Bias_1 GND1 IGND IAVDD VDD1 SHTDN
+VS1         IGND 0 0
+VIvdd1      VDD1 48 ; Current Arrow
+XD6         GND1 48 D_ZR_30V0_0
+Rp1         48 GND1 3.846154MEG TC=-6M,22U
+GIS1        49 GND1 VALUE = {(2.5692M*(971.1538M+TEMP*1.154M)+V(49,GND1)/73.3333K)}
+EAVDD       IAVDD IGND 48 49 2
+RAVDD       IAVDD IGND 1k
+Rs4         49 GND1 73.333333G TC=-6M,22U
+XD1         GND1 49 D_D4_0
+XDZb1       49 48 D_ZB1_0
+.ENDS
+
+.SUBCKT TXRX_0 Out INP IGND1 IGND2
++ PARAMS: Tdlh={Tdellh},Tdhl={Tdelhl}
+XU6         INP IGND1 Out IGND2 HYSTCOMPG_THLRF_0_9_SINO1_0
++ PARAMS: ROUT=100 VOUTH=5 VOUTL=0 VTHRES=2.5 VHYST=10M TDLH={Tdlh} TDHL={Tdhl}
++ TRISE=1N TFALL=1N
+.ENDS
+
+.SUBCKT D_LIMINH_0 1 2
+D1 1 2  D_Liminh
+.MODEL D_Liminh D( IS=1.0f N=1.8221 RS=1 XTI=0 AF=0 KF=0 EG=0.55)
+.ENDS
+
+.SUBCKT D_CURR_100U_0 1 2
+D1 1 2  D_Curr_100u
+.ENDS
+.MODEL D_Curr_100u D( IS=100u N=1.0 RS=0 XTI=0 AF=0 KF=0 EG=0.48 T_ABS=27)
+
+.SUBCKT D_ZR_6V5_0 1    2
+D1 1 2  D_Z6V5
+.MODEL D_Z6V5 D( IS=6.0p N=1.0199 BV=6.5 IBV=10.0M RS=8.33 T_ABS=27 )
+.ENDS
+
+.SUBCKT IIB_0 1 2 Vdd Gnd
+.PARAM Rtemp = {1/1}
+.PARAM RVdd = {1/1}
+.PARAM DIib_DT= {1.0p}
+GVocmtemp 0 10 table {TEMP} = (-40,1.0, 25,1.0, 125,1.0)
+R1 10 0 { Rtemp}
+GIibvdd 0 20 table {V(Vdd,Gnd)} = (0,0, 3,1.0, 5.50000,1.0)
+R2 20 0 {RVdd}
+GIib 2 1 Value = { V(20)*V(10)*1f}
+.ENDS
+
+.SUBCKT HYSTCOMPG_THLRF_0_9_G_0 inp inm out gnd
++ Params: VoutH=5 VoutL=0 Rout=1 Tdel=10N Trise=1N Tfall=1N  Vthres=0 Vhyst=1m Vind=5m Vinmin=100u
+* Vhyst2=10m 
+* Trise ->   90%*(VoutH-VoutL), Tfall -> 10%*(VoutH-VoutL)
+.Param MinADel=100p
+.PARAM Tdel_ = {MAX(Tdel,MinADel)}
+.PARAM Tdel0_ = {MAX(Tdel*Vind/Vinmin,MinADel)}
+.Param Ro = {IF ( ((Trise > 1E-15)|(Tfall > 1E-15)) & (Rout < 1), 1, Rout ) } 
+.Param VoutM={(VoutH+VoutL)/2}
+.Param VthH={Vthres+Vhyst/2}
+.Param VthL={Vthres-Vhyst/2}
+.Param Tdmin= 1p
+.Param MthOH= 0.9
+.Param MthOL= 0.1
+.Param Cdel={Tdel0_/(2.28*(Rdel+1u))}
+.Param Cout={Sqrt(Tfall*Trise)/(2.287*(Ro+1u))}
+.Param Gr={Sqrt(Tfall/(Trise+Tdmin))/Ro}
+.Param Gf={(Trise+Tdmin)/Tfall*Gr}
+.PARAM IS = 1.0E-12
+.PARAM VT = 0.02585
+.PARAM N = 0.5
+.PARAM IMAX = 100.0E-6
+.PARAM RS = {1.0E-3/IMAX}
+.PARAM Rdel = {(VoutM+VDF)/IMAX*(Tdel0_/Tdel_-1)}
+.PARAM VDF = {N*VT*LOG(1 + IMAX/IS) + RS*IMAX}
+.PARAM GAIN = {VoutM*MthOH/Vinmin}
+.PARAM GM1 = {GAIN/Rdel}
+  
+Gthr gnd thr Value= { IF ( V(out,gnd) < {VoutM}, {VthH}, {VthL}) }
+Rthr gnd thr 1
+Gouti VMI outi Value= { LIMIT( GM1*(V(inp,inm) - V(thr,gnd)), -IMAX, IMAX) }
+Couti outi VMI {Cdel}
+Routi outi VMI {Rdel}
+EVP  VPI gnd VALUE = { VoutH }
+EVM  VMI gnd VALUE = { VoutM }
+D3   gnd outi  D_1
+D2   outi VPI  D_1
+Gthro gnd thro Value= { IF ( V(out,gnd) < VoutM, (VoutH-VoutL)*MthOH, (VoutH-VoutL)*MthOL ) }
+Rthro gnd thro 1
+Gout gnd out Value= { IF ( (V(outi, gnd) > V(thro,gnd)), (VoutH - V(out,gnd))*Gr, (VoutL - V(out,gnd))*Gf ) }
+Cout out gnd {Cout}
+Rout out gnd 1G  
+
+.Param Csin= {1n*1m}
+GVCCS2      0 T2 VALUE = {sin(10*2*pi*V(inp,inm))}
+C5          0 T2  {Csin}
+R4          0 T2 1 
+
+.MODEL D_1 D( IS={IS} N={N}  RS={RS})
+.ENDS
+
+.SUBCKT D_ZR_5V5_0 1    2
+D1 1 2  D_Z5V5
+.MODEL D_Z5V5 D( IS=1.5p N=1.0199 BV=5.417 IBV=10.0M RS=8.33 T_ABS=27 )
+.ENDS
+
+.SUBCKT D_ZR_5V0_0 1    2
+D1 1 2  D_Z5V0
+.MODEL D_Z5V0 D( IS=2p N=1.0389 BV=4.917 IBV=10.0M RS=8.33 T_ABS=27 )
+.ENDS
+
+.SUBCKT VOST_0 1 2
+*VOS Input offset voltage
+*Initial, at TA = 25°C, –1.2 0 1.2mV
+*TCVOS Input offset drift ±0µV/°C
+.PARAM DVOS_DT= {0.0U}
+.PARAM I0 = {(VOFFS/R0)}
+.PARAM VOFFS = {0.0U + 2*DVOS_DT}
+.PARAM R0 = {1k}
+.PARAM TC1= {DVOS_DT/R0/I0}
+R2 1 2 RMOD2 {R0}
+I2 1 2 {I0}
+.MODEL RMOD2 RES (TC1={TC1} TC2=0 TCE=0)
+.ENDS
+
+.SUBCKT MOSP1_0 D  G  S  B  Vdd Vss
++ Params: Vth=2.0 KP=390u M=30 W=100u L=1u LAMBDA=100m Rd=1m Rds=100MEG CGD=1p CGS=5p CDS=1p
+Rd      D    Di   {Rd}
+M1      Di   G    S    B    MOSP1 M={M} W={W} L={L}
+.MODEL MOSP1 PMOS (LEVEL=1 KP={KP} VTO={Vth} LAMBDA={LAMBDA})
+RDS     D    S    {Rds}
+Cgd     G    D    {CGD}
+Cgs     G    S    {CGS}
+Cds     D    S    {CDS}
+.ENDS 
+
+.SUBCKT D_LIM01_0 1 2
+D1 1 2  D_LIM01
+.MODEL D_LIM01 D( IS=10F N=0.1 RS=10 XTI=0 AF=0 KF=0 EG=0.111)
+.ENDS
+
+.SUBCKT D_LIMINH_1 1 2
+D1 1 2  D_Liminh
+.MODEL D_Liminh D( IS=3.5f N=1.0 RS=1)
+.ENDS
+
+.SUBCKT MOSN1_0 D  G  S  B  Vdd Vss
++ Params: Vth=2.0 KP=390u M=30 W=102u L=1u LAMBDA=100m Rd=1m Rds=100MEG CGD=1p CGS=5p  CDS=1p
+Rd     D    Di   {Rd}
+M1      Di    G    S    B    MOSN1  M={M} W={W} L={L}
+.MODEL MOSN1 NMOS (LEVEL=1 KP={KP} VTO={Vth} LAMBDA={LAMBDA} )
+RDS D   S  {Rds}
+Cgd     G    D    {CGD}
+Cgs     G    S    {CGS}
+Cds     D    S    {CDS}
+.ENDS
+
+.SUBCKT HYSTCOMPG_THLRF_0_9_SIN1_0 inp inm out gnd
++ Params: VoutH=5 VoutL=0 Rout=1 Tdlh=1N Tdhl=1N Trise=1N Tfall=1N  Vthres=0 Vhyst=1m
+* Trise ->   90%*(VoutH-VoutL), Tfall -> 10%*(VoutH-VoutL)
+.Param MinADel=100p
+.PARAM Tdellh = {MAX(Tdlh,MinADel)}
+.PARAM Tdelhl = {MAX(Tdhl,MinADel)}
+.Param Rdel = {IF ( ((Tdellh > 1E-15)|(Tdelhl > 1E-15)) & (Rout < 1), 1, Rout ) } 
+.Param Ro = {IF ( ((Trise > 1E-15)|(Tfall > 1E-15)) & (Rout < 1), 1, Rout ) } 
+.Param VoutM={(VoutH+VoutL)/2}
+.Param VthH={Vthres+Vhyst}
+.Param VthL={Vthres-Vhyst}
+.Param Tdmin= 1p
+.Param MthOH= 0.9
+.Param MthOL= 0.1
+.Param Cdel={Sqrt((Tdelhl+Tdmin)*(Tdellh+Tdmin))/(2.28*(Rdel+1u))}
+.Param Gdlh={Sqrt((Tdelhl+Tdmin)/(Tdellh+Tdmin))/Rdel}
+.Param Gdhl={(Tdellh+Tdmin)/(Tdelhl+Tdmin)*Gdlh}
+
+.Param Cout={Sqrt(Tfall*Trise)/(2.287*(Ro+1u))}
+.Param Gr={Sqrt(Tfall/(Trise+Tdmin))/Ro}
+.Param Gf={(Trise+Tdmin)/Tfall*Gr}
+  
+Gthr gnd thr Value= { IF ( V(out,gnd) < {VoutM}, {VthH}, {VthL}) }
+Rthr gnd thr 1
+Gouti gnd outi Value= { IF ( (V(inp,inm) > V(thr,gnd)), (VoutH - V(outi,gnd))*Gdlh, (VoutL - V(outi,gnd))*Gdhl )}
+Couti outi gnd {Cdel}
+Routi outi gnd 1G
+
+Gthro gnd thro Value= { IF ( V(out,gnd) < VoutM, (VoutH-VoutL)*MthOH, (VoutH-VoutL)*MthOL ) }
+Rthro gnd thro 1
+
+Gout gnd out Value= { IF ( (V(outi, gnd) > V(thro,gnd)), (VoutH - V(out,gnd))*Gr, (VoutL - V(out,gnd))*Gf ) }
+Cout out gnd {Cout}
+Rout out gnd 1G
+.Param Csin= {1n*1m}
+GVCCS2      0 T2 VALUE = {sin(1*2*pi*V(inp,inm))}
+C5          0 T2  {Csin}
+R4          0 T2 1 
+.ENDS
+
+.SUBCKT HYSTCOMPG_THLRF_0_9_0 inp inm out gnd
++ Params: VoutH=5 VoutL=0 Rout=1 Tdlh=1N Tdhl=1N Trise=1N Tfall=1N  Vthres=0 Vhyst=1m
+* Trise ->   90%*(VoutH-VoutL), Tfall -> 10%*(VoutH-VoutL)
+.Param MinADel=100p
+.PARAM Tdellh = {MAX(Tdlh,MinADel)}
+.PARAM Tdelhl = {MAX(Tdhl,MinADel)}
+.Param Rdel = {IF ( ((Tdellh > 1E-15)|(Tdelhl > 1E-15)) & (Rout < 1), 1, Rout ) } 
+.Param Ro = {IF ( ((Trise > 1E-15)|(Tfall > 1E-15)) & (Rout < 1), 1, Rout ) } 
+.Param VoutM={(VoutH+VoutL)/2}
+.Param VthH={Vthres+Vhyst}
+.Param VthL={Vthres-Vhyst}
+.Param Tdmin= 1p
+.Param MthOH= 0.9
+.Param MthOL= 0.1
+.Param Cdel={Sqrt((Tdelhl+Tdmin)*(Tdellh+Tdmin))/(2.28*(Rdel+1u))}
+.Param Gdlh={Sqrt((Tdelhl+Tdmin)/(Tdellh+Tdmin))/Rdel}
+.Param Gdhl={(Tdellh+Tdmin)/(Tdelhl+Tdmin)*Gdlh}
+
+.Param Cout={Sqrt(Tfall*Trise)/(2.287*(Ro+1u))}
+.Param Gr={Sqrt(Tfall/(Trise+Tdmin))/Ro}
+.Param Gf={(Trise+Tdmin)/Tfall*Gr}
+  
+Gthr gnd thr Value= { IF ( V(out,gnd) < {VoutM}, {VthH}, {VthL}) }
+Rthr gnd thr 1
+Gouti gnd outi Value= { IF ( (V(inp,inm) > V(thr,gnd)), (VoutH - V(outi,gnd))*Gdlh, (VoutL - V(outi,gnd))*Gdhl )}
+Couti outi gnd {Cdel}
+Routi outi gnd 1G
+
+Gthro gnd thro Value= { IF ( V(out,gnd) < VoutM, (VoutH-VoutL)*MthOH, (VoutH-VoutL)*MthOL ) }
+Rthro gnd thro 1
+
+Gout gnd out Value= { IF ( (V(outi, gnd) > V(thro,gnd)), (VoutH - V(out,gnd))*Gr, (VoutL - V(out,gnd))*Gf ) }
+Cout out gnd {Cout}
+Rout out gnd 1G
+.ENDS
+
+.SUBCKT D_LIM1_0 1 2
+D1 1 2  D_Lim1
+.MODEL D_LIM1 D( IS=10F N=1.0 RS=0 XTI=0 AF=0 KF=0)
+.ENDS
+
+.SUBCKT MOSP0_0 D  G  S  B 
++ Params: Vth=-2.0 KP=390u M=30 W=102u L=1u LAMBDA=100m Rds=100MEG 
+M1      D    G    S    B    MOSP1  M={M} W={W} L={L}
+.MODEL MOSP1 PMOS (LEVEL=1 KP={KP} VTO={Vth} LAMBDA={LAMBDA} )
+RDS D   S  {Rds}
+.ENDS
+
+.SUBCKT MOSN0_0 D  G  S  B 
++ Params: Vth=2.0 KP=390u M=30 W=102u L=1u LAMBDA=100m Rds=100MEG 
+M1      D    G    S    B    MOSN1  M={M} W={W} L={L}
+.MODEL MOSN1 NMOS (LEVEL=1 KP={KP} VTO={Vth} LAMBDA={LAMBDA} )
+RDS D   S  {Rds}
+.ENDS
+
+.SUBCKT D_ZR_30V0_0 1    2
+D1 1 2  D_Z30V0
+.MODEL D_Z30V0 D( IS=18P N=1.0 BV=30.0 IBV=3.0M RS=8.33 T_ABS=25 )
+.ENDS
+
+.SUBCKT D_D4_0 1    2
+D1 1 2  DD
+.MODEL DD D( IS=10n N=0.50 RS=1 XTI=0 Eg=0.35)
+.ENDS
+
+.SUBCKT D_ZB1_0 1    2
+D1 1 2  D_4_9V
+CD 1 2 10P
+.MODEL D_4_9V D( IS=1n N=1.0 BV=2.5 IBV=2.6m RS=0 XTI=0 EG=0.55)
+.ENDS 
+
+.SUBCKT HYSTCOMPG_THLRF_0_9_SINO1_0 inp inm out gnd
++ Params: VoutH=5 VoutL=0 Rout=1 Tdlh=1N Tdhl=1N Trise=1N Tfall=1N  Vthres=0 Vhyst=1m
+* Trise ->   90%*(VoutH-VoutL), Tfall -> 10%*(VoutH-VoutL)
+.Param MinADel=100p
+.PARAM Tdellh = {MAX(Tdlh,MinADel)}
+.PARAM Tdelhl = {MAX(Tdhl,MinADel)}
+.Param Rdel = {IF ( ((Tdellh > 1E-15)|(Tdelhl > 1E-15)) & (Rout < 1), 1, Rout ) } 
+.Param Ro = {IF ( ((Trise > 1E-15)|(Tfall > 1E-15)) & (Rout < 1), 1, Rout ) } 
+.Param VoutM={(VoutH+VoutL)/2}
+.Param VthH={Vthres+Vhyst}
+.Param VthL={Vthres-Vhyst}
+.Param Tdmin= 1p
+.Param MthOH= 0.9
+.Param MthOL= 0.1
+.Param Cdel={Sqrt((Tdelhl+Tdmin)*(Tdellh+Tdmin))/(2.28*(Rdel+1u))}
+.Param Gdlh={Sqrt((Tdelhl+Tdmin)/(Tdellh+Tdmin))/Rdel}
+.Param Gdhl={(Tdellh+Tdmin)/(Tdelhl+Tdmin)*Gdlh}
+
+.Param Cout={Sqrt(Tfall*Trise)/(2.287*(Ro+1u))}
+.Param Gr={Sqrt(Tfall/(Trise+Tdmin))/Ro}
+.Param Gf={(Trise+Tdmin)/Tfall*Gr}
+  
+Gthr gnd thr Value= { IF ( V(out,gnd) < {VoutM}, {VthH}, {VthL}) }
+Rthr gnd thr 1
+Gouti gnd outi Value= { IF ( (V(inp,inm) > V(thr,gnd)), (VoutH - V(outi,gnd))*Gdlh, (VoutL - V(outi,gnd))*Gdhl )}
+Couti outi gnd {Cdel}
+Routi outi gnd 1G
+
+Gthro gnd thro Value= { IF ( V(out,gnd) < VoutM, (VoutH-VoutL)*MthOH, (VoutH-VoutL)*MthOL ) }
+Rthro gnd thro 1
+
+Gout gnd out Value= { IF ( (V(outi, gnd) > V(thro,gnd)), (VoutH - V(out,gnd))*Gr, (VoutL - V(out,gnd))*Gf ) }
+Cout out gnd {Cout}
+Rout out gnd 1G
+.Param Csin= {1n*1m}
+GVCCS2      0 T2 VALUE = {sin(1*2*pi*V(outi,gnd))}
+C5          0 T2  {Csin}
+R4          0 T2 1 
+.ENDS

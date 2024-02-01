@@ -1,0 +1,284 @@
+* OPA2316S
+*****************************************************************************
+* (C) Copyright 2012 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: OPA2316S
+* Date: 12/10/2014
+* Model Type: All In One
+* Simulator: Pspice
+* Simulator Version: Pspice 16.2.0.p001
+* EVM Order Number: N/A 
+* EVM Users Guide: N/A
+* Datasheet: SBOS703C - April 2014 - Revised October 2014
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 : Release to Web
+*
+*****************************************************************************
+* Notes: 
+* 1. This model conforms to the major device parameters as described in 
+*    the data sheet version listed above for 5V operation 
+*    The model's behavior may not agree with the data sheet for other 
+*    power supply voltages.
+* 2. The model's nominal CMRR behavior is preserved over a wider VICMR than
+*    shown in the data sheet.
+* 3. The model has enable/disable times of 9.4us/2us for 5V operation.
+* 4. The model has a disabled IQ = 8.5nA at 5V operation. 
+*****************************************************************************
+*
+*
+*$
+.SUBCKT OPA2316S INP INN VCC VEE OUT SHDN
+C_C4         INN INP  1p  TC=0,0 
+E_E2         N61051 0 VEE 0 1
+X_U22         INPUT_OUTP INPUT_VOS vnse_OPA2316S
+X_U28         INPUTP_GBW INPUTN_GBW VCC VEE INPUTP_ICMR INPUTN_ICMR EN GNDF
++  ICMR_OPA2316S 
+X_S1          EN GNDF INPUT_VIMON INPUT_ZOUT DEV_SCH_S1 
+X_U12         INPUT_TF INPUT_VCLAMP VCC VEE EN GNDF TF_OPA2316S
+X_U19         OUT_CNTRL SHDN VCC VEE GNDF SHDN_NOT
+E_E5         INPUTP_CMRR INPUTP_ICMR OUT_CMRR GNDF 0.5
+X_U29         VCC VEE INPUT_VCLAMP INPUT_ZOUT VIMON GNDF VCLAMP_W_SENSE
+R_R10         GNDF EN  10k TC=0,0 
+X_U31         INPUT_VIMON OUT VIMON GNDF AMETER 
+V_V4         N278677 GNDF 0.69Vdc
+X_U5         VICM INP INN GNDF VICM
+X_U30         INPUTP_CMRR INPUT_VOS VICM VCC VEE GNDF VOS 
+G_G1         OUT_CMRR GNDF VICM GNDF -4e-5
+R_R6         OUT_CNTRL N278435  400 TC=0,0 
+X_U13         INPUTP_GBW INPUTN_GBW INPUT_TF EN GNDF GBW_SLEW
+X_U26         VCC VEE INPUT_OUTN INPUTN_CMRR GNDF PSRR 
+R_R1         N61125 N61045  1e6 TC=0,0 
+I_I2         INPUT_OUTN GNDF DC 6pAdc  
+X_U20         VCC VEE EN VIMON GNDF IQ
+D_D1         IN_COMP N278435 Dbreak 
+R_R4         INN INPUT_OUTN  1 TC=0,0 
+R_R2         N61051 N61125  1e6 TC=0,0 
+R_R9         OUT_CNTRL IN_COMP  1k TC=0,0 
+C_C1         0 N61125  1m  TC=0,0 
+I_I1         INPUT_VOS GNDF DC 4pAdc  
+C_C6         GNDF IN_COMP  8.1n  TC=0,0 
+R_R3         INP INPUT_OUTP  1 TC=0,0 
+X_U23         INPUT_OUTN INPUT_VOS femt
+E_E3         GNDF 0 N61125 0 1
+R_R5         N114739 GNDF  1 TC=0,0 
+C_C2         INN GNDF  2p  TC=0,0 
+X_U2         EN IN_COMP N278677 GNDF COMPARATOR 
+E_E1         N61045 0 VCC 0 1
+L_L1         OUT_CMRR N114739  8uH  
+C_C3         GNDF INP  2p  TC=0,0 
+E_E4         INPUTN_CMRR INPUTN_ICMR OUT_CMRR GNDF -0.5
+.ENDS
+*$
+.subckt DEV_SCH_S1 1 2 3 4  
+S_S1         3 4 1 2 _S1
+RS_S1         1 2 1G
+.MODEL         _S1 VSWITCH Roff=1e6 Ron=250 Voff=0.0V Von=1.0V
+.ends DEV_SCH_S1
+*$
+.SUBCKT VNSE_OPA2316S 1 2 
+.PARAM NLF = 600 
+.PARAM FLW = 0.1  
+.PARAM NVR = 10
+.PARAM GLF={PWR(FLW,0.25)*NLF/1164}
+.PARAM RNV={1.184*PWR(NVR,2)}
+.MODEL DVN D KF={PWR(FLW,0.5)/1E11} IS=1.0E-16
+I1 0 7 10E-3
+I2 0 8 10E-3
+D1 7 0 DVN
+D2 8 0 DVN
+E1 3 6 7 8 {GLF}
+R1 3 0 1E9
+R2 3 0 1E9
+R3 3 6 1E9
+E2 6 4 5 0 10
+R4 5 0 {RNV}
+R5 5 0 {RNV}
+R6 3 4 1E9
+R7 4 0 1E9
+E3 1 2 3 4 1
+C1 1 0 1E-15
+C2 2 0 1E-15
+C3 1 2 1E-15
+.ENDS
+*$
+.SUBCKT ICMR_OPA2316S   VOP VOM VDD VSS VIP VIM SHDN GNDF 
+.PARAM VMAX = -0.12 
+.PARAM VMIN = -0.12
+ECLAMPP  VOP GNDF VALUE = {LIMIT(V(VIP,GNDF),V(VDD,GNDF) - VMAX, V(VSS,GNDF) + VMIN)}
+ECLAMPM  VOM GNDF VALUE = {LIMIT(V(VIM,GNDF),V(VDD,GNDF) - VMAX, V(VSS,GNDF) + VMIN)}
+.ENDS
+*$
+.SUBCKT TF_OPA2316S  VI  VO  VCC VEE SHDN GNDF
+.PARAM fp1 = 45e6 
+.PARAM fp2 = 10G 
+.PARAM fp3 = 10G 
+.PARAM fp4 = 10G
+.PARAM Gm = 1M
+.PARAM Ro = {1/Gm}
+.PARAM PI = 3.141592
+.PARAM gL = 1M
+Gp1  GNDF Vp1 VI GNDF {Gm}
+Rp1  Vp1 GNDF {Ro}
+Cp1  Vp1 GNDF {1/(2*PI*Ro*fp1)} IC = 0
+Gp2  GNDF Vp2 Vp1 GNDF {Gm}
+Rp2  Vp2 GNDF {Ro}
+Cp2  Vp2 GNDF {1/(2*PI*Ro*fp2)} IC = 0
+Gp3  GNDF Vp3 Vp2 GNDF {Gm}
+Rp3  Vp3 GNDF {Ro}
+Cp3  Vp3 GNDF {1/(2*PI*Ro*fp3)} IC = 0
+Gp4  GNDF VO Vp3 GNDF {Gm}
+Rp4  VO GNDF {Ro}
+Cp4  VO GNDF {1/(2*PI*Ro*fp4)} IC = 0
+.ENDS
+*$
+.SUBCKT SHDN_NOT OUT_CNTRL IN VCC VEE GNDF
+.PARAM VIHparam = 0.7
+.PARAM VILparam = 0.3
+.PARAM VIMIDparam = 0.5
+.PARAM VSmax = 5.5
+.PARAM IIBmin = 0.04u
+.PARAM IIBmax = 0.13u
+.PARAM VCCnom = 5
+.PARAM VD = 0.3
+ETEST TEST 0 VALUE = {V(IN,GNDF)}
+EN1 N1 GNDF VALUE = {IF(V(IN) < V(GNDF),0,1)}
+EN2 N2 GNDF VALUE = {IF(V(IN) >= V(GNDF),1,0)}
+EN3 N3 GNDF VALUE = {IF(V(IN) > V(VCC)+VD,0,1)}
+EN4 N4 GNDF VALUE = {IF(V(IN) < V(VEE)-VD,0,1)}
+EOUT OUT_CNTRL GNDF VALUE = {V(N1,GNDF)*V(N2,GNDF)*V(N3,GNDF)*V(N4,GNDF)}
+EN5 N5 GNDF VALUE = {(V(IN,VEE)/55e6) + IIBmin}
+GIB_IN IN GNDF VALUE = {V(N5,GNDF)*V(N3,GNDF)*V(N4,GNDF)}
+****
+.ENDS
+*$
+.SUBCKT VCLAMP_W_SENSE  VDD  VSS  VI  VO VIMON  GNDF
+.PARAM SCALEP = 1
+.PARAM SCALEN = 1
+.PARAM ISC = 0.05
+.PARAM ROS = 250
+.PARAM RM = 25.8
+.PARAM REQ = {ROS-RM}
+EHRPOS HRPOS GNDF VALUE = {MIN(V(VIMON,GNDF)*REQ,ISC*ROS-V(VDD,GNDF))}
+EHRNEG HRNEG GNDF VALUE = {MAX(V(VIMON,GNDF)*REQ,-ISC*ROS-V(VSS,GNDF))}
+EPCLIP  VDD_CLP GNDF VALUE = {V(VDD,GNDF) + V(HRPOS,GNDF)}
+ENCLIP  VSS_CLP GNDF VALUE = {V(VSS,GNDF) + V(HRNEG,GNDF)}
+ECLAMP  VO GNDF VALUE = {LIMIT(V(VI,GNDF), V(VDD_CLP,GNDF), V(VSS_CLP,GNDF))}
+.ENDS
+*$
+.SUBCKT AMETER  VI  VO VIMON GNDF
+.PARAM GAIN = 1
+VSENSE VI VO DC = 0
+EMETER VIMON GNDF VALUE = {I(VSENSE)*GAIN}
+.ENDS
+*$
+.SUBCKT VICM OUT INP INN GNDF
+EOUT OUT GNDF VALUE = {0.5*(V(INP,GNDF) + V(INN,GNDF))}
+.ENDS
+*$
+.SUBCKT VOS OUT IN VICM VCC VEE GNDF
+.PARAM SCALE = 1e-6
+.PARAM DRIFT = 2
+.PARAM VICM_SHIFT = 10
+.PARAM VCC_SHIFT = 30
+.PARAM VOS_TYP = -500
+EDRIFT NDRIFT 0 VALUE = {DRIFT*(TEMP - 27)}
+ESHIFT NSHIFT 0 VALUE = {VICM_SHIFT*V(VICM,GNDF)}
+EVCC NVCC 0 VALUE = {V(VCC,VEE)}
+EVCCSHIFT NVCCSHIFT 0 VALUE = {VCC_SHIFT*(V(NVCC) - 5.5)}
+EVOS OUT IN VALUE = {SCALE*(VOS_TYP + V(NDRIFT) + V(NSHIFT) + V(NVCCSHIFT))}
+.ENDS
+*$
+.SUBCKT GBW_SLEW  VIP  VIM  VO  SHDN GNDF 
+.PARAM Aol = 110  
+.PARAM GBW = 10e6  
+.PARAM SRP = 6e6  
+.PARAM SRN = 6e6 
+.PARAM IT = 0.001
+.PARAM PI = 3.141592
+.PARAM IP = {IT*MAX(1,SRP/SRN)}
+.PARAM IN = {IT*MIN(-1,-SRN/SRP)}
+.PARAM CC = {IT*MAX(1/SRP,1/SRN)}
+.PARAM FP = {GBW/PWR(10,AOL/20)}
+.PARAM RC = {1/(2*PI*CC*FP)}
+.PARAM GC = {PWR(10,AOL/20)/RC}
+G1p GNDF OUTG1p VALUE = {MAX(MIN(GC*V(SHDN,GNDF)*V(VIP,VIM),IP),IN)}
+G1n OUTG1n GNDF VALUE = {MAX(MIN(GC*V(SHDN,GNDF)*V(VIP,VIM),IP),IN)}
+G1OUT GNDF VO VALUE = {V(SHDN,GNDF)*V(OUTG1p,OUTG1n)}
+RG1p OUTG1p GNDF {0.5*RC}
+Cg1dp OUTG1p GNDF {2*CC} IC=0
+RG1n OUTG1n GNDF {0.5*RC}
+Cg1dn OUTG1n GNDF {2*CC} IC=0
+ROUT VO GNDF 1
+.ENDS
+*$
+.SUBCKT PSRR  VDD  VSS  VI  VO  GNDF 
+.PARAM PSRR = 90 
+.PARAM fpsrr = 10
+.PARAM PI = 3.141592
+.PARAM RPSRR = 1
+.PARAM GPSRR = {PWR(10,-PSRR/20)/RPSRR}
+.PARAM LPSRR = {RPSRR/(2*PI*fpsrr)}
+G1  GNDF 1 VDD VSS {GPSRR}
+R1  1 2 {RPSRR}
+L1  2 GNDF {LPSRR} 
+E1  VO VI 1 GNDF 1
+C2  VDD VSS 10P 
+.ENDS
+*$
+.SUBCKT IQ VCC VEE SHDN VIMON GNDF
+.PARAM IQ_NOM = 400u
+.PARAM IQ_SHDN = 8.5n
+.PARAM Geq = 1u
+GVAR VCC VEE VALUE = {(V(SHDN)+ 1e-9)*Geq}
+GIQ VCC VEE VALUE = {V(SHDN)*IQ_NOM + (1-V(SHDN))*IQ_SHDN}
+GOUTP VCC GNDF VALUE = {IF(V(VIMON,GNDF) > 0, V(VIMON)*V(SHDN),0)}
+.ENDS
+*$
+.SUBCKT FEMT 1 2 
+.PARAM NLFF = 1 
+.PARAM FLWF = 22 
+.PARAM NVRF = 1.3
+.PARAM GLFF={PWR(FLWF,0.25)*NLFF/1164}
+.PARAM RNVF={1.184*PWR(NVRF,2)}
+.MODEL DVNF D KF={PWR(FLWF,0.5)/1E11} IS=1.0E-16
+I1 0 7 10E-3
+I2 0 8 10E-3
+D1 7 0 DVNF
+D2 8 0 DVNF
+E1 3 6 7 8 {GLFF}
+R1 3 0 1E9
+R2 3 0 1E9
+R3 3 6 1E9
+E2 6 4 5 0 10
+R4 5 0 {RNVF}
+R5 5 0 {RNVF}
+R6 3 4 1E9
+R7 4 0 1E9
+G1 1 2 3 4 1E-6
+C1 1 0 1E-15
+C2 2 0 1E-15
+C3 1 2 1E-15
+.ENDS
+*$
+.SUBCKT COMPARATOR OUT IN REF GNDF
+.PARAM VOUT_MAX = 1
+.PARAM VOUT_MIN = 0
+.PARAM GAIN = 1e4
+EOUT OUT GNDF VALUE = {MAX(MIN(GAIN*V(IN,REF),VOUT_MAX),VOUT_MIN)}
+.ENDS
+*$

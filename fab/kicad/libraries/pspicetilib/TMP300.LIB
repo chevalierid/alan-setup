@@ -1,0 +1,86 @@
+* TMP300
+*****************************************************************************
+* (C) Copyright 2015 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: TMP300
+* Date: 06/08/2015
+* Model Type: Transient,Temperature Sweep
+* Simulator: Pspice
+* Simulator Version: Pspice 16.2.0.s003
+* EVM Order Number: N/A 
+* EVM Users Guide: N/A
+* Datasheet: SBOS335C,07 Jan 2011
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 : New model
+*
+*****************************************************************************
+*Notes :
+*The following parameters are being modeled:
+* 1. Low and High Threshold,VOL,Open drain Leakge Current,RSET Equation. 
+* 2. Threshold Hysteresis(5°C and 10°C Hysteresis).
+* 3. Temperature sensitivity of 10mv/°C
+* 4. Quiescent current variation over temerature and power supply (1.8V and 3.3V).
+*
+*The parameters which are not modeled:
+* 1. Analog PSR over temperature.
+* 2. Trip PSR over temperature.
+*****************************************************************************
+*$
+.SUBCKT TMP300 TSET GND OUT HYSTSET VTEMP VP
+X_U1 VTEMP TSET COMPOUT HYSTSET VP GND TMP300_comparator
+X_U2 VP VTEMP GS
+X_U3 VP GND GQuiescent
+RINT VTEMP GND 210e+3
+ISconst VP TSET 3uA
+Dout OUT VP DBREAK
+.MODEL DBREAK D N=0.001 RS=0.001 T_ABS=27
+EOUTCTRL OUTCTRL GND VALUE={IF(V(COMPOUT)>=0.7*V(VP),1,
++IF(V(COMPOUT)<=0.3*V(VP),0,V(OUTCTRL)))}
+S1 OUT GND OUTCTRL GND SWHIGH
+.MODEL SWHIGH VSWITCH Ron=56 Roff=0.33e+06 Von=1 Voff=0
+.ENDS TMP300
+*$
+.SUBCKT GQuiescent n1 n2
+.PARAM Rsers = 210e+3
+.PARAM Vdrs = 0.01
+.PARAM Idrs = {Vdrs/Rsers}
+.PARAM Inom = {750e-3/210e+3}
+.PARAM Idr = 0.125e-06
+GQsource n1 n2  VALUE = {IF(V(n1)==1.8,61e-06 + Idr*(TEMP-25)- 3e-06 - Inom - Idrs *(TEMP-25),
++ IF(V(n1)==3.3,72e-06 + Idr*(TEMP-25)- 3e-06 - Inom - Idrs *(TEMP-25),61e-06))}
+.ENDS GQuiescent
+*$
+.SUBCKT GS n1 n2 
+.PARAM Rser = 210e+3
+.PARAM Vdr = 0.01
+.PARAM Idr = {Vdr/Rser}
+.PARAM Io = {750e-3/210e+3}
+GSsource n1 n2 Value = {Io + Idr *(TEMP-25)}
+.ENDS GS
+*$
+.SUBCKT TMP300_comparator inp inn out hystset vdd gnd 
+Ehyst hyst gnd Value = {IF(V(hystset)<= 0.4,0.025,
++IF(V(hystset)>= V(vdd)-0.4,0.05,0))}
+S5 vdd out 8 0 smoothSW
+EBcrtl 8 0 Value = { IF(V(inp)-V(inn) > V(ref), 1, 0 ) }
+EBref ref 0 Value = {IF(V(8) == 0,V(hyst),
++IF(V(8) == 1,-V(hyst),V(hyst)))}
+.model smoothSW VSWITCH RON=1 ROFF=10G VON=1 VOFF=0
+Rinter out gnd 100e06
+.ENDS TMP300_comparator
+*$

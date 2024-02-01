@@ -1,0 +1,161 @@
+***********************************************************************
+
+*  (C) Copyright 2019 Texas Instruments Incorporated. All rights reserved.
+
+***********************************************************************
+
+***********************************************************************
+
+** This model is designed as an aid for customers of Texas Instruments.
+
+** TI and its licensors and suppliers make no warranties, either expressed
+
+** or implied, with respect to this model, including the warranties of
+
+** merchantability or fitness for a particular purpose. The model is
+
+** provided solely on an "as is" basis. The entire risk as to its quality
+
+** and performance is with the customer
+
+********************************************************************************
+
+*
+
+* Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+
+* Part: CSD87313DMS
+
+* Date: 02/04/2019
+
+* Model Type: 
+
+* Simulator: PSPICE
+
+* Simulator Version: 16.2
+
+* EVM Order Number: 
+
+* EVM Users Guide: 
+
+* Datasheet: 
+
+* Model Version: Final 1.00
+
+*
+
+*****************************************************************************
+
+*
+
+* Updates:
+
+*
+
+* Final 1.00
+
+* Release to Web
+
+*
+**********************************************************************
+* Model History:
+*   12/20/2016 - Strawman
+*   04/06/2017 - v1.0
+*
+**********************************************************************
+*$
+* SUBCKT Definition:  1=D  2=G1  3=G2  4=S1  5=S2
+*
+.SUBCKT	CSD87313DMS 	1	2	3	4	5
+X1	6	2	4	N87313
+R1	1	6		1.5e-5
+R2	1	7		1.5e-5
+X2	7	3	5	N87313
+.ends CSD87313DMS
+* PSpice Model Editor - Version 16.6.0
+*$
+**********************************************************************
+**********************************************************************
+*                                                                    *
+* csd87313dms   -  PSpice Model for use with OrCAD/Allegro           *
+*                                                                    *
+**********************************************************************
+**********************************************************************
+* Characteristics:
+*   Technology:  n-channel 30/10
+*   Assembly:    DMS
+*
+**********************************************************************
+* Model History
+*   n87313 is the silicon model;
+*   csd87313dms is the final part.
+*   Preliminary model based on very limited data.     gd 12/16/2016
+*   Updated based on measurements for datasheet.      gd 04/17/2017
+*   
+* SUBCKT Definition:  1=D  2=G  3=S
+**********************************************************************
+.SUBCKT n87313   1 2 3
+.PARAM  ptrc1   5.9e-3  
+.PARAM  ptrc2   2.00e-5
+.PARAM  pAA	    2.50429
+.PARAM  pwidth {pAA/0.8*2}
+.PARAM  perim  {2.1*pwidth}
+.PARAM  pRgate  2.9
+M1   10 11 12 12  NMOS	W={pwidth} L=0.52u  PS={perim} PD={perim}
+M2   12 11 12 20  PMOSd W={pwidth} L=0.075u  PS={perim} PD={perim}
+DDx  20  10	 DD	{pwidth}
+DBD   8  7	 DBD	{pwidth}
+RDB   8  7   3e10
+CGD0  5  7	 0.5e-12
+CGS0  5  8	 1e-12
+CDS0 10 12	 2e-12
+DDG  14  5   DD	{pwidth}
+DGD  14 10   DD 	{pwidth}
+LGG   2  5	 0.7e-9
+RGG   5 11	 {1 + pRgate}
+RSB  12  9	 RTEMP 0.01e-3
+RSS   9  8 	 RTEMP 0.10e-3
+RSP   8  6 	 0.01e-3
+LSS   6  3	 0.05E-9
+RDP   4  7	 RTEMP 0.05e-3
+RDD   7 10 	 RTEMP 1.35e-3
+LDD   1  4	 0.05E-9
+******************************************************************* 
+.MODEL  NMOS   NMOS (    LEVEL  = 7             Version = 3.2
++ TNOM   = 27            LINT   = 0.05e-6       CAPMOD = 2
++ TOX    = 2.5e-8        NCH    = 3.5e17
++ AGS    = 0.0           PVAG   = 0.1           U0     = 380
++ A0     = 1.0           A1     = 0.1           A2     = 1.0
++ UA     = 3.5e-9        UB     = 5.0e-19       VBM    = -10.0
++ UA1    = 4.5e-9        UB1    = 5e-19         UTE    = -0.50
++ KT1    = -0.44         KT2    = 0.022         KT1L   = 1.0e-12
++ DVT0   = 2.3           DVT1   = 0.55	      DVT2   = -0.033
++ ETA0   = 0.075         ETAB   = -0.07         XJ     = 3e-7
++ PDIBLC1= 0.08          PDIBLC2= 0.005         NLX    = 1.78e-7
++ PSCBE1 = 1e9           PSCBE2 = 1e-8          PCLM   = 1.1
++ VOFF   = -0.04         NFACTOR= 1.30          JS     = 0
++ DROUT  = 0.95          DSUB   = 1.05          DELTA  = 0.01
++ XPART  = 0.0           VOFFCV =-0.08
++ K1     = 1.42          K2     = 0             K3     = 10
++ CJ     = 1e-18         CJSW   = 1e-18         CF     = 0
++ CGSO   = 20e-12        CGDO   = 22e-12        CGBO   = 0    )
+******************************************************************* 
+.MODEL  PMOSd   PMOS (   LEVEL  = 7			Version= 3.2
++ TNOM   = 27		 CAPMOD = 0			VOFFCV = 0.0
++ TOX    = 2.5e-8	 	 VTH0   = -1.0		XPART  = 0.0
++ K1	   = 5.0		 K2	  = -0.10		U0	 = 250
++ CJ     = 1e-18         CJSW   = 1e-18		JS	 = 0
++ CGSO   = 1e-20         CGDO   = 1e-20         CGBO   = 1e-18 )
+******************************************************************* 
+.MODEL DBD D (CJO=285e-12 VJ=0.45 M=0.70 FC=0.5 TT=4e-09 TNOM=27
++  IS=6.3e-11 N=1.15 RS=1.1e-2 TRS1=3e-4 XTI=1.0 BV=32.9
++  TBV1=7.9e-4 TBV2=-1.0e-6 NR=4.0 ISR=1.3e-10 )
+******************************************************************
+.MODEL DD  D (CJO=137e-12 VJ=0.40 M=1.21 IS=5e-16 RS=50 TNOM=27
++  FC=0.9 )
+******************************************************************* 
+.MODEL RTEMP RES (TC1={ptrc1} TC2={ptrc2})
+*******************************************************************
+.ENDS n87313   
+*
+*$

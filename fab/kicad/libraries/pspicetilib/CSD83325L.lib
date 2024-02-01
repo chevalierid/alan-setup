@@ -1,0 +1,125 @@
+*$
+*CSD83325L
+***********************************************************************
+* (C) Copyright 2015 Texas Instruments Incorporated. All rights reserved.
+***********************************************************************
+***********************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose. The model is
+** provided solely on an "as is" basis. The entire risk as to its quality
+** and performance is with the customer
+********************************************************************************
+**Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: CSD83325L
+* Date: 02/02/2015
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number:
+* EVM Users Guide:
+* Datasheet: SLPS494 –NOVEMBER 2014
+* Model Version: Final 1.00
+**
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web
+*
+**********************************************************************
+**********************************************************************
+*                                                                    *
+* CSD83325L   -  PSpice Model for use with OrCAD                     *
+*                                                                    *
+**********************************************************************
+**********************************************************************
+* Characteristics:
+*   Technology:   NCH 30/20
+*
+**********************************************************************
+* Model History: theoritical
+*   tr, 11/06/2014
+*    
+**********************************************************************
+* SUBCKT Definition:  1=S1  2=S2  3=G1	4=G2  5=S3  6= S4
+.SUBCKT	CSD83325L	1	2	3	4   5   6
+.PARAM  ptrc1    	2.75e-3  
+.PARAM  ptrc2    	03.00e-6
+
+X1	D1	3	1	N83325
+X2	D2	4	2	N83325
+R_R1    5  1  1u  TC=0,0 
+R_R2    6  2  1u  TC=0,0 
+RD	D1	D2 7.824e-3	TC=2.75e-3,3.00e-6
+*RD	D1	D	RTEMP 8.400e-3	TC1=2.50e-3 TC2=3.00e-6
+.ends
+*$
+
+* SUBCKT Definition:  1=D  2=G  3=S
+.SUBCKT N83325  1 2 3
+* PARAMETER (local) DEFINITIONS SECTION
+.param	 AAN83325	1.58
+.PARAM  ptrc1    	2.75e-3  
+.PARAM  ptrc2    	03.00e-6
+.PARAM  pwidthP  	{AAN83325/0.8*2}
+.PARAM  pwidth   	{pwidthP*1e6}
+.PARAM  perimP   	{2.1*pwidthP}
+.PARAM  perim    	{perimP*1e6}
+****** MODEL SUBCIRCUIT BEGINS HERE     ******************************
+M1		1	5	6	6	NMOS	W={pwidthP} L=0.5u  PS={perimP} PD={perimP}
+DBD		3	1	 DBD
+CBD0  	1  	3   3e-12
+RBD0  	1  	3   1e10
+DDG1  	1	101	DD
+DDG2  	2	101	DD
+RGG		2	5	300
+RSP   	6	3	0.15e-3
+DESD1	2	30	DDZ
+DESD2	3	30	DDZ
+******************************************************************* 
+.MODEL  NMOS   NMOS (
+* CONTROL PARAMETERS
++ LEVEL  = 7             VERSION = 3.2         CAPMOD = 2
+* DC PARAMETERS
++ NLX    = 1.74E-7       VBM    = -5           DVT0   = 2.2
++ DVT1   = 0.53          DVT2   = -0.032       U0     = 550
++ UA     = 8.0e-9        UB     = 0.0e-19      A0     = 0.9
++ AGS    = 0.0           A1     = 0.0          A2     = 0.9
++ LINT   = 0.055e-6      VOFF   = -0.30        NFACTOR= 1.7
++ ETA0   = 0.005         ETAB   = -0.07        DSUB   = 1.4
++ PCLM   = 3.00          PDIBLC1= 0.02         PDIBLC2= 0.004
++ DROUT  = 0.90          PSCBE1 = 3.0e8        PSCBE2 = 1e-6
++ PVAG   = 0.1           DELTA  = 0.0220       JS     = 0
+* AC AND CAPACITANCE PARAMETERS
++ CGSO   = 1.00e-18		CGDO   = 1e-18        CGBO   = 1e-18
++ CJ     = 1e-18         CJSW   = 1e-18        CF     = 0
+* TEMPERATURE PARAMETERS
++ TNOM   = 25            UTE    = -1.5         KT1    = -0.50
++ KT1L   = 1.0e-15       KT2    = 0.022        UA1    = -01.00e-9
++ UB1    = 5.0e-17      
+* PROCESS PARAMETERS
++ TOX    = 2.50e-8       XJ     = 3e-7          NCH    = 1.275e17
++ NSUB   = 1.0e16)
+******************************************************************* 
+.MODEL  PMOSd   PMOS (   LEVEL  = 1
++ TNOM   = 25            VTO    = -1.0          IS     = 6.0e-14
++ TOX    = 3.0e-8        NSUB   = 2.0e17		GAMMA  = 15
++ CJ     = 1e-18         CJSW   = 1e-18
++ CGSO   = 1e-18         CGDO   = 1e-18         CGBO   = 0  )
+*******************************************************************
+.MODEL DBD D (CJO=1.35e-10 VJ=1.0 M=0.3 TNOM=25
++ FC=0.5 TT=2e-09 XTI=0.0 BV=13.2
++ IS=3.0e-11 N=1.07 RS=1.0e-2 TRS1=4.0e-3)
+*******************************************************************
+.MODEL DD  D (CJO=4.25e-010 VJ=0.9 M=0.50 IS=1e-13 RS=0.1 TNOM=25)
+*******************************************************************
+.MODEL DDZ D (CJO=1e-011 VJ=0.9 M=0.9 IS=1e-13 RS=1.0e+1 TNOM=25 bv=12.1)
+*******************************************************************
+
+*******************************************************************
+.ENDS N83325  
+*$
+

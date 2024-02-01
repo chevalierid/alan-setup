@@ -1,0 +1,113 @@
+* PSpice Model Editor - Version 9.2
+
+*$
+.SUBCKT THS4121 inp1 inn1 vdd vss outp outn vocm
+
+.MODEL p1 PMOS
++ LEVEL=3
++ L=2.0000E-6
++ W=.5
++ RS=10.000E-3
++ RD=10.000E-3
++ VTO=-3
++ RDS=1.0000E6
++ TOX=2.0000E-6
++ CGSO=40.000E-12
++ CGDO=10.000E-12
++ CBD=1.0000E-9
++ RG=5
++ RB=1.0000E-3
++ GAMMA=0
++ KAPPA=0
++ UO=300
+
+.MODEL n1 NMOS
++ LEVEL=3
++ L=2.0000E-6
++ W=5.0000E-6
++ KP=100.00E-6
++ RS=10.000E-3
++ RD=10.000E-3
++ VTO=.7
++ RDS=1.0000E6
++ TOX=200.00E-9
++ CGSO=4.0000E-15
++ CGDO=1.0000E-15
++ CBD=1.0000E-15
++ RG=100
++ IS=10.000E-18
++ RB=1.0000E-3
++ GAMMA=.6
++ DELTA=20.000E-3
++ ETA=20.000E-3
++ KAPPA=0
++ VMAX=13.500E3
++ XJ=200.00E-9
++ KF=1.38e-27
++ AF=1
+
+.MODEL D_break D
++ RS=1.0000E-1
++ CJO=1.0000E-13
++ IS=100e-15
+
+R_R101       vdd vdd1 65 
+R_R102       vdd vdd2 65
+C-C101       N47671 N47742 1.5p
+C_C102       inp2 try 1p
+C_C103       inn1 try 1p
+C_C104       inp1 N47671 2.3p
+C_C105       inn1 N47742 2.3p
+E_E10        VOCM1 vss VOCM vss 1
+R_R16         vss OUTP  25k  
+E_E5         INP2 INP1 CMR vss 1
+V_V6         vdd N125776 0.85Vdc
+I_I4         TRY vss DC 6mAdc  
+C_C1         OUTN vss  4p  
+X_U3         Vdd1 N47671 vdd AMPP CSWIL PARAMS:  IL=3.4m
+C_C6         vss INN1  3p  
+C_C7         AMPN N115715  11.8p  
+C_C2         vss OUTP  4p  
+R_R33         OUTP VCOM  20k  
+R_R17         OUTN vss  25k  
+M_Q11         N47671 INP2 TRY TRY N1   
++ W=1.5m         
+G_G3         CMR vss N119932 vss 30e-6
+X_U4         vdd2 N47742 vdd AMPN CSWIL PARAMS:  IL=3.4m
+R_R34         VCOM OUTN  20k  
+R_R9         VOCM1 AMPN  10k  
+D_D5         OUTP N125776 D_BREAK 32
+M_Q12         N47742 INN1 TRY TRY N1   
++ W=1.5m         
+L_L1         CMR N119774  40n  
+E_E3         N119932 N120193 INP1 INN1 0.5
+V_V7         vss N126207 -0.8
+I_I6         AMPN vss DC 3mAdc  
+D_D6         OUTN N125776 D_BREAK 32
+E_E4         N120193 vss INN1 vss 1
+D_D7         N126207 OUTP D_BREAK 32
+R_R7         vss N119774  0.5  
+C_C8         AMPP N115811  11.8p  
+D_D8         N126207 OUTN D_BREAK 32
+G_G4         OUTP VOCM1 AMPN VOCM1 50m
+R_R5         N115811 OUTN  9.5  
+R_R10         VOCM1 AMPP  10k  
+G_G13         TRY vss VCOM VOCM 200m
+I_I7         AMPP vss DC 3mAdc  
+C_C5         vss INP1  3p  
+R_R6         N115715 OUTP  9.5  
+G_G14         TRY vss VCOM VOCM 200m
+G_G5         OUTN VOCM1 AMPP VOCM1 50m
+.ENDS THS4121
+*$
+
+.SUBCKT cswil 1 2 3 4  
++ PARAMS: 
++ IL = 800u ;
+v1  1 2 0 
+Gout 3 4 value={limit(I(v1),IL,-IL)} ;
+.ENDS 
+
+
+
+*$

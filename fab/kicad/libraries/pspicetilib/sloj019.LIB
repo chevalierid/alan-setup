@@ -1,0 +1,47 @@
+* TLV2772 operational amplifier "macromodel" subcircuit
+* created using Parts release 8.0 on 12/12/97 at 10:08
+* Parts is a MicroSim product.
+*
+* connections:   non-inverting input
+*                | inverting input
+*                | | positive power supply
+*                | | | negative power supply
+*                | | | | output
+*                | | | | |
+.subckt TLV2772  1 2 3 4 5
+*
+  c1   11 12 2.8868E-12
+  c2    6  7 10.000E-12
+  css  10 99 2.6302E-12
+  dc    5 53 dy
+  de   54  5 dy
+  dlp  90 91 dx
+  dln  92 90 dx
+  dp    4  3 dx
+  egnd 99  0 poly(2) (3,0) (4,0) 0 .5 .5
+  fb    7 99 poly(5) vb vc ve vlp vln 0 15.513E6 -1E3 1E3 16E6 -16E6
+  ga    6  0 11 12 188.50E-6
+  gcm   0  6 10 99 9.4472E-9
+  iss   3 10 dc 145.50E-6
+  hlim 90  0 vlim 1K
+  j1   11  2 10 jx1
+  j2   12  1 10 jx2
+  r2    6  9 100.00E3
+  rd1   4 11 5.3052E3
+  rd2   4 12 5.3052E3
+  ro1   8  5 17.140
+  ro2   7 99 17.140
+  rp    3  4 4.5455E3
+  rss  10 99 1.3746E6
+  vb    9  0 dc 0
+  vc    3 53 dc .82001
+  ve   54  4 dc .82001
+  vlim  7  8 dc 0
+  vlp  91  0 dc 47
+  vln   0 92 dc 47
+.model dx D(Is=800.00E-18)
+.model dy D(Is=800.00E-18 Rs=1m Cjo=10p)
+.model jx1 PJF(Is=2.2500E-12 Beta=244.20E-6 Vto=-.99765)
+.model jx2 PJF(Is=1.7500E-12 Beta=244.20E-6 Vto=-1.002350)
+.ends
+*$

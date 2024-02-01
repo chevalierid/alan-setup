@@ -1,0 +1,133 @@
+*$
+* INA106
+*****************************************************************************
+* (C) Copyright 2022 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Online Design Tools, Texas Instruments Inc.
+* Part: INA106
+* Date: 14JUL2022
+* EVM Order Number: N/A 
+* EVM Users Guide:  N/A 
+* Datasheet: SBOS152A - AUGUST 1987 - REVISED OCTOBER 2003
+*
+* Model Version: Final 1.1
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.1
+* 1. Updated PSpice Symbol.
+* 2. Added .ENDS name as INA106.
+*
+* Final 1.0: 
+* Release to Web
+*
+***************************************************************************** 
+* Model Usage Notes:
+* 1. Model file is updated with latest header.
+*****************************************************************************
+***** INA106 SUB-CIRCUIT
+* CONNECTIONS:          NON-INVERTING INPUT
+*                       |  INVERTING INPUT
+*                       |  |  POSITIVE POWER SUPPLY
+*                       |  |  |  NEGATIVE POWER SUPPLY
+*                       |  |  |  |  OUTPUT
+*                       |  |  |  |  |  REFERENCE
+*                       |  |  |  |  |  |  SENSE
+*                       |  |  |  |  |  |  |
+.SUBCKT INA106          1  2  3  4  5  8  9
+*****************************************************************************
+***** A3_106E SUB-CIRCUIT
+* CONNECTIONS:          NON-INVERTING INPUT
+*                       |  INVERTING INPUT
+*                       |  | POSITIVE POWER SUPPLY
+*                       |  |  |  NEGATIVE POWER SUPPLY
+*                       |  |  |  |  OUTPUT
+*                       |  |  |  |  |
+X1                     14 13  3  4  5  A3_106E
+*
+R1    2   13   10000
+R2    13   9   100010
+C2    13   9   0.1PF
+R3    1   14   10000
+R4    14   8   100000
+*
+C1CM  14   0   1.5PF
+C2CM  13   0   1.5PF
+CDIF  14  13   1.5PF
+*
+.ENDS INA106
+*
+* A3_106E OPERATIONAL AMPLIFIER "MACROMODEL" SUBCIRCUIT
+* "E" IS ENHANCED MODEL
+* CREATED USING PARTS RELEASE 4.03 ON 10/09/90 AT 08:58
+*
+* CONNECTIONS:   NON-INVERTING INPUT
+*                | INVERTING INPUT
+*                | | POSITIVE POWER SUPPLY
+*                | | | NEGATIVE POWER SUPPLY
+*                | | | | OUTPUT
+*                | | | | |
+.SUBCKT A3_106E  1 2 3 4 5
+*
+C1   11 12 9.283E-12
+C2    6  7 13.00E-12
+DC    5 53 DX
+DE   54  5 DX
+DLP  90 91 DX
+DLN  92 90 DX
+DP    4  3 DX
+EGND 99  0 POLY(2) (3,0) (4,0) 0 .5 .5
+FB    7 99 POLY(5) VB VC VE VLP VLN 0 4.081E6 -4E6 4E6 4E6 -4E6
+GA    6  0 11 12 408.4E-6
+GCM   0  6 10 99 408.4E-12
+IEE  10  4 DC 39.14E-6
+HLIM 90  0 VLIM 1K
+Q1   11  2 13 QX
+Q2   12  1 14 QX
+R2    6  9 100.0E3
+RC1   3 11 2.449E3
+RC2   3 12 2.449E3
+RE1  13 10 1.118E3
+RE2  14 10 1.118E3
+REE  10 99 5.110E6
+RO1   8  5 60
+RO2   7 99 60
+*  RP    3  4 20.53E3
+VB    9  0 DC 0
+VC    3 53 DC 4.500
+VE   54  4 DC 2
+VLIM  7  8 DC 0
+VLP  91  0 DC 20
+VLN   0 92 DC 20
+****************************
+* A3_106 "E" - ENHANCEMENTS
+****************************
+* OUTPUT SUPPLY MIRROR
+FQ3   0 20 POLY(1) VLIM 0  1
+DQ1  20 21 DX
+DQ2  22 20 DX
+VQ1  21  0 0
+VQ2  22  0 0
+FQ1   3  0 POLY(1) VQ1  1.414E-3  1
+FQ2   0  4 POLY(1) VQ2  1.414E-3 -1
+* QUIESCIENT CURRENT
+RQ    3  4  6.5E5
+****************************
+.MODEL DX D(IS=800.0E-18)
+.MODEL QX NPN(IS=800.0E-18 BF=278.6)
+.ENDS A3_106E

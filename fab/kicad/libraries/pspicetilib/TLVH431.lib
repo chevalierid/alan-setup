@@ -1,0 +1,50 @@
+*$
+* TLVH431
+*****************************************************************************
+* (C) Copyright 2010 Texas Instruments Incorporated. All rights reserved.  **
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.    **
+** TI and its licensors and suppliers make no warranties, either expressed **
+** or implied, with respect to this model, including the warranties of     **
+** merchantability or fitness for a particular purpose. The model is       **
+** provided solely on an "as is" basis. The entire risk as to its quality  **
+** and performance is with the customer                                    **   
+*****************************************************************************
+*
+** Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: TLVH431
+* Date: 10/20/2010
+* Simulator: PSpice
+* Simulator Version: 16.0.0.p001
+* Datasheet: SLVS555I - November 2004 - Revised September 2009
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+.SUBCKT TLVH431 A K Fdbk
+V_V2         N59715 A 1.24
+G_G4         K A TABLE { V(STAGE2, A) } 
++ ( (-10,0)(0,0)(80m,80m)(10,81m) )
+R_R1         A STAGE1  1  
+R_R2         A STAGE2  1  
+C_C2         A STAGE1  159e-6  
+C_C3         A STAGE2  80n  
+G_G1         A STAGE1 Fdbk N59715 4
+X_D1          A STAGE1 DC_1mV_1A_1V_1nA
+G_G3         A STAGE2 STAGE1 A 1
+X_D2          STAGE1 N59689 DC_1mV_1A_1V_1nA
+X_D3          A K DC_1mV_1A_1V_1nA
+V_V1         N59689 A 80m
+.ENDS TLVH431
+*$
+.subckt DC_1mV_1A_1V_1nA A C
+G1 A C TABLE { V(A, C) } ( (-1,-1n)(0,0)(1m,1) (2m,10) (3m,1000) )
+.ends DC_1mV_1A_1V_1nA 
+*$

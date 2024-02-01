@@ -1,0 +1,197 @@
+* INA193
+*****************************************************************************
+* (C) Copyright 2012 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: INA193
+* Date: 10/23/13
+* Model Type: All In One
+* Simulator: TINA-TI
+* Simulator Version: Allegro CIS 16.2, w/Pspice Plug-In 16.2
+* EVM Order Number: N/A 
+* EVM Users Guide: N/A
+* Datasheet: SBOS307F –MAY 2004–REVISED FEBRUARY 2010
+*
+* Model Version: 2.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 : Release to Web
+* Version 2.0 : New model
+*
+*****************************************************************************
+*****************************************************************************
+*SUBCKT INA193 VOUT GND Vin+ Vin- Vs 
+*PINOUT ORDER    1   2   3    4    5
+.SUBCKT INA193 1 2 3 4 5 
+V2          37 38 1U
+V4          2 52 400M
+V1          VDD 68 150M
+IS1         4 2 9U
+VCCVS3_in   39  2 
+HCCVS3      40 2 VCCVS3_in   1
+C3          39 41 530.5U 
+R3          39 41 1 
+EVCVS7      41 2 IN+_Commonmode 2  1U
+VCCVS4_in   42 2 
+HCCVS4      43 2 VCCVS4_in   1
+EVCVS9      44 2 VDD 2  5.6234U
+C4          44 42 1.5915M 
+R9          44 42 1 
+XU25        43 2 45 46 VCVS_LIMIT_0
+VCCCS1_in   47  2 
+FCCCS1      CL_clamp 2 VCCCS1_in   -1
+C2          48 47 500N 
+R8          48 47 R_RES_1 1 
+EVCVS1      48 2 49 2  1
+R7          1 50 R_RES_1 22 
+XU8         IN+_Commonmode 51 37 IN+_Commonmode VCVS_LIMIT_1
+C17         53 2 1P  
+C19         2 54 1P  
+R26         55 54 1 
+R25         56 53 1 
+R6          57 CL_clamp 10M 
+SW2         57 55 54 2  S_VSWITCH_1
+SW1         56 57 2 53  S_VSWITCH_2
+XU22        58 Vimon 56 2 VCVS_LIMIT_2
+XU21        52 Vimon 55 2 VCVS_LIMIT_2
+EVCVS5      58 2 Vclim 2  1K
+XU10        VDD 2 Vclim 2 VCCS_LIMIT_0
+EVCVS6      46 2 59 51  1
+L4          60 61 150U  
+R11         62 63 R_RES_1 1MEG 
+EVCVS4      62 2 1 2  1
+XU3         63 2 5 2 VCCS_LIMIT_1
+GVCCS4      5 2 Vimon 2  1M
+EVCVS3      VDD 2 5 2  1
+R1          Vclp 2 1T 
+C1          49 2 1N  
+C7          50 2 58P  
+R15         64 61 628.3 
+R13         65 49 R_RES_1 440 
+EVCVS8      65 2 66 2  1
+XR103       2 67 RNOISE_FREE_0
+XU13        67 66 0 66 VCCS_LIMIT_2
+C6          66 0 500N  
+R12         66 0 R_RES_1 10K 
+XU12        59 38 noise_macro_0
+XU23        Vimon 2 68 Vclp VCVS_LIMIT_3
+XU11        CL_clamp 2 64 2 VCVS_LIMIT_4
+R5          CL_clamp 2 R_RES_1 1 
+EVCVS2      69 2 Vclp 2  1
+VCCVS1_in   61 1
+HCCVS1      Vimon 0 VCCVS1_in   1K
+ROUT        64 60 R_RES_1 1.5 
+R4          4 51 R_RES_1 1U 
+R2          3 IN+_Commonmode R_RES_1 1U 
+XU2         40 2 45 70 VCVS_LIMIT_5
+XU26        70 2  2  67 69 VCCS_LIMIT_3
+.MODEL R_RES_1 RES ( TCE=0 T_ABS=-300)
+.MODEL S_VSWITCH_1 VSWITCH (RON=1 ROFF=1T VON=10 VOFF=-10)
+.MODEL S_VSWITCH_2 VSWITCH (RON=1 ROFF=1T VON=10 VOFF=-10)
+
+.ENDS INA193
+**************
+.SUBCKT VCCS_LIMIT_0  VC+ VC- VOUT+ VOUT-            
+.PARAM GAIN = 5.5E-3
+.PARAM IPOS = 27.5M
+.PARAM INEG = 0
+ESAT 1 0 VALUE={-54.54E-6*(TEMP) + 0.02981}
+EOUT VOUT+ VOUT- VALUE={LIMIT((-23E-6*(TEMP) + 0.00859)*V(VC+,VC-) + (0.00003419*(TEMP) - 12.024E-3), V(1,0),INEG)}
+.ENDS VCCS_LIMIT_0
+****************
+.SUBCKT VCCS_LIMIT_1  VC+ VC- IOUT+ IOUT-             
+.PARAM GAIN = 0.05E-3
+.PARAM IPOS = .5
+.PARAM INEG = -.5 
+E1 1 0 VALUE={LIMIT(1.25M+1M*V(VC+,VC-),1.5M,1.25M)}
+E2 2 1 VALUE={LIMIT(.14358M*V(VC+,VC-) - .035875M,5M,0)}
+R 2 0 1M
+G1 IOUT+ IOUT- VALUE={V(2,0)}
+.ENDS VCCS_LIMIT_1
+**************
+.SUBCKT VCCS_LIMIT_2  VC+ VC- IOUT+ IOUT-            
+.PARAM GAIN = 1.25
+.PARAM IPOS = .5
+.PARAM INEG = -.5
+G1 IOUT+ IOUT- VALUE={LIMIT(GAIN*V(VC+,VC-),IPOS,INEG)}
+.ENDS VCCS_LIMIT_2
+**************
+.SUBCKT VCCS_LIMIT_3  VC+ VC- IOUT+ IOUT- VSAT            
+.PARAM GAIN = 20U
+.PARAM IPOS = 18U
+.PARAM INEG = 0
+G1 IOUT+ IOUT- VALUE={LIMIT(GAIN*V(VC+,VC-),V(VSAT,0)*1U,INEG)}
+.ENDS VCCS_LIMIT_3
+**************
+.SUBCKT VCVS_LIMIT_0  VC+ VC- VOUT+ VOUT-           
+.PARAM GAIN = 1
+.PARAM VPOS = 20M
+.PARAM VNEG = -20M
+E1 VOUT+ VOUT- VALUE={LIMIT(GAIN*V(VC+,VC-),VPOS,VNEG)}
+.ENDS VCVS_LIMIT_0 
+**************
+.SUBCKT VCVS_LIMIT_1  VC+ VC- VOUT+ VOUT-          
+.PARAM GAIN = 50
+.PARAM VPOS = 6M
+.PARAM VNEG = 0
+E1 VOUT+ VOUT- VALUE={LIMIT(-.725*V(VC+,VC-)+(15M-79.78U),15M-79.48U,.5M-79.48U)}
+*E2 VOUT- 1  VALUE={LIMIT(0.0045*V(VC+,VC-)-0.09E-3,.38M,0)}
+.ENDS VCVS_LIMIT_1
+**************
+.SUBCKT VCVS_LIMIT_2  VC+ VC- VOUT+ VOUT-            
+.PARAM GAIN = 1000
+.PARAM VPOS = 5000
+.PARAM VNEG = -5000
+E1 VOUT+ VOUT- VALUE={LIMIT(GAIN*V(VC+,VC-),VPOS,VNEG)}
+.ENDS VCVS_LIMIT_2 
+**************
+.SUBCKT VCVS_LIMIT_3  VC+ VC- VOUT+ VOUT-             
+.PARAM GAIN = 10.6M
+.PARAM VPOS = 2
+.PARAM VNEG = 0
+*E1 VOUT+ 1 VALUE={LIMIT((0.2343E-3*(TEMP) +78.46E-3)*V(VC+,VC-),VPOS,VNEG)}
+E1 VOUT+ 1 VALUE={LIMIT((0.1696E-3*(TEMP) +48.786E-3)*V(VC+,VC-),VPOS,VNEG)}
+*E2 VOUT+ VOUT- VALUE={(0.5+0.5*TANH((V(VC+,VC-)-17.5)*10E12))*LIMIT(EXP(0.3*(V(VC+,VC-)-17.5)),5,0)}
+E2 1 VOUT- VALUE={LIMIT(EXP(.5*(V(VC+,VC-)-(-.051515*(TEMP)+24.94))),(V(VOUT+,0)-2),0)}
+*(0.5+0.5*TANH((V(VC+,VC-)-17.5)*10E8))*
+.ENDS VCVS_LIMIT_3
+**************
+.SUBCKT VCVS_LIMIT_4  VC+ VC- VOUT+ VOUT-          
+.PARAM GAIN = 1
+.PARAM VPOS = 18
+.PARAM VNEG = 4M
+E1 VOUT+ VOUT- VALUE={LIMIT(GAIN*V(VC+,VC-),VPOS,VNEG)}
+.ENDS VCVS_LIMIT_4
+**************
+.SUBCKT VCVS_LIMIT_5  VC+ VC- VOUT+ VOUT-            
+.PARAM GAIN = -1
+.PARAM VPOS = 20M
+.PARAM VNEG = -20M
+E1 VOUT+ VOUT- VALUE={LIMIT(GAIN*V(VC+,VC-),VPOS,VNEG)}
+.ENDS VCVS_LIMIT_5 
+**************
+.SUBCKT noise_macro_0 + -
+EVCVS1      + - 71 0  1
+R1          71 0 R_RES_1 96.3K 
+.MODEL R_RES_1 RES ( TCE=0 T_ABS=25)
+.ENDS
+***************
+.SUBCKT RNOISE_FREE_0  1 2
+*ROHMS = VALUE IN OHMS OF NOISELESS RESISTOR
+.PARAM ROHMS=1E6
+ERES 1 3 VALUE = { I(VSENSE) * ROHMS }
+RDUMMY 30 3 1
+VSENSE 30 2 DC 0V
+.ENDS RNOISE_FREE_0 
+***************

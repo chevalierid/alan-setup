@@ -1,0 +1,432 @@
+*$
+*****************************************************************************
+* (C) Copyright 2021 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose. The model is
+** provided solely on an "as is" basis. The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: TPS7A44
+* Date: 19NOVEMBER2021
+* Model Type: Transient
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.s003
+* EVM Order Number:
+* EVM Users Guide:
+* Datasheet:
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web
+*
+*****************************************************************************
+* Model Usage Notes:
+*
+* 1. The following features have been modeled
+*      a. Start-up behaviour is modeled
+*      b. Line transients 
+*      c. Load transients
+*      d. Current Limit and current foldback is modeled
+*      e. PSRR is modeled only till 1st pole and 1st Zero (Model limitation)
+* 2. Quiescent current, noise characteristics and temperature effects are not modeled
+*****************************************************************************
+*$
+
+.SUBCKT TPS7A4433_TRANS EN MVSEL1 MVSEL2 GND MID_OUT PG IN OUT
+V_U2_U5_V7         U2_U5_N924928 0 .9V
+V_U2_U5_V5         U2_U5_N924944 0 .5V
+X_U2_U5_U12         MVSEL1 U2_U5_N924928 U2_U5_N924944 U2_U5_N917550
++  COMPHYS_BASIC_GEN PARAMS: VDD=5 VSS=0 VTHRESH=0.5
+V_U2_U5_V9         U2_U5_N929523 0 5
+V_U2_U5_V8         U2_U5_N924940 0 .9V
+V_U2_U5_V10         U2_U5_N928748 0 5
+X_U2_U5_U13         MVSEL2 U2_U5_N924940 U2_U5_N924948 U2_MVSEL12V
++  COMPHYS_BASIC_GEN PARAMS: VDD=5 VSS=0 VTHRESH=0.5
+V_U2_U5_V11         U2_U5_N929984 0 5
+V_U2_U5_V6         U2_U5_N924948 0 .5V
+X_U2_U5_NOR_2_S5    U2_MVSEL12V 0 U2_MVSEL15V 0 NOR_2_U2_U5_NOR_2_S5 
+X_U2_U5_NOR_2_S6    U2_U5_N917550 0 U2_MVSEL15V 0 NOR_2_U2_U5_NOR_2_S6 
+R_U2_U5_NOR_2_R1         U2_MVSEL15V U2_U5_N928748  100k TC=0,0 
+R_U2_U5_INVERTER_R1         U2_U5_N917475 U2_U5_N929984  100k TC=0,0 
+X_U2_U5_INVERTER_S5    U2_MVSEL12V 0 U2_U5_N917475 0 INVERTER_U2_U5_INVERTER_S5
++  
+X_U2_U5_AND_2_S5    U2_U5_N917550 0 U2_U5_N929523 U2_U5_AND_2_N946597
++  AND_2_U2_U5_AND_2_S5 
+X_U2_U5_AND_2_S6    U2_U5_N917475 0 U2_U5_AND_2_N946597 U2_MVSEL10V
++  AND_2_U2_U5_AND_2_S6 
+R_U2_U5_AND_2_R1         0 U2_MVSEL10V  100k TC=0,0 
+C_U2_C4         0 U2_N928858  0.7u  
+R_U2_R16         U2_FB MID_OUT  600k  
+E_U2_ABM1         U2_N928408 0 VALUE { {MIN(V(U2_N928402),
++  (V(U2_VZZ_INT)+(ILIM*ROUT)))}    }
+X_U2_S4    U2_MVSEL10V 0 U2_FB U2_N946544 TPS7A44_U2_S4 
+R_U2_R17         0 U2_N946544  84931 TC=0,0 
+X_U2_S2    U2_N928858 0 IN U2_N928134 TPS7A44_U2_S2 
+C_U2_C5         GND U2_N928134  0.01u  
+E_U2_E11         U2_V_FBK 0 VALUE { V(U2_FB, GND) }
+X_U2_U3         U2_DISCH_A U2_DISCH_B INV_DELAY_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5 DELAY=10n
+C_U2_C2         U2_VXX U2_V_INT  {1/(6.28*PSRR*RINP*ZERO*1)}  
+E_U2_E10         U2_N928520 GND VALUE { V(U2_N928408, 0) }
+E_U2_E7         U2_VZZ_INT 0 VALUE { V(U2_VZZ, GND) }
+R_U2_R2         U2_V_INT U2_VXX  {PSRR*RINP}  
+E_U2_E1         U2_EN_INT 0 VALUE { V(EN, GND) }
+V_U2_U1_V5         U2_U1_EN_HYS 0 {EHYS}
+E_U2_U1_E1         U2_U1_DROP 0 TABLE { V(U2_LOAD, 0) } 
++ ( (100m,255m)(150m,345m) )
+X_U2_U1_U15         U2_VIN_INT U2_U1_N08002 U2_U1_N08864 U2_U1_VIN_OK
++  COMPHYS_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+X_U2_U1_U12         U2_EN_OK U2_U1_N08828 d_d1 PARAMS:
+R_U2_U1_R2         0 U2_U1_N08110  1G  
+E_U2_U1_ABM4         U2_U1_N08364 0 VALUE { V(U2_U1_N08530)  
++ * (ABS(V(U2_VOUT1)) + 1e-6)  
++ / (ABS(V(U2_V_FBK)) + 1e-6)  }
+E_U2_U1_ABM5         U2_U1_N08482 0 VALUE { MIN(V(U2_U1_N08110),  
++ MAX(V(U2_VIN_INT) -0.3, 0))   }
+X_U2_U1_U11         U2_U1_N08530 U2_U1_N08522 d_d1 PARAMS:
+R_U2_U1_R5         U2_U1_N18974 U2_V_INT  10 TC=0,0 
+V_U2_U1_V6         U2_U1_EN_IH 0 {VENB}
+C_U2_U1_C5         0 U2_U1_N08530  {0.1*TTRN/10} IC=0 TC=0,0 
+E_U2_U1_E12         U2_U1_N18974 GND VALUE { V(U2_U1_N08482, 0) }
+X_U2_U1_U16         U2_U1_N08828 U2_U1_N08622 BUF_DELAY_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=0.5 DELAY=10n
+V_U2_U1_V3         U2_U1_N08864 0 {UVLO_HYS}
+C_U2_U1_C2         0 U2_U1_N08110  1n  
+C_U2_U1_C3         GND U2_V_INT  1n  
+R_U2_U1_R4         U2_U1_N08364 U2_U1_N08110  10 TC=0,0 
+X_U2_U1_U14         U2_U1_N08828 U2_EN_OK BUF_DELAY_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=0.5 DELAY={TTRN}
+G_U2_U1_ABMI1         U2_U1_N08522 U2_U1_N08530 VALUE { {IF(V(U2_EN_OK)>0.5 &
++  V(U2_U1_VIN_OK)>0.5, 0.06, 0)}    }
+V_U2_U1_V7         U2_U1_N08522 0 1.155
+X_U2_U1_U13         U2_EN_INT U2_U1_EN_IH U2_U1_EN_HYS U2_U1_N08828
++  COMPHYS_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+E_U2_U1_ABM10         U2_DISCH 0 VALUE { if( V(U2_U1_VIN_OK) > 0.5 &
++  V(U2_U1_N08622) >0.5,1,0)    }
+V_U2_U1_V4         U2_U1_N08002 0 {UVLO}
+E_U2_E12         U2_N929956 0 U2_LOAD 0 -50
+R_U2_R18         0 U2_N946566  69145 TC=0,0 
+R_U2_R15         U2_N928520 U2_VYY  10  
+C_U2_C8         GND U2_VYY  1n  TC=0,0 
+X_U2_S5    U2_MVSEL12V 0 U2_FB U2_N946566 TPS7A44_U2_S5 
+E_U2_E6         U2_VOUT1 0 VALUE { V(MID_OUT, GND) }
+E_U2_ABM3         U2_N929362 0 VALUE { IF(V(U2_DISCH)>0.5,1,0)    }
+R_U2_R14         U2_N929956 U2_N929962  1.5k TC=0,0 
+E_U2_postReg_ABM1         U2_postReg_N844292 0 VALUE { 
++ {MIN(V(U2_postReg_N501262), (V(U2_postReg_VZZ_INT)+(ILIM*ROUT_post)))}    }
+C_U2_postReg_C6         0 U2_postReg_DISCH_A  1n  
+C_U2_postReg_C8         0 U2_postReg_VYY  1n  TC=0,0 
+E_U2_postReg_E1         U2_postReg_EN_INT 0 VALUE { V(U2_EN_INT, 0) }
+R_U2_postReg_R1         U2_postReg_VXX U2_postReg_N430319  {RINP_post}  
+X_U2_postReg_S4    U2_postReg_N940769 0 PG 0 TPS7A44_postreg_U2_postReg_S4 
+E_U2_postReg_E7         U2_postReg_VZZ_INT 0 VALUE { V(U2_postReg_VZZ, 0) }
+R_U2_postReg_R14         U2_postReg_N906370 U2_postReg_N906376  1.5k TC=0,0 
+R_U2_postReg_R10         U2_EN_INT 0  1E6 TC=0,0 
+G_U2_postReg_U1_ABMI1         U2_postReg_U1_N27081 U2_postReg_U1_N27189 VALUE {
++  {IF(V(U2_postReg_EN_OK)>0.5 & V(U2_postReg_U1_VIN_OK)>0.5, 0.06, 0)}    }
+X_U2_postReg_U1_U14         U2_postReg_U1_N27603 U2_postReg_EN_OK
++  BUF_DELAY_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=0.5 DELAY={TTRN_post}
+V_U2_postReg_U1_V6         U2_postReg_U1_EN_IH 0 {VENB}
+V_U2_postReg_U1_V3         U2_postReg_U1_N27121 0 {UVLO_HYS}
+X_U2_postReg_U1_U12         U2_postReg_EN_OK U2_postReg_U1_N27603 d_d1 PARAMS:
+C_U2_postReg_U1_C2         0 U2_postReg_U1_N27359  1n  
+E_U2_postReg_U1_E1         U2_postReg_U1_DROP 0 TABLE { V(U2_postReg_LOAD, 0) }
++  
++ ( (100m,255m)(150m,345m) )
+X_U2_postReg_U1_U15         U2_postReg_VIN_INT U2_postReg_U1_N27035
++  U2_postReg_U1_N27121 U2_postReg_U1_VIN_OK COMPHYS_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=0.5
+C_U2_postReg_U1_C5         0 U2_postReg_U1_N27189  {0.1*TTRN_post/10} IC=0
++  TC=0,0 
+R_U2_postReg_U1_R4         U2_postReg_U1_N27353 U2_postReg_U1_N27359  10 TC=0,0
++  
+C_U2_postReg_U1_C3         0 U2_postReg_V_INT  1n  
+E_U2_postReg_U1_ABM4         U2_postReg_U1_N27353 0 VALUE {
++  V(U2_postReg_U1_N27189)  
++ * (ABS(V(U2_postReg_VOUT1)) + 1e-6)  
++ / (ABS(V(U2_postReg_V_FBK)) + 1e-6)  }
+V_U2_postReg_U1_V7         U2_postReg_U1_N27081 0 1.155
+V_U2_postReg_U1_V5         U2_postReg_U1_EN_HYS 0 {EHYS}
+X_U2_postReg_U1_U16         U2_postReg_U1_N27603 U2_postReg_U1_N27907
++  BUF_DELAY_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=0.5 DELAY=10n
+X_U2_postReg_U1_U11         U2_postReg_U1_N27189 U2_postReg_U1_N27081 d_d1
++  PARAMS:
+E_U2_postReg_U1_E12         U2_postReg_U1_N27327 0 VALUE {
++  V(U2_postReg_U1_N27319, 0) }
+X_U2_postReg_U1_U13         U2_postReg_EN_INT U2_postReg_U1_EN_IH
++  U2_postReg_U1_EN_HYS U2_postReg_U1_N27603 COMPHYS_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=0.5
+V_U2_postReg_U1_V4         U2_postReg_U1_N27035 0 {UVLO}
+R_U2_postReg_U1_R5         U2_postReg_U1_N27327 U2_postReg_V_INT  10 TC=0,0 
+E_U2_postReg_U1_ABM10         U2_postReg_DISCH 0 VALUE { if(
++  V(U2_postReg_U1_VIN_OK) > 0.5 & V(U2_postReg_U1_N27907) >0.5,1,0)    }
+E_U2_postReg_U1_ABM5         U2_postReg_U1_N27319 0 VALUE {
++  MIN(V(U2_postReg_U1_N27359),  
++ MAX(V(U2_postReg_VIN_INT) -0.3, 0))   }
+R_U2_postReg_U1_R2         0 U2_postReg_U1_N27359  1G  
+E_U2_postReg_E11         U2_postReg_V_FBK 0 VALUE { V(U2_postReg_FB, 0) }
+C_U2_postReg_C5         0 U2_postReg_N430319  0.01u  
+V_U2_postReg_V3         U2_postReg_N940801 0 {VREF*.93}
+C_U2_postReg_C1         U2_postReg_VXX U2_postReg_N430319  
++ {1/(6.28*RINP_post*POLE_post)}  
+X_U2_postReg_U4         U2_postReg_V_FBK U2_postReg_N940801 U2_postReg_N940847
++  U2_postReg_N940757 COMPHYS_BASIC_GEN PARAMS: VDD=5 VSS=0 VTHRESH=0.5
+E_U2_postReg_ABM3         U2_postReg_N430701 0 VALUE {
++  IF(V(U2_postReg_DISCH)>0.5,1,0)    }
+R_U2_postReg_R2         U2_postReg_V_INT U2_postReg_VXX  {PSRR_post*RINP_post} 
++  
+R_U2_postReg_R16         U2_postReg_FB OUT  {(VOUT/VREF-1)*600k}  
+R_U2_postReg_R9         U2_postReg_N440312 OUT  120  
+X_U2_postReg_S1    U2_postReg_DISCH_A 0 U2_postReg_N430233 OUT
++  TPS7A44_postreg_U2_postReg_S1 
+C_U2_postReg_C7         U2_postReg_VXX U2_postReg_N906376  1n  
+R_U2_postReg_R5         U2_postReg_N431149 U2_postReg_VYY  {ROUT_post}  
+X_U2_postReg_H2    U2_postReg_VZZ U2_postReg_N430233 U2_postReg_LOAD 0
++  TPS7A44_postreg_U2_postReg_H2 
+V_U2_postReg_V2         U2_postReg_N940847 0 {VREF*.03}
+R_U2_postReg_R15         U2_postReg_N864140 U2_postReg_VYY  10  
+R_U2_postReg_R8         U2_postReg_EN_OK U2_postReg_N855074  50 TC=0,0 
+X_U2_postReg_U5         U2_postReg_N940763 U2_postReg_N940769  $G_DPWR 0 INV
+E_U2_postReg_E9         U2_postReg_N501262 0 VALUE { V(U2_postReg_VXX, 0) }
+E_U2_postReg_E12         U2_postReg_N906370 0 U2_postReg_LOAD 0 -50
+R_U2_postReg_R7         U2_postReg_N430701 U2_postReg_DISCH_A  10 TC=0,0 
+E_U2_postReg_E8         U2_postReg_VIN_INT 0 VALUE { V(MID_OUT, 0) }
+C_U2_postReg_C2         U2_postReg_VXX U2_postReg_V_INT  
++ {1/(6.28*PSRR_post*RINP_post*ZERO_post*1)}  
+C_U2_postReg_C4         0 U2_postReg_N855074  .7u  
+X_U2_postReg_S3    U2_postReg_DISCH_B 0 U2_postReg_N440312 0
++  TPS7A44_postreg_U2_postReg_S3 
+R_U2_postReg_R17         0 U2_postReg_FB  600k  
+X_U2_postReg_F1    U2_postReg_N431149 U2_postReg_VZZ U2_postReg_N430319
++  U2_postReg_VYY TPS7A44_postreg_U2_postReg_F1 
+X_U2_postReg_U3         U2_postReg_DISCH_A U2_postReg_DISCH_B
++  INV_DELAY_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=0.5 DELAY=10n
+R_U2_postReg_R18         U2_postReg_N940757 U2_postReg_N940763  .0001 TC=0,0 
+E_U2_postReg_E6         U2_postReg_VOUT1 0 VALUE { V(OUT, 0) }
+E_U2_postReg_E10         U2_postReg_N864140 0 VALUE { V(U2_postReg_N844292, 0)
++  }
+X_U2_postReg_S2    U2_postReg_N855074 0 MID_OUT U2_postReg_N430319
++  TPS7A44_postreg_U2_postReg_S2 
+C_U2_C1         U2_VXX U2_N928134  {1/(6.28*RINP*POLE)}  
+X_U2_F1    U2_N928482 U2_VZZ U2_N928134 U2_VYY TPS7A44_U2_F1 
+E_U2_E9         U2_N928402 0 VALUE { V(U2_VXX, GND) }
+E_U2_E8         U2_VIN_INT 0 VALUE { V(IN, GND) }
+X_U2_H2    U2_VZZ U2_N928562 U2_LOAD 0 TPS7A44_U2_H2 
+R_U2_R19         0 U2_N946588  54070 TC=0,0 
+X_U2_S1    U2_DISCH_A 0 U2_N928562 MID_OUT TPS7A44_U2_S1 
+R_U2_R8         U2_EN_OK U2_N928858  50 TC=0,0 
+R_U2_R7         U2_N929362 U2_DISCH_A  10 TC=0,0 
+R_U2_R10         EN GND  1E6 TC=0,0 
+R_U2_R5         U2_N928482 U2_VYY  {ROUT}  
+X_U2_S3    U2_DISCH_B 0 U2_N928914 0 TPS7A44_U2_S3 
+X_U2_S6    U2_MVSEL15V 0 U2_FB U2_N946588 TPS7A44_U2_S6 
+C_U2_C7         U2_VXX U2_N929962  1n  
+C_U2_C6         0 U2_DISCH_A  1n  
+R_U2_R9         U2_N928914 MID_OUT  120  
+R_U2_R1         U2_VXX U2_N928134  {RINP}  
+.PARAM  zero=100k psrr_post=1m ehys=.05 uvlo_hys=400m psrr=1m ttrn_post=900u
++  zero2=100meg vref=1.24 drop=350m uvlo=4 pole2_post=1k isc=755m rinp_post=1e5
++  zero2_post=100meg ttrn=200u venb=1.24 pole_post=3k pole=10k vout=3.3 ilim=0.125
++  zero_post=6k rout_post=66.67m rout=66.67m rinp=1e6 pole2=100meg
+.ENDS TPS7A4433_TRANS
+
+
+.subckt NOR_2_U2_U5_NOR_2_S5 1 2 3 4  
+S_U2_U5_NOR_2_S5         3 4 1 2 _U2_U5_NOR_2_S5
+RS_U2_U5_NOR_2_S5         1 2 1G
+.MODEL         _U2_U5_NOR_2_S5 VSWITCH Roff=1e9 Ron=1m Voff=1V Von=2.5V
+.ends NOR_2_U2_U5_NOR_2_S5
+
+.subckt NOR_2_U2_U5_NOR_2_S6 1 2 3 4  
+S_U2_U5_NOR_2_S6         3 4 1 2 _U2_U5_NOR_2_S6
+RS_U2_U5_NOR_2_S6         1 2 1G
+.MODEL         _U2_U5_NOR_2_S6 VSWITCH Roff=1e9 Ron=1m Voff=1V Von=2.5V
+.ends NOR_2_U2_U5_NOR_2_S6
+
+.subckt INVERTER_U2_U5_INVERTER_S5 1 2 3 4  
+S_U2_U5_INVERTER_S5         3 4 1 2 _U2_U5_INVERTER_S5
+RS_U2_U5_INVERTER_S5         1 2 1G
+.MODEL         _U2_U5_INVERTER_S5 VSWITCH Roff=1e9 Ron=1m Voff=1V Von=2.5V
+.ends INVERTER_U2_U5_INVERTER_S5
+
+.subckt AND_2_U2_U5_AND_2_S5 1 2 3 4  
+S_U2_U5_AND_2_S5         3 4 1 2 _U2_U5_AND_2_S5
+RS_U2_U5_AND_2_S5         1 2 1G
+.MODEL         _U2_U5_AND_2_S5 VSWITCH Roff=1e12 Ron=1m Voff=1V Von=2.5V
+.ends AND_2_U2_U5_AND_2_S5
+
+.subckt AND_2_U2_U5_AND_2_S6 1 2 3 4  
+S_U2_U5_AND_2_S6         3 4 1 2 _U2_U5_AND_2_S6
+RS_U2_U5_AND_2_S6         1 2 1G
+.MODEL         _U2_U5_AND_2_S6 VSWITCH Roff=1e12 Ron=1m Voff=1V Von=2.5V
+.ends AND_2_U2_U5_AND_2_S6
+
+.subckt TPS7A44_U2_S4 1 2 3 4  
+S_U2_S4         3 4 1 2 _U2_S4
+RS_U2_S4         1 2 1G
+.MODEL         _U2_S4 VSWITCH Roff=1e12 Ron=1m Voff=1V Von=2.5V
+.ends TPS7A44_U2_S4
+
+.subckt TPS7A44_U2_S2 1 2 3 4  
+S_U2_S2         3 4 1 2 _U2_S2
+RS_U2_S2         1 2 1G
+.MODEL         _U2_S2 VSWITCH Roff=1k Ron=1 Voff=0.0V Von=0.8V
+.ends TPS7A44_U2_S2
+
+.subckt TPS7A44_U2_S5 1 2 3 4  
+S_U2_S5         3 4 1 2 _U2_S5
+RS_U2_S5         1 2 1G
+.MODEL         _U2_S5 VSWITCH Roff=1e12 Ron=1m Voff=1V Von=2.5V
+.ends TPS7A44_U2_S5
+
+.subckt TPS7A44_postreg_U2_postReg_S4 1 2 3 4  
+S_U2_postReg_S4         3 4 1 2 _U2_postReg_S4
+RS_U2_postReg_S4         1 2 1G
+.MODEL         _U2_postReg_S4 VSWITCH Roff=200e6 Ron=1.0 Voff=.3V Von=1V
+.ends TPS7A44_postreg_U2_postReg_S4
+
+.subckt TPS7A44_postreg_U2_postReg_S1 1 2 3 4  
+S_U2_postReg_S1         3 4 1 2 _U2_postReg_S1
+RS_U2_postReg_S1         1 2 1G
+.MODEL         _U2_postReg_S1 VSWITCH Roff=1E9 Ron=0.1u Voff=0.2 Von=1
+.ends TPS7A44_postreg_U2_postReg_S1
+
+.subckt TPS7A44_postreg_U2_postReg_H2 1 2 3 4  
+H_U2_postReg_H2         3 4 VH_U2_postReg_H2 1
+VH_U2_postReg_H2         1 2 0V
+.ends TPS7A44_postreg_U2_postReg_H2
+
+.subckt TPS7A44_postreg_U2_postReg_S3 1 2 3 4  
+S_U2_postReg_S3         3 4 1 2 _U2_postReg_S3
+RS_U2_postReg_S3         1 2 1G
+.MODEL         _U2_postReg_S3 VSWITCH Roff=1E9 Ron=0.1m Voff=0.2 Von=1
+.ends TPS7A44_postreg_U2_postReg_S3
+
+.subckt TPS7A44_postreg_U2_postReg_F1 1 2 3 4  
+F_U2_postReg_F1         3 4 VF_U2_postReg_F1 1
+VF_U2_postReg_F1         1 2 0V
+.ends TPS7A44_postreg_U2_postReg_F1
+
+.subckt TPS7A44_postreg_U2_postReg_S2 1 2 3 4  
+S_U2_postReg_S2         3 4 1 2 _U2_postReg_S2
+RS_U2_postReg_S2         1 2 1G
+.MODEL         _U2_postReg_S2 VSWITCH Roff=1k Ron=1 Voff=0.0V Von=0.8V
+.ends TPS7A44_postreg_U2_postReg_S2
+
+.subckt TPS7A44_U2_F1 1 2 3 4  
+F_U2_F1         3 4 VF_U2_F1 1
+VF_U2_F1         1 2 0V
+.ends TPS7A44_U2_F1
+
+.subckt TPS7A44_U2_H2 1 2 3 4  
+H_U2_H2         3 4 VH_U2_H2 1
+VH_U2_H2         1 2 0V
+.ends TPS7A44_U2_H2
+
+.subckt TPS7A44_U2_S1 1 2 3 4  
+S_U2_S1         3 4 1 2 _U2_S1
+RS_U2_S1         1 2 1G
+.MODEL         _U2_S1 VSWITCH Roff=1E9 Ron=0.1u Voff=0.2 Von=1
+.ends TPS7A44_U2_S1
+
+.subckt TPS7A44_U2_S3 1 2 3 4  
+S_U2_S3         3 4 1 2 _U2_S3
+RS_U2_S3         1 2 1G
+.MODEL         _U2_S3 VSWITCH Roff=1E9 Ron=0.1m Voff=0.2 Von=1
+.ends TPS7A44_U2_S3
+
+.subckt TPS7A44_U2_S6 1 2 3 4  
+S_U2_S6         3 4 1 2 _U2_S6
+RS_U2_S6         1 2 1G
+.MODEL         _U2_S6 VSWITCH Roff=1e12 Ron=1m Voff=1V Von=2.5V
+.ends TPS7A44_U2_S6
+
+
+** Wrapper definitions for AA legacy support **
+
+.subckt d_d1 1 2
+
+d1 1 2 dd1
+
+.model dd1 d
++ is=1e-15
++ tt=1e-11
++ rs=0.05
++ n=0.1
+
+.ends d_d1
+
+
+*$
+.SUBCKT COMPHYS_BASIC_GEN INP INM HYS OUT PARAMS: VDD=1 VSS=0 VTHRESH=0.5	
+EIN INP1 INM1 INP INM 1 
+EHYS INP1 INP2 VALUE { IF( V(1) > {VTHRESH},-V(HYS),0) }
+EOUT OUT 0 VALUE { IF( V(INP2)>V(INM1), {VDD} ,{VSS}) }
+R1 OUT 1 1
+C1 1 0 5n
+RINP1 INP1 0 1K
+.ENDS COMPHYS_BASIC_GEN
+*$
+
+.SUBCKT BUF_DELAY_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 DELAY = 10n 
+E_ABMGATE1    YINT1 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT1 YINT2 1
+CINT YINT2 0 {DELAY*1.3}
+E_ABMGATE2    YINT3 0 VALUE {{IF(V(YINT2) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT2 YINT3 Y 1
+CINT2 Y 0 1n
+.ENDS BUF_DELAY_BASIC_GEN
+*$
+.SUBCKT AND2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS AND2_BASIC_GEN
+*$
+.SUBCKT SRLATCHRHP_BASIC_GEN S R Q QB PARAMS: VDD=1 VSS=0 VTHRESH=0.5  
+GQ 0 Qint VALUE = {IF(V(R) > {VTHRESH},-5,IF(V(S)>{VTHRESH},5, 0))} 
+CQint Qint 0 1n 
+RQint Qint 0 1000MEG 
+D_D10 Qint MY5 D_D1 
+V1 MY5 0 {VDD} 
+D_D11 MYVSS Qint D_D1 
+V2 MYVSS 0 {VSS}  
+EQ Qqq 0 Qint 0 1 
+X3 Qqq Qqqd1 BUF_BASIC_GEN PARAMS: VDD={VDD} VSS={VSS} VTHRESH={VTHRESH} 
+RQq Qqqd1 Q 1 
+EQb Qbr 0 VALUE = {IF( V(Q) > {VTHRESH}, {VSS},{VDD})} 
+RQb Qbr QB 1  
+Cdummy1 Q 0 1n  
+Cdummy2 QB 0 1n 
+.IC V(Qint) {VSS} 
+.MODEL D_D1 D( IS=1e-15 TT=10p Rs=0.05 N=.1 ) 
+.ENDS SRLATCHRHP_BASIC_GEN 
+*$
+.SUBCKT BUF_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5  
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} ,{VDD},{VSS})}} 
+RINT YINT Y 1 
+CINT Y 0 1n 
+.ENDS BUF_BASIC_GEN 
+*$
+.SUBCKT INV_DELAY_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 DELAY = 10n  
+E_ABMGATE1    YINT1 0 VALUE {{IF(V(A) > {VTHRESH} ,{VDD},{VSS})}} 
+RINT YINT1 YINT2 1 
+CINT YINT2 0 {DELAY*1.443} 
+E_ABMGATE2    YINT3 0 VALUE {{IF(V(YINT2) > {VTHRESH} ,{VSS},{VDD})}} 
+RINT2 YINT3 Y 1 
+CINT2 Y 0 1n 
+.ENDS INV_DELAY_BASIC_GEN 
+*$

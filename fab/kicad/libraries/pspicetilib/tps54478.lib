@@ -1,0 +1,103 @@
+* PSpice Model Editor - Version 16.2.0
+
+*$
+* TPS54478
+*****************************************************************************
+* (C) Copyright 2011 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose. The model is
+** provided solely on an "as is" basis. The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+** Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: TPS54478
+* Date: 31MAY2011
+* Model Type: Average
+* Simulator: PSpice
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: TPS54478EVM-037
+* EVM Users Guide: SLVU470
+* Datasheet: SLVSAS2 
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web
+***************************************
+.SUBCKT TPS54478_AVG VIN VSNS GND PH COMP PARAMS: L=1.2u FS=1000k
+R_R19         GND COMP  2.2e6 TC=0,0 
+C_C13         GND COMP  10p  TC=0,0 
+V_V28         N1165059 GND 0.6
+G_G2         GND COMP N1165059 VSNS 225u
+X_U2         VIN PH GND COMP N1165537 CCM PARAMS:  L={L} FS={FS} RI=0.0645 
++  ACS=1
+.ENDS TPS54478_AVG
+*$
+.SUBCKT CCM a c p vc dc params: L=4.7u FS=500k RI=83.3333m ACS=1
+ESe Sa 0 value = { (9*{Fs}*{Ri}) }
+Edc dcx 0 value = { v(cx,p)/(v(a,p)+1u) }
+Xdc dcx dc limit params: clampH=0.99 clampL=48m
+Ed2 d2X 0 value = {(1 - V(dc))} 
+Xd2 d2X dc d2 limit2
+GIap a p value =  {V(dc)*I(VM)}
+GIpc p cx value = { V(vc)/({Acs}*{Ri}) }
+GImju cx p value = {V(Sa)*V(dc)/({Acs}*{Ri}*{Fs})+(v(cx,p))/({L}*{Fs})*((1-(V(dc))/2)) }
+XC1 cx p mode varicap ; 
+Emode mode 0 Value = { IF ((2*{L}*{Fs}*I(VM)/(V(dc)*V(a,cx)+1u))
++ < 1, {4/({L}*(6.28*{Fs})^2)}, {4/({L}*(6.28*{Fs})^2)}) } ;
+VM cx c
+.ENDS
+*$
+.SUBCKT VARICAP 1 2 CTRL
+R1 1 3 1u
+VC 3 4
+EBC 4 2 Value = { (1/v(ctrl))*v(int) }
+GINT 0 INT Value = { I(VC) }
+CINT INT 0 1
+Rdum INT 0 10E10
+.ENDS
+*$
+.subckt limit d dc params: clampH=0.99 clampL=48m
+Gd 0 dcx VALUE = { V(d)*100u }
+Rdc dcx 0 10k
+V1 clpn 0 {clampL}
+V2 clpp 0 {clampH}
+D1 clpn dcx dclamp
+D2 dcx clpp dclamp
+Edc dc 0 value={ V(dcx) }
+.model dclamp d n=0.01 rs=100m
+.ENDS
+*$
+*
+.subckt limit2 d2nc d d2c
+Gd 0 d2cx d2nc 0 100u
+Rdc d2cx 0 10k
+V1 clpn 0 7m
+E2 clpp 0 Value = { 1-V(d) }
+D1 clpn d2cx dclamp
+D2 d2cx clpp dclamp
+Edc d2c 0 value={ V(d2cx) }
+.model dclamp d n=0.01 rs=100m
+.ENDS
+*
+*$
+.SUBCKT LDCR IN OUT
++ PARAMs:  L=1u DCR=0.01 
+L             IN 1  {L} 
+RDCR	1 OUT {DCR}
+.ENDS LDCR
+*$
+*
+.SUBCKT CESR IN OUT
++ PARAMs:  C=100u ESR=0.01 X=2 
+C	IN 1  {C*X} 
+RESR	1 OUT {ESR/X}
+.ENDS CESR
+*$

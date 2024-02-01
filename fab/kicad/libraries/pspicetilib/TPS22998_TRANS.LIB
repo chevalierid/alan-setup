@@ -1,0 +1,114 @@
+*$
+* TPS22998
+*****************************************************************************
+* (C) Copyright 2021 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose. The model is
+** provided solely on an "as is" basis. The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+* Part: TPS22998
+* Date: 03DEC2021 
+* Model Type: Transient
+* Simulator: PSpice
+* Simulator Version: 17.4.0.p001
+* EVM Order Number: 
+* EVM User's Guide: SLVUA84–February 2016
+* Data sheet: SLVSD76–FEBRUARY 2016
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+*
+* 1. The following features have been modelled
+*      a. Switching Characteristics for VIN ranging from 0.285V to 5.0V
+*      b. Constant QOD of 50ohm
+*      c. Tri-state CT pin 
+* 2. Temperature effects have not been modelled 
+*
+*****************************************************************************
+.SUBCKT TPS22998_TRANS VIN ON CT VOUT VBIAS GND 
+G_U1_U2_G1         VIN GND TABLE { V(U1_ON_INT, 0) } 
++ ( (0,3.0u)(1,40.0u) )
+D_U1_U1_U2_D6         VOUT U1_U1_U2_N16813296 DD 
+X_U1_U1_U2_S4    U1_ON_INT 0 VOUT GND DRIVER_U1_U1_U2_S4 
+R_U1_U1_U2_R3         U1_U1_U2_N16883614 CT  10M TC=0,0 
+E_U1_U1_U2_ABM9         U1_U1_U2_VGATE_CLAMP 0 VALUE { V(VIN) + 6.0    }
+C_U1_U1_U2_Cgd         U1_U1_U2_N16813296 U1_U1_U2_VGATE  0.124n  
+M_U1_U1_U2_M1         U1_U1_U2_N16813296 U1_U1_U2_VGATE VOUT VOUT NMOS01       
++     
+G_U1_U1_U2_G1         U1_U1_U2_VGATE_CLAMP U1_U1_U2_VGATE U1_U1_U2_N16883143 0
++  1
+E_U1_U1_U2_E6         U1_U1_U2_ITD_DOWN 0 TABLE { V(VIN, 0) } 
++ ( (0,0)(0.285,408n)(0.6,245n)(1.125,211n)(1.8,165n)(3.3,140n)(5.0,139n) )
+D_U1_U1_U2_D5         U1_U1_U2_VGATE U1_U1_U2_VGATE_CLAMP DD 
+E_U1_U1_U2_ABM8         U1_U1_U2_N16883143 0 VALUE { IF(V(U1_ON_INT) > 0.5 &
++  V(U1_U1_U2_VGATE) < 1.56, 5u,  
++ IF ( V(U1_ON_INT) > 0.5 & V(CT) == 0, V(U1_U1_U2_ITD_DOWN),  
++ IF(V(U1_ON_INT) > 0.5 & V(CT) == 1.000,  V(U1_U1_U2_ITD_FLOAT),  
++ IF ( V(U1_ON_INT) > 0.5 & V(CT) == V(VBIAS), V(U1_U1_U2_ITD_UP), 0)))) }
+X_U1_U1_U2_S3    U1_ON_INT 0 U1_U1_U2_VGATE VOUT DRIVER_U1_U1_U2_S3 
+C_U1_U1_U2_Cgs         U1_U1_U2_VGATE VOUT  0.160n  
+E_U1_U1_U2_E7         U1_U1_U2_ITD_FLOAT 0 TABLE { V(VIN, 0) } 
++ (
++  (0,0)(0.285,2100n)(0.6,3000n)(1.125,3500n)(1.8,2700n)(3.3,2300n)(5.0,2210n) )
+V_U1_U1_U2_V1         U1_U1_U2_N16883614 0 1Vdc
+R_U1_U1_U2_R2         U1_U1_U2_N16813296 VIN  4m TC=0,0 
+E_U1_U1_U2_E8         U1_U1_U2_ITD_UP 0 TABLE { V(VIN, 0) } 
++ ( (0,0)(0.285,730n)(0.6,479n)(1.125,420n)(1.8,330n)(3.3,285n)(5.0,280n) )
+V_U1_U1_U1_V1         U1_U1_U1_N15523969 0 0.9
+X_U1_U1_U1_U1         ON U1_U1_U1_N15523969 U1_U1_U1_N15524117 U1_ON_INT
++  COMPHYS_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+V_U1_U1_U1_V2         U1_U1_U1_N15524117 0 0.2
+.ends TPS22998_TRANS
+
+.subckt DRIVER_U1_U1_U2_S4 1 2 3 4  
+S_U1_U1_U2_S4         3 4 1 2 _U1_U1_U2_S4
+RS_U1_U1_U2_S4         1 2 1G
+.MODEL         _U1_U1_U2_S4 VSWITCH Roff=1E9 Ron=50 Voff=0.9 Von=0.1
+.ends DRIVER_U1_U1_U2_S4
+
+.subckt DRIVER_U1_U1_U2_S3 1 2 3 4  
+S_U1_U1_U2_S3         3 4 1 2 _U1_U1_U2_S3
+RS_U1_U1_U2_S3         1 2 1G
+.MODEL         _U1_U1_U2_S3 VSWITCH Roff=1e9 Ron=1 Voff=0.8 Von=0.2
+.ends DRIVER_U1_U1_U2_S3
+
+
+.model DD d
+
++ is=1e-15
++ n=0.01
++ tt=1e-11
+
+
+.model NMOS01 nmos
+
++ vto=1.53
++ kp=5.931
++ lambda=0.001
+
+.SUBCKT COMPHYS_BASIC_GEN INP INM HYS OUT PARAMS: VDD=1 VSS=0 VTHRESH=0.5	
+EIN INP1 INM1 INP INM 1 
+EHYS INP1 INP2 VALUE { IF( V(1) > {VTHRESH},-V(HYS),0) }
+EOUT OUT 0 VALUE { IF( V(INP2)>V(INM1), {VDD} ,{VSS}) }
+R1 OUT 1 1
+C1 1 0 5n
+RINP1 INP1 0 1K
+.ENDS COMPHYS_BASIC_GEN
+
+
+

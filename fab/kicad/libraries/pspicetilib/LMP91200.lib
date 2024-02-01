@@ -1,0 +1,1171 @@
+* LMP91200_PSPICE
+*****************************************************************************
+* (C) Copyright 2013 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: LMP91200_PSPICE
+* Date: 1/28/2013
+* Model Type: Transient
+* Simulator: Pspice
+* Simulator Version: Pspice 16.0.0.p001
+* EVM Order Number: N/A
+* EVM Users Guide: N/A
+* Datasheet: 
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 : Release to Web
+*
+*****************************************************************************
+* Notes:
+*****************************************************************************
+* Notes: Model includes the following parameters and functions:
+*1- Current Range setting via pin D12 and D13
+*2-PGA 
+*3-PH Buffer 
+*4-Programmable CM voltage selector
+*5-CM buffer 
+*6-MUX options for Temp measurement and ph measurement,
+*7-Selectable output CM
+*8-PGA with selectable gain 
+*9-Five different power dissipations depending on mode of operation and settings
+*10- Implemented the RTD pin function: a regular resistor attached to this pin,  along
+*with the embedded module inside the model,  will act as resistance temperature detector. This option
+*will be activated once the RTD mux is selected.
+
+
+*****************************************************************************
+*****************************************************************************
+.SUBCKT LMP91200 VREF D9_VCM_SET RTD INP D14_Imux D7_VOCM GAURD1 GAURD2 CAL D12_Ivalue
++ D11_PGA_Gain VCM VDD VOCM D13_Ivalue VOUT D8_VCM_SET D10_VCM_SET VCM_HIZ D15_Meas_Mode GND
+
+E_U1_Top_E4         U1_Top_N105645 0 VDD 0 1
+
+X_U1_Top_U15         D12_IVALUE D13_IVALUE D14_IMUX U1_Top_VDDP U1_Top_N59701
++  SELECT1OF4_RTD PARAMS: VTHRESH=0.5
+X_U1_Top_S4    D11_PGA_GAIN 0 U1_Top_N100334 U1_Top_N100558 LMP91200_U1_Top_S4
+X_U1_Top_U14         U1_Top_N59927 U1_Top_N59939 U1_Top_N59955 U1_Top_N59907
++  U1_Top_N59907 U1_Top_N59869 U1_Top_N59821 U1_Top_N59769 D10_VCM_SET D9_VCM_SET
++  D8_VCM_SET VCM_HIZ 8TO1MUX PARAMS: VTHRESH=0.5
+R_U1_Top_R6         U1_Top_VMID U1_Top_N105645  10M TC=0,0
+R_U1_Top_R3         U1_Top_N100558 U1_Top_N100324  9k TC=0,0
+E_U1_Top_E3         U1_Top_N72336 0 U1_Top_N100324 U1_Top_VMID 1
+R_U1_Top_U_RES_LAD_R5         U1_Top_N59955 U1_Top_N59907  100k TC=0,0
+R_U1_Top_U_RES_LAD_R8         GND U1_Top_N59927  100k TC=0,0
+R_U1_Top_U_RES_LAD_R2         U1_Top_N59821 U1_Top_N59769  100k TC=0,0
+R_U1_Top_U_RES_LAD_R6         U1_Top_N59939 U1_Top_N59955  100k TC=0,0
+R_U1_Top_U_RES_LAD_R3         U1_Top_N59869 U1_Top_N59821  100k TC=0,0
+R_U1_Top_U_RES_LAD_R1         U1_Top_N59769 VREF  100k TC=0,0
+R_U1_Top_U_RES_LAD_R7         U1_Top_N59927 U1_Top_N59939  100k TC=0,0
+R_U1_Top_U_RES_LAD_R4         U1_Top_N59907 U1_Top_N59869  100k TC=0,0
+R_U1_Top_R7         GND U1_Top_VMID  10M TC=0,0
+R_U1_Top_R1         U1_Top_N100350 U1_Top_N100324  4k TC=0,0
+X_U1_Top_UPH         INP GAURD1 VDD GND GAURD1 PH_BUFF
+**X_U1_Top_U17         U1_Top_N113864 N114007 INV_BASIC_GEN PARAMS: VDD=1 VSS=0
+**+  VTHRESH=500E-3
+V_U1_Top_V3         U1_Top_VDDP 0 3.3Vdc
+E_U1_Top_E1         GAURD2 0 GAURD1 0 1
+R_U1_Top_R2         U1_Top_VMID U1_Top_N100334  1k TC=0,0
+X_U1_Top_UPGA         U1_Top_N109085 U1_Top_N100334 VDD GND U1_Top_N100324 PGA
+
+X_U1_Top_U18         VDD GND D15_MEAS_MODE D12_IVALUE D13_IVALUE I_DISS PARAMS:
++   VTHRESH=0.5
+
+**X_U1_Top_U16         D6_DIAG_EN U1_Top_N113864 INV_BASIC_GEN PARAMS: VDD=1
+**+  VSS=0 VTHRESH=500E-3
+X_U1_Top_U_AM3_U14         D7_VOCM U1_Top_U_AM3_N13377 INV_BASIC_GEN PARAMS:
++  VDD=1 VSS=0 VTHRESH=500E-3
+X_U1_Top_U_AM3_S5    U1_Top_U_AM3_N13377 0 VCM VOCM ANALOG_MUX_U1_Top_U_AM3_S5
+X_U1_Top_U_AM3_S6    D7_VOCM 0 0 VOCM ANALOG_MUX_U1_Top_U_AM3_S6
+X_U1_Top_U13         D11_PGA_GAIN U1_Top_N100642 INV_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=500E-3
+X_U1_Top_UVCM         VCM_HIZ VCM VDD GND VCM VCM_BUFF
+E_U1_Top_E2         U1_Top_N109085 U1_Top_VMID U1_Top_N59701 0 1
+X_U1_Top_U_AM2_U14         D15_MEAS_MODE U1_Top_U_AM2_N13377 INV_BASIC_GEN
++  PARAMS: VDD=1 VSS=0 VTHRESH=500E-3
+X_U1_Top_U_AM2_S5    U1_Top_U_AM2_N13377 0 GAURD1 VOUT
++  ANALOG_MUX_U1_Top_U_AM2_S5
+X_U1_Top_U_AM2_S6    D15_MEAS_MODE 0 U1_Top_N72336 VOUT
++  ANALOG_MUX_U1_Top_U_AM2_S6
+X_U1_Top_S3    U1_Top_N100642 0 U1_Top_N100334 U1_Top_N100350
++  LMP91200_U1_Top_S3
+X_U1_Top_U_AM1_U14         D14_IMUX U1_Top_U_AM1_N13377 INV_BASIC_GEN PARAMS:
++  VDD=1 VSS=0 VTHRESH=500E-3
+X_U1_Top_U_AM1_S5    U1_Top_U_AM1_N13377 0 RTD U1_Top_N59701
++  ANALOG_MUX_U1_Top_U_AM1_S5
+X_U1_Top_U_AM1_S6    D14_IMUX 0 CAL U1_Top_N59701 ANALOG_MUX_U1_Top_U_AM1_S6
+
+.ends LMP91200
+
+.subckt LMP91200_U1_Top_S4 1 2 3 4
+S_U1_Top_S4         3 4 1 2 _U1_Top_S4
+RS_U1_Top_S4         1 2 1G
+.MODEL         _U1_Top_S4 VSWITCH Roff=1e6 Ron=1.0 Voff=0.0V Von=0.5V
+.ends LMP91200_U1_Top_S4
+
+.subckt ANALOG_MUX_U1_Top_U_AM3_S5 1 2 3 4
+S_U1_Top_U_AM3_S5         3 4 1 2 _U1_Top_U_AM3_S5
+RS_U1_Top_U_AM3_S5         1 2 1G
+.MODEL         _U1_Top_U_AM3_S5 VSWITCH Roff=1e6 Ron=1.0m Voff=0.0V Von=0.5V
+.ends ANALOG_MUX_U1_Top_U_AM3_S5
+
+.subckt ANALOG_MUX_U1_Top_U_AM3_S6 1 2 3 4
+S_U1_Top_U_AM3_S6         3 4 1 2 _U1_Top_U_AM3_S6
+RS_U1_Top_U_AM3_S6         1 2 1G
+.MODEL         _U1_Top_U_AM3_S6 VSWITCH Roff=1e6 Ron=1.0m Voff=0.0V Von=0.5V
+.ends ANALOG_MUX_U1_Top_U_AM3_S6
+
+.subckt ANALOG_MUX_U1_Top_U_AM2_S5 1 2 3 4
+S_U1_Top_U_AM2_S5         3 4 1 2 _U1_Top_U_AM2_S5
+RS_U1_Top_U_AM2_S5         1 2 1G
+.MODEL         _U1_Top_U_AM2_S5 VSWITCH Roff=1e6 Ron=1.0m Voff=0.0V Von=0.5V
+.ends ANALOG_MUX_U1_Top_U_AM2_S5
+
+.subckt ANALOG_MUX_U1_Top_U_AM2_S6 1 2 3 4
+S_U1_Top_U_AM2_S6         3 4 1 2 _U1_Top_U_AM2_S6
+RS_U1_Top_U_AM2_S6         1 2 1G
+.MODEL         _U1_Top_U_AM2_S6 VSWITCH Roff=1e6 Ron=1.0m Voff=0.0V Von=0.5V
+.ends ANALOG_MUX_U1_Top_U_AM2_S6
+
+.subckt LMP91200_U1_Top_S3 1 2 3 4
+S_U1_Top_S3         3 4 1 2 _U1_Top_S3
+RS_U1_Top_S3         1 2 1G
+.MODEL         _U1_Top_S3 VSWITCH Roff=1e6 Ron=1.0 Voff=0.0V Von=0.5V
+.ends LMP91200_U1_Top_S3
+
+.subckt ANALOG_MUX_U1_Top_U_AM1_S5 1 2 3 4
+S_U1_Top_U_AM1_S5         3 4 1 2 _U1_Top_U_AM1_S5
+RS_U1_Top_U_AM1_S5         1 2 1G
+.MODEL         _U1_Top_U_AM1_S5 VSWITCH Roff=1e6 Ron=1.0m Voff=0.0V Von=0.5V
+.ends ANALOG_MUX_U1_Top_U_AM1_S5
+
+.subckt ANALOG_MUX_U1_Top_U_AM1_S6 1 2 3 4
+S_U1_Top_U_AM1_S6         3 4 1 2 _U1_Top_U_AM1_S6
+RS_U1_Top_U_AM1_S6         1 2 1G
+.MODEL         _U1_Top_U_AM1_S6 VSWITCH Roff=1e6 Ron=1.0m Voff=0.0V Von=0.5V
+.ends ANALOG_MUX_U1_Top_U_AM1_S6
+
+* PSpice Model Editor - Version 16.2.0
+
+*$
+
+*********************************************************************
+**********************************************************************
+.subckt  I_diss  VDD GND  D15  D12  D13 PARAMS:  VTHRESH=0.5
+
+
+G_SUPPLY   VDD   GND  VALUE = {IF (  V(D15) < {VTHRESH} ,50e-6 ,
++ IF (V(D15) > {VTHRESH} & V(D13) < {VTHRESH} & V(D12) < {VTHRESH}, 300e-6,
++ IF (V(D15) > {VTHRESH} & V(D13) < {VTHRESH} & V(D12) > {VTHRESH}, 400e-6,
++ IF (V(D15) > {VTHRESH} & V(D13) > {VTHRESH} & V(D12) < {VTHRESH}, 350e-6,
++ IF (V(D15) > {VTHRESH} & V(D13) > {VTHRESH} & V(D12) > {VTHRESH}, 470e-6, 10u ) ) ) ) ) }
+
+
+.ENDS I_diss
+
+
+
+
+************************************************************************************
+************************************************************************************
+************************************************************************************
+
+
+.SUBCKT PGA VIP VIN VDD VSS VO
+Vos         20 12 250u
+XU4         GNDF VSS 8 10 GNDF PSRR_0
++ PARAMS: PSRR=80 FPSRR=2k
+*********XU5         VDD GNDF 9 10 GNDF PSRR_0
+*********+ PARAMS: PSRR=95 FPSRR=2K
+XU_VNOISE   11 12 VNSE_0
++ PARAMS: NLF=826 FLW=1k NVR=92
+XU2         15 13 18 GNDF VDD GBW_SLEW_SE_0
++ PARAMS: AOL=120 GBW=5.5MEG SRP=8MEG SRN=8MEG IT=1M VON=0.5 ROFF=1M
+XU3         17 16 VDD OUT_CURRENT_CLAMP_PD_0
++ PARAMS: RON=0.1 ROFF=100MEG VON=0.5 IMAX=16 IMIN=-12
+********
+******XU_TF       14 18 GNDF TF_0
+******+ PARAMS: FZ1=10G FZ2=10G FZ3=10G FZ4=10G FZ5=10G FP1=10E6 FP2=10G FP3=10G
+********+ FP4=10G
+********
+XU1         VDD VSS VDD IQ_IOFF_0
++ PARAMS: VON=0.5 IQQ=0 IOFF=0
+XD4         VSS 10 IDEAL_DIODE_0
++ PARAMS: EMCO=0.01 BRKV=60 IBRKV=1M
+XD3         10 VDD IDEAL_DIODE_0
++ PARAMS: EMCO=0.01 BRKV=60 IBRKV=1M
+XD2         VSS 20 IDEAL_DIODE_0
++ PARAMS: EMCO=0.01 BRKV=60 IBRKV=1M
+XD1         20 VDD IDEAL_DIODE_0
++ PARAMS: EMCO=0.01 BRKV=60 IBRKV=1M
+XU_GND      VDD VSS GNDF GND_FLOAT_0
+XU6         16 VO Vimon AMETER_0
++ PARAMS: GAIN=1
+
+XU_CLAW     VDD VSS 18 17 Vimon GNDF VCLAMP_W_SENSE_0
++ PARAMS: VMAXIO=0.1 VMINIO=0.1 SLOPE=0
+
+XU2_VCLAMP  VDD VSS 10 13 GNDF VCLAMP_0
++ PARAMS: VMAX=0.1 VMIN=0.1
+XU1_VCLAMP  VDD VSS 20 15 GNDF VCLAMP_0
++ PARAMS: VMAX=0.1 VMIN=0.1
+********XU_CMRR     10 19 GNDF CMRR_0
+********+ PARAMS: CMRR=95 FCMRR=2k
+XUINPUT     VIP VIN 11 8 GNDF INPUT_0
++ PARAMS: RCM=1 CCM=1000F CDM=100F
+.ENDS
+*$
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+.SUBCKT PSRR_0   VDD  VSS  VI  VO  GNDF PARAMS: PSRR = 130 FPSRR = 1.6
+.PARAM PI = 3.141592
+.PARAM RPSRR = 1
+.PARAM GPSRR = {PWR(10,-PSRR/20)/RPSRR}
+.PARAM LPSRR = {RPSRR/(2*PI*FPSRR)}
+G1  GNDF 1 VDD VSS {GPSRR}
+R1  1 2 {RPSRR}
+L1  2 GNDF {LPSRR}
+E1  VO VI 1 GNDF 1
+C2  VDD VSS 10P
+.ENDS
+*$
+* BEGIN PROG NSE NANO VOLT/RT-HZ
+.SUBCKT VNSE_0  1 2 PARAMS: NLF = 10 FLW = 4  NVR = 4.6
+* BEGIN SETUP OF NOISE GEN - NANOVOLT/RT-HZ
+* INPUT THREE VARIABLES
+* SET UP VNSE 1/F
+********************
+* NV/RHZ AT 1/F FREQ
+* NLF
+********************
+* FREQ FOR 1/F VAL
+* FLW
+********************
+* SET UP VNSE FB
+* NV/RHZ FLATBAND
+* NVR
+********************
+* END USER INPUT
+* START CALC VALS
+.PARAM GLF={PWR(FLW,0.25)*NLF/1164}
+.PARAM RNV={1.184*PWR(NVR,2)}
+.MODEL DVN D KF={PWR(FLW,0.5)/1E11} IS=1.0E-16
+* END CALC VALS
+I1 0 7 10E-3
+I2 0 8 10E-3
+D1 7 0 DVN
+D2 8 0 DVN
+E1 3 6 7 8 {GLF}
+R1 3 0 1E9
+R2 3 0 1E9
+R3 3 6 1E9
+E2 6 4 5 0 10
+R4 5 0 {RNV}
+R5 5 0 {RNV}
+R6 3 4 1E9
+R7 4 0 1E9
+E3 1 2 3 4 1
+C1 1 0 1E-15
+C2 2 0 1E-15
+C3 1 2 1E-15
+.ENDS
+*$
+* END PROG NSE NANOV/RT-HZ
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+.SUBCKT GBW_SLEW_SE_0    VIP  VIM  VO  GNDF  PD
++ PARAMS: AOL = 100  GBW = 1MEG  SRP = 1MEG  SRN = 1MEG IT = 1M
++ VON = 0.5 ROFF = 1M
+.PARAM PI = 3.141592
+.PARAM IP = {IF(SRP <= SRN,IT,IT*(SRP/SRN))}
+.PARAM IN = {IF(SRN <= SRP,-IT,-IT*(SRN/SRP))}
+.PARAM CC = {IF(SRP <= SRN,IT/SRP,IT/SRN)}
+.PARAM FP = {GBW/PWR(10,AOL/20)}
+.PARAM RC = {1/(2*PI*CC*FP)}
+.PARAM GC = {PWR(10,AOL/20)/RC}
+G1          GNDF VO VALUE = {IF(V(PD) >= VON,LIMIT(GC*V(VIP,VIM),IP,IN),0)}
+C1          VO GNDF {CC}
+GR1          VO GNDF VALUE =  {IF(V(PD) >= VON,V(VO,GNDF)/RC,V(VO,GNDF)/ROFF)}
+GR11          VO GNDF VALUE =  {V(VO,GNDF)/(RC*100)}
+.ENDS
+*$
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+.SUBCKT OUT_CURRENT_CLAMP_PD_0   IN  OUT  PD
++PARAMS: RON = 1 ROFF = 1G   VON = 0.5 IMAX = 10M  IMIN = -10M
+GRES  IN OUT VALUE = {LIMIT(IF(V(PD) >= VON,1,0)*V(IN,OUT)/RON
++ + IF(V(PD) >= VON,0,1)*V(IN,OUT)/ROFF,IMAX,IMIN)}
+.ENDS
+*$
+.SUBCKT TF_0    VI  VO  GNDF
++ PARAMS: FZ1 = 10G FZ2 = 10G FZ3 = 10G FZ4 = 10G FZ5 = 10G
++ FP1 = 1 FP2 = 10G FP3 = 10G FP4 = 10G
+.PARAM GM = 1M
+.PARAM RO = {1/GM}
+.PARAM PI = 3.141592
+GP1  GNDF VP1 VI GNDF {GM}
+GRP1 VP1 GNDF VALUE = {V(VP1,GNDF)/RO}
+CP1  VP1 GNDF {1/(2*PI*RO*FP1)}
+GP2  GNDF VP2 VP1 GNDF {GM}
+GRP2 VP2 GNDF VALUE = {V(VP2,GNDF)/RO}
+CP2  VP2 GNDF {1/(2*PI*RO*FP2)}
+GP3  GNDF VP3 VP2 GNDF {GM}
+GRP3 VP3 GNDF VALUE = {V(VP3,GNDF)/RO}
+CP3  VP3 GNDF {1/(2*PI*RO*FP3)}
+GP4  GNDF VP4 VP3 GNDF {GM}
+GRP4 VP4 GNDF VALUE = {V(VP4,GNDF)/RO}
+CP4  VP4 GNDF {1/(2*PI*RO*FP4)}
+GZ1  GNDF VZ1 VP4 GNDF {GM}
+GRZ1  VZ1 VX1 VALUE =  {V(VZ1,VX1)/RO}
+LZ1  VX1 GNDF {RO/(2*PI*FZ1)}
+GZ2  GNDF VZ2 VZ1 GNDF {GM}
+GRZ2  VZ2 VX2 VALUE =  {V(VZ2,VX2)/RO}
+LZ2  VX2 GNDF {RO/(2*PI*FZ2)}
+GZ3  GNDF VZ3 VZ2 GNDF {GM}
+GRZ3  VZ3 VX3 VALUE =  {V(VZ3,VX3)/RO}
+LZ3  VX3 GNDF {RO/(2*PI*FZ3)}
+GZ4  GNDF VZ4 VZ3 GNDF {GM}
+GRZ4  VZ4 VX4 VALUE =  {V(VZ4,VX4)/RO}
+LZ4  VX4 GNDF {RO/(2*PI*FZ4)}
+GZ5  GNDF VO VZ4 GNDF {GM}
+GRZ5  VO VX5  VALUE = {V(VO,VX5)/RO}
+LZ5  VX5 GNDF {RO/(2*PI*FZ5)}
+.ENDS
+*$
+**************************************
+**          **
+**                       **
+**             **
+**             **
+**************************************
+.SUBCKT IQ_IOFF_0   VDD VSS PD
++ PARAMS: VON = 0.5 IQQ = 1M  IOFF = 1P
+G1 VDD VSS VALUE = {IF(V(PD) >= VON,IQQ,IOFF)}
+.ENDS
+*$
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+.SUBCKT IDEAL_DIODE_0  A C
++PARAMS: EMCO = 0.01 BRKV = 60 IBRKV = 1M)
+D1 A C IDIODE
+.MODEL IDIODE D(N = {EMCO} BV = {BRKV} IBV = {IBRKV})
+.ENDS
+*$
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+.SUBCKT GND_FLOAT_0   VDD VSS GNDF
+EGNDF  GNDF 0 VALUE = {(V(VDD)+V(VSS))*0.5}
+.ENDS
+*$
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+.SUBCKT AMETER_0   VI  VO VIMON
++ PARAMS: GAIN = 1
+VSENSE VI VO DC = 0
+EMETER VIMON 0 VALUE = {I(VSENSE)*GAIN}
+.ENDS
+*$
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+.SUBCKT VCLAMP_W_SENSE_0   VDD  VSS  VI  VO VIMON  GNDF
++ PARAMS: VMAXIO = 0.1 VMINIO = 0.1 SLOPE = 0
+EPCLIP  VDD_CLP 0 VALUE = {V(VDD,GNDF) - SLOPE*V(VIMON) - VMAXIO}
+ENCLIP  VSS_CLP 0 VALUE = {V(VSS,GNDF) - SLOPE*V(VIMON) + VMINIO}
+*EPCLIP  VDD_CLP 0 VALUE = {V(VDD,GNDF) -  VMAXIO}
+*ENCLIP  VSS_CLP 0 VALUE = {V(VSS,GNDF)  + VMINIO}
+ECLAMP  VO GNDF VALUE = {LIMIT(V(VI,GNDF), V(VDD_CLP), V(VSS_CLP))}
+.ENDS
+*$
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+.SUBCKT VCLAMP_0   VDD  VSS  VI  VO  GNDF PARAMS: VMAX = 0.1 VMIN = 0.1
+ECLAMP  VO GNDF VALUE = {LIMIT(V(VI,GNDF),V(VDD,GNDF) - VMAX, V(VSS,GNDF) + VMIN)}
+.ENDS
+*$
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+.SUBCKT CMRR_0   VI  VO  GNDF PARAMS: CMRR = 130 FCMRR = 1.6K
+.PARAM PI = 3.141592
+.PARAM RCMRR = 1
+.PARAM GCMRR = {PWR(10,-CMRR/20)/RCMRR}
+.PARAM LCMRR = {RCMRR/(2*PI*FCMRR)}
+G1  GNDF 1 VI GNDF {GCMRR}
+R1  1 2 {RCMRR}
+L1  2 GNDF {LCMRR}
+E1  VI VO 1 GNDF 1
+.ENDS
+*$
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+.SUBCKT INPUT_0    VIP  VIN  VOP  VON  GNDF PARAMS: RCM = 1  CCM = 100F  CDM = 100F
+C1          VOP GNDF {CCM}
+C2          VON GNDF {CCM}
+C3          VOP VON {CDM}
+G1          VIP VOP VALUE =  {V(VIP,VOP)/RCM}
+G2          VIN VON VALUE = {V(VIN,VON)/RCM}
+.ENDS
+.END
+*$
+
+************************************************************************************
+************************************************************************************
+************************************************************************************
+
+.SUBCKT VCM_Buff VIP VIN VDD VSS VO
+IS2         VDD 20 200N
+IS3         19 VSS -200N
+Vos         20 12 250u
+XU4         GNDF VSS 8 10 GNDF PSRR_0
++ PARAMS: PSRR=80 FPSRR=2k
+***********XU5         VDD GNDF 9 10 GNDF PSRR_0
+************+ PARAMS: PSRR=95 FPSRR=2K
+XU_VNOISE   11 12 VNSE_0
++ PARAMS: NLF=826 FLW=1k NVR=92
+XU2         15 13 18 GNDF VDD GBW_SLEW_SE_0
++ PARAMS: AOL=120 GBW=5.5MEG SRP=8MEG SRN=8MEG IT=1M VON=0.5 ROFF=1M
+XU3         17 16 VDD OUT_CURRENT_CLAMP_PD_0
++ PARAMS: RON=0.1 ROFF=100MEG VON=0.5 IMAX=16 IMIN=-12
+
+*************XU_TF       14 18 GNDF TF_0
+*************+ PARAMS: FZ1=10G FZ2=10G FZ3=10G FZ4=10G FZ5=10G FP1=10E6 FP2=10G FP3=10G
+*************+ FP4=10G
+XU1         VDD VSS VDD IQ_IOFF_0
++ PARAMS: VON=0.5 IQQ=0 IOFF=0
+XD4         VSS 19 IDEAL_DIODE_0
++ PARAMS: EMCO=0.01 BRKV=60 IBRKV=1M
+XD3         19 VDD IDEAL_DIODE_0
++ PARAMS: EMCO=0.01 BRKV=60 IBRKV=1M
+XD2         VSS 20 IDEAL_DIODE_0
++ PARAMS: EMCO=0.01 BRKV=60 IBRKV=1M
+XD1         20 VDD IDEAL_DIODE_0
++ PARAMS: EMCO=0.01 BRKV=60 IBRKV=1M
+XU_GND      VDD VSS GNDF GND_FLOAT_0
+XU6         16 VO Vimon AMETER_0
++ PARAMS: GAIN=1
+XU_CLAW     VDD VSS 18 17 Vimon GNDF VCLAMP_W_SENSE_0
++ PARAMS: VMAXIO=0.1 VMINIO=0.1 SLOPE=0
+XU2_VCLAMP  VDD VSS 19 13 GNDF VCLAMP_0
++ PARAMS: VMAX=0.1 VMIN=0.1
+XU1_VCLAMP  VDD VSS 20 15 GNDF VCLAMP_0
++ PARAMS: VMAX=0.1 VMIN=0.1
+XU_CMRR     10 19 GNDF CMRR_0
++ PARAMS: CMRR=95 FCMRR=2k
+XUINPUT     VIP VIN 11 8 GNDF INPUT_0
++ PARAMS: RCM=1 CCM=1000F CDM=100F
+.ENDS
+
+
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+
+.SUBCKT PSRR_0   VDD  VSS  VI  VO  GNDF PARAMS: PSRR = 130 FPSRR = 1.6
+.PARAM PI = 3.141592
+.PARAM RPSRR = 1
+.PARAM GPSRR = {PWR(10,-PSRR/20)/RPSRR}
+.PARAM LPSRR = {RPSRR/(2*PI*FPSRR)}
+G1  GNDF 1 VDD VSS {GPSRR}
+R1  1 2 {RPSRR}
+L1  2 GNDF {LPSRR}
+E1  VO VI 1 GNDF 1
+C2  VDD VSS 10P
+.ENDS
+
+
+* BEGIN PROG NSE NANO VOLT/RT-HZ
+.SUBCKT VNSE_0  1 2 PARAMS: NLF = 10 FLW = 4  NVR = 4.6
+* BEGIN SETUP OF NOISE GEN - NANOVOLT/RT-HZ
+* INPUT THREE VARIABLES
+* SET UP VNSE 1/F
+********************
+* NV/RHZ AT 1/F FREQ
+* NLF
+********************
+* FREQ FOR 1/F VAL
+* FLW
+********************
+* SET UP VNSE FB
+* NV/RHZ FLATBAND
+* NVR
+********************
+* END USER INPUT
+* START CALC VALS
+.PARAM GLF={PWR(FLW,0.25)*NLF/1164}
+.PARAM RNV={1.184*PWR(NVR,2)}
+.MODEL DVN D KF={PWR(FLW,0.5)/1E11} IS=1.0E-16
+* END CALC VALS
+I1 0 7 10E-3
+I2 0 8 10E-3
+D1 7 0 DVN
+D2 8 0 DVN
+E1 3 6 7 8 {GLF}
+R1 3 0 1E9
+R2 3 0 1E9
+R3 3 6 1E9
+E2 6 4 5 0 10
+R4 5 0 {RNV}
+R5 5 0 {RNV}
+R6 3 4 1E9
+R7 4 0 1E9
+E3 1 2 3 4 1
+C1 1 0 1E-15
+C2 2 0 1E-15
+C3 1 2 1E-15
+.ENDS
+* END PROG NSE NANOV/RT-HZ
+
+
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+
+
+
+.SUBCKT GBW_SLEW_SE_0    VIP  VIM  VO  GNDF  PD
++ PARAMS: AOL = 100  GBW = 1MEG  SRP = 1MEG  SRN = 1MEG IT = 1M
++ VON = 0.5 ROFF = 1M
+.PARAM PI = 3.141592
+.PARAM IP = {IF(SRP <= SRN,IT,IT*(SRP/SRN))}
+.PARAM IN = {IF(SRN <= SRP,-IT,-IT*(SRN/SRP))}
+.PARAM CC = {IF(SRP <= SRN,IT/SRP,IT/SRN)}
+.PARAM FP = {GBW/PWR(10,AOL/20)}
+.PARAM RC = {1/(2*PI*CC*FP)}
+.PARAM GC = {PWR(10,AOL/20)/RC}
+G1          GNDF VO VALUE = {IF(V(PD) >= VON,LIMIT(GC*V(VIP,VIM),IP,IN),0)}
+C1          VO GNDF {CC}
+GR1          VO GNDF VALUE =  {IF(V(PD) >= VON,V(VO,GNDF)/RC,V(VO,GNDF)/ROFF)}
+GR11          VO GNDF VALUE =  {V(VO,GNDF)/(RC*100)}
+.ENDS
+
+
+
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+
+.SUBCKT OUT_CURRENT_CLAMP_PD_0   IN  OUT  PD
++PARAMS: RON = 1 ROFF = 1G   VON = 0.5 IMAX = 10M  IMIN = -10M
+GRES  IN OUT VALUE = {LIMIT(IF(V(PD) >= VON,1,0)*V(IN,OUT)/RON
++ + IF(V(PD) >= VON,0,1)*V(IN,OUT)/ROFF,IMAX,IMIN)}
+.ENDS
+
+
+.SUBCKT TF_0    VI  VO  GNDF
++ PARAMS: FZ1 = 10G FZ2 = 10G FZ3 = 10G FZ4 = 10G FZ5 = 10G
++ FP1 = 1 FP2 = 10G FP3 = 10G FP4 = 10G
+.PARAM GM = 1M
+.PARAM RO = {1/GM}
+.PARAM PI = 3.141592
+
+GP1  GNDF VP1 VI GNDF {GM}
+GRP1 VP1 GNDF VALUE = {V(VP1,GNDF)/RO}
+CP1  VP1 GNDF {1/(2*PI*RO*FP1)}
+
+GP2  GNDF VP2 VP1 GNDF {GM}
+GRP2 VP2 GNDF VALUE = {V(VP2,GNDF)/RO}
+CP2  VP2 GNDF {1/(2*PI*RO*FP2)}
+
+GP3  GNDF VP3 VP2 GNDF {GM}
+GRP3 VP3 GNDF VALUE = {V(VP3,GNDF)/RO}
+CP3  VP3 GNDF {1/(2*PI*RO*FP3)}
+
+GP4  GNDF VP4 VP3 GNDF {GM}
+GRP4 VP4 GNDF VALUE = {V(VP4,GNDF)/RO}
+CP4  VP4 GNDF {1/(2*PI*RO*FP4)}
+
+GZ1  GNDF VZ1 VP4 GNDF {GM}
+GRZ1  VZ1 VX1 VALUE =  {V(VZ1,VX1)/RO}
+LZ1  VX1 GNDF {RO/(2*PI*FZ1)}
+
+GZ2  GNDF VZ2 VZ1 GNDF {GM}
+GRZ2  VZ2 VX2 VALUE =  {V(VZ2,VX2)/RO}
+LZ2  VX2 GNDF {RO/(2*PI*FZ2)}
+
+GZ3  GNDF VZ3 VZ2 GNDF {GM}
+GRZ3  VZ3 VX3 VALUE =  {V(VZ3,VX3)/RO}
+LZ3  VX3 GNDF {RO/(2*PI*FZ3)}
+
+GZ4  GNDF VZ4 VZ3 GNDF {GM}
+GRZ4  VZ4 VX4 VALUE =  {V(VZ4,VX4)/RO}
+LZ4  VX4 GNDF {RO/(2*PI*FZ4)}
+
+GZ5  GNDF VO VZ4 GNDF {GM}
+GRZ5  VO VX5  VALUE = {V(VO,VX5)/RO}
+LZ5  VX5 GNDF {RO/(2*PI*FZ5)}
+
+.ENDS
+
+
+
+**************************************
+**          **
+**                       **
+**             **
+**             **
+**************************************
+
+.SUBCKT IQ_IOFF_0   VDD VSS PD
++ PARAMS: VON = 0.5 IQQ = 1M  IOFF = 1P
+G1 VDD VSS VALUE = {IF(V(PD) >= VON,IQQ,IOFF)}
+.ENDS
+
+
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+
+.SUBCKT IDEAL_DIODE_0  A C
++PARAMS: EMCO = 0.01 BRKV = 60 IBRKV = 1M)
+D1 A C IDIODE
+.MODEL IDIODE D(N = {EMCO} BV = {BRKV} IBV = {IBRKV})
+.ENDS
+
+
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+.SUBCKT GND_FLOAT_0   VDD VSS GNDF
+EGNDF  GNDF 0 VALUE = {(V(VDD)+V(VSS))*0.5}
+.ENDS
+
+
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+
+.SUBCKT AMETER_0   VI  VO VIMON
++ PARAMS: GAIN = 1
+VSENSE VI VO DC = 0
+EMETER VIMON 0 VALUE = {I(VSENSE)*GAIN}
+.ENDS
+
+
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+
+.SUBCKT VCLAMP_W_SENSE_0   VDD  VSS  VI  VO VIMON  GNDF
++ PARAMS: VMAXIO = 0.1 VMINIO = 0.1 SLOPE = 0
+EPCLIP  VDD_CLP 0 VALUE = {V(VDD,GNDF) - SLOPE*V(VIMON) - VMAXIO}
+ENCLIP  VSS_CLP 0 VALUE = {V(VSS,GNDF) - SLOPE*V(VIMON) + VMINIO}
+*EPCLIP  VDD_CLP 0 VALUE = {V(VDD,GNDF) -  VMAXIO}
+*ENCLIP  VSS_CLP 0 VALUE = {V(VSS,GNDF)  + VMINIO}
+ECLAMP  VO GNDF VALUE = {LIMIT(V(VI,GNDF), V(VDD_CLP), V(VSS_CLP))}
+.ENDS
+
+
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+
+.SUBCKT VCLAMP_0   VDD  VSS  VI  VO  GNDF PARAMS: VMAX = 0.1 VMIN = 0.1
+ECLAMP  VO GNDF VALUE = {LIMIT(V(VI,GNDF),V(VDD,GNDF) - VMAX, V(VSS,GNDF) + VMIN)}
+.ENDS
+
+
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+
+.SUBCKT CMRR_0   VI  VO  GNDF PARAMS: CMRR = 130 FCMRR = 1.6K
+.PARAM PI = 3.141592
+.PARAM RCMRR = 1
+.PARAM GCMRR = {PWR(10,-CMRR/20)/RCMRR}
+.PARAM LCMRR = {RCMRR/(2*PI*FCMRR)}
+G1  GNDF 1 VI GNDF {GCMRR}
+R1  1 2 {RCMRR}
+L1  2 GNDF {LCMRR}
+E1  VI VO 1 GNDF 1
+.ENDS
+
+
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+
+.SUBCKT INPUT_0    VIP  VIN  VOP  VON  GNDF PARAMS: RCM = 1  CCM = 100F  CDM = 100F
+C1          VOP GNDF {CCM}
+C2          VON GNDF {CCM}
+C3          VOP VON {CDM}
+G1          VIP VOP VALUE =  {V(VIP,VOP)/RCM}
+G2          VIN VON VALUE = {V(VIN,VON)/RCM}
+.ENDS
+
+
+.END
+
+
+
+
+*************************************************************************************
+*************************************************************************************
+*************************************************************************************
+
+.SUBCKT PH_Buff VIP VIN VDD VSS VO
+
+IS2         VDD 20 600f
+IS3         19 VSS -720f
+Vos         20 12 250u
+XU4         GNDF VSS 8 10 GNDF PSRR_0
++ PARAMS: PSRR=90 FPSRR=2k
+********XU5         VDD GNDF 9 10 GNDF PSRR_0
+*******+ PARAMS: PSRR=95 FPSRR=2K
+XU_VNOISE   11 12 VNSE_0
++ PARAMS: NLF=826 FLW=1k NVR=92
+
+XU2         15 13 18 GNDF VDD GBW_SLEW_SE_0
++ PARAMS: AOL=120 GBW=220000 SRP=8MEG SRN=8MEG IT=1M VON=0.5 ROFF=1M
+
+XU3         17 16 VDD OUT_CURRENT_CLAMP_PD_0
+
++ PARAMS: RON=0.1 ROFF=100MEG VON=0.5 IMAX=13 IMIN=-12
+************XU_TF       14 18 GNDF TF_0
+***********+ PARAMS: FZ1=10G FZ2=10G FZ3=10G FZ4=10G FZ5=10G FP1=10E6 FP2=10G FP3=10G
+***********+ FP4=10G
+XU1         VDD VSS VDD IQ_IOFF_0
++ PARAMS: VON=0.5 IQQ=0 IOFF=0
+XD4         VSS 19 IDEAL_DIODE_0
++ PARAMS: EMCO=0.01 BRKV=60 IBRKV=1M
+XD3         19 VDD IDEAL_DIODE_0
++ PARAMS: EMCO=0.01 BRKV=60 IBRKV=1M
+XD2         VSS 20 IDEAL_DIODE_0
++ PARAMS: EMCO=0.01 BRKV=60 IBRKV=1M
+XD1         20 VDD IDEAL_DIODE_0
++ PARAMS: EMCO=0.01 BRKV=60 IBRKV=1M
+XU_GND      VDD VSS GNDF GND_FLOAT_0
+XU6         16 VO Vimon AMETER_0
++ PARAMS: GAIN=1
+XU_CLAW     VDD VSS 18 17 Vimon GNDF VCLAMP_W_SENSE_0
++ PARAMS: VMAXIO=0.1 VMINIO=0.1 SLOPE=0
+XU2_VCLAMP  VDD VSS 19 13 GNDF VCLAMP_0
++ PARAMS: VMAX=0.1 VMIN=0.1
+XU1_VCLAMP  VDD VSS 20 15 GNDF VCLAMP_0
++ PARAMS: VMAX=0.1 VMIN=0.1
+XU_CMRR     10 19 GNDF CMRR_0
++ PARAMS: CMRR=80 FCMRR=2k
+XUINPUT     VIP VIN 11 8 GNDF INPUT_0
++ PARAMS: RCM=1 CCM=1000F CDM=100F
+.ENDS
+
+
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+
+.SUBCKT PSRR_0   VDD  VSS  VI  VO  GNDF PARAMS: PSRR = 130 FPSRR = 1.6
+.PARAM PI = 3.141592
+.PARAM RPSRR = 1
+.PARAM GPSRR = {PWR(10,-PSRR/20)/RPSRR}
+.PARAM LPSRR = {RPSRR/(2*PI*FPSRR)}
+G1  GNDF 1 VDD VSS {GPSRR}
+R1  1 2 {RPSRR}
+L1  2 GNDF {LPSRR}
+E1  VO VI 1 GNDF 1
+C2  VDD VSS 10P
+.ENDS
+
+
+* BEGIN PROG NSE NANO VOLT/RT-HZ
+.SUBCKT VNSE_0  1 2 PARAMS: NLF = 10 FLW = 4  NVR = 4.6
+* BEGIN SETUP OF NOISE GEN - NANOVOLT/RT-HZ
+* INPUT THREE VARIABLES
+* SET UP VNSE 1/F
+********************
+* NV/RHZ AT 1/F FREQ
+* NLF
+********************
+* FREQ FOR 1/F VAL
+* FLW
+********************
+* SET UP VNSE FB
+* NV/RHZ FLATBAND
+* NVR
+********************
+* END USER INPUT
+* START CALC VALS
+.PARAM GLF={PWR(FLW,0.25)*NLF/1164}
+.PARAM RNV={1.184*PWR(NVR,2)}
+.MODEL DVN D KF={PWR(FLW,0.5)/1E11} IS=1.0E-16
+* END CALC VALS
+I1 0 7 10E-3
+I2 0 8 10E-3
+D1 7 0 DVN
+D2 8 0 DVN
+E1 3 6 7 8 {GLF}
+R1 3 0 1E9
+R2 3 0 1E9
+R3 3 6 1E9
+E2 6 4 5 0 10
+R4 5 0 {RNV}
+R5 5 0 {RNV}
+R6 3 4 1E9
+R7 4 0 1E9
+E3 1 2 3 4 1
+C1 1 0 1E-15
+C2 2 0 1E-15
+C3 1 2 1E-15
+.ENDS
+* END PROG NSE NANOV/RT-HZ
+
+
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+
+
+
+.SUBCKT GBW_SLEW_SE_0    VIP  VIM  VO  GNDF  PD
++ PARAMS: AOL = 100  GBW = 1MEG  SRP = 1MEG  SRN = 1MEG IT = 1M
++ VON = 0.5 ROFF = 1M
+.PARAM PI = 3.141592
+.PARAM IP = {IF(SRP <= SRN,IT,IT*(SRP/SRN))}
+.PARAM IN = {IF(SRN <= SRP,-IT,-IT*(SRN/SRP))}
+.PARAM CC = {IF(SRP <= SRN,IT/SRP,IT/SRN)}
+.PARAM FP = {GBW/PWR(10,AOL/20)}
+.PARAM RC = {1/(2*PI*CC*FP)}
+.PARAM GC = {PWR(10,AOL/20)/RC}
+G1          GNDF VO VALUE = {IF(V(PD) >= VON,LIMIT(GC*V(VIP,VIM),IP,IN),0)}
+C1          VO GNDF {CC}
+GR1          VO GNDF VALUE =  {IF(V(PD) >= VON,V(VO,GNDF)/RC,V(VO,GNDF)/ROFF)}
+GR11          VO GNDF VALUE =  {V(VO,GNDF)/(RC*100)}
+.ENDS
+
+
+
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+
+.SUBCKT OUT_CURRENT_CLAMP_PD_0   IN  OUT  PD
++PARAMS: RON = 1 ROFF = 1G   VON = 0.5 IMAX = 10M  IMIN = -10M
+GRES  IN OUT VALUE = {LIMIT(IF(V(PD) >= VON,1,0)*V(IN,OUT)/RON
++ + IF(V(PD) >= VON,0,1)*V(IN,OUT)/ROFF,IMAX,IMIN)}
+.ENDS
+
+
+.SUBCKT TF_0    VI  VO  GNDF
++ PARAMS: FZ1 = 10G FZ2 = 10G FZ3 = 10G FZ4 = 10G FZ5 = 10G
++ FP1 = 1 FP2 = 10G FP3 = 10G FP4 = 10G
+.PARAM GM = 1M
+.PARAM RO = {1/GM}
+.PARAM PI = 3.141592
+
+GP1  GNDF VP1 VI GNDF {GM}
+GRP1 VP1 GNDF VALUE = {V(VP1,GNDF)/RO}
+CP1  VP1 GNDF {1/(2*PI*RO*FP1)}
+
+GP2  GNDF VP2 VP1 GNDF {GM}
+GRP2 VP2 GNDF VALUE = {V(VP2,GNDF)/RO}
+CP2  VP2 GNDF {1/(2*PI*RO*FP2)}
+
+GP3  GNDF VP3 VP2 GNDF {GM}
+GRP3 VP3 GNDF VALUE = {V(VP3,GNDF)/RO}
+CP3  VP3 GNDF {1/(2*PI*RO*FP3)}
+
+GP4  GNDF VP4 VP3 GNDF {GM}
+GRP4 VP4 GNDF VALUE = {V(VP4,GNDF)/RO}
+CP4  VP4 GNDF {1/(2*PI*RO*FP4)}
+
+GZ1  GNDF VZ1 VP4 GNDF {GM}
+GRZ1  VZ1 VX1 VALUE =  {V(VZ1,VX1)/RO}
+LZ1  VX1 GNDF {RO/(2*PI*FZ1)}
+
+GZ2  GNDF VZ2 VZ1 GNDF {GM}
+GRZ2  VZ2 VX2 VALUE =  {V(VZ2,VX2)/RO}
+LZ2  VX2 GNDF {RO/(2*PI*FZ2)}
+
+GZ3  GNDF VZ3 VZ2 GNDF {GM}
+GRZ3  VZ3 VX3 VALUE =  {V(VZ3,VX3)/RO}
+LZ3  VX3 GNDF {RO/(2*PI*FZ3)}
+
+GZ4  GNDF VZ4 VZ3 GNDF {GM}
+GRZ4  VZ4 VX4 VALUE =  {V(VZ4,VX4)/RO}
+LZ4  VX4 GNDF {RO/(2*PI*FZ4)}
+
+GZ5  GNDF VO VZ4 GNDF {GM}
+GRZ5  VO VX5  VALUE = {V(VO,VX5)/RO}
+LZ5  VX5 GNDF {RO/(2*PI*FZ5)}
+
+.ENDS
+
+
+
+**************************************
+**          **
+**                       **
+**             **
+**             **
+**************************************
+
+.SUBCKT IQ_IOFF_0   VDD VSS PD
++ PARAMS: VON = 0.5 IQQ = 1M  IOFF = 1P
+G1 VDD VSS VALUE = {IF(V(PD) >= VON,IQQ,IOFF)}
+.ENDS
+
+
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+
+.SUBCKT IDEAL_DIODE_0  A C
++PARAMS: EMCO = 0.01 BRKV = 60 IBRKV = 1M)
+D1 A C IDIODE
+.MODEL IDIODE D(N = {EMCO} BV = {BRKV} IBV = {IBRKV})
+.ENDS
+
+
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+.SUBCKT GND_FLOAT_0   VDD VSS GNDF
+EGNDF  GNDF 0 VALUE = {(V(VDD)+V(VSS))*0.5}
+.ENDS
+
+
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+
+.SUBCKT AMETER_0   VI  VO VIMON
++ PARAMS: GAIN = 1
+VSENSE VI VO DC = 0
+EMETER VIMON 0 VALUE = {I(VSENSE)*GAIN}
+.ENDS
+
+
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+
+.SUBCKT VCLAMP_W_SENSE_0   VDD  VSS  VI  VO VIMON  GNDF
++ PARAMS: VMAXIO = 0.1 VMINIO = 0.1 SLOPE = 0
+EPCLIP  VDD_CLP 0 VALUE = {V(VDD,GNDF) - SLOPE*V(VIMON) - VMAXIO}
+ENCLIP  VSS_CLP 0 VALUE = {V(VSS,GNDF) - SLOPE*V(VIMON) + VMINIO}
+*EPCLIP  VDD_CLP 0 VALUE = {V(VDD,GNDF) -  VMAXIO}
+*ENCLIP  VSS_CLP 0 VALUE = {V(VSS,GNDF)  + VMINIO}
+ECLAMP  VO GNDF VALUE = {LIMIT(V(VI,GNDF), V(VDD_CLP), V(VSS_CLP))}
+.ENDS
+
+
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+
+.SUBCKT VCLAMP_0   VDD  VSS  VI  VO  GNDF PARAMS: VMAX = 0.1 VMIN = 0.1
+ECLAMP  VO GNDF VALUE = {LIMIT(V(VI,GNDF),V(VDD,GNDF) - VMAX, V(VSS,GNDF) + VMIN)}
+.ENDS
+
+
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+
+.SUBCKT CMRR_0   VI  VO  GNDF PARAMS: CMRR = 130 FCMRR = 1.6K
+.PARAM PI = 3.141592
+.PARAM RCMRR = 1
+.PARAM GCMRR = {PWR(10,-CMRR/20)/RCMRR}
+.PARAM LCMRR = {RCMRR/(2*PI*FCMRR)}
+G1  GNDF 1 VI GNDF {GCMRR}
+R1  1 2 {RCMRR}
+L1  2 GNDF {LCMRR}
+E1  VI VO 1 GNDF 1
+.ENDS
+
+
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+
+.SUBCKT INPUT_0    VIP  VIN  VOP  VON  GNDF PARAMS: RCM = 1  CCM = 100F  CDM = 100F
+C1          VOP GNDF {CCM}
+C2          VON GNDF {CCM}
+C3          VOP VON {CDM}
+G1          VIP VOP VALUE =  {V(VIP,VOP)/RCM}
+G2          VIN VON VALUE = {V(VIN,VON)/RCM}
+.ENDS
+
+
+.END
+
+
+
+******************************************************************************
+******************************************************************************
+******************************************************************************
+
+.SUBCKT Select1of4_RTD S0 S1 SX OP OM    PARAMS:  VTHRESH=0.5
+
+E_decide  V1 0  VALUE = { IF  (V(SX)> 0.5, 1 ,(1+(3.98e-3*TEMP)))}
+
+E_select  Vmy 0  Value = {IF (  V(S0) > {VTHRESH} & V(S1) > {VTHRESH}, 2m/V(V1) ,
++ IF (V(S0) < {VTHRESH} & V(S1) < {VTHRESH}, 100u/V(V1) ,
++ IF (V(S0) > {VTHRESH} & V(S1) < {VTHRESH}, 200u/V(V1) ,
++ IF (V(S0) < {VTHRESH} & V(S1) > {VTHRESH}, 1m/V(V1) , 0 ) ) ) ) }
+*.PARAM f ={Vmy/1}
+G_out  OP OM  Vmy 0 1
+.ENDS Select1of4_RTD
+
+
+******************************************************************************
+******************************************************************************
+
+
+.SUBCKT 8to1MUX V0 V1 V2 V3 V4 V5 V6 V7 S2 S1 S0 OUT    PARAMS:  VTHRESH=0.5
+
+
+E_MUX    OUT 0 VALUE = {
++ IF (V(S2) < {VTHRESH} & V(S1) > {VTHRESH} & V(S0) > {VTHRESH},    V(V7),
++ IF (V(S2) < {VTHRESH} & V(S1) > {VTHRESH} & V(S0) < {VTHRESH},    V(V6),
++ IF (V(S2) < {VTHRESH} & V(S1) < {VTHRESH} & V(S0) > {VTHRESH},    V(V5),
++ IF (V(S2) < {VTHRESH} & V(S1) < {VTHRESH} & V(S0) < {VTHRESH},    V(V4),
++ IF (V(S2) > {VTHRESH} & V(S1) < {VTHRESH} & V(S0) < {VTHRESH},    V(V3),
++ IF (V(S2) > {VTHRESH} & V(S1) < {VTHRESH} & V(S0) > {VTHRESH},    V(V2),
++ IF (V(S2) > {VTHRESH} & V(S1) > {VTHRESH} & V(S0) < {VTHRESH},    V(V1),
++ IF (V(S2) > {VTHRESH} & V(S1) > {VTHRESH} & V(S0) > {VTHRESH},    V(V0), V(Dummy) ) ) ) ) ) ) ) ) }
+
+R1 Dummy 0 10e6
+C1 Dummy 0 10e-9
+
+.ENDS 8to1MUX
+
+
+
+******************************************************************************
+******************************************************************************
+**************************************
+**                                  **
+**                                  **
+**                                  **
+**                                  **
+**************************************
+******************************************************************************
+******************************************************************************
+.SUBCKT INV_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} ,
++ {VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1f
+.ENDS INV_BASIC_GEN
+*$
+
+.SUBCKT AND2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  &
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS AND2_BASIC_GEN
+*$
+
+

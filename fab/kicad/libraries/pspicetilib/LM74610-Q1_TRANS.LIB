@@ -1,0 +1,365 @@
+* CIP: NDA is required as of 08/29/2019
+*****************************************************************************
+* LM74610-Q1
+*****************************************************************************
+* (C) Copyright 2019 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Texas Instruments Inc.
+* Part: LM74610-Q1
+* Date: 04FEB2019
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: LM74610-SQ Evaluation Module (EVM)
+* EVM Users Guide: SNVU489 September 2015
+* Datasheet: SNOSCZ1B –JULY 2015–REVISED JUNE 2016
+*
+* Model Version: Final 1.10
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.10
+* Gate pull down current when reverse voltage is sensed is changed to 160mA.
+*
+* Final 1.00
+* Release to Web
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+*
+* 1. "Device_Burnout" is the pin added in order to detect if the differential 
+*     voltage between Cathode to Anode crosses 45V.
+* 2. Operating current and shutdown current have not been modelled.
+*
+*******************************************************************************
+.SUBCKT LM74610-Q1_TRANS ANODE CATHODE DEVICE_BURNOUT GATE_DRIVE GATE_PULL_DOWN
++  NC_1 NC_2 VCAPH VCAPL  
+R_R36         N16347066 N16233884  1 TC=0,0 
+G_G1         GATE_PULL_DOWN 0 N16738601 0 160m
+E_E4         VAC 0 CATHODE ANODE 1
+C_C22         0 N16235420  1n  TC=0,0 
+E_ABM9         N16235410 0 VALUE { if (V(ANODE)<0, 0 , 1)    }
+R_R26         VAC N16233892  1 TC=0,0 
+C_C21         0 DIFF_VOLTAGE  1n  TC=0,0 
+R_R24         N16235602 ABCD  2.82 TC=0,0 
+R_R37         N16926697 N16926602  1 TC=0,0 
+X_U829         N17041837 GATE_DRIVE D_D1
+X_U830         5_1_COMP N16961898 INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+G_ABM2I2         0 GATE_DRIVE VALUE {
++  Limit((V(N16233796)-V(GATE_DRIVE))*10m,10u,-10u)    }
+C_C28         0 N16926602  1n  TC=0,0 
+C_C31         0 N16233884  1n  TC=0,0 
+E_ABM25         N17041837 0 VALUE { if(V(DIFF_VOLTAGE)>0.5,0,V(VCAPL)+2)    }
+R_R15         N16235410 N16235514  1 TC=0,0 
+X_U17         N16235420 5_1_COMP N16975523 AND2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+E_ABM3         N16926697 0 VALUE { if(V(CAP_DIFF)>6.2,1,0)    }
+C_C17         0 ABCD  1u  TC=0,0 
+C_C19         0 N16233892  1n  TC=0,0 
+X_S1    N16339047 0 VCAPH VCAPL LM74610-Q1_TRANS_S1 
+E_E11         N16738605 0 N16759443 0 1
+C_C10         0 N16235514  1n IC=0 TC=0,0 
+E_E6         VAN_CT_INT 0 N16235208 0 1
+E_ABM30         TEMP_VALUE 0 VALUE { -0.4874*{TEMP} + 169.53    }
+E_E7         CAP_DIFF 0 VCAPH VCAPL 1
+E_ABM6         N162339381 0 VALUE { if (V(N16233892)>45, 1 , 0)    }
+R_R33         N16297990 N16235708  1 TC=0,0 
+X_U18         N16961898 N16926600 N16958915 AND2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+E_ABM24         N16759443 0 VALUE { if(V(DIFF_VOLTAGE)>0.5,0,1)    }
+R_R55         GATE_PULL_DOWN 0  1000MEG TC=0,0 
+R_R7         0 GATE_DRIVE  100G TC=0,0 
+X_U30         N16235708 N16233884 N16235514 N16234196 AND3_BASIC_GEN PARAMS:
++  VDD=1 VSS=0 VTHRESH=500E-3
+R_R20         N16235080 VAC_THRE  1 TC=0,0 
+C_C27         0 N16235708  1n  TC=0,0 
+E_ABM11         DIS_CUR 0 VALUE { 2.06758400E-11*{TEMP}*{TEMP}+  
++ 4.00012900E-09*{TEMP}+  
++ 8.26923800E-07  }
+R_R10         0 NC_1  1m TC=0,0 
+X_U11         ABCD ABCD N16297990 AND2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+R_R27         DIFF_ANODE_CATHODE N16235174  1 TC=0,0 
+E_ABM7         N16735993 0 VALUE { IF(V(N16233950)<0.95,(V(ANODE)),(V(VCAPH))) 
++    }
+E_ABM16         N16926500 0 VALUE { if (V(DIFF_ANODE_CATHODE)>V(VAC_THRE), 1,
++  0)    }
+R_R11         0 NC_1  1m TC=0,0 
+X_U19         N16975523 DIFF_VOLTAGE N16233950 AND2_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=500E-3
+X_U832         N16994525 N16926602 N16994243 OR2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+R_R30         N16738605 N16738601  1 TC=0,0 
+C_C14         0 START_DEV  1n IC=0 TC=0,0 
+E_E8         VCAPL 0 N16930904 0 1
+E_E5         N16979592 0 N16235174 0 1
+C_C15         0 VAC_THRE  1n IC=0 TC=0,0 
+E_ABM13         CHR_CUR 0 VALUE { IF(V(N16234186)<0, 0,V(N16234186))    }
+E_E12         DIFF_ANODE_CATHODE 0 ANODE CATHODE 1
+X_U825         DEVICE_BURNOUT N16347066 INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+R_R12         0 NC_2  1m TC=0,0 
+C_C26         0 N16738601  1n IC=0 TC=0,0 
+R_R31         N16979592 N16235208  1 TC=0,0 
+R_R19         N16926500 START_DEV  1 TC=0,0 
+C_C20         0 N16235174  1n IC=0 TC=0,0 
+R_R25         N162339381 DEVICE_BURNOUT  1 TC=0,0 
+R_R38         N16735993 HI_LO_MARGIN_1  1 TC=0,0 
+R_R13         0 NC_2  1m TC=0,0 
+E_E3         N16233796 0 HI_LO_MARGIN_1 0 1
+R_R35         N16342592 N16339047  10 TC=0,0 
+G_ABMII3         VCAPL VCAPH VALUE { if(
++  V(N16918965)<0.5,-(V(DIS_CUR)),(V(CHR_CUR)/1000000))    }
+R_R28         N16234196 DIFF_VOLTAGE  1 TC=0,0 
+X_S5    DIFF_VOLTAGE 0 ANODE CATHODE LM74610-Q1_TRANS_S5 
+C_C8         0 N16235208  1n IC=0 TC=0,0 
+C_C29         0 N16339047  1n  TC=0,0 
+C_C33         0 HI_LO_MARGIN_1  1n IC=0 TC=0,0 
+E_ABM29         N16937439 0 VALUE { if(V(CAP_DIFF)<5.1,0,1)    }
+X_S4    DIFF_VOLTAGE 0 N16930904 ANODE LM74610-Q1_TRANS_S4 
+C_C18         0 DEVICE_BURNOUT  1n  TC=0,0 
+C_C9         0 N16926600  1n  TC=0,0 
+R_R54         N16937439 5_1_COMP  1 TC=0,0 
+R_R8         START_DEV N16926600  1 TC=0,0 
+E_ABM18         N16235080 0 VALUE { 2.70854959*0.000001*{TEMP}*{TEMP} -  
++ 1.363679112*0.0001*{TEMP} + 0.4396362528  
++ +0  }
+X_S3    DIFF_VOLTAGE 0 N16930904 CATHODE LM74610-Q1_TRANS_S3 
+C_C47         0 5_1_COMP  1n  TC=0,0 
+R_R29         N16939888 N16235420  1 TC=0,0 
+E_ABM23         N16342592 0 VALUE { if(V(CAP_DIFF)<0,1,0)    }
+E_ABM5         N16235602 0 VALUE { if (V(N16233892)>0.0140, 0 , 1)    }
+E_ABM12         N16234186 0 VALUE { 0+  
++ 0+  
++ 0+  
++ -V(TEMP_VALUE) + 285.2246*V(VAN_CT_INT) - 0.01992*{TEMP} }
+X_U833         DIFF_VOLTAGE N16994525 INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+X_U7         N16958915 N16994243 N16918965 N16939888 SRLATCHRHP_BASIC_GEN
++  PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+.IC         V(GATE_DRIVE )=0
+.ENDS LM74610-Q1_TRANS
+*$
+.subckt LM74610-Q1_TRANS_S1 1 2 3 4  
+S_S1         3 4 1 2 _S1
+RS_S1         1 2 1G
+.MODEL         _S1 VSWITCH Roff=10000e6 Ron=1m Voff=0.2 Von=0.8
+.ends LM74610-Q1_TRANS_S1
+*$
+.subckt LM74610-Q1_TRANS_S5 1 2 3 4  
+S_S5         3 4 1 2 _S5
+RS_S5         1 2 1G
+.MODEL         _S5 VSWITCH Roff=1000e6 Ron=225k Voff=0.8 Von=0.2
+.ends LM74610-Q1_TRANS_S5
+*$
+.subckt LM74610-Q1_TRANS_S4 1 2 3 4  
+S_S4         3 4 1 2 _S4
+RS_S4         1 2 1G
+.MODEL         _S4 VSWITCH Roff=1e6 Ron=10 Voff=0.8 Von=0.2
+.ends LM74610-Q1_TRANS_S4
+*$
+.subckt LM74610-Q1_TRANS_S3 1 2 3 4  
+S_S3         3 4 1 2 _S3
+RS_S3         1 2 1G
+.MODEL         _S3 VSWITCH Roff=1e6 Ron=10 Voff=0.2 Von=0.8
+.ends LM74610-Q1_TRANS_S3
+*$
+.SUBCKT AND2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS AND2_BASIC_GEN
+*$
+.SUBCKT INV_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS INV_BASIC_GEN
+*$
+.SUBCKT D_D1 1 2
+D1 1 2 DD1
+.MODEL DD1 D( IS=1e-15 TT=10p Rs=0.05 N=.1  )
+.ENDS D_D1
+*$
+.SUBCKT SQD40N06_14L_PS_RC D G S PARAMS: C2=1000 C3=1000 R1=1M C4=1000 R2=1M
++  C5=1000 R3=1M R4=1M R5=1M C1=1000
+C_CT6         N11708 N11712  125.4376u  TC=0,0 
+C_CF2         0 N16364  24.4181m  TC=0,0 
+R_RT1         j-a-Temp-Tank N11404  17.4960 TC=0,0 
+C_CF7         0 N18737  19.5748m  TC=0,0 
+R_RT7         N11712 N11716  650.3891m TC=0,0 
+C_CF4         0 N16388  2.0275  TC=0,0 
+G_G7         0 JUNCTION-TEMPERATURE-1RC VALUE {
++  (V(Drain)*I(V_V_Drain)+V(Gate)*I(V_V_Gate)+V(Source)*I(V_V_Source)) }
+C_C10         N94536 N94151  {C4}  TC=0,0 
+C_C12         N95722 N95798  {C2}  TC=0,0 
+C_C5         N92368 N92773  {C2}  TC=0,0 
+V_V_Gate         G GATE 0VDC
+R_RT3         N11408 N11412  7.4701 TC=0,0 
+C_C8         N94061 N94123  {C2}  TC=0,0 
+R_RF3         N16384 N16388  13.9508 TC=0,0 
+V_V4         N11732 0 {TEMP}
+R_R10         N94536 N94151  {R4} TC=0,0 
+R_R5         N92368 N92773  {R2} TC=0,0 
+C_C3         N91434 N91125  {C2}  TC=0,0 
+R_R12         N95722 N95798  {R2} TC=0,0 
+R_R8         N94061 N94123  {R2} TC=0,0 
+R_RT8         N11716 N11732  692.4277m TC=0,0 
+R_RT6         N11708 N11712  35.1142m TC=0,0 
+R_R3         N91434 N91125  {R2} TC=0,0 
+G_DissipationPower         0 J-A-TEMP-FILTER VALUE {
++  (V(Drain)*I(V_V_Drain)+V(Gate)*I(V_V_Gate)+V(Source)*I(V_V_Source)) }
+C_CT2         N11404 N11408  4.2567  TC=0,0 
+R_RT5         j-c-Temp-Tank N11708  625.7403m TC=0,0 
+C_C1         JUNCTION-TEMPERATURE-1RC N89014  {C1}  TC=0,0 
+X_U1         DRAIN GATE SOURCE SQD40N06-14L 
+C_C13         N95798 N95860  {C3}  TC=0,0 
+R_RF2         N16364 N16384  4.6732 TC=0,0 
+V_V3         N11450 0 {TEMP}
+C_C9         N94123 N94536  {C3}  TC=0,0 
+R_R13         N95798 N95860  {R3} TC=0,0 
+R_RF8         N18741 N18767  833.8745m TC=0,0 
+C_CT1         j-a-Temp-Tank N11404  1.3050  TC=0,0 
+R_RF1         J-A-TEMP-FILTER N16364  5.5453 TC=0,0 
+R_RT2         N11404 N11408  28.8765 TC=0,0 
+R_R9         N94123 N94536  {R3} TC=0,0 
+C_CT4         N11412 N11450  349.8513u  TC=0,0 
+R_RF5         J-C-TEMP-FILTER N18733  64.8177m TC=0,0 
+V_V5         N16436 0 {TEMP}
+C_CT3         N11408 N11412  75.0225m  TC=0,0 
+G_G5         0 j-a-Temp-Tank VALUE {
++  (V(Drain)*I(V_V_Drain)+V(Gate)*I(V_V_Gate)+V(Source)*I(V_V_Source)) }
+C_C4         JUNCTION-TEMPERATURE-3RC N92368  {C1}  TC=0,0 
+R_RF7         N18737 N18741  503.9512m TC=0,0 
+C_C14         N95860 N96370  {C4}  TC=0,0 
+C_C11         JUNCTION-TEMPERATURE-5RC N95722  {C1}  TC=0,0 
+R_RT4         N11412 N11450  6.1574 TC=0,0 
+C_CF8         0 N18741  27.5099m  TC=0,0 
+C_C7         JUNCTION-TEMPERATURE-4RC N94061  {C1}  TC=0,0 
+R_R1         JUNCTION-TEMPERATURE-1RC N89014  {R1} TC=0,0 
+C_C2         JUNCTION-TEMPERATURE-2RC N91434  {C1}  TC=0,0 
+R_R4         JUNCTION-TEMPERATURE-3RC N92368  {R1} TC=0,0 
+R_R14         N95860 N96370  {R4} TC=0,0 
+R_R11         JUNCTION-TEMPERATURE-5RC N95722  {R1} TC=0,0 
+C_CF5         0 J-C-TEMP-FILTER  1.4101m  TC=0,0 
+C_CF1         0 J-A-TEMP-FILTER  295.9678u  TC=0,0 
+R_R7         JUNCTION-TEMPERATURE-4RC N94061  {R1} TC=0,0 
+R_R2         JUNCTION-TEMPERATURE-2RC N91434  {R1} TC=0,0 
+C_CT5         j-c-Temp-Tank N11708  2.5085m  TC=0,0 
+C_C15         N96370 N95888  {C5}  TC=0,0 
+V_V9         N92392 0 {TEMP}
+V_V_Source         SOURCE S 0VDC
+V_V11         N95888 0 {TEMP}
+R_RF4         N16388 N16436  35.8307 TC=0,0 
+C_CT8         N11716 N11732  63.3093m  TC=0,0 
+V_V10         N94151 0 {TEMP}
+R_R15         N96370 N95888  {R5} TC=0,0 
+G_G4         0 J-C-TEMP-FILTER VALUE {
++  (V(Drain)*I(V_V_Drain)+V(Gate)*I(V_V_Gate)+V(Source)*I(V_V_Source)) }
+V_V8         N91125 0 {TEMP}
+C_C6         N92773 N92392  {C3}  TC=0,0 
+C_CT7         N11712 N11716  69.7450m  TC=0,0 
+G_G9         0 JUNCTION-TEMPERATURE-3RC VALUE {
++  (V(Drain)*I(V_V_Drain)+V(Gate)*I(V_V_Gate)+V(Source)*I(V_V_Source)) }
+C_CF6         0 N18733  596.9231u  TC=0,0 
+R_R6         N92773 N92392  {R3} TC=0,0 
+G_G11         0 JUNCTION-TEMPERATURE-5RC VALUE {
++  (V(Drain)*I(V_V_Drain)+V(Gate)*I(V_V_Gate)+V(Source)*I(V_V_Source)) }
+V_V7         N89014 0 {TEMP}
+C_CF3         0 N16384  341.6993m  TC=0,0 
+G_G10         0 JUNCTION-TEMPERATURE-4RC VALUE {
++  (V(Drain)*I(V_V_Drain)+V(Gate)*I(V_V_Gate)+V(Source)*I(V_V_Source)) }
+G_G8         0 JUNCTION-TEMPERATURE-2RC VALUE {
++  (V(Drain)*I(V_V_Drain)+V(Gate)*I(V_V_Gate)+V(Source)*I(V_V_Source)) }
+R_RF6         N18733 N18737  603.9346m TC=0,0 
+V_V_Drain         D DRAIN 0VDC
+G_G6         0 j-c-Temp-Tank VALUE {
++  (V(Drain)*I(V_V_Drain)+V(Gate)*I(V_V_Gate)+V(Source)*I(V_V_Source)) }
+V_V6         N18767 0 {TEMP}
+.ENDS SQD40N06_14L_PS_RC
+*$
+.SUBCKT SQD40N06-14L D G S 
+M1 3 GX S S NMOS W= 2896229u L= 0.25u 
+M2 S GX S D PMOS W= 2896229u L= 7.093e-07 
+R1 D 3 9.556e-03 TC=9.110e-03 2.837e-05   
+CGS GX S 1.153e-09 
+CGD GX D 8.215e-12 
+RG G GY 1m 
+RTCV 100 S 1e6 TC=1.233e-3 0 
+ETCV GX GY 100 200 1 
+ITCV S 100 1u 
+VTCV 200 S 1 
+DBD S D DBD
+.MODEL NMOS NMOS ( LEVEL = 3 TOX = 7e-8 
++ RS = 9.000e-05 KP = 9.8e-6 NSUB = 6.9e16 
++ KAPPA = 1e-2 ETA = 1e-4 NFS = 8e11 
++ LD = 0 IS = 0 TPG = 1) 
+.MODEL PMOS PMOS ( LEVEL = 3 TOX = 7e-8 
++NSUB = 2.425e+16 IS = 0 TPG = -1 ) 
+.MODEL DBD D ( 
++FC = 0.1 TT = 1.000e-08 T_MEASURED = 25 BV = 61 
++RS = 4.823e-3 N = 1.064 IS = 1.3943e-11
++EG = 1.14 XTI = 2.694 TRS1 = 3.228e-3 
++CJO = 9.508e-10 VJ = 3.431e-01 M = 4.384e-01 ) 
+.ENDS
+*$
+.SUBCKT AND3_BASIC_GEN A B C Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH} &
++ V(C) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS AND3_BASIC_GEN
+*$
+.SUBCKT OR2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  |  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS OR2_BASIC_GEN
+*$
+.SUBCKT BUF_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS BUF_BASIC_GEN
+*$
+.SUBCKT SRLATCHRHP_BASIC_GEN S R Q QB PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+GQ 0 Qint VALUE = {IF(V(R) > {VTHRESH},-5,IF(V(S)>{VTHRESH},5, 0))}
+CQint Qint 0 1n
+RQint Qint 0 1000000MEG
+D_D10 Qint MY5 D_D1
+V1 MY5 0 {VDD}
+D_D11 MYVSS Qint D_D1
+V2 MYVSS 0 {VSS} 
+EQ Qqq 0 Qint 0 1
+X3 Qqq Qqqd1 BUF_BASIC_GEN PARAMS: VDD={VDD} VSS={VSS} VTHRESH={VTHRESH}
+RQq Qqqd1 Q 1
+EQb Qbr 0 VALUE = {IF( V(Q) > {VTHRESH}, {VSS},{VDD})}
+RQb Qbr QB 1
+Cdummy1 Q 0 1n 
+Cdummy2 QB 0 1n
+.IC V(Qint) {VSS}
+.MODEL D_D1 D( IS=1e-15 TT=10p Rs=0.05 N=.1  )
+.ENDS SRLATCHRHP_BASIC_GEN
+*$

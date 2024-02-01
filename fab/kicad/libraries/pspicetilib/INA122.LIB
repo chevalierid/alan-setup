@@ -1,0 +1,143 @@
+*$
+* INA122
+*****************************************************************************
+* (C) Copyright 2023 Texas Instruments Incorporated. All rights reserved.     
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.      
+** TI and its licensors and suppliers make no warranties, either expressed   
+** or implied, with respect to this model, including the warranties of       
+** merchantability or fitness for a particular purpose. The model is        
+** provided solely on an "as is" basis. The entire risk as to its quality   
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Online Design Tools, Texas Instruments Inc.
+* Part: INA122
+* Date: 27JAN2023
+* Model Type: ALL IN ONE
+* EVM Order Number: N/A 
+* EVM Users Guide:  N/A 
+* Datasheet: SBOS069
+*
+* Model Version: Final 1.1
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.1
+* Updated PSpice symbol
+*
+* Final 1.0 : 
+* Release to Web
+*
+*****************************************************************************
+* CONNECTIONS: NON-INVERTING INPUT
+*              |   INVERTING INPUT
+*              |   |   POSITIVE POWER SUPPLY
+*              |   |   |   NEGATIVE POWER SUPPLY
+*              |   |   |   |   OUTPUT
+*              |   |   |   |   |   REFERENCE
+*              |   |   |   |   |   |    GAIN SENSE 1
+*              |   |   |   |   |   |    |   GAIN SENSE 2
+*              |   |   |   |   |   |    |   |
+.SUBCKT INA122 INP INN VDD VEE OUT REF  RG1 RG2 
+*****************************************************************************
+* Models
+.MODEL DX D (IS=800.00E-18)
+.MODEL QX PNP (IS=800.00E-18 BF=200)
+.MODEL QX1 PNP (IS=800.00E-18 BF=200)
+.MODEL QX2 PNP (IS=800.0000E-18 BF=200)
+*****************************************************************************
+* Components
+C1I 11I 12I 5.7735E-12
+C1O 11O 12O 4.3301E-12
+C2I 6I 7I 20.000E-12
+C2O 6O 7O 15.000E-12
+CEEI 10I 99I 20.000E-12
+CEEO 10O 99O 15.000E-12
+D11 INN VDD DX 
+D12 VEE INN DX 
+D21 INP VDD DX 
+D22 VEE INP DX 
+DCI 5I 53I DX
+DCO 5O 53O DX
+DEI 54I 5I DX
+DEO 54O 5O DX
+DLNI 92I 90I DX
+DLNO 92O 90O DX
+DLPI 90I 91I DX
+DLPO 90O 91O DX
+DPI 4I 3I DX
+DPO 4O 3O DX
+EGNDI 99I 0 POLY(2) (3I,0) (4I,0) 0 .5 .5
+EGNDO 99O 0 POLY(2) (3O,0) (4O,0) 0 .5 .5
+FBI 7I 99I POLY(5) VBI VCI VEI VLPI VLNI 0 1.5915E9 -1E9 1E9 1E9 -1E9
+FBO 7O 99O POLY(5) VBO VCO VEO VLPO VLNO 0 7.0736E9 -7E9 7E9 7E9 -7E9
+GAI 6I 0 11I 12I 25.133E-6
+GAO 6O 0 11O 12O 28.274E-6
+GCMI 0 6I 10I 99I 251.33E-12
+GCMO 0 6O 10O 99O 282.74E-12
+HLIMI 90I 0 VLIMI 1K
+HLIMO 90O 0 VLIMO 1K
+I1 VDD 2 2U
+I2 VDD 3 2U
+IEEI 3I 10I DC 2.0100E-6
+IEEO 3O 10O DC 1.5100E-6
+Q1 VEE INN 2 QX 
+Q1I 11I 2I 13I QX1
+Q1O 11O 2O 13O QX1
+Q2 VEE INP 3 QX 
+Q2I 12I 1I 14I QX2
+Q2O 12O 1O 14O QX2
+R1 REF RG1 100K 
+R2 RG1 1 25K 
+R2I 6I 9I 100.00E3
+R2O 6O 9O 100.00E3
+R3 1 RG2 25K 
+R4 RG2 OUT 100K 
+RC1I 4I 11I 39.789E3
+RC1O 4O 11O 35.368E3
+RC2I 4I 12I 39.789E3
+RC2O 4O 12O 35.368E3
+RE1I 13I 10I 13.855E3
+RE1O 13O 10O 876.34
+RE2I 14I 10I 13.855E3
+RE2O 14O 10O 876.34
+REEI 10I 99I 99.502E6
+REEO 10O 99O 132.45E6
+RO1I 8I 5I 50
+RO1O 8O 5O 50
+RO2I 7I 99I 25
+RO2O 7O 99O 25
+RPI 3I 4I 517.29E3
+RPO 3O 4O 512.86E3
+RX1 1I 2 1E-3 
+RX2 2I RG1 1E-3 
+RX3 3I VDD 1E-3 
+RX4 4I VEE 1E-3 
+RX5 5I 1 1E-3 
+RX6 1O 3 1E-3 
+RX7 2O RG2 1E-3 
+RX8 3O VDD 1E-3 
+RX9 4O VEE 1E-3 
+RX10 5O OUT 1E-3 
+VBI 9I 0 DC 0
+VBO 9O 0 DC 0
+VCI 3I 53I DC .84884
+VCO 3O 53O DC .84884
+VEI 54I 4I DC .84884
+VEO 54O 4O DC .84884
+VLIMI 7I 8I DC 0
+VLIMO 7O 8O DC 0
+VLNI 0 92I DC 3
+VLNO 0 92O DC 3
+VLPI 91I 0 DC 3
+VLPO 91O 0 DC 3
+.ENDS INA122
+*

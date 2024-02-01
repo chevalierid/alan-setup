@@ -1,0 +1,117 @@
+**$UNENCRYPTED_LIB
+**$INTERFACE
+*$
+* CSD22206W  
+*****************************************************************************
+* (C) Copyright 2017 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose. The model is
+** provided solely on an "as is" basis. The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: CSD22206W  
+* Date: 01JUN2017
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.s003
+* EVM Order Number:
+* EVM Users Guide: 
+* Datasheet: SLPS689 �MAY 2017
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web
+*
+*****************************************************************************
+*
+*****************************************************************************
+*$
+**********************************************************************
+*													*
+*  CSD22206W  -  P-Channel	08/06V WCSP						*
+*  Version:	Initial model based on measurements f/datasheet;	*
+*								ged,sks  5/19/2017		*
+*  SUBCKT Definition:  1=D  2=G  3=S							*
+**********************************************************************
+*$
+.SUBCKT csd22206w  1 2 3
+.param AA		1.7316
+.param width 	{AA/1.78} 
+.param perim	{2.1*width} 
+.param pLg		3e-07
+.param ptox		1e-08
+.param wgate	{AA/1.78}
+.param plint	{0.1*pLg}
+.param ptrc1	9.5e-04
+.param ptrc2	5.0e-08
+.param rss		3e-04
+.param rred		6e+04
+.param rdd		1.04e-3
+.param rbd		9e9
+.param cds		1.7e-10
+.param cgs		9.04e-10
+.param cgd		2.10e-10
+M1    10 11 12 12   PMOS W={width} L={pLg} PD={perim} PS={perim}
+DGD   11 16 	DD	{width} 
+DDG   10 16 	DD	{width} 
+RGD   11 16 		 {rred}
+RSS   12  9 	RTEMP	 {rss} 
+RSUB   9  6 	RTEMP  0.02E-3
+RSP    6  3 	RTEMP	 0.05E-12
+CGS    2  9 		 {cgs}
+RDD   10  7 	RTEMP	 {rdd}
+RDP    7  1 	RTEMP	 2e-3
+CGD    2  7 		 {cgd}
+DBD    7  9 	DBD	 {width} 
+RBD    7  9 		 {rbd}
+CDS    7  9 		 {cds}
+RGG   11  13 	1.1
+RESD   8  13 	30.9
+RGw    2  8 	0.20
+DDz    8  9 	ZENERD
+******************************************************************* 
+.MODEL  PMOS   PMOS (   LEVEL  = 7			Version = 3.2
++ TNOM    = 27	       K1	   = 1.15		K2	  = -1E-02            
++ VBM     = -8           NLX     = 1.74E-07	VTH0	  =-0.967
++ DVT0    = 2.68512	 DVT1    = 0.53		DVT2    =-3.2E-02
++ A0      = 1.0		 A1      = 0		A2      = 1
++ LINT    = {0.1*pLg}    TOX     = {ptox}		NCH = 1.1E+17
++ U0      = 184		 UA	   = 3.7E-10	UB = 4E-19
++ DROUT   = 1.50		 DELTA   = 0.05		VOFFCV  =-0.45
++ PDIBLC1 = 0.3436	 PDIBLC2 = 8.6E-03	VSAT = 5.0e4
++ PSCBE1  = 4.24E+08	 PSCBE2  = 5E-06		PVAG = 0.0
++ DSUB    = 1.65		 ETA0    = 4E-02		ETAB =-7E-02 
++ JS      = 1E-20		 VOFF    = -0.21		NFACTOR = 1.9 
++ KT1     = -0.532	 KT2     = 2.2E-03	KT1L    = 0
++ UA1     = 1E-09	 	 UB1     = -7E-19     	UTE     =-1.40
++ CJ      = 1E-18		 CJSW    = 1E-18		CF      = 0
++ CGSO    = 60e-12	 CGDO    = 65e-12		CGBO    = 0  )
+*******************************************************************
+.MODEL DBD D ( 
++ CJO=1.0E-09  VJ=0.33  M=0.29  FC=0.5  TT=2e-9
++ IS=1.3e-10 N=1.05  RS=1.35E-02  TRS1=2.3E-03  TRS2=-8E-06 
++ XTI=-3.5	BV=11.21  TBV1=3.1E-04  TBV2=-1e-6  NR=4.2  ISR=1.5E-08	
++ TNOM=27  )
+*******************************************************************
+.MODEL DD D ( 
++ CJO=4.8E-10  VJ=0.3  M=0.8 FC=0.5  TNOM = 27
++ IS=1E-15  N=1.1  RS= 41.51 )
+*******************************************************************
+.MODEL ZENERD D ( TNOM = 27
++ CJO=9.5E-11	VJ=0.7	M=0.4	 RS=5E-03	TRS1=4e-3
++ FC=0.5	IS=1.63E-14  N=1.01	  XTI=3.3 
++ BV=6.52		TBV1=2.98E-04  )
+*******************************************************************
+.MODEL RTEMP RES ( TC1	= {ptrc1}  TC2	= {ptrc2} )
+*******************************************************************
+.ENDS csd22206w
+*$

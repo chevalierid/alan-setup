@@ -1,0 +1,108 @@
+*$
+* CSD22205L
+*****************************************************************************
+* (C) Copyright 2017 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose. The model is
+** provided solely on an "as is" basis. The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: CSD22205L 
+* Date: 24OCT2017
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.s003
+* EVM Order Number:
+* EVM Users Guide: 
+* Datasheet: SLPS690A –MAY 2017–REVISED AUGUST 2017
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web
+*
+*****************************************************************************
+*
+*****************************************************************************
+*$
+**********************************************************************
+*
+*  CSD22205L  - P-Channel	08/06V WCSP					
+*  Version:	Initial model based on measurements f/datasheet;
+*								ged,sks  5/19/2017	
+*               Updated                        ged  9/8/2017         *
+*  SUBCKT Definition:  1=D  2=G  3=S						
+**********************************************************************
+*$
+.SUBCKT csd22205L  1 2 3
+.param AA		1.033
+.param width 	{AA/1.78} 
+.param perim	{2.1*width} 
+.param pLg		3e-07
+.param wgate	{AA/1.78}
+.param plint	{0.1*pLg}
+.param ptrc1	2.4e-03
+.param ptrc2	1.0e-07
+.param rred		1.0e+09
+M1    10 11 12 12   PMOS W={width} L={pLg} PD={perim} PS={perim}
+DGD   11 16 	DD	{width} 
+DDG   10 16 	DD	{width} 
+RGD   11 16 		 {rred}
+RSS   12  9 	RTEMP	 9.9e-4 
+RSUB   9  6 	RTEMP  1.0e-3
+RSP    6  3 	RTEMP	 1.0e-4
+CGS    2  9 	1e-13
+RDD   10  7 	RTEMP	 1.2e-3
+RDP    7  1 	RTEMP	 2.75e-3
+CGD    2  7 	1e-13
+DBD    7  6 	DBD	 {width} 
+RBD    7  6 	1e10
+CDS    7  6 	1.2e-10
+RGG   11  13 	5.3
+RESD   8  13 	30.9
+RGw    2  8 	0.20
+DDz    8  9 	ZENERD
+******************************************************************* 
+.MODEL  PMOS   PMOS (   LEVEL  = 7			Version = 3.2
++ TNOM    = 27	       K1	   = 1.10		K2	  = -1E-02            
++ VBM     = -8           NLX     = 1.74E-07	VTH0	  =-0.96
++ DVT0    = 2.68512	 DVT1    = 0.53		DVT2    =-3.2E-02
++ A0      = 1.0		 A1      = 0		A2      = 1
++ LINT    = {0.1*pLg}    TOX     = 1.0e-8		NCH     = 1.7E+17
++ U0      = 200		 UA	   = 2.1E-10	UB      = 1E-19
++ DROUT   = 0.96		 DELTA   = 0.12		VOFFCV  =-0.21
++ PDIBLC1 = 0.3436	 PDIBLC2 = 8.6E-03	VSAT    = 5.7e4
++ PSCBE1  = 6E+08	 	 PSCBE2  = 2E-08		PVAG    = 0.0
++ DSUB    = 1.20		 ETA0    = 0.1		ETAB    =-7E-02 
++ JS      = 0.0		 VOFF    = -0.20		NFACTOR = 1.65 
++ KT1     = -0.49 	 KT2     = 2.2E-03	KT1L    = 0
++ UA1     = 8E-10	 	 UB1     = -9E-19     	UTE     =-1.0
++ CJ      = 1E-18		 CJSW    = 1E-18		CF      = 0
++ CGSO    = 9.83e-10	 CGDO    = 2.46e-10	CGBO    = 0  )
+*******************************************************************
+.MODEL DBD D ( 
++ CJO=0.95E-09  VJ=0.32  M=0.32  FC=0.5  TT=2e-9  TNOM=27
++ IS=6.8e-11 N=1.05   RS=7.5E-03  TRS1=1.0E-03  TRS2=-8E-06 
++ XTI=-3.5	BV=11.37 TBV1=3.0E-04 TBV2=-7.0e-7 NR=4.2 ISR=2.5E-09)
+*******************************************************************
+.MODEL DD D ( 
++ CJO=5.8E-10  VJ=0.3  M=0.615 FC=0.5  TNOM = 27
++ IS=1.05E-15  N=1.3  RS= 41.51 )
+*******************************************************************
+.MODEL ZENERD D ( TNOM = 27
++ CJO=9.5E-11	VJ=0.7	M=0.6	 RS=5E-3	TRS1=4e-3
++ FC=0.5	IS=1.25E-14  N=1.01	  XTI=3.3   
++ BV=6.580		TBV1=3.1E-04  )
+*******************************************************************
+.MODEL RTEMP RES ( TC1	= {ptrc1}  TC2	= {ptrc2} )
+*******************************************************************
+.ENDS csd22205L
+*$

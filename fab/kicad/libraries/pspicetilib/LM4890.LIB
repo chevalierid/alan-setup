@@ -1,0 +1,179 @@
+* LM4890
+*****************************************************************************
+* (C) Copyright 2015 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: LM4890
+* Date: 08/02/2015
+* Model Type: All In One
+* Simulator: Pspice
+* Simulator Version: Pspice 16.2.0.s003
+* EVM Order Number: N/A
+* EVM Users Guide: N/A
+* Datasheet: SNAS138L –SEPTEMBER 2001–REVISED MAY 2013
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 : Release to Web
+*
+*****************************************************************************
+* Notes:
+*  Parameters Modeled
+*    1. PSRR
+*    2. Quiescent Current
+*    3. Shut Down Current
+*    4. Shut Down Voltage
+*    5. Resistor Output to GND
+*    6. Offset Voltage
+*    7. ShutDown mode
+*    8. Supply Voltage Range
+*    9. The value of Wakeup time is less
+*       than the datasheet value
+*  Parameters Not Modeled
+*    1. Thermal shutdown temperature
+*    2. Total Harmonic Distortion + Noise
+*****************************************************************************
+*$
+.SUBCKT LM4890 +IN -IN VDD GND SHUTDOWN BYPASS Vo1 Vo2
+V6          13 BYPASS 0
+V5          15 14 0
+Vos         24 +IN 6m
+*ECS1        12 0 VALUE = {IF(V(SHUTDOWN,0)>=V(VDDx,0)/2,0,V(11,0))}
+*ECS1        12 0 VALUE = {IF(V(SHUTDOWN,0)<=0.8,0,V(11,GND))}
+*ECS3        161 0 VALUE = {IF(V(SHUTDOWN,0)<=0.8,0,V(16,GND))}
+*ECS1        12 0 VALUE = {IF(V(SHUTDOWN,0)<=0.8,0,IF(V(SHUTDOWN,0)>=0.8,V(11,GND),V(11,GND)))}
+R5          Vo22 0 10k
+R6          Vo11 0 10k
+R1          14 Vo11 20k
+R2          Vo22 14 20k
+C1          Vo11 -IN 15p
+XU1         13 15 16 BYPASS SHUTDOWN GBW_SLEW_SE
++ PARAMS: AOL=70 GBW=0.3MEG SRP=1MEG SRN=1MEG IT=1
+XU14        17 18 11 BYPASS SHUTDOWN GBW_SLEW_SE
++ PARAMS: AOL=70 GBW=0.3MEG SRP=1MEG SRN=1MEG IT=1
+ECS2        VDDx 0 VALUE = {LIMIT(V(VDD,0),2.2,5.5)}
+XU6         20 Vo11 VIMONP AMETER
++ PARAMS: GAIN=1
+XU2         21 Vo22 VIMONN AMETER
++ PARAMS: GAIN=1
+****shutdown control @output stage
+ECS1        Vo1 0 VALUE = {IF(V(SHUTDOWN,0)<=0.8,0,V(Vo11,GND))}
+ECS3        Vo2 0 VALUE = {IF(V(SHUTDOWN,0)<=0.8,0,V(Vo22,GND))}
+****************************************
+XU9         22 20 OUT_CURRENT_CLAMP
++ PARAMS: RSER=1 IMAX=0.5 IMIN=0.5
+XU4         23 21 OUT_CURRENT_CLAMP
++ PARAMS: RSER=1 IMAX=0.5 IMIN=0.5
+XU3         VDDx 0 16 23 VIMONN BYPASS VCLAMP_W_CLAW
++ PARAMS: VMAXIO=0 VMINIO=0 SLOPE=0
+XU5         VDDx 0 11 22 VIMONP BYPASS VCLAMP_W_CLAW
++ PARAMS: VMAXIO=0 VMINIO=0 SLOPE=0
+R4          BYPASS -IN 3MEG
+R3          +IN BYPASS 3MEG
+XU13        VDDx 0 24 25 17 18 BYPASS CMR
++ PARAMS: VMAX=0 VMIN=0
+XU11        VDDx 0 BYPASS GND_FLOAT
+XU12        VDD 0 SHUTDOWN IQ
++ PARAMS: IQQ=5m IOFF=0.1u
+XU7         VDDx 0 -IN 25 BYPASS PSRR
++ PARAMS: PSRR=75 FPSRR=1K
+.ENDS
+*$
+**************************************
+**   GBW, SLEW, OPENLOOP GAIN       **
+***********************************************
+.SUBCKT GBW_SLEW_SE   VIP  VIM  VO  GNDF  PD
++ PARAMS: AOL = 100  GBW = 1MEG  SRP = 1MEG  SRN = 1MEG IT = 1M  
++ VON = 0.8 RSC = 1M
+.PARAM PI = 3.141592
+.PARAM IP = {IF(SRP <= SRN,IT,IT*(SRP/SRN))}
+.PARAM IN = {IF(SRN <= SRP,-IT,-IT*(SRN/SRP))}
+.PARAM CC = {IF(SRP <= SRN,IT/SRP,IT/SRN)}
+.PARAM FP = {GBW/PWR(10,AOL/20)}
+.PARAM RC = {1/(2*PI*CC*FP)}
+.PARAM GC = {PWR(10,AOL/20)/RC}
+G1          GNDF VO VALUE = {IF(V(PD) > VON,LIMIT(GC*V(VIP,VIM),IP,IN),0)}
+C1          VO GNDF {CC}
+GR1         VO GNDF VALUE =  {IF(V(PD) > VON,V(VO,GNDF)/RC,V(VO,GNDF)/RSC)}
+GR11        VO GNDF VALUE =  {V(VO,GNDF)/(RC*1000)}
+.ENDS
+*$
+**************************************
+.SUBCKT AMETER   VI  VO VIMON
++ PARAMS: GAIN = 1
+VSENSE VI VO DC = 0
+EMETER VIMON 0 VALUE = {I(VSENSE)*GAIN}
+.ENDS
+*$
+**************************************
+**   OUTPUT CURRENT CLAMP       **
+**************************************
+.SUBCKT OUT_CURRENT_CLAMP   IN  OUT
++PARAMS: RSER = 1 IMAX = 10M  IMIN = 10M
+GRESP  OUTX OUT VALUE = {LIMIT(V(OUTX,OUT)/RSER,IMAX,-IMIN)}
+GRESN  IN OUTX VALUE = {-V(IN,OUTX)/RSER}
+.ENDS
+*$
+**************************************
+**  CLAW CURVE PARAMETER            **
+**************************************
+.SUBCKT VCLAMP_W_CLAW   VDD  VSS  VI  VO VIMON  GNDF
++ PARAMS: VMAXIO = 0 VMINIO = 0 SLOPE = 0
+EPCLIP  VDD_CLP 0 VALUE = {V(VDD,GNDF) - SLOPE*V(VIMON) - VMAXIO}
+ENCLIP  VSS_CLP 0 VALUE = {V(VSS,GNDF) - SLOPE*V(VIMON) + VMINIO}
+ECLAMP  VO GNDF VALUE = {LIMIT(V(VI,GNDF), V(VDD_CLP), V(VSS_CLP))}
+.ENDS
+*$
+**************************************
+**       COMMON MODE RANGE          **
+**************************************
+.SUBCKT CMR    VDD  VSS  VIP  VIM  VOP VOM  GNDF
++ PARAMS: VMAX = 0 VMIN = 0
+ECLAMPP  VOP GNDF VALUE = {LIMIT(V(VIP,GNDF),V(VDD,GNDF) - VMAX, V(VSS,GNDF) + VMIN)}
+ECLAMPM  VOM GNDF VALUE = {LIMIT(V(VIM,GNDF),V(VDD,GNDF) - VMAX, V(VSS,GNDF) + VMIN)}
+.ENDS
+*$
+**************************************
+**        VCM SUBCIRCUIT            **
+**************************************
+.SUBCKT GND_FLOAT   VDD VSS GNDF
+EVCM  GNDF 0  VALUE = {(V(VDD) + V(VSS))*0.5}
+.ENDS
+*$
+**************************************
+**  QUIESCENT CURRENT WITH          **
+**  SHUTDOWN FUNCTIONALITY          **
+**************************************
+.SUBCKT IQ   VDD VSS SHDN
++ PARAMS: IQQ = 1M  IOFF = 1P
+G1 VDD VSS VALUE = {IF(V(SHDN) <= 0.8,IOFF,IQQ)}
+*G1 VDD VSS VALUE = {IF(V(SHDN) >= V(VDD)/2,IOFF,IQQ)}
+.ENDS
+*$
+**************************************
+**            PSRR block            **
+**************************************
+.SUBCKT PSRR   VDD  VSS  VI  VO  GNDF PARAMS: PSRR = 130 FPSRR = 1.6
+.PARAM PI = 3.141592
+.PARAM RPSRR = 1
+.PARAM GPSRR = {PWR(10,-PSRR/20)/RPSRR}
+.PARAM LPSRR = {RPSRR/(2*PI*FPSRR)}
+G1  GNDF 1 VDD VSS {GPSRR}
+R1  1 2 {RPSRR}
+L1  2 GNDF {LPSRR}
+E1  VO VI 1 GNDF 1
+C2  VDD VSS 10p
+.ENDS
+*$

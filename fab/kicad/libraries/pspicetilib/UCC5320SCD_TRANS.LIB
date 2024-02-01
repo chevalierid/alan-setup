@@ -1,0 +1,284 @@
+*$
+* UCC5320SCD
+*****************************************************************************
+* (C) Copyright 2019 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Texas Instruments Inc.
+* Part: UCC5320SCD
+* Date: 25FEB2019
+* Model Type: TRANSIENT 
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: UCC5320SDEVM
+* EVM Users Guide: SLLU238–JUNE 2017
+* Datasheet: SLLSER8F –JUNE 2017–REVISED JANUARY 2019
+* Topologies Supported: NA
+*
+* Model Version: Final 1.10
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.10
+* False turn ON of upper NMOS is avoided
+* 
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+*
+* 1. The following features have been modeled
+*      a. Switching Characteristics such as propagation delay, rise/fall time
+*      b. Peak output source/sink current
+*      c. UVLO
+*      d. Short Circuit Clamping
+*      e. Active ShutDown
+* 2. Temperature effects are not modeled. 
+*
+*****************************************************************************
+.SUBCKT UCC5320SCD_TRANS GND1 VEE2 IN+ IN- OUTH OUTL VCC1 VCC2  
+E_ABM1         N17180405 0 VALUE { IF(V(GATEUPPERMOS)>0.5, (V(VCC2)-5),
++  V(VCC2))    }
+X_U19         INP_OK INN_OK INPUT_OK AND2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+E_E22         VCC2_INT 0 VCC2 VEE2 1
+E_E32         N16851003 0 VCC1_INT 0 0.4
+E_ABM25         ASD 0 VALUE { IF(V(UVLO_OK)<0.5, 1,0)    }
+C_C1         0 UVLO1_DELAYED  1.443n   
+E_E28         N16816719 0 VCC1_INT 0 0.7
+R_R1         UVLO1 UVLO1_DELAYED  33k  
+R_R52         DRVA_MOD N17110019  10  
+R_R54         0 INPUT_DEL  1k  
+E_ABM5         DRVA 0 VALUE { IF(V(UVLO_OK) > 0.5, V(N16669580), 0)    }
+E_E8         N16669982 0 N17027842 0 1
+X_U26         N16855073 N16850947 INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+X_U10         N17450859 VEE2 d_dsd 
+X_U5         OUTH VCC2 d_body 
+E_ABM23         DRVA_MOD 0 VALUE { IF(V(UVLO_OK)>0.5 & V(DRVA)<0.45, 6,0)    }
+E_E29         INN_INT 0 IN- GND1 1
+E_E34         GATE_P 0 N17180405 0 1
+V_V3         N16781655 0 12
+R_R58         VEE2 VCC2  1G  
+R_R30         INPUT_OK N16672528  8  
+T_T1         N16669982 0 INPUT_DEL 0 Z0=1k TD=52n  
+X_S2    ASD 0 OUTL N17450859 UCC5320SCD_TRANS_S2 
+V_V8         N16789976 0 2.7
+X_M16         OUTH GATE_P VCC2 pmos_upper 
+X_U12         OUTL VCC2 d_clamp 
+E_ABM2         N17180339 0 VALUE { LIMIT(IF(V(GATEUPPERMOS)>0.75, V(OUTH)+5,
++  V(OUTH)), V(VEE2), V(VCC2))    }
+E_E33         GATE_N 0 N17180339 0 1
+X_U8         OUTH VCC2 d_body 
+E_ABM20         N17027842 0 VALUE { IF(V(N16672528) > 0.5 , 1, 0)    }
+X_U57         N16672528 INPUT_OK d_d1 
+X_U18         UVLO1 N16850947 INN_OK AND2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+R_R57         GND1 VCC1  1G  
+R_RLN         IN- VCC1  {5V/40uA}  
+E_E30         N16850890 0 VCC1_INT 0 0.7
+X_M14         VCC2 GATE_N OUTH nmos_upper 
+X_U3         VEE2 OUTL d_d1 
+C_C2         0 UVLO2_DELAYED  1.443n   
+X_U20         UVLO1_DELAYED UVLO2_DELAYED UVLO_OK AND2_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=500E-3
+R_RLP         GND1 IN+  {5V/40uA}  
+C_C38         0 N17110019  1.443n  
+E_E31         N16839246 0 VCC1_INT 0 0.4
+E_E15         GATE_LOWERMOS VEE2 N17110019 0 1
+E_E26         INP_INT 0 IN+ GND1 1
+X_U6         VCC1_INT N16789976 UVLO1 COMPHYS3_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5 HYS=0.2
+X_M13         OUTL GATE_LOWERMOS VEE2 lowmos 
+E_E7         N16669580 0 INPUT_DEL 0 1
+E_E21         VCC1_INT 0 VCC1 GND1 1
+X_U17         UVLO1 N16832250 INP_OK AND2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+X_U677         INN_INT N16850890 N16851003 N16855073 COMPHYS_BASIC_GEN PARAMS:
++  VDD=1 VSS=0 VTHRESH=0.5
+C_C24         0 N16672528  1.443n  
+E_E3         GATEUPPERMOS 0 VALUE { if ( V(DRVA, 0) >0.5, 1, 0 ) }
+X_U60         N17110019 DRVA_MOD d_d1 
+X_U7         VCC2_INT N16781655 UVLO2 COMPHYS3_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5 HYS=1
+R_R2         UVLO2 UVLO2_DELAYED  55k  
+X_U56         UVLO2_DELAYED UVLO2 d_d1 
+X_U676         INP_INT N16816719 N16839246 N16832250 COMPHYS_BASIC_GEN PARAMS:
++  VDD=1 VSS=0 VTHRESH=0.5
+X_U55         UVLO1_DELAYED UVLO1 d_d1 
+.ENDS UCC5320SCD_TRANS
+*$
+.subckt UCC5320SCD_TRANS_S2 1 2 3 4  
+S_S2         3 4 1 2 _S2
+RS_S2         1 2 1G
+.MODEL         _S2 VSWITCH Roff=100MEG Ron=1.0 Voff=0.4 Von=0.6
+.ends UCC5320SCD_TRANS_S2
+*$
+.subckt d_dsd 1 2 
+d1 1 2 dd 
+.model dd d
++ n=2
+.ends d_dsd
+*$
+.subckt d_body 1 2 
+d1 1 2 dd
+.model dd d
++ n=1
+.ends d_body
+*$
+.subckt pmos_upper d g s
+m1 d g s s _mod
+.model _mod pmos
++ kp=2e-009
++ w=0.107
++ l=1e-008
++ vto=-0.2
++ n=2.5
+.ends pmos_upper
+*$
+.subckt d_clamp 1 2 
+d1 1 2 dd
+.model dd d
++ n=1.6
+.ends d_clamp
+*$
+.subckt d_d1 1 2 
+d1 1 2 dd
+.model dd d
++ n=0.001
+.ends d_d1
+*$
+.subckt nmos_upper d g s
+m1 d g s s _mod
+.model _mod nmos
++ kp=2e-009
++ w=1.8
++ l=1e-008
++ vto=0.2
++ n=2.5
+.ends nmos_upper
+*$
+.subckt lowmos d g s
+m1 d g s s _mod
+.model _mod nmos
++ kp=5.23e-009
++ w=0.5
++ l=1e-008
++ vto=0.2
++ n=2.5
++ rg=0
++ cgso=0
+.ends lowmos
+*$
+.SUBCKT AND2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS AND2_BASIC_GEN
+*$
+.SUBCKT INV_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS INV_BASIC_GEN
+*$
+.SUBCKT COMPHYS3_BASIC_GEN INP INM OUT PARAMS: VDD=1 VSS=0 VTHRESH=0.5	HYS=0.1
+EIN INP1 INM1 INP INM 1 
+EHYS INP1 INP2 VALUE { IF( V(1) > {VTHRESH},-HYS,0) }
+EOUT OUT 0 VALUE { IF( V(INP2)>V(INM1), {VDD} ,{VSS}) }
+R1 OUT 1 1
+C1 1 0 1n 
+RINP1 INP1 0 1K
+.ENDS COMPHYS3_BASIC_GEN
+*$
+.SUBCKT COMPHYS_BASIC_GEN INP INM HYS OUT PARAMS: VDD=1 VSS=0 VTHRESH=0.5	
+EIN INP1 INM1 INP INM 1 
+EHYS INP1 INP2 VALUE { IF( V(1) > {VTHRESH},-V(HYS),0) }
+EOUT OUT 0 VALUE { IF( V(INP2)>V(INM1), {VDD} ,{VSS}) }
+R1 OUT 1 1
+C1 1 0 5n
+RINP1 INP1 0 1K
+.ENDS COMPHYS_BASIC_GEN
+*$
+.subckt D_D11 1 2 
+d1 1 2 dd
+.model dd d n=0.3
+.ends D_D11
+*$
+.SUBCKT IGBT C G E
+L_E   VA E  2n 
+R_E   VE VA 0.0032
+R_C   VC C  0.012
+R_G   G VG  0.0001
+CGE  E VG  4n
+M1   VD VG VE VE MOS1 W=19u L=1u 
+Q1   VE VD VC VINTERALPNP 
+D_SD  VE VD DO 
+L_d E1 E 2n
+D_FRED E1 C FRD
+E_cg VG VCG VG E 1
+D_CG VCG C DCG
+D_CG1 VCG C DCG
+.MODEL DCG D
++ CJO=3.0814E-9
++ M=1.4555
++ VJ=8
++ BV=1.2000E3
+.MODEL VINTERALPNP PNP 
++ IS=8.07e-22  
++ NF=0.75          
++ BF=0.966  
++ CJE=4.28e-7
++ TF=2.4e-9       
++ XTB=1.0204      
++ EG=1.52   
+.MODEL DO D 
++ IS=1.0e-18      
++ BV=1.2000E3
++ CJO=2.5e-9     
++ VJ=0.38    
++ M=0.84
+.MODEL FRD D 
++ IS=36.910E-9
++ N=4.5591
++ RS=5.8822E-3
++ IKF=.10401
++ CJO=5.1196E-9
++ M=2.2146
++ VJ=10
++ ISR=10.010E-21
++ BV=1.1999E3
++ IBV=26.017E-3
++ TT=465.87E-9
+.MODEL MOS1 NMOS LEVEL=1 
++IS=1e-32
++VTO=4.6
++LAMBDA=1.26605e-05 
++KP=1
+.ENDS
+*$
+.SUBCKT BUF_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS BUF_BASIC_GEN
+*$

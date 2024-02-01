@@ -1,0 +1,180 @@
+** SN6501
+*****************************************************************************
+* (C) Copyright 2012 Texas Instruments Incorporated. All rights reserved.
+* TI Confidential - NDA Restrictions per NDA# ####-##-##-#####
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose. The model is
+** provided solely on an "as is" basis. The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: SN6501
+* Date: 14MAR2012
+* Model Type: Transient
+* Simulator: PSpice
+* Simulator Version: 16.2
+* EVM Order Number: SN6501EVM
+* EVM Users Guide: SLLU156 – February 2012
+* Datasheet: SLLSEA0 - January 2012
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web
+*
+*
+***************************************
+.subckt SN6501_TRANS GND2 GND1 D2 VCC D1
+C_U1_C9         0 U1_D2_CTRL  5p  TC=0,0 
+X_U1_U12         U1_N16806762 U1_N16775205 BUF_DELAY_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=0.5 DELAY=60n
+R_U1_R4         U1_N16784690 U1_D1_CTRL  65k  
+C_U1_C4         0 U1_D1_CTRL  5p  TC=0,0 
+D_U1_U14         U1_N16784690 U1_D1_CTRL D_D1
+E_U1_ABM5         U1_N16794722 0 VALUE { IF(V(VCC)<2.3,V(VCC),  
++ -0.0131*V(VCC)*V(VCC)+0.155*V(VCC)+1.9504)   }
+X_U1_U13         U1_N16806971 U1_N16775296 BUF_DELAY_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=0.5 DELAY=60n
+X_U1_U3         U1_N16775205 U1_N16774980 U1_N16806971 NOR2_BASIC_GEN PARAMS:
++  VDD=1 VSS=0 VTHRESH=500E-3
+X_U1_U2         N00045 U1_N16774980 INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+E_U1_ABM6         U1_N16787873 0 VALUE { IF(V(VCC)<2.3,V(VCC),  
++ -0.0131*V(VCC)*V(VCC)+0.155*V(VCC)+1.9504)   }
+R_U1_R5         U1_N16787866 U1_D2_CTRL  65k  
+C_U1_C7         0 U1_N16791468  1n  
+X_U1_U8         0 U1_N16791468 U1_N16775205 U1_N16785346 MUX2_BASIC_GEN PARAMS:
++  VDD=1 VSS=0 VTHRESH=0.5
+C_U1_C5         0 D1  15p  TC=0,0 
+X_U1_U9         0 U1_N16787862 U1_N16775296 U1_N16787900 MUX2_BASIC_GEN PARAMS:
++  VDD=1 VSS=0 VTHRESH=0.5
+R_U1_R1         U1_N16785346 U1_N16784690  19k  
+D_U1_U11         U1_N16787866 U1_D2_CTRL D_D1
+C_U1_C8         0 U1_N16787862  1n  
+X_U1_U1         N00045 U1_N16775296 U1_N16806762 NOR2_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=500E-3
+C_U1_C6         0 D2  15p  TC=0,0 
+R_U1_R2         U1_N16787900 U1_N16787866  19k  
+X_U1_S3    U1_D1_CTRL 0 D1 0 Driver_2_U1_S3 
+X_U1_S2    U1_D2_CTRL 0 D2 0 Driver_2_U1_S2 
+D_U1_U6         0 D1 D_D1
+D_U1_U7         0 D2 D_D1
+R_U1_R7         U1_N16794722 U1_N16791468  1  
+R_U1_R8         U1_N16787873 U1_N16787862  1  
+E_U2_ABM3         U2_N14342404 0 VALUE { {IF(V(U2_N14341692)>V(U2_VTH),0,1)}   
++  }
+C_U2_C3         0 U2_FS  1n IC=1 TC=0,0 
+R_U2_R3         U2_N14342404 U2_FS  1  
+X_U2_U7         U2_FSBY2 U2_N01586 U2_FS U2_N01586 0 0 DFFSR_RHPBASIC_GEN
++  PARAMS: VDD=1 VSS=0 VTHRESH=500E-3
+E_U2_ABM2         U2_N01439 0 VALUE { {IF(V(U2_N00129)>V(U2_VTH),0,1)}    }
+C_U2_C1         U2_N00129 U2_FS  2.8p IC=1 TC=0,0 
+R_U2_R2         U2_N01439 U2_N14341692  1  
+R_U2_R1         U2_N00129 U2_N14341692  45k  
+X_U2_U8         U2_FSBY4 U2_N02087 U2_FSBY2 U2_N02087 0 0 DFFSR_RHPBASIC_GEN
++  PARAMS: VDD=1 VSS=0 VTHRESH=500E-3
+E_U2_ABM1         U2_VTH 0 VALUE {  0.0121*V(VCC)*V(VCC) + 0.0223*V(VCC) -
++  0.0098    }
+X_U2_U9         N00045 U2_N02592 U2_FSBY4 U2_N02592 0 0 DFFSR_RHPBASIC_GEN
++  PARAMS: VDD=1 VSS=0 VTHRESH=500E-3
+C_U2_C2         0 U2_N14341692  1n IC=1 TC=0,0 
+R_R1         GND2 GND1  1m  
+.ENDS SN6501_TRANS
+*$
+.subckt Driver_2_U1_S3 1 2 3 4  
+S_U1_S3         3 4 1 2 _U1_S3
+RS_U1_S3         1 2 1G
+.MODEL         _U1_S3 VSWITCH Roff=100k Ron=0.5 Voff=1.2 Von=2.5
+.ends Driver_2_U1_S3
+*$
+.subckt Driver_2_U1_S2 1 2 3 4  
+S_U1_S2         3 4 1 2 _U1_S2
+RS_U1_S2         1 2 1G
+.MODEL         _U1_S2 VSWITCH Roff=100k Ron=0.5 Voff=1.2 Von=2.5
+.ends Driver_2_U1_S2
+*$
+.MODEL D_D1 D( IS=1e-15 TT=10p Rs=0.05 N=.1  )
+*$
+.SUBCKT DFFSR_RHPBASIC_GEN Q QB CLK D R S PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+***Set has higher priority in this
+** Changed the delay from 7n/10n to 15n/20n to help larger time step simulations
+**Faster flip-flops require a a smaller time step to simulate
+X1 CLK CLKdel INV_DELAY_BASIC_GEN PARAMS: VDD={VDD} VSS={VSS} VTHRESH={VTHRESH} DELAY = 15n
+X2 CLK CLKdel CLKint AND2_BASIC_GEN PARAMS: VDD={VDD} VSS={VSS} VTHRESH={VTHRESH}  
+GQ 0 Qint VALUE = {IF(V(R) > {VTHRESH},-5,IF(V(S) > {VTHRESH},5, IF(V(CLKint)> {VTHRESH}, 
++ IF(V(D)> {VTHRESH},5,-5),0)))}
+CQint Qint 0 1n
+RQint Qint 0 1000MEG
+D_D10 Qint MY5 D_D1
+V1 MY5 0 {VDD}
+D_D11 MYVSS Qint D_D1
+V2 MYVSS 0 {VSS} 
+EQ Qqq 0 Qint 0 1
+X3 Qqq Qqqd1 BUF_DELAY_BASIC_GEN PARAMS: VDD={VDD} VSS={VSS} VTHRESH={VTHRESH} DELAY = 20n
+RQq Qqqd1 Q 1
+EQb Qbr 0 VALUE = {IF( V(Q) > {VTHRESH}, {VSS},{VDD})}
+RQb Qbr Qb 1 
+Cdummy1 Q 0 1nF 
+Cdummy2 QB 0 1nF 
+.IC V(Qint) {VSS}
+.ENDS DFFSR_RHPBASIC_GEN
+*$
+.SUBCKT MUX2_BASIC_GEN A B S Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE  YINT 0 VALUE {{IF(V(S) > {VTHRESH},  
++ V(B),V(A))}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS MUX2_BASIC_GEN
+*$
+.SUBCKT NOR2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  |  
++ V(B) > {VTHRESH},{VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS NOR2_BASIC_GEN
+*$
+.SUBCKT BUF_DELAY_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 DELAY = 10n 
+E_ABMGATE1    YINT1 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT1 YINT2 1
+CINT YINT2 0 {DELAY*1.3}
+E_ABMGATE2    YINT3 0 VALUE {{IF(V(YINT2) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT2 YINT3 Y 1
+CINT2 Y 0 1n
+.ENDS BUF_DELAY_BASIC_GEN
+*$
+.SUBCKT INV_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS INV_BASIC_GEN
+*$
+.SUBCKT INV_DELAY_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 DELAY = 10n 
+E_ABMGATE1    YINT1 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT1 YINT2 1
+CINT YINT2 0 {DELAY*1.3}
+E_ABMGATE2    YINT3 0 VALUE {{IF(V(YINT2) > {VTHRESH} , 
++ {VSS},{VDD})}}
+RINT2 YINT3 Y 1
+CINT2 Y 0 1n
+.ENDS INV_DELAY_BASIC_GEN
+*$
+.SUBCKT AND2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS AND2_BASIC_GEN
+*$
+
+

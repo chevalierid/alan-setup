@@ -1,0 +1,127 @@
+* OPA337
+*****************************************************************************
+* (C) Copyright 2011 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: OPA337
+* Date: 13JUN2011
+* Model Type: ALL IN ONE
+* Simulator: PSPICE
+* Simulator Version: 16.0.0.p001
+* EVM Order Number: N/A
+* EVM Users Guide: N/A
+* Datasheet: SBOS077B - JUNE 1997 - REVISED MARCH 2005
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 : 
+* Release to Web
+*
+*****************************************************************************
+* This model is applicable to OPA337, OPA2337
+*                 connections:   non-inverting input
+*      		                 |  inverting input
+*		                 |  |  positive power supply
+*		                 |  |  |   negative power supply
+*		                 |  |  |   |   output
+*		                 |  |  |   |   |
+*		.subckt OPA337   1  2  3   4   5
+*
+* Note that node "4" may be connected to ground "0", i.e., single supply operation.
+*
+* ADD .OPTIONS ITL=40 AND .OPTIONS GMIN=10p TO NET LIST IF SIMULATION DOES NOT
+*      CONVERGE
+**
+*
+* connections:   non-inverting input
+*                |  inverting input
+*                |  |  positive power supply
+*                |  |  |   negative power supply
+*                |  |  |   |   output
+*                |  |  |   |   |
+.subckt OPA337  1  2  3   4   5
+*
+*** First Stage ***
+ITAIL1    3 23  DC 15U
+RGNDS    GNDS 4  0.01
+M24      29 1  23 3  PCH W=500U L=2U 
+M23      25 2  23 3  PCH W=500U L=2U 
+R25      25 4  RPO2 100K
+R29      29 4  RPO2 100K
+I20      20 4  DC 1U
+R20      3 20  2.3MEG
+G23      3 23 poly(1) 20 23 10e-6 10e-6
+***********************************************
+I34      3 34  DC 2.5U
+I32      3 32  DC 2.5U
+R32      32 25  493K
+R34      34 29  493K
+*** Second Stage ***
+ITAIL2   27 4  DC 50U
+M43      43 34 27  GNDS NCH W=12.5U L=1U     M=2  
+M45      45 32 27  GNDS NCH W=12.5U L=1U     M=2  
+*************************************************************************
+M47      43 43 3  3 PCH W=60U L=4U     M=1  
+M49      45 43 3  3 PCH W=60U L=4U     M=1  
+V64      3 64  DC 2.1
+V60      60 62  DC 1.2
+V62      62 4  DC 1.0
+ITAIL3   51 4  DC 30U
+M53      53 45 51  GNDS NCH W=15U L=1U     M=1  
+M55      55 60 51  GNDS NCH W=15U L=1U     M=1  
+M61      4 64 55 55  PCH W=45U L=1U     M=1  
+M57      53 53 3  3 PCH W=50U L=4U     M=2  
+M59      55 53 3  3 PCH W=50U L=4U     M=4  
+M67      55 55 67  3 PCH W=5U L=5U     M=1  
+M74      45 51 62  GNDS NCH W=5U L=1U     M=1  
+R67      3 67  RNW 5K
+M71      76 55 3  3 PCH W=45U L=1U     M=18
+M73      76 51 4  GNDS NCH W=15U L=1U     M=18
+R76      76 5   RPO2 250
+RC1      44 76  RPO2 350
+CM1      29 44  CP1P2 25P
+RC2      54 4  RPO2 350
+CM2      25 54  CP1P2 25P
+C45      47 76  CP1P2 6P
+R47      45 47  RPO2 1K
+* MODELS for LEVEL 3 PSpice
+.model dx d(rs=1 cjo=0.1p)
+.model nix nmos(vto=0.75 kp=205.5u rd=1 rs=1 rg=1 rb=1 cgso=4e-9
++cgdo=4e-9 cgbo=16.667e-9 cbs=2.34e-13 cbd=2.34e-13)
+.model nox nmos(vto=0.75 kp=195u rd=.5 rs=.5 rg=1 rb=1 cgso=66.667e-12
++cgdo=66.667e-12 cgbo=125e-9 cbs=2.34e-13 cbd=2.34e-13)
+.model pix pmos(vto=-0.75 kp=205.5u rd=1 rs=1 rg=1 rb=1 cgso=4e-9
++cgdo=4e-9 cgbo=16.667e-9 cbs=2.34e-13 cbd=2.34e-13)
+.model pox pmos(vto=-0.75 kp=195u rd=.5 rs=.5 rg=1 rb=1 cgso=66.667e-12
++cgdo=66.667e-12 cgbo=125e-9 cbs=2.34e-13 cbd=2.34e-13)
+
+.MODEL PCH PMOS (LEVEL=3 TOX=30E-9 CGDO=1.80e-10 CGSO=1.80e-10 CJ=7.199E-4 CJSW=3.40E-10
++AF=1.05 KF=1.0e-31 JS=4.0e-7 JSSW=3.0e-13 RSH=117 MJ=.47 MJSW=.16 VFB=-0.34 PHI=0.71 VTO=-.892
++LD=12E-9 WD=43E-9 TPG=+1 GAMMA=0.6)
+
+.MODEL NCH NMOS (LEVEL=3 TOX=30E-9 CGDO=1.55e-10 CGSO=1.55e-10 CJ=6.300E-4 CJSW=3.83E-10
++AF=1.05 KF=2.6e-31 JS=2.0e-7 JSSW=5e-13 RSH=68 MJ=.25 MJSW=.11 VFB=-0.784 PHI=0.792 VTO=.81
++LD=34E-9 WD=17E-9 TPG=-1 GAMMA=0.6)
+
+.MODEL RPO2 RES (R=1 TC1=6.3e-4 TC2= 1.1e-6)
+.MODEL RNW  RES (R=1 TC1=5.5e-3 TC2=-1.3e-5)
+.MODEL CP1P2 CAP (C=1)
+.ENDS 
+* ENDS OPA337

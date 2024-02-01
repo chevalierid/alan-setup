@@ -1,0 +1,317 @@
+* TPS7H2211-SP
+*****************************************************************************
+* (C) Copyright 2021 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose. The model is
+** provided solely on an "as is" basis. The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+* Released by: Texas Instruments Inc.
+* Part: TPS7H2211-SP
+* Date: 07DEC2021
+* Model Type: Transient - Worst Case Analysis
+* Simulator: PSpice
+* Simulator Version: 17.4
+* EVM Order Number: TPS7H2211EVM-CVAL
+* EVM Users Guide: SLVUC17
+* Datasheet: SLVSEW6A
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+*
+* 1. This model is intended for transient simulation only and does not support AC simulation.
+* 2. The following features have not been modeled:
+*	- Thermal shutdown
+*       - Reverse current protection response time
+*       - Fast trip off response time
+*       - SS behavior after faults
+* 3. The TID parameter can take on any value from 0 to 100
+* 4. The AGING parameter can be either 0 (no aging effects) or 1 (with aging effects)
+*
+*****************************************************************************
+
+.SUBCKT TPS7H2211-SP_WCA VIN_1 VIN_2 VIN_3 VIN_4 EN OVP PAD GND VOUT_1 VOUT_2 VOUT_3 VOUT_4 SS 
++ PARAMS:  TID=0 AGING=0
+R_R8         VIN_3 VIN  1m TC=0,0 
+X_U3_S2    FASTTRIP 0 GATE_CTRL VIN MOS_U3_S2 
+M_U3_M3         U3_N17102676 GATE_CTRL VIN VIN Mbreakp           
+E_U3_ABM17         U3_N17103445 0 VALUE { IF( V(U3_I_SENSE)>8.5, 1,0)    }
+M_U3_M4         U3_N17102676 GATE_CTRL U3_N17102690 U3_N17102690 Mbreakp       
++     
+X_U3_H1    U3_N17102690 U3_N17156104 U3_I_SENSE 0 MOS_U3_H1 
+D_U3_D7         U3_N17103374 U3_N17103378 D_D1 
+X_U3_U18         U3_N17103378 0 FASTTRIP OR2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+C_U3_C54         U3_N17103378 0  1n IC=0 TC=0,0 
+R_U3_Rds_extra         U3_N17156104 U3_N17156166  36.15m TC=0,0 
+E_U3_ABM16         U3_N17103374 0 VALUE { IF(V(U3_N17103448)>0.5, 1, 0)    }
+C_U3_C53         U3_N17103448 0  1n IC=0 TC=0,0 
+R_U3_R89         U3_N17103445 U3_N17103448  800 TC=0,0 
+R_U3_R9         U3_N17103374 U3_N17103378  {60u/(0.7*1n)} TC=0,0 
+R_U3_R90         U3_N17174884 U3_N17102690  1 TC=0,0 
+E_U3_TABLE1         U3_N17174922 0 TABLE {V(VIN)} 4.5V        
++ {112.50k*(1-0.0196*TID/100)*(1-0.0103*AGING)}  
++ 9V             {60.00k*(1-0.0137*TID/100)*(1-0.0160*AGING)}  
++ 12V           {18.46k*(1-0.0132*TID/100)*(1-0.0103*AGING)}  
++ 14V           {14.00k*(1-0.3443*TID/100)*(1-0.0047*AGING)}
+X_U3_U19          U3_N17174884 VIN U3_N17174922 0 VCR
+E_U3_TABLE8         U3_N17176324 0 TABLE {V(U3_TEMP_C)} -55V        0mV  
++ -40V        2.95mV  
++ 25V         13.95mV 
++ 85V         24.95mV 
++ 125V       31.95mV
+X_U3_U20          U3_N17176736 U3_N17156166 U3_N17176324 0 VCR
+X_U3_U21          VOUT U3_N17176736 U3_N17176624 0 VCR
+E_U3_TABLE10         U3_N17176624 0 TABLE {V(VIN)} 4.5V      
++ {5m+1.178m*TID/100+0.3699m*AGING}  
++ 6V         {1.840m*TID/100+0.3433m*AGING}  
++ 9V         {1.841m*TID/100+0.3430m*AGING}  
++ 12V       {1.778m*TID/100+0.3408m*AGING} 
++ 14V       {1.807m*TID/100+0.4000m*AGING}
+E_U3_ABM14         U3_TEMP_C 0 VALUE { TEMP    }
+R_R4         VOUT_1 VOUT  1m TC=0,0 
+R_R3         VIN_2 VIN  1m TC=0,0 
+R_R7         VOUT_4 VOUT  1m TC=0,0 
+R_R2         VIN_1 VIN  1m TC=0,0 
+R_R9         VIN_4 VIN  1m TC=0,0 
+D_U2_D9         U2_N16779417 U2_N16779103 D_D2 
+D_U2_D8         U2_N16793898 GATE_CTRL D_D2 
+M_U2_M4         GATE_CTRL U2_N16779440 0 0 N2           
+E_U2_ABM1         U2_VMAX 0 VALUE { IF(V(VOUT)>V(VIN), V(VOUT), V(VIN))    }
+X_U2_S6    SWEN 0 U2_N16793898 U2_VIN_BUFFER dV_by_dT_U2_S6 
+I_U2_Idvdt1         U2_N16779417 U2_N16785762 DC 1mA  
+M_U2_M2         SS U2_N16774494 0 0 Mbreakn           
+X_U2_S3    SWEN 0 U2_VIN_BUFFER SS dV_by_dT_U2_S3 
+M_U2_M3         U2_N16779103 SS GATE_CTRL GATE_CTRL N1           
+D_U2_D10         U2_N167976751 GATE_CTRL D_D2 
+X_U2_S4    UVLOB 0 U2_N16785762 U2_N16779440 dV_by_dT_U2_S4 
+M_U2_M1         U2_N16774494 U2_N16774494 0 0 Mbreakn           
+X_U2_S7    U2_RCP_INVERSE 0 U2_N167976751 U2_VMAX dV_by_dT_U2_S7 
+E_U2_ABM2         U2_RCP_INVERSE 0 VALUE { IF(V(REVERSE)>0.5, 0, 1)    }
+M_U2_M6         U2_N16779440 U2_N16779440 0 0 N2           
+X_U2_S5    UVLOB 0 U2_N16779417 U2_N16785762 dV_by_dT_U2_S5 
+E_U2_E1         U2_N16779417 0 U2_VIN_BUFFER 0 1
+E_U2_E2         U2_VIN_BUFFER 0 VIN 0 1
+G_U2_ABM2I1         U2_VIN_BUFFER U2_N16774494 VALUE { V(U2_N16802905) +
++  V(U2_N16803144)    }
+E_U2_TABLE1         U2_N16802905 0 TABLE {V(VIN)} 4.5V        64.75uV  
++ 9V           66.25uV  
++ 12V         65.75uV  
++ 14V         65.6uV
+E_U2_ABM14         U2_TEMP_C 0 VALUE { TEMP    }
+E_U2_TABLE10         U2_N16803144 0 TABLE {V(U2_TEMP_C)} -55V        -2uV  
++ 25V          0uV  
++ 125V        1.25uV
+R_R5         VOUT_2 VOUT  1m TC=0,0 
+E_U1_E6         U1_VIN_VOUT 0 VOUT VIN 1
+X_U1_U8         U1_ENABLE UVLOB U1_OVP_N U1_OVP_N U1_SWEN_NO_DELAY
++  AND4_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=500E-3
+E_U1_E2         U1_EN_INT 0 EN GND 1
+X_U1_U6         U1_N16801144 U1_N16812165 BUF_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+C_U1_C1         0 U1_N16801144  1n  TC=0,0 
+E_U1_ABM7         U1_RCP_TH 0 VALUE { IF ( V(REVERSE) < 0.5, 0.363, 0.249)    }
+E_U1_E4         U1_N16801351 0 OVP GND 1
+E_U1_ABM2         U1_UVLO_TH 0 VALUE { IF ( V(UVLOB) < 0.5,
++  3.4-0.026*TID/100-0.0037*AGING, 2.9-0.019*TID/100-0.0037*AGING)    }
+E_U1_ABM1         U1_EN_TH 0 VALUE { IF ( V(U1_ENABLE) < 0.5,
++  0.63+V(U1_IHEN_TEMP)+29m*TID/100+1m*AGING,
++  0.52+V(U1_ILEN_TEMP)-6m*TID/100-0.7m*AGING)    }
+E_U1_GAIN1         U1_N16801137 0 VALUE {1 * V(U1_SWEN_NO_DELAY)}
+X_U1_U3         U1_VIN_INT U1_UVLO_TH UVLOB COMP_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+E_U1_ABM3         U1_OVP_TH 0 VALUE { IF ( V(U1_OVP_OUT) < 0.5,
++  1.15+V(U1_OVPR_TEMP)+26m*TID/100+0.2m*AGING,
++  1.14+V(U1_OVPF_TEMP)-25m*TID/100-2.1m*AGING)    }
+D_U1_D6         U1_N16801137 U1_N16801248 D_D1 
+X_U1_U10         U1_VIN_VOUT U1_RCP_TH REVERSE COMP_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=0.5
+D_U1_D5         U1_N16801141 U1_N16801137 D_D1 
+R_U1_R1         U1_N16801248 U1_N16801144  10k TC=0,0 
+X_U1_U1         U1_EN_INT U1_EN_TH U1_ENABLE COMP_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+R_U1_R2         U1_N16801141 U1_N16801144  15k TC=0,0 
+X_U1_U7         U1_N16801351 U1_OVP_TH U1_OVP_OUT COMP_BASIC_GEN PARAMS: VDD=1
++  VSS=0 VTHRESH=0.5
+E_U1_E3         U1_VIN_INT 0 VIN GND 1
+X_U1_U9         U1_N16812165 U1_N16812165 U1_N16812165 U1_OVP_N SWEN
++  AND4_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=500E-3
+X_U1_U5         U1_OVP_OUT U1_OVP_N INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+E_U1_ABM9         U1_N16819050 0 VALUE { IF(V(U1_ENABLE)<0.5,
++  V(U1_N16819047)+V(U1_ISD_TEMP), V(UVLOB)* (V(U1_N16821309)+V(U1_IQ_TEMP)) )  
++     }
+G_U1_G2         EN GND U1_N16820324 0 1
+E_U1_TABLE1         U1_N16819047 0 TABLE {V(VIN)} 0V               0mV  
++ 4.5V      {3.66mV+0.061m*TID/100+0.0027m*AGING}  
++ 9V         {4.25mV+0.133m*TID/100+0.0116m*AGING}  
++ 12V       {5.25mV+0.132m*TID/100+0.0237m*AGING} 
++ 14V       {5.90mV+0.130m*TID/100+0.0189m*AGING}
+G_U1_G1         VIN GND U1_N16819050 0 1
+E_U1_TABLE5         U1_ISD_TEMP 0 TABLE {V(U1_TEMP_C)} -55V        -0.5mV  
++ 25V          0mV  
++ 125V        0.75mV
+E_U1_TABLE10         U1_OVPF_TEMP 0 TABLE {V(U1_TEMP_C)} -55V        -10mV  
++ 25V          -10mV  
++ 125V        -20mV
+E_U1_TABLE9         U1_OVPR_TEMP 0 TABLE {V(U1_TEMP_C)} -55V     -10mV  
++ 25V          0mV  
++ 125V     -10mV
+E_U1_TABLE8         U1_ILEN_TEMP 0 TABLE {V(U1_TEMP_C)} -55V        4mV  
++ 25V          7mV  
++ 125V        4mV
+E_U1_TABLE6         U1_IQ_TEMP 0 TABLE {V(U1_TEMP_C)} -55V        -0.75mV  
++ 25V          0mV  
++ 125V        1.2mV
+E_U1_ABM12         U1_N16820992 0 VALUE { 1.5m+1.976m*TID/100+0.6998m*AGING   
++  }
+G_U1_G3         OVP GND U1_N16820992 0 1
+E_U1_ABM14         U1_TEMP_C 0 VALUE { TEMP    }
+E_U1_TABLE4         U1_N16821309 0 TABLE {V(VIN)} 0V               0mV  
++ 4.5V      {4.4mV+0.554m*TID/100+0.1142m*AGING}  
++ 9V         {5.0mV+0.542m*TID/100+0.1097m*AGING}
+E_U1_ABM10         U1_N16820324 0 VALUE { 2m+6.188m*TID/100+1.1953m*AGING    }
+E_U1_TABLE7         U1_IHEN_TEMP 0 TABLE {V(U1_TEMP_C)} -55V        6mV  
++ 25V          6mV  
++ 125V       0mV
+R_R6         VOUT_3 VOUT  1m TC=0,0 
+.ENDS TPS7H2211-SP_WCA
+
+*****************************************************************************
+
+.subckt MOS_U3_S2 1 2 3 4  
+S_U3_S2         3 4 1 2 _U3_S2
+RS_U3_S2         1 2 1G
+.MODEL         _U3_S2 VSWITCH Roff=1E9 Ron=1u Voff=0.2 Von=0.8
+.ends MOS_U3_S2
+
+.subckt MOS_U3_H1 1 2 3 4  
+H_U3_H1         3 4 VH_U3_H1 1
+VH_U3_H1         1 2 0V
+.ends MOS_U3_H1
+
+.subckt dV_by_dT_U2_S6 1 2 3 4  
+S_U2_S6         3 4 1 2 _U2_S6
+RS_U2_S6         1 2 1G
+.MODEL         _U2_S6 VSWITCH Roff=1u Ron=1E9 Voff=0.2 Von=0.8
+.ends dV_by_dT_U2_S6
+
+.subckt dV_by_dT_U2_S3 1 2 3 4  
+S_U2_S3         3 4 1 2 _U2_S3
+RS_U2_S3         1 2 1G
+.MODEL         _U2_S3 VSWITCH Roff=1u Ron=1E9 Voff=0.2 Von=0.8
+.ends dV_by_dT_U2_S3
+
+.subckt dV_by_dT_U2_S4 1 2 3 4  
+S_U2_S4         3 4 1 2 _U2_S4
+RS_U2_S4         1 2 1G
+.MODEL         _U2_S4 VSWITCH Roff=1E9 Ron=1u Voff=0.2 Von=0.8
+.ends dV_by_dT_U2_S4
+
+.subckt dV_by_dT_U2_S7 1 2 3 4  
+S_U2_S7         3 4 1 2 _U2_S7
+RS_U2_S7         1 2 1G
+.MODEL         _U2_S7 VSWITCH Roff=1u Ron=1E9 Voff=0.2 Von=0.8
+.ends dV_by_dT_U2_S7
+
+.subckt dV_by_dT_U2_S5 1 2 3 4  
+S_U2_S5         3 4 1 2 _U2_S5
+RS_U2_S5         1 2 1G
+.MODEL         _U2_S5 VSWITCH Roff=1u Ron=1E9 Voff=0.2 Von=0.8
+.ends dV_by_dT_U2_S5
+
+.SUBCKT VCR 1 2  CTRL+ CTRL-
+ERES   1  3  VALUE = { I(VSENSE)*V(CTRL+,CTRL-) }
+VSENSE 3  2  DC 0V
+.ENDS
+
+.SUBCKT OR2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  |  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS OR2_BASIC_GEN
+
+.SUBCKT AND4_BASIC_GEN A B C D Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH} &
++ V(C) > {VTHRESH} &
++ V(D) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS AND4_BASIC_GEN
+
+.SUBCKT BUF_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS BUF_BASIC_GEN
+
+.SUBCKT COMP_BASIC_GEN INP INM Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5	
+E_ABM Yint 0 VALUE {IF (V(INP) > 
++ V(INM), {VDD},{VSS})}
+R1 Yint Y 1
+C1 Y 0 1n
+.ENDS COMP_BASIC_GEN
+
+.SUBCKT INV_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS INV_BASIC_GEN
+
+.model Mbreakp pmos
++ vto=-0.66
++ kp=4.2e-05
++ w=1.24667e+06
++ l=1.2
++ t_abs=25
+
+.model D_D1 d
++ is=1e-15
++ tt=1e-11
++ rs=0.05
++ n=0.1
++ t_abs=25
+
+.model D_D2 d
++ is=1e-13
++ rs=0
++ n=0.1
++ vj=0.001
++ bv=100
++ ibv=1e-06
++ t_abs=25
+
+.model N2 nmos
++ vto=0.6
++ kp=0.01
+
+.model Mbreakn nmos
++ vto=0.6
++ kp=0.002
+
+.model N1 nmos
++ vto=0.1
++ kp=0.2
+

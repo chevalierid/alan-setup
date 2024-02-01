@@ -1,0 +1,204 @@
+*$
+* INA148
+*****************************************************************************
+* (C) Copyright 2023 Texas Instruments Incorporated. All rights reserved.     
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.      
+** TI and its licensors and suppliers make no warranties, either expressed   
+** or implied, with respect to this model, including the warranties of       
+** merchantability or fitness for a particular purpose. The model is        
+** provided solely on an "as is" basis. The entire risk as to its quality   
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Online Design Tools, Texas Instruments Inc.
+* Part: INA148
+* Date: 08FEB2023
+* Model Type: ALL IN ONE
+* EVM Order Number: N/A 
+* EVM Users Guide:  N/A 
+* Datasheet: SBOS123
+*
+* Model Version: Final 1.1
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.1
+* Updated PSpice symbol.
+*
+* Final 1.0 : 
+* Release to Web
+*
+*****************************************************************************
+* Model Usage Notes:
+* 1. Below features are Modeled :
+*     BANDWIDTH, INPUT VOLTAGE NOISE,
+*     SETTLING TIME TO 0.1 AND 0.01 %
+*     INPUT COMMON MODE VOLT RANGE
+*     INPUT IMPEDANCE
+*     INPUT CLAMPS TO RAILS
+*     CMRR WITH FREQUENCY EFFECTS
+*     PSRR WITH FREQUENCY EFFECTS
+*     SLEW RATE
+*     QUIESCENT CURRENT
+*     QUIESCENT CURRENT VS VOLTAGE
+*     HIGH CLOAD EFFECTS
+*     OUTPUT CURRENT THROUGH SUPPLIES
+*     OUTPUT CURRENT LIMITING
+*     OUTPUT CLAMPS TO RAILS
+*     OUTPUT SWING VS OUTPUT CURRENT
+* 2. Model is applicable to INA148 and INA148-Q1.
+*****************************************************************************
+* PINOUT ORDER +IN -IN +V -V OUT VREF
+* PINOUT ORDER  3   2   7  4  6    1
+*****************************************************************************
+.SUBCKT INA148 3 2 7 4 6 1
+C6 32 36 10E-12 
+C7 33 37 5E-12 
+C8 34 38 1E-9 
+C12 20 6 17.7E-12 
+C13 49 51 50E-12 
+C14 30 0 4E-12 
+C15 28 0 4E-12 
+C16 6 0 1E-12 
+C21 30 28 8E-12 
+C23 55 43 16E-12 
+C26 3 0 0.1E-12 
+C27 2 0 0.1E-12 
+D5 6 7 DD 
+D6 4 6 DD 
+D7 24 0 DIN 
+D8 25 0 DIN 
+D9 26 0 DVN 
+D10 27 0 DVN 
+D11 19 22 DD 
+D12 10 19 DD 
+D13 45 8 DD 
+D14 56 47 DD 
+D17 63 60 DD 
+D18 61 62 DD 
+D19 65 0 DD 
+E2 10 0 4 0 1
+E3 22 0 7 0 1
+E4 28 29 26 27 0.005
+E5 32 0 22 0 1
+E6 33 0 10 0 1
+E7 34 0 35 0 1
+E10 39 31 38 0 -0.5
+E11 42 39 37 0 0.028
+E12 30 42 36 0 0.0025
+E14 43 10 22 10 0.5
+E17 41 0 30 0 1
+E18 40 0 29 0 1
+E20 59 43 51 49 1
+E23 22 53 22 63 1
+E24 54 10 62 10 1
+E25 16 22 7 17 -2.2
+E26 14 10 18 4 2.2
+G2 30 29 24 25 2.5E-7
+G3 19 43 55 43 0.2E-3
+G7 60 43 19 43 -1E-3
+G8 43 61 19 43 1E-3
+G9 43 62 52 10 1E-3
+G10 63 43 22 48 1E-3
+G11 7 4 64 0 -165E-6
+G12 7 4 7 4 -2.5E-6
+I8 0 24 0.1E-3
+I9 0 25 0.1E-3
+I10 0 26 0.2E-6
+I11 0 27 0.2E-6
+I14 48 52 40E-6
+I15 58 10 45E-6
+I19 0 65 1E-3
+I20 7 4 214E-6
+I21 28 0 1E-9
+I22 30 0 1E-9
+J1 22 30 22 JNC 
+J2 22 28 22 JNC 
+J3 28 10 28 JNC 
+J4 30 10 30 JNC 
+M1 44 45 18 18 NOUT L=3U W=800U
+M2 46 47 17 17 POUT L=3U W=800U
+M3 48 48 21 21 POUT L=3U W=800U
+M4 49 50 11 11 PIN L=3U W=60U
+M5 51 28 13 13 PIN L=3U W=60U
+M8 52 52 23 23 NOUT L=3U W=800U
+M19 57 58 22 22 PIN L=6U W=500U
+M23 58 58 22 22 PIN L=6U W=500U
+Q15 56 15 22 QPL 
+Q20 8 9 10 QNL 
+R3 11 12 2 
+R4 13 12 2 
+R10 9 14 100 
+R11 15 16 100 
+R12 17 7 23 
+R13 4 18 23 
+R14 0 6 10E3 
+R16 19 20 100 
+R17 21 22 23 
+R18 10 23 23 
+R22 4 7 500E6 
+R28 31 3 1MEG 
+R30 32 36 1E6 
+R31 33 37 1E6 
+R32 34 38 1E6 
+R33 0 36 100 
+R34 0 37 100 
+R35 0 38 100 
+R36 40 35 1E3 
+R37 35 41 1E3 
+R43 53 47 100 
+R44 54 45 100 
+R45 43 19 90E6 
+R46 10 49 2E3 
+R47 10 51 2E3 
+R59 6 46 300 
+R60 44 6 300 
+R62 59 55 10E3 
+R66 60 63 100E6 
+R67 62 61 100E6 
+R68 63 22 1E3 
+R69 10 62 1E3 
+R70 61 43 1E6 
+R71 62 43 1E6 
+R72 43 63 1E6 
+R73 43 60 1E6 
+R74 0 64 1E6 
+R75 42 30 1E9 
+R76 39 42 1E9 
+R77 31 39 1E9 
+R78 29 28 1E9 
+R79 43 55 1E9 
+R81 53 22 1E9 
+R82 10 54 1E9 
+R83 35 0 1E9 
+R86 29 66 50K 
+R87 2 29 1MEG 
+R88 66 6 50K 
+R89 1 66 2.7778K 
+R90 31 1 52.6316K 
+R91 22 47 1E9 
+R92 45 10 1E9 
+R93 58 22 1E9 
+V18 30 50 0
+V20 57 12 0.2
+V23 65 64 0.71
+.MODEL QPL PNP
+.MODEL QNL NPN
+.MODEL JNC NJF IS=1E-17
+.MODEL DVN D KF=3.3E-16 IS=1E-16
+.MODEL DIN D
+.MODEL DD D
+.MODEL POUT PMOS KP=200U VTO=-0.7
+.MODEL NOUT NMOS KP=200U VTO=0.7
+.MODEL PIN PMOS KP=200U VTO=-0.7
+.MODEL NIN NMOS KP=200U VTO=0.7
+.ENDS INA148
+*

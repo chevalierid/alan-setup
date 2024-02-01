@@ -1,0 +1,109 @@
+*//////////////////////////////////////////////////////////////////////
+* (C) National Semiconductor, Corporation.
+* Models developed and under copyright by:
+* National Semiconductor, Corporation. 
+*/////////////////////////////////////////////////////////////////////
+* Legal Notice: 
+* The model may be copied, and distributed without any modifications;
+* however, reselling or licensing the material is illegal.
+* We reserve the right to make changes to the model without prior notice.
+* Pspice Models are provided "AS IS, WITH NO WARRANTY OF ANY KIND"
+*////////////////////////////////////////////////////////////////////
+* For more information, and our latest models,
+* please visit the models section of our website at
+*       http://www.national.com/models/
+*////////////////////////////////////////////////////////////////////
+* Rev 1.0 Public Release 11 APR 2011 - DG/PCG
+*--------------------------------------------------------------------------------------
+.SUBCKT    LMP8645    OUT  VEE  IN1  IN2  RG  VCC   
+*--------------------------------------------------------------------------------------
+EOFFSET IN1  INNAA POLY(1)  TCVos   0  1E-3  -7E-6
+ECMRR  INNAA  INNXX CMRROUT 0 1
+EPSRR  INNXX  INNYY PSRROUT 0 1
+E_OTA  INNZZ  0  VALUE {if( V(IN1)>(-2),(V(INNYY)-V(IN2)),0) }
+G_OTA  INNYY  RG  INNZZ  0 200E-6
+EsatRG1 st1 0 VALUE {if( V(IN1) < 1.79999 , 1.8 , 0 ) }
+EsatRG2 st2 0 VALUE {if( (V(IN1)> 1.79999)&(V(IN1)< (V(VCC)+0.0001)) , min((V(VCC)-1.5),(V(IN1)-V(INNZZ)-0.25)) , 0 ) }
+EsatRG3 st3 0 VALUE {if( V(IN1) > (V(VCC)+0.0001) , V(VCC)-1.5 , 0 ) }
+Esat stA 0 VALUE {V(st1) + V(st2) + V(st3)}
+D19  RG    N220 DIODEIDEAL 
+VDDDROP   N220   NDROP -0.6 
+EVDDREF    NDROP  0  stA  0  1.00
+D20    N221 RG  DIODEIDEAL 
+VEEREF N221 0  0.6
+.MODEL DIODEIDEAL D IS=1E-14
+I_IBIAS1 IN1   0  12E-6
+I_IBIAS2 IN2   0  12E-6
+*--------------------------------------------------------------------------------------
+CINBUF      RG  0      19E-12  
+ESLEWTABLE  INSLWCTRL     0      TABLE {V(VCC_NORIPPLE)}
++  2.7V    10E-19
++  4.0V    20E-12
++  5.0V    35E-12
++ 12.0V    25E-12
+G_SLEWRATECONTROL       RG  0    VALUE {V(INSLWCTRL)*DDT(V(RG))}
+*--------------------------------------------------------------------------------------
+EBUFOUT  BUFOUT  0    VALUE {if(V(RG)<20E-3,20E-3,V(RG)) }
+RBUFOUT  BUFOUT  OUT  100
+E_TABLEOUTMAXCTRL  OUT_MAX_CONTROL     0     TABLE {V(VCC_NORIPPLE)}
++  2.7V  1.20V  
++  5.0V  3.30V
++ 12.0V 10.20V
+*--------------------------------------------------------------------------------------
+E_SUM_CMAVG        NCMRR1  0  VALUE {0.5*{V(IN1)+V(IN2)}}
+E_ECMRRCONTROL     CTRLCMRR  0  TABLE {V(IN1)}
++ -2.0V   40E-6
++  2.1V   10E-7
++  5.0V   4E-8
++ 70.0V   0.2E-8
+G_CMRR        CMRRSIG    0    VALUE {V(CTRLCMRR)*V(NCMRR1)}
+R_RCMRR1 NCMRR3  CMRRSIG   1E3 
+L_LCMRR1 NCMRR3  CMRRSIG   159E-3  
+R_RCMRR2 NCMRR3 0     10 
+E_ECMRROUT         CMRROUT    0      CMRRSIG    0     1.00
+*
+*--------------------------------------------------------------------------------------
+E_EPSRRINPOS        NPSRRPOS1 0 VCC 0 1
+C_CSUPFILTERPOS     NPSRRPOS1 NPSRRPOS2  1E-3
+R_RSUPFILTERPOS     NPSRRPOS2 0  1E15 
+G_GPSRRPOS          NPSRRPOS4 0 NPSRRPOS2 0 3.65E-6
+R_RPSRRPOS2         NPSRRPOS3 0 10 
+R_RPSRRPOS1         NPSRRPOS3 NPSRRPOS4  10k
+L_LPSRRPOS1         NPSRRPOS3 NPSRRPOS4  159E-3  
+*
+E_EPSRRINNEG        NPSRRNEG1 0 VEE 0 1
+C_CSUPFILTERNEG     NPSRRNEG1 NPSRRNEG2  1E-3 
+R_RSUPFILTERNEG     NPSRRNEG2 0  1E15 
+G_GPSRRNEG          NPSRRNEG4 0 NPSRRNEG2 0 3.65E-6
+R_RPSRRNEG1         NPSRRNEG3 NPSRRNEG4  10E3 
+R_RPSRRNEG2         NPSRRNEG3 0 10
+L_LPSRRNEG1         NPSRRNEG3 NPSRRNEG4  159E-3  
+*
+E_SUMPSRR PSRROUT 0 VALUE {V(NPSRRPOS4)+V(NPSRRNEG4)}
+*--------------------------------------------------------------------------------------
+E_EPosSupply      VCC_NORIPPLE 0 VCC 0 1
+E_ENegSupply      VEE_NORIPPLE 0 VEE 0 1
+*--------------------------------------------------------------------------------------
+G_GVsupDepIsup          VCC VEE SUPDEPNODE 0 1E-4
+E_TABLE_SUPDEPCURRENT   SUPDEPNODE 0 TABLE {V(VCC)}
++  0.0V     0.00V  
++  2.0V     3.60V  
++  2.7V     2.945V
++  3.0V     2.30V  
++  5.0V     2.92V  
++ 12.0V     1.71V
+R_RIsupplyStatic    VCC VEE  31.6E3 
+G_GPUDEPENDENTSUPPLYCURRENT   VCC VEE TABLE {V(IN1)}
++  -2V,  1612E-6
++ 1.6V,   0
+*--------------------------------------------------------------------------------------------------------- 
+I_ITH1       0   NTHERM1  DC 1E-6  
+I_ITH2       0   NTHERM2  DC 1E-6  
+D_DTHERMAL1  NTHERM1  0   DIODEIDEAL
+D_DTHERMAL2  NTHERM2  0   DIODEIDEAL 
+D_DTHERMAL3  NTHERM2  0   DIODEIDEAL
+E_ETCNVRSN1  NTHERM3  0   NTHERM1  NTHERM2  1.67386293783563E4
+V_VTEMP1     NTHERM4  0   273
+E_ETCNVRSNa  TCVos  0   NTHERM3  NTHERM4  1
+*--------------------------------------------------------------------------------------
+.ENDS LMP8645

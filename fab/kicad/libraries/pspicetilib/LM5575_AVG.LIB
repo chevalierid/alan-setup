@@ -1,0 +1,141 @@
+*$
+* LM5575
+*****************************************************************************
+* (C) Copyright 2018 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Texas Instruments Inc.
+* Part: LM5575
+* Date: 17APR2018
+* Model Type: AVERAGE
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: LM5575 Evaluation Board
+* EVM Users Guide: SNVA209C – January 2007 – Revised April 2013
+* Datasheet: SNVS471G – JANUARY 2007 – REVISED APRIL 2013
+* Topologies Supported: Buck
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+*
+* 1. Since this is an average model used for AC analysis, 
+*    only the pins affecting AC analysis are modeled.
+* 2. The model takes the Switching frequency (FSW), Feedback Top resistor (Rfbtop),
+*    Feedback Bottom resistor (Rfbbot), Input Voltage (VIN), Inductance (L), 
+*    Ramp Capacitor(Cramp) and approximate Efficiency (EFF) as parameters.
+*    Pass appropriate values to these parameters based
+*    on the application circuit. 
+* 3. The operating quiescent current and thermal properties 
+*    have not been modeled.
+*
+*****************************************************************************
+.SUBCKT LM5575_AVG VCC SD VIN SYNC COMP FB RT RAMP AGND SS OUT PGND IS SW PRE BST DAP
++ PARAMS: FSW=298730.39581777446 Rfbtop=3.09k Rfbbot=1.02k 
++ VIN=18 L=8.2E-5 CRAMP=8.2E-10 EFF=0.83493
+X1 Vin sw comp AGND EPCMBuckBlock PARAMS: FSW={FSW}
++	Rfbtop={Rfbtop} Rfbbot={Rfbbot} VIN={VIN} L={L} CRAMP={Cramp} EFF={EFF}
+Vref Ref AGND DC=1.225
+Vsupply Vsupply AGND DC=5
+X2 FB REF COMP VSUPPLY AGND OPAMPL 
+.ENDS LM5575_AVG
+*$
+.SUBCKT OPAMPL 2 3 6 7 4
+RP 4 7 10K
+RXX 4 0 10MEG
+IBP 3 0 0
+RIP 3 0 10MEG
+CIP 3 0 1.4PF
+IBN 2 0 0
+RIN 2 0 10MEG
+CIN 2 0 1.4PF
+VOFST 2 10 0
+RID 10 3 200K
+EA 11 0 10 3 1
+R1 11 12 5K
+R2 12 13 50K
+C1 12 0 4.3333P
+GA 0 14 0 13 42.687
+C2 13 14 900.00F
+RO 14 0 75
+L 14 6 10.0000U
+RL 14 6 1000
+CL 6 0 3PF
+.ENDS OPAMPL
+*$
+.SUBCKT EPCMBuckBlock Vinp Vsw comp Rtn PARAMS: FSW=298730.39581777446 
++	Rfbtop=3.09k Rfbbot=1k VIN=18 L=8.2E-5 CRAMP=8.2E-10 EFF=0.83493
+.PARAM DMAX={ 1 - 0.000000500 *{FSW}}
+.PARAM VFB_REF_VOLTAGE=1.225
+.PARAM CL_THRESHOLD=2.1  
+.PARAM RI_VALUE=1.0
+.PARAM VCC=7.15
+.PARAM IOS=5.0E-5
+.PARAM GM=1.0E-5
+.PARAM RRAMP=1.0E7
+.PARAM VSL_VALUE={({IOS}+{VCC}/{RRAMP})/({CRAMP}*{FSW})}
+.PARAM KSL_VALUE={({GM})/({CRAMP}*{FSW})}
+.PARAM PI=3.14159
+.PARAM C2_DEN={1/({PI}*{PI}*{FSW}*{FSW})}
+.PARAM C1_DEN={-({VOUT}/{VIN})/{FSW}}
+.PARAM VOUT = {( {Rfbtop} / {Rfbbot} + 1) * {VFB_REF_VOLTAGE}}
+E_Beff Vinp Vin value = {(1 - {EFF})*(V(Vinp) - V(Rtn))}
+E_Bvout Vo Rtn value = {VOUT}
+G_B1 Vin Rtn value = {V(Vo)*I(VIL1)/(V(Vin))}
+E_B2x Ipx Rtn value = { (V(Vc)/ {RI_VALUE} + V(Vinsw)*V(D)/( {L} * {FSW} ))}
+E_B2 Ip Rtn value = { IF(V(Ipx) > 0 , V(Ipx) , 0)}
+E_B3x Ivx Rtn value = {(V(Ip)-V(Vsw)*(1-V(Vsw)/V(Vin))/( {L} * {FSW} ))}
+E_B3 Iv Rtn value = { IF(V(Ivx)>0 , V(Ivx) , 0)}
+G_B4 Rtn Vswx value = { IF(V(Iv)>0 , V(ILs) , V(IL))}
+X_A1 IL ILs Hs	PARAMS: IN_OFFSET=0 GAIN=1 c0_num=1 c2_den={C2_DEN}
++ c1_den={C1_DEN} c0_den=1 out_ic=0 denorm_freq=1
+E_B5x Dx Rtn value = { IF(( {L} * {FSW} *(V(Ip)-V(Iv))/V(Vinsw)) > {DMAX} , {DMAX} , 
++	({L} * {FSW} *(V(Ip)-V(Iv))/V(Vinsw)))}
+E_B5 D Rtn value = { IF(v(Dx) < 0 , 0 , v(Dx))}
+E_B6 Vinsw Rtn value = {V(Vin,Vsw)}
+E_B7 Vinvo Rtn value = {V(Vin,Vo)}
+E_B8 IL Rtn value = { {L} * {FSW} *(V(Ip)**2-V(Iv)**2)/2*(1/V(Vsw) + 1/V(Vinsw))}
+E_Bramp VLIM Vc value = { {VSL_VALUE} *V(D)+ {KSL_VALUE} *V(D)*V(Vinvo)}
+VIL1 Vswx Vsw DC=0
+D1 Vswx Vin mur105rl
+.MODEL mur105rl d AF=1 BV=100 CJO=5.37397e-11 EG=0.849639  FC=0.5 IBV=0.000002 IS=9.82502e-09 KF=0 M=0.515449  N=1.57715
++	 RS=0.0304421 TT=1.63843e-08 VJ=1.24876 XTI=0.5
+E_Blim comp VLIM value = { 5 - {RI_VALUE} * {CL_THRESHOLD}}
+.ENDS EPCMBuckBlock
+*$
+.SUBCKT Hs 1 2 PARAMS: IN_OFFSET=0 GAIN=1 c0_num=1 c2_den=1
++ c1_den=1 c0_den=1 out_ic=0 denorm_freq=1
+ES_XFER 2 0 LAPLACE {IN_OFFSET+GAIN*V(1)}={(c0_num/(c2_den*s*s+c1_den*s+c0_den))}
+.ENDS Hs
+*$
+.SUBCKT LDCR 1 2 PARAMS: L=1u DCR=20m
+L1 1 INT1 {L}
+R1 INT1 2 {DCR}
+.ENDS LDCR
+*$
+.SUBCKT CESR 1 2 PARAMS: C=10u ESR=2m
+C1 1 INT1 {C}
+R1 INT1 2 {ESR}
+.ENDS CESR
+*$

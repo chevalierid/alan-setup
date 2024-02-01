@@ -1,0 +1,362 @@
+* PSpice Model Editor - Version 16.0.0
+
+*$
+* TPS40055 STARTUP MODEL
+***************************************************************************
+** This product is designed as an aid for customers of Texas Instruments.**
+** No warranties, either expressed or implied, with respect to this third**
+** party software (if any) or with respect to its fitness for any        **
+** particular purpose is claimed by Texas Instruments or the author. The **
+** software (if any) is provided soley on an "as is" basis. The entire   **
+** risk as to its quality and performance is with the customer           **
+***************************************************************************
+* This model was developed for Texas Instruments Incorporated by:
+*   AEi Systems, LLC
+*   5777 W. Century Blvd., Suite 876
+*   Los Angeles, California  90045
+*
+* This model is subject to change without notice. Neither Texas Instruments Incorporated 
+* nor AEi Systems is responsible for updating this model.
+* For more information regarding modeling services, model libraries and simulation 
+* products, please call AEi Systems at (310) 216-1144, or contact AEi Systems by email: 
+* info@AENG.com. Or visit AEi Systems on the web at http://www.AENG.com.
+********************************************************************************
+* 
+* Released by: Analog e-Lab Design Center, Texas Instruments Inc.
+* Part: TPS40055
+* Date: 11/18/2008
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* EVM Order Number: TPS40055EVM-002
+* Datasheet: slus593f - Revised September 2008
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+.SUBCKT TPS40055 KFF RT REF05 SYNC Gnd SS VFB COMP PGnd LDRV REF10 SW HDRV BOOST VIN ILIM 
+EBHG 5 hdrv Value={ IF (V(uvlo) > 1 & V(Drive) > 4 & V(Ldrv) < 1.25 , 5 , -5 ) }
+EBDrive Drive Gnd Value={ IF (V(q) > 2.5 & V(Rst2) < 2.5 & V(Shdwn) > 2 & V(On) > 2 , 5 , 0 ) }
+RHG 16 5 2;10
+CHG hdrv 16 10p;110p
+EBBP5 ref05 Gnd Value={ IF (V(Vin)-2 > 5 , 5 , IF ( V(Vin)-2 < 0 , 0 , V(Vin)-2 ) ) }
+EBP10 ref10 0 TABLE {V(VIN)} 0 0 2 0.75 3 1.75 4 2.15
++ 4.75 3.4 6 4.5 7 5.5 7.5 5.4 10 7.9 12 9.2 12.6 9.6
+XAmp vfb ninv comp ref5 0 40055Amp 
+XLatch clk ref5 CycleOff 0 14 q FFLOPX1 
+Rsync sync Gnd 10meg
+RCL 13 CLEvent 100                
+CCL CLEvent Gnd 100p
+X4 vin kff rt sync uvlo clk Gnd ramp rst2 40055osc
+EBCL 13 Gnd Value={ IF (V(ilim,sw) > -0.03 & V(Ramp) > 50m & V(boost,vin) > 2 , 5 , 0 ) } 
+Suvlo vin on 49 uvlo _SUVLO
+.MODEL _SUVLO VSWITCH VT=0 VH=0 RON=1m ROFF=100MEG
+Ron on Gnd 100k
+EBuvlo 49 vin Value={ IF (V(On) > 1 , V(Vin)*0.035-0.15 , 0 ) }
+EBRef7 ref07 Gnd Value={ IF (V(Vin)-2 > 0.7 , 0.7 , IF ( V(Vin)-2 < 0 , 0 , V(Vin)-2 ) ) }
+GBilim ilim Gnd Value={ V(Ref07)*14.29u }
+Rilim Gnd ilim 1G
+Dilim 48 ilim _DN 
+.MODEL _DN D
+Vilim 48 Gnd DC=1.2
+GBss Gnd ss Value={ V(Ref07)*2.7u} ; was 3.36u
+Rss ss Gnd 10meg
+DD ss 50 _DN 
+Vshi 50 0 DC=3.1
+XSS ref07 51 52 MIN
+SSSD ref07 SDD ss Gnd _SSD
+.MODEL _SSD VSWITCH VT=167.5m VH=42.5m RON=1m ROFF=100MEG
+RSD SDD Gnd 100k
+EBsd shdwn Gnd Value={ IF (V(SDD) < 0.5 , 0 , 5 ) }
+EBVss ss 51 VALUE={IF(V(VIN) > 40 , 0.63 , IF( V(VIN) > 10 , 1.4/300*(40-V(VIN)) + 0.63 , 0.77))} ; was just a 0.85V source
+Eslim ninv Gnd Value={ IF( V(52) < 0 , 0, IF ( V(52) > 0.7 , 0.7 , V(52) ) ) }
+EBLG 17 Ldrv Value={ IF (V(uvlo) > 1 & V(Drive) < 1 & V(Hdrv) < 1 , 5 , -5 ) }
+Vref5 ref5 0 DC=7 ; was 5V
+RLG 19 17 2 ;10
+EBReset CycleOff Gnd Value={ IF (V(Ramp)+1.5 > V(Comp) , 5 , IF ( V(CLEvent) > 4.5 , 5 , 0 ) ) }
+CLG 19 Ldrv 10p
+Rsw ilim sw 1G
+D6 ref10 Boost MBRS260X
+.MODEL MBRS260X d IS=45.3u N=1.64 RS=38.8m BV=60 IBV=200u 
++ CJO=1.668e-010 M=0.43816 VJ=0.79938 TT=4.32p
+M5 Boost 16 hdrv hdrv NFET40055H 
+.MODEL NFET40055H NMOS Level=1 CBD=1.2p CBS=1.4p CGBO=2.6n
++ CGDO=1.6n CGSO=1.9n GAMMA=2.60 IS=250f KP=58.7m
++ LAMBDA=3.12m MJ=0.460 PB=0.800 PHI=.75 RD=0.350 RS=0.350
++ VTO=0.699
+M6 ref10 19 Ldrv Ldrv NFET40055L 
+.MODEL NFET40055L NMOS Level=1 CBD=1.2p CBS=1.4p CGBO=2.6n
++ CGDO=1.6n CGSO=1.9n GAMMA=2.60 IS=250f KP=258.7m
++ LAMBDA=3.12m MJ=0.460 PB=0.800 PHI=.75 RD=0.750 RS=0.750
++ VTO=0.699
+M7 Pgnd 19 Ldrv Ldrv PFET40055 
+.MODEL PFET40055 PMOS Level=1 CBD=1.2p CBS=1.4p CGBO=2.6n
++ CGDO=1.6n CGSO=1.9n GAMMA=2.60 IS=250f KP=358.7m
++ LAMBDA=3.12m MJ=0.460 PB=0.800 PHI=.75 RD=0.420 RS=0.420
++ VTO=-.75
+M8 sw 16 hdrv hdrv PFET40055 
+.ENDS
+*$
+.SUBCKT 40055Mod KFF Comp Duty Gnd PARAMS: Freq=300k
+VKFFM 3 gnd DC=3.18
+VKFF KFF 4
+DKFF 4 3 _DMOD 
+.MODEL _DMOD D IS=1.0e-9
+EBDuty 20 gnd Value={ V(CompL) * 135p * Freq / (I(VKFFM)+1n) }
+Vofst Comp 6 DC=1.5
+ELimit CompL 0 Value={ IF ( V(6) < 0 , 0 , IF ( V(6) > 2 , 2 , V(6) ) ) }
+ELimit2 Duty 0 Value={ IF ( V(20) < 0 , 0 , IF ( V(20) > 1 , 1 , V(20) ) ) }
+.ENDS
+*$
+.SUBCKT TPS40055FastS KFF RT REF05 SYNC Gnd SS VFB COMP PGnd LDRV REF10 SW HDRV BOOST VIN ILIM 
+EBHG 5 hdrv Value={ IF (V(uvlo) > 1 & V(Drive) > 4 & V(Ldrv) < 1.25 , 5 , -5 ) }
+EBDrive Drive Gnd Value={ IF (V(q) > 2.5 & V(Rst2) < 2.5 & V(Shdwn) > 2 & V(On) > 2 , 5 , 0 ) }
+RHG 16 5 2;10
+CHG hdrv 16 10p;110p
+EBBP5 ref05 Gnd Value={ IF (V(Vin)-2 > 5 , 5 , IF ( V(Vin)-2 < 0 , 0 , V(Vin)-2 ) ) }
+EBP10 ref10 0 TABLE {V(VIN)} 0 0 2 0.75 3 1.75 4 2.15
++ 4.75 3.4 6 4.5 7 5.5 7.5 5.4 10 7.9 12 9.2 12.6 9.6
+XAmp vfb ninv comp ref5 0 40055Amp 
+XLatch clk ref5 CycleOff 0 14 q FFLOPX1 
+Rsync sync Gnd 10meg
+RCL 13 CLEvent 100                 
+CCL CLEvent Gnd 100p
+X4 vin kff rt sync uvlo clk Gnd ramp rst2 40055osc
+EBCL 13 Gnd Value={ IF (V(ilim,sw) > -0.03 & V(Ramp) > 50m & V(boost,vin) > 2 , 5 , 0 ) } 
+Suvlo vin on 49 uvlo _SUVLO
+.MODEL _SUVLO VSWITCH VT=0 VH=0 RON=1m ROFF=100MEG
+Ron on Gnd 100k
+EBuvlo 49 vin Value={ IF (V(On) > 1 , V(Vin)*0.035-0.15 , 0 ) }
+EBRef7 ref07 Gnd Value={ IF (V(Vin)-2 > 0.7 , 0.7 , IF ( V(Vin)-2 < 0 , 0 , V(Vin)-2 ) ) }
+GBilim ilim Gnd Value={ V(Ref07)*14.29u }
+Rilim Gnd ilim 1G
+Dilim 48 ilim _DN 
+.MODEL _DN D
+Vilim 48 Gnd DC=1.2
+GBss Gnd ss Value={ V(Ref07)*25u}
+Rss ss Gnd 10meg
+DD ss 50 _DN 
+Vshi 50 0 DC=3.1
+XSS ref07 51 52 MIN
+SSSD ref07 SDD ss Gnd _SSD
+.MODEL _SSD VSWITCH VT=167.5m VH=42.5m RON=1m ROFF=100MEG
+RSD SDD Gnd 100k
+EBsd shdwn Gnd Value={ IF (V(SDD) < 0.5 , 0 , 5 ) }
+Vss ss 51 0
+Eslim ninv Gnd Value={ IF( V(52) < 0 , 0, IF ( V(52) > 0.7 , 0.7 , V(52) ) ) }
+EBLG 17 Ldrv Value={ IF (V(uvlo) > 1 & V(Drive) < 1 & V(Hdrv) < 1 , 5 , -5 ) }
+Vref5 ref5 0 DC=7 ;5V
+RLG 19 17 2 ;10
+EBReset CycleOff Gnd Value={ IF (V(Ramp)+1.5 > V(Comp) , 5 , IF ( V(CLEvent) > 4.5 , 5 , 0 ) ) }
+CLG 19 Ldrv 10p
+Rsw ilim sw 1G
+D6 ref10 Boost MBRS260X
+.MODEL MBRS260X d IS=45.3u N=1.64 RS=38.8m BV=60 IBV=200u 
++ CJO=1.668e-010 M=0.43816 VJ=0.79938 TT=4.32p
+M5 Boost 16 hdrv hdrv NFET40055H 
+.MODEL NFET40055H NMOS Level=1 CBD=1.2p CBS=1.4p CGBO=2.6n
++ CGDO=1.6n CGSO=1.9n GAMMA=2.60 IS=250f KP=58.7m
++ LAMBDA=3.12m MJ=0.460 PB=0.800 PHI=.75 RD=0.350 RS=0.350
++ VTO=0.699
+M6 ref10 19 Ldrv Ldrv NFET40055L 
+.MODEL NFET40055L NMOS Level=1 CBD=1.2p CBS=1.4p CGBO=2.6n
++ CGDO=1.6n CGSO=1.9n GAMMA=2.60 IS=250f KP=258.7m
++ LAMBDA=3.12m MJ=0.460 PB=0.800 PHI=.75 RD=0.750 RS=0.750
++ VTO=0.699
+M7 Pgnd 19 Ldrv Ldrv PFET40055 
+.MODEL PFET40055 PMOS Level=1 CBD=1.2p CBS=1.4p CGBO=2.6n
++ CGDO=1.6n CGSO=1.9n GAMMA=2.60 IS=250f KP=358.7m
++ LAMBDA=3.12m MJ=0.460 PB=0.800 PHI=.75 RD=0.420 RS=0.420
++ VTO=-.75
+M8 sw 16 hdrv hdrv PFET40055 
+.ENDS
+*$
+.SUBCKT MIN  1   2   3
+*Connections In1 In2 Out
+EBMIN 3 0 Value={ IF (V(1) < V(2) , V(1) , V(2) ) }
+.ENDS
+*$
+.SUBCKT 40055osc Vin KFF RT SYNC UVLO CLK GND RAMP RESET
+Vff 1 gnd DC=3.18
+Q1clk 5 5 1 _QP 
+.MODEL _QP PNP
+Q2clk Osc 5 1 _QP 
+Cclk 4 gnd 19.8p IC=.48
+*XSosc Osc gnd Osc gnd SWhysteTI PARAMS: VT=1.75 VH=1.25 RON=2k ; _SOSC  
+Sosc Osc gnd Osc gnd _SOSC
+.MODEL _SOSC VSWITCH VT=1.75 VH=1.25 RON=2k ROFF=100MEG
+Vclk 4 Osc
+EBclk clk gnd Value={ IF (I(Vclk) > 100u , 5 , 0 ) }
+VKFF KFF 7
+VRT 5 RT
+EBuvlo UVLO gnd Value={ V(KFF) + (6.06*I(VRT) / (1+6800*I(VRT)) * V(Vin,KFF)) / (I(VKFF)+10U) }
+MSync Osc sync gnd gnd _NMOD 
+.MODEL _NMOD NMOS KP=1 RD=1k VTO=1.5
+DKff 7 1 _DMOD 
+.MODEL _DMOD D IS=1.0e-9
+MRamp ramp Reset gnd gnd _M2_mod 
+.MODEL _M2_mod NMOS KP=1 RD=10 VTO=1.5
+FRamp gnd ramp VKFF .1
+CRamp ramp gnd 13.5p
+EB1 15 Gnd Value={ IF ( V(clk) > 1.5 , 0.2 , 3.5 ) }
+X3 15 16 17 gnd Reset 19 FFLOPX1
+V8 16 0 DC=5
+EBRamp 17 0 Value={ IF (V(Ramp) > 2 , 5 , 0 ) }
+.ENDS
+*$
+.SUBCKT FFLOPX1 1  2 11 12 5  6
+*              CLK D R  S  QB Q
+X1 7 4 2 8 NAND3_0X1 
+X2 8 3 10 9 NAND3_0X1 
+X3 1 8 10 7 NAND3_1X1
+X4 4 9 1 10 NAND3_0X1 
+X5 4 7 6 5 NAND3_1X1
+X6 5 10 3 6 NAND3_0X1
+X7 11 4 INV_1X1
+X8 12 3 INV_1X1
+.ENDS
+*$
+.SUBCKT NAND3_0X1 1 2 3 4
+E1 5 0 VALUE = { IF ( (V(1)>1.5) & (V(2)>1.5) & (V(3)>1.5), 0.3, 3.5 ) }
+R1 5 4 1 ; was 200/10p
+C1 4 0 10P IC=0.3
+.ENDS NAND3_0X1
+*$
+.SUBCKT NAND3_1X1 1 2 3 4
+E1 5 0 VALUE = { IF ( (V(1)>1.5) & (V(2)>1.5) & (V(3)>1.5), 0.3, 3.5 ) }
+R1 5 4 1
+C1 4 0 10p IC=3.5
+.ENDS NAND3_1X1
+*$
+.SUBCKT INV_1X1 1 2
+E1 3 0 VALUE = { IF ( V(1)>1.5, 0.3, 3.5 ) }
+R1 3 2 1 ; was 100/10p
+C1 2 0 10P IC=3.5
+.ENDS 
+*$
+.SUBCKT 40055Amp Vinv Vninv Outpos Vcc Vee
+Q1 2 Vinv 3 _Q1_modX 
+.MODEL _Q1_modX PNP BF=33 RE=1
+Q2 11 vninv 3 _Q2_mod 
+.MODEL _Q2_mod PNP BF=33 RE=1
+R1 2 vee 1k
+R2 11 vee 1k
+G1 0 posdrv 2 11 400u
+R3 posdrv 0 350MEG
+C1 posdrv 0 18.5p IC=0 
+Cin Vinv vninv 1.2p
+D1 posdrv 12 DMOD 
+.MODEL DMOD D
+Q3 3 10 vcc _Q1_modXXX 
+.MODEL _Q1_modXXX PNP BF=33 RE=1710
+Q4 10 10 vcc _Q1_modXXX 
+I2 10 vee DC=85u
+X2 posdrv 4 GAIN
+D2 1 posdrv DMOD 
+V7 vcc 12 DC=2.36 
+V8 1 vee DC=0.78 
+Q9 vcc 27 outpos _Q1_mod 
+.MODEL _Q1_mod NPN BF=10 NF=.8 RE=0
+Q10 vee 29 outpos _Q4_mod 
+.MODEL _Q4_mod PNP BF=35 NF=.8 RE=.5
+I3 vcc 27 DC=250u
+I4 29 vee DC=250u
+D7 4 29 DMOD 
+D8 27 31 _D2_mod 
+.MODEL _D2_mod D IS=1.0e-14
+V4x 31 4 DC=-2m
+.ENDS
+*$
+.SUBCKT GAIN  1  2 
+E1 2 0 1 0 1
+.ENDS
+*$
+.subckt SWhysteTI NodeMinus NodePlus Plus Minus PARAMS: RON=1 ROFF=1G VT=5 VH=1
+S5 NodePlus NodeMinus 8 0 smoothSW
+EBcrtl 8 0 Value = { IF ( V(plus)-V(minus) > V(ref), 1, 0 ) }
+EBref ref1 0 Value = { IF ( V(8) > 0.5, {VT-VH}, {VT+VH} ) }
+Rdel ref1 ref 100
+Cdel ref 0 100p  IC={VT+VH}
+Rconv1 8 0 10Meg
+Rconv2 plus 0 10Meg
+Rconv3 minus 0 10Meg
+.model smoothSW VSWITCH (RON={RON} ROFF={ROFF} VON=1 VOFF=0)
+.ends SWhysteTI
+*$
+.SUBCKT 40055Mod2 KFF Comp Duty Gnd Freq RT
+Vkffm 3 gnd DC=3.18
+VKFF KFF 4
+DKFF 4 3 _DMOD 
+.MODEL _DMOD D IS=1.0e-9
+EBDuty 20 gnd Value={ V(CompL,gnd)*135p/(I(Vkffm)+1p) * 56.116G / ((2.5/I(VRTm)) + 17000) }
+* H1 13 0 Vkffm 1
+* Rtmp 13 0 1G
+Vofst comp 6 DC=1.5
+EBfreq freq gnd Value={ 56.116G / ((2.5/I(VRTm))+17000) }
+ELimit CompL 0 Value={ IF ( V(6) < 0 , 0 , IF ( V(6) > 2 , 2 , V(6) ) ) }
+ELimit2 Duty 0 Value={ IF ( V(20) < 0 , 0 , IF ( V(20) > 1 , 1 , V(20) ) ) }
+Vrt 11 gnd DC=2.5
+VRTm 11 Rt
+.ENDS
+*$
+.SUBCKT UTD 1 2
+RIN 1 0 1E15
+E1 3 0 Value = {V(1)} 
+T1 3 0 2 0 Z0=1 TD=2.0000U
+R1 2 0 1
+.ENDS
+*$
+.SUBCKT PWM 1 2 3 4 5
+R1 1 2 1MEG
+E 6 2 Value= { V(1,2) * V(4,5) }
+G 1 2 Value= { V(6,3) * V(4,5) * 1K }
+R2 6 3 1M
+.ENDS 
+*$
+.SUBCKT TPS40055_AVG VIN KFF OUT COMP FB
+X2 VIN 0 OUT 6 0 PWM 
+V3 5 0 DC=0.7
+E11 6 0 VALUE = {IF(V(8)> 1 , 1 , IF(V(8)<0, 0, V(8)))}
+X1 KFF COMP 3 0 2 RT 40055MOD2 
+E1 COMP 0 Value = {V(5,FB)*1K}
+X3 3 8 UTD 
+R2 RT 0 165K
+.ENDS
+*$
+.model BAS16_TPS40055    D 
++ IS=560N RS=0.466 N=2.43 BV=85 IBV=100N
++ CJO=1.15P VJ=.75 M=.333 TT=4.32N)
+*$
+.MODEL 10bq100_60_TPS40055 d
++ IS=2.50u RS=42.2m BV=100 IBV=10.0u
++ CJO=61.0p  M=0.333 N=1.70 TT=4.32n
+*$
+.SUBCKT Si4946EY_TPS40055 10 20 40
+*     TERMINALS:  D  G  S
+M1   1  2  3  3  DMOS L=1U W=1U
+RD  10  1  20.4m
+RS  40  3  2.12m
+RG  20  2  1.3
+CGS  2  3  468p
+EGD 12  0  2  1  1
+VFB 14  0  0
+FFB  2  1  VFB  1
+CGD 13 14  216p
+R1  13  0  1.00
+D1  12 13  DLIM
+DDG 15 14  DCGD
+R2  12 15  1.00
+D2  15  0  DLIM
+DSD  3 10  DSUB
+.MODEL DMOS NMOS(LEVEL=3 VMAX=125k THETA=75.0m
++ ETA=2.00m VTO=2.40 KP=51.8
+.MODEL DCGD D (CJO=216p VJ=0.600 M=0.680
+.MODEL DSUB D (IS=18.7n N=1.50 RS=11.1m BV=60.0
++ CJO=335p VJ=0.800 M=0.420 TT=35.0n
+.MODEL DLIM D (IS=100U)
+.ENDS
+*$

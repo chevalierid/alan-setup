@@ -1,0 +1,142 @@
+* SN74AUC1G66
+*****************************************************************************
+* (C) Copyright 2018 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Texas Instruments Inc.
+* Part: SN74AUC1G66
+* Date: 30NOV2018
+* Model Type: ALL IN ONE
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: NA
+* EVM Users Guide: NA
+* Datasheet: NA
+*
+* Model Version: Final 1.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+* This model was designed to mtach datasheet specs for 1.65V operation
+* 1. The following features have been modeled
+*      a. Leakage currents are equal to the datasheet MAX values
+*      b. C_IN for disabled and enabled states
+*      c. BW & Isolation
+*      d. Propagation Delay
+*      e. Enable and Disable times
+*      f. Quiescent current
+* 2. Temperature effects are not modeled. 
+*    Variations over supply voltage have not been modeled.
+*
+*****************************************************************************
+*****
+*$
+.SUBCKT SN74AUC1G66 A B C VCC GND
+X_U19         B GND VCC_MON SN74AUC1G66_ILEAK_OFF 
+X_U27         A GND VCC_MON SN74AUC1G66_ILEAK_OFF 
+X_U1_S1    CNTRL GND A U1_N06857 SN74AUC1G66_SCH_PORT1_U1_S1 
+C_U1_C6         GND B  3.2p  TC=0,0 
+X_U1_S2    CNTRL GND U1_N00770 B SN74AUC1G66_SCH_PORT1_U1_S2 
+R_U1_R1         GND U1_NISO  10e6 TC=0,0 
+L_U1_L1         U1_N06857 U1_N51417  50nH  
+R_U1_R6         U1_N51417 U1_N51467  10 TC=0,0 
+C_U1_C1         GND A  3.2p  TC=0,0 
+L_U1_L2         U1_N51467 U1_N00770  50nH  
+C_U1_C5         U1_N13923 U1_NISO  1p  TC=0,0 
+X_U1_S3    CNTRL GND A U1_N12958 SN74AUC1G66_SCH_PORT1_U1_S3 
+R_U1_R2         U1_N06857 U1_N51417  6 TC=0,0 
+C_U1_C4         U1_NISO U1_N12958  1p  TC=0,0 
+R_U1_R3         U1_N51467 U1_N00770  6 TC=0,0 
+X_U1_S4    CNTRL GND B U1_N13923 SN74AUC1G66_SCH_PORT1_U1_S4 
+X_U30         C VCC GND VCC_MON C_INT SN74AUCXG66_DIGITAL 
+*R_U10_R5         U10_N349504 U10_RC_IN  1.4 TC=0,0 
+R_U10_R5         U10_N349504 U10_RC_IN  1.9 TC=0,0 
+D_U10_D3         U10_RC_OUT U10_N349504 Dideal 
+C_U10_C3         GND U10_RC_OUT  1.1n  TC=0,0 
+E_U10_E2         U10_RC_IN GND C_INT GND 10
+R_U10_R4         U10_RC_IN U10_N345841  0.6 TC=0,0 
+V_U10_V1         U10_N345775 GND 5Vdc
+D_U10_D2         U10_N345841 U10_RC_OUT Dideal
+X_U10_U9         U10_RC_OUT U10_N345775 CNTRL GND SN74AUC1G66_COMPARATOR 
+.MODEL Dideal D
+.ENDS
+*$
+.subckt SN74AUC1G66_SCH_PORT1_U1_S1 1 2 3 4  
+S_U1_S1         3 4 1 2 _U1_S1
+RS_U1_S1         1 2 1G
+.MODEL         _U1_S1 VSWITCH Roff=10e6 Ron=1m Voff=0.25V Von=0.75V
+.ends
+*$
+.subckt SN74AUC1G66_SCH_PORT1_U1_S2 1 2 3 4  
+S_U1_S2         3 4 1 2 _U1_S2
+RS_U1_S2         1 2 1G
+.MODEL         _U1_S2 VSWITCH Roff=10e6 Ron=1m Voff=0.25V Von=0.75V
+.ends
+*$
+.subckt SN74AUC1G66_SCH_PORT1_U1_S3 1 2 3 4  
+S_U1_S3         3 4 1 2 _U1_S3
+RS_U1_S3         1 2 1G
+.MODEL         _U1_S3 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends
+*$
+.subckt SN74AUC1G66_SCH_PORT1_U1_S4 1 2 3 4  
+S_U1_S4         3 4 1 2 _U1_S4
+RS_U1_S4         1 2 1G
+.MODEL         _U1_S4 VSWITCH Roff=10e6 Ron=1m Voff=0.75V Von=0.25V
+.ends
+*$
+.SUBCKT SN74AUCXG66_DIGITAL C VCC GND VCC_MON CNTRL
+.PARAM VCC_MAX = 2.75
+.PARAM VCC_MIN = 0.75
+**
+** Digital Threshold
+ETHR NTHR 0 TABLE {V(VCC,GND)}
++ (0.8, 0.1)
++ (1.1, 0.55)
++ (1.95, 0.975)
++ (2.3, 1.2)
+** Control input current
+RIC C NTHR 225k
+** Test for Min and Max power supplies
+E1 N1 0 VALUE = {0.5*(SGN(VCC_MAX - V(VCC,GND))+ ABS(SGN(VCC_MAX - V(VCC,GND))))}
+E2 N2 0 VALUE = {0.5*(SGN(V(VCC,GND) - VCC_MIN)+ ABS(SGN(V(VCC,GND) - VCC_MIN)))}
+** Convert digital input voltage to '1' and '0'
+E3 CNTRL GND VALUE = {0.5*(SGN(V(C,GND)-V(NTHR)) + ABS(SGN(V(C,GND)-V(NTHR))))}
+** Current Drain
+GVCC VCC GND VALUE = {V(N1)*V(N2)*8u}
+** TRUE if VCC__MIN < VCC < VCC_MAX
+EVCCMON VCC_MON GND VALUE = {V(N1)*V(N2)}
+.ENDS
+*$
+.SUBCKT SN74AUC1G66_ILEAK_OFF OUT GND EN
+.PARAM I_LEAK_OFF = 50n
+*G1 OUT GND VALUE = {(1 - V(EN,GND))*I_LEAK_OFF}
+G1 OUT GND VALUE = {V(EN,GND)*I_LEAK_OFF}
+.ENDS
+*$
+.SUBCKT SN74AUC1G66_COMPARATOR  INP INN OUT GND
+.PARAM VHI = 1
+.PARAM VLOW = 0
+EOUT OUT GND VALUE = {VHI*0.5*(1+ (SGN(V(INP,INN)) - ABS(SGN(V(INP,INN))) + 1))}
+.ENDS
+*$

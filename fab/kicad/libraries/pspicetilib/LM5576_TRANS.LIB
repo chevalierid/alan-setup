@@ -1,0 +1,401 @@
+*$
+* LM5576
+*****************************************************************************
+* (C) Copyright 2018 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Texas Instruments Inc.
+* Part: LM5576	
+* Date: 15FEB2019
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: LM5576 EVALUTION BD.
+* EVM Users Guide: SNVA210B-January 2007-Revised April 2013
+* Datasheet: SNVS447J -JANUARY 2007-REVISED NOVEMBER 2014
+* Topologies Supported: Buck,Inverting Buck Boost.
+*
+* Model Version: Final 1.30
+*
+*****************************************************************************
+*
+* Updates:
+*
+*Final 1.30
+* 1. Modified the implementation in VCC Regulator Block.
+* 2. Modified the implementation in Soft Start Block.
+*
+* Final 1.20
+* 1. VH voltage of model "_U2_STRACK VSWITCH" is changed to 1f from 0 
+*    as keeping VH=0 gives error in Simetrix.
+* 2. Propagation delay of "AND2B0" has been increased and for this capacitor 
+*    CD is changed to 2n from 0.087n to resolve glitches observed SW node in Simterix.
+*
+* Final 1.10
+* 1. Model is made to work both in Buck & Inverting Buck Boost topologies.
+* 2. CLK is made dependent on VIN signal. Previously there was no control to CLK signal.
+* 3. Added STEADY parameter to make the model to work in both normal & steady state.
+* 
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+* Model Usage Notes
+*
+* 1. Following features are been modeled 
+*	 a. Adjustable operating frequency between 50kHz to 500kHz
+*	 b. Adjustable soft-start
+*	 c. Emulated current mode control architecture
+*	 d. Cycle by cycle current limit 
+*
+* 2. Follwing features have not been modeled
+*	 a. SYNC, SD and PRE pins
+*	 b. Thermal characteristics
+*
+*****************************************************************************
+.SUBCKT  LM5576_TRANS VIN FB SW BST RT RAMP SYNC AGND IS SD
++ VCC OUT SS COMP PRE PGND PARAMS: STEADY=0
+E_E5         15 0 VALUE { V(SHDN) }
+E_E11         SS_INT 0 VALUE { V(SS, GND) }
+E_E4         SHDN_INT GND VALUE { V(SHDN, 0) }
+R_RSBY         STBYON 0  1E6 TC=0,0 
+V_V1SDN         SDN 0 5Vdc
+V_V62         38 GND 5Vdc
+V_V9         7 0 5Vdc
+R_RSD         8 0  115.3k TC=0,0 
+E_E12         FB_INT 0 VALUE { V(FB, GND) }
+E_E1         CLK 0 CLK1 0 1
+R_RVSD         VSD GND  1E6 TC=0,0 
+E_E14         VIN_INT 0 VALUE { V(VIN, GND) }
+E_E13         PWM_INT 0 VALUE { V(PWM, GND) }
+R_RSHDN         SHDN 0  1E6 TC=0,0 
+C_C1         12 0  20p  TC=0,0 
+R_U1_R26         U1_69 GND  10k TC=0,0 
+X_U1_SGUVLO    BST SW U1_42 U1_GATEUVLO DRIVER_U1_SGUVLO 
+R_U1_RBOOT         BST SW  150k TC=0,0 
+X_U1_U2         PWM_INT U1_N251285 U1_22 COMP0
+R_U1_RGATE         U1_GATEUVLO 0  1E6 TC=0,0 
+X_U1_U3         CLK U1_64 INVB0
+X_U1_U1         U1_Q U1_64 DRIVE AND2B0
+X_U1_U52         CLK U1_72 U1_Q U1_14 LATCH0 
+X_U1_U4         PWM_INT U1_REF175 U1_63 COMP0
+E_U1_E1         U1_40 SW VALUE { IF(V(UVLO) > 1 & V(U1_GATEUVLO) > 1 & V(SHDN)
++  > 1 & V(STBY) > 1 & V(DRIVE)  > 1 , V(BST,SW) , -1) }
+X_U1_U5         U1_22 U1_63 U1_72 OR2B0
+E_U1_E2         U1_5 GND VALUE { IF(V(SHDN) > 0.7 , 5 , 0) }
+V_U1_V61         U1_42 0 5Vdc
+V_U1_VSENSE         VIN U1_29 0Vdc
+V_U1_VOFFSET         COMP U1_69 0.7Vdc
+E_U1_E3         U1_N251285 0 U1_69 GND 1
+X_U1_U53         U1_29 U1_35 SW GND nationalfet1ax8_lm5576
+V_U1_VCL         U1_REF175 0 2.1Vdc
+D_U1_D1         U1_35 U1_40 _D6_MOD 
+X_U1_U51         FB COMP SS U1_5 GND opamp3a 
+Q_U1_Q1         BST U1_40 U1_35 _QMOD 
+R_R4         CLK1 0  1 TC=0,0 
+D_D5         VCC1 BST BOOSTDIODE 
+X_STBY    SDN 0 49 STBYON LM5576_STBY 
+E_U3_ABM3         U3_N697180 0 VALUE { IF (V(U3_N697328) < .5 ,(IF
++  (V(U3_BIAS) < 3.6, 0, (IF (V(U3_BIAS) >3.5 & V(U3_BIAS) <9,
++  (V(U3_BIAS)-.206), 6.944)))),(IF (V(U3_BIAS) < 2.5, 0, (IF
++  (V(U3_BIAS) >2.4 & V(U3_BIAS) <8.7, (V(U3_BIAS)-.206), 6.944)))))   
++  }
+R_U3_RVSD9         U3_N697304 U3_N697328  1 TC=0,0 
+C_U3_C4         U3_N697328 0  1n  TC=0,0 
+E_U3_ABM4         U3_N697304 0 VALUE { IF (V(U3_BIAS) < 9, (IF
++  (V(U3_N697352) > 0.5, 0, V(U3_N697328))), 1)    }
+E_U3_E1         U3_BIAS GND VALUE { IF( V(SHDN) > 0.7 ,
++  V(VIN), 0 ) }
+E_U3_ABM7         U3_N697352 0 VALUE { IF( V(U3_N697180) < 2, 1, 0)   
++  }
+R_U3_RVSD4         52 GND  1E6 TC=0,0 
+I_U3_I2         U3_N697180 VCC DC 25m  
+D_U3_D2         VCC U3_N697180 D_D1 
+R_RVSD9         VCC1 VCC  100 TC=0,0
+E_U3_E2         U3_VSD_1 GND VALUE { IF(V(VSD) < 1 , 0 , 1) }
+R_U3_RVSD2         52 GND  1E6 TC=0,0 
+X_U3_SUVLO    VCC GND VSD 52 REGULATOR_U3_SUVLO 
+X_U3_SVCC    U3_VSD_1 GND VCC GND REGULATOR_U3_SVCC
+E_U5_E_BSS         U5_REF GND TABLE { IF(V(VCC,GND) > 1.2436 & V(SHDN) > 0.7 ,
++  1.2436 , 0) } 
++ ( (-15,-15) (15,15) )
+M_U5_M1         SS U5_VSDN GND GND _M           
+R_U5_RUV         U5_46 UVLO  1k TC=0,0 
+E_U5_E_BSTBY         STBY 0 TABLE { IF(V(VCC,GND) > 5.35 & V(STBYON) > 1 , 5 ,
++  0) } 
++ ( (-15,-15) (15,15) )
+E_U5_EUV         U5_46 0 52 GND 1 
+C_U5_CUV         UVLO 0  1.5n  TC=0,0 
+R_U5_RSS         U5_57 GND  55.8k TC=0,0 
+Q_U5_Q1         U5_57 U5_57 U5_REF QP 
+Q_U5_Q2         SS U5_57 U5_REF QP 
+E_U5_E_BSSR         U5_VSDN GND TABLE { IF({STEADY}>0.5,0,IF(V(UVLO) < 1 , 5 , IF(
++  V(STBY) < 1 , 5 , 0))) } 
++ ( (-15,-15) (15,15) )
+X_SSD    SDN 0 7 SHDN LM5576_SSD 
+G_U2_GTRACK         RAMP TRACK PGND IS 1m
+R_U2_RIS         IS PGND  50m TC=0,0 
+M_U2_M2         RAMP U2_N495210 GND GND _NMOD           
+C_U2_CRAMP2         PWM U2_RAMPX  5p  TC=0,0 
+G_U2_G1         REF5 RAMP VALUE { 25u + (V(VIN,GND) - V(OUT,GND))/200k }
+V_U2_VREF5         REF5 GND 5Vdc
+E_U2_E1         U2_N495210 GND VALUE { V(U2_48, 0) }
+X_U2_U7         DRIVE U2_48 INVB01
+R_U2_RTRACK         TRACK RAMP  10k TC=0,0 
+E_U2_EVRAMPX         U2_RAMPX GND RAMP GND 1
+X_U2_STRACK    CLK 0 TRACK PWM TRACK_RAMP_U2_STRACK 
+G_U4_G4         U4_6 U4_5 VALUE {
++  ((V(U4_6,U4_5)*2*1.098*1E-6)/(1E6*V(RT,GND)*135E-12+580E-9)) }
+C_U4_C2         U4_6 0  1u  TC=0,0 
+R_U4_R5         U4_6 0  1E9 TC=0,0 
+X_U4_U6         U4_7 U4_6 U4_5 COMPARATOR_0
+R_U4_R2         0 U4_7  1k TC=0,0 
+X_U4_U5         U4_5 U4_3 U4_N469460 AND_0
+C_U4_C1         U4_3 0  1u  TC=0,0 
+X_U4_U1         U4_5 U4_4 INV_0
+I_U4_IS1         GND RT DC 1u  
+X_U4_U3         U4_4 U4_3 d_d1_0
+G_U4_G3         U4_4 U4_3 VALUE { (V(U4_4,U4_3)/(28.24*V(RT,GND)+0.121)) }
+E_U4_ABM1         CLK1 0 VALUE { IF(V(VIN_INT)<4,0,V(U4_N469460))    }
+R_U4_R1         U4_7 U4_5  1k TC=0,0 
+Q_Q3         8 8 11 QP 
+E_E3         11 0 VALUE { IF(V(VCC,GND) > 1.225 , 1.225 , V(VCC,GND)) }
+V_V11         49 0 5Vdc
+V_V111         AGND GND 0Vdc
+Q_Q4         SDN 8 11 QP 
+X_SSHDN    12 0 38 VSD LM5576_SSHDN 
+R_RSDN         15 12  1k TC=0,0
+.ENDS  LM5576_TRANS
+*$
+.subckt DRIVER_U1_SGUVLO 1 2 3 4  
+S_U1_SGUVLO         3 4 1 2 _U1_SGUVLO
+RS_U1_SGUVLO         1 2 1G
+.MODEL         _U1_SGUVLO VSWITCH Roff=1e9 Ron=1.0 VH=0.5 VT=3.8 TD=0
+.ends DRIVER_U1_SGUVLO
+*$
+.subckt LM5576_STBY 1 2 3 4  
+S_STBY         3 4 1 2 _STBY
+RS_STBY         1 2 1G
+.MODEL         _STBY VSWITCH Roff=1e9 Ron=1.0 VH=0.1 VT=1.125 TD=0
+.ends LM5576_STBY
+*$
+.subckt REGULATOR_U3_SUVLO 1 2 3 4  
+S_U3_SUVLO         3 4 1 2 _U3_SUVLO
+RS_U3_SUVLO         1 2 1G
+.MODEL         _U3_SUVLO VSWITCH Roff=1e9 Ron=1.0 VH=0.175 VT=5.175 TD=0
+.ends REGULATOR_U3_SUVLO
+*$
+.subckt REGULATOR_U3_SVCC 1 2 3 4  
+S_U3_SVCC         3 4 1 2 _U3_SVCC
+RS_U3_SVCC         1 2 1G
+.MODEL         _U3_SVCC VSWITCH Roff=480k Ron=96k VH=100u VT=1 TD=0
+.ends REGULATOR_U3_SVCC
+*$
+.subckt LM5576_SSD 1 2 3 4  
+S_SSD         3 4 1 2 _SSD
+RS_SSD         1 2 1G
+.MODEL         _SSD VSWITCH Roff=1e9 Ron=1.0 VH=0.1 VT=0.6 TD=0
+.ends LM5576_SSD
+*$
+.subckt TRACK_RAMP_U2_STRACK 1 2 3 4  
+S_U2_STRACK         3 4 1 2 _U2_STRACK
+RS_U2_STRACK         1 2 1G
+.MODEL         _U2_STRACK VSWITCH Roff=1e9 Ron=1m VH=1f VT=1V TD=0
+.ends TRACK_RAMP_U2_STRACK
+*$
+.subckt LM5576_SSHDN 1 2 3 4  
+S_SSHDN         3 4 1 2 _SSHDN
+RS_SSHDN         1 2 1G
+.MODEL         _SSHDN VSWITCH Roff=1e9 Ron=1.0 VH=20m VT=2 TD=0
+.ends LM5576_SSHDN
+*$
+.SUBCKT AND2B0 1 2 3
+EB1 4 0 VALUE = { IF(V(1)>1.5 & V(2)>1.5 , 3.5 , 0.3) }
+RD 4 3 1
+CD 3 0 2NF
+.ENDS
+*$
+.SUBCKT COMP0 1 2 3
+EB1 4 0 VALUE= {IF(V(1) > V(2) , 5V , 0) }
+RD 4 3 10
+CD 3 0 10P
+.ENDS
+*$
+.SUBCKT NATIONALFET1AX8_LM5576 10 20 40 GND
+M1   1  2  3  3  DMOS L=1U W=1U
+RD  10  1  70M
+RS  40  3  4.5M
+RG  20  2  1
+CGS  2  3  60P
+EGD 12  GND  2  1  1
+VFB 14  GND  0
+FFB  2  1  VFB  1
+CGD 13 14  130P
+R1  13  GND  1
+D1  12 13  DLIM
+DDG 15 14  DCGD
+R2  12 15  1
+D2  15  GND  DLIM
+.MODEL DMOS NMOS (LEVEL=3 VMAX=125K THETA=58.1M ETA=2M VTO=1.2 KP=2.89)
+.MODEL DCGD D (CJO=0.062N VJ=0.4 M=1.2)
+.MODEL DSUB D (IS=11.62N N=1.5 RS=268M 
++	BV=100 CJO=0.042N VJ=0.8 M=0.42 TT=45N)
+.MODEL DLIM D (IS=100U)
+.ENDS
+*$
+.SUBCKT OPAMP3A 1    3    2   4   5
+CIP 2 5 1P
+CIN 1 5 1P
+EIP 10 5 2 5 1
+RIP 10 11 26
+DIP 11 12 _D2_MOD 400P
+.MODEL _D2_MOD D CJO=10P IS=1E-8 KF=3.1F
+VOFP 12 13
+EIN 16 5 1 5 1
+RIN 16 15 26
+DIN 15 14 _D2_MOD 400P
+VOFN 13 14
+RIS 15 11 200
+I1 13 5 DC=10U
+CPS 15 11 3.7000N
+DINN 17 13 _D2_MOD 400P
+VIN 17 5
+DINR 15 18 _D2_MOD 400P
+VIP 4 18 DC=2
+FCP 4 5 VOFP 34
+FIBP 2 5 VOFN 12.200U
+FIBN 5 1 VOFP 12.000U
+FCN 5 4 VOFN 34
+FIP 5 19 VOFP 162.00
+FIN 5 19 VOFN 162.00
+R4 19 4 3.6MEG
+R5 19 5 3.6MEG
+C4 5 19 333.33P
+DOPM 19 22 _D2_MOD 400P
+D6 21 19 _D2_MOD 400P
+HOPM 22 28 VOUT 39.750K
+HONM 21 27 VOUT 38.750K
+VIPM 28 4 DC=150
+VINM 5 27 DC=150
+EOUT 9 23 19 5 1
+VOUT 23 5
+ROUT 9 3 20
+C5 3 5 1P
+DON 24 19 _D2_MOD 400P
+D8 19 25 _D2_MOD 400P
+VOP 4 25 DC=890.30M
+VON 24 5 DC=895.30M
+.ENDS
+*$
+.SUBCKT LATCH0 6 8 2 1
+EBQB   10 0 VALUE = {IF((V(8)<800M) & (V(2)>800M) , 100.000M , 10.0000)}
+EBQ    20 0 VALUE = {IF((V(6)<800M) & (V(1)>800M) , 100.000M , 10.0000)}
+RD1   10 1 100
+CD1   1 0 10P IC=10.0000
+RD2   20 2 10
+CD2   2 0 1P IC=100.000M
+.ENDS
+*$
+.SUBCKT LDCR 1 2 PARAMS: L=1u DCR=20m IC = 0
+L1 1 INT1 {L} IC={IC}
+R1 INT1 2 {DCR}
+.ENDS LDCR
+*$
+.SUBCKT Cin 1 2 PARAMS: IC=0
+Ccap 1 3 4.4E-6 IC = {IC}
+Resr 3 2 0.0035
+.ENDS
+*$
+.SUBCKT OR2B0 1 2 3
+EB1 4 0 Value = {if(V(1)>1.5|V(2)>1.5,3.5,0.3)}
+RD 4 3 1
+CD 3 0 0.0087NF
+.ENDS
+*$
+.SUBCKT INVB01 1  2
+EB1 3 0 Value = { if (V(1)>1.5 ,0.3,3.5)}
+RD 3 2 1
+CD 2 0 0.87NF
+.ENDS
+*$
+.SUBCKT INVB0 1  2
+EB1 3 0 Value = { if (V(1)>1.5 ,0.3,3.5)}
+RD 3 2 1
+CD 2 0 0.087NF
+.ENDS
+*$
+.SUBCKT INVB 1  2
+EB1 3 0 Value = { if (V(1)>1.5 ,0.3,3.5)}
+RD 3 2 1
+CD 2 0 0.87NF
+.ENDS
+*$
+.MODEL _D6_MD6_MOD D RS=65
+*$
+.MODEL _QMOD NPN
+*$
+.MODEL _M NMOS KP=2000E-5 VTO=1
+*$
+.MODEL QP PNP
+*$
+.MODEL D_D1 D
++ IS=1E-011
++ TT=1E-09
++ RS=0
++ N=.1
+*$
+.subckt REGULATOR_U3_S1 1 2 3 4  
+S_U3_S1         3 4 1 2 U3_S1
+RS_U3_S1         1 2 1G
+.MODEL         U3_S1 VSWITCH Roff=1e9 Ron=1.0u Voff=0.8 Von=0.2
+.ends REGULATOR_U3_S1
+*$
+.MODEL _D6_MOD D RS=65
+*$
+.MODEL _NMOD NMOS KP=1 RD=10 VTO=1.5
+*$
+.MODEL BOOSTDIODE D BV=100.00 CJO=2.667776E-11  IBV=10.000E-6
++	 IS=2.843488E-13 M=388.7E-3 N=1.091 RS=4.21E-1  TNOM=25.0 VJ=632.1E-3
+*$
+.MODEL DIODE_D1 D (IS=916u RS=14.1m BV=70.0 IBV=500u
++ CJO=159p  M=0.333 N=3.04 TT=1n)
+*$
+.SUBCKT INV_0  IN OUT
+E1 OUT 0 VALUE {IF(V(IN)>0 , -12 , 12)}
+.ENDS
+*$
+.SUBCKT AND_0  1 2 OUT
+E1 OUT 0 VALUE {IF(V(1)>0 & V(2)>0, 3.5 , 0.3)}
+.ENDS   
+*$
+.SUBCKT COMPARATOR_0  P N Y
+E1 Y 0 VALUE {IF(V(P,N)>0,12,-12)}
+.ENDS
+*$
+.SUBCKT D_D1_0  1 2
+D1 1 2 DD1
+.MODEL DD1 D
++ IS=1E-011
++ TT=1E-09
++ RS=0
++ N=1.1
+.ENDS D_D1_0 
+*$
+.SUBCKT CESR 1 2 PARAMS: C=10u ESR=2m ESL=1n IC=0
+C1 1 INT1 {C} IC={IC}
+R1 INT1 INT2 {ESR}
+L1 INT2 2 {ESL}
+.ENDS CESR
+*$

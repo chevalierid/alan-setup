@@ -1,0 +1,126 @@
+*//////////////////////////////////////////////////////////////////////
+* (C) National Semiconductor, Corporation.
+* Models developed and under copyright by:
+* National Semiconductor, Corporation.  
+*/////////////////////////////////////////////////////////////////////
+* Legal Notice:  
+* The model may be copied, and distributed without any modifications;
+* however, reselling or licensing the material is illegal.
+* We reserve the right to make changes to the model without prior notice. 
+* Pspice Models are provided "AS IS, WITH NO WARRANTY OF ANY KIND" 
+*////////////////////////////////////////////////////////////////////
+* For more information, and our latest models,
+* please visit the models section of our website at
+*       http://www.national.com/models/
+*////////////////////////////////////////////////////////////////////
+* SPICE MODEL LMH6622
+* PINOUT IS FOR A AMP ONLY
+* PINOUT ORDER IS -IN +IN +V -V OUT
+* PINOUT           2   3   8  4  1
+.SUBCKT LMH6622 2 3 8 4 1
+Q17 4 9 10 QOP
+Q21 8 11 10 QON
+R3 12 13 12
+R4 12 14 12
+R5 15 16 5
+R8 17 18 300
+R9 19 18 300
+R15 20 21 5
+Q24 22 22 23 QP
+Q25 21 21 22 QP
+Q26 23 23 24 QN
+Q27 24 24 21 QN
+D1 23 25 DD
+D2 21 25 DD
+D3 26 23 DD
+D4 26 21 DD
+D5 1 8 DD
+D6 4 1 DD
+V6 16 23 0.3E-3
+D7 27 0 DIN
+D8 28 0 DIN
+I8 0 27 0.1E-3
+I9 0 28 0.1E-3
+E2 26 0 4 0 1
+E3 25 0 8 0 1
+C4 15 0 1E-12
+C5 2 0 1E-12
+D9 29 0 DVN
+D10 30 0 DVN
+I10 0 29 0.1E-3
+I11 0 30 0.1E-3
+E4 20 2 29 30 0.33
+G2 15 20 27 28 2E-4
+I12 8 4 2.45E-3
+R22 4 8 17E3
+E5 31 0 25 0 1
+E6 32 0 26 0 1
+E7 33 0 34 0 1
+RSP 3 0 1E12
+RS1 52 0 1E12
+RS2 53 0 1E12
+RS3 54 0 1E12
+R30 31 35 1E6
+R31 32 36 1E6
+R32 33 37 1E6
+R33 0 35 100
+R34 0 36 100
+R35 0 37 100
+E10 38 3 37 0 0.4
+R36 39 34 1E3
+R37 34 40 1E3
+C6 31 35 1E-12
+C7 32 36 0.25E-12
+C8 33 37 1E-12
+E11 41 38 36 0 0.36
+E12 15 41 35 0 0.04
+E14 42 26 25 26 0.5
+D11 43 25 DVC
+D12 26 44 DVC
+C10 17 19 1E-16
+Q28 25 45 9 QON
+Q29 26 45 11 QOP
+I13 25 11 1.25E-3
+I14 9 26 1.25E-3
+Q30 17 23 13 QIN
+Q31 19 21 14 QIN
+G6 46 42 47 42 0.1
+G7 45 42 46 42 0.1
+R38 42 46 10
+R39 42 45 10
+C11 46 42 70E-12
+Q32 12 48 49 QN
+I15 49 48 10E-6
+G8 50 42 17 19 1.1E-3
+R40 42 50 3E6
+C13 42 47 3.3E-12
+R41 47 50 2E3
+D13 50 51 DL
+D14 51 50 DL
+E15 51 42 47 42 1
+V11 43 52 1.32
+V12 53 44 1.52
+E16 52 47 54 0 1
+E17 47 53 54 0 1
+D16 55 0 DVC
+I16 0 55 1E-3
+R42 10 1 5
+V14 49 26 0.62
+V15 25 18 0.9
+V16 54 55 -0.71465
+E18 39 0 20 0 1
+E19 40 0 15 0 1
+I18 23 12 40E-9
+.MODEL DD D
+.MODEL QP PNP
+.MODEL QN NPN
+.MODEL QPV PNP VAF=150
+.MODEL QNV NPN VAF=150
+.MODEL QON NPN VAF=40 RE=6.3
+.MODEL QOP PNP VAF=40 RE=1.7
+.MODEL QIN NPN KF=1.25E-15 BF=100
+.MODEL DVN D KF=1.5E-15
+.MODEL DIN D KF=8E-16
+.MODEL DL D IS=5.002E-16
+.MODEL DVC D IS=7E-9
+.ENDS

@@ -1,0 +1,97 @@
+*$
+***********************************************************************
+*  (C) Copyright 2014 Texas Instruments Incorporated. All rights reserved.
+***********************************************************************
+***********************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose. The model is
+** provided solely on an "as is" basis. The entire risk as to its quality
+** and performance is with the customer
+********************************************************************************
+*
+* Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: CSD23202W10
+* Date: 09/01/2014
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.2
+* EVM Order Number: 
+* EVM Users Guide:
+* Datasheet: SLPS506 �AUGUST 2014
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+*
+*****************************************************************************
+**********************************************************************
+*                                                                    *
+*  CSD23202W10  -  P-Channel 12/05 CSP 1x1mm                         *
+*                                                                    *
+**********************************************************************
+.SUBCKT CSD23202W10  1 2 3
+M1   10 11 12 12  PMOS W={0.6241/1.51} L=0.4u PD={0.6241/1.51*2.1} PS={0.6241/1.51*2.1}
+DBD   7  8	  DBD
+RBD   7  8	  1e9
+CBD   7  8	  15e-12
+CGD   5  4	  2e-12
+DGD  11 13	  DD
+DDG  10 13	  DD
+CGS   5  6	  {2.0E-12+0.9e-10}
+LGG   2  5	  0.2e-9
+RGG   5 11	  39
+RSB  12  9	  RTEMP 10E-3
+RSS   9  8	  1.0E-3
+Rsub  8  6	  0.5E-3
+LSS   6  3	  0.02E-9
+RDD   7 10	  15.068E-3
+RDP   4  7	  1.0E-3
+LDD   1  4	  0.1E-9
+desd  5  8	  zenerd
+******************************************************************* 
+.MODEL  PMOS   PMOS (   LEVEL   = 7            Version = 3.2 
++ TNOM    = 27          VSAT    = 8.00e4       AT      = 1.0e4
++ TOX     = 1.25E-8     NCH     = 1.010e17     NSUB    = 5.2e15
++ A0      = 0.55        A1      = 0.0          A2      = 0.6
++ UA      = 2.00E-09    UB      = 1.0E-18      VBM     = -3
++ UA1     = 1.00e-9     UB1     = -1.0e-17     UTE     = -1.50
++ KT1     = -0.5625     KT2     = .010         KT1L    = 1.5e-09
++ Dvt0    = 2.0         Dvt1    = 0.55         Dvt2    = -0.03
++ PDIBLC1 = 0.01        PDIBLC2 = 0.002	       U0	 = 156.55
++ PCLM    = 1e-9
++ VOFF    = -0.100      NFACTOR = 1.76         NLX     = 1.80e-7
++ ETA0    = 0.02        ETAB    = -0.07        DROUT   = 0.65
++ PSCBE1  = 7.0e8       PSCBE2  = 1.0e-6       B0      = 0.03
++ DELTA   = 0.09        AGS     = 5.0          JS      = 0
++ CJ      = 1e-18       CJSW    = 1e-18        CF      = 0
++ CGSO    = 69e-12      CGDO    = 25e-12       CGBO    = 0	)
+*******************************************************************
+.MODEL DBD D (
++ CJO=350E-12	VJ=0.9		M=0.3	  	FC=0.5	    TT=3e-9
++ TNOM=27	RS=100.0e-3	TRS1=1e-3	IS=5.0e-10  N=1.03
++ XTI=-10.0 	BV=13.2)
+*******************************************************************
+.MODEL DD D (
++ CJO=125.0e-12	VJ=0.38	M=0.75	FC=0.5	TT=1e-9
++ TNOM=27	IS=1.00e-12 N=1.0  	RS = 0.1)
+*******************************************************************
+.MODEL RTEMP RES (
++ TC1=0.80E-2	TC2=2.0E-5)
+*******************************************************************
+.MODEL ZENERD D (
++ CJO=25E-12	VJ=0.7	M=0.45	RS=0.205	TRS1=-2e-3
++ FC=0.5	TT=3E-9	IS=1.00e-14 N=1.02	XTI=3.5
++ BV=6.08	TNOM=27)
+.ENDS CSD23202W10  
+*$
+*******************************************************************

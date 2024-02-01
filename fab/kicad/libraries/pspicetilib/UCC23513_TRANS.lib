@@ -1,0 +1,250 @@
+*$
+* UCC23513
+*****************************************************************************
+* (C) Copyright 2018 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Texas Instruments Inc.
+* Part: UCC23513
+* Date: 12NOV2018
+* Model Type: TRANSIENT 
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: UCC23513EVM-014
+* EVM Users Guide: SLUUBW3–October 2018
+* Datasheet: SLUSD31 –AUG 16 2018
+* Topologies Supported: Driver
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+* 1. The following features have been modeled
+*      a. VCC UVLO.
+*      b. Output current limit.
+*      c. Ouput propagation delay, rise & fall time.
+*      d. CMTI feature.
+* 2. Operating current, shutdown current, and thermal 
+*    characteristics of the part have not been modeled. 
+*
+*****************************************************************************
+.SUBCKT UCC23513_TRANS ANODE CATHOD NC VCC VSS VOUT  
+V_V6         N16136934 VSS 5
+X_U636         N16137812 N16137806 INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+X_H1    N16134789 CATHOD N16134563 VSS UCC23513_TRANS_H1 
+X_D8         VSS VOUT d_d48 
+D_D83         N161349470 CATHOD D_D1 
+R_R12         N16136828 N16136816  100k  
+V_V3         N16137286 VSS 11
+C_C208         N16136832 VSS  50p  
+V_V5         N16137604 VSS 15
+R_R9         N16137680 N16137278  10k  
+X_D5         N16135089 N16135095 d_d48 
+R_R7         N16136832 VCC  100k  
+R_R6         VCC N16135089  150k  
+X_S10    N16136928 0 N16136828 N16136934 UCC23513_TRANS_S10 
+V_V7         N16136770 VSS 6
+D_D78         ANODE N16135075 D_D2 
+X_U634         N16137712 N16137716 INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+X_D6         VOUT VCC d_d48 
+X_U638         N16136822 N16136928 INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+X_U633         N16136832 N16137680 N16137712 COMP_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+R_R3         N16134563 N16134705  100k  
+X_S9    N16137806 0 N16137652 VSS UCC23513_TRANS_S9 
+X_S6    N16137712 0 N16137278 N16137286 UCC23513_TRANS_S6 
+X_U637         N16137652 N16136770 N16136822 COMP_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+G_ABMII1         VCC VSS VALUE { LIMIT((V(N16134987)-V(VSS))*167u,0,1.8m)    }
+R_R5         N16134987 VSS  10Meg  
+X_D1         VCC N16158002 d_d48 
+E_E1         N16136816 VSS N16136882 0 1
+X_S8    N16136828 VSS N16134705 VSS UCC23513_TRANS_S8 
+X_U635         VCC N16136934 N16137812 COMP_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+C_C207         ANODE CATHOD  15p  
+R_R8         N16137660 N16137680  10k  
+X_D4         N16158002 N16134987 d_d48 
+C_C209         N16136882 0  1p  
+R_R2         N16135075 N16134789  300  
+R_R10         N16136882 N16137716  100k  
+X_S7    N16137716 0 N16137660 N16137752 UCC23513_TRANS_S7 
+R_R11         N16137604 N16137652  90K  
+X_D2         N16134511 CATHOD d_d44  
+D_D81         ANODE N161349250 D_D1 
+X_D7         N16134511 ANODE d_d48 
+V_V2         N16135095 VSS 12
+C_C210         N16137652 VSS  500p  
+X_U50_S4    U50_N16124434 0 U50_N16113382 U50_N16087080 MOSFET_DRIVER_U50_S4 
+C_U50_C3         U50_N16124434 0  1.443n  
+R_U50_R2         U50_N16085851 U50_IN_DELAYED  70 TC=0,0 
+E_U50_ABM6         U50_N16113524 0 VALUE { IF(V(U50_IN_DELAYED)>2.05,1,0)    }
+C_U50_C1         U50_IN_DELAYED 0  1.443n  
+I_U50_I2         U50_N16095168 VOUT DC 4.3  
+D_U50_D2         VOUT U50_N16095168 D_D99 
+R_U50_R3         U50_N16119515 U50_N16119578  10 TC=0,0 
+E_U50_E1         U50_N16085851 0 N16134705 VSS 1
+C_U50_C2         U50_N16119578 0  1.443n  
+X_U50_S3    U50_N16113524 0 VCC U50_N16113382 MOSFET_DRIVER_U50_S3 
+E_U50_ABM4         U50_N16096593 0 VALUE { IF(V(U50_IN_DELAYED)<1.90,1,0)    }
+E_U50_ABM5         U50_N16124515 0 VALUE { IF((V(VCC)-V(U50_N16087080))<1,1,0) 
++    }
+X_U50_S1    U50_N16096593 0 U50_N16087080 U50_N16117775 MOSFET_DRIVER_U50_S1 
+I_U50_I1         U50_N16095168 U50_N16087080 DC 5.3  
+X_U50_S2    U50_N16119578 0 U50_N16117775 VSS MOSFET_DRIVER_U50_S2 
+E_U50_ABM3         U50_N16119515 0 VALUE {
++  IF((V(U50_N16087080)-V(VSS))<0.5,1,0)    }
+R_U50_R4         U50_N16124515 U50_N16124434  10 TC=0,0 
+D_U50_D1         U50_N16087080 U50_N16095168 D_D99 
+V_V4         N16137752 VSS 12
+D_D82         N161349250 N161349470 D_D1 
+.ENDS UCC23513_TRANS
+*$
+.subckt UCC23513_TRANS_H1 1 2 3 4  
+H_H1         3 4 VH_H1 1k
+VH_H1         1 2 0V
+.ends UCC23513_TRANS_H1
+*$
+.subckt UCC23513_TRANS_S10 1 2 3 4  
+S_S10         3 4 1 2 _S10
+RS_S10         1 2 1G
+.MODEL         _S10 VSWITCH Roff=10e6 Ron=1 Voff=0.4 Von=0.8
+.ends UCC23513_TRANS_S10
+*$
+.subckt UCC23513_TRANS_S9 1 2 3 4  
+S_S9         3 4 1 2 _S9
+RS_S9         1 2 1G
+.MODEL         _S9 VSWITCH Roff=10e6 Ron=200m Voff=0.25 Von=0.75
+.ends UCC23513_TRANS_S9
+*$
+.subckt UCC23513_TRANS_S6 1 2 3 4  
+S_S6         3 4 1 2 _S6
+RS_S6         1 2 1G
+.MODEL         _S6 VSWITCH Roff=10e6 Ron=1 Voff=0.4 Von=0.8
+.ends UCC23513_TRANS_S6
+*$
+.subckt UCC23513_TRANS_S8 1 2 3 4  
+S_S8         3 4 1 2 _S8
+RS_S8         1 2 1G
+.MODEL         _S8 VSWITCH Roff=10e6 Ron=1 Voff=0.25 Von=0.75
+.ends UCC23513_TRANS_S8
+*$
+.subckt UCC23513_TRANS_S7 1 2 3 4  
+S_S7         3 4 1 2 _S7
+RS_S7         1 2 1G
+.MODEL         _S7 VSWITCH Roff=10e6 Ron=1 Voff=0.4 Von=0.8
+.ends UCC23513_TRANS_S7
+*$
+.subckt MOSFET_DRIVER_U50_S4 1 2 3 4  
+S_U50_S4         3 4 1 2 _U50_S4
+RS_U50_S4         1 2 1G
+.MODEL         _U50_S4 VSWITCH Roff=3.3 Ron=6 Voff=0.25 Von=0.75
+.ends MOSFET_DRIVER_U50_S4
+*$
+.subckt MOSFET_DRIVER_U50_S3 1 2 3 4  
+S_U50_S3         3 4 1 2 _U50_S3
+RS_U50_S3         1 2 1G
+.MODEL         _U50_S3 VSWITCH Roff=10e6 Ron=1m Voff=0.25 Von=0.75
+.ends MOSFET_DRIVER_U50_S3
+*$
+.subckt MOSFET_DRIVER_U50_S1 1 2 3 4  
+S_U50_S1         3 4 1 2 _U50_S1
+RS_U50_S1         1 2 1G
+.MODEL         _U50_S1 VSWITCH Roff=10e6 Ron=1m Voff=0.25 Von=0.75
+.ends MOSFET_DRIVER_U50_S1
+*$
+.subckt MOSFET_DRIVER_U50_S2 1 2 3 4  
+S_U50_S2         3 4 1 2 _U50_S2
+RS_U50_S2         1 2 1G
+.MODEL         _U50_S2 VSWITCH Roff=1 Ron=10 Voff=0.25 Von=0.75
+.ends MOSFET_DRIVER_U50_S2
+*$
+.subckt d_d48 1 2 
+r1 1 2 5.827e+9 
+d1 1 2 1n4148
+.model 1n4148 d
++ is=4.352e-009
++ n=1.906
++ bv=110
++ ibv=0.0001
++ rs=0.6458
++ cjo=7.048e-013
++ vj=0.869
++ m=0.03
++ fc=0.5
++ tt=3.48e-009
+.ends d_d48
+*$
+.model D_D1 d
++ is=1e-015
++ tt=1e-011
++ rs=0.22
++ n=0.79
+*$
+.model D_D2 d
++ is=1e-015
++ tt=1e-011
++ rs=1.36621
++ n=0.8
+*$
+.subckt d_d44  1 2
+d1 1 2 df
+dz 3 1 dr
+vz 2 3 13.7
+.model df d
++ is=2.75e-011
++ rs=0.62
++ n=1.1
++ cjo=7.83e-011
++ vj=1
++ m=0.33
++ tt=5.01e-008
+.model dr d
++ is=5.49e-015
++ rs=0.804
++ n=1.77
+.ends d_d44
+*$
+.model D_D99 d
++ is=1e-015
++ tt=1e-011
++ rs=0.005
++ n=0.001
+*$
+.SUBCKT INV_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS INV_BASIC_GEN
+*$
+.SUBCKT COMP_BASIC_GEN INP INM Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5	
+E_ABM Yint 0 VALUE {IF (V(INP) > 
++ V(INM), {VDD},{VSS})}
+R1 Yint Y 1
+C1 Y 0 1n
+.ENDS COMP_BASIC_GEN
+*$

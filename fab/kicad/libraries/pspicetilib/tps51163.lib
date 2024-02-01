@@ -1,0 +1,845 @@
+* PSpice Model Editor - Version 16.0.0
+*$
+**(C) Copyright 2009 Texas Instruments Incorporated  . All rights reserved.
+*===========================================================================
+* TPS51163 PSPICE TRANSIENT MODEL (PSPICE Netlist Editor format)
+***************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed or implied, 
+** with respect to this  model, including the warranties of merchantability or fitness 
+** for a particular purpose. The model is provided solely on an "as is" basis. The entire
+** risk as to its quality and performance is with the customer.         
+***************************************************************************
+* 
+* Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: TPS51163
+* Date: 01/26/2009
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Datasheet: TPS51163, May, 2008
+*
+***************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+***************************************************************************
+.SUBCKT TPS51163 BOOT SW HDRV LDRV GND VDD COMP FB VOS PGD 
++PARAMS: CALFAST=0 SSFAST=0 PBOFF=1
+X_U27         N4209902 OV VOS 0 SWHYSTE PARAMS: 
++ RON=1 ROFF=1MEG VT=0.864
++  VH=0.016
+E_E47         N4226080 0 VALUE { {IF (V(PREBIASCTRL)
++ > 3VBias & V(N4210450) >
++  3VBias, 5, 0)} }
+C_C23         0 THRESHOLD  10n  
+X_U11         COMPARATOR1 COMPFFRESET N4218104 
++ N4216526 FFLOP 
+R_R159         N4209860 N4215358  1  
+E_E6         OCDETECT 0 VALUE { {IF (V(VCOUNTER) 
++ > V(N4224988), 5, 0)} }
+E_E38         N4226996 0 VALUE { {IF (V(N4222998)
++ > V(3VBIAS), 1, 0)} }
+E_ABM95         N4282060 0 VALUE { {IF( V(OCLATCH)
++ > 2.5 |  
++ V(UVP) > 2.5 |  
++ V(OVP) > 2.5,5,0)}  }
+X_U32         COMPARATOR9 COMPFFRESET N4222504 
++ N4222352 FFLOP 
+E_ABM111         N4345463 0 VALUE { {IF( V(N4345559)
++ > 2.5 |  
++ V(OVPLATCH) > 2.5, 5,0)}   }
+R_R72         0 N4216228  100k  
+R_R119         N4209930 N4211122  10  
+E_E11         OCCPULSE 0 VALUE { {IF (V(N4223348) 
++ > V(3VBIAS), 5, 0)} }
+C_C20         0 HDRVCTRL2PRE  1n  
+C_C14         0 N4209564  100n  
+R_R76         N4218286 N4216386  99k  
+X_U8         N4215420 N4213310 N4223834 N4217344 
++ FFLOP 
+R_R8         0 N4211584  100k  
+R_R61         N4218492 N4218198  1  
+R_R176         0 N4217612  100k  
+E_E27         INITIAL 0 VALUE { {IF (V(N4222196) 
++ > V(3VBIAS), 5, 0)} }
+R_R44         0 N4216390  100k  
+E_SUM4         N4221796 0 VALUE {V(N4221534)+V(N4221860)}
+R_R156         N4223824 COMPBLANK  1  
+C_C45         WINDOWH 0  1n  
+V_V43         COMP N4251271 0.15
+E_E13         N42196041 0 VALUE { {IF (V(MYPT3) 
++ > V(3VBIAS), 5, 0)} }
+E_E31         N4218662 0 VALUE { {IF (V(WINDOW) 
++ > V(3VBIAS), 5, 0)} }
+R_R147         0 UVLO  1k  
+V_V34         N4211560 0 0.8Vdc
+R_R106         LDRVCTRL1 LDRVCTRL1DEL  1  
+E_ABM118         LDRVCTRL2 0 VALUE { {IF( V(N4965396) > 2.5 |  
++ V(N4967139) > 2.5, 5,0)}   }
+R_R43         0 N4216652  1k  
+R_R146         0 UVLOREG  1k  
+C_C92         E+U N4211926  1n  
+E_E2         N4226280 0 VALUE { {IF (V(N4251271) 
++ > V(RAMP), 5, 0)} }
+E_ABM78         N4210042 0 VALUE { {IF ( V(VOS) < 0.72V |  
++ V(E+U) < 2.5 |  
++ V(OClatch) > 2.5V, 0, 5)}  }
+E_ABM11         COMPARATOR10 0 VALUE { {IF (V(THRESHOLD) 
++ > 498mV, 5V, 0V)}    }
+C_C73         N4215070 N4211204  1050n  
+V_V8         N4220610 0 2.5Vdc
+V_V11         N4226098 0 2Vdc
+R_R105         0 N4221658  1k  
+R_R83         INITIAL N4219860  1k  
+E_E20         N4210872 0 VALUE { {IF (V(ENBL) > 3VBIAS
++ & V(UVLOREG) >3VBIAS, 0,
++  5)} }
+D_D9         N4213972 INITIAL D_D1 
+R_R180         0 N4219402  100k  
+E_ABM104         PROTECTSIDEENABLE 0 VALUE { {IF ( V(N4210956)
++ > 2.5V | V(UVP)
++  > 2.5 |  V(OCLATCH) > 2.5, 0,5)}    }
+R_R65         N4213746 N4211964  1  
+R_R192         N4221982 N4211986  1k  
+E_ABM96         N4345559 0 VALUE { {IF( V(OCLATCH) > 2.5 |  
++ V(UVP) > 2.5 |  
++ V(OVP) > 2.5,5,0)}  }
+R_R53         N4209734 WINDOWL  1  
+R_R75         N4218154 N4216396  99k  
+C_C115         0 FFRESET  1n  
+R_R84         N4222116 N4222344  1k  
+X_U25         5VDC UVLOREG VDD 0 SWHYSTE PARAMS:  
++ RON=1 ROFF=1MEG VT=4.175
++  VH=0.125
+E_E12         N4219160 0 VALUE { {IF (V(N4211934)
++ > V(3VBIAS), 5, 0)} }
+E_ABM10         COMPARATOR4 0 VALUE { {IF (V(THRESHOLD)
++ >198mV, 5V, 0V)}    }
+D_D20         0 N4211382 D_D1 
+V_V41         N4220026 0 3
+R_R166         0 UVPQUALIFIER  1k  
+V_V31         N4214562 0  
++PULSE 1V 2.4V 1us 1555.4n 110ns 1ns 1666.6ns
+R_R103         0 VOS  10MEG  
+R_R45         0 N4221662  100k  
+X_S2    HDRVCTRL1DEL 0 BOOT HDRV FINALSCH_Ver3_S2 
+R_R138         N4211958 N4211922  99k  
+X_U10         N4209098 N4209460 PREBIASCTRL N4211840 FFLOP 
+R_R6         0 N4217344  100k  
+R_R158         N4227052 N4219382  1  
+V_V42         N4216180 0 {1*CALFAST}
+E_SUM7  SCVOLTAGE 0 VALUE {V(SCVOLTAGEPRE2)+V(SCVOLTAGEPRE1)}
+E_MULT1         N4226248 0 VALUE {V(N4209090)*V(OCCPULSE)}
+X_S6    ENABLEHDRV 0 MYPT2 WINDOW FINALSCH_Ver3_S6 
+X_U14         COMPARATOR5 COMPFFRESET N4222372 N4221662 FFLOP 
+R_R157         N4214204 N4217336  10k  
+R_R125         0 N4219872  10k  
+R_R120         0 N4221796  1k  
+E_ABM29         ENABLEHDRV 0 VALUE { {IF ( ( V(SS-ENABLE)
++ > 3Vbias) &  
++ ( V(SS-ENABLE) > 3Vbias), 1V, 0V ) }   }
+R_R50         0 WINDOW  10k  
+E_ABM27         N4218198 0 VALUE { {IF ( (V(N4211482) 
++ > 1V), 5V, 0)}    }
+C_C13         COMPFFRESET E+U  1n  
+R_R11         N4221976 PREBIASRAMP  10  
+R_R141         0 PROTECTSIDEENABLE  100k  
+C_C125         0 N4211986  1n  
+R_R18         0 COMPFFRESET  1k  
+D_D14         N4211204 N4211398 D_D1 
+X_S9    N4210356 0 N4210414 0 FINALSCH_Ver3_S9 
+X_U16         COMPARATOR4 COMPFFRESET N4215502
++  N4215364 FFLOP 
+R_R20         0 N4216838  1k  
+E_E26         N4211398 0 VALUE { {IF (V(N4222344)
++ > V(3VBIAS), 5, 0)} }
+V_V40         N4211688 0 5Vdc
+E_MULT3         N4212824 0 VALUE {V(N4217340)*V(N4214562)}
+E_E48         N4213746 0 VALUE { {IF (V(N4214024)
++ > V(3VBIAS), 5, 0)} }
+C_C94         0 N4214024  1p  
+C_C19         N4223348 N4217884  140.5p  
+E_E21         IPEAKH 0 VALUE { (V(VDD) - V(SW)) *1 }
+X_S22    SETSSFAST 0 N4644733 0 FINALSCH_Ver3_S22 
+V_V10         N4221976 0 {1.5+ PBOFF*3.5}
+X_U15         N4219382 N4211894 PREBIASPULSES N4213050 FFLOP 
+R_R165         0 OVP  1k  
+R_R143         0 N4226810  100k  
+E_E50         N4211894 0 VALUE { {IF ( V(N4211846)
++ > 3Vbias |  V(N4211926) >
++  3Vbias, 5, 0 ) } }
+E_ABM5         N4215752 0 VALUE { {IF(V(COMP) >0.8V, 5V, 0V)}    }
+E_E34         N4211584 0 VALUE { {IF ( V(N4210812) 
++ > 250mV |  V(N4209158) >
++  250mV, 1, 0 ) } }
+X_D4          EAOUT N4220026 DCLAMP 
++  PARAMS:  IS=1E-9  VT=13800  
+R_R98         0 N4214018  1k  
+R_R29         N4215752 N4210330  1  
+V_V18         N4213794 0 100mVdc
+R_R175         N4209560 0  1k  
+C_C113         0 N4217884  1n  
+E_E44         N4220684 0 VALUE { {IF (V(COMP, 0) 
++ > 55mV, 5, 0)} }
+D_D2         0 VCOUNTER D_D1 
+E_ABM84         N4213320 0 VALUE { {IF ( V(N4213422)
++ > 2.5V & V(UVPQUALIFIER) >
++  2.5, 5,0)}    }
+D_D1         N4210414 N4213298 D_D1 
+V_V9         N4224988 0 2Vdc
+R_R142         N4218662 N4212156  1  
+C_C5         0 BP5  4.7u  
+E_SUM6         N4223846 0 VALUE {V(N4211922)+V(N4221796)}
+R_R164         0 N4219392  1k  
+R_R163         N4211926 0  1k  
+E_ABM109         HDRVCTRL1 0 VALUE { {IF( V(WINDOWH)
++ > 2.5 &  
++ V(N4325535) > 2.5, 5,0)}   }
+X_S3    HDRVCTRL2DEL 0 HDRV SW FINALSCH_Ver3_S3 
+D_D7         MYPT2 PWM D_D1 
+X_U29         N4216784 N4218310 OVPLATCH N4219402 FFLOP 
+R_R101         0 NORES  1k  
+E_E17         N4209050 0 VALUE { {IF (V(PREBIASCTRL)
++ > 3VBias & V(PGD) < 1, 5,
++  0)} }
+R_R115         N4217340 E+U  4k  
+E_E15         OCRESET 0 VALUE { {IF (V(N4209560)
++ > 2.5, 0, V(N4209614))} }
+C_C86         0 N4213150  100p  
+E_ABM81         E+U 0 VALUE { {IF ( V(N4215916)
++ < 2.5V |  
++ V(N4215916)  < 2.5V,0, 5 )}   }
+R_R55         0 N4211840  100k  
+E_E45         N4215060 0 VALUE { {IF (V(N4220684)
++ > 3VBias & V(N4210450) >
++  3VBias, 5, 0)} }
+E_E35         N4223824 0 VALUE { {IF ( V(N4211398)
++ > 3VBIAS &  V(N4209674) <
++  3VBIAS, 5, 0 ) } }
+E_E19         N4224144 0 VALUE { {IF ( V(E+U)
++ < 3VBIAS |  V(N4210442) < 3VBIAS,
++  0, 5 ) } }
+E_E41         N4221806 0 VALUE { {IF (V(RAMP)
++ < V(N4218498), 5, 0)} }
+R_R191         N4224334 0  1k  
+R_R182         N4216784 0  1k  
+C_C49         HDRVCTRL1DEL 0  1n  
+X_S16    SETCALFAST 0 N4225096 0 FINALSCH_Ver3_S16 
+R_R185         0 N4210760  1k  
+C_C17         0 N4210330  1n  
+X_U22         N4211964 FFRESET OCLOW N4213292 FFLOP 
+X_S5    LDRVCTRL2DEL 0 LDRV 0 FINALSCH_Ver3_S5 
+R_R170         0 N4211922  1k  
+R_R190         N4226654 0  1k  
+R_R128         0 N4211846  300  
+R_R171         N4222504 N4222494  99k  
+R_R21         0 N4221860  1k  
+R_R104         0 N4223846  1k  
+E_ABM20         N4221588 0 VALUE { {IF ( V(N4215792)
++ > 3V, 0V, 5V)}    }
+R_R23         N4210356 N4210872  1k  
+C_C76         OCRESET N4211934  250p  
+R_R193         N4671658 N4217336  400  
+R_R74         N4218104 N4216652  99k  
+R_R80         N4211398 N4211204  1k  
+E_ABM99         N4500540 0 VALUE { {IF( V(WINDOWL)
++ > 2.5 &  
++ V(OCCAL) < 0.5 &  
++ V(N4367415) < 2.5,5,0)}  }
+R_R187         HDRVCTRL2 HDRVCTRL2DEL  1  
+X_S17    1SET 0 N4215070 0 FINALSCH_Ver3_S17 
+E_ABM12         COMPARATOR5 0 VALUE { {IF (V(THRESHOLD)
++ > 248mV, 5V, 0V)}    }
+E_MULT4         RAMP 0 VALUE {V(N4219872)*V(N4212824)}
+X_U17         COMPARATOR10 COMPFFRESET NORES N4212182 FFLOP 
+E_ABM89         N4210864 0 VALUE { {IF ( V(N4224334)
++ > 1,0, V(VOS))}    }
+X_U24         5VDC UVLO VDD 0 SWHYSTE 
++ PARAMS:  RON=1 ROFF=1MEG VT=4.175
++  VH=0.125
+R_R189         N4212590 0  1k  
+C_C75         PWM 0  1n  
+R_R186         0 SCVOLTAGEPRE2  1k  
+E_ABM83         SETCALFAST 0 VALUE { {IF ( V(N4225690)
++ > 0.5V, 0V, 1V)}    }
+E_E29         N4225326 0 VALUE { {IF ( V(N4209674) 
++ < 3VBIAS |  V(N4213150) >
++  3VBIAS, 0, 5 ) } }
+R_R48         LDRVCTRL2PRE N4221588  1  
+E_ABM24         N4216522 0 VALUE { {IF ( ( V(N4212538)>0.5V) &  
++ (V(LDRV)  <2.5),5,0)}   }
+X_S23    N4209050 0 NEWPREBIASRAMP N4213794 FINALSCH_Ver3_S23 
+R_R67         0 N4223348  1000  
+C_C78         0 N4214712  1n  
+X_S21    N4690235 0 PGD 0 FINALSCH_Ver3_S21 
+R_R40         PWM MYPT2  50  
+X_S4    LDRVCTRL1DEL 0 N4212420 LDRV FINALSCH_Ver3_S4 
+X_U2         VREF FB EAOUT op_amp
++ PARAMS: HLIMIT=2.205 RIN=10MEG
++  BW=16MEG DC_GAIN=89 ROUT=100 LLIMIT=0.95 SRP=10   SRM=10 
+C_C15         0 MYPT2  400p  
+E_E9         VOLTAGEVALID 0 VALUE { {IF (V(UV)
++ > 2.5 | V(OV) >2.5, 0, 5)} }
+E_E25         N4210442 0 VALUE { {IF (V(N4211204)
++ > 2.5 &  V(OCCAL) < 0.5 , 5,
++  0)} }
+E_ABM15         COMPARATOR9 0 VALUE { {IF (V(THRESHOLD)
++ >448mV, 5V, 0V)}    }
+E_ABM30         N4210642 0 VALUE { {IF ( ( V(ENBL)
++ > 3Vbias) &  
++ ( V(UVLO) > 3Vbias), 5V, 0V ) }   }
+R_R100         HDRVCTRL1 HDRVCTRL1DEL  1  
+R_R5         0 N4213310  1K  
+X_S19    N4209050 0 PREBIASRAMP N4224940 FINALSCH_Ver3_S19 
+R_R178         N4212958 0  1k  
+X_U26         N4216848 UV VOS 0 SWHYSTE 
++ PARAMS:  RON=1MEG ROFF=1 VT=0.736
++  VH=0.016
+E_E10         N4227052 0 VALUE { {IF (V(N4210816)
++ > 3VBias & V(N4210384) >
++  3VBias, 5, 0)} }
+R_R173         N4221738 0  1k  
+V_V38         N4216848 0 5Vdc
+E_ABM101         N4967139 0 VALUE { {IF( V(OCLATCH) > 2.5 |  
++ V(UVP) > 2.5 |  
++ V(OVPLATCH) > 2.5,5,0)}  }
+R_R94         N4210642 N4215916  10  
+X_U28         N4211688 OVP N4210864 N4219392 SWHYSTE
++ PARAMS:  RON=1 ROFF=1MEG
++  VT=0.7 VH=0.3
+E_SUM9         SCVOLTAGEPRE2 0 VALUE {V(N4222494)+V(N4210760)}
+E_ABM8         COMPARATOR3 0 VALUE { {IF (V(THRESHOLD)
++ >148mV, 5V, 0V)}    }
+R_R110         0 N4221534  1k  
+C_C128         0 N4644785  11n  
+V_V39         N4209902 0 5Vdc
+C_C12         0 N4210356  1n  
+R_R71         0 N4216396  1k  
+E_ABM14         COMPARATOR8 0 VALUE { {IF (V(THRESHOLD)
++ >398mV, 5V, 0V)}    }
+C_C31         0 N4211122  1n  
+R_R154         N4211366 N4209084  1  
+E_ABM116         N4925797 0 VALUE { {IF( V(LDRVCTRL2PRE) > 2.5 &  
++ V(OCCAL) < 0.5, 5,0)}   }
+C_C47         0 N4219860  5.178n  
+R_R118         N4226996 N4214712  11  
+R_R181         N4210558 0  1k  
+R_R112         0 GND  1m  
+X_U13         COMPARATOR3 COMPFFRESET N4218286 N4216228 FFLOP 
+V_V35         5VDC 0 5Vdc
+R_R162         N4227226 N4213416  1  
+G_ABM2I3         N4209564 THRESHOLD VALUE
++ { {IF(V(N4209564, THRESHOLD)<-1m,0,  
++ IF(V(N4209564, THRESHOLD)> 1m, 10u*V(CALFASTVOLT),  
++ 9.999u*V(CALFASTVOLT)*V(N4209564, THRESHOLD)*1000))}  }
+E_ABM88         UVPQUALIFIER 0 VALUE { {IF ( V(VOS)
++ < 0.6V & V(OVP) < 2.5,
++  5,0)}    }
+R_R161         N4219160 FFRESET  1  
+R_R33         N4209564 N4213950  10  
+C_C71         N4210384 0  1n  
+E_E32         IPEAKL 0 VALUE { (V(0) - V(SW)) *1 }
+V_V12         N4224940 0 3Vdc
+R_R16         VDD N4210414  10K  
+R_R73         0 N4216386  1k  
+E_ABM31         ENABLELDRV 0 VALUE { {IF ( ( V(SS-ENABLE)
++ > 3Vbias) &  
++ ( V(N4212914) > 700mVbias), 1V, 0V ) }   }
+R_R130         N4211282 0  1k  
+V_V37         N4210566 N4220642 0Vdc
+E_E4         N4210108 0 VALUE { { LIMIT ( 
++ (V(N4210414) - V(BP5) ) * 100, 0, 7)}
++  }
+R_R109         0 N4221530  100k  
+R_R126         N4219872 SS-ENABLE  40k  
+D_D6         NEWPREBIASRAMP N4226098 D_D1 
+V_V15         3VBIAS 0 3Vdc
+D_D3         VCOUNTER N4220610 D_D1 
+C_C80         N4211122 N4211382  101p  
+R_R95         0 COMP  100MEG  
+X_S14    OCCAL 0 N4210566 THRESHOLD FINALSCH_Ver3_S14 
+X_S11    N4209084 0 THRESHOLD 0 FINALSCH_Ver3_S11 
+V_V3         N4213298 0 3.3Vdc
+R_R68         N4220878 N4209090  1  
+R_R172         N4210562 0  1k  
+E_E37         N4211342 0 VALUE { {IF (V(RAMP)
++ < V(N4218498), 0, 5)} }
+R_R51         N4215792 0  10k  
+X_S10    SS-ENABLE 0 N4211482 0 FINALSCH_Ver3_S10 
+E_ABM34         N4212420 0 VALUE { {IF ( V(OVP) > 2.5 ,
++ V(BP5), V(VDD))}    }
+C_C106         E+U N4209560  1n  
+R_R150         N4224144 N4209674  1  
+R_R132         N4226080 PWM  1  
+R_R174         N4222594 0  1k  
+E_ABM106         N4222020 0 VALUE { {IF(V(N4211986)>2.5,5,0)}    }
+R_R144         EAOUT COMP  100  
+E_E36         N4209930 0 VALUE { {IF (V(N4209254)
++ > V(SCVOLTAGE), 5, 0)} }
+R_R102         0 N4212182  100k  
+C_C44         0 N4215916  1n  
+C_C21         0 LDRVCTRL2PRE  1n  
+E_ABM87         CALFASTVOLT 0 VALUE { {IF ( V(N4216180)
++ > 0.5V, 10V, 1V)}    }
+C_C25         LDRV N4213310  30p  
+E_SUM1         N4216838 0 VALUE {V(N4216396)+V(N4216652)}
+X_U23         N4216460 N4212958 UVP N4217612 FFLOP 
+E_E43         N4215420 0 VALUE { {IF ( V(N4211282) 
++ > 3Vbias |  V(N4216522) >
++  3Vbias, 5, 0 ) } }
+C_C50         HDRVCTRL2DEL 0  1n  
+R_R49         0 N4221836  1k  
+X_U19         COMPARATOR6 COMPFFRESET N4222888 N4221622 FFLOP 
+R_R66         0 N4224080  100k  
+C_C126         0 N4690235  1n  
+R_R77         0 SCVOLTAGEPRE1  1k  
+E_ABM79         N4214204 0 VALUE { {IF ( V(N4210042)
++ > 2.5 &  
++ V(N4649097) > 2.5 &  
++ V(VOLTAGEVALID) > 2.5V, 0, 5)}  }
+C_C124         UVLO N4224334  1n  
+R_R117         N4222894 N4221534  99k  
+C_C37         0 N4222196  22n  
+R_R42         0 N4216526  100k  
+R_R152         0 OV  1k  
+C_C102         0 SS-ENABLE  1n  
+C_C112         0 N4215358  1n  
+E_ABM32         ENBL 0 VALUE { {IF( V(PROTECTSIDEENABLE)
++ < 3,5,
++  IF(V(N4210330)<3, 0,5))}    }
+C_C36         0 N4211964  1n  
+C_C122         N4213548 N4212590  1n  
+E_ABM25         N4212914 0 VALUE { {IF ( ( V(SS-ENABLE)
++ >0.5V) &  
++ (V(PREBIASPULSES)  >0.7),1,0)}   }
+R_R121         N4215060 N4209098  1  
+E_ABM26         N4209158 0 VALUE { {IF (( V(VDD)  
++ - V(SW) ) <-0.5,1,0)}   }
+E_E24         N4211372 0 VALUE { {IF (V(N4219860) 
++ > V(3VBIAS), 5, 0)} }
+E_ABM105         N4221982 0 VALUE { {IF(V(UVLO)>2.5,5,0)}    }
+R_R88         N4212156 MYPT3  1113.3  
+E_E52         N4211366 0 VALUE { {IF (V(N4211372) 
++ > 3VBIAS  &  V(N4210442) <
++  3VBIAS, 0, 1)} }
+R_R114         N4222888 N4221658  99k  
+E_ABM82         SETSSFAST 0 VALUE { {IF ( V(N4213192)
++  > 0.5V, 0V, 1V)}    }
+R_R148         0 UV  1k  
+X_S20    SETSSFAST 0 N4221774 0 FINALSCH_Ver3_S20 
+D_D15         N4222196 E+U D_D1 
+C_C38         0 N4211204  5n  
+D_D13         N4222344 N4222116 D_D1 
+C_C24         0 WINDOWL  1n  
+E_E18         N4216724 0 VALUE { {IF (V(N4211398)
++  < 3VBIAS  &  V(INITIAL)
++  >3VBIAS, 1, 0)} }
+C_C28         0 N4218492  1n  
+R_R167         N4216996 N4690235  1  
+R_R86         N4225736 N4210450  1  
+C_C101         UVLO N4210562  1n  
+E_E7         N4210816 0 VALUE { {IF (V(P-B_RAMP) 
++ > V(NEWPREBIASRAMP), 5, 0)} }
+E_ABM7         COMPARATOR6 0 VALUE { {IF (V(THRESHOLD)
++  > 298mV, 5V, 0V)}    }
+R_R139         N42140900 N4209254  10  
+X_U30         COMPARATOR7 COMPFFRESET N4222894 N4221530 FFLOP 
+E_ABM13         COMPARATOR7 0 VALUE { {IF (V(THRESHOLD)
++  >348mV, 5V, 0V)}    }
+C_C114         0 N4209614  1n  
+C_C121         N4214058 N4216784  1n  
+R_R89         0 N4215364  100k  
+R_R64         0 N4220642  10MEG  
+E_ABM9         N4213950 0 VALUE { {IF (V(OCCAL) 
++ > 240mV, 1V, 0V)}    }
+C_C26         0 MYPT3  21p  
+X_U33         N4212590 N4226654 N4213422 N4226810 FFLOP 
+E_ABM112         N4644789 0 VALUE { {IF(V(VREFVALID)
++ >2.5,5,0)}    }
+G_ABM2I2         0 NEWPREBIASRAMP VALUE {
++  (V(N4219248) - V(0)) *0.01    }
+E_E5         N4225736 0 VALUE { {IF (V(N4209710)
++ > 3VBias & V(1OCRESET) <
++  3VBias, 5, 0)} }
+C_C123         E+U N4226654  1n  
+R_R87         N42196041 WINDOWH  1  
+R_R177         N4216460 0  1k  
+R_R90         0 N4211382  1.097k  
+C_C61         N4209710 0  1n  
+R_R131         N4212508 N4210384  1  
+R_R82         INITIAL N4213972  1k  
+V_V32         N4225690 0 {1*CALFAST}
+C_C116         0 N4213416  1n  
+E_E46         N4212508 0 VALUE { {IF (V(PREBIASCTRL)
++ > 3VBias & V(WINDOWH) >
++  3VBias, 5, 0)} }
+R_R59         N4221028 N4211482  0.1  
+C_C91         N4215358 N4211846  300p  
+C_C16         0 MYPT1  1200p  
+R_R179         N4218310 0  1k  
+X_U20         N4210558 N4210562 N4210956 N4211222 FFLOP 
+E_ABM2         COMPARATOR2 0 VALUE { {IF (V(THRESHOLD)
++ >98mV, 5V, 0V)}    }
+E_ABM22         N4210812 0 VALUE { {IF (( V(VDD)  
++ - V(SW) ) >0.7,1,0)}   }
+E_ABM113         LDRVCTRL1 0 VALUE { {IF( V(N4500540)
++ > 2.5 |  
++ V(OVP) > 2.5, 5,0)}   }
+E_ABM28         N4215430 0 VALUE { 1.1000    }
+R_R169         0 N4211906  100k  
+E_ABM23         N4212538 0 VALUE { {IF ( ( V(SW)  
++ - V(0) ) <0.15,1,0)}   }
+C_C34         N4211282 SS-ENABLE  300p  
+R_R46         0 N4221622  100k  
+C_C74         N4221774 N4211482  471uF  
+C_C107         0 N4209084  1n  
+D_D34         0 N4222998 D_D1 
+E_E53         N4219248 0 VALUE { {IF (V(MYPT1) 
++ > V(N4212446), 1, -100)} }
+D_D8         MYPT1 N4215758 D_D1 
+E_ABM97         N4367415 0 VALUE { {IF( V(OCLATCH)
++ > 2.5 |  
++ V(UVP) > 2.5 |  
++ V(OVPLATCH) > 2.5,5,0)}  }
+E_ABM107         N4216996 0 VALUE { {IF(V(N4217336)
++ >2.5,5,0)}    }
+R_R149         N4225326 SS-ENABLE  1  
+D_D5         0 NEWPREBIASRAMP D_D1 
+E_E49         VREFVALID 0 VALUE { { IF ( V(N4211482)
++  > V( N4211560), 5, 0)} }
+R_R22         N4210108 N4210226  1  
+X_U21         N4222594 N4221738 OCLATCH N4209450 FFLOP 
+C_C48         0 N4222344  5.178n  
+E_ABM115         N4649097 0 VALUE { {IF(V(N4644785)
++ >2.5,5,0)}    }
+C_C95         0 N4209254  1n  
+E_SUM5         N4221860 0 VALUE {V(N4221658)+V(N4221836)}
+X_U12         COMPARATOR2 COMPFFRESET N4218154 N4216390 FFLOP 
+C_C100         COMP 0  1p  
+R_R184         0 N4222494  1k  
+C_C119         N4222020 N4218310  1n  
+C_C62         N4210450 0  1n  
+G_ABMII2         0 N4221028 VALUE { (V(N4213416) * 0.02516)    }
+R_R113         0 GND  1m  
+V_V13         N4212446 0 2.5Vdc
+R_R151         N4221806 N4209614  1  
+D_D35         N4222998 N4209038 D_D1 
+R_R60         N4211482 N4215430  1meg  
+R_R137         N4211382 N4214024  1k  
+R_R96         COMP VDD  200K  
+C_C27         N4209460 UVLO  1n  
+R_R188         LDRVCTRL2 LDRVCTRL2DEL  1  
+R_R111         N4222372 N4221836  99k  
+C_C46         0 N4213972  500n  
+X_S8    N4210226 BP5 VDD BP5 FINALSCH_Ver3_S8 
+E_MULT5         N42140900 0 VALUE {V(N4214712)*V(IPEAKL)}
+C_C105         OCDETECT N4222594  1n  
+R_R155         N4216724 N4225784  1  
+C_C127         N4644733 N4644785  60n  
+C_C118         UVLO N4212958  1n  
+V_V36         N4210566 LDRV 0Vdc
+R_R99         N4215502 N4214018  99k  
+R_R52         0 N4211934  333  
+V_V33         N4218498 0 2.35dc
+E_E51         OCCAL 0 VALUE { {IF (V(N4225784) > 0.5
++  |  V(NORES) > 2.5, 1, 0)}
++  }
+C_C11         0 N4210226  1n  
+C_C18         0 NEWPREBIASRAMP  2n  
+V_V30         N4213192 0 {1*SSFAST}
+E_SUM2         SCVOLTAGEPRE1 0 VALUE {V(N4216386)+V(N4216838)}
+C_C79         0 N4222998  145p  
+R_R140         0 N4211222  100k  
+R_R127         0 N4213150  1k  
+R_R92         N4209038 N4222998  1.5k  
+E_ABM4         N4227226 0 VALUE { {IF ( (V(SS-ENABLE) 
++ > 2.5V) &  
++ (V(N4218492) < 2.5V), 5V, 0V)}   }
+C_C103         N4209674 0  1n  
+R_R41         N4215758 MYPT1  50  
+R_R183         0 N4222352  100k  
+X_U31         COMPARATOR8 COMPFFRESET N4211958 N4211906 FFLOP 
+E_ABM117         N4965396 0 VALUE { {IF( V(N4925797) > 2.5 &  
++ V(OVP) < 2.5, 5,0)}   }
+R_R79         E+U N4222196  1k  
+C_C111         0 N4219382  1n  
+C_C52         LDRVCTRL1DEL 0  1n  
+E_ABM110         HDRVCTRL2 0 VALUE { {IF( V(HDRVCTRL2PRE) > 2.5 |  
++ V(N4345463) > 2.5, 5,0)}   }
+E_ABM21         N4215758 0 VALUE { {IF ( V(PWM) > 2.5V, 0V, 5V)}    }
+E_ABM93         N4213548 0 VALUE { {IF(V(PGD) > 1, 5, 0)}    }
+D_D11         N4214204 N4671658 D_D1 
+R_R81         N4226280 N4209710  1  
+C_C120         OVP N4210558  1n  
+X_S7    ENABLELDRV 0 MYPT1 N4215792 FINALSCH_Ver3_S7 
+E_ABM108         N4325535 0 VALUE { {IF( V(N4282060) > 2.5 |  
++ V(OVPLATCH) > 2.5, 0,5)}   }
+C_C117         N4213320 N4216460  1n  
+R_R7         0 N4223834  100k  
+R_R168         N4644789 N4644785  10k  
+R_R57         0 N4209460  300  
+C_C110         0 N4217336  3.61n  
+R_R129         0 N4213050  100k  
+D_D10         0 N4223348 D_D1 
+C_C108         0 N4225784  1n  
+E_E8         P-B_RAMP 0 VALUE { { pwr( (V(PREBIASRAMP, 0)),1 )} }
+C_C104         UVLO N4221738  1n  
+C_C29         0 N4211482  79uF  
+C_C72         N4225096 N4213972  5500n  
+R_R91         0 N4213292  100k  
+R_R160         N4211342 N4217884  1  
+D_D12         0 N4211934 D_D1 
+E_ABM91         N4214058 0 VALUE { {IF(V(N4210558) < -0.5, 5, 0)}    }
+E_SUM8         N4210760 0 VALUE {V(N4214018)+V(N4223846)}
+V_V29         N4220790 0 {1*MODE}
+E_ABM19         N4217418 0 VALUE { {IF ( V(WINDOWH) > 2.5V, 0V, 5V)}    }
+R_R47         HDRVCTRL2PRE N4217418  1  
+E_ABM6         COMPARATOR1 0 VALUE { {IF (V(THRESHOLD) >48mV, 5V, 0V)}    }
+D_D16         N4219860 INITIAL D_D1 
+E_E39         N4209038 0 VALUE { {IF (V(WINDOWL) > 3VBIAS
++  &  V(PWM) < 3VBIAS,
++  5, 0)} }
+C_C109         0 COMPBLANK  1n  
+E_GLIMIT9         VREF 0 VALUE {LIMIT(V(N4211482)*1,0,0.8V)}
+D_D25         N4212156 MYPT3 D_D1 
+C_C51         LDRVCTRL2DEL 0  1n  
+R_R62         0 1OCRESET  100k  
+E_E23         N4222116 0 VALUE { {IF (V(N4213972) > V(3VBIAS), 5, 0)} }
+E_E14         N4220878 0 VALUE { {IF (V(N4224080) > 3VBIAS |   V(OCLOW) >
++  3VBIAS, 1, -100)} }
+C_C41         0 N4209090  1n  
+R_R153         0 N4209450  100k  
+E_ABM77         1SET 0 VALUE { {IF ( V(N4220790) > 0.5V, 0V, 1V)}    }
+C_C30         0 OCLATCH  0.1p  
+R_R12         0 PREBIASRAMP  1MEG  
+C_C10         0 VCOUNTER  10n  
+E_E33         N4209734 0 VALUE { {IF (V(N4215792) > V(3VBIAS), 5, 0)} }
+G_ABM2I1         0 VCOUNTER VALUE { (V(N4226248) - V(0)) *0.027825    }
+C_C69         N4209098 0  1n  
+E_E42         N4209860 0 VALUE { {IF (V(N4210816) > V(3VBIAS), 0, 5)} }
+R_R116         0 N4217340  1k  
+.IC         V(OCCAL )=0
+.IC         V(N4211482 )=0
+.IC         V(BP5 )=0
+.IC         V(N4209460 )=5V
+.IC         V(VCOUNTER )=0
+.IC         V(NEWPREBIASRAMP )=0
+.IC         V(COMPFFRESET )=5V
+.IC         V(OCLATCH )=0
+.PARAM  mode=1
+.ENDS TPS51163
+*$
+.subckt FINALSCH_Ver3_S2 1 2 3 4  
+S_S2         3 4 1 2 _S2
+RS_S2         1 2 1G
+.MODEL         _S2 VSWITCH Roff=1e6 Ron=6 Voff=2.4V Von=2.5V
+.ends FINALSCH_Ver3_S2
+*$
+.subckt FINALSCH_Ver3_S6 1 2 3 4  
+S_S6         3 4 1 2 _S6
+RS_S6         1 2 1G
+.MODEL         _S6 VSWITCH Roff=1e6 Ron=1.5 Voff=0.0V Von=1.0V
+.ends FINALSCH_Ver3_S6
+*$
+.subckt FINALSCH_Ver3_S9 1 2 3 4  
+S_S9         3 4 1 2 _S9
+RS_S9         1 2 1G
+.MODEL         _S9 VSWITCH Roff=1e6 Ron=1 Voff=1v Von=4.5V
+.ends FINALSCH_Ver3_S9
+*$
+.subckt FINALSCH_Ver3_S22 1 2 3 4  
+S_S22         3 4 1 2 _S22
+RS_S22         1 2 1G
+.MODEL         _S22 VSWITCH Roff=100meg Ron=10m Voff=.1V Von=.9V
+.ends FINALSCH_Ver3_S22
+*$
+.subckt FINALSCH_Ver3_S3 1 2 3 4  
+S_S3         3 4 1 2 _S3
+RS_S3         1 2 1G
+.MODEL         _S3 VSWITCH Roff=1e6 Ron=1.0 Voff=1.0V Von=4.0V
+.ends FINALSCH_Ver3_S3
+*$
+.subckt FINALSCH_Ver3_S16 1 2 3 4  
+S_S16         3 4 1 2 _S16
+RS_S16         1 2 1G
+.MODEL         _S16 VSWITCH Roff=100meg Ron=10m Voff=.1V Von=.9V
+.ends FINALSCH_Ver3_S16
+*$
+.subckt FINALSCH_Ver3_S5 1 2 3 4  
+S_S5         3 4 1 2 _S5
+RS_S5         1 2 1G
+.MODEL         _S5 VSWITCH Roff=100e6 Ron=2.6 Voff=1V Von=4.0V
+.ends FINALSCH_Ver3_S5
+*$
+.subckt FINALSCH_Ver3_S17 1 2 3 4  
+S_S17         3 4 1 2 _S17
+RS_S17         1 2 1G
+.MODEL         _S17 VSWITCH Roff=100meg Ron=10m Voff=.1V Von=.9V
+.ends FINALSCH_Ver3_S17
+*$
+.subckt FINALSCH_Ver3_S23 1 2 3 4  
+S_S23         3 4 1 2 _S23
+RS_S23         1 2 1G
+.MODEL         _S23 VSWITCH Roff=10e8 Ron=10m Voff=4.9V Von=0.1V
+.ends FINALSCH_Ver3_S23
+*$
+.subckt FINALSCH_Ver3_S21 1 2 3 4  
+S_S21         3 4 1 2 _S21
+RS_S21         1 2 1G
+.MODEL         _S21 VSWITCH Roff=250k Ron=100 Voff=0.2V Von=4.8V
+.ends FINALSCH_Ver3_S21
+*$
+.subckt FINALSCH_Ver3_S4 1 2 3 4  
+S_S4         3 4 1 2 _S4
+RS_S4         1 2 1G
+.MODEL         _S4 VSWITCH Roff=100e6 Ron=2.5 Voff=2.4V Von=2.5V
+.ends FINALSCH_Ver3_S4
+*$
+.subckt FINALSCH_Ver3_S19 1 2 3 4  
+S_S19         3 4 1 2 _S19
+RS_S19         1 2 1G
+.MODEL         _S19 VSWITCH Roff=10e8 Ron=10m Voff=4.9V Von=0.1V
+.ends FINALSCH_Ver3_S19
+*$
+.subckt FINALSCH_Ver3_S14 1 2 3 4  
+S_S14         3 4 1 2 _S14
+RS_S14         1 2 1G
+.MODEL         _S14 VSWITCH Roff=10e6 Ron=1 Voff=0V Von=1V
+.ends FINALSCH_Ver3_S14
+*$
+.subckt FINALSCH_Ver3_S11 1 2 3 4  
+S_S11         3 4 1 2 _S11
+RS_S11         1 2 1G
+.MODEL         _S11 VSWITCH Roff=10e6 Ron=0.1 Voff=0.1V Von=0.9V
+.ends FINALSCH_Ver3_S11
+*$
+.subckt FINALSCH_Ver3_S10 1 2 3 4  
+S_S10         3 4 1 2 _S10
+RS_S10         1 2 1G
+.MODEL         _S10 VSWITCH Roff=100meg Ron=1m Voff=4.8V Von=0.2V
+.ends FINALSCH_Ver3_S10
+*$
+.subckt FINALSCH_Ver3_S20 1 2 3 4  
+S_S20         3 4 1 2 _S20
+RS_S20         1 2 1G
+.MODEL         _S20 VSWITCH Roff=100meg Ron=10m Voff=.1V Von=.9V
+.ends FINALSCH_Ver3_S20
+*$
+.subckt FINALSCH_Ver3_S8 1 2 3 4  
+S_S8         3 4 1 2 _S8
+RS_S8         1 2 1G
+.MODEL         _S8 VSWITCH Roff=10e6 Ron=10.8 Voff=0.0V Von=1.0V
+.ends FINALSCH_Ver3_S8
+*$
+.subckt FINALSCH_Ver3_S7 1 2 3 4  
+S_S7         3 4 1 2 _S7
+RS_S7         1 2 1G
+.MODEL         _S7 VSWITCH Roff=1e6 Ron=1.5 Voff=0.0V Von=1.0V
+.ends FINALSCH_Ver3_S7
+*$
+.SUBCKT FFLOP 6 8 2 1
+*             S R Q Q\
+E_BQB 10 0 VALUE = { IF ( (V(8)<0.8) & (V(2)>0.8), 0, 5V ) }
+E_BQ  20 0 VALUE = { IF ( (V(6)<0.8) & (V(1)>0.8), 0, 5V ) }
+RD1   10 1 100
+CD1   1 0 5P IC=0
+RD2   20 2 100
+CD2   2 0 5P IC=5
+.ENDS FFLOP
+*$
+.SUBCKT IRF7466   10  20  30
+*     TERMINALS:  D  G  S
+M1   1  2  3  3  DMOS L=1U W=1U
+RD  10  1  3.0m
+RS  40  3  1.24m
+RG  20  2  1.36
+CGS  2  3  2.05n
+EGD 12  0  2  1  1
+VFB 14  0  0
+FFB  2  1  VFB  1
+CGD 13 14  477p
+R1  13  0  1.00
+D1  12 13  DLIM
+DDG 15 14  DCGD
+R2  12 15  1.00
+D2  15  0  DLIM
+DSD  3 10  DSUB
+LS  30 40  100.00p
+.MODEL DMOS NMOS(LEVEL=3 VMAX=625k THETA=900m
++ ETA=2.00m VTO=1.0 KP=107
+.MODEL DCGD D (CJO=477p VJ=0.600 M=0.680
+.MODEL DSUB D (IS=45.7n N=1.50 RS=4.55m BV=30.0
++ CJO=2.30n VJ=0.800 M=0.420 TT=42.0n
+.MODEL DLIM D (IS=100U)
+.ENDS IRF7466
+*$
+.SUBCKT IRF7834  10 20 30
+*     TERMINALS:  D  G  S
+M1   21  22  23  23  DMOS L=1U W=1U
+RD  10  21  1u
+RS  40  23  2.2m
+RG  20  22  30
+CGS  22  23  2n
+EGD 12  0  22  21  1
+VFB 14  0  0
+FFB  22  21  VFB  1
+CGD 13 14  200p
+R1  13  0  1
+D1  12 13  DLIM
+DDG 15 14  DCGD
+R2  12 15  1
+D2  15  0  DLIM
+DSD  23 10  DSUB
+LS  30 40  1N
+DB 30 10 DSUB2
+.MODEL DMOS NMOS(LEVEL=3 VMAX=62.5k THETA=80.0m
++ ETA=2.00m VTO=2.00 KP=80)
+.MODEL DCGD D (CJO=0.825n VJ=0.600 M=0.680)
+.MODEL DSUB D (IS=22p N=1.0 RS=0 BV=30.0 IBV=0.025u
++ CJO=0.76p VJ=0.450 M=0.6 TT=20.0n)
+.MODEL DSUB2 D (IS=1p BV=30.0)
+.MODEL DLIM D (IS=100U)
+.ENDS IRF7834
+*$
+.subckt DCLAMP A C
++ PARAMS:  IS=1E-9 VT=6
+G1 A C VALUE = {IS*(EXP(V(A,C)*VT)-1)}
+*G1 A C A C {IS*(EXP(6)-1)}
+.ends DCLAMP
+*$
+.SUBCKT OP_AMP P M OUT 
++ PARAMs:  Hlimit=5 Rin=10Meg BW=18Meg DC_Gain=100 
++ Rout=100 Llimit=0 SRP=1 SRM=1
+R_Rin         P M  {Rin}
+E_E1          5 0 M P {-Gain}
+E_LIMIT2      6 0 VALUE {LIMIT(V(5), {-Abs(SRM)*Ca*1Meg+V(1)/Ra},
++                 {SRP*Ca*1Meg+V(1)/Ra})}
+G_G2          1 0 6 0 -1
+R_Ra          0 1  {Ra} 
+C_Ca          0 1  {Ca}   
+E_LIMIT1      2 0 VALUE {LIMIT(V(1),{Llimit},{Hlimit})}
+V_VL          3 0 {Llimit+200m}
+V_VH          4 0 {Hlimit-200m}
+D_D1          3 1 Dideal 
+D_D2          1 4 Dideal 
+R_Rout        OUT 2  {Rout}
+.model Dideal D Is=1e-10 Cjo=.01pF Rs=1m  N=1
+.PARAM  Ra=1k   Ca={exp(DC_gain*log(10)/20)/(2*3.14159*BW*Ra)} 
++ Gain={exp(DC_gain*log(10)/20)/Ra} 
+.ENDS OP_AMP
+*$
+.MODEL D_D1 D( IS=1e-15 TT=10p Rs=0.05 N=.1  )
+*$
+.MODEL DBIAS D  ( IS=0.3e-021 RS=2.43 BV=600 IBV=10.0u
++ CJO=2.15p  M=0.333 N=0.700 TT=0u )
+*$
+.MODEL DBOOST D  ( IS=2.04e-020 RS=2.43 BV=600 IBV=10.0u
++ CJO=2.15p  M=0.333 N=0.700 TT=0u )
+*$
+.MODEL DPREBIAS D  ( IS=2.04e-020 RS=75e-3 BV=600 IBV=10.0u
++ CJO=2.15p  M=0.333 N=0.700 TT=0u )
+*$
+

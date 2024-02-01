@@ -1,0 +1,218 @@
+* OPA4743
+*****************************************************************************
+* (C) Copyright 2011 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: OPA4743
+* Date: 13JUN2011
+* Model Type: ALL IN ONE
+* Simulator: PSPICE
+* Simulator Version: 16.0.0.p001
+* EVM Order Number: N/A
+* EVM Users Guide: N/A
+* Datasheet: SBOS201 – MAY 2001
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 : 
+* Release to Web
+*
+*****************************************************************************
+*
+* This macro is applicable to OPA743, OPA2743 and OPA4743
+*
+* BEGIN MODEL OPA4743
+* PINOUT        3   2   7  4  6
+* PINOUT ORDER +IN -IN +V -V OUT
+.SUBCKT OPA4743 3 2 7 4 6
+* NOTE SET GMIN=1E-13 FOR ACCURATE
+* INPUT BIAS CURRENT RESULTS
+* FEATURES MODELED ARE
+* OPEN LOOP GAIN AND PHASE
+* INPUT VOLTAGE NOISE W 1/F
+* INPUT CURRENT NOISE W F^2
+* OFFSET CHANGE AT TRANSITION
+* WHEN CMV NEAR POSITIVE RAIL
+* INPUT BIAS CURRENT
+* INPUT CAPACITANCE
+* INPUT COMMON MODE VOLT RANGE
+* INPUT CLAMPS TO RAILS
+* CMRR WITH FREQUENCY EFFECTS
+* PSRR WITH FREQUENCY EFFECTS
+* SLEW RATE
+* QUIESCENT CURRENT
+* QUIESCENT CURRENT VS VOLTAGE
+* RAIL TO RAIL OUTPUT STAGE
+* HIGH CLOAD EFFECTS
+* CLASS AB BIAS IN OUTPUT STAGE
+* OUTPUT CURRENT THROUGH SUPPLIES
+* OUTPUT CURRENT LIMITING
+* OUTPUT CLAMPS TO RAILS
+* OUTPUT SWING VS OUTPUT CURRENT
+* END OF FEATURES
+R3 11 12 200
+R4 13 12 200
+R10 9 14 100
+R11 15 16 100
+R12 16 7 20
+R13 4 14 20
+R16 17 18 8.5E3
+R17 19 20 20
+R18 10 21 20
+D5 6 7 DD
+D6 4 6 DD
+D7 22 0 DIN
+D8 23 0 DIN
+I8 0 22 0.1E-3
+I9 0 23 0.1E-3
+E2 10 0 4 0 1
+E3 20 0 7 0 1
+D9 24 0 DVN
+D10 25 0 DVN
+I10 0 24 0.4E-6
+I11 0 25 0.4E-6
+E4 26 2 24 25 0.7
+G2 27 2 22 23 2.9E-7
+R22 4 7 40E3
+E5 28 0 20 0 1
+E6 29 0 10 0 1
+E7 30 0 31 0 1
+R30 28 32 1E6
+R31 29 33 1E6
+R32 30 34 1E6
+R33 0 32 100
+R34 0 33 100
+R35 0 34 100
+E10 35 3 34 0 -0.05
+R36 36 31 1E3
+R37 31 37 1E3
+C6 28 32 1E-12
+C7 29 33 1E-12
+C8 30 34 1E-12
+E11 38 35 33 0 0.20
+E12 27 38 32 0 0.1
+E14 39 10 20 10 0.5
+D11 17 20 DD
+D12 10 17 DD
+R43 49 43 100
+R44 50 41 100
+G3 17 39 51 39 0.2E-3
+R45 39 17 25E6
+C12 18 6 5.2E-12
+R46 10 45 2E3
+R47 10 47 2E3
+C13 45 47 5E-12
+C14 27 0 5E-12
+C15 26 0 5E-12
+C16 52 0 1E-12
+D13 41 8 DD
+D14 53 43 DD
+Q15 53 15 20 QP
+Q20 8 9 10 QN
+V18 27 46 -60E-6
+R53 57 56 200
+R54 57 59 200
+R55 54 20 2E3
+R56 58 20 2E3
+C20 54 58 5E-12
+V19 46 55 -0.25E-3
+V20 20 61 1.8
+G6 17 39 64 39 0.2E-3
+I14 44 48 800E-6
+E17 37 0 27 0 1
+E18 36 0 2 0 1
+I15 63 10 135E-6
+R59 52 42 4
+R60 40 52 20
+J1 65 27 65 JCL
+J2 65 26 65 JCL
+J3 26 66 26 JCL
+J4 27 66 27 JCL
+C21 27 26 5P
+E19 67 39 58 54 1
+R61 67 64 10E3
+C22 64 39 4E-12
+E20 68 39 47 45 1
+R62 68 51 10E3
+C23 51 39 4E-12
+G7 69 39 17 39 -1E-3
+G8 39 70 17 39 1E-3
+G9 39 71 48 10 1E-3
+G10 72 39 20 44 1E-3
+D17 72 69 DD
+D18 70 71 DD
+R66 69 72 100E6
+R67 71 70 100E6
+R68 72 20 1E3
+R69 10 71 1E3
+E23 20 49 20 72 1
+E24 50 10 71 10 1
+R70 70 39 1E6
+R71 71 39 1E6
+R72 39 72 1E6
+R73 39 69 1E6
+G11 7 4 73 0 -1.7E-3
+I19 0 74 1E-3
+D19 74 0 DD
+V23 74 73 0.71
+R74 0 73 1E6
+R75 38 27 1E9
+R76 35 38 1E9
+R77 3 35 1E9
+R78 2 26 1E9
+R79 39 51 1E9
+R80 39 64 1E9
+R81 49 20 1E9
+R82 10 50 1E9
+R83 31 0 1E9
+R85 62 12 200
+I20 7 4 -0.1E-3
+R86 52 6 10
+I21 27 0 1E-12
+I22 26 0 1E-12
+V24 66 10 0.3
+V25 20 65 0.3
+M1 40 41 14 14 NOUT L=3U W=800U
+M2 42 43 16 16 POUT L=3U W=800U
+M3 44 44 19 19 POUT L=3U W=800U
+M4 45 46 11 11 PIN L=3U W=60U
+M5 47 26 13 13 PIN L=3U W=60U
+M8 48 48 21 21 NOUT L=3U W=800U
+M16 54 55 56 56 NIN L=3U W=60U
+M17 58 26 59 59 NIN L=3U W=60U
+M18 60 61 62 62 PIN L=6U W=500U
+M19 12 63 20 20 PIN L=6U W=500U
+M21 57 60 10 10 NIN L=6U W=500U
+M22 60 60 10 10 NIN L=6U W=500U
+M23 63 63 20 20 PIN L=6U W=500U
+.MODEL DD D
+.MODEL QN NPN
+.MODEL QP PNP
+.MODEL DVN D KF=4E-16 IS=1E-16
+.MODEL DIN D
+.MODEL JCL NJF IS=1E-18
+.MODEL PIN PMOS KP=200U VTO=-0.7
+.MODEL NIN NMOS KP=200U VTO=0.7
+.MODEL POUT PMOS KP=200U VTO=-0.7
++ LAMBDA=0.01
+.MODEL NOUT NMOS KP=200U VTO=0.7
++ LAMBDA=0.01
+.ENDS
+* END MODEL OPA4743

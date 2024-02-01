@@ -1,0 +1,96 @@
+*//////////////////////////////////////////////////////////////////////
+* (C) National Semiconductor, Inc.
+* Models developed and under copyright by:
+* National Semiconductor, Inc.  
+*
+*/////////////////////////////////////////////////////////////////////
+* Legal Notice: This material is intended for free software support.
+* The file may be copied, and distributed; however, reselling the 
+*  material is illegal
+*
+*////////////////////////////////////////////////////////////////////
+* For ordering or technical information on these models, contact:
+* National Semiconductor's Customer Response Center
+*                 7:00 A.M.--7:00 P.M.  U.S. Central Time
+*                                (800) 272-9959
+* For Applications support, contact the Internet address:
+*  amps-apps@galaxy.nsc.com
+*/////////////////////////////////////////
+* LMV393  Dual Low Voltage General Purpose Comparator
+* Only One Channel Modeled
+* MODEL FORMAT: PSPICE
+* Rev:  12/17/97 -- ABG 
+*/////////////////////////////////////////
+* Connections       non-inverting input
+*                   |  inverting input
+*                   |  |  positive power supply 
+*                   |  |  |  negative power supply (ground)
+*                   |  |  |  |  output 
+*                   |  |  |  |  |
+.SUBCKT  lmv393    3  2  8  4  1
+* Features:
+* 2.7V and 5V Single-Supply Operation
+* Low Supply Current:  50uA per channel at VCC=5V
+* Input Common-mode Range Includes Ground
+*/////////////////////////////////////////
+**************************************
+vcco  8   88  dc  0
+fcco   4  8   vcco  0.15
+*******
+vos  2 13 dc 0.0063
+iee  88 10 dc 5e-4
+rc_q1  11 4 303.44
+rc_q2  12 4 303.44
+re_q1  10 6 200
+re_q2  10 7 200
+q1  11 3 6 mq1
+q2  12 13 7 mq2
+gsup  88 4 33 4 1
+*gsup  88 4 33 4 1
+rsup  88  45  750K
+dsup  45 4 mds
+iis  4 33 dc -0.000446667
+ris  33 4 1 TC=-0.000373134, 0
+g1  4 25 12 11 10
+rcl  25 4 10
+dcl1  25 26 md0
+dcl2  27 25 md0
+vcl1  26 4 dc 9.4
+vcl2  4 27 dc 9.4
+g2  4 16 25 4 0.01
+d3  16 18 md1
+d4  17 16 md1
+v1  18 4 dc 0
+v2  4 17 dc 0
+gb  4 20 12 11 100
+rb  20 4 10
+h1  22 4 poly(1) v1 0 748.395 -5483.95
+h2  4 21 poly(1) v2 0 1211.03 -10110.3  
+db1  20 22 mdb1
+db2  21 20 mdb1
+gt  4 30 20 4 1e-5
+rt  30 4 100k
+ct  30 4 4.18061e-12
+gc  4 35 30 4 0.005172
+rc  35 4 1k
+go  4 40 35 4 -0.01
+ro  4 40 10
+eob  41 40 45 4 1
+** Sets output Leakage
+*rr  1 4 1meg
+rr  1 4 3e9
+co  40 4 1p
+** Sets output Vsat
+voe   42  4  dc  0.1
+*voe  42 4 dc -0.0477
+qo  1 41 42 mqo
+.model mq1 pnp bf=9614.38 xtb=2.27169
+.model mq2 pnp bf=10415.7 xtb=2.27169
+.model md0 d is=1e-10 rs=0.01
+.model md1 d is=1e-12
+.model mdb1 d cjo=0.2e-12
+.model mds d is=1e-16
+.model mqo npn bf=100 rc=13.6145 isc=2.7e-09
++ br=10 nr=0.95 cjs=0.05p cje=0.01p
+.ends lmv393
+

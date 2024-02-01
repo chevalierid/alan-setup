@@ -1,0 +1,227 @@
+* PSpice Model Editor - Version 16.0.0
+
+*$
+* TPS61040
+*****************************************************************************
+*  (C) Copyright 2010 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warrenties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+** Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: TPS61040
+* Date: 10/08/2010
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.0.0.P001
+* EVM Order Number: TPS61040EVM-001
+* EVM Users Guide: SLVU065 FEB 2002
+* Datasheet: SLVS413E OCTOBER 2002  REVISED MAY 2009
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+.SUBCKT TPS61040_TRANS EN FB SW VIN GND
+E_ABM56         N14288296 0 VALUE { if(V(ENCIR)>0.5,1.233,0)    }
+X_S14    TONCHECK GND TONMAX GND TPS61040_TRANS_S14 
+C_C15         GND VREF  1p IC=0 TC=0,0 
+E_ABM1         N14309796 0 VALUE { if( V(ISENSE)* 4  
++ >V(LIMIT), 1,0)   }
+X_U5         PWMOFF ENCIR TOFFCHECK AND2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+R_R1         GND ISENSE  250m  
+G_ABMII4         V5FILT TOFFTIME VALUE { if(V(TOFFCHECK)>0.5, 10u,0)    }
+E_ABM58         V5FILT 0 VALUE { if(V(VIN)>1.5,5,0)    }
+X_U3         SHUT CL_OUT MAX_ON N00319 OR3_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+C_C13         GND TOFFTIME  4p IC=0 TC=0,0 
+R_R28         GND TOFFTIME  1e8 TC=0,0 
+X_U7         PWMON ENCIR TONCHECK AND2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+E_ABM57         ENCIR 0 VALUE { if(V(EN)>1.3 & V(VIN)>1.5,1,0)    }
+X_U1         N00516 N00319 PWMON PWMOFF srlatchrhp_basic_gen PARAMS:
++  VDD=1 VSS=0 VTHRESH=0.5
+E_ABM55         MAX_ON 0 VALUE { if(V(TONMAX)>1,1,0)    }
+X_U4         N00319 N00154 INV_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=500E-3
+E_ABM59         CL_OUT 0 VALUE { if(V(N14317600)>0.5,1,0)    }
+X_S1    PWMON GND SW ISENSE TPS61040_TRANS_S1 
+E_ABM2         EAOUT 0 VALUE { if( V(FB)  
++ >V(VREF), 0,1)   }
+R_R5         GND MAX_ON  1Meg TC=0,0 
+X_S13    TOFFCHECK GND TOFFTIME GND TPS61040_TRANS_S13 
+X_U2         N00154 TOFFMINOK EAOUT N00516 AND3_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+E_ABM54         TOFFMINOK 0 VALUE { if(V(TOFFTIME)>1,1,0)    }
+C_C14         GND TONMAX  4p IC=0 TC=0,0 
+R_R4         GND TOFFMINOK  1Meg TC=0,0 
+R_R29         GND TONMAX  1e8 TC=0,0 
+X_U9         N14309796 N14317600 BUF_DELAY_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5 DELAY=100n
+X_U6         ENCIR SHUT INV_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=500E-3
+R_R30         VREF N14288296  10 TC=0,0 
+X_u_S1    u_N14296522 GND u_N14294522 u_COUNT ILIMcount_u_S1 
+E_u_ABM60         u_ILIM1 0 VALUE { if(V(ENCIR)>0.5  
++ , if(V(u_COUNT) <256 & V(u_COUNT)>0 , {ILIM*0.25},{ILIM*0.5}),0)   }
+E_u_ABM58         u_V5FILT 0 VALUE { if(V(VIN)>1.5,5,0)    }
+X_u_U30         PWMOFF u_PWMOFF1 u_N14294749 MONOPOS_PS PARAMS: PW=100n
+R_u_R270         GND u_N14294749  100MEG  
+G_u_ABMII4         u_V5FILT u_N14294522 VALUE { if(V(u_PWMOFF1)>0.5, 10m,0)   
++  }
+E_u_ABM59         u_N14296522 0 VALUE { if(V(u_PWMOFF1)>0.5  
++ & V(u_COUNT) <513, 1,0)   }
+C_u_C13         GND u_COUNT  1n IC=0 TC=0,0 
+R_u_R29         GND u_N14294522  1e8 TC=0,0 
+E_u_ABM61         LIMIT 0 VALUE { if(V(u_COUNT)>512  
++ ,V(u_ILIM1) + {ILIM *0.5},V(u_ILIM1))   }
+G_ABMII5         V5FILT TONMAX VALUE { if(V(TONCHECK)>0.5, 0.6667u,0)    }
+.PARAM  ilim=400m
+.ENDS TPS61040_TRANS
+*$
+.subckt TPS61040_TRANS_S14 1 2 3 4  
+S_S14         3 4 1 2 _S14
+RS_S14         1 2 1G
+.MODEL         _S14 VSWITCH Roff=1e11 Ron=1 Voff=.75 Von=.25
+.ends TPS61040_TRANS_S14
+*$
+.subckt TPS61040_TRANS_S1 1 2 3 4  
+S_S1         3 4 1 2 _S1
+RS_S1         1 2 1G
+.MODEL         _S1 VSWITCH Roff=1e8 Ron=0.6 Voff=0.0V Von=1.0V
+.ends TPS61040_TRANS_S1
+*$
+.subckt TPS61040_TRANS_S13 1 2 3 4  
+S_S13         3 4 1 2 _S13
+RS_S13         1 2 1G
+.MODEL         _S13 VSWITCH Roff=1e11 Ron=1 Voff=.75 Von=.25
+.ends TPS61040_TRANS_S13
+*$
+.subckt ILIMcount_u_S1 1 2 3 4  
+S_u_S1         3 4 1 2 _u_S1
+RS_u_S1         1 2 1G
+.MODEL         _u_S1 VSWITCH Roff=1e11 Ron=1.0 Voff=0.0V Von=1.0V
+.ends ILIMcount_u_S1
+*$
+.subckt srlatchrhp_basic_gen s r q qb params: vdd=1 vss=0 vthresh=0.5 
+gq 0 qint value = {if(v(r) > {vthresh},-5,if(v(s)>{vthresh},5, 0))}
+cqint qint 0 1n
+rqint qint 0 1000meg
+d_d10 qint my5 d_d1
+v1 my5 0 {vdd}
+d_d11 myvss qint d_d1
+v2 myvss 0 {vss} 
+eq qqq 0 qint 0 1
+x3 qqq qqqd1 buf_basic_gen params: vdd={vdd} vss={vss} vthresh={vthresh}
+rqq qqqd1 q 1
+eqb qbr 0 value = {if( v(q) > {vthresh}, {vss},{vdd})}
+rqb qbr qb 1 
+cdummy1 q 0 10p 
+cdummy2 qb 0 10p
+.ic v(qint) {vss}
+.model d_d1 d
++ is=1e-015
++ tt=1e-011
++ rs=0.05
++ n=0.1
+.ends srlatchrhp_basic_gen
+*$
+.SUBCKT MONOPOS_PS in Q Qn PARAMS: PW=250u 
+VS VSUP 0 DC 1
+r1 Q 0 1e11
+GIN VSUP YA VALUE={IF(V(IN)>0.5, V(VSUP)/1000K, 0)}
+GDIS YA 0 VALUE={IF(V(IN)>0.5,0, V(YA)/1m)}
+CIN YA 0 1n IC=0
+RIN YA 0 1e11
+EABM1 YTD 0 VALUE={IF(V(YA)> {PW*1000}, 1, 0)}
+RYTD YTD 0 1e11
+EXOR P 0 VALUE={IF(V(YTD) > 0.5 ^ V(IN) > .5, 1, 0)}
+ROUTpp2 P 0 1e11
+EAND1 Q1 0 VALUE={ IF(V(P)>0.5 & V(IN)>0.5, 1, 0)}
+Ro1 Q1 Q 1m
+Co1 Q 0 1p
+ROUT2 Q 0 1e11
+EAND2 Qn1 0 VALUE={ IF(V(Q)>0.5, 0, 1)}
+Ro2 Qn1 Qn 1m
+Co2 Qn 0 1p
+ROUT4 Qn 0 1e11
+.ENDS MONOPOS_PS
+*$
+.subckt d_d1 1 2
+d1 1 2 dd1
+.model dd1 d
++ is=1e-015
++ tt=1e-011
++ rs=0.05
++ n=0.1
+.ends d_d1
+*$
+.SUBCKT DIDEAL_PS A C PARAMS: ron=1e-3 roff=1e9 
+RA A 0 1e11
+RC C 0 1e11
+RAC A C 1e11
+CAC A C 0.01pF ic=0
+GD A B VALUE={LIMIT((0.01/{roff})*EXP((V(A,B)- 0.01)*{5}/0.026),40,-10u)}
+RB B 0 1e9
+RD B C {ron}
+CC C 0 0.1pF 
+.ENDS DIDEAL_PS
+*$
+.SUBCKT AND3_BASIC_GEN A B C Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH} &
++ V(C) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 10p
+.ENDS AND3_BASIC_GEN
+*$
+.SUBCKT AND2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS AND2_BASIC_GEN
+*$
+.SUBCKT OR3_BASIC_GEN A B C Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  |  
++ V(B) > {VTHRESH} |
++ V(C) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 10p
+.ENDS OR3_BASIC_GEN
+*$
+.SUBCKT INV_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS INV_BASIC_GEN
+*$
+.SUBCKT BUF_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS BUF_BASIC_GEN
+*$
+.SUBCKT BUF_DELAY_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 DELAY = 10n 
+E_ABMGATE1    YINT1 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT1 YINT2 1
+CINT YINT2 0 {DELAY*1.3}
+E_ABMGATE2    YINT3 0 VALUE {{IF(V(YINT2) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT2 YINT3 Y 1
+CINT2 Y 0 1n
+.ENDS BUF_DELAY_BASIC_GEN
+*$

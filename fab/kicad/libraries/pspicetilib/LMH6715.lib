@@ -1,0 +1,125 @@
+*//////////////////////////////////////////////////////////////////////
+* (C) National Semiconductor, Corporation.
+* Models developed and under copyright by:
+* National Semiconductor, Corporation.  
+*/////////////////////////////////////////////////////////////////////
+* Legal Notice:  
+* The model may be copied, and distributed without any modifications;
+* however, reselling or licensing the material is illegal.
+* We reserve the right to make changes to the model without prior notice. 
+* Pspice Models are provided "AS IS, WITH NO WARRANTY OF ANY KIND" 
+*////////////////////////////////////////////////////////////////////
+* For more information, and our latest models,
+* please visit the models section of our website at
+*       http://www.national.com/models/
+*////////////////////////////////////////////////////////////////////
+* BEGIN MODEL LMH6715
+* PINOUT ORDER  +IN -IN +V -V OUT
+* PINOUT ORDER   3   2   8  4  1
+.SUBCKT LMH6715 3 2 8 4 1
+Q17 4 9 10 QOP
+Q21 8 11 10 QON
+D5 1 8 DD
+D6 4 1 DD
+D7 12 0 DIN
+D8 13 0 DIN
+I8 0 12 0.1E-3
+I9 0 13 0.1E-3
+E2 14 0 4 0 1
+E3 15 0 8 0 1
+D9 16 0 DVN
+D10 17 0 DVN
+I10 0 16 0.1E-3
+I11 0 17 0.1E-3
+E4 18 2 16 17 1.25
+G2 19 0 12 13 6.7E-4
+R22 4 8 100E3
+E5 20 0 15 0 1
+E6 21 0 14 0 1
+E7 22 0 23 0 1
+R30 20 24 1E4
+R31 21 25 1E4
+R32 22 26 1E4
+R33 0 24 1
+R34 0 25 1
+R35 0 26 1
+E10 27 19 26 0 1E-6
+R36 18 23 1E9
+R37 23 19 1E9
+C6 20 24 100E-12
+C7 21 25 100E-12
+C8 22 26 1E-12
+E11 28 27 25 0 4
+E12 29 28 24 0 4
+Q22 14 30 11 QDP
+Q23 15 30 9 QDN
+I12 8 4 4.9E-3
+I13 15 11 0.8E-3
+I14 9 14 0.8E-3
+R38 0 31 10
+R39 0 30 10
+C9 31 0 15E-12
+C10 30 0 5E-12
+E15 32 33 34 0 1
+E16 33 35 34 0 1
+E17 36 0 33 0 1
+D11 37 15 DD
+D12 14 38 DD
+V11 35 38 1.45
+V12 37 32 1.45
+I15 0 39 1E-3
+D13 39 0 DD
+V13 34 39 -0.71465
+C11 33 0 2.05E-12
+D14 40 41 DD
+D15 41 42 DD
+R40 41 33 220
+R41 0 41 170E3
+F1 41 0 V14 -2.4
+E18 43 0 29 0 0.99935
+R42 43 44 160
+C12 18 0 0.8E-12
+C13 29 0 1E-12
+V14 44 45 0
+R43 10 46 5
+G3 31 0 33 0 0.1
+G4 30 0 31 0 0.1
+C14 10 0 0.2E-12
+L1 46 1 4E-9
+R45 46 1 40
+E20 40 36 34 0 1
+E21 42 36 34 0 -1
+C15 18 29 0.15E-12
+L2 18 45 70E-9
+R46 18 45 200
+D16 47 0 DINN
+D17 48 0 DINN
+I16 0 47 0.1E-3
+I17 0 48 0.1E-3
+G5 18 0 47 48 4.85E-3
+D18 18 49 DD
+D19 50 18 DD
+D20 19 49 DD
+D21 50 19 DD
+V15 15 49 3.15
+V16 50 14 3.15
+I19 0 19 5E-6
+I20 0 2 6E-6
+V17 19 3 2E-3
+R49 19 27 1E9
+R50 27 28 1E9
+R51 28 29 1E9
+R52 2 18 1E9
+R53 0 34 1E9
+R54 2 51 10
+C16 51 1 0.1E-12
+.MODEL DD D
+.MODEL DVN D KF=5E-16
+.MODEL DIN D KF=1E-15
+.MODEL DINN D KF=1E-15
+.MODEL QDP PNP
+.MODEL QDN NPN
+.MODEL QON NPN VAF=150 BF=110 IKF=0.45 RE=1 RC=1
+.MODEL QOP PNP VAF=150 BF=110 IKF=0.45 RE=1 RC=1
+.ENDS
+* END MODEL LMH6715

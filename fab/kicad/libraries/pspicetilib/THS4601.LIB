@@ -1,0 +1,135 @@
+* THS4601
+*****************************************************************************
+* (C) Copyright 2011 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: THS4601
+* Date: 08JUL2011
+* Model Type: ALL IN ONE
+* Simulator: PSPICE
+* Simulator Version: 16.0.0.p001
+* EVM Order Number: N/A
+* EVM Users Guide: N/A
+* Datasheet: SLOS388B - OCTOBER 2001 - REVISED JUNE 2002
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+* 
+* Updates:
+*
+* Version 1.0 : 
+* Release to Web
+*
+*****************************************************************************
+.SUBCKT THS4601 inp2 inn vcc vee out
+
+E_E5         DIFF 0 VCC vee 0.5
+J_Q1         N00749 INP1 N00893 NFET 1
+R_R10         vee N50384  5
+E_E9         N55048 INP1 A vee 1
+R_R6         N018062 N15030  10m
+R_R29         N46164 N20427  10
+R_R36         vee N54842  1
+L_L12         N15030 VCC  70n
+V_V1         N138668 VCC -2Vdc
+C_C15         N100339 N00778  1p
+R_R7         N02590 N018363  10m
+V_V10         N146209 VCC 1.7Vdc
+D_D15         N1482531 N148310 MY_D 4
+R_R30         N023821 N46164  10
+R_R5         vee N27645  5
+J_Q2         N00778 INN N00893 NFET 1
+V_V2         N138695 vee 3Vdc
+R_R3         0 N09542  4
+R_R90         N01668 N77197  2k
+V_V11         N146276 VCC 1.7Vdc
+E_E1         AVG vee VCC vee 0.5
+V_V13         N1482531 vee 5.4Vdc
+L_L1         N46164 OUT  8n
+R_R54         N00749 N146209  2000
+G_G1         HIZ2 EREF N77197 EREF -1m
+L_L13         vee N02590  70n
+E_E2         EREF 0 AVG 0 1
+V_V6         DDROP 0 0.65Vdc
+V_V14         INP2 N55048 1m
+I_I1         VCC INP1 DC -11.85n
+C_C6         N09542 OUT  5p
+I_I4         N00893 vee DC 2mAdc
+C_C13         N77752 HIZ2  1f
+E_E3         N018062 N018063 TOP EREF -1
+R_R55         N00778 N146276  2000
+I_I2         VCC INN DC -11.85n
+C_C5         N27645 INN  3p
+R_R44         EREF N129766  25
+G_G3         A vee N54584 vee 3u
+D_D14         HIZ N138668 MY_D 4
+R_R61         EREF N77752  800
+E_E4         N018362 N018363 BOT EREF 1
+X_U2         N00749 N00778 HIZ EREF GMAXIN PARAMS:  GM=-9m IL=11.3m
+R_R45         EREF HIZ  780k
+E_E14         N01668 EREF HIZ EREF -1
+E_E8         N54584 INN INP2 INN 0.5
+D_D2         N018063 N20427 D_BREAK 128
+D_D12         N138695 HIZ MY_D 4
+E_E6         HIZ2 TOP DIFF DDROP 1
+C_C2         EREF N77197  680f
+R_R1         EREF HIZ2  1k
+D_D3         N023821 N018362 D_BREAK 128
+R_R76         N00749 N100339  1u
+C_C4         N129766 HIZ  110p
+C_C9         N50384 INP1  3p
+E_E7         HIZ2 BOT DIFF DDROP -1
+R_R17         N148310 N00893  500
+L_L4         A N54842  25n
+.MODEL NFET NJF
++ VTO=-1.8
++ BETA=8e-3
++ LAMBDA=1.0000E-8
++ IS=100.00E-16
++ ALPHA=1.0000E-6
++ VK=1
++ RD=1
++ RS=1
++ CGD=30.0000E-15
++ CGS=30.0000E-15
++ KF=1.0000E-18
++ BETATCE=-.5
++ VTOTC=-2.5000E-3
+.MODEL D_break D
++ RS=1.0000E-1
++ CJO=1.0000E-13
++ IS=100e-15
+.MODEL my_d D
++ IS=10.000E-18
++ RS=1.0000E-3
++ CJO=1.0000E-12
++ M=.3333
++ VJ=.75
++ ISR=100.00E-12
++ BV=100
++ IBV=100.00E-6
++ TT=5.0000E-9
+
+.ENDS THS4601
+*$
+.SUBCKT Gmaxin   1 2 3 4
++ PARAMS:
++ gm = 1 ;
++ IL = 10m;
+Gout 3 4 value={limit(v(1,2)*gm,IL,-IL)}
+.ENDS
+*$

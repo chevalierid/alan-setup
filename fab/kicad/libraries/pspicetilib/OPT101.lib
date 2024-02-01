@@ -1,0 +1,231 @@
+*  OPT101P,W SPICE MACROMODEL-- Copyright 1994 Burr-Brown Corp.
+
+*  Bandwidth: 14kHz,  Iq = 0.12mA, Single-Supply: +2.7 - +36V
+
+*  REV.A   12-13-94  EM
+
+*   
+
+*  ------------------------------------------------------------------------ 
+
+* |  NOTICE: THE INFORMATION PROVIDED HEREIN IS BELIEVED TO BE RELIABLE;   |
+
+* |  HOWEVER; BURR-BROWN ASSUMES NO RESPONSIBILITY FOR INACCURACIES OR     |
+
+* |  OMISSIONS.  BURR-BROWN ASSUMES NO RESPONSIBILITY FOR THE USE OF THIS  |
+
+* |  INFORMATION, AND ALL USE OF SUCH INFORMATION SHALL BE ENTIRELY AT     |
+
+* |  THE USER'S OWN RISK.  NO PATENT RIGHTS OR LICENSES TO ANY OF THE      |
+
+* |  CIRCUITS DESCRIBED HEREIN ARE IMPLIED OR GRANTED TO ANY THIRD PARTY.  |
+
+* |  BURR-BROWN DOES NOT AUTHORIZE OR WARRANT ANY BURR-BROWN PRODUCT FOR   |
+
+* |  USE IN LIFE-SUPPORT DEVICES AND/OR SYSTEMS.                           |
+
+*  ------------------------------------------------------------------------ 
+
+*
+
+* Users should very carefully note the following factors regarding this
+
+* model:
+
+*
+
+*      This macromodel, although similar to the commonly used
+
+*      Boyle model, has limitations on many characteristics.
+
+*
+
+*      Use this macromodel to model both OPT101P (PDIP), and OPT101W (SIP).
+
+*      The inverting input is used on the SIP to connect a current source to,
+
+*      much like the photodiode acts as a current source on the real devices.
+
+*
+
+*      Modeled behavior includes:
+
+*           Offset Voltage (initially set to 7.5mV)
+
+*           Input bias current (initially set to 200pA)
+
+*           Current limit and load-dependant output swing
+
+*           Quiescent Current, including the effect of Vpin3
+
+*           Input Impedance
+
+*           Open Loop Gain
+
+*           Large-signal dynamic behavior
+
+*           
+
+*
+
+*
+
+*      Behavior that is not modeled includes:
+
+*           Changes in parameters over temperature
+
+*           Noise
+
+*           Parameter variation for Monte Carlo analysis
+
+*           Over-voltage effects 
+
+*           Slew Rate
+
+*
+
+*       This macromodel may not accurately model all aforementioned behaviour
+
+*       with other than the internal 1meg-ohm feedback resistor, and feedback
+
+*       capacitors.
+
+*
+
+*       While reasonable care has been taken in their preparation, we cannot
+
+*       be responsible for correct application on any and all computer
+
+*       systems.
+
+*
+
+*       Further, Burr-Brown Corporation reserves the right to change these
+
+*       models without prior notice.
+
+*
+
+*       In all cases, the current data sheet information for a given real
+
+*       device is your final design guideline, and is the only actual
+
+*       performance guarantee.
+
+*
+
+*-----------------------------------------------------------------------------
+
+*
+
+* Connections:   vs
+
+*                |  inverting input
+
+*                |  |  vpin3
+
+*                |  |   |  feedback
+
+*                |  |   |  |    vout
+
+*                |  |   |  |     |  common
+
+                 |  |   |  |     |    |
+
+.subckt OPT101   vs in vpd feed vout com
+
+*
+
+  c1   11 12 1E-12
+
+  c2    6  7 1E-12
+
+  cee  10 99 9E-12
+
+  cpar in feed 5.5e-12
+
+  cf   in vout 9e-12
+
+  cphoto in com 1200e-12 ; photodiode capacitance
+
+  dc   vout 53 dx
+
+  de   54  vout dx
+
+  dlp  90 91 dx
+
+  dln  92 90 dx
+
+  dp    4 vs dx
+
+  egnd 99  0 poly(2) (vs,0) (4,0) 0 .5 .5
+
+  fb    7 99 poly(5) vb vc ve vlp vln 0 1.061E9 -1E9 1E9 1E9 -1E9
+
+  ga    6  0 11 12 22.5E-6
+
+  gcm   0  6 10 99 314.2E-12
+
+  iee  vs 10 dc 10.00E-6
+
+  hlim 90  0 vlim 1K
+
+  q1   11  in 13 qx
+
+  q2   12  1 14 qx
+
+  jpd  ed vout vout jp ; JFET pulldown
+
+  r2    6  9 100e3
+
+  rc1   44 11 79.58E3
+
+  rc2   44 12 79.58E3
+
+  re1  13 10 74.40E3
+
+  re2  14 10 74.40E3
+
+  ree  10 99 20.00E6
+
+  ro1   8 vout 3
+
+  ro2   7 99 3
+
+  rp   vs 4 2.8e6
+
+  rf   in feed 1e6 ; internal 1meg
+
+  vb    9  0 dc 0
+
+  vc   vs 53 dc 1.815
+
+  ve   54  4 dc 0
+
+  vlim  7  8 dc 0
+
+  vlp  91  0 dc 15
+
+  vln   0 92 dc 15
+
+  vls  4 44 dc 0.7
+
+  vped 1 com dc 7.5e-3 ; offset voltage
+
+  vbulk 4 0 dc 0
+
+  vdrain ed vpd dc 0
+
+  iq   vs 4 dc 100u
+
+  fdrain vs 4 vdrain 1
+
+.model dx D(Is=800.0E-18)
+
+.model qx PNP(Is=800.0E-18 Bf=25.00E3)
+
+.model jp PJF(VTO=-1.2 BETA=72U LAMBDA=7M)
+
+.ends
+
+

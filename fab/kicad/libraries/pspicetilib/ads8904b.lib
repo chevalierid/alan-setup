@@ -1,0 +1,387 @@
+* ADS8904B (PSpice format)
+*****************************************************************************
+* (C) Copyright 2021 Texas Instruments Incorporated. All rights reserved.   
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+* Released by: Texas Instruments Inc.
+* Part: ADS8904B
+* Date: 06/01/2022
+* Model Type:  General
+* Simulator: PSPICE for TI
+* Simulator Version: 17.4-2020
+* Datasheet: SLUSD31A –OCTOBER 2018–REVISED DECEMBER 2018
+*
+* Model Version: 1.40
+*
+*  Model created  Art Kay & DesignSoft, Inc.   
+**************************************************************************
+
+.SUBCKT ADS8904B INP INM Tconv ResetSH SampleRate Tacq Vref_err Vsamp 
++ Vsettling_err Vref_ideal Vref
++ PARAMS:
++ Csh=60p Cdio=4p Cres=4p Rsh=50 tConv=2500n Vref=5 fSampl=250k Iref=1u IrefL=1n N=20 Iref_on=0 IL=1p EG=0.005 EO=0.03m
+* SET UP VNSE 1/F
+* NV/RHZ AT 1/F FREQ
++ NLF=2.52
+* FREQ FOR 1/F VAL
++ FLW=0.01
+* SET UP VNSE FB
+* NV/RHZ FLATBAND
++ NVR=2.52
++ Cref=10p
+.PARAM Rt= {100k}
+.PARAM Rres= {10}
+.PARAM Krcr= {3.55}
+.PARAM Crcr= {tConv/(Krcr*Rt)}
+.PARAM Rd1= {1k}
+.PARAM Rd2= {1k}
+.PARAM Kth= { Rd1/(Rd1+Rd2)}
+.PARAM Krc= {-Log(1 - 2*Kth/(1 + Kth) )}
+.PARAM Cosc= {Tosc/(2*Krc*Rosc)}
+.PARAM Rosc= {1k}
+.PARAM Tosc= {tConv/N - 4*Tdel}
+.PARAM Tdel= {500p}
+.PARAM Vref_on= {If (Iref_on > 0.5, 0, 5)}
+.PARAM Tsmpl= {1/fSampl}
+*.PARAM Cref= {-Iref*Krcr*Tsmpl*(N-1.0)/(Vref*N^2*(Exp(-(N-0.5)/N*Krcr) - Exp(-0.5/N*Krcr)))}
+.PARAM Ciref= {-Iref*Krcr*Tsmpl*(N-0.5)/(Vref*N^2*(Exp(-(N-0.25)/N*Krcr) - Exp(-0.25/N*Krcr)))}
+.PARAM Rref= {Vref/IrefL}
+*.PARAM Rrs= {1000*Vrd/IrefL}
+.PARAM Rrs= {1*Vrd/IrefL}
+.PARAM Rref1= {Rref-Rrs}
+*.PARAM Vrd= {10000n}
+.PARAM Vrd= {Vref*0.1}
+.PARAM Gvr= {10m}
+.PARAM IlimL= {10*IrefL}
+IS1         0 29 2.5
+*GIS2        0 19 VALUE = {LIMIT(GVR*(VREF-V(19,0))*LIMIT((VRD-ABS(V(Vref,19)))/VRD,0,1), -ILIML, ILIML)}
+R8          0 20 R_RES_1 1T 
+GIG1        0 Res VALUE = {IF(TIME<10N,0,5)}
+CG1         0 Res 100p 
+C2          0 21  {Cref} 
+R9          VrefB 21 R_RES_1 {Rsh} 
+XVn11       20 22 VNSE_0
++ PARAMS: NLF={707.1m*NLF} FLW={FLW} NVR={707.1m*NVR}
+XVn1        23 24 VNSE_0
++ PARAMS: NLF={707.1M*NLF} FLW={FLW} NVR={707.1M*NVR}
+XU5         ResetSH Tacq0_13 Tconv SampleRate Res Tacq One_Shot_ADC2
++ PARAMS: tConv={tConv}
+GVCCS16     0 Tacq0_15 VALUE = {IF(TIME<1N,5,V(Tacq,0))}
+R32         0 Tacq0_15 R_RES_1 1 
+GVCCS9      0 25 VALUE = {IF(IREF_ON>0.5&V(Tacq0_13,0)>2.5,0,-5)}
+R31         0 25 R_RES_1 1 
+R25         0 19 R_RES_1 {Rref1} 
+R22         Vref_ideal 26 R_RES_1 1T 
+GVCCS13     26 Vref_ideal VALUE = {IF(V(Tacq0_13,0)<1,V(26,Vref_ideal),0)}
+GVCCS12     27 24 VALUE = {IF(TIME<1P,V(27,24)/RSH,0)}
+GVCCS11     28 22 VALUE = {IF(TIME<1P,V(28,22)/RSH,0)}
+R19         26 0 R_RES_1 1K 
+EVCVS5      26 0 VALUE = {IF(TIME<1P,VREF, V(Vref,0))}
+R10         Vref 19 R_RES_1 {Rrs} 
+R29         0 29 R_RES_1 1 
+R28         0 Res R_RES_1 1 
+R27         VrefB 0 1K 
+R26         30 0 R_RES_1 1K 
+R24         31 0 1K 
+GVCCS10     0 Res0 VALUE = {IF(TIME<1N,0,-V(Res,0)+5)}
+R23         0 Res0 R_RES_1 1 
+GVCCS8      0 Iref_on VALUE = {IF(IREF_ON>0.5&V(Tacq0_13,0)>2.5,0,5)}
+R21         0 Iref_on R_RES_1 1 
+R20         0 Vsettling_err R_RES_1 1 
+GVCCS7      Vsettling_err 0 Voa_SS Vsamp  1
+R6          0 Vref_err R_RES_1 1 
+GVCCS6      Vref_err 0 Vref_ideal Vref  1
+GVCCS5      0 Vsamp VALUE = {IF(TIME<1P,V(33,0)*V(Vref_ideal,0)/V(21,0)*(1+10M*EG)+EO,
++            V(33,0)/V(Vref_ideal,0)*V(Vref,0))}
+GVCCS3      0 INM VALUE = {IF(TIME<1P,IL,0)}
+GVCCS2      0 INP VALUE = {IF(TIME<1P,IL,0)}
+XD_D4       20 VrefB D_D1_0
+XD_D3       23 VrefB D_D1_0
+XD_D2       0 20 D_D1_0
+XD_D1       0 23 D_D1_0
+R4          INM 20 R_RES_1 200M 
+R1          INP 23 R_RES_1 200M 
+SW12        VCt 29 Res 0 S_VSWITCH_1
+EVCVS4      31 0 INP INM  1
+C3          0 Voa_SS  1N 
+SW11        31 Voa_SS Tacq0_13 0 S_VSWITCH_2
+R16         0 Vra R_RES_1 1T 
+R15         0 Vcr R_RES_1 1T 
+Ciref       0 Vcr  {Ciref} 
+R5          Vra VrefB {Rt} 
+EVCVS3      VrefB 0 Vref 0  1
+EVCVS2      30 0 Vra 0  1
+SW10        Vra 0 Tconv 25 S_VSWITCH_3
+C8          0 Vra  {Crcr} 
+SW8         Vcr 30 osc_out 0 S_VSWITCH_4
+SW7         Vref Vcr osc_out 0 S_VSWITCH_5
+XU1         Vthp VCt osc_out 0 HYSTCOMPG_3_0
++ PARAMS: ROUT=1 VOUTH=2.5 VOUTL=-2.5 VTHRES=0 VHYST=1M TDEL={TDEL}
+R17         0 VCt R_RES_1 1T 
+SW9         VCt 29 Tconv Iref_on S_VSWITCH_1
+C11         0 VCt  {Cosc} 
+R14         Vthp osc_out {Rd2} 
+R13         0 Vthp {Rd1} 
+R12         VCt osc_out {Rosc} 
+C12         0 Vref_ideal  100P 
+R3          0 Vsamp R_RES_1 1 
+SW5         27 0 Res0 0 S_VSWITCH_6
+SW1         28 0 Res0 0 S_VSWITCH_6
+R7          23 0 R_RES_1 1T 
+R2          0 33 R_RES_1 1 
+GVCCS1      33 0 27 28  -1
+C5          20 0  {Cdio} 
+C4          0 23  {Cdio} 
+SW4         0 38 Tacq0_15 0 S_VSWITCH_7
+SW3         0 39 Tacq0_15 0 S_VSWITCH_7
+C7          0 39  {Cres} 
+C6          0 38  {Cres} 
+SW2         38 28 ResetSH 0 S_VSWITCH_6
+SW_acq2     28 22 Tacq 0 S_VSWITCH_8
+C1          0 28  {Csh} 
+SW_conv     39 27 ResetSH 0 S_VSWITCH_6
+SW_acq1     27 24 Tacq 0 S_VSWITCH_8
+Csh         0 27  {Csh} 
+
+.MODEL R_RES_1 RES ( TCE=0 T_ABS=-273.15)
+.MODEL S_VSWITCH_1 VSWITCH (RON=1 ROFF=1G VON=1 VOFF=4)
+.MODEL S_VSWITCH_2 VSWITCH (RON=1 ROFF=1T VON=100M VOFF=1)
+.MODEL S_VSWITCH_3 VSWITCH (RON=10 ROFF=1G VON=1 VOFF=4)
+.MODEL S_VSWITCH_4 VSWITCH (RON=10 ROFF=1G VON=-2 VOFF=0)
+.MODEL S_VSWITCH_5 VSWITCH (RON=96 ROFF=1T VON=2 VOFF=0)
+.MODEL S_VSWITCH_6 VSWITCH (RON=10 ROFF=1T VON=4 VOFF=1)
+.MODEL S_VSWITCH_7 VSWITCH (RON=10 ROFF=1G VON=4 VOFF=1)
+.MODEL S_VSWITCH_8 VSWITCH (RON=96 ROFF=1T VON=4 VOFF=1)
+.ENDS
+
+
+.SUBCKT One_Shot_ADC2 ResetSH Tacq0 Tconv In Res Tacq
++ PARAMS: tConv=710n
+.PARAM Vconv= {2}
+.PARAM Itd= {100u}
+.PARAM Rres= {1}
+.PARAM Vout= {5}
+.PARAM tD= {1n}
+.PARAM Cconv= { (tConv-tD)*Itd/Vconv}
+.PARAM tRes_del= {98}
+.PARAM tRes_end= {99}
+.PARAM Vthrl= {10m*tRes_del*Vconv}
+.PARAM Vthrh= {10m*tRes_end*Vconv}
+.PARAM Vth= {Vout/2}
+VS1         DPWR 0 {Vout}
+XU6         St DPWR 0 Res Tacq0 35 DPWR 0 RSFFLOP_P_R_ASR2_0
++ PARAMS: DLH=100P DHL=100P VOUTH={VOUT} VOUTL=0 VTHRES=1
+R26         DPWR 0 1K 
+GVCCS10     0 ResetSH VALUE = {IF(V(RSHL,0)>VTH&V(RSHH,0)<VTH&V(Qtd,0)<VTH,VOUT,0)}
+R23         0 ResetSH R_RES_1 1 
+R3          In 0 1G 
+R1          0 Tconv R_RES_1 1 
+GVCCS1      Tconv 0 Qtd DPWR  1
+R6          0 Tacq R_RES_1 1 
+GVCCS6      Tacq 0 Qtd 0  -1
+XU5         In 0 InC 0 HYSTCOMPG_2_0
++ PARAMS: ROUT=1 VOUTH={Vout} VOUTL=0 VTHRES=1.5 VHYST=1M TDEL=100P
+SW1         VCtd 0 Res 0 S_VSWITCH_1
+XU3         Cmptd DPWR St Res Qtd 39 DPWR 0 RSFFLOP_P_R_ASR2_0
++ PARAMS: DLH=200P DHL=200P VOUTH={VOUT} VOUTL=0 VTHRES={Vth}
+XU2         VCtd 0 RSHH 0 HYSTCOMPG_2_0
++ PARAMS: ROUT=1 VOUTH={Vout} VOUTL=0 VTHRES={VTHRH-1M} VHYST=1M TDEL=1N
+XU1         VCtd 0 RSHL 0 HYSTCOMPG_2_0
++ PARAMS: ROUT=1 VOUTH={Vout} VOUTL=0 VTHRES={VTHRL-1M} VHYST=1M TDEL=1N
+XU4         VCtd 0 Cmptd 0 HYSTCOMPG_THLRF_0_9_0
++ PARAMS: ROUT=1 VOUTH={Vout} VOUTL=0 VTHRES={VCONV-1M} VHYST=1M TDLH=1N TDHL=1N
++ TRISE=100P TFALL=100P
+R9          St InC R_RES_1 1T 
+R2          0 St 1K 
+C2          St InC  10P 
+SW2         VCtd 0 Qtd 0 S_VSWITCH_2
+XD3         VCtd DPWR D_D2_0
+GKItd       DPWR VCtd VALUE = {ITD}
+Cconv       VCtd 0  {Cconv}
+
+.MODEL R_RES_1 RES ( TCE=0 T_ABS=-273.15)
+.MODEL S_VSWITCH_1 VSWITCH (RON=1 ROFF=1G VON=1 VOFF=4)
+.MODEL S_VSWITCH_2 VSWITCH (RON=1 ROFF=1G VON=4 VOFF=1)
+
+.ENDS
+
+* BEGIN PROG NSE NANO VOLT/RT-HZ
+.SUBCKT VNSE_0 1 2
+* BEGIN SETUP OF NOISE GEN - NANOVOLT/RT-HZ
++ PARAMS: 
+* INPUT THREE VARIABLES
+* SET UP VNSE 1/F
+* NV/RHZ AT 1/F FREQ
++ NLF=4.077
+* FREQ FOR 1/F VAL
++ FLW=0.01
+* SET UP VNSE FB
+* NV/RHZ FLATBAND
++ NVR=4.09
+* END USER INPUT
+* START CALC VALS
+.PARAM GLF={PWR(FLW,0.25)*NLF/1164}
+.PARAM RNV={1.184*PWR(NVR,2)}
+.MODEL DVN D KF={PWR(FLW,0.5)/1E11} IS=1.0E-16
+* END CALC VALS
+I1 0 7 10E-3
+I2 0 8 10E-3
+D1 7 0 DVN
+D2 8 0 DVN
+E1 3 6 7 8 {GLF}
+R1 3 0 1E9
+R2 3 0 1E9
+R3 3 6 1E9
+E2 6 4 5 0 10
+R4 5 0 {RNV}
+R5 5 0 {RNV}
+R6 3 4 1E9
+R7 4 0 1E9
+E3 1 2 3 4 1
+C1 1 0 1E-15
+C2 2 0 1E-15
+C3 1 2 1E-15
+.ENDS
+* END PROG NSE NANOV/RT-HZ
+
+.SUBCKT D_D1_0 1    2
+D1 1 2  DD
+.MODEL DD D( IS=10f N=1.0 RS=0 T_ABS=25 AF=0 KF=0)
+.ENDS
+
+
+.SUBCKT HYSTCOMPG_3_0 inp inm out gnd 
++ Params: Vthres=0 Vhyst=1 VoutH=5 VoutL=0 Rout=1 Tdel=1N
+*
+.PARAM Delay = {MAX(Tdel,1p)}
+.Param Rdel = {IF ( (Delay > 1E-15) & (Rout < 1), 1, Rout ) }
+.Param VoutM={(VoutH+VoutL)/2}
+.Param VthH={Vthres+Vhyst}
+.Param VthL={Vthres-Vhyst}
+.Param Cout={Delay/(0.693*(Rdel+1u))}
+.Param Gdlh={1/Rdel}
+.Param Gdhl={1*Gdlh}
+.Param Csin= {1n*1m}
+*
+Gthr gnd thr Value= { IF ( V(out,gnd) < {VoutM}, {VthH}, {VthL}) }
+Rthr gnd thr 1
+Gout gnd out Value= { IF ( (V(inp,inm) > V(thr,gnd)), (VoutH - V(out,gnd))*Gdlh, (VoutL - V(out,gnd))*Gdhl ) }
+Cout out gnd {Cout}
+Rout out gnd {1e5*Rdel}
+
+GVCCS2      0 T2 VALUE = {sin(pi*V(inp,inm))}
+C5          0 T2  {Csin}
+R4          0 T2 1 
+.ENDS
+
+
+.SUBCKT HYSTCOMPG_2_0 inp inm out gnd 
++ Params: Vthres=0 Vhyst=1 VoutH=5 VoutL=0 Rout=1 Tdel=1N
+*
+.PARAM Delay = {MAX(Tdel,1p)}
+.Param Rdel = {IF ( (Delay > 1E-15) & (Rout < 1), 1, Rout ) }
+.Param VoutM={(VoutH+VoutL)/2}
+.Param VthH={Vthres+Vhyst}
+.Param VthL={Vthres-Vhyst}
+.Param Cout={Delay/(0.693*(Rdel+1u))}
+.Param Gdlh={1/Rdel}
+.Param Gdhl={1*Gdlh}
+.Param Csin= {1n*1m}
+*
+Gthr gnd thr Value= { IF ( V(out,gnd) < {VoutM}, {VthH}, {VthL}) }
+Rthr gnd thr 1
+Gout gnd out Value= { IF ( (V(inp,inm) > V(thr,gnd)), (VoutH - V(out,gnd))*Gdlh, (VoutL - V(out,gnd))*Gdhl ) }
+Cout out gnd {Cout}
+Rout out gnd {1e5*Rdel}
+
+GVCCS2      0 T2 VALUE = {sin(10*2*pi*V(inp,inm))}
+C5          0 T2  {Csin}
+R4          0 T2 1 
+.ENDS
+
+.SUBCKT RSFFLOP_P_R_ASR2_0 S S_ R R_ Q QB DPWR DGND
++ PARAMS: DHL= {10n} DLH= {10n} VOUTH= {5} VOUTL= {0} VTHRES= {2.5}
+* R has higher priority
+.PARAM MinADel= {100p}
+.Param Rdel = 1k
+.Param Cdel={MinADel/(0.693*(Rdel+1u))}
+.Param Cdel1={Max(MinADel,DLH)/(2.2*(Rdel+1u))}
+.Param Cdel2={Max(MinADel,DHL)/(2.2*(Rdel+1u))}
+C2          DPWR Q  {Cdel2}
+C1          DPWR QB  {Cdel1}
+GVCCS2      DGND 9 VALUE = {IF(V(R,DGND)>VTHRES | V(R_,DGND)<VTHRES, 0, IF((TIME<1F)&(V(S,DGND)<VTHRES)&(V(S_,DGND)>VTHRES), 0, 1M*V(Q,DGND)))}
+*GVCCS2      DGND 9 VALUE = {IF(V(R,DGND)>VTHRES | V(R_,DGND)<VTHRES, 0, IF((V(S,DGND)<VTHRES)&(V(S_,DGND)>VTHRES), 0, IF (TIME<1p, 1M*VOUTH, 1M*V(Q,DGND))))}
+GVCCS1      DGND 10 VALUE = {IF((V(S,DGND)>VTHRES | V(S_,DGND)<VTHRES) & ((V(R,DGND)<VTHRES) & V(R_,DGND)>VTHRES), 0, 1M*V(QB,DGND))}
+*GVCCS1      DGND 10 VALUE = {IF((V(S,DGND)>VTHRES | V(S_,DGND)<VTHRES) & ((V(R,DGND)<VTHRES) & V(R_,DGND)>VTHRES), 0, IF (TIME<1p, 1M*VOUTH, 1M*V(QB,DGND)))}
+R4          9 DGND 1.0K
+C4          9 DGND {0.1*Cdel} 
+R3          10 DGND 1.0K 
+C3          10 DGND {0.1*Cdel} 
+R2          DPWR QB 1K 
+R1          DPWR Q 2K 
+SW2         QB DGND 9 DGND S_VSWITCH_1
+SW1         Q DGND 10 DGND S_VSWITCH_1
+.MODEL S_VSWITCH_1 VSWITCH (RON=10 ROFF=1G VON={1.2*VTHRES} VOFF={0.8*VTHRES})
+.ENDS
+
+.SUBCKT HYSTCOMPG_THLRF_0_9_0 inp inm out gnd
++ Params: VoutH=5 VoutL=0 Rout=1 Tdlh=1N Tdhl=1N Trise=1N Tfall=1N  Vthres=0 Vhyst=1m
+* Trise ->   90%*(VoutH-VoutL), Tfall -> 10%*(VoutH-VoutL)
+.Param MinADel=100p
+.PARAM Tdellh = {MAX(Tdlh,MinADel)}
+.PARAM Tdelhl = {MAX(Tdhl,MinADel)}
+.Param Rdel = {IF ( ((Tdellh > 1E-15)|(Tdelhl > 1E-15)) & (Rout < 1), 1, Rout ) } 
+.Param Ro = {IF ( ((Trise > 1E-15)|(Tfall > 1E-15)) & (Rout < 1), 1, Rout ) } 
+.Param VoutM={(VoutH+VoutL)/2}
+.Param VthH={Vthres+Vhyst}
+.Param VthL={Vthres-Vhyst}
+.Param Tdmin= 1p
+.Param MthOH= 0.9
+.Param MthOL= 0.1
+
+.Param Cdel={Sqrt((Tdelhl+Tdmin)*(Tdellh+Tdmin))/(2.28*(Rdel+1u))}
+.Param Gdlh={Sqrt((Tdelhl+Tdmin)/(Tdellh+Tdmin))/Rdel}
+.Param Gdhl={(Tdellh+Tdmin)/(Tdelhl+Tdmin)*Gdlh}
+
+.Param Cout={Sqrt(Tfall*Trise)/(2.287*(Ro+1u))}
+.Param Gr={Sqrt(Tfall/(Trise+Tdmin))/Ro}
+.Param Gf={(Trise+Tdmin)/Tfall*Gr}
+
+Gthr gnd thr Value= { IF ( V(out,gnd) < {VoutM}, {VthH}, {VthL}) }
+Rthr gnd thr 1
+
+Gouti gnd outi Value= { IF ( (V(inp,inm) > V(thr,gnd)), (VoutH - V(outi,gnd))*Gdlh, (VoutL - V(outi,gnd))*Gdhl )}
+Couti outi gnd {Cdel}
+Routi outi gnd {1e5*Rdel}
+
+Gthro gnd thro Value= { IF ( V(out,gnd) < VoutM, (VoutH-VoutL)*MthOH, (VoutH-VoutL)*MthOL ) }
+Rthro gnd thro 1
+
+Gout gnd out Value= { IF ( (V(outi, gnd) > V(thro,gnd)), (VoutH - V(out,gnd))*Gr, (VoutL - V(out,gnd))*Gf ) }
+Cout out gnd {Cout}
+Rout out gnd {1e5*Rdel}
+.Param Csin= {1n*1m}
+GVCCS2      0 T2 VALUE = {sin(10*2*pi*V(inp,inm))}
+C5          0 T2  {Csin}
+R4          0 T2 1 
+.ENDS
+
+.SUBCKT D_D2_0 1    2
+D1 1 2  DD
+.MODEL DD D( IS=1p N=1.0 RS=0 T_ABS=25)
+.ENDS
+
+
+

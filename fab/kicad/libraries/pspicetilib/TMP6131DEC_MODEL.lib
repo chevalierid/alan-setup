@@ -1,0 +1,96 @@
+* PSpice Model Editor - Version 16.6.0
+
+*$
+* TMP6131DEC
+*****************************************************************************
+* (C) Copyright 2021 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Texas Instruments Inc.
+* Part: TMP6131DEC
+* Date: 10MAY2021
+* Model Type: NA
+* Simulator: PSPICE
+* Simulator Version: 16.6-S084
+* EVM Order Number: NA
+* EVM Users Guide: NA
+* Datasheet: SBOS921E –DEC 2018–REVISED FEB 2020
+* Topologies Supported: NA
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+*
+* Model Usage Notes:
+* 
+* A. The following features have been modeled
+*	1. 	Linear resistance change across temperature
+*	2. 	10-kOhm nominal resistance at 25°C (R25)
+*	3. 	Resistance vs. Ambient Temperature Using Multiple Bias Currents
+*	4. 	Resistance vs. Ambient Temperature Using Multiple Bias Voltages
+*	5. 	Supply Dependence Resistance vs. Bias Current
+*	6. 	Supply Dependence vs. Bias Voltage
+*
+* B. Features have not been modelled
+*	1. TCR vs. Sense Currents (ISNS) and Sense Voltages(VSNS) and thermal 
+*      characteristics of the part have not been modeled.
+*
+*****************************************************************************
+.SUBCKT TMP6131DEC_MODEL 1 2  
+X_H1    2 N00804 N00832 0 TMP6131DEC_MODEL_H1 
+E_E1         N00804 1 VALUE {
++  ((((5.629499534E+15*(V(N00832)*V(N00832)*V(N00832)*V(N00832)*V(N00832)*V(N00832))-
++  2.917664055E+12*(V(N00832)*V(N00832)*V(N00832)*V(N00832)*V(N00832))+
++  6.112951056E+15*(V(N00832)*V(N00832)*V(N00832)*V(N00832)) -
++  4.515440204E+12*(V(N00832)*V(N00832)*V(N00832)) +
++  7.417725084E+08*(V(N00832)*V(N00832)) + 8.508771416E+05*V(N00832) +
++  8.336192299E+03+({temp}*0.4)) +
++  (1.717986918E+10*(V(N00832)*V(N00832)*V(N00832)*V(N00832)*V(N00832))-
++  7.162331756E+13*(V(N00832)*V(N00832)*V(N00832)*V(N00832))+
++  6.248140177E+10*(V(N00832)*V(N00832)*V(N00832)) -
++  2.177439684E+07*(V(N00832)*V(N00832)) + 1.315294750E+04*(V(N00832)) +
++  5.362142672E+01)*{temp} +
++  (1.717986918E+10*(V(N00832)*V(N00832)*V(N00832)*V(N00832)*V(N00832)*V(N00832))+
++  5.820485992E+07*(V(N00832)*V(N00832)*V(N00832)*V(N00832)*V(N00832))+
++  1.265869950E+12*(V(N00832)*V(N00832)*V(N00832)*V(N00832)) -
++  8.707969960E+08*(V(N00832)*V(N00832)*V(N00832)) +
++  1.542910090E+05*(V(N00832)*V(N00832)) + 4.762209856E+01*V(N00832) +
++  1.462123150E-01)*{temp*temp} +
++  (-9.395240960E+08*(V(N00832)*V(N00832)*V(N00832)*V(N00832)*V(N00832)*V(N00832))+
++  1.240601723E+06*(V(N00832)*V(N00832)*V(N00832)*V(N00832)*V(N00832))-
++  3.069250054E+10*(V(N00832)*V(N00832)*V(N00832)*V(N00832)) +
++  2.377880012E+07*(V(N00832)*V(N00832)*V(N00832)) -
++  6.112700022E+03*(V(N00832)*V(N00832)) + 5.682120021E-01*V(N00832) -
++  1.759210000E-04)*{temp*temp*temp} +
++  (-1.966080000E+06*(V(N00832)*V(N00832)*V(N00832)*V(N00832)*V(N00832)*V(N00832))+
++  2.618982400E+03*(V(N00832)*V(N00832)*V(N00832)*V(N00832)*V(N00832))-
++  5.389270169E+07*(V(N00832)*V(N00832)*V(N00832)*V(N00832)) +
++  4.222480029E+04*(V(N00832)*V(N00832)*V(N00832)) -
++  9.606389908E+00*(V(N00832)*V(N00832)) + 2.581479982E-03*V(N00832) +
++  1.533860000E-06)*{temp*temp*temp*temp}+12)*V(N00832))) }
+.ENDS TMP6131DEC_MODEL
+*$
+.subckt TMP6131DEC_MODEL_H1 1 2 3 4  
+H_H1         3 4 VH_H1 1
+VH_H1         1 2 0V
+.ends TMP6131DEC_MODEL_H1
+*$

@@ -1,0 +1,95 @@
+*$
+* TPS56121 & TPS56221
+*****************************************************************************
+* (C) Copyright 2011 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose. The model is
+** provided solely on an "as is" basis. The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+** Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: TPS56121 & TPS56221
+* Date: 12OCT2011
+* Model Type: Average 
+* Simulator: PSpice
+* Simulator Version: 16.0.0.p001
+* EVM Order Number: TPS56121EVM-601 (TPS56121)
+*                   TPS56221EVM-579 (TPS56221)
+* EVM Users Guide: SLVU445 - March 2011 (TPS56121)
+*                  SLVU446 - March 2011 (TPS56221)
+* Datasheet: SLUSAH4 - MARCH 2011 (TPS56121)
+*            SLUSAH5 - MARCH 2011 (TPS56221)
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+***************************************************************************
+.SUBCKT TPS56x21 FB SW COMP VDD VIN GND PARAMS: L=320n Fs=500k
+E_ABM1         N14501718 0 VALUE { 6* V(COMP)/V(VDD)    }
+X_U1         VIN SW GND N14501718 PWMVM PARAMS:  L={L} FS={FS}
+E_E1         COMP GND N14502406 FB 1000
+V_V9         N14502406 GND 0.6
+.ENDS TPS56x21
+*$
+.SUBCKT PWMVM a c p d params: L=2096u Fs=300k
+Xd d dc L1 params: Fs={Fs}
+EVcp cx p Value = { ( V(dc)*V(a,p) ) }
+GIap a p Value = {(V(dc)*I(VM))}
+Ed2 d2X 0 value = { (1 - V(dc)) }
+Xd2 d2X dc d2 L2
+VM cx c
+*
+.ENDS
+*$
+.subckt L1 d dc params: Fs=300k
+Gd 0 dcx VALUE = {V(d)*100u}
+Rdc dcx 0 10k
+* Minimum Controllable ON Time
+V1 clpn 0 {100n * Fs}
+* Maximum Duty Cycle
+V_FSW FSW 0 {Fs}
+E_TABLE DMAX 0 TABLE { V(FSW) } 
++ ( (300k,0.93)(500k,0.9)(1000k,0.85) )
+E2 clpp 0 DMAX 0 1
+D1 clpn dcx dclamp
+D2 dcx clpp dclamp
+Edc dc 0 value={V(dcx)}
+.model dclamp d n=0.0001 
+.ENDS
+*$
+.subckt L2 d2nc d d2c
+*
+Gd 0 d2cx d2nc 0 100u
+Rdc d2cx 0 10k
+V1 clpn 0 7m
+E2 clpp 0 Value = {1-V(d) }
+D1 clpn d2cx dclamp
+D2 d2cx clpp dclamp
+Edc d2c 0 value={V(d2cx)}
+.model dclamp d n=0.0001 
+.ENDS
+*$
+.SUBCKT LDCR IN OUT
++ PARAMs:  L=1u DCR=0.01 
+L             IN 1  {L} 
+RDCR	1 OUT {DCR}
+.ENDS
+*$
+.SUBCKT CESR IN OUT
++ PARAMs:  C=100u ESR=0.01 X=2 
+C	IN 1  {C*X} 
+RESR	1 OUT {ESR/X}
+.ENDS
+*$
+
+
+

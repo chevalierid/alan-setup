@@ -1,0 +1,252 @@
+* LMH6521
+*****************************************************************************
+* (C) Copyright 2011 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: LMH6521
+* Date: 04/06/12
+* Model Type: All In One
+* Simulator: TINA-TI
+* Simulator Version: 9.3.50.40 SF-TI
+* EVM Order Number: N/A 
+* EVM Users Guide: N/A
+* Datasheet: SNOSB47C - May 2011 - Revised September 2011
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 : Release to Web
+*
+*****************************************************************************
+* Notes: 
+* 1. The model conforms to the published specs for:
+*    - Nominal max gain, min gain and gain steps
+*    - Output Noise with a 200 ohm signal source
+*    - Input impedance
+*    - Output impedance
+*    - Enabled & disabled supply current at +5V supply
+*         NOTE: Model is disabled if the power supply is outside 
+*         of the max supply range: 4.75V < Vsupp < 5.25V
+*    - Max output swing
+*    - Singe-tone distortion (HD2/3) and two-tone distortion 
+*      (IMD3, OIP3) versus gain and frequency are close to the 
+*      published specs for the case of a nominal 200 ohm resistive load.
+* 2. Gain: The voltage gain will be slightly lower than nominal for 
+*      driving loads less than 250 ohms.
+* 3. Digital functions: This model provides only a nominal, idealized 
+*      version of the PARALLEL MODE of operation by using a 6 bit
+*      gain control word [B5 B4 B3 B2 B1 B0].
+*    - This model does not provide many of the digital functions 
+*      described in the device data sheet. For example, this model does
+*      not support SERIAL MODE or PULSE MODE gain control. 
+*    - This model does not conform to many of the digital performance 
+*      metrics described in the device data sheet, such as setup time or 
+*      hold time. 
+* 4. Output: This model does not offer the same distortion performance 
+*      versus output load as described in the device data sheet.
+* 5. Rejection ratios: this model does not conform to the published 
+*      specs for PSRR and CMRR. 
+*****************************************************************************
+
+.SUBCKT LMH6521 OUT+ OUT- IN+ IN- B0 B1 B2 B3 B4 B5 EN VCC GRND
+R_R25         HD2- 0  0.5 TC=0,0 
+G_G7         N856659 N856483 N854631 N854661 1
+R_R16         0 N856985  0.5 TC=0,0 
+L_L6         N858717 N856915  132p  
+G_G10         GC+ GC- N856075 N856219 -1
+C_C9         N856483 N854617  1n  TC=0,0 
+X_U4         N855671 N855679 N855215 N855183 LMH6521_LIMITER 
+R_R18         0 N858315  1 TC=0,0 
+R_R14         N855183 0  1 TC=0,0 
+C_C11         N855691 N855219_1  24pF  TC=0,0 
+R_R39        N855219_1 N855219 4  TC=0,0
+R_R10         N858485 N858469  2 TC=0,0 
+G_G2         N856985 N854649 N856091 N856125 -1
+E_E5         OUT 0 OUT+ OUT- 1
+G_G12         HD2+ HD2- N856091 N856125 0.05
+L_L9         0 N854617  66.3p  
+X_U5         N854343 N854423 IN+ IN- B5 B4 B3 B2 B1 B0 EN VCC GRND LMH6521_DIG_ATTEN 
+E_E20        N854343 N8543430 NE20_IN+ 0 1
+E_E21        N854423 N8544230 NE21_IN+ 0 1
+R_E20        NE20_IN+ 0 50
+R_E21        NE21_IN+ 0 50
+E_E15         N854541 N854443 N855663 N855655 1
+L_L7         N858783 N858717  132p  
+R_R36         N854523 N854443  10 TC=0,0 
+G_G3         N857077 N857065 N856195 N856169 1
+G_G11         N858783 N856915 N856921 N856345 1
+C_C4         N857077 N856921  1n  TC=0,0 
+C_C6         N856985 N854631  1n  TC=0,0 
+X_F2         OUT- N855343 IOUT 0 LMH6521_F2 
+E_E16         N855691 N855343 N855671 N855679 1
+R_R17         N854649 0  0.5 TC=0,0 
+R_R4         0 GC+  1 TC=0,0 
+R_R15         N855183 N855215  2 TC=0,0 
+C_C3         N858377 N858315  50p  TC=0,0 
+V_V11         N855229 0 0.35Vdc
+R_R32         0 N858717  0.01 TC=0,0 
+L_L3         N855229 N854523  8.5nH  
+G_G13         GC+ GC- N858783 N856915 1
+R_R19         N858377 0  1 TC=0,0 
+V_V12         N855219 0 0.35Vdc
+G_G9         GC+ GC- HD2+ HD2- 1
+R_R24         0 HD2+  0.5 TC=0,0 
+R_R5         GC- 0  1 TC=0,0 
+G_G4         N858301 N858703 N858469 N858485 1
+G_G1         N858469 N858485 GC+ GC- 1
+R_R20         0 N856659  0.5 TC=0,0 
+R_R27         0 OUT  1k TC=0,0 
+R_R28         0 N857077  0.5 TC=0,0 
+R_R7         0 N855215  1 TC=0,0 
+R_R22         N858377 N858315  2 TC=0,0 
+L_L12         N855753 N855219  8.5nH  
+R_R11         0 N858301  1 TC=0,0 
+R_R29         N857065 0  0.5 TC=0,0 
+R_R37         N855691 N855753  10 TC=0,0 
+G_G6         N855215 N855183 N858315 N858377 1
+R_R6         GC- GC+  2 TC=0,0 
+L_L2         N854667 0  66.3p  
+C_C7         N854649 N854661  1n  TC=0,0 
+R_R33         0 IOUT  1 TC=0,0 
+X_U2         N856075 N856219 N856091 N856125 N856195 N856169 N8544230 N8543430 LMH6521_GAIN 
+L_L4         N856921 0  66.3p  
+C_C2         N858703 N858301  50p  TC=0,0 
+R_R21         N856483 0  0.5 TC=0,0 
+R_R30         0 N858783  0.5 TC=0,0 
+X_U3         N855663 N855655 N855215 N855183 LMH6521_LIMITER 
+G_G8         HD2+ HD2- N854667 N854617 1
+R_R12         N858703 0  1 TC=0,0 
+R_R8         0 N858469  1 TC=0,0 
+C_C8         N856659 N854667  1n  TC=0,0 
+R_R31         N856915 0  0.5 TC=0,0 
+X_F1    N854541 OUT+ 0 IOUT LMH6521_F1 
+R_R13         N858703 N858301  2 TC=0,0 
+C_C1         N858485 N858469  50p  TC=0,0 
+L_L5         0 N856345  66.3p  
+L_L1         N854631 0  66.3p  
+C_C10         N855229_1 N854443  24pF  TC=0,0
+R_R38       N855229 N855229_1  4  TC=0,0
+C_C5         N857065 N856345  1n  TC=0,0 
+G_G5         N858315 N858377 N858301 N858703 1
+R_R9         N858485 0  1 TC=0,0 
+L_L8         0 N854661  66.3p  
+.ends LMH6521
+*$
+.subckt LMH6521_F2 1 2 3 4  
+F_F2         3 4 VF_F2 -0.5
+VF_F2         1 2 0V
+.ends LMH6521_F2
+*$
+.subckt LMH6521_F1 1 2 3 4  
+F_F1         3 4 VF_F1 0.5
+VF_F1         1 2 0V
+.ends LMH6521_F1
+*$
+.SUBCKT LMH6521_LIMITER OUT+ OUT- IN+ IN-
+.PARAM VCM_OUT = 0
+.PARAM LL = -2.5
+.PARAM UL = 2.5
+.PARAM GAIN = 0.5
+EOUT OUT+ OUT- VALUE = {MIN(MAX(GAIN*(V(IN+)-V(IN-)),LL),UL)}
+V1CM N2 0 {VCM_OUT}
+ROUT1+ OUT+ N2 100
+ROUT1- OUT- N2 100
+.ENDS LMH6521_LIMITER
+*$
+.SUBCKT LMH6521_DIG_ATTEN VOUT+ VOUT- IN+ IN- B5 B4 B3 B2 B1 B0 EN VCC GRND
+* B5-B0 are active low digital inputs; Max gain is at [000000]
+* B5 - 16dB Gain Step
+* B4 -  8dB Gain Step  
+* B3 -  4dB Gain Step
+* B2 -  2dB Gain Step
+* B1 -  1dB Gain Step
+* B0 - 0.5dB Gain Step
+.PARAM VCM_OUT = 2.5
+.PARAM VTHRESH_DIG = 0.5
+.PARAM SCALE = {1/1.3}
+.PARAM G_B5 = -16
+.PARAM G_B4 = -8
+.PARAM G_B3 = -4
+.PARAM G_B2 = -2
+.PARAM G_B1 = -1
+.PARAM G_B0 = -0.5
+.PARAM RINT = {5/260e-6}
+.PARAM VINT = {5*60e-6/260e-6}
+.PARAM VCC_MIN = 4.75
+.PARAM VCC_MAX = 5.25
+.PARAM VCC_NOM = 5.0
+EVCC_TEST N_VCC_TEST 0 VALUE = {0.5*(1 - SGN(V(VCC,GRND)-VCC_MIN)*SGN(V(VCC,GRND)-VCC_MAX))}
+VB5 B5n 0 {VINT}
+VB4 B4n 0 {VINT}
+VB3 B3n 0 {VINT}
+VB2 B2n 0 {VINT}
+VB1 B1n 0 {VINT}
+VB0 B0n 0 {VINT}
+RB5 B5 B5n {RINT}
+RB4 B4 B4n {RINT}
+RB3 B3 B3n {RINT}
+RB2 B2 B2n {RINT}
+RB1 B1 B1n {RINT}
+RB0 B0 B0n {RINT}
+VEN ENn 0 {VINT}
+REN EN ENn {RINT}
+EB5 N_B5 0 VALUE = {MIN(MAX(SCALE*(V(B5)-VTHRESH_DIG),0),1)}
+EB4 N_B4 0 VALUE = {MIN(MAX(SCALE*(V(B4)-VTHRESH_DIG),0),1)}
+EB3 N_B3 0 VALUE = {MIN(MAX(SCALE*(V(B3)-VTHRESH_DIG),0),1)}
+EB2 N_B2 0 VALUE = {MIN(MAX(SCALE*(V(B2)-VTHRESH_DIG),0),1)}
+EB1 N_B1 0 VALUE = {MIN(MAX(SCALE*(V(B1)-VTHRESH_DIG),0),1)}
+EB0 N_B0 0 VALUE = {MIN(MAX(SCALE*(V(B0)-VTHRESH_DIG),0),1)}
+EEN N_EN 0 VALUE = {MIN(MAX(SCALE*(V(EN)-VTHRESH_DIG),0),1)}
+E_ATTEN_GAIN_DB N_GAIN_DB 0 VALUE = {G_B5*V(N_B5)+G_B4*V(N_B4)+G_B3*V(N_B3)+G_B2*V(N_B2)+G_B1*V(N_B1)+G_B0*V(N_B0)}
+E_ATTEN_GAIN a1 0 VALUE = {V(N_EN)*V(N_VCC_TEST)*(10^(V(N_GAIN_DB)/20))}
+.PARAM a3 = -1.13e-4
+.PARAM a2 = -4e-5
+.PARAM a0 = 0
+VinCM CM_INT 0 2.5V
+RIN+ IN+ CM_INT 100
+RIN- IN- CM_INT 100
+CIN2 INmid IN- 2.7p
+RIN2 IN+ INmid 200
+E_id DIFF_IN 0 VALUE = {V(IN+) - V(IN-)}
+G_1 VOUT+ VOUT- VALUE = {(a0 + V(a1)*V(DIFF_IN) + a2*PWR(V(DIFF_IN),2) + a3*PWRS(V(DIFF_IN),3))}
+GQ_EN VCC GRND VALUE = {V(N_EN)*V(N_VCC_TEST)*0.113}
+GQ_DIS VCC GRND VALUE = {(1-V(N_EN))*V(N_VCC_TEST)*(0.0175)}
+ROUT1+ VOUT+ N2 1
+ROUT1- VOUT- N2 1
+ROUTp  VOUT+ VOUT- 2
+V1CM N2 0 {VCM_OUT}
+.ENDS LMH6521_DIG_ATTEN
+
+.SUBCKT LMH6521_GAIN OUT1+ OUT1- OUT2+ OUT2- OUT3+ OUT3- IN+ IN-
+.PARAM a0 = 0
+.PARAM a1 = 20
+.PARAM a2 = 0.36
+.PARAM a3 = -3.2
+.PARAM LL = -10
+.PARAM UL = 10
+Eid DIFF_IN 0 VALUE = {V(IN+) - V(IN-)}
+E1 OUT1+ OUT1- VALUE = {MAX(MIN(a1*V(DIFF_IN),UL),LL)}
+E2 OUT2+ OUT2- VALUE = {MAX(MIN(a2*PWR(V(DIFF_IN),2),UL),LL)}
+E3 OUT3+ OUT3- VALUE = {MAX(MIN(a3*PWRS(V(DIFF_IN),3),UL),LL)}
+RE1+ OUT1+ 0 200
+RE1- 0 OUT1- 200
+RE1d OUT1+ OUT1- 400
+RE2+ OUT2+ 0 200
+RE2- 0 OUT2- 200
+RE2d OUT2+ OUT2- 400
+RE3+ OUT3+ 0 200
+RE3- 0 OUT3- 200
+RE3d OUT3+ OUT3- 400
+.ENDS LMH6521_GAIN
+*$

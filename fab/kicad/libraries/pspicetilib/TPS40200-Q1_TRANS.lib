@@ -1,0 +1,345 @@
+* TPS40200-Q1
+*****************************************************************************
+* (C) Copyright 2013 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: TPS40200-Q1
+* Date: 12MAR2013
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p002
+* EVM Order Number: N/A
+* EVM Users Guide: N/A
+* Datasheet: SLUS739D –REVISED JULY 2011
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+.SUBCKT TPS40200-Q1_TRANS RC SS COMP FB GND GDRV ISNS VDD
+xSuvlo vdd run vdd gnd SWhysteTI PARAMS: VT=4.15 VH=0.1 
+XD clk 41 46 gnd OR2B402 
+R6 run gnd 50k
+R7 20 23 1meg
+D7 gnd 23 _DZ 
+D8 gnd 23 _D1_mod 
+.MODEL _DZ D BV=6.95 IBV=1u RS=40k
+.MODEL _D1_mod D BV=8.3 IBV=10u N=1 RS=0
+V2 vdd 20 DC=0.7
+X4 gnd gnd 22 25 29 32 Gnd FFLOP40200 
+EBrc 25 gnd Value= { IF ( V(RC,gnd) < 0.15 , 5 , 0 ) }
+EB2 22 gnd Value={ IF ( V(RC,gnd) > V(Vdd,gnd)/10 , 5 , 0 ) }
+XS2 RC 33 29 gnd  SWhysteTI PARAMS: VT=2 VH=0.1 RON=100 
+Vm 33 gnd
+EBclk clk gnd Value={ IF ( V(RC,gnd) < 0.16 , 5 , 0 ) }
+XSon ref8 SS enable gnd SWhysteTI PARAMS: VT=2 VH=0.1 RON=105K
+XSoff SS gnd 34 gnd  SWhysteTI PARAMS: VT=2 VH=0.1 RON=300k 
+X1 gnd gnd 36 38 34 enable Gnd FFLOP40200
+EBss 38 gnd Value={ IF ( V(SS,gnd) < 0.15 & V(run,gnd) > 2 , 5 , 0 ) }
+EB5 36 gnd Value={ IF (V(Vdd,Isns) > 0.1 , 5 , 0 ) }
+Risns vdd ISNS 100k
+Vst SS 19 DC=0.7 ; was 395m
+EA1 ref8 gnd Value={LIMIT(V(23,gnd),0,8)}
+X5 14 39 40 gnd 41 42 Gnd FFLOP40200
+V6 39 gnd DC=5
+EBIS_VC 40 gnd Value={IF(V(rc,gnd)>(V(comp,gnd)-0.5),5,IF(V(rc,gnd)>V(Vdd,gnd)/10.5,5,0))}
+X3 clk 14 gnd INVB
+EBninv NINV gnd Value={IF(V(19,gnd)<0,0,IF(V(ref,gnd)<0,0,IF(V(19,gnd)<V(ref,gnd),V(19,gnd),V(ref,gnd))))}
+XEA ref8 gnd NINV fb comp enable TPS402AMP
+Ronoff 44 GDRV 26.5
+EBDrv 44 gnd Value={IF(V(46,gnd)<0.5&V(vdd,gnd)-8>0,V(vdd,gnd)-8,IF(V(46,gnd)<0.5&V(vdd,gnd)-8<0,0,V(vdd,gnd)))}
+EBref ref gnd Value={ IF ( V(run,gnd) > 2 , 0.7 , 0 ) }
+.ENDS TPS40200-Q1_TRANS
+*$
+.subckt SWhysteTI NodeMinus NodePlus Plus Minus PARAMS: RON=1 ROFF=1G VT=5 VH=1
+S5 NodePlus NodeMinus 8 0 smoothSW
+EBcrtl 8 0 Value = { IF ( V(plus)-V(minus) > V(ref), 1, 0 ) }
+EBref ref1 0 Value = { IF ( V(8) > 0.5, {VT-VH}, {VT+VH} ) }
+Rdel ref1 ref 100
+Cdel ref 0 100p  IC={VT+VH}
+Rconv1 8 0 10Meg
+Rconv2 plus 0 10Meg
+Rconv3 minus 0 10Meg
+.model smoothSW VSWITCH (RON={RON} ROFF={ROFF} VON=1 VOFF=0)
+.ends SWhysteTI
+*$
+.SUBCKT INVB 1  2 gnd
+*           in out gnd
+EB1 3 gnd Value= { IF ( V(1,gnd) > 2.5 , 300m , 3.5 ) }
+RD 3 2 1
+CD 2 gnd 0.087NF
+.ENDS
+*$
+.SUBCKT OR2B402 1 2 3 gnd
+*           A B Out gnd
+EB1 4 gnd Value= { IF ( (V(1,gnd)>2.5) | (V(2,gnd)>2.5) , 3.5V , 300m ) }
+RD 4 3 1
+CD 3 gnd 0.087NF
+.ENDS
+*$
+.SUBCKT FFLOP40200 1 2 11 12 5 6 Gnd
+*CLK D R S QBAR Q
+X1 7 4 2 8 Gnd NAND3402_0
+X2 8 3 10 9 Gnd NAND3402_0
+X3 1 8 10 7 Gnd NAND3402_1 
+X4 4 9 1 10 Gnd NAND3402_0 
+X5 4 7 6 5 Gnd NAND3402_1 
+X6 5 10 3 6 Gnd NAND3402_0 
+X7 11 4 Gnd INV402 
+X8 12 3 Gnd INV402
+.ENDS
+*$
+.SUBCKT NAND3402_0 1 2 3 4 Gnd
+EB1 5 gnd Value= { IF ( (V(1,gnd)>2.5) & (V(2,gnd)>2.5) & (V(3,gnd)>2.5) , 300m , 3.5V ) }
+R1 5 4 40
+C1 4 gnd 100P IC=0
+.ENDS
+*$
+.SUBCKT NAND3402_1 1 2 3 4 Gnd
+EB1 5 gnd Value= { IF ( (V(1,gnd)>2.5) & (V(2,gnd)>2.5) & (V(3,gnd)>2.5) , 300m , 3.5V ) }
+R1 5 4 40
+C1 4 gnd 100P IC=5
+.ENDS
+*$
+.SUBCKT INV402 1 2 Gnd
+EB1 3 gnd Value= { IF ( V(1,gnd) > 2.5 , 300m , 3.5 ) }
+R1 3 2 10
+C1 2 gnd 100P 
+.ENDS
+*$
+.SUBCKT TPS402AMP  REF8 GND NINV FB  COMP ENABLE
+*                  REF8 GND NINV INV OUT  ENABLE
+* Q1 5 NINV 6 _Q1_MOD
+Q4 39 NINV 40 _Q4_MOD
+.MODEL _Q4_MOD PNP BF=72 IS=1E-18 RE=0
+Q5 41 42 40 _Q1_MOD
+.MODEL _Q1_MOD PNP BF=72 IS=1E-18 RE=0
+R16 39 GND 200K
+R17 41 GND 100K
+Q6 COMP 39 43 _QN
+.MODEL _QN NPN BF=300 IS=1E-14
+R18 43 GND 100
+I1 REF8 COMP DC=250U
+D6 COMP 32 _DN
+.MODEL _DN D
+V14 REF8 32 DC=.7
+C4 39 COMP 7.65P
+V15 FB 42 DC=13M
+R19 COMP 39 140MEG
+GB10 REF8 40 Value={ IF ( V(ENABLE,gnd) > 2 , 20U , 0 ) }
+RGB10 ENABLE gnd 1E11
+R20 45 39 200K
+EB11 45 GND Value={ IF ( V(ENABLE,gnd) < 2 , 5 , 0 ) }
+D7 46 COMP DN5819
+.MODEL DN5819 D BV=5.33E+01 CJO=1.44E-10 EG=0.69
++ IBV=6.00E-04 IS=1.65E-05 M=.671 N=1.41 RS=4.47E-02
++ TT=7.20E-11 VJ=1.45 XTI=2
+V17 46 GND DC=.5
+.ENDS
+*$
+.SUBCKT 40200driver Vdin Out Vdd Gnd
+M1 2 out 6 6 _M1_mod 
+M2 4 2 Gnd Gnd _M2_mod 
+M3 out 4 Gnd Gnd _M3_mod 
+M4 out 7 Vdd Vdd _M4_mod 
+R1 2 Gnd 100k
+R2 Vdin 4 1k
+EB1 Vdd 6 Value={ IF ( V(Vdd,gnd) < 0 , 0 , IF ( V(Vdd,gnd) > 40 , 1.6 , V(Vdd,gnd)*.04 ) ) }
+EB2 Vdd 7 Value={ IF ( V(Vdin,gnd) > 2.5 , 0 , 5 ) }
+RHS out Gnd 200k
+.MODEL _M1_mod PMOS KP=1 VTO=-6.8
+.MODEL _M2_mod NMOS KP=1 RS=26 VTO=1
+.MODEL _M3_mod NMOS KP=1 RD=13 RS=13 VTO=1
+.MODEL _M4_mod PMOS KP=1 RD=26 VTO=-2.5
+cap 4 3 2p
+.ENDS 
+*$
+.SUBCKT LIMIT 1  2 PARAMS: K=1 PLIM=1 NLIM=0
+*Connections: In Out
+*Parameters: K Gain, PLIM Positive rail in Volts, NLIM Negative rail in Volts
+RIN 1 0 1E12
+E1 3 0 0 1 {K}
+RC1 2 4 1MEG
+C1 2 4 1F IC=0
+R1 3 4 1MEG
+E2 2 0 0 4 1E6
+*DIODES WILL HAVE .0597V DROP AT 10V INPUT FOR GAIN=1
+*IDIODE = IS*EXP(.597/.O26)
+VN 5 2 {NLIM-.0597}
+DN 4 5 DN
+.MODEL DN D(IS=1E-12 N=.14319)
+VP 2 6 {PLIM-.0597}
+DP 6 4 DN
+.ENDS
+*$
+.SUBCKT GAIN40200  1 2 
+*Connections: In Out
+E1 2 0 Value={ IF (V(1)*10 < 0 , 0 , V(1)*10 ) }
+.ENDS
+*$
+.SUBCKT DIVIDE40200 1 2 4
+* 10 8 3
+*Connections:  InN InD Out
+* V4 = V1 / V2 ; 1 2 4
+EB1 4 0 Value = { V(1) / (V(2)+1u) }
+*GI1 0 1 10 0 100
+*RR3 0 1 100.0MEG TC=0 0
+*GI3 1 0 POLY(2) 1 0 8 0 0 0 0 0 100 0 0 0 0 0
+*EV1 3 0 1 0 1
+*RR1 0 3 1.0K TC=0 0
+.ENDS
+*$
+.SUBCKT FORWARD VINp Rtn Vc Vout Dr PARAMS: L=33u NC=1 NP=1 RB=10m F=300k EFF=0.95 TS=0 DMAX=0.95
+* VINp RTN VC VOUT Dr
+*Used for voltage or current mode forward converters
+*{L} Output inductance in Henries
+*{NC} Current transformer turns ratio
+*{NP} Power transformer turns ratio
+*{F} Switching frequency in Hz
+*{DMAX} Duty Cycle
+*{EFF} efficiency
+*{RB} Current transformer burden resistor in ohms
+*{TS} Propagation delay time in the current loop
+*
+EBVeff VINp 1 Value={ (1-Eff)*( V(VINp) - V(Rtn) ) }
+*B1 IS INPUT CURRENT
+GB1 1 Rtn Value={ V(Vout)*I(VM1)/(V(1)+.001) }
+*B2 IS PEAK INDUCTOR CURRENT
+EB2 2 Rtn Value={ IF ( V(Vc) > 0 , ((V(Vc) * NC / (NP * RB)) + (((V(1) * NP) - V(Vout)) * TS / L)) , 0 ) }
+*B3 IS MINIMUM INDUCTOR CURRENT
+EB3 3 Rtn Value={ IF ( V(2) - ((V(Vout) * (1 - (V(Vout) / (1u+(V(1) * NP)) ))) / (L * F)) > 0 , 
++ V(2) - ((V(Vout) *(1 - (V(Vout) / (1u+(V(1) * NP)) ))) / (L * F)) , 0 ) }
+*B4 IS OUTPUT CURRENT
+GB4 Rtn 8 Value={ (L * F * ((V(2)*V(2)) - (V(3)*V(3))) / 2) * ((1 / (V(Vout)+1U) ) + 
++(1 / ((V(1) * NP + 1u) - V(Vout)))) }
+*B5 IS DUTY CYCLE
+EB5 Dr Rtn Value={ L * F * (V(2) - V(3)) / (((V(1) * NP) - V(Vout)) + .01) }
+DCLAMP 8 80 D
+.MODEL D D IS=1E-6 N=1 RS=.0001
+EBCLAMP 80 Rtn Value={ (V(1) * NP * DMAX) - .25 }
+VM1 8 Vout
+.ENDS
+*$
+.SUBCKT FDC654P_AEI 10 20 30
+*     TERMINALS:     D  G  S
+M1   1  2  3  3  DMOS L=1U W=1U
+RD  10  1  28.9m
+RS  40  3  2.57m
+RG  20  2  41.7
+CGS  2  3  259p
+EGD 12  0  1  2  1
+VFB 14  0  0
+FFB  1  2  VFB  1
+CGD 13 14  501p
+R1  13  0  1.00
+D1  12 13  DLIM
+DDG 15 14  DCGD
+R2  12 15  1.00
+D2  15  0  DLIM
+DSD  10 3  DSUB
+LS  30 40  2.50n
+.MODEL DMOS PMOS(LEVEL=3 VMAX=62.5k THETA=58.1m
++ ETA=2.00m VTO=-1.9 KP=18.9
+.MODEL DCGD D (CJO=501p VJ=0.600 M=0.680
+.MODEL DSUB D (IS=14.9n N=1.50 RS=13.9m BV=30.0
++ CJO=189p VJ=0.800 M=0.420 TT=207n
+.MODEL DLIM D (IS=100U)
+.ENDS
+*$
+.MODEL Zener1 D BV=6.95 IBV=1u RS=40k
+*$
+.MODEL Zener2 D BV=8.3 IBV=10u N=1 RS=0
+*$
+.MODEL Z12V D(RS=6.0855 BV=11.937 CJO=670.52P TT=20N N=2 IS=1E-9 IBV=10.417M)
+*$
+.SUBCKT FDS4685 20 10 30 50
+*20=DRAIN 10=GATE 30=SOURCE 50=VTEMP
+Rg 10 11x 1
+Rdu 12x 1 1u
+M1 2 1 4x 4x DMOS L=1u W=1u
+.MODEL DMOS PMOS(VTO=-1.7 KP=2.6E+1
++THETA=.1 VMAX=5.5E5 LEVEL=3)
+Cgs 1 5x 1736p
+Rd 20 4 6E-3 
+Dds 4 5x DDS
+.MODEL DDS D(M=5.1E-1 VJ=1.03E-1 CJO=570p)
+Dbody 20 5x DBODY
+.MODEL DBODY D(IS=2.86E-13 N=0.932967 RS=1.3E-4 TT=12.41n)
+Ra 4 2 6E-3
+Rs 5x 5 0.5m
+Ls 5 30 0.5n
+M2 1 8 6 6 INTER
+E2 8 6 4 1 2
+.MODEL INTER PMOS(VTO=0 KP=10 LEVEL=1)
+Cgdmax 7 4 1329p
+Rcgd 7 4 10meg
+Dgd 4 6 DGD
+Rdgd 4 6 10meg
+.MODEL DGD D(M=2.69E-1 VJ=8.56E-3 CJO=1329p)
+M3 7 9 1 1 INTER
+E3 9 1 4 1 -2
+*ZX SECTION
+EOUT 4x 6x poly(2) (1x,0) (3x,0) 0 0 0 0 1
+FCOPY 0 3x VSENSE 1
+RIN 1x 0 1G
+VSENSE 6x 5x 0
+RREF 3x 0 10m
+*TEMP SECTION
+ED 101 0 VALUE {V(50,100)}
+VAMB 100 0 25
+EKP 1x 0 101 0 .012
+*VTO TEMP SECTION
+EVTO 102 0 101 0 .005
+EVT 11x 12x 102 0 1
+*DIODE THEMO BREAKDOWN SECTION
+EBL VB1 VB2 101 0 .08
+VBLK VB2 0 40
+D DB1 20 DBLK
+.MODEL DBLK D(IS=1E-14 CJO=.1p RS=.1)
+EDB 0 DB1 VB1 0 1
+.ENDS FDS4685
+*$
+.MODEL grd D ( is = 5.36639E-006 n = 0.947898 rs = 0.0132545
++ eg = 0.663278 xti = 0.539193 t_measured = 27)
+*$
+.MODEL legd D (is = 1.00002E-015 n = 0.663355 rs = 0.00362975
++ eg = 0.400729 xti = 0.500158 t_measured = 27
++ cjo = 2.15315E-009 vj = 0.7 m = 0.539076 fc = 0.5
++ tt = 2.4663E-010 bv = 44 ibv = 0.1 af = 1 kf = 0)
+*$
+.MODEL MBRS330T3 d
++IS=0.000362927 RS=0.0337803 N=1.54281 EG=0.57107
++XTI=1.06008 BV=30 IBV=0.002 CJO=6.00953e-10
++VJ=0.4 M=0.501749 FC=0.5 TT=0
++KF=0 AF=1
+*$
+.SUBCKT CESR 1 2 PARAMS: C=10u ESR=2m IC=0
+C1 1 INT1 {C} IC = {IC}
+R1 INT1 2 {ESR}
+.ENDS CESR
+*$
+.SUBCKT LDCR IN OUT
++ PARAMs:  L=1u DCR=0.01 IC=0
+L	IN 1  {L} IC={IC}
+RDCR	1 OUT {DCR}
+.ENDS LDCR
+*$

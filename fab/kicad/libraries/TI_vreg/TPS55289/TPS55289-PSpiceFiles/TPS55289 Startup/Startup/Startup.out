@@ -1,0 +1,121 @@
+
+**** 08/31/22 10:15:29 ******* PSpice 17.4.0 (Nov 2018) ******* ID# 0 ********
+
+ ** Profile: "TPS55289 Startup-Startup"  [ C:\Workspace\Bryce_Xun\Simulation\PSpice\Bryce\TPS55289\TPS55289\Release\TPS55289-PSpiceFi
+
+
+ ****     CIRCUIT DESCRIPTION
+
+
+******************************************************************************
+
+
+
+
+** Creating circuit file "Startup.cir" 
+** WARNING: THIS AUTOMATICALLY GENERATED FILE MAY BE OVERWRITTEN BY SUBSEQUENT SIMULATIONS
+
+*Libraries: 
+* Profile Libraries :
+* Local Libraries :
+.LIB "../../../generic_blocks.lib" 
+.LIB "../../../tps55289.lib" 
+* From [PSPICE NETLIST] section of C:\Users\a0497752\AppData\Roaming\SPB_Data\cdssetup\OrCAD_PSpice\17.4.0\PSpice.ini file:
+.lib "nom.lib" 
+
+*Analysis directives: 
+.TRAN  0 5ms 0 20n 
+.OPTIONS ADVCONV
+.PROBE64 V(alias(*)) I(alias(*)) W(alias(*)) D(alias(*)) NOISE(alias(*)) 
+.INC "..\TPS55289 Startup.net" 
+
+
+
+**** INCLUDING "TPS55289 Startup.net" ****
+* source TPS55289
+C_C7         N16778675 SW1  0.1u  TC=0,0 
+C_C11         0 DITH  10n  TC=0,0 
+C_C9         0 N16774071  4.7n  TC=0,0 
+V_V4         MODE 0 {3.3*FPWM}
+C_C5         0 VCC  4.7u  TC=0,0 
+L_L1         SW1 SW2  4.7uH  
+V_V5         EN 0  
++PULSE 0 3 10u 1u 0 1 10
+R_R7         N167740991 0  150k TC=0,0 
+R_R2         ISN ISP  10m TC=0,0 
+C_C8         N16778686 SW2  0.1u  TC=0,0 
+R_R8         ISN 0  {Vout/Iout} TC=0,0 
+C_C3         0 ISP  120u IC=0 TC=0,0 
+R_R5         COMP N16774071  27.4k TC=0,0 
+C_C10         0 COMP  100p  TC=0,0 
+R_R3         ISN FB  {Rup} TC=0,0 
+R_R4         FB 0  {Rup/(Vout/1.2-1)} TC=0,0 
+C_C1         0 VIN  22u  TC=0,0 
+R_R1         0 FSW  50k TC=0,0 
+V_V1         VIN 0 {Vin}
+X_U5         0 N16778675 N16778686 N167740991 COMP DITH EN 0 FB FSW ISN ISP
++  MODE 0 0 0 SW1 SW2 VCC VIN ISP ASSIGNED_TOP_LEVEL PARAMS:  FAST_STARTUP=1000
+.PARAM  vin=5 iout=1 fpwm=1 ss=0 cout=0.75 vout=9 rup=100k
+
+**** RESUMING Startup.cir ****
+.END
+
+**** 08/31/22 10:15:29 ******* PSpice 17.4.0 (Nov 2018) ******* ID# 0 ********
+
+ ** Profile: "TPS55289 Startup-Startup"  [ C:\Workspace\Bryce_Xun\Simulation\PSpice\Bryce\TPS55289\TPS55289\Release\TPS55289-PSpiceFi
+
+
+ ****     INITIAL TRANSIENT SOLUTION       TEMPERATURE =   27.000 DEG C
+
+
+******************************************************************************
+
+
+
+ NODE   VOLTAGE     NODE   VOLTAGE     NODE   VOLTAGE     NODE   VOLTAGE
+
+
+(   EN)    0.0000  (   FB) 1.336E-24  (  FSW)    1.0000  (  ISN) 10.05E-24      
+
+(  ISP) 10.06E-24  (  SW1) 5.005E-12  (  SW2) 5.005E-12  (  VCC)    0.0000      
+
+(  VIN)    5.0000  ( COMP)     .4667  ( DITH)    1.0000  ( MODE)    3.3000      
+
+(N16774071)     .4667                 (N16778675) 10.01E-21                     
+
+(N16778686) 10.01E-21                 (N167740991) 223.2E-27                
+
+
+
+
+    VOLTAGE SOURCE CURRENTS
+    NAME         CURRENT
+
+    V_V4        -4.125E-06
+    V_V5         0.000E+00
+    V_V1        -5.005E-09
+
+    TOTAL POWER DISSIPATION   1.36E-05  WATTS
+
+Reducing minimum delta to make the circuit converge.
+Reducing minimum delta to make the circuit converge.
+Reducing minimum delta to make the circuit converge.
+Reducing minimum delta to make the circuit converge.
+
+          JOB ABORTED
+
+**** 08/31/22 10:15:29 ******* PSpice 17.4.0 (Nov 2018) ******* ID# 0 ********
+
+ ** Profile: "TPS55289 Startup-Startup"  [ C:\Workspace\Bryce_Xun\Simulation\PSpice\Bryce\TPS55289\TPS55289\Release\TPS55289-PSpiceFi
+
+
+ ****     JOB STATISTICS SUMMARY
+
+
+******************************************************************************
+
+
+
+  License check-out time            =     2036.13
+  Total job time (using Solver 1)   =      274.72
+

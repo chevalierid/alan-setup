@@ -1,0 +1,141 @@
+*$
+*TLV803Z
+*****************************************************************************
+* (C) Copyright 2011 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.                                             
+** TI and its licensors and suppliers make no warranties, either expressed                                           
+** or implied, with respect to this model, including the warranties of                                                    
+** merchantability or fitness for a particular purpose. The model is                                                      
+** provided solely on an "as is" basis. The entire risk as to its quality                                                    
+** and performance is with the customer                                                                                          
+*****************************************************************************
+*
+** Released by: Analog eLab(TM) Design Center, Texas Instruments Inc.
+* Part: TLV803Z
+* Date: 05/17/2011
+* Model Type: Transient 
+* Simulator: PSpice 
+* Simulator Version: 16.0.0.p001
+* EVM Order Number: Based on TLV803SEVM-019
+* EVM Users Guide: Based on SLVU461 - May 2011
+* Datasheet: SBVS157 - April 2011
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+***************************************************************************
+.SUBCKT TLV803Z_TRANS GND RESET_N VDD
+G_ABMII3         VDD 0 VALUE { IF(V(VDD) < 0, 0,  
++ IF(V(VDD) < 2.5, V(VDD)*4u,  
++ V(VDD)*2.29u + 4.285u))  }
+E_GAIN1         N435029 0 VALUE {1 * V(OVDRIVE_N)}
+X_U27         OVDRIVE_N OVDRIVE INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+G_ABMII2         N127479 TIMER_RAMP VALUE { V(N128055)     }
+R_R23         N435029 RESET_CTRL_BAR  288.54k  
+X_U25         RESET_CTRL_BAR RESET_CTRL INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+D_D3         RESET_CTRL_BAR N435029 D_D1special 
+C_C25         0 RESET_CTRL_BAR  1u  
+V_V2         N09915 0 1.999
+V_V6         N127917 0 1
+X_U5         VDD_INT N08542 OUT1 COMP_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+E_ABM10         N127973 0 VALUE { (12.514m*pwr(V(N127629),3))+  
++ (13.24m*pwr(V(N127629),2))+  
++ (587.09u*V(N127629))+ 149.15u+  
++ (-0.12723*pwr(V(N127629),4)) }
+R_R16         N146088 N147006  1  
+X_U29         OUT1 VDD_GOOD COMP_OUT AND2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+C_C11         0 N127629  1n  
+R_R11         N167700661 N127629  1  
+X_U16         VDD_GOOD VDDGOOD_N INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+C_C3         0 N08542  1n  
+E_ABM7         N167700661 0 VALUE { LIMIT(2.25-V(VDD_INT) ,0,0.3  
++ )   }
+X_U4         VDD_INT N194185 VDD_VALID COMP_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+C_C15         0 N147006  1n  
+DX_D4         TIMER_RAMP N127479 d_d1 
+R_R6         N167703621 N08542  1  
+X_S8    N16820570 0 RESET_N 0 TLV803Z_TOPLEVEL_S8 
+X_U26         TIMER_RAMP OVDRIVE_N INV_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+R_R2         0 GND  1  
+V_V7         N127479 0 1
+X_S6    COMP_OUT 0 TIMER_RAMP 0 TLV803Z_TOPLEVEL_S6 
+E_ABM2         N167703621 0 VALUE { ((V(OUT1)*-30m) + 2.28)    }
+C_C14         0 N128055  1n  
+E_GAIN2         VDD_INT 0 VALUE {1 * V(VDD)}
+X_U3         VDD_INT N09915 VDD_GOOD COMP_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+C_C12         0 TIMER_RAMP  1n  
+R_R15         N127973 N128055  1  
+V_V3         N194185 0 1.099
+X_U65         N147006 N16820570 BUF_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+X_S7    VDDGOOD_N N127917 TIMER_RAMP N127917 TLV803Z_TOPLEVEL_S7 
+E_ABM14         N146088 0 VALUE { IF(V(VDD_VALID) <0.5,0,  
++ IF(V(VDD_GOOD) <0.5,1,  
++ +V(RESET_CTRL)))  }
+.ENDS TLV803Z_TRANS
+*$
+.subckt TLV803Z_TOPLEVEL_S8 1 2 3 4  
+S_S8         3 4 1 2 _S8
+RS_S8         1 2 1G
+.MODEL         _S8 VSWITCH Roff=60e6 Ron=100 Voff=0.2 Von=0.8
+.ends TLV803Z_TOPLEVEL_S8
+*$
+.subckt TLV803Z_TOPLEVEL_S6 1 2 3 4  
+S_S6         3 4 1 2 _S6
+RS_S6         1 2 1G
+.MODEL         _S6 VSWITCH Roff=100e6 Ron=1 Voff=0.2 Von=0.8
+.ends TLV803Z_TOPLEVEL_S6
+*$
+.subckt TLV803Z_TOPLEVEL_S7 1 2 3 4  
+S_S7         3 4 1 2 _S7
+RS_S7         1 2 1G
+.MODEL         _S7 VSWITCH Roff=100e6 Ron=0.1 Voff=0.2 Von=0.8
+.ends TLV803Z_TOPLEVEL_S7
+*$
+*$
+.SUBCKT AND2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  &  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS AND2_BASIC_GEN
+*$
+*$
+.SUBCKT INV_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS INV_BASIC_GEN
+*$
+*$
+.SUBCKT BUF_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS BUF_BASIC_GEN
+*$
+.SUBCKT COMP_BASIC_GEN INP INM Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5	
+E_ABM Yint 0 VALUE {IF (V(INP) > 
++ V(INM), {VDD},{VSS})}
+R1 Yint Y 1
+C1 Y 0 1n
+.ENDS COMP_BASIC_GEN
+*$
+.MODEL D_D1special D( IS=1e-15 TT=10p Rs=0.05 N=.01  )
+*$
+.MODEL D_D1 D( IS=1e-15 TT=10p Rs=0.05 N=.1  )
+*$

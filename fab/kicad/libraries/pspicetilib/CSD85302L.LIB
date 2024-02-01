@@ -1,0 +1,157 @@
+*$
+* CSD85302L
+***********************************************************************
+* (C) Copyright 2015 Texas Instruments Incorporated. All rights reserved.
+***********************************************************************
+***********************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose. The model is
+** provided solely on an "as is" basis. The entire risk as to its quality
+** and performance is with the customer
+********************************************************************************
+**Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: CSD85302L
+* Date: 12/15/2015
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number:
+* EVM Users Guide:
+* Datasheet: SLPS561 - NOVEMBER 2015
+* Model Version: Final 1.0
+**
+*****************************************************************************
+*Updates:
+*
+* Final 1.0
+* Release to Web
+*
+**********************************************************************
+**********************************************************************
+**********************************************************************
+*                                                                    *
+* CSD85302L   -  PSpice Model for use with OrCAD                     *
+*                                                                    *
+**********************************************************************
+**********************************************************************
+* Characteristics:
+*   Technology:   NCH 30/20
+*   
+**********************************************************************
+* SUBCKT Definition:  1=S1  2=S2  3=G1  4=G2  
+.SUBCKT         CSD85302L       1     2     3     4	 
+X1              D1              3               1               N58897  
+X2              D2              4               2               N58897  
+RD              D1              D2              RTEMP 6.824e-3  
+*RD             D1              D2              RTEMP 6.824e-3  TC1=2.75e-3 TC2=3.00e-6
+*RD             D1              D               RTEMP 8.400e-3  TC1=2.50e-3 TC2=3.00e-6
+.MODEL RTEMP RES (TC1= 2.75e-3   TC2= 3e-6)
+.ends           CSD85302L
+*$
+* SUBCKT Definition:  1=D  2=G  3=S
+.SUBCKT N58897  1 2 3
+* PARAMETER (local) DEFINITIONS SECTION
+ .param          AAN85301       0.2464
+ .param          AAN58897       {0.52/1}
+ .PARAM  ptrc1                  2.25e-3  
+ .PARAM  ptrc2                  03.00e-6
+ .PARAM  pwidthP                {AAN58897/0.8*2}
+ .PARAM  pwidth                 {pwidthP*1e6}
+ .PARAM  perimP                 {2.1*pwidthP}
+ .PARAM  perim                  {perimP*1e6}
+****** MODEL SUBCIRCUIT BEGINS HERE     ******************************
+RDD	1               4               1.6e-3
+RGG     2               5               100
+RSS     6               3               0.1e-3
+M1      4    5    6    6    NMOS    W={pwidthP} L=0.5u  PS={perimP} PD={perimP}
+CGS	5		6		{AAN58897/AAN85301*100e-12} 
+ 
+DBD     6               4               DBD             {AAN58897/AAN85301}
+CDS	4		6		26pF
+ 
+DDG     5               7               DD              {AAN58897/AAN85301}
+RDG	5		7		1e9
+DGD     4               7               DD              {AAN58897/AAN85301}
+RGD	4		7		1e9
+
+*CGD	4		5		44pf	 
+
+DGS     2               8               DDZ
+DSG     9               8               DDZ
+ 
+RESD    9               3               10
+ 
+Rtemp           101             0               1E0 TC=1e-3
+itemp           0               101             DC              1A
+ 
+VA              102             0               DC              27V
+ETDIFF          103             102             value = {(V(101,0)-1)*1000}
+RTTERM          103             0               1e6
+ 
+ggss            2               3               value={1e-6*V(2,3)/ABS(V(2,3))*
++ ((1.46E-11*ABS(V(2,3))*ABS(V(2,3))*ABS(V(2,3))*ABS(V(2,3))*ABS(V(2,3))*ABS(V(2,3))
++ - 2.62E-10*ABS(V(2,3))*ABS(V(2,3))*ABS(V(2,3))*ABS(V(2,3))*ABS(V(2,3))
++ + 1.76E-09*ABS(V(2,3))*ABS(V(2,3))*ABS(V(2,3))*ABS(V(2,3))
++ - 5.46E-09*ABS(V(2,3))*ABS(V(2,3))*ABS(V(2,3))
++ + 7.67E-09*ABS(V(2,3))*ABS(V(2,3))
++ + 1.27E-07*ABS(V(2,3))
++ + 7.89E-12)*V(103,0)*V(103,0)*V(103,0)
++ +(1.84E-09*ABS(V(2,3))*ABS(V(2,3))*ABS(V(2,3))*ABS(V(2,3))*ABS(V(2,3))*ABS(V(2,3))
++ - 3.29E-08*ABS(V(2,3))*ABS(V(2,3))*ABS(V(2,3))*ABS(V(2,3))*ABS(V(2,3))
++ + 2.21E-07*ABS(V(2,3))*ABS(V(2,3))*ABS(V(2,3))*ABS(V(2,3))
++ - 6.85E-07*ABS(V(2,3))*ABS(V(2,3))*ABS(V(2,3))
++ + 9.63E-07*ABS(V(2,3))*ABS(V(2,3))
++ + 1.06E-06*ABS(V(2,3))
++ + 9.88E-10)*V(103,0)*V(103,0)
++ +(2.17E-07*ABS(V(2,3))*ABS(V(2,3))*ABS(V(2,3))*ABS(V(2,3))*ABS(V(2,3))*ABS(V(2,3))
++ - 3.88E-06*ABS(V(2,3))*ABS(V(2,3))*ABS(V(2,3))*ABS(V(2,3))*ABS(V(2,3))
++ + 2.61E-05*ABS(V(2,3))*ABS(V(2,3))*ABS(V(2,3))*ABS(V(2,3))
++ - 8.09E-05*ABS(V(2,3))*ABS(V(2,3))*ABS(V(2,3))
++ + 1.14E-04*ABS(V(2,3))*ABS(V(2,3))
++ + 1.51E-04*ABS(V(2,3))
++ + 1.17E-07)*V(103,0)
++ +1.76E-05*ABS(V(2,3))*ABS(V(2,3))*ABS(V(2,3))*ABS(V(2,3))*ABS(V(2,3))*ABS(V(2,3))
++ - 3.15E-04*ABS(V(2,3))*ABS(V(2,3))*ABS(V(2,3))*ABS(V(2,3))*ABS(V(2,3))
++ + 2.12E-03*ABS(V(2,3))*ABS(V(2,3))*ABS(V(2,3))*ABS(V(2,3))
++ - 6.57E-03*ABS(V(2,3))*ABS(V(2,3))*ABS(V(2,3))
++ + 9.23E-03*ABS(V(2,3))*ABS(V(2,3))
++ + 3.46E-02*ABS(V(2,3))
++ + 9.48E-06)}
+******************************************************************* 
+.MODEL  NMOS   NMOS (
+* CONTROL PARAMETERS
++ LEVEL  = 7             VERSION = 3.2         CAPMOD = 2
++ NLX    = 1.74E-7       VBM    = -5           DVT0   = 2.2
++ DVT1   = 0.53          DVT2   = -0.032       U0     = 350
++ UA     = 6.0e-9        UB     = 0.0e-19      A0     = 0.9
++ AGS    = 0.0           A1     = 0.0          A2     = 0.9
++ LINT   = 0.055e-6      VOFF   = +0.08        NFACTOR= 1.7
++ ETA0   = 0.005         ETAB   = -0.07        DSUB   = 1.4
++ PCLM   = 3.00          PDIBLC1= 0.02         PDIBLC2= 0.004
++ DROUT  = 0.90          PSCBE1 = 3.0e8        PSCBE2 = 1e-6
++ PVAG   = 0.1           DELTA  = 0.0220       JS     = 0
+* AC AND CAPACITANCE PARAMETERS
++ CGSO   = 1.00e-18      CGDO   = 1e-18        CGBO   = 1e-18
++ CJ     = 1e-18         CJSW   = 1e-18        CF     = 0
+* TEMPERATURE PARAMETERS
++ TNOM   = 25            UTE    = -1.5         KT1    = -0.65
++ KT1L   = 1.0e-15       KT2    = 0.022        UA1    = -06.00e-9
++ UB1    = 5.0e-17      
+* PROCESS PARAMETERS
++ TOX    = 2.50e-8       XJ     = 3e-7         NCH    = 1.080e17
++ NSUB   = 1.0e16)
+******************************************************************* 
+.MODEL DBD D (CJO=0.3e-10 VJ=1.0 M=0.3 TNOM=25
++ FC=0.5 TT=2e-09 XTI=0.0 BV=22
++ IS=2.0e-11 N=1.07 RS=1.0e-2 TRS1=4.0e-3)
+*******************************************************************
+.MODEL DD  D (CJO=1.75e-010 VJ=0.9 M=0.50 IS=1e-18 RS=0.1 TNOM=25)
+*******************************************************************
+.MODEL DDZ D (CJO=1e-018 VJ=0.9 M=0.9 IS=1.0e-18 RS=1.0e-3 TNOM=25 bv=11.00)
+*******************************************************************
+.MODEL RTEMP RES (TC1={ptrc1} TC2={ptrc2})
+*******************************************************************
+.ENDS N58897  
+*$

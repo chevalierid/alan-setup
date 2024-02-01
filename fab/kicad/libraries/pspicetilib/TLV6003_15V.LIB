@@ -1,0 +1,88 @@
+*$ 
+* TLV6003_15V
+*****************************************************************************
+* (C) Copyright 2022 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Online Design Tools, Texas Instruments Inc.
+* Part: TLV6003_15V
+* Date: 12AUG2022
+* EVM Order Number: N/A 
+* EVM Users Guide:  N/A 
+* Datasheet: SLOS981 -OCTOBER 2019
+* Parts is a MicroSim product.
+*
+* Model Version: Final 1.1
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.1
+* 1. Updated PSpice Symbol.
+* 2. Added .ENDS name as TLV6003_15V.
+*
+* Final 1.0
+* Release to Web.
+*
+*****************************************************************************
+* Model Usage Notes:
+* 1. Model file is updated with latest header.
+*****************************************************************************
+* CONNECTIONS:       NON-INVERTING INPUT
+*                    | INVERTING INPUT
+*                    | | POSITIVE POWER SUPPLY
+*                    | | | NEGATIVE POWER SUPPLY
+*                    | | | | OUTPUT
+*                    | | | | |
+.SUBCKT TLV6003_15V  1 2 3 4 5
+*****************************************************************************
+c1   11 12 5.9814E-12
+c2    6  7 30.000E-12
+cee  10 99 8.3769E-12
+dc    5 53 dy
+de   54  5 dy
+dlp  90 91 dx
+dln  92 90 dx
+dp    4  3 dx
+egnd 99  0 poly(2) (3,0) (4,0) 0 .5 .5
+fb    7 99 poly(5) vb vc ve vlp vln 0 81.786E6 -1E3 1E3 82E6 -82E6
+ga    6  0 11 12 848.23E-9
+gcm   0  6 10 99 8.4823E-12
+iee  10  4 dc 55.800E-9
+ioff 0 6 dc 3.55e-12
+hlim 90  0 vlim 1K
+q1   11  2 13 qx1
+q2   12  1 14 qx2
+r2    6  9 100.00E3
+rc1   3 11 1.1789E6
+rc2   3 12 1.1789E6
+re1  13 10 251.89E3
+re2  14 10 251.89E3
+ree  10 99 3.5842E9
+ro1   8  5 10
+ro2   7 99 10
+rp    3  4 4.1618E6
+vb    9  0 dc 0
+vc    3 53 dc .88714
+ve   54  4 dc .88714
+vlim  7  8 dc 0
+vlp  91  0 dc 630
+vln   0 92 dc 630
+.model dx D(Is=800.00E-18)
+.model dy D(Is=800.00E-18 Rs=1m Cjo=10p)
+.model qx1 NPN(Is=800.00E-18 Bf=27.900E21)
+.model qx2 NPN(Is=800.0000E-18 Bf=27.900E21)
+.ENDS TLV6003_15V

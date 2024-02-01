@@ -1,0 +1,204 @@
+* PSpice Model Editor - Version 16.0.0
+
+*$
+* TPS3800
+*****************************************************************************
+* (C) Copyright 2009 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warrenties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+*  This model was developed for Texas Instruments Incorporated by:
+*  Logix Consulting, Inc.
+*  http://www.lgx.com. 
+*
+*****************************************************************************
+*
+** Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: TPS3800
+* Date: 01/07/10
+* Model Type: Transient
+* Simulator: PSPICE
+* Simulator Version: 16.0.0.p001
+* EVM Order Number: None
+* EVM Users Guide: None
+* Datasheet: SLVS219D - August 1999 - Revised December 2006
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+.subckt TPS3800 RESET_BAR MR_BAR VDD GND
+*VGND GND 0 0
+R_RPULLUP VDD MR_BAR 30K
+R_DC VDD 0 300K
+M_M186         N16719988 N16719448 N16719548 N16719548 MbreakP  
++ L=300n  
++ W=100u         
+M_M203         N17156046 N16721594 N16719548 N16719548 Minvp  
++ L=300n  
++ W=10u         
+M_M225         N16718890 N16718890 N16718874 N16718874 MbreakN  
++ L=300n  
++ W=650n         
+*V_V45         N16719548 0 2.7Vdc
+V_V45         N16719548 VDD 0.0Vdc
+M_M42         N16720154 N16720154 0 0 MbreakN  
++ L=300n  
++ W=600n         
+M_M230         N16718826 N16719216 N16718838 N16718838 Mbreakp  
++ L=300n  
++ W=4u         
+M_M12         N16718930 N16719208 N16718902 N16718902 Mbreakn  
++ L=600n  
++ W=600n         
+M_M243         N16720752 N16718826 N16718830 N16718830 Mbreakn  
++ L=300n  
++ W=900n         
+M_M204         RESET_BAR N17156046 0 0 Minvn  
++ L=300n  
++ W=44.6u         
+X_E3    0 0 N16720752 VDD SCHEMATIC1_E3 
+M_M26         N16718924 N16718878 N16718838 N16718838 MbreakP  
++ L=300n  
++ W=1.8u         
+M_M205         RESET_BAR N17156046 N16719548 N16719548 Minvp  
++ L=300n  
++ W=70.4510703125u
+*C_C27         0 N16721480 Cbreak 0.03u 
+C_C27         0 N16721480 0.045u 
+M_M196         N16721594 N16721472 0 0 Minvn  
++ L=300n  
++ W=20u         
+M_M46         N16718874 N16718874 N16720154 N16720154 MbreakN  
++ L=300n  
++ W=2500n         
+V_V32         N16719208 0 2.43Vdc
+M_M44         N16718874 N16719212 N16720154 N16720154 Mbreakn  
++ L=300n  
++ W=1000n         
+M_M197         N16721594 N16721472 N16719548 N16719548 Minvp  
++ L=300n  
++ W=20u         
+*R_R43         N16718850 MR_BAR Rbreak 30k
+R_R43         N16718850 MR_BAR 30k
+M_M235         N16718890 N16718890 N16718924 N16718924 MbreakP  
++ L=300n  
++ W=1.8u         
+M_M17         N16718902 N16718902 0 0 Mbreakn  
++ L=300n  
++ W=300n         
+X_E2    0 0 N16718838 N17337198 SCHEMATIC1_E2 
+M_M183         N16719856 N16718826 0 0 MbreakN  
++ L=300n  
++ W=1.8u         
+M_M201         N16719216 N16718890 N16720528 N16720528 MbreakP  
++ L=50u  
++ W=3u         
+M_M198         N16737010 N16782649 0 0 Mbreakn  
++ L=300n  
++ W=100u         
+*R_R34         N16718830 N16720752 Rbreak 23.3k
+R_R34         N16718830 N16720752 19.3K
+*R_R29         0 N16718830 Rbreak 700k
+R_R29         0 N16718830 700k
+M_M47         N16719212 N16719212 N16720154 N16720154 MbreakN  
++ L=300n  
++ W=1000n         
+M_M157         N16719448 N16718850 N16719548 N16719548 MbreakP  
++ L=300n  
++ W=3.6u         
+M_M199         N16737010 N16782649 N16719548 N16719548 Mbreakp  
++ L=300n  
++ W=10u         
+*R_R48         0 N17337198 Rbreak 0.666Meg
+R_R48         0 N17337198 0.666Meg
+M_M45         N16719212 N16718874 N16720154 N16720154 MbreakN  
++ L=300n  
++ W=490n         
+M_M192         N16782649 N16719988 0 0 MbreakN  
++ L=300n  
++ W=50u         
+M_M27         N16720528 N16718930 N16718838 N16718838 Mbreakp  
++ L=300n  
++ W=900n         
+M_M18         N16718878 N16718878 N16718838 N16718838 Mbreakp  
++ L=300n  
++ W=1.8u         
+M_M223         N16719216 N16718890 N16719212 N16719212 MbreakN  
++ L=300n  
++ W=520n         
+V_V47         N17337198 0 6Vdc
+M_M194         N16721472 N16721480 0 0 Minvn  
++ L=330n  
++ W=1000u         
+M_M193         N16782649 N16719988 N16719548 N16719548 MbreakP  
++ L=300n  
++ W=100u         
+M_M185         N16719988 N16719448 0 0 MbreakN  
++ L=300n  
++ W=50u         
+M_M184         N16719448 N16718850 N16719856 N16719856 MbreakN  
++ L=300n  
++ W=1.8u         
+M_M244         0 N16737010 N16721480 N16721480 Mbreakp  
++ L=1u  
++ W=10000u         
+M_M191         N16719448 N16718826 N16719548 N16719548 MbreakP  
++ L=300n  
++ W=3.6u         
+M_M200         N16968826 N16737010 N16721480 N16721480 Mbreakn  
++ L=300n  
++ W=5u         
+M_M25         N16718930 N16718930 N16718838 N16718838 Mbreakp  
++ L=300n  
++ W=1.8u         
+M_M236         N16718826 N16719216 0 0 Mbreakn  
++ L=2000n  
++ W=10u         
+M_M195         N16721472 N16721480 N16719548 N16719548 Minvp  
++ L=300n  
++ W=306u         
+*R_R46         N16968826 N16719548 Rbreak 4600k
+R_R46         N16968826 N16719548 4600k
+M_M202         N17156046 N16721594 0 0 Minvn  
++ L=300n  
++ W=10u         
+M_M11         N16718878 N16718830 N16718902 N16718902 MbreakN  
++ L=500n  
++ W=450n         
+RConv1 N16718902 0 10Meg
+RConv2 N16720154 0 10Meg
+*C_C25         0 N16719216 Cbreak 1.8p 
+C_C25         0 N16719216 0.5p 
+.ends TPS3800
+*$
+.subckt SCHEMATIC1_E3 NV NVC PV PVC  
+E_E3         PV NV PVC NVC 1
+EDUMMY_E3         NODE_E3 0 VALUE ={1} 
++ERROR={ERROR(1==0,"ZERO VALUED COMPONENT")}
+.ends SCHEMATIC1_E3
+*$
+.subckt SCHEMATIC1_E2 NV NVC PV PVC  
+E_E2         PV NV PVC NVC 1
+EDUMMY_E2         NODE_E2 0 VALUE ={1} 
++ERROR={ERROR(1==0,"ZERO VALUED COMPONENT")}
+.ends SCHEMATIC1_E2
+*$
+.model Minvp PMOS LEVEL=7 VERSION=3.2 VTH0=-0.6 PCLM=5.71397147705
+*$
+.model Minvn NMOS LEVEL=7 VERSION=3.2 VTH0=0.5  U0=0.06248 RDSW=50.4 PCLM=2.73
+*$
+.model Mbreakp PMOS 
+*$
+.model Mbreakn NMOS 
+*$

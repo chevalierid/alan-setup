@@ -1,0 +1,122 @@
+*$
+* TPS62290
+*****************************************************************************
+* (C) Copyright 2013 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: TPS62290
+* Date: 21JUN2013
+* Model Type: AVERAGE
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.p001
+* EVM Order Number: TPS62290EVM-279
+* EVM Users Guide: SLVU217 – July 2007
+* Datasheet: SLVS764C – JUNE 2007 – REVISED MARCH 2008
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+.SUBCKT TPS62290_AVG FB GND SW VIN PARAMS: L=2.2U
+.PARAM FS=2.25Meg
+.PARAM CLAMPH=0.98
+E_ABM2         N14496479 0 VALUE { V(VIN)/5    }
+E_ABM1         N14496805 0 VALUE { (1* ((V(COMP))/V(N14496479)))    }
+E_PWMVM_ABM2         PWMVM_FSV 0 VALUE { {FS}    }
+E_PWMVM_L1_ABM4         PWMVM_L1_CLPN 0 VALUE { 0    }
+R_PWMVM_L1_Rdc         PWMVM_L1_DCX 0  10k TC=0,0 
+G_PWMVM_L1_Gdabm         0 PWMVM_L1_DCX VALUE { (V(N14496805) * 100u)    }
+E_PWMVM_L1_ABM3         PWMVM_DC 0 VALUE { (V(PWMVM_L1_DCX) )    }
+X_PWMVM_L1_U19         PWMVM_L1_DCX PWMVM_L1_CLPP d_d1 PARAMS:
+E_PWMVM_L1_ABM5         PWMVM_L1_CLPP 0 VALUE { (V(PWMVM_N14540114))    }
+X_PWMVM_L1_U20         PWMVM_L1_CLPN PWMVM_L1_DCX d_d1 PARAMS:
+X_PWMVM_H1    PWMVM_CX PWMVM_N14543521 PWMVM_VM 0 PWMVM_PWMVM_H1 
+E_PWMVM_ABM5         PWMVM_N14544947 0 VALUE { (0.24*V(PWMVM_DC) + 0.185*(1 -
++  V(PWMVM_DC)))*0.01    }
+G_PWMVM_GIap         VIN GND VALUE { (V(PWMVM_DC) * V(PWMVM_VM))    }
+V_PWMVM_L2_V3         PWMVM_L2_CLPN 0 0.1Vdc
+G_PWMVM_L2_Gdabm         0 PWMVM_L2_D2CX VALUE { (V(PWMVM_D2X) * 100u)    }
+X_PWMVM_L2_U22         PWMVM_L2_CLPN PWMVM_L2_D2CX d_d1 PARAMS:
+X_PWMVM_L2_U21         PWMVM_L2_D2CX PWMVM_L2_CLPP d_d1 PARAMS:
+R_PWMVM_L2_Rdc1         PWMVM_L2_D2CX 0  10k TC=0,0 
+E_PWMVM_L2_ABM7         PWMVM_L2_CLPP 0 VALUE { (1-V(PWMVM_DC) )    }
+E_PWMVM_L2_ABM4         PWMVM_D2 0 VALUE { (V(PWMVM_L2_D2CX) )    }
+E_PWMVM_Evcp         PWMVM_CX GND PWMVM_N14536508 0 1
+V_PWMVM_V3         PWMVM_N14540114 0 {CLAMPH}
+X_PWMVM_U1         PWMVM_N14544947 PWMVM_N14543521 SW VAR_RES 
+E_PWMVM_ABM4         PWMVM_D2X 0 VALUE { (1 - V(PWMVM_DC))    }
+E_PWMVM_ABM3         PWMVM_N14536508 0 VALUE { V(PWMVM_DC) * V(VIN,GND)    }
+G_COMPENSATOR_G2         0 COMPENSATOR_COMP_STAGE2 0 FB {1/160k}
+C_COMPENSATOR_C6         0 COMPENSATOR_COMP_STAGE1  0.5p  
+C_COMPENSATOR_C10         COMPENSATOR_N31880 COMPENSATOR_N31914  7p  
+R_COMPENSATOR_R9         0 COMPENSATOR_COMP_STAGE1  800E6  
+E_COMPENSATOR_GAIN2         COMPENSATOR_N31914 0 VALUE {10 *
++  V(COMPENSATOR_COMP_STAGE2)}
+C_COMPENSATOR_C7         COMPENSATOR_N24741 COMPENSATOR_N24691  7p  
+C_COMPENSATOR_C5         0 COMPENSATOR_N18574  40p  
+R_COMPENSATOR_R12         0 COMPENSATOR_N24741  20k  
+R_COMPENSATOR_R10         COMPENSATOR_N18574 COMPENSATOR_COMP_STAGE1  160k  
+R_COMPENSATOR_R15         0 COMPENSATOR_N31880  20k  
+R_COMPENSATOR_R14         COMPENSATOR_N31880 COMPENSATOR_N31914  150k  
+R_COMPENSATOR_R16         0 COMPENSATOR_COMP_STAGE2  160k  
+R_COMPENSATOR_R11         COMPENSATOR_N24741 COMPENSATOR_N24691  150k  
+E_COMPENSATOR_GAIN1         COMPENSATOR_N24691 0 VALUE {10 *
++  V(COMPENSATOR_COMP_STAGE1)}
+E_COMPENSATOR_SUM1         COMP 0 VALUE 
++ {V(COMPENSATOR_N24741)+V(COMPENSATOR_N31880)}
+G_COMPENSATOR_G1         0 COMPENSATOR_COMP_STAGE1 VREF FB 10u
+C_COMPENSATOR_C9         0 COMPENSATOR_COMP_STAGE2  0.5p  
+V_V30         VREF 0 0.6
+.ENDS TPS62290_AVG
+*$
+.subckt PWMVM_PWMVM_H1 1 2 3 4  
+H_PWMVM_H1         3 4 VH_PWMVM_H1 1
+VH_PWMVM_H1         1 2 0V
+.ends PWMVM_PWMVM_H1
+*$
+.subckt d_d1 1 2
+d1 1 2 dd1
+.model dd1 d
++ is=1e-015
++ tt=1e-011
++ rs=0.05
++ n=0.0001
+.ends d_d1
+*$
+.subckt var_res RVAL INP INM
+VSENSE INP 1
+EDROP 1 INM VALUE={V(RVAL)*I(VSENSE)}
+.ENDS
+*$
+.SUBCKT LDCR IN OUT
++ PARAMs:  L=1u DCR=0.01 IC=0
+L             IN 1  {L} 
+RDCR	1 OUT {DCR}
+.ENDS LDCR
+*$
+*
+.SUBCKT CESR IN OUT
++ PARAMs:  C=100u ESR=0.01 X=2 IC=0
+C	IN 1  {C*X} 
+RESR	1 OUT {ESR/X}
+.ENDS CESR
+*$

@@ -1,0 +1,96 @@
+* OPA820  Unit Gain Low Noise Wide Bandwidth Voltage Feedback Amp
+* REV. A - Created 8/31/04 Rea.Schmid@ti.com
+* REV. B - Created 6/23/06 X-ramus2@ti.com - Diode DX model missing from Netlist
+*
+*
+* NOTES:
+*   1- This macromodel predicts well: DC, small-signal AC,
+*      noise, and transient performance under a wide range
+*      of conditions
+*   2- This macromodel does not predict: distortion
+*      (harmonic, intermod, diff. gain & phase, ...),
+*      temperature effects, board parasitics, differences
+*      between package styles, and process changes
+*   3- This is duplicated for duals.  There is no amplifier crosstalk
+*      included in this simulation package.
+*      
+*      
+*
+* |-------------------------------------------------------------|
+* |  This macro model is being supplied as an aid to            |
+* |  circuit designs.  While it reflects reasonably close       |
+* |  similarity to the actual device in terms of performance,   |
+* |  it is not suggested as a replacement for breadboarding.    |
+* |  Simulation should be used as a forerunner or a supplement  |
+* |  to traditional lab testing.                                |
+* |                                                             |
+* |  Neither this library nor any part may be copied without    |
+* |  the express written consent of Texas Instruments Corp.     |
+* |-------------------------------------------------------------|
+*
+* CONNECTIONS:
+*              Non-Inverting Input
+*              | Inverting Input
+*              | |  Out
+*              | |  |   Positive Supply
+*              | |  |   |  Negative Supply
+*              | |  |   |  |  
+*              | |  |   |  |  
+*              | |  |   |  |  
+*              | |  |   |  |  
+.SUBCKT OPA820 + - Out V+ V- 
+V_V12         17 V- DC 1.10  
+I_I24         25 24 DC 100uA  
+L_L51         0 52  41.5U  
+C_C50         50 52  0.0415F  
+D_D25         0 25 DN3 .25
+D_D24         24 0 DN3 .25
+C_C52         0 51  0.0415F  
+L_L50         50 51  41.5U  
+R_R53         52 51  1MEG  
+E_E71         73 74 POLY(2) 51 52  V+ V-  -785M 1 0.5
+E_E70         70 71 POLY(2) 52 51  V+ V-  -785m 1 0.5
+D_D12         17 16 Da 1
+D_D70         71 Out DX 1
+D_D73         Out 73 DX 1
+I_I12         16 V- DC 1.575mA  
+C_C6         0 3  .9p  
+C_C7         0 -  .9p  
+D_D42         42 40 DX 1
+D_D41         40 41 DX 1
+E_E41         41 0 POLY(1) V+ V- -1.7  0.5  0
+E_E42         42 0 POLY(1) V- V+ 1.7  0.5  0
+V_V1         V+ 10 DC 1.4  
+R_R70         70 V+  28  
+R_R71         V- 74  28  
+Q_Q1         11 3 16 QN 1.0
+G_G50         0 50 POLY(1) 40 0 0  1.0u  0  0
+C_C5         0 40  25f  
+R_R10         11 10  400  
+R_R11         12 10  400  
+R_R1         30 0  160K  
+R_R40         40 0  1K  
+G_G40         0 40 POLY(1) 30 0 0  1E-03  0  0
+G_G30         0 30 POLY(1) 12 11 1m  4.814m  0  0
+C_C2         30 0  20.0p  
+Q_Q2         12 - 16 QN 2
+G_G11         - 0 POLY(2) 24 0 25 0 0 .2M .2M
+D_D20         20 0 DN1 .5
+D_D21         0 21 DN1 .5
+I_I20         21 20 DC 10.5uA  
+E_E11         + 3 POLY(2) 20 0  21 0  .2M .3 .3
+C_C8         11 12  40f  
+*
+.MODEL Da D IS=1.0000E-15
+.MODEL DN1 D(IS=2F AF=1 KF=10.5E-17)
+.MODEL DN3 D( IS=.1F AF=1.0 KF=39.0E-17)
+*
+.MODEL QN NPN IS=7.6E-18 VAF=78.71 VAR=1.452 BF=157
++RB=1.02E02 CJE=0.720E-15 CJC=3.208E-16 KF=9.5e-15 AF=1
+*
+
+.MODEL DX D
++IS=1.0000E-15
+
+.ENDS    OPA820
+$

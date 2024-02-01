@@ -1,0 +1,90 @@
+* SN54AHC244
+*****************************************************************************
+* (C) Copyright 2015 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: SN54AHC244
+* Date: 4/30/2015
+* Model Type: Transient
+* Simulator: Pspice
+* Simulator Version: Pspice 16.2.0.s003
+* EVM Order Number: N/A 
+* EVM Users Guide: N/A
+* Datasheet: SCLS226K,26 November 2013
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 : New model
+*
+*****************************************************************************
+*Notes :
+*
+* 1. The following parameters are being modeled: VIH,VIL,VOH,VOL,IOH,IOL,
+*     Ii,IOZ,ICC,Ci,Co,tpd,ten,tdis.
+*
+******************************************************************************
+*$
+.SUBCKT SN54AHC244 1OE 1A1 2Y4 1A2 2Y3 1A3 2Y2 1A4 2Y1 GND 2A1 1Y4 2A2 1Y3 2A3 1Y2 2A4 1Y1 2OE VCC
+R_R1OE 1OE GND 6e+06 TC=0,0 
+C_C1OE 1OE GND 2p  TC=0,0
+R_R2OE 2OE GND 6e+06 TC=0,0 
+C_C2OE 2OE GND 2p  TC=0,0
+X_U1 1A1 1OE 1Y1 VCC GND SN54AHC244_BUF 
+X_U2 1A2 1OE 1Y2 VCC GND SN54AHC244_BUF 
+X_U3 1A3 1OE 1Y3 VCC GND SN54AHC244_BUF 
+X_U4 1A4 1OE 1Y4 VCC GND SN54AHC244_BUF 
+X_U5 2A1 2OE 2Y1 VCC GND SN54AHC244_BUF 
+X_U6 2A2 2OE 2Y2 VCC GND SN54AHC244_BUF 
+X_U7 2A3 2OE 2Y3 VCC GND SN54AHC244_BUF 
+X_U8 2A4 2OE 2Y4 VCC GND SN54AHC244_BUF
+.ENDS SN54AHC244
+*$
+.subckt SN54AHC244_BUF A OE Y VCC GND
+**************************************************
+ROE11 OE OE_Dbrk11 6.25K
+DOE11 OE_Dbrk11 OE_DL1 DBREAK
+COE11 OE_DL1 GND 1p
+ROE21 OE OE_Dbrk21 5.0K
+DOE21 OE_DL1 OE_Dbrk21 DBREAK
+***************************************************
+ROE12 OE OE_Dbrk12 6.27K
+DOE12 OE_Dbrk12 OE_DL2 DBREAK
+COE12 OE_DL2 GND 1p
+ROE22 OE OE_Dbrk22 5.5K
+DOE22 OE_DL2 OE_Dbrk22 DBREAK 
+***************************************************
+RA1 A A_Dbrk1 3.41K
+DA1 A_DL A_Dbrk1 DBREAK 
+CA1 A_DL GND 1p
+RA2 A A_Dbrk2 3.9K
+DA2 A_Dbrk2 A_DL DBREAK 
+***************************************************
+R_RA A GND 6e+06 TC=0,0
+C_CA A GND 2p TC=0,0
+S1 VCC Y_HI1 A_DL GND SWHIGH1
+.MODEL SWHIGH1 VSWITCH Ron=120 Roff=2.4e+06 Von=2.1V Voff=0.9V
+S2 Y_HI1 Y OE_DL1 GND SWHIGH2
+.MODEL SWHIGH2 VSWITCH Ron=1 Roff=2.4e+06 Voff=2.1V Von=0.9V
+S3 Y Y_LO1 OE_DL2 GND SWLOW1
+.MODEL SWLOW1 VSWITCH Ron=1 Roff=2.4e+06 Von=0.9V Voff=2.1V
+S4 Y_LO1 GND A_DL GND SWLOW2
+.MODEL SWLOW2 VSWITCH Ron=80 Roff=2.4e+06 Von=0.9V Voff=2.1V
+CO Y GND 3.5p TC=0,0
+.MODEL DBREAK D N=0.001 RS=0.001 T_ABS=27
+RCC VCC INT 1.95Meg
+SRCC INT GND OE GND SCC
+.MODEL SCC VSWITCH Von=0.9 Voff=2.1 Ron = 0.9Meg Roff=0.1
+.ENDS SN54AHC244_BUF
+*$

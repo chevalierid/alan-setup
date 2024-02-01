@@ -1,0 +1,87 @@
+*$
+* TPS62130
+*****************************************************************************
+* (C) Copyright 2013 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose. The model is
+** provided solely on an "as is" basis. The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: TPS62130
+* Date: 29JUL2013
+* Model Type: Average
+* Simulator: PSpice
+* Simulator Version: 16.2
+* EVM Order Number: TPS62130EVM-505
+* EVM Users Guide: SLVU437 - October 2011
+* Datasheet: SLVSAG7B - NOVEMBER 2011 – REVISED JUNE 2013  
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web
+*****************************************************************************
+*
+* Application Notes:
+* 
+* 1. Since this is an average model used for AC analysis, 
+*    only the pins affecting AC analysis are modeled.
+* 2. The model is valid only under CCM condition. 
+* 3. The operating quiescent current and thermal properties 
+*    have not been modeled.
+*
+***************************************************************************** 
+
+.SUBCKT TPS62130_AVG AVIN FB VOS SW 
+C_Caux        VOS INNER_FB  20p  
+R_R3         CENTRE SW  667k  
+V_Vref         N14511890 0 0.8
+C_Cff         FB VOS  25p  
+G_G2         0 INNER_REF N14511890 FB 5.3u
+E_ABM6         N14550735 0 VALUE { (V(INNER_REF)-V(INNER_FB))*10    }
+R_R8         N14507380 CENTRE  844.4k  
+X_U2         AVIN SW SW 0 N14550735 CCM_TI_PD PARAMS:  RON=0.05 VD=0.8 RD=0.05
++  VDD=3
+R_Rc         INNER_REF 0  2.4G  
+R_R17         0 N14507380  500k  
+R_Raux         INNER_FB CENTRE  1.337MEG  
+C_Cc         0 INNER_REF  10p  
+.ENDS TPS62130_AVG
+*$
+* CCM Average switch model that includes switch consuction losses
+* Model from Robert W. Erickson, Dragan Maksimovic
+
+.subckt CCM_TI_PD port1 port2 port3 port4 duty params: ron=0.115 vd=0.8 rd=0.05 vdd=3
+
+E_dlim dlim 0 value = {IF(V(DUTY)>0.999,0.999,IF(V(DUTY) < 0.001,0.001,V(DUTY)))}
+E_d_dprime d_dprime 0 value = {(1-V(DLIM))/V(DLIM)}
+Er port1 port1x value = {V(d_dprime)*(V(port3)-V(port4)+vd)}
+Et port1x port2 value = {I(Er)*(ron+V(d_dprime)*rd)/V(dlim)}
+Gd port4 port3 value = {V(d_dprime)*I(Et)}
+.ends CCM_TI_PD
+
+*$
+.SUBCKT LDCR IN OUT
++ PARAMs:  L=1u DCR=0.01 
+L             IN 1  {L} 
+RDCR	1 OUT {DCR}
+.ENDS LDCR
+*$
+.SUBCKT CESR IN OUT
++ PARAMs:  C=100u ESR=0.01 ESL=1n X=2 
+C	IN 1  {C*X} 
+RESR	1 2 {ESR/X}
+LESL    2 OUT {ESL/X}
+.ENDS CESR
+*$
+
+
+

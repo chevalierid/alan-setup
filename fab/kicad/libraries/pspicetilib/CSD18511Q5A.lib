@@ -1,0 +1,124 @@
+*$
+* CSD18511Q5A  
+*****************************************************************************
+* (C) Copyright 2017 Texas Instruments Incorporated. All rights reserved.
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose. The model is
+** provided solely on an "as is" basis. The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: CSD1851Q5A
+* Date: 21DEC2017
+* Model Type: 
+* Simulator: PSPICE
+* Simulator Version: 16.2.0.s003
+* EVM Order Number:
+* EVM Users Guide: 
+* Datasheet: SLPS631 �DECEMBER 2016
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web
+*
+*****************************************************************************
+*
+*****************************************************************************
+*$
+***********************************************
+* PSpice Model Editor - Version 16.6.0
+*$
+* PSpice Model Editor - Version 16.6.0
+*$
+**********************************************************************
+**********************************************************************
+*                                                                    *
+* csd18511q5a   -  PSpice Model for use with OrCAD/Allegro           *
+*                                                                    *
+**********************************************************************
+* Characteristics:
+*   Technology:  n-channel 40/20
+*   Assembly:    QFN5x6
+*
+**********************************************************************
+* Model History
+*
+*   Initial model.     gd 01/30/2017
+*   Updated model,     gd 11/20/2017
+*   
+* SUBCKT Definition:  1=D  2=G  3=S
+**********************************************************************
+.SUBCKT csd18511q5a  1 2 3
+.PARAM  ptrc1   5.75e-3  
+.PARAM  ptrc2   1.44e-5
+.PARAM  pAA	    5.651477
+.PARAM  pwidth  {pAA/0.8*2}
+.PARAM  perim   {2.1*pwidth}
+.PARAM  perimp  {1.01*pwidth}
+.PARAM  pRgate  0.51
+.PARAM  pCJO    59e-12
+M1   10 11 12 12  NMOS	W={pwidth} L=0.65u  PD={perim} PS={perim}
+M2   12 11 12 20  PMOSd W={pwidth} L=0.092u PS={perimp} PD={perimp}
+DDx  20  10  DD
+DBD   8  7	 DBD	{pwidth/2}
+RDB   8  7   8e10
+CGD0  5  7	 0.5e-12
+CGS0  5  8	 4e-12
+CDS0 10 12	 {6.9e-12 * pwidth}
+DGD  14 10	 DD	{pwidth}
+DDG  14  5	 DD	{pwidth}
+RDC  14  5   1e10
+LGG   2  5	 2.0e-9
+RGG   5 11	 {0.5 + pRgate}
+RSB  12  9	 RTEMP 0.01e-3
+RSS   9  8 	 RTEMP 0.10e-3
+RSP   8  6 	 0.01e-4
+LSS   6  3	 0.35E-9
+RDP   4  7	 0.02e-3
+RDD   7 10 	 RTEMP 1.52e-3
+LDD   1  4	 0.1E-9
+*******************************************************************
+.MODEL  NMOS   NMOS (    LEVEL  = 7             Version = 3.2
++ TNOM   = 27            LINT   = 0.060e-6      CAPMOD = 2
++ TOX    = 5.50e-8       NCH    = 1.465e17      NSUB   = 8.0e15
++ AGS    = 0.0           PVAG   = 0.0           VOFFCV = 0.3
++ U0     = 365		 VSAT   = 8.4e4
++ A0     = 1.9           A1     = 0.1           A2     = 1.0
++ UA     = 1.0e-9        UB     = 8e-19         VBM    = -10.0
++ UA1    = 3.3e-9        UB1    =-1e-19         UTE    = -0.15
++ KT1    = -0.72         KT2    = 0.022         KT1L   = 1.0e-10
++ DVT0   = 2.15          DVT1   = 0.54	      DVT2   = -0.033
++ ETA0   = 0.05          ETAB   = -0.07         XJ     = 3e-7
++ PDIBLC1= 1.20          PDIBLC2= 0.750         NLX    = 1.74e-7
++ PSCBE1 = 4.2e8         PSCBE2 = 4e-6          PCLM   = 1.3
++ VOFF   = -0.34         NFACTOR= 1.70          JS     = 0
++ DROUT  = 0.88          DSUB   = 0.90          DELTA  = 0.02
++ CJ     = 1e-18         CJSW   = 1e-18         CF     = 0
++ CGSO   = 7e-12         CGDO   = 15e-12        CGBO   = 0   )
+*******************************************************************
+.MODEL  PMOSd   PMOS (   LEVEL  = 3
++ TNOM   = 27            VTO    = -5            IS     = 1.0e-18
++ TOX    = 5.5e-8        NSUB   = 1e16
++ CJ     = 1e-18         CJSW   = 1e-18 
++ CGSO   = 1e-18         CGDO   = 1e-18         CGBO   = 0  )
+*******************************************************************
+.MODEL DBD D (CJO=590e-12 VJ=0.99 M=1.14 FC=0.5 TT=3e-09 TNOM=27
++  IS=4.0e-12 N=1.060 RS=6.8e-3 TRS1=3.1e-3 TRS2=-5.0e-6 XTI=3.2 
++  BV=43.7 TBV1=9.0e-4 TBV2=-2.3e-6 NR=3.5 ISR=2.75e-10)
+*******************************************************************
+.MODEL DD  D (CJO={2*pCJO} VJ=0.65 M=1.55 IS=1e-15 RS=10 TNOM=27 
++  FC=0.90 BV=50)
+*******************************************************************
+.MODEL RTEMP RES (TC1={ptrc1} TC2={ptrc2})
+*******************************************************************
+.ENDS csd18511q5a
+*
+*$

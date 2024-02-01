@@ -1,0 +1,305 @@
+* MSP430FG6626_OA 
+*****************************************************************************
+* (C) Copyright 2012 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+** Released by: WEBENCH(R) Design Center, Texas Instruments Inc.
+* Part: MSP430FG6626_OA
+* Date: 05/12/15
+* Model Type: All In One
+* Simulator: Pspice
+* Simulator Version: Pspice 16.2.0.p001
+* EVM Order Number: N/A 
+* EVM Users Guide: N/A
+* Datasheet: SLAS874 - April 2105
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Version 1.0 : Release to Web
+*
+*****************************************************************************
+* Notes: 
+* The model consists of an op amp with the inputs connected to switches as shown
+* in the data sheet diagram. Switches are bascially ideal, with the specified 
+* RON and ROFF.The model uses the same or similar designations as the data sheet 
+* for inputs and outputs.
+*
+* 1. The following op amp parameters are modeled:
+*    IOA, VOS, dVOS/dT, dVOS/dV, Cin, PSRR_DC, CMRR_DC, input voltage noise, 
+*    AOL, GBW, slew rate, output swing.
+* 2. The following opamp paramteres are not modeled:
+*    charge pump, enable/disable time
+* 3. The following opamp and ground switch parameters are modeled:
+*    RON, ROFF
+* 4. The following opamp and ground switch parameters are not modeled:
+*    ILKG, Iin, enable/disable time
+* 5. The internal switches are turned ON with 1Vdc and OFF with 0Vdc.
+*****************************************************************************
+*
+*
+*
+*
+*$
+.SUBCKT MSP430FG6626_OA OAxO OAxIP0 OAxIN0 GxSW0 GxSW1 DAC0 DAC1 AVCC AVSS1
++ NSW0 NSW1 NSW2 NSW3 NSW4 PSW0 PSW1 PSW2 PSW3 GSW0 GSW1
+***
+X_SWP0    PSW0 AVSS1 OAxIP0 INP DEV_wSW_SCH_SWP0 
+C_C1         N68153 AVSS1  0.1p  TC=0,0 
+X_SWP3    PSW3 AVSS1 N68153 INP DEV_wSW_SCH_SWP3 
+X_SGW0    GSW0 AVSS1 GXSW0 AVSS1 DEV_wSW_SCH_SGW0 
+X_SWN0    NSW0 AVSS1 OAxIN0 INN DEV_wSW_SCH_SWN0 
+C_U1_C4         INN INP  2.5p  TC=0,0 
+E_U1_E2         U1_N61051 0 AVSS1 0 1
+E_U1_E5         U1_INPUTP_CMRR U1_INPUTP_ICMR U1_OUT_CMRR U1_GNDF 0.5
+X_U1_U37         U1_INPUTP_CMRR U1_INPUT_VOS U1_VICM AVCC AVSS1 U1_GNDF VOS 
+X_U1_U35         U1_INPUT_OUTP U1_INPUT_VOS vnse 
+X_U1_U40         U1_INPUTP_GBW U1_INPUTN_GBW U1_INPUT_VCLAMP U1_EN U1_GNDF
++  GBW_SLEW 
+X_U1_U43         U1_INPUT_VIMON OAXO U1_VIMON U1_GNDF AMETER 
+G_U1_G1         U1_OUT_CMRR U1_GNDF U1_VICM U1_GNDF -0.3e-6
+X_U1_U34         U1_VICM INP INN U1_GNDF VICM 
+X_U1_U39         U1_INPUTP_GBW U1_INPUTN_GBW AVCC AVSS1 U1_INPUTP_ICMR
++  U1_INPUTN_ICMR U1_EN U1_GNDF ICMR 
+R_U1_R1         U1_N61125 U1_N61045  1e6 TC=0,0 
+R_U1_R4         INN U1_INPUT_OUTN  1 TC=0,0 
+V_U1_V1         U1_EN U1_GNDF 1Vdc
+R_U1_R2         U1_N61051 U1_N61125  1e6 TC=0,0 
+X_U1_U42         AVCC AVSS1 U1_INPUT_VCLAMP U1_INPUT_ZOUT U1_VIMON U1_GNDF
++  VCLAMP_W_SENSE 
+R_U1_R11         U1_INPUT_ZOUT U1_INPUT_VIMON  100 TC=0,0 
+C_U1_C1         0 U1_N61125  1m  TC=0,0 
+X_U1_U38         AVCC AVSS1 U1_INPUT_OUTN U1_INPUTN_CMRR U1_GNDF PSRR 
+R_U1_R3         INP U1_INPUT_OUTP  1 TC=0,0 
+E_U1_E3         U1_GNDF 0 U1_N61125 0 1
+R_U1_R5         U1_N114739 U1_GNDF  1 TC=0,0 
+X_U1_U33         AVCC AVSS1 U1_EN U1_VIMON U1_GNDF IQ 
+C_U1_C2         INN U1_GNDF  3p  TC=0,0 
+E_U1_E1         U1_N61045 0 AVCC 0 1
+L_U1_L1         U1_OUT_CMRR U1_N114739  0.8uH  
+C_U1_C3         U1_GNDF INP  3p  TC=0,0 
+E_U1_E4         U1_INPUTN_CMRR U1_INPUTN_ICMR U1_OUT_CMRR U1_GNDF -0.5
+X_SWN4    NSW4 AVSS1 OAXO INN DEV_wSW_SCH_SWN4 
+X_SWN2    NSW2 AVSS1 GXSW0 INN DEV_wSW_SCH_SWN2 
+X_SWP1    PSW1 AVSS1 DAC1 INP DEV_wSW_SCH_SWP1 
+X_SWN1    NSW1 AVSS1 GXSW1 INN DEV_wSW_SCH_SWN1 
+C_C3         AVSS1 N71338  0.1p  TC=0,0 
+X_SWN3    NSW3 AVSS1 N71338 INN DEV_wSW_SCH_SWN3 
+X_SWP2    PSW2 AVSS1 DAC0 INP DEV_wSW_SCH_SWP2 
+X_SQW1    GSW1 AVSS1 GXSW1 AVSS1 DEV_wSW_SCH_SQW1 
+.ENDS
+*$
+*
+.subckt DEV_wSW_SCH_SWP0 1 2 3 4  
+S_SWP0         3 4 1 2 _SWP0
+RS_SWP0         1 2 1G
+.MODEL         _SWP0 VSWITCH Roff=100e6 Ron=1e3 Voff=0.0V Von=1.0V
+.ends DEV_wSW_SCH_SWP0
+*$
+*
+.subckt DEV_wSW_SCH_SWP3 1 2 3 4  
+S_SWP3         3 4 1 2 _SWP3
+RS_SWP3         1 2 1G
+.MODEL         _SWP3 VSWITCH Roff=100e6 Ron=1e3 Voff=0.0V Von=1.0V
+.ends DEV_wSW_SCH_SWP3
+*$
+*
+.subckt DEV_wSW_SCH_SGW0 1 2 3 4  
+S_SGW0         3 4 1 2 _SGW0
+RS_SGW0         1 2 1G
+.MODEL         _SGW0 VSWITCH Roff=100e6 Ron=9.5 Voff=0.0V Von=1.0V
+.ends DEV_wSW_SCH_SGW0
+*$
+*
+.subckt DEV_wSW_SCH_SWN0 1 2 3 4  
+S_SWN0         3 4 1 2 _SWN0
+RS_SWN0         1 2 1G
+.MODEL         _SWN0 VSWITCH Roff=100e6 Ron=1e3 Voff=0.0V Von=1.0V
+.ends DEV_wSW_SCH_SWN0
+*$
+*
+.subckt DEV_wSW_SCH_SWN4 1 2 3 4  
+S_SWN4         3 4 1 2 _SWN4
+RS_SWN4         1 2 1G
+.MODEL         _SWN4 VSWITCH Roff=100e6 Ron=1e3 Voff=0.0V Von=1.0V
+.ends DEV_wSW_SCH_SWN4
+*$
+*
+.subckt DEV_wSW_SCH_SWN2 1 2 3 4  
+S_SWN2         3 4 1 2 _SWN2
+RS_SWN2         1 2 1G
+.MODEL         _SWN2 VSWITCH Roff=100e6 Ron=1e3 Voff=0.0V Von=1.0V
+.ends DEV_wSW_SCH_SWN2
+*$
+*
+.subckt DEV_wSW_SCH_SWP1 1 2 3 4  
+S_SWP1         3 4 1 2 _SWP1
+RS_SWP1         1 2 1G
+.MODEL         _SWP1 VSWITCH Roff=100e6 Ron=1e3 Voff=0.0V Von=1.0V
+.ends DEV_wSW_SCH_SWP1
+*$
+*
+.subckt DEV_wSW_SCH_SWN1 1 2 3 4  
+S_SWN1         3 4 1 2 _SWN1
+RS_SWN1         1 2 1G
+.MODEL         _SWN1 VSWITCH Roff=100e6 Ron=1e3 Voff=0.0V Von=1.0V
+.ends DEV_wSW_SCH_SWN1
+*$
+*
+.subckt DEV_wSW_SCH_SWN3 1 2 3 4  
+S_SWN3         3 4 1 2 _SWN3
+RS_SWN3         1 2 1G
+.MODEL         _SWN3 VSWITCH Roff=100e6 Ron=1e3 Voff=0.0V Von=1.0V
+.ends DEV_wSW_SCH_SWN3
+*$
+*
+.subckt DEV_wSW_SCH_SWP2 1 2 3 4  
+S_SWP2         3 4 1 2 _SWP2
+RS_SWP2         1 2 1G
+.MODEL         _SWP2 VSWITCH Roff=100e6 Ron=1e3 Voff=0.0V Von=1.0V
+.ends DEV_wSW_SCH_SWP2
+*$
+*
+.subckt DEV_wSW_SCH_SQW1 1 2 3 4  
+S_SQW1         3 4 1 2 _SQW1
+RS_SQW1         1 2 1G
+.MODEL         _SQW1 VSWITCH Roff=100e6 Ron=9.5 Voff=0.0V Von=1.0V
+.ends DEV_wSW_SCH_SQW1
+*$
+*
+*
+.SUBCKT VNSE 1 2 
+.PARAM NLF = 87 
+.PARAM FLW = 100  
+.PARAM NVR = 25
+.PARAM GLF={PWR(FLW,0.25)*NLF/1164}
+.PARAM RNV={1.184*PWR(NVR,2)}
+.MODEL DVN D KF={PWR(FLW,0.5)/1E11} IS=1.0E-16
+* END CALC VALS
+I1 0 7 10E-3
+I2 0 8 10E-3
+D1 7 0 DVN
+D2 8 0 DVN
+E1 3 6 7 8 {GLF}
+R1 3 0 1E9
+R2 3 0 1E9
+R3 3 6 1E9
+E2 6 4 5 0 10
+R4 5 0 {RNV}
+R5 5 0 {RNV}
+R6 3 4 1E9
+R7 4 0 1E9
+E3 1 2 3 4 1
+C1 1 0 1E-15
+C2 2 0 1E-15
+C3 1 2 1E-15
+.ends
+*$
+*
+*
+.SUBCKT VOS OUT IN VICM VCC VEE GNDF
+.PARAM SCALE = 1e-6
+.PARAM DRIFT = 1
+.PARAM VICM_SHIFT = 3
+.PARAM VCC_SHIFT = 1
+.PARAM VOS_TYP = 2000
+EDRIFT NDRIFT 0 VALUE = {DRIFT*(TEMP - 27)}
+ESHIFT NSHIFT 0 VALUE = {VICM_SHIFT*V(VICM,GNDF)}
+EVCC NVCC 0 VALUE = {V(VCC,VEE)}
+EVCCSHIFT NVCCSHIFT 0 VALUE = {VCC_SHIFT*(V(NVCC) - 5.5)}
+EVOS OUT IN VALUE = {SCALE*(VOS_TYP + V(NDRIFT) + V(NSHIFT) + V(NVCCSHIFT))}
+.ENDS
+*$
+*
+*
+.SUBCKT GBW_SLEW  VIP  VIM  VO  SHDN GNDF 
+.PARAM Aol = 95  
+.PARAM GBW = 8e5  
+.PARAM SRP = 0.4e6  
+.PARAM SRN = 0.4e6 
+.PARAM IT = 0.001
+.PARAM PI = 3.141592
+.PARAM IP = {IT*MAX(1,SRP/SRN)}
+.PARAM IN = {IT*MIN(-1,-SRN/SRP)}
+.PARAM CC = {IT*MAX(1/SRP,1/SRN)}
+.PARAM FP = {GBW/PWR(10,AOL/20)}
+.PARAM RC = {1/(2*PI*CC*FP)}
+.PARAM GC = {PWR(10,AOL/20)/RC}
+G1p GNDF OUTG1p VALUE = {MAX(MIN(GC*V(SHDN,GNDF)*V(VIP,VIM),IP),IN)}
+G1n OUTG1n GNDF VALUE = {MAX(MIN(GC*V(SHDN,GNDF)*V(VIP,VIM),IP),IN)}
+G1OUT GNDF VO VALUE = {V(SHDN,GNDF)*V(OUTG1p,OUTG1n)}
+RG1p OUTG1p GNDF {0.5*RC}
+Cg1dp OUTG1p GNDF {2*CC}
+RG1n OUTG1n GNDF {0.5*RC}
+Cg1dn OUTG1n GNDF {2*CC}
+ROUT VO GNDF 1
+.ENDS
+*$
+*
+.SUBCKT AMETER  VI  VO VIMON GNDF
+.PARAM GAIN = 1
+VSENSE VI VO DC = 0
+EMETER VIMON GNDF VALUE = {I(VSENSE)*GAIN}
+.ENDS
+*$
+*
+.SUBCKT VICM OUT INP INN GNDF
+EOUT OUT GNDF VALUE = {0.5*(V(INP,GNDF) + V(INN,GNDF))}
+.ENDS
+*$
+*
+.SUBCKT ICMR   VOP VOM VDD VSS VIP VIM SHDN GNDF 
+.PARAM VMAX = 0.1 
+.PARAM VMIN = 0.1
+ECLAMPP  VOP GNDF VALUE = {LIMIT(V(VIP,GNDF),V(VDD,GNDF) - VMAX, V(VSS,GNDF) + VMIN)}
+ECLAMPM  VOM GNDF VALUE = {LIMIT(V(VIM,GNDF),V(VDD,GNDF) - VMAX, V(VSS,GNDF) + VMIN)}
+.ENDS
+*$
+*
+.SUBCKT VCLAMP_W_SENSE  VDD  VSS  VI  VO VIMON  GNDF
+.PARAM SCALEP = 1
+.PARAM SCALEN = 1
+.PARAM ISC = 2.5
+.PARAM ROS = 100
+.PARAM RM = 0.025
+.PARAM REQ = {ROS-RM}
+EPCLIP  VDD_CLP GNDF VALUE = {V(VDD,GNDF) - 0.005}
+ENCLIP  VSS_CLP GNDF VALUE = {V(VSS,GNDF) + 0.005}
+ECLAMP  VO GNDF VALUE = {LIMIT(V(VI,GNDF), V(VDD_CLP,GNDF), V(VSS_CLP,GNDF))}
+.ENDS
+*$
+*
+.SUBCKT PSRR  VDD  VSS  VI  VO  GNDF 
+.PARAM PSRR = 86 
+.PARAM fpsrr = 1
+.PARAM PI = 3.141592
+.PARAM RPSRR = 1
+.PARAM GPSRR = {PWR(10,-PSRR/20)/RPSRR}
+.PARAM LPSRR = {RPSRR/(2*PI*fpsrr)}
+G1  GNDF 1 VDD VSS {GPSRR}
+R1  1 2 {RPSRR}
+L1  2 GNDF {LPSRR} 
+E1  VO VI 1 GNDF 1
+C2  VDD VSS 10P 
+.ENDS
+*$
+*
+.SUBCKT IQ VCC VEE SHDN VIMON GNDF
+.PARAM IQ_NOM = 105e-6
+.PARAM IQ_SHDN = 8.5p
+.PARAM Geq = 1u
+GVAR VCC VEE VALUE = {(V(SHDN,GNDF)+ 1e-9)*Geq}
+GIQ VCC VEE VALUE = {V(SHDN,GNDF)*IQ_NOM + (1-V(SHDN,GNDF))*IQ_SHDN}
+GOUTP VCC GNDF VALUE = {IF(V(VIMON,GNDF) > 0, V(VIMON,GNDF)*V(SHDN,GNDF),0)}
+.ENDS
+*$

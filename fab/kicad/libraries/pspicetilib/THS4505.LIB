@@ -1,0 +1,188 @@
+
+* THS4505
+*****************************************************************************
+* (C) Copyright 2011 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer.
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: Analog eLab Design Center, Texas Instruments Inc.
+* Part: THS4505
+* Date: 27JUL2011
+* Model Type: ALL IN ONE
+* Simulator: PSPICE
+* Simulator Version: 16.0.0.p001
+* EVM Order Number: N/A
+* EVM Users Guide: N/A
+* Datasheet: SLOS363D – AUGUST 2002 – REVISED MAY 2008
+*
+* Model Version: 1.0
+*
+*****************************************************************************
+* 
+* Updates:
+*
+* Version 1.0 : 
+* Release to Web
+*
+*****************************************************************************
+* NOTES:
+*   1- This macromodel predicts well: DC, small-signal AC,
+*      and transient performance under a wide range of
+*      conditions
+*   2- This macromodel does not predict well: distortion
+*      (harmonic, intermod, diff. gain & phase, ...),
+*      noise, temperature effects, board parasitics, differences
+*      between package styles, and process changes
+*
+* connections:   non-inverting input
+*                | inverting input
+*                | | positive power supply
+*                | | | negative power supply
+*                | | | | outputn
+*                | | | | | outputp
+*                | | | | | | Vocm
+*                | | | | | | |
+*                | | | | | | |
+*****************************************************************************
+.subckt THS4505  1 2 3 4 5 6 7
+
+*Offset
+  Vos  1  9  .004
+  Ios  1  2  .25u
+
+* upper Vic range limit
+  Vcp   3 16 dc 3.9
+  Drc  17 16 dx
+  Fcp  10  4 Vcp 10
+  Rcp  10 17 10000
+
+
+* input stage
+  rc1  3 11 176.8
+  rc2  3 12 176.8
+*  c1   11 12 2.2p
+  q1   11 2 13 qx1
+  q2   12  9 14 qx1
+  re1  13 10 170.5
+  re2  14 10 170.5
+  Cdif  1  2  1p
+  Ccm   2 99  0.4p
+
+* lower Vic range limit
+  d10  15 10 dx
+  v10  15  4 dc -.8
+
+* dc bias settings
+  Iee  10  4 dc 3e-3
+  Icc   3  4  9m
+  Rcc   3  4  2500
+  egnd  99  0  poly(2)  3  0  4  0  0 .5  .5
+
+* gain stage and dominant pole
+  ga   21 22 11 12 -5.6549E-3
+  ca    21 21a 3.5E-12
+  raz   21a 22 .00500
+  rap   21 99 50E3
+  ran   22 99 50E3
+
+* GAIN STAGE SWING LIMIT
+  DPC1  21 23 dx
+  DPC2  22 23 dx
+  VPC    3 23 1.7
+  DNC1  24 21 dx
+  DNC2  24 22 dx
+  VNC   24  4  1.74
+
+* phase shift stage
+  gps   27 29 21 22 -50.0E-6
+  rpsp   27 28 10.0E3
+  rpsn   29 28 10.0E3
+*  cps   27 29 7E-15
+  cps   27 29 20E-15
+
+* Output stages
+  Xp_OP  27 99  3  4  6 THS4505_OP
+  Xn_OP  29 99  3  4  5 THS4505_OP
+
+* Common mode output control
+  X_Vcm  7  99  5  6  28 VOCM
+* Diode Models
+.model dx D(Is=800.00E-18)
+* Transistor Models
+.model qx1 NPN(Is=800.00E-18 Bf=375)
+.ends
+*$
+
+* VCM
+* connections:      Vocm
+*                   | Egnd
+*                   | | outputn
+*                   | | | outputp
+*                   | | | | Vcm
+*                   | | | | |
+.subckt VOCM        1 2 3 4 5
+
+  rcmp   3  6  10k
+  rcmn   4  6  10k
+  ccmp   3  6  2.5p
+  ccmn   4  6  2.5p
+  rcm    1  2  50k
+  gcm    5  2  1  6  -31.6
+  rocm   5  2  10
+  cocm   5  2  27n
+
+
+.ends
+*$
+
+* Output stage
+* connections:      non-inverting input
+*                   | inverting input
+*                   | | positive power supply
+*                   | | | negative power supply
+*                   | | | | output
+*                   | | | | |
+.subckt THS4505_OP  1 2 3 4 5
+* GAIN STAGE SWING LIMIT
+  DOPC   1 38  dx
+  VOPC   3 38  1.
+  DONC  48  1  dx
+  VONC  48  4  1.
+
+* UPPER DRIVE STAGE
+  ROP   3  34  8.5
+  HLP2 34  33  VLP 30
+  VOP  33  32  0
+  HLP1 35   0  VOP  8
+  RLP  35  36  8
+  DLP  36  37  dx
+  VLP  37   0  0
+  EOP  32  31  Poly(2)   2  1  3  4  -.8  1  .5
+  DOP  31   5  dx
+
+* LOWER DRIVE STAGE
+  DON   5  41  dx
+  EON  41  42  Poly(2)   1  2  3  4  -.8  1  .5
+  VON  42  43  0
+  HLN1 45   0  VON  15
+  RLN  45  46  8
+  DLN  46  47  dx
+  VLN  47   0  0
+  HLN2 43  44  VLN 45
+  RON  44   4  12
+* Diode Models
+.model dx D(Is=800.00E-18)
+
+.ends
+*$

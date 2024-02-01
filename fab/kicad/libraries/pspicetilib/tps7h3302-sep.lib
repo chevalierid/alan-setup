@@ -1,0 +1,373 @@
+*$ TPS7H3302-SEP
+*****************************************************************************
+*  (C) Copyright 2022 Texas Instruments Incorporated. All rights reserved.
+***********************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of
+** merchantability or fitness for a particular purpose. The model is
+** provided solely on an "as is" basis. The entire risk as to its quality
+** and performance is with the customer
+********************************************************************************
+* Released by: Texas Instruments Inc.
+* Part: TPS7H3302-SEP
+* Date: 27JAN2023
+* Model Type: Generic
+* Simulator: PSPICE
+* Simulator Version: 17.4
+* EVM Order Number: TPS7H3302EVM
+* EVM Users Guide: SLVUCK2
+* Datasheet: SLVSGX6
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+* 
+*****************************************************************************
+*
+* Model Usage Notes:
+*
+* 1. Temperature effects not modeled
+* 2. Operating supply current not modeled
+*
+*****************************************************************************
+.SUBCKT TPS7H3302-SEP VDD EN VDDQSNS VLDOIN PGOOD VTTSNS VTT VTTREF AGND PGND  
+G_G10         N28718 AGND N150470 AGND 1
+G_G6         VDD AGND TABLE { V(UVLO, AGND) } ( (0,0) (1,3m) )
+E_E5         N78464 AGND VTTREF AGND 1.2
+C_C10         B N28176  10p  TC=0,0 
+R_R14         N28718 N15632  0.14 TC=0,0 
+R_R24         N112207 VDDQ_SET  1k TC=0,0 
+R_R12         AGND N28852  1k TC=0,0 
+X_D8          AGND N78784 DCLAMP
+X_D6          N16684 ILIM_SOURCE DCLAMP
+G_G8         VLDOIN AGND TABLE { V(VDDQ_SET, AGND) } ( (0,0) (1,50u) )
+X_U7          N78464 VTTSNS AGND N78666 COMP_HYS  PARAMS:  T=100 
+X_U2          VDDQSNS N112207 COMP_HYS2 PARAMS:  TH=0.77 HYS=0.02  T=10000 
+I_I2         EN AGND DC 500n  
+X_S3    ENABLED AGND VTTREF VT_INT TPS7H3302-SEP_S3 
+G_G4         VDD AGND TABLE { V(EN_SET, AGND) } ( (0,0) (1,11.5m) )
+R_R8         AGND N16684  1k TC=0,0 
+E_E2         N35607 AGND VDD_AMP AGND 0.5
+X_D2          N28176 A DCLAMP
+G_G13         N78784 AGND N78694 AGND -550m
+E_ABM1         N62511 0 VALUE { V(VX)*V(ENABLED)   }
+C_C2         AGND N28852  750p  TC=0,0 
+C_C14         AGND VDDQ_SET  1n  TC=0,0 
+G_G12         N28176 AGND N61878 AGND -1
+G_G14         N78784 AGND N78694 1V -175u
+X_D9          N78784 1V DCLAMP
+X_S4    N129627 AGND PGOOD AGND TPS7H3302-SEP_S4 
+X_U4         N35607 VT_INT VDD_AMP AGND VT_INT OPAMPX  
+R_R16         N35362 VTTREF  384 TC=0,0 
+G_G1         VLDOIN N16084 N149906 AGND 1
+I_I1         PGOOD AGND DC 1u  
+R_R25         N112542 UVLO  1k TC=0,0 
+E_E6         N78596 AGND VTTREF AGND 0.8
+X_D3          N16084 VLDOIN DCLAMP
+R_R15         N35154 N15632  18 TC=0,0 
+E_E1         VDD_AMP AGND VDDQSNS AGND 1
+R_R7         AGND A  1 TC=1E-6,0 
+C_C1         AGND N16684  750p  TC=0,0 
+E_E4         N61878 AGND TABLE { V(N62511, AGND) } 
++ ((-0.05,-5)(-0.025,-4.71)(-0.01,-0.51)(-0.005,-0.038)(0.005,0.03)(0.01,0.422)
++ (0.02,2.74)(0.025,3.73)(0.05,5))
+R_R23         N111767 EN_SET  1k TC=0,0 
+C_C3         N16084 VLDOIN  10p  TC=0,0 
+V_V2         ILIM_SOURCE AGND 5
+G_G9         VDDQSNS AGND TABLE { V(VDDQ_SET, AGND) } ( (0,0) (1,4u) )
+G_G11         AGND N28852 B AGND -1m
+R_R13         N15632 N16084  0.14 TC=0,0 
+G_G5         VDD AGND TABLE { V(VDDQ_SET, AGND) } ( (0,0) (1,3.5m) )
+C_C15         AGND UVLO  1n  TC=0,0 
+X_S2    DIS AGND N35362 AGND TPS7H3302-SEP_S2 
+R_R11         AGND B  1 TC=1E-6,0 
+C_C4         AGND N28718  10p  TC=0,0 
+X_D5          B N28176 DCLAMP
+V_V3         ILIM_SINK AGND 5
+X_D4          AGND N28718 DCLAMP
+X_U1          EN N111767 COMP_HYS2 PARAMS:  TH=1 HYS=0.5  T=10000 
+X_U3          VDD N112542 COMP_HYS2 PARAMS:  TH=2.18 HYS=0.05  T=10000 
+C_C8         AGND N78784  1u  TC=0,0 
+X_U8          VTTSNS N78596 AGND N78680 COMP_HYS  PARAMS:  T=100 
+C_C13         AGND EN_SET  1n  TC=0,0 
+X_U6          ENABLED N123732 INVERTER
+G_G7         VLDOIN AGND TABLE { V(EN_SET, AGND) } ( (0,0) (1,525u) )
+G_G3         AGND N16684 A AGND 1m
+C_C9         A N28176  10p  TC=0,0 
+X_U5          EN_SET VDDQ_SET UVLO N138906 AND3
+X_S1    DIS AGND N35154 AGND TPS7H3302-SEP_S1 
+V_V5         1V AGND 1
+E_E3         VX AGND VTTREF VTTSNS 1
+X_D7          N28852 ILIM_SINK DCLAMP
+X_D12          AGND VTTREF DCLAMP
+R_R26         N123732 DIS  1k TC=0,0 
+C_C18         AGND DIS  1n  TC=0,0 
+C_C16         AGND N35154  10p  TC=0,0 
+C_C17         AGND N35362  10p  TC=0,0 
+X_U10          N78666 N78680 N78694 NAND
+E_ABM2         N129627 0 VALUE { ( V(N78784)*V(N129792))   }
+X_U11          VDD N129792 COMP_HYS2 PARAMS:  TH=0.35 HYS=0.05  T=100 
+C_C19         AGND ENABLED  1n  TC=0,0 
+R_R27         N138906 ENABLED  1k TC=0,0 
+R_R28         AGND N141664  1k TC=0,0 
+C_C22         AGND N149906  20p  TC=0,0 
+C_C20         AGND N141664  20p  TC=0,0 
+G_G18         AGND N150470 N143070 AGND -1m
+G_G17         AGND N149906 N141664 AGND 1m
+C_C23         AGND N150470  20p  TC=0,0 
+R_R31         AGND N150470  1k TC=0,0 
+R_R30         AGND N149906  1k TC=0,0 
+C_C21         AGND N143070  20p  TC=0,0 
+G_G16         AGND N143070 N28852 AGND -1m
+R_R29         AGND N143070  1k TC=0,0 
+L_L1         N15632 VTT  6p  
+G_G15         AGND N141664 N16684 AGND 1m
+.ENDS TPS7H3302-SEP
+*****************************************************************************
+
+.subckt TPS7H3302-SEP_S3 1 2 3 4  
+S_S3         3 4 1 2 _S3
+RS_S3         1 2 1G
+.MODEL         _S3 VSWITCH Roff=1e6 Ron=10m Voff=0.25 Von=0.75
+.ends TPS7H3302-SEP_S3
+
+.subckt TPS7H3302-SEP_S4 1 2 3 4  
+S_S4         3 4 1 2 _S4
+RS_S4         1 2 1G
+.MODEL         _S4 VSWITCH Roff=10e6 Ron=100 Voff=0.45V Von=0.55V
+.ends TPS7H3302-SEP_S4
+
+.subckt TPS7H3302-SEP_S2 1 2 3 4  
+S_S2         3 4 1 2 _S2
+RS_S2         1 2 1G
+.MODEL         _S2 VSWITCH Roff=1e6 Ron=10m Voff=0.25 Von=0.75
+.ends TPS7H3302-SEP_S2
+
+.subckt TPS7H3302-SEP_S1 1 2 3 4  
+S_S1         3 4 1 2 _S1
+RS_S1         1 2 1G
+.MODEL         _S1 VSWITCH Roff=1e6 Ron=10m Voff=0.25 Von=0.75
+.ends TPS7H3302-SEP_S1
+
+.subckt DCLAMP A C
+G1 A C TABLE { V(A, C) } ( (-1,-1n)(0,0)(1m,1) (2m,10) (3m,1000) )
+.ends DCLAMP 
+
+.SUBCKT COMP_HYS INP INM HYS OUT PARAMs: T=10
+EIN INP1 INM1 INP INM 1 
+EHYS INP1 INP2 VALUE { IF( V(1)>0.5,-V(HYS)/2,V(HYS)/2) }
+EOUT OUT 0 VALUE { IF( V(INP2)>V(INM1),1,0) }
+R1 OUT 1 1
+C1 1 0 {T*1e-9}
+RINP1 INP1 0 1K
+.ends COMP_HYS
+
+.SUBCKT COMP_HYS2 INP OUT 
++ PARAMs:  TH=1 HYS=0.1 T=10
+EIN INP1 0 INP 0 1 
+EHYS INP1 INP2 VALUE { IF( V(1)>0.5,-(HYS)/2,HYS/2) }
+EOUT OUT 0 VALUE { IF( V(INP2)>TH,1,0) }
+R1 OUT 1 1
+C1 1 0 {T*1e-9}
+RINP1 INP1 0 1K
+.ends COMP_HYS2
+
+.SUBCKT OPAMPX 1 2 3 4 5
+*              | | | | |
+*              | | | | Output
+*              | | | Negative Supply
+*              | | Positive Supply
+*              | Inverting Input
+*              Non-inverting Input
+*
+* Recommendations:
+*      Use PSPICE (or SPICE 2G6; other simulators may require translation)
+*      For a quick, effective design, use a combination of: data sheet
+*            specs, bench testing, and simulations with this macromodel
+*      For high impedance circuits, set GMIN=100F in the .OPTIONS statement
+*
+* Supported:
+*      Typical performance for temperature range (-40 to 125) degrees Celsius
+*      DC, AC, Transient, and Noise analyses.
+*      Most specs, including: offsets, DC PSRR, DC CMRR, input impedance,
+*            open loop gain, voltage ranges, supply current, ... , etc.
+*      Temperature effects for Ibias, Iquiescent, Iout short circuit 
+*            current, Vsat on both rails, Slew Rate vs. Temp and P.S.
+*
+* Not Supported:
+*      Some Variation in specs vs. Power Supply Voltage
+*      Vos distribution, Ib distribution for Monte Carlo
+*      Distortion (detailed non-linear behavior)
+*      Some Temperature analysis
+*      Process variation
+*      Behavior outside normal operating region
+
+* Input Stage
+*
+V10  3 10 -300M
+R10 10 11 69.0K
+R11 10 12 69.0K
+G10 10 11 10 11 1.44M
+G11 10 12 10 12 1.44M
+C11 11 12 38.4P
+C12  1  0 1.5P
+E12 71 14 VALUE { (1.00N-1u)+V(20)*0.00+V(21)*0.00+V(22)*0.00+V(23)*0.00 }
+G12 1 0 62 0 1m
+G13 1 2 63 0 1u
+M12 11 14 15 15 NMI 
+M14 12 2 15 15 NMI 
+G14 2 0 62 0 1m
+C14  2  0 1.5P
+I15 15 4 500U
+V16 16 4 -100M
+GD16 16 1 TABLE { V(16,1) } ((-100,-1.00N)(0,0)(1m,1u)(2m,1m)) 
+V13 3 13 -100M
+GD13 2 13 TABLE { V(2,13) } ((-100,-1.00N)(0,0)(1m,1u)(2m,1m)) 
+R71  1  0 1.00G
+R72  2  0 1.00G
+R73  1  2 1.00G
+*C13  1  2 1.00E-15
+*
+* Noise 
+*
+I20 21 20 10.3M
+D20 20  0 DN1
+D21  0 21 DN1
+I22 22 23 1N
+R22 22 0  1k
+R23  0 23 1k
+*
+* Open Loop Gain, Slew Rate
+*
+G30  0 30 12 11 1
+R30 30  0 1.00K
+G31 0 31 3 4 0.00
+I31 0 31 DC 636K
+R31 31  0 1 TC=0.00,0.00
+GD31 30 0 TABLE { V(30,31) } ((-100,-1n)(0,0)(1m,0.1)(2m,2))
+G32 32 0 3 4 0.00
+I32 32 0 DC 636K
+R32 32  0 1 TC=0.00,0.00
+GD32 0 30 TABLE { V(30,32) } ((-2m,2)(-1m,0.1)(0,0)(100,-1n))
+G33  0 33 30 0 1m
+R33  33 0 1K
+G34  0 34 33 0 1.00
+R34  34 0 1K
+C34  34 0 159M
+G37  0 37 34 0 1m
+R37  37 0 1K
+C37  37 0 79.5N
+G38  0 38 37 0 1m
+R38  39 0 1K
+L38  38 39 1.59E-15
+E38  35 0 38 0 1
+G35 33 0 TABLE { V(35,3) } ((-1,-1p)(0,0)(10.0,1n))(11.0,1))
+G36 33 0 TABLE { V(35,4) } ((-11.0,-1)((-10.0,-1n)(0,0)(1,1p))
+*
+* Output Stage
+*
+R80 50 0 100MEG
+G50 0 50 57 96 2
+R58 57  96 0.50
+R57 57  0 1.00
+C58  5  0 2.00P
+*
+* PSRR PLUS 
+*
+G57  0 57 VALUE { V(35) * 1.00 + V(110) + V(120) + V(130) } 
+* G110 THE DC GAIN FOR +PSRR AND L110 THE ROLL OFF WITH R110 AND THE NOISELESS ZERO WITH GR112
+G110 0 110 3 0 1.00U
+L110 110 111 159U
+R110 111 0 1E6 
+GR112 110 111 110 111 {1/1.00MEG}
+GR110 111 0 111 0 1 
+*
+* PSRR MINUS 
+*
+* G120 THE DC GAIN FOR -PSRR AND L120 THE ROLL OFF WITH R120 AND THE NOISELESS ZERO WITH GR122
+G120 0 120 4 0 1.00U
+L120 120 121 159P
+R120 121 0 1E6 
+GR122 120 121 120 121 {1/1.00}
+GR120 121 0 121 0 1 
+*
+* CMRR 
+*
+* G130 THE DC GAIN FOR CMRR AND L130 THE ROLL OFF WITH R130 AND THE NOISELESS ZERO WITH GR132
+G130 0 130 VALUE { ( V(15) ) * 1.00E-15 } 
+L130 130 131 1.59E-15
+R130 131 0 1E6 
+GR132 130 131 130 131 {1/1.00}
+GR130 131 0 131 0 1 
+*
+GD55 55 57 TABLE { V(55,57) } ((-0.2m,-1)(-0.1m,-1m)(0,0)(10,1n))
+GD56 57 56 TABLE { V(57,56) } ((-0.2m,-1)(-0.1m,-1m)(0,0)(10,1n))
+E55 55  0 VALUE { -300U + V(3) * 1 + V(51) * -50.0U }
+E56 56  0 VALUE { -33.3U + V(4) * 1 + V(52) * -66.6U }
+R51 51 0 1k
+R52 52 0 1k
+GD51 50 51 TABLE { V(50,51) } ((-10,-1n)(0,0)(1m,1m)(2m,1))
+GD52 50 52 TABLE { V(50,52) } ((-2m,-1)(-1m,-1m)(0,0)(10,1n))
+G53  3  0 VALUE { -500U + V(51) * 1M }
+G54  0  4 VALUE { -500U + V(52) * -1M }
+*
+* Current Limit
+*
+G99 96 5 99 0 1
+R98 0 98 1 TC=0.00,0.00
+G97 0 98 TABLE { V(96,5) } ((-84.0,-40.0M)(-1.00M,-39.6M)(0,0)(1.00M,39.6M)(84.0,40.0M))
+E97 99 0 VALUE { V(98) * LIMIT((( V(3) - V(4) ) * 0.00 + 1.00), 0.00, 1E6 ) 
++ * LIMIT((( V(3) - V(4) ) * 574M + -5.74M), 0, 1) }
+D98 4 5 DESD
+D99 5 3 DESD
+*
+* Temperature / Voltage Sensitive IQuiscent
+*
+R61 0 61 1 TC=0.00,0.00
+G61 3 4 61 0 1
+G60 0 61 TABLE { V(3, 4) } ((0, 0)(500M,22.5U)(3.00,2.25M)(5.00,2.25M)(7.00,2.25M)
++ (10.0,2.25M)(42.0,2.25M))
+*
+* Temperature Sensitive offset voltage
+*
+I73 0 70 DC 1
+R74 0 70 1 TC=0.00
+E75 1 71 VALUE {V(70)-1}
+*
+* Temp Sensistive IBias
+*
+I62 0 62 DC 1000uA
+R62 0 62 REXP  100U
+*
+* Temp Sensistive Offset IBias
+*
+I63 0 63 DC 1000uA
+R63 0 63 50.0 TC=0.00,0.00
+*
+* Models
+.MODEL NMI NMOS(L=2.00U W=42.0U KP=200U LEVEL=1 )
+.MODEL DESD  D   N=1 IS=1.00E-15
+.MODEL DN1 D   IS=1P KF=300E-18 AF=1
+.MODEL REXP  RES TCE=0.00
+.ENDS OPAMPX
+
+.SUBCKT AND A B OUT  
+EOUT OUT 0 VALUE { IF( V(A)>0.5 & V(B)>0.5,1,0) }
+.ENDS AND
+
+.SUBCKT AND3 A B C OUT  
+EOUT OUT 0 VALUE { IF( V(A)>0.5 & V(B)>0.5 & V(C)>0.5,1,0) }
+.ENDS AND3
+
+.SUBCKT INVERTER IN OUT  
+EOUT OUT 0 VALUE { IF( V(IN)<0.5,1,0) }
+.ENDS INVERTER
+
+.SUBCKT NAND A B OUT  
+EOUT OUT 0 VALUE { IF( V(A)>0.5 & V(B)>0.5,0,1) }
+.ENDS NAND

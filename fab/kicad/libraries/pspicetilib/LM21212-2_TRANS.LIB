@@ -1,0 +1,278 @@
+*$
+* LM21212-2
+*****************************************************************************
+* (C) Copyright 2013 Texas Instruments Incorporated. All rights reserved.                                            
+*****************************************************************************
+** This model is designed as an aid for customers of Texas Instruments.
+** TI and its licensors and suppliers make no warranties, either expressed
+** or implied, with respect to this model, including the warranties of 
+** merchantability or fitness for a particular purpose.  The model is
+** provided solely on an "as is" basis.  The entire risk as to its quality
+** and performance is with the customer
+*****************************************************************************
+*
+* This model is subject to change without notice. Texas Instruments
+* Incorporated is not responsible for updating this model.
+*
+*****************************************************************************
+*
+** Released by: WEBENCH Design Center, Texas Instruments Inc.
+* Part: LM21212-2
+* Date: 14MAR2013
+* Model Type: TRANSIENT
+* Simulator: PSPICE
+* Simulator Version:16.2.0.p001
+* EVM Order Number: AN-2140 LM21212-2
+* EVM Users Guide: SNVA480–May 2011
+* Datasheet: SNVS715 –MARCH 2011
+*
+* Model Version: Final 1.00
+*
+*****************************************************************************
+*
+* Updates:
+*
+* Final 1.00
+* Release to Web.
+*
+*****************************************************************************
+.SUBCKT LM21212-2_TRANS SGND PGND SS FB COMP FADJ AVIN EN SW PVIN PGOOD
+E_B1EN 49 SGND value = { IF(V(EN) < 1.1 , 5 , 0)}
+G_BPULLEN 0 EN value = { IF(V(UVLO) > 2.5 , 2P , 0)}
+M1 50 48 SGND SGND _M1_MOD
+.MODEL _M1_MOD NMOS KP=10M VTO=2
+X1 6 49 8 4 RSFFLOP_0
+E_BSSSHORT 48 SGND value = { IF(V(4) > 2.5 ,  5  ,  0)}
+R5 EN SGND 1MEG
+E_B2EN 6 SGND value = { IF(V(EN) > 1.25 , 5 , 0)}
+E_B3 2 0 value = { IF(V(SSI) > 0.6 , V(VDAC) , V(SSI))} 
+VDAC VDAC SGND DC=0.6
+G_BG 0 10 value = { IF(V(8) > 2.5 & V(UVLO) > 2.75 , 2U  ,  0)}
+DSSI2 SSI SS _D2_MOD
+VILOW 0 28
+V1X PVIN 45
+E1 VSHI VGHI HDRV PGND 1
+R_SHI VSHI 0 1G
+R_GHI VGHI 0 1G
+E_B1 40 PGND value = { IF(V(VSHI,VGHI) < 1 , 5 , 0)}
+X21 COMP RAMP PWM2 COMPARX21_0
+X44 FB 2 COMP OPAMP2X44_0
+S4X SW 28 VGSLOW PGND _S4_MOD
+.MODEL _S4_MOD vswitch VT=2 VH=.15 RON=0.022
+X2 CLK 38 30 ICL RSFFLOP_0
+E_B5 32 0 value = { IF(I(V1X) > 17 , 5 , 0)}
+R13 32 38 100
+S2 AVIN UVLO AVIN 0 _S2_MODX
+.MODEL _S2_MODX vswitch VT=2.5 VH=.075
+R15 UVLO 0 1MEG
+S3 45 SW HDRV PGND _S3_MOD
+.MODEL _S3_MOD vswitch VT=2 VH=.15 RON=0.01
+E_B6 RAMP SGND value = { IF(V(UVLO) > 1 , V(26) , 0)}
+E_B7 CLK SGND Value={IF ( V(UVLO) > 1 , V(29) , 0) }
+D2 0 SW _D2_MOD
+.MODEL _D2_MOD D BV=150 CJO=66.3P IBV=1U IS=23.3N M=.333  
++ N=1.67 RS=33.7M TT=43.2N VJ=.75
+D1 SW 45 _D1_MOD
+.MODEL _D1_MOD D BV=150 CJO=66.3P IBV=1U IS=23.3N M=.333  
++ N=1.67 RS=33.7M TT=43.2N VJ=.75
+C8 38 0 8N
+R17 40 VD 1K
+C9 VD PGND 0.1P
+E_B8 VGSLOW PGND value ={ IF(V(VD) > 4.95 & V(PWM) < 2.5 & V(NCD) < 500M , 5 , 0)}
+E_B12 39 PGND value = { IF(V(PWM,PGND) < 2.5 , 5 , 0)}
+R18X 39 VD2 1K
+C10 VD2 PGND 0.15P
+E_B13 HDRV PGND value = { IF(V(VD2,PGND) < 0.2 , 5 , 0)}
+C15X UVLO 0 100P
+E_BPWMEN PWM 0 value = { IF(TIME > 40N & V(8) >
++ 2.5 & V(UVLO) > 2.75 & V(OVP) < 2.5 ,  V(PWM2) , 0)}
+D3 0 SSI _D3_MOD
+.MODEL _D3_MOD D BV=1.95  IBV=2U IS=25.2P 
++ M=.33 N=1  RS=34.8 TT=50.1N VJ=.75
+X8 FB 53 OVP COMPARX21_0
+V7 10 SSI
+V11 53 PGND DC=0.672
+X9 61 FB UVP COMPARX21_0
+V2 61 PGND DC=0.528
+E_BSSSHORTX 17 SGND value = { IF(V(UVLO) < 2.5 ,  5 , IF(  V(ICL) > 2.5 , 5 , 0))}
+R2 50 SSI 5K
+M4 SSI 17 SGND SGND _M1_MOD
+E_B15 55 0 value = { IF(V(VGSLOWDLY) > 4 & I(VILOW) < 0 , 5 , 0)}
+X4 55 54 57 PGND 59 56 FFLOPX1_0
+V12 54 0 DC=5
+X5 56 NCD UTD_0
+E_B16 57 0 value = { IF(V(HDRV) > 2.5 , 5 , 0)}
+R19 0 59 1MEG
+X6 VGSLOW VGSLOWDLY UTD_0
+E_B20 65 SGND value = { IF(V(8) > 2.5 & V(OVP) < 2.5 & V(UVP) < 2.5 , 0 , 5)}
+S4 PGOOD SGND 65 SGND _S2_MOD
+.MODEL _S2_MOD vswitch VT=2.825 VH=.075
+X_U55         EN EN_B INV_BASIC_GEN PARAMS: VDD=1 VSS=0 VTHRESH=0.5
+X_U136         EN_B SYSCLK N16533268 OR2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+C_C80         N16532961 0  1p IC=0 
+V_V47         EN_B 0 0Vdc
+X_U131         I_RAMP N16505459 SYSCLK COMP_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+I_I1         0 FADJ DC 1nAdc  
+X_U132         N16683544 N16682686 N16684234 COMP_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5
+E_ABM4         26 0 VALUE { V(N16532961)+0.5    }
+G_ABMII3         N16490106 N16682686 VALUE { V(N16681704)*10u    }
+X_U135         SYSCLK N16517387 BUF_DELAY_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=0.5 DELAY=5n
+X_U138         N16684234 SYSCLK 29 OR2_BASIC_GEN PARAMS: VDD=5 VSS=0
++  VTHRESH=500E-3
+V_V45         N16490106 0 5
+C_C79         I_RAMP 0  1p IC=0 
+C_C81         N16682686 0  1p IC=0 
+D_D11         I_RAMP N16490106 D_D 
+X_U137         EN_B N16517387 N16685155 OR2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+G_ABMII1         N16490106 I_RAMP VALUE { 1n*(54680/((V(FADJ)*1e6)+13.15))    }
+X_S26    N16655199 0 I_RAMP 0 Oscillator_S26 
+V_V49         N16683544 0 1
+X_S28    N16685155 0 N16682686 0 Oscillator_S28 
+X_S27    N16533268 0 N16532961 0 Oscillator_S27 
+D_D12         N16532961 N16490106 D_D 
+X_U134         EN_B N16517387 N16655199 OR2_BASIC_GEN PARAMS: VDD=1 VSS=0
++  VTHRESH=500E-3
+G_ABMII2         N16490106 N16532961 VALUE { 1n*(54680/((V(FADJ)*1e6)+13.15))   
++  }
+V_V46         N16505459 0 1
+V_V48         N16681704 0 1Vdc
+.ENDS LM21212-2_TRANS 
+*$
+.subckt Oscillator_S26 1 2 3 4  
+S_S26         3 4 1 2 _S26
+RS_S26         1 2 1G
+.MODEL         _S26 VSWITCH Roff=1e9 Ron=1.0 Voff=0.2 Von=0.8
+.ends Oscillator_S26
+*$
+.subckt Oscillator_S28 1 2 3 4  
+S_S28         3 4 1 2 _S28
+RS_S28         1 2 1G
+.MODEL         _S28 VSWITCH Roff=1e9 Ron=1.0 Voff=0.2 Von=0.8
+.ends Oscillator_S28
+*$
+.model D_D d
++ is=1e-015
++ n=0.01
++ tt=1e-011
+*$
+.subckt Oscillator_S27 1 2 3 4  
+S_S27         3 4 1 2 _S27
+RS_S27         1 2 1G
+.MODEL         _S27 VSWITCH Roff=1e9 Ron=1.0 Voff=0.2 Von=0.8
+.ends Oscillator_S27
+.SUBCKT INV_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VSS},{VDD})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS INV_BASIC_GEN
+*$
+.SUBCKT COMP_BASIC_GEN INP INM Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5	
+E_ABM Yint 0 VALUE {IF (V(INP) > 
++ V(INM), {VDD},{VSS})}
+R1 Yint Y 1
+C1 Y 0 10n
+.ENDS COMP_BASIC_GEN
+*$
+.SUBCKT OR2_BASIC_GEN A B Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 
+E_ABMGATE    YINT 0 VALUE {{IF(V(A) > {VTHRESH}  |  
++ V(B) > {VTHRESH},{VDD},{VSS})}}
+RINT YINT Y 1
+CINT Y 0 1n
+.ENDS OR2_BASIC_GEN
+*$
+.SUBCKT BUF_DELAY_BASIC_GEN A  Y PARAMS: VDD=1 VSS=0 VTHRESH=0.5 DELAY = 10n 
+E_ABMGATE1    YINT1 0 VALUE {{IF(V(A) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT YINT1 YINT2 1
+CINT YINT2 0 {DELAY*1.3}
+E_ABMGATE2    YINT3 0 VALUE {{IF(V(YINT2) > {VTHRESH} , 
++ {VDD},{VSS})}}
+RINT2 YINT3 Y 1
+CINT2 Y 0 1n
+.ENDS BUF_DELAY_BASIC_GEN
+*$
+.SUBCKT RSFFLOP_0 6 8 2 1
+E_BQB 10 0 value = { IF((V(8)<800M) & (V(2)>800M) , 0 , 5V)}
+E_BQBVSEC 110 0 value = {100*V(10)}
+RQBVSEC 110 0 10MEG
+E_BQ 20 0 value = { IF((V(6)<800M) & (V(1)>800M) , 0 , 5V)}
+E_BQVVSEC 120 0 value = {100*V(20)}
+RBQVVSEC 120 0 1MEG
+RD1 10 1 100
+CD1 1 0 10P IC=5
+RD2 20 2 100
+CD2 2 0 10P IC=0
+.ENDS
+*$
+.SUBCKT COMPARX21_0 NINV INV OUT
+E_B1 4 0 value = { IF( V(NINV,INV) > 0  ,  5.0  ,  0)}
+RO 4 OUT 100
+CO OUT 0 10PF IC=0
+.ENDS
+*$
+.SUBCKT OPAMP2X44_0 1 2 3
+RIN 1 2 1.0G
+E_BE 101 0 value = { 56.23413K*V(2,1)}
+R 101 102 1
+C 102 0 14.46863N  IC=0
+E_BEOUT 201 0 value = { IF( V(102)/15.0 < -0.2 , -0.2 , 
++ IF(  V(102)/15.0 > 2 , 2 ,  V(102)))}
+ROUT 201 3 1.0N
+ROUT2 3 0 1G
+.ENDS
+*$
+.SUBCKT FFLOPX1_0 1 2 11 12 5 6
+X1 7 4 2 8 NAND3_0
+X2 8 3 10 9 NAND3_0
+X3 1 8 10 7 NAND3_2
+X4 4 9 1 10 NAND3_0
+X5 4 7 6 5 NAND3_2
+X6 5 10 3 6 NAND3_0
+X7 11 4 INV_0
+X8 12 3 INV_0
+.ENDS
+*$
+.SUBCKT NAND3_0 1 2 3 4
+E_B2 6 0 value = {100*V(4)}
+E_B1 5 0 value = {IF(~((V(1)>1.5)&(V(2)>1.5)&(V(3)>1.5)),3.5,0.3)}
+R1 5 4 40
+C1 4 0 20P IC=0
+.ENDS
+*$
+.SUBCKT NAND3_2 1 2 3 4
+E_B2 6 0 value = {100*V(4)}
+E_B1 5 0 value = {IF(~((V(1)>1.5)&(V(2)>1.5)&(V(3)>1.5)),3.5,0.3)}
+R1 5 4 40
+C1 4 0 20P IC=3.50
+.ENDS
+*$
+.SUBCKT INV_0 1 2
+E_B1 3 0 value = {IF(~((V(1)>1.5)),3.5,0.3)}
+R1 3 2 10
+C1 2 0 10P IC=3.50
+.ENDS
+*$
+.SUBCKT UTD_0 1 2
+RIN 1 0 1E15
+E1 3 0 1 0 1.0
+T1 3 0 2 0 Z0=1 TD=35.0N
+R1 2 0 1
+.ENDS
+*$   
+.SUBCKT Cout 1 2 Params: IC=0
+C 1 3 100E-6 IC={IC}
+R_ESR 3 2 0.001
+.ENDS
+*$
+.SUBCKT LDCR 1 2 Params: L=1 DCR=0 IC=0
+L 2 3 {L} IC={IC}
+R_DCR 3 1 {DCR}
+.ENDS
+*$
+
