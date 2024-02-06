@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP RC0603FR-0730KL
+D Yageo 30k, 0603 (1608M) Thick Film SMD Resistor +/-1% 0.1W - RC0603FR-0730KL
+K
+F https://www.yageo.com/upload/media/product/app/datasheet/rchip/pyu-rc_group_51_rohs_l.pdf
+$ENDCMP
+#
+#End Doc Library

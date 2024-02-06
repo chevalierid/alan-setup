@@ -1,0 +1,9 @@
+Manufacturer=Panasonic
+PartNumber=10SVPC68MV
+PartCategory=Capacitor Polarised
+PackageCategory=Other
+PinCount=2
+Version=5.1
+Released=2020-10-07 06:02:29
+Downloaded=2024-02-06 15:02:41
+3D=Y

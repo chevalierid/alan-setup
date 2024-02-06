@@ -1,0 +1,13 @@
+(unit MM)
+
+(package "C0603C105Z8VACTU"
+    (type UNDEF)
+    (uver 2)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (utime 2022-03-23-20:24:07)
+    (mountForm default
+        (footprintRef "C0603")
+        (spec "System")
+    )
+)

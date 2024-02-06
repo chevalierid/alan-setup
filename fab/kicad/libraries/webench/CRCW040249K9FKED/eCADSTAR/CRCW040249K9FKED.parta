@@ -1,0 +1,68 @@
+(Japanese_coding: sjis)
+(function "ECS_185434"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2023-03-07-09:03:20)
+    (utime 2023-03-07-09:03:20)
+    (interface
+        (port "1" (symbPinId 1) (portType INOUT))
+        (port "2" (symbPinId 2) (portType INOUT))
+    )
+    (property "symbolName" "CRCW040249K9FKED")
+)
+
+
+(pinAssign "ECS_185434"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2023-03-07-09:03:20)
+    (utime 2023-03-07-09:03:20)
+    (interface
+        (port "1" (symbPinId 1) (portName "1") (portType INOUT))
+        (port "2" (symbPinId 2) (portName "2") (portType INOUT))
+    )
+    (internal
+        (funcInst (functionRef "ECS_185434")
+                (port "1" (match "1"))
+                (port "2" (match "2"))
+        )
+    )
+    (property "usePowerBox" "No")
+    (property "symbolName" "CRCW040249K9FKED")
+)
+
+
+(part "CRCW040249K9FKED"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2023-03-07-09:03:20)
+    (utime 2023-03-07-09:03:20)
+    (packageRef "CRCW040249K9FKED")
+    (pinAssignRef "ECS_185434")
+    (interface
+        (port "1" (symbPinId 1) (portName "1") (portType INOUT))
+        (port "2" (symbPinId 2) (portName "2") (portType INOUT))
+    )
+    (partClass UNDEF)
+    (useInSchema Y)
+    (useInLayout Y)
+    (inPartsList Y)
+    (partType NORMAL)
+    (placeRestriction FREE)
+    (property "enetNonSeries" "NO")
+    (property "refDesPrefix" "R")
+    (property "description" "Vishay CRCW Series Thick Film Surface Mount Resistor 0402 Case 49.9k +/-1% 0.063W +/-100ppm/C")
+    (property "Manufacturer_Name" "Vishay")
+    (property "Manufacturer_Part_Number" "CRCW040249K9FKED")
+    (property "Mouser_Part_Number" "71-CRCW0402-49.9K-E3")
+    (property "Mouser_Price/Stock" "https://www.mouser.co.uk/ProductDetail/Vishay-Dale/CRCW040249K9FKED?qs=hAuyw6LW%252BLhwjtjsHx%2FGDQ%3D%3D")
+    (property "Arrow_Part_Number" "CRCW040249K9FKED")
+    (property "Arrow_Price/Stock" "https://www.arrow.com/en/products/crcw040249k9fked/vishay?region=nac")
+    (property "Datasheet_Link" "http://www.vishay.com/docs/20035/dcrcwe3.pdf")
+    (property "compAreaTopHeight" 0.4)
+)
+
+

@@ -1,0 +1,10 @@
+(unit MM)
+
+(package "EEHZA1E101XP"
+    (type UNDEF)
+    (uver 2)
+    (mountForm default
+        (footprintRef "EEHZA1E101XP")
+        (spec "default")
+    )
+)

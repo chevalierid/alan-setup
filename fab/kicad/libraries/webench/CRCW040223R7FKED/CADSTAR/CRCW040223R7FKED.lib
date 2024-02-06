@@ -1,0 +1,18 @@
+.CRCW040223R7FKED :1 ;RESISTOR, 0402 23.7 Ohms +/-1% 0.063 W
+RESC1005X40N
+*STM R
+*NGS
+*PLB 1="1" 2="2"
+*MXP 2
+*DFN CRCW040223R7FKED
+~!Manufacturer_Name (Vishay)
+~!Manufacturer_Part_Number (CRCW040223R7FKED)
+~!Mouser Part Number (-)
+~!Mouser Price/Stock (-)
+~!Arrow Part Number (-)
+~!Arrow Price/Stock (-)
+~!Link Datasheet (http://www.vishay.com/docs/20035/dcrcwe3.pdf)
+~!Height (0.4mm)
+~!3D_Model (CRCW040223R7FKED)
+CRCW040223R7FKED
+1.1!U 2.1!U 

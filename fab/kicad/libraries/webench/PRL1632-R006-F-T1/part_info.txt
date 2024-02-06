@@ -1,0 +1,9 @@
+Manufacturer=Susumu
+PartNumber=PRL1632-R006-F-T1
+PartCategory=Resistor
+PackageCategory=Resistor Chip
+PinCount=2
+Version=1.1
+Released=2019-11-10 17:27:27
+Downloaded=2024-02-02 12:57:44
+3D=Y

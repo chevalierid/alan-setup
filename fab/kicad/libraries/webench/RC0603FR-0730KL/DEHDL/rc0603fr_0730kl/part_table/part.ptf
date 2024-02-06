@@ -1,0 +1,11 @@
+FILE_TYPE = MULTI_PHYS_TABLE;
+
+PART 'RC0603FR_0730KL'
+CLASS = DISCRETE
+{========================================================================================}
+:"MANUFACTURER_NAME", "MANUFACTURER_PART_NUMBER"= "PART_NUMBER", "JEDEC_TYPE", "PACK_TYPE", "MOUSER_PART_NUMBER", "MOUSER_PRICE/STOCK", "ARROW_PART_NUMBER", "ARROW_PRICE/STOCK", "DESCRIPTION", "DATASHEET", "HEIGHT";
+{========================================================================================}
+ "YAGEO", "RC0603FR-0730KL" (!) = "", "RESC1608X55N", "Resistor Chip", "603-RC0603FR-0730KL", "https://www.mouser.co.uk/ProductDetail/YAGEO/RC0603FR-0730KL?qs=diQw95jMAeNFr44yr782FQ%3D%3D", "RC0603FR-0730KL", "https://www.arrow.com/en/products/rc0603fr-0730kl/yageo?region=nac", "Yageo 30k, 0603 (1608M) Thick Film SMD Resistor +/-1% 0.1W - RC0603FR-0730KL", "https://www.yageo.com/upload/media/product/app/datasheet/rchip/pyu-rc_group_51_rohs_l.pdf", "0.55 mm"
+END_PART
+
+END.

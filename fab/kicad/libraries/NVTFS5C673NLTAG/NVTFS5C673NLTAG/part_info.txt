@@ -1,0 +1,9 @@
+Manufacturer=onsemi
+PartNumber=NVTFS5C673NLTAG
+PartCategory=MOSFET (N-Channel)
+PackageCategory=Other
+PinCount=11
+Version=1.1
+Released=2021-06-23 09:53:51
+Downloaded=2024-02-02 10:37:56
+3D=N

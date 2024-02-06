@@ -1,0 +1,18 @@
+.RC0201FR-0723K7L :1 ;Res Thick Film 0201 23.7K Ohm 1% 0.05W(1/20W) +/-200ppm/C Epoxy Pad SMD T/R
+RESC0603X26N
+*STM R
+*NGS
+*PLB 1="1" 2="2"
+*MXP 2
+*DFN RC0201FR-0723K7L
+~!Manufacturer_Name (YAGEO)
+~!Manufacturer_Part_Number (RC0201FR-0723K7L)
+~!Mouser Part Number (603-RC0201FR-0723K7L)
+~!Link Mouser Price/Stock (https://www.mouser.co.uk/ProductDetail/YAGEO/RC0201FR-0723K7L?qs=Q4gDqC5t5%2FAQco3wz1Gmbw%3D%3D)
+~!Arrow Part Number (RC0201FR-0723K7L)
+~!Link Arrow Price/Stock (https://www.arrow.com/en/products/rc0201fr-0723k7l/yageo?region=nac)
+~!Link Datasheet (https://www.mouser.in/datasheet/2/447/PYu_RC_Group_51_RoHS_L_11-1984063.pdf)
+~!Height (0.26mm)
+~!3D_Model (RC0201FR-0723K7L)
+RC0201FR-0723K7L
+1.1!U 2.1!U 

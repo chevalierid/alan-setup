@@ -1,0 +1,9 @@
+Manufacturer=Panasonic
+PartNumber=25SVPF47M
+PartCategory=Capacitor Polarised
+PackageCategory=Other
+PinCount=2
+Version=6.1
+Released=2020-04-27 07:26:40
+Downloaded=2024-02-06 15:01:45
+3D=Y

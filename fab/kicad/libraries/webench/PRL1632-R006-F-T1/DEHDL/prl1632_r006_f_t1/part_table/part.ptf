@@ -1,0 +1,11 @@
+FILE_TYPE = MULTI_PHYS_TABLE;
+
+PART 'PRL1632_R006_F_T1'
+CLASS = DISCRETE
+{========================================================================================}
+:"MANUFACTURER_NAME", "MANUFACTURER_PART_NUMBER"= "PART_NUMBER", "JEDEC_TYPE", "PACK_TYPE", "MOUSER_PART_NUMBER", "MOUSER_PRICE/STOCK", "ARROW_PART_NUMBER", "ARROW_PRICE/STOCK", "DESCRIPTION", "DATASHEET", "HEIGHT";
+{========================================================================================}
+ "Susumu", "PRL1632-R006-F-T1" (!) = "", "RESC1632X60N", "Resistor Chip", "754-PRL1632-R006-FT1", "https://www.mouser.co.uk/ProductDetail/Susumu/PRL1632-R006-F-T1?qs=juJhw1yPxAHGKYokg5pJ8Q%3D%3D", "PRL1632-R006-F-T1", "https://www.arrow.com/en/products/prl1632-r006-f-t1/susumu", "Current Sense Resistors - SMD 1W 0.006ohm 1%", "https://componentsearchengine.com/Datasheets/1/PRL1632-R006-F-T1.pdf", "0.6 mm"
+END_PART
+
+END.

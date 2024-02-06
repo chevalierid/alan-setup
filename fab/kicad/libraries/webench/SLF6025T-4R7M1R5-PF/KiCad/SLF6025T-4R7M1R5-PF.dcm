@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP SLF6025T-4R7M1R5-PF
+D SMD / SMT Inductors (Coils), L=4.7?H, L x W x T :
+K
+F https://product.tdk.com/system/files/dam/doc/product/inductor/inductor/smd/catalog/inductor_commercial_power_slf6025_en.pdf
+$ENDCMP
+#
+#End Doc Library

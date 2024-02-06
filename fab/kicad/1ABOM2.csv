@@ -1,0 +1,17 @@
+﻿Part,Manufacturer,Part Number,Quantity,Price ($),Footprint (mm²),Description
+Cboot1,Taiyo Yuden,EMK107B7104KA-T,1,0.01,4.68,Cap: 100 nF  Total Derated Cap: 100 nF  VDC: 16 V  ESR: 1 mΩ  Package: 0603  
+Cboot2,Taiyo Yuden,EMK107B7104KA-T,1,0.01,4.68,Cap: 100 nF  Total Derated Cap: 100 nF  VDC: 16 V  ESR: 1 mΩ  Package: 0603  
+Rcomp,Vishay-Dale,CRCW0402301RFKED,1,0.01,3,Resistance: 301 Ω  Tolerance: 1.0%  Power: 63 mW  
+Coutx2,TDK,C1005X5R1V105K050BC,1,0.03,3,Cap: 1 µF  Total Derated Cap: 1 µF  VDC: 35 V  ESR: 11.42 mΩ  Package: 0402  
+Cinx,TDK,C3225X7R1H106M250AC,1,0.27,14.7,Cap: 10 µF  Total Derated Cap: 10 µF  VDC: 50 V  ESR: 1 mΩ  Package: 1210  
+Cin,Panasonic,EEE-FK1V101P,1,0.36,123.6,Cap: 100 µF  Total Derated Cap: 100 µF  VDC: 35 V  ESR: 160 mΩ  Package: F  
+Ccomp,MuRata,GRM155R70J104KA01D,1,0.01,3,Cap: 100 nF  Total Derated Cap: 100 nF  VDC: 6.3 V  ESR: 1 mΩ  Package: 0402  
+Cinx2,TDK,C1005X5R1V105K050BC,1,0.03,3,Cap: 1 µF  Total Derated Cap: 1 µF  VDC: 35 V  ESR: 11.42 mΩ  Package: 0402  
+Cvcc,TDK,C1608X6S1C475K080AC,1,0.08,4.68,Cap: 4.7 µF  Total Derated Cap: 4.7 µF  VDC: 16 V  ESR: 3.73 mΩ  Package: 0603  
+Rent,Vishay-Dale,CRCW0402301KFKED,1,0.01,3,Resistance: 301 kΩ  Tolerance: 1.0%  Power: 63 mW  
+Coutx,TDK,C2012X5R1V156M125AC,3,0.2,6.75,Cap: 15 µF  Total Derated Cap: 5.7 µF  VDC: 35 V  ESR: 1.67 mΩ  Package: 0805  
+L1,Coilcraft,MSS1210-103MEB,1,0.81,204.49,L: 10 µH  DCR: 14 mΩ  IDC: 10 A  
+Rt,Vishay-Dale,CRCW040248K7FKED,1,0.01,3,Resistance: 48.7 kΩ  Tolerance: 1.0%  Power: 63 mW  
+Renb,Vishay-Dale,CRCW0402100KFKED,1,0.01,3,Resistance: 100 kΩ  Tolerance: 1.0%  Power: 63 mW  
+Cout,Panasonic,25SVPF27MX,1,0.47,53.29,Cap: 27 µF  Total Derated Cap: 27 µF  VDC: 25 V  ESR: 40 mΩ  Package: 5x5.9  
+U1,Texas Instruments,TPS55289RYQR,1,3.35,35,

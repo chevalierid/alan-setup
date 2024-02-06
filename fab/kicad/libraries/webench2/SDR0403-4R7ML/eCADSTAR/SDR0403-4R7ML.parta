@@ -1,0 +1,67 @@
+(Japanese_coding: sjis)
+(function "ECS_955737"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2018-03-22-12:26:11)
+    (utime 2023-03-07-16:10:32)
+    (interface
+        (port "1" (symbPinId 1) (portType INOUT))
+        (port "2" (symbPinId 2) (portType INOUT))
+    )
+    (property "symbolName" "SDR0403-4R7ML")
+)
+
+
+(pinAssign "ECS_955737"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2018-03-22-12:26:11)
+    (utime 2023-03-07-16:10:32)
+    (interface
+        (port "1" (symbPinId 1) (portName "1") (portType INOUT))
+        (port "2" (symbPinId 2) (portName "2") (portType INOUT))
+    )
+    (internal
+        (funcInst (functionRef "ECS_955737")
+                (port "1" (match "1"))
+                (port "2" (match "2"))
+        )
+    )
+    (property "usePowerBox" "No")
+    (property "symbolName" "SDR0403-4R7ML")
+)
+
+
+(part "SDR0403-4R7ML"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2018-03-22-12:26:11)
+    (utime 2023-03-07-16:10:32)
+    (packageRef "SDR0403-4R7ML")
+    (pinAssignRef "ECS_955737")
+    (interface
+        (port "1" (symbPinId 1) (portName "1") (portType INOUT))
+        (port "2" (symbPinId 2) (portName "2") (portType INOUT))
+    )
+    (partClass UNDEF)
+    (useInSchema Y)
+    (useInLayout Y)
+    (inPartsList Y)
+    (partType NORMAL)
+    (placeRestriction FREE)
+    (property "enetNonSeries" "NO")
+    (property "refDesPrefix" "L")
+    (property "description" "SDR0403 SMD Power Inductors 4.7uH 20% Bourns SDR0403 Series Wire-wound SMD Inductor with a Ferrite Core, 4.7 uH +/-20% Wire-Wound 1.7A Idc Q:28")
+    (property "Manufacturer_Name" "Bourns")
+    (property "Manufacturer_Part_Number" "SDR0403-4R7ML")
+    (property "Mouser_Part_Number" "652-SDR0403-4R7ML")
+    (property "Mouser_Price/Stock" "https://www.mouser.co.uk/ProductDetail/Bourns/SDR0403-4R7ML?qs=xrpI9KL%2FXvtm2g7dmggyxA%3D%3D")
+    (property "Arrow_Part_Number" "SDR0403-4R7ML")
+    (property "Arrow_Price/Stock" "https://www.arrow.com/en/products/sdr0403-4r7ml/bourns?region=nac")
+    (property "Datasheet_Link" "http://www.bourns.com/docs/Product-Datasheets/sdr0403.pdf")
+)
+
+

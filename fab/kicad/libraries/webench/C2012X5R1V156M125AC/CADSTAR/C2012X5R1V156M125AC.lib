@@ -1,0 +1,18 @@
+.C2012X5R1V156M125AC :1 ;MULTILAYER CERAMIC CHIP CAPACITORS, 2012, Commercial grade, general (Up to 75V)
+CAPC2012X145N
+*STM C
+*NGS
+*PLB 1="1" 2="2"
+*MXP 2
+*DFN C2012X5R1V156M125AC
+~!Manufacturer_Name (TDK)
+~!Manufacturer_Part_Number (C2012X5R1V156M125AC)
+~!Mouser Part Number (810-C2012X5R1V156M1C)
+~!Link Mouser Price/Stock (https://www.mouser.co.uk/ProductDetail/TDK/C2012X5R1V156M125AC?qs=xLDY6iXSiQZGpZ5eDP6b8w%3D%3D)
+~!Arrow Part Number (C2012X5R1V156M125AC)
+~!Link Arrow Price/Stock (https://www.arrow.com/en/products/c2012x5r1v156m125ac/tdk?region=nac)
+~!Link Datasheet (https://product.tdk.com/info/en/catalog/datasheets/mlcc_commercial_midvoltage_en.pdf)
+~!Height (1.45mm)
+~!3D_Model (C2012X5R1V156M125AC)
+C2012X5R1V156M125AC
+1.1!U 2.1!U 

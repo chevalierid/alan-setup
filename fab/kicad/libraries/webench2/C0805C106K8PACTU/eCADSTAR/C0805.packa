@@ -1,0 +1,13 @@
+(unit MM)
+
+(package "C0805C106K8PACTU"
+    (type UNDEF)
+    (uver 2)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (utime 2022-03-24-23:09:42)
+    (mountForm default
+        (footprintRef "C0805")
+        (spec "System")
+    )
+)

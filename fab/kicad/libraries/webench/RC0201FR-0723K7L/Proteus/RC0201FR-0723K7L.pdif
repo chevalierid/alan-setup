@@ -1,0 +1,86 @@
+;Proteus Design Interchange Format
+(PDIF
+ (vendor "SamacSys Limited")
+ (version 1 0)
+ (library
+  (part "RC0201FR-0723K7L"
+   (description "Res Thick Film 0201 23.7K Ohm 1% 0.05W(1/20W) +/-200ppm/C Epoxy Pad SMD T/R")
+   (family "RES")
+   (package "RESC0603X26N")
+   (attribute "Datasheet Link" "https://www.mouser.in/datasheet/2/447/PYu_RC_Group_51_RoHS_L_11-1984063.pdf")
+   (attribute "Geometry.Height" "0.26mm")
+   (attribute "Manufacturer_Name" "YAGEO")
+   (attribute "Manufacturer_Part_Number" "RC0201FR-0723K7L")
+   (attribute "Mouser Part Number" "603-RC0201FR-0723K7L")
+   (attribute "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/YAGEO/RC0201FR-0723K7L?qs=Q4gDqC5t5%2FAQco3wz1Gmbw%3D%3D")
+   (attribute "Arrow Part Number" "RC0201FR-0723K7L")
+   (attribute "Arrow Price/Stock" "https://www.arrow.com/en/products/rc0201fr-0723k7l/yageo?region=nac")
+   (gate
+    (symbol "RC0201FR-0723K7L")
+    (pin "1" 1 PS)
+    (pin "2" 2 PS)
+   )
+  )
+  (symbol "RC0201FR-0723K7L"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 200 50) (pt 500 50) (pt 500 -50) (pt 200 -50) (pt 200 50) (closed))
+   )
+   (terminal
+    (body (symbol "PIN") (pt 0 0) (rot 0) (mir 0) (visible true))
+    (name (pt 0 -10) (rot 0) (just TOP LEFT) (visible false))
+    (number (pt 0 10) (rot 0) (just BOTTOM LEFT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 700 0) (rot 0) (mir X) (visible true))
+    (name (pt 0 -10) (rot 0) (just TOP LEFT) (visible false))
+    (number (pt 0 10) (rot 0) (just BOTTOM LEFT) (visible true)))
+  )
+  (symbol "PIN"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 200 0))))
+  (symbol "PINSHORT"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 100 0))))
+  (package "RESC0603X26N"
+   (units MM)
+   (layer OCCA
+    (graphic
+     (stroke 0.05)
+     (path
+      (closed true)
+      (pt -0.975 0.45)
+      (pt 0.975 0.45)
+      (pt 0.975 -0.45)
+      (pt -0.975 -0.45)
+      (pt -0.975 0.45))))
+   (layer TASM
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed true)
+      (pt -0.3 0.15)
+      (pt 0.3 0.15)
+      (pt 0.3 -0.15)
+      (pt -0.3 -0.15)
+      (pt -0.3 0.15))))
+   (leg 1 (pt -0.412 0) (padstack 0))
+   (leg 2 (pt 0.412 0) (padstack 0))
+   (padstack 0
+    (plated false)
+    (pad (layer TCOP) (rectf 0.4 0.625 0 0 0))
+   )
+   (model "RC0201FR-0723K7L.stp"
+    (euler 0 0 0)
+    (offset 0 0 0)
+   )
+  )
+ )
+)

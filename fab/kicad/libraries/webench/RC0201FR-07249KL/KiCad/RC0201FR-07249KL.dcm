@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP RC0201FR-07249KL
+D The resistor is constructed on top of a high-grade ceramic body. Internal metal electrodes are added on each end to make the contacts to the thick film resistive element. The composition of the resistive element is a noble metal imbedded into a glass and covered by a second glass to prevent environmental influences. The resistor is laser trimmed to the rated resistance value. The resistor is covered with a protective epoxy coat, finally the two external terminations
+K
+F https://www.mouser.com/datasheet/2/447/PYu-RC_Group_51_RoHS_L_9-1314892.pdf
+$ENDCMP
+#
+#End Doc Library

@@ -1,0 +1,11 @@
+FILE_TYPE = MULTI_PHYS_TABLE;
+
+PART 'GRM188R71H104KA93D'
+CLASS = DISCRETE
+{========================================================================================}
+:"MANUFACTURER_NAME", "MANUFACTURER_PART_NUMBER"= "PART_NUMBER", "JEDEC_TYPE", "PACK_TYPE", "MOUSER_PART_NUMBER", "MOUSER_PRICE/STOCK", "ARROW_PART_NUMBER", "ARROW_PRICE/STOCK", "DESCRIPTION", "DATASHEET", "HEIGHT";
+{========================================================================================}
+ "Murata Electronics", "GRM188R71H104KA93D" (!) = "", "CAPC1608X90N", "Capacitor Chip Non-polarised", "81-GRM39X104K50D", "https://www.mouser.co.uk/ProductDetail/Murata-Electronics/GRM188R71H104KA93D?qs=f7ZljCwbPOm85Y6l%2FNGt7A%3D%3D", "GRM188R71H104KA93D", "https://www.arrow.com/en/products/grm188r71h104ka93d/murata-manufacturing?region=europe", "Ceramic  SMT capacitor 100nF 50Vdc Murata 0603 GRM 100nF Ceramic Multilayer Capacitor, 50 V dc, +125?C, X7R Dielectric, ?10%", "https://datasheet.datasheetarchive.com/originals/distributors/Datasheets_SAMA/ec4f1577dddcc7a13ddad897a28002d3.pdf", "0.9 mm"
+END_PART
+
+END.

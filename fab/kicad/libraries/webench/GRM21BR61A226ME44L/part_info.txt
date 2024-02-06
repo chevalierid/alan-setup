@@ -1,0 +1,9 @@
+Manufacturer=Murata Electronics
+PartNumber=GRM21BR61A226ME44L
+PartCategory=Capacitor
+PackageCategory=Capacitor Chip Non-polarised
+PinCount=2
+Version=2.3
+Released=2023-03-07 08:57:12
+Downloaded=2024-02-05 09:38:28
+3D=Y

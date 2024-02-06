@@ -1,0 +1,68 @@
+(Japanese_coding: sjis)
+(function "ECS_1157070"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2019-11-10-17:27:27)
+    (utime 2023-03-07-16:10:32)
+    (interface
+        (port "1" (symbPinId 1) (portType INOUT))
+        (port "2" (symbPinId 2) (portType INOUT))
+    )
+    (property "symbolName" "PRL1632-R006-F-T1")
+)
+
+
+(pinAssign "ECS_1157070"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2019-11-10-17:27:27)
+    (utime 2023-03-07-16:10:32)
+    (interface
+        (port "1" (symbPinId 1) (portName "1") (portType INOUT))
+        (port "2" (symbPinId 2) (portName "2") (portType INOUT))
+    )
+    (internal
+        (funcInst (functionRef "ECS_1157070")
+                (port "1" (match "1"))
+                (port "2" (match "2"))
+        )
+    )
+    (property "usePowerBox" "No")
+    (property "symbolName" "PRL1632-R006-F-T1")
+)
+
+
+(part "PRL1632-R006-F-T1"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2019-11-10-17:27:27)
+    (utime 2023-03-07-16:10:32)
+    (packageRef "PRL1632-R006-F-T1")
+    (pinAssignRef "ECS_1157070")
+    (interface
+        (port "1" (symbPinId 1) (portName "1") (portType INOUT))
+        (port "2" (symbPinId 2) (portName "2") (portType INOUT))
+    )
+    (partClass UNDEF)
+    (useInSchema Y)
+    (useInLayout Y)
+    (inPartsList Y)
+    (partType NORMAL)
+    (placeRestriction FREE)
+    (property "enetNonSeries" "NO")
+    (property "refDesPrefix" "R")
+    (property "description" "Current Sense Resistors - SMD 1W 0.006ohm 1%")
+    (property "Manufacturer_Name" "Susumu")
+    (property "Manufacturer_Part_Number" "PRL1632-R006-F-T1")
+    (property "Mouser_Part_Number" "754-PRL1632-R006-FT1")
+    (property "Mouser_Price/Stock" "https://www.mouser.co.uk/ProductDetail/Susumu/PRL1632-R006-F-T1?qs=juJhw1yPxAHGKYokg5pJ8Q%3D%3D")
+    (property "Arrow_Part_Number" "PRL1632-R006-F-T1")
+    (property "Arrow_Price/Stock" "https://www.arrow.com/en/products/prl1632-r006-f-t1/susumu")
+    (property "Datasheet_Link" "https://componentsearchengine.com/Datasheets/1/PRL1632-R006-F-T1.pdf")
+    (property "compAreaTopHeight" 0.6)
+)
+
+

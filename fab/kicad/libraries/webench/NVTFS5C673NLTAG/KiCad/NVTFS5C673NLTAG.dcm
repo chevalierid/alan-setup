@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP NVTFS5C673NLTAG
+D Trans MOSFET N-CH 60V 13A Automotive 8-Pin WDFN EP T/R
+K
+F https://www.onsemi.com/pdf/datasheet/nvtfs5c673nl-d.pdf
+$ENDCMP
+#
+#End Doc Library

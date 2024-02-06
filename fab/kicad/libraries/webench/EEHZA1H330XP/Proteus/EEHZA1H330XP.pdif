@@ -1,0 +1,137 @@
+;Proteus Design Interchange Format
+(PDIF
+ (vendor "SamacSys Limited")
+ (version 1 0)
+ (library
+  (part "EEHZA1H330XP"
+   (description "Hybrid Capacitor SMT ZA 50V 33uF low ESR Panasonic 33uF 50 V dc Aluminium Electrolytic Capacitor D8, ZA Series 10000h 6.3 x 7.7mm")
+   (family "CAP")
+   (package "EEHZA1E101XP")
+   (attribute "Datasheet Link" "http://industrial.panasonic.com/cdbs/www-data/pdf/RDD0000/ABA0000C1221.pdf")
+   (attribute "Geometry.Height" "8.3mm")
+   (attribute "Manufacturer_Name" "Panasonic")
+   (attribute "Manufacturer_Part_Number" "EEHZA1H330XP")
+   (attribute "Mouser Part Number" "")
+   (attribute "Mouser Price/Stock" "")
+   (attribute "Arrow Part Number" "EEHZA1H330XP")
+   (attribute "Arrow Price/Stock" "https://www.arrow.com/en/products/eehza1h330xp/panasonic?region=nac")
+   (gate
+    (symbol "EEHZA1H330XP")
+    (pin "+" 1 PS)
+    (pin "-" 2 PS)
+   )
+  )
+  (symbol "EEHZA1H330XP"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 200 100) (pt 200 -100) (pt 230 -100) (pt 230 100) (pt 200 100) (closed))
+   )
+   (graphic
+    (stroke 10)
+    (path (pt 180 50) (pt 140 50))
+   )
+   (graphic
+    (stroke 10)
+    (path (pt 160 70) (pt 160 30))
+   )
+   (graphic
+    (stroke 10)
+    (path (pt 100 0) (pt 200 0))
+   )
+   (graphic
+    (stroke 10)
+    (path (pt 300 0) (pt 400 0))
+   )
+   (graphic
+    (stroke 10)
+    (path (closed true) (pt 300 100) (pt 300 -100) (pt 270 -100) (pt 270 100) (pt 300 100))
+   )
+   (terminal
+    (body (symbol "PINSHORT") (pt 0 0) (rot 0) (mir 0) (visible true))
+    (name (pt 0 -10) (rot 0) (just TOP LEFT) (visible false))
+    (number (pt 0 10) (rot 0) (just BOTTOM LEFT) (visible true)))
+   (terminal
+    (body (symbol "PINSHORT") (pt 500 0) (rot 0) (mir X) (visible true))
+    (name (pt 0 -10) (rot 0) (just TOP LEFT) (visible false))
+    (number (pt 0 10) (rot 0) (just BOTTOM LEFT) (visible true)))
+  )
+  (symbol "PIN"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 200 0))))
+  (symbol "PINSHORT"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 100 0))))
+  (package "EEHZA1E101XP"
+   (units MM)
+   (layer OCCA
+    (graphic
+     (stroke 0.05)
+     (path
+      (closed true)
+      (pt -5.75 4.3)
+      (pt 4.9 4.3)
+      (pt 4.9 -4.3)
+      (pt -5.75 -4.3)
+      (pt -5.75 4.3))))
+   (layer TSLK
+    (graphic
+     (stroke 0.05000000000000071)
+     (path
+      (closed true)
+      (pt -4.875 0)
+      (arc (pt -4.875 0.000) (pt -4.875 -0.025) (pt -4.825 0.025) (start 180.0) (sweep -180.0))
+      (pt -4.825 0)
+      (arc (pt -4.825 0.000) (pt -4.875 -0.025) (pt -4.825 0.025) (start 180.0) (sweep .0))
+      (pt -4.875 0))))
+   (layer TASM
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed false)
+      (pt -3.3 1.5)
+      (pt -1.5 3.3)
+      (pt 3.3 3.3)
+      (pt 3.3 -3.3)
+      (pt -1.5 -3.3)
+      (pt -3.3 -1.5)
+      (pt -3.3 1.5)
+      (pt -1.5 3.3))))
+   (layer TSLK
+    (graphic
+     (stroke 0.2)
+     (path
+      (closed false)
+      (pt -3.3 1.5)
+      (pt -1.5 3.3)
+      (pt 3.3 3.3)
+      (pt 3.3 1.5))))
+   (layer TSLK
+    (graphic
+     (stroke 0.2)
+     (path
+      (closed false)
+      (pt 3.3 -1.5)
+      (pt 3.3 -3.3)
+      (pt -1.5 -3.3)
+      (pt -3.3 -1.5))))
+   (leg 1 (pt -2.500 0.000) (padstack 0))
+   (leg 2 (pt 2.500 0.000) (padstack 0))
+   (padstack 0
+    (plated false)
+    (pad (layer TCOP) (rectf 1.600 3.200 0 0 0.000))
+   )
+   (model "EEHZA1H330XP.stp"
+    (euler 90 0 180)
+    (offset 0 0 0)
+   )
+  )
+ )
+)

@@ -1,0 +1,18 @@
+.SLF6025T-4R7M1R5-PF :1 ;SMD / SMT Inductors (Coils), L=4.7?H, L x W x T :
+SLF6025
+*STM L
+*NGS
+*PLB 1="1" 2="2"
+*MXP 2
+*DFN SLF6025T-4R7M1R5-PF
+~!Manufacturer_Name (TDK)
+~!Manufacturer_Part_Number (SLF6025T-4R7M1R5-PF)
+~!Mouser Part Number (810-SLF6025T-4R7M)
+~!Link Mouser Price/Stock (https://www.mouser.co.uk/ProductDetail/TDK/SLF6025T-4R7M1R5-PF?qs=ZkOiLKk8CrAv31GuoYQOdw%3D%3D)
+~!Arrow Part Number (SLF6025T-4R7M1R5-PF)
+~!Link Arrow Price/Stock (https://www.arrow.com/en/products/slf6025t-4r7m1r5-pf/tdk)
+~!Link Datasheet (https://product.tdk.com/system/files/dam/doc/product/inductor/inductor/smd/catalog/inductor_commercial_power_slf6025_en.pdf)
+~!Height (-)
+~!3D_Model (SLF6025T-4R7M1R5-PF)
+SLF6025T-4R7M1R5-PF
+1.1!U 2.1!U 

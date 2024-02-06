@@ -1,0 +1,18 @@
+.GRM21BR61E106MA73L :1 ;Murata 0805 (2012M) 10uF MLCC 25V dc +/-20% SMD GRM21BR61E106MA73L
+CAPC2012X145N
+*STM C
+*NGS
+*PLB 1="1" 2="2"
+*MXP 2
+*DFN GRM21BR61E106MA73L
+~!Manufacturer_Name (Murata Electronics)
+~!Manufacturer_Part_Number (GRM21BR61E106MA73L)
+~!Mouser Part Number (81-GRM21BR61E106MA3L)
+~!Link Mouser Price/Stock (https://www.mouser.co.uk/ProductDetail/Murata-Electronics/GRM21BR61E106MA73L?qs=2W5sgKM%2F371odLMyCilkag%3D%3D)
+~!Arrow Part Number (GRM21BR61E106MA73L)
+~!Link Arrow Price/Stock (https://www.arrow.com/en/products/grm21br61e106ma73l/murata-manufacturing?region=nac)
+~!Link Datasheet (http://www.murata.com/~/media/webrenewal/support/library/catalog/products/capacitor/mlcc/c02e.pdf)
+~!Height (1.45mm)
+~!3D_Model (GRM21BR61E106MA73L)
+GRM21BR61E106MA73L
+1.1!U 2.1!U 

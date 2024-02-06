@@ -1,0 +1,9 @@
+Manufacturer=Bourns
+PartNumber=SDR0403-4R7ML
+PartCategory=Inductor
+PackageCategory=Other
+PinCount=2
+Version=1.2
+Released=2018-03-22 12:26:11
+Downloaded=2024-02-06 15:02:31
+3D=Y

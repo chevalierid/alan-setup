@@ -1,0 +1,11 @@
+FILE_TYPE = MULTI_PHYS_TABLE;
+
+PART 'TPS564255DRLR'
+CLASS = IC
+{========================================================================================}
+:"MANUFACTURER_NAME", "MANUFACTURER_PART_NUMBER"= "PART_NUMBER", "JEDEC_TYPE", "PACK_TYPE", "MOUSER_PART_NUMBER", "MOUSER_PRICE/STOCK", "ARROW_PART_NUMBER", "ARROW_PRICE/STOCK", "DESCRIPTION", "DATASHEET", "HEIGHT";
+{========================================================================================}
+ "Texas Instruments", "TPS564255DRLR" (!) = "", "SOTFL50P160X60-6N", "SO Transistor Flat Lead", "595-TPS564255DRLR", "https://www.mouser.co.uk/ProductDetail/Texas-Instruments/TPS564255DRLR?qs=ulEaXIWI0c8mPomYtvsyTw%3D%3D", "", "", "3-V to 17-V input voltage, 4-A OOA mode, synchronous buck converter with PG", "https://www.ti.com/lit/ds/symlink/tps564257.pdf?HQS=dis-mous-null-mousermode-dsf-pf-null-wwe&ts=1695645096067&ref_url=https%253A%252F%252Fwww.mouser.com%252F", "0.6 mm"
+END_PART
+
+END.

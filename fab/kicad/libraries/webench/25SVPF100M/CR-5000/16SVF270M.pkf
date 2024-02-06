@@ -1,0 +1,10 @@
+(unit MM)
+
+(package "16SVF270M"
+    (type UNDEF)
+    (uver 2)
+    (mountForm default
+        (footprintRef "16SVF270M")
+        (spec "default")
+    )
+)

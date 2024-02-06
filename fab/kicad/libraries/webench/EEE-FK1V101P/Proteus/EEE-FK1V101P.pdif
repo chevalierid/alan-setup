@@ -1,0 +1,137 @@
+;Proteus Design Interchange Format
+(PDIF
+ (vendor "SamacSys Limited")
+ (version 1 0)
+ (library
+  (part "EEE-FK1V101P"
+   (description "Aluminum Electrolytic Capacitors - SMD 100uF 35V")
+   (family "CAP")
+   (package "EEHZT1E331UP")
+   (attribute "Datasheet Link" "http://industrial.panasonic.com/cdbs/www-data/pdf/RDE0000/ABA0000C1181.pdf")
+   (attribute "Geometry.Height" "10.8mm")
+   (attribute "Manufacturer_Name" "Panasonic")
+   (attribute "Manufacturer_Part_Number" "EEE-FK1V101P")
+   (attribute "Mouser Part Number" "667-EEE-FK1V101P")
+   (attribute "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Panasonic/EEE-FK1V101P?qs=qE6bgDGEOCsMXxs4z7sT2w%3D%3D")
+   (attribute "Arrow Part Number" "EEE-FK1V101P")
+   (attribute "Arrow Price/Stock" "https://www.arrow.com/en/products/eeefk1v101p/panasonic?region=nac")
+   (gate
+    (symbol "EEE-FK1V101P")
+    (pin "+" 1 PS)
+    (pin "-" 2 PS)
+   )
+  )
+  (symbol "EEE-FK1V101P"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 200 100) (pt 200 -100) (pt 230 -100) (pt 230 100) (pt 200 100) (closed))
+   )
+   (graphic
+    (stroke 10)
+    (path (pt 180 50) (pt 140 50))
+   )
+   (graphic
+    (stroke 10)
+    (path (pt 160 70) (pt 160 30))
+   )
+   (graphic
+    (stroke 10)
+    (path (pt 100 0) (pt 200 0))
+   )
+   (graphic
+    (stroke 10)
+    (path (pt 300 0) (pt 400 0))
+   )
+   (graphic
+    (stroke 10)
+    (path (closed true) (pt 300 100) (pt 300 -100) (pt 270 -100) (pt 270 100) (pt 300 100))
+   )
+   (terminal
+    (body (symbol "PINSHORT") (pt 0 0) (rot 0) (mir 0) (visible true))
+    (name (pt 0 -10) (rot 0) (just TOP LEFT) (visible false))
+    (number (pt 0 10) (rot 0) (just BOTTOM LEFT) (visible true)))
+   (terminal
+    (body (symbol "PINSHORT") (pt 500 0) (rot 0) (mir X) (visible true))
+    (name (pt 0 -10) (rot 0) (just TOP LEFT) (visible false))
+    (number (pt 0 10) (rot 0) (just BOTTOM LEFT) (visible true)))
+  )
+  (symbol "PIN"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 200 0))))
+  (symbol "PINSHORT"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 100 0))))
+  (package "EEHZT1E331UP"
+   (units MM)
+   (layer OCCA
+    (graphic
+     (stroke 0.05)
+     (path
+      (closed true)
+      (pt -7.05 5.15)
+      (pt 6.35 5.15)
+      (pt 6.35 -5.15)
+      (pt -7.05 -5.15)
+      (pt -7.05 5.15))))
+   (layer TSLK
+    (graphic
+     (stroke 0.05)
+     (path
+      (closed true)
+      (pt -6.175 0)
+      (arc (pt -6.175 0.000) (pt -6.175 -0.025) (pt -6.125 0.025) (start 180.0) (sweep -180.0))
+      (pt -6.125 0)
+      (arc (pt -6.125 0.000) (pt -6.175 -0.025) (pt -6.125 0.025) (start 180.0) (sweep .0))
+      (pt -6.175 0))))
+   (layer TASM
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed false)
+      (pt -4.15 2)
+      (pt -2 4.15)
+      (pt 4.15 4.15)
+      (pt 4.15 -4.15)
+      (pt -2 -4.15)
+      (pt -4.15 -2)
+      (pt -4.15 2)
+      (pt -2 4.15))))
+   (layer TSLK
+    (graphic
+     (stroke 0.2)
+     (path
+      (closed false)
+      (pt -4.15 2)
+      (pt -2 4.15)
+      (pt 4.15 4.15)
+      (pt 4.15 2))))
+   (layer TSLK
+    (graphic
+     (stroke 0.2)
+     (path
+      (closed false)
+      (pt -4.15 -2)
+      (pt -2 -4.15)
+      (pt 4.15 -4.15)
+      (pt 4.15 -2))))
+   (leg 1 (pt -3.550 0.000) (padstack 0))
+   (leg 2 (pt 3.550 0.000) (padstack 0))
+   (padstack 0
+    (plated false)
+    (pad (layer TCOP) (rectf 2.000 4.000 0 0 0.000))
+   )
+   (model "EEE-FK1V101P.stp"
+    (euler 90 0 180)
+    (offset 0.05999999865889549 0 0)
+   )
+  )
+ )
+)

@@ -1,0 +1,18 @@
+.EMK107B7104KA-T :1 ;EMK107B7104KA-T 0.1F +/-10% 16V Ceramic Capacitor X7R 0603
+CAPC1608X95N
+*STM C
+*NGS
+*PLB 1="1" 2="2"
+*MXP 2
+*DFN EMK107B7104KA-T
+~!Manufacturer_Name (TAIYO YUDEN)
+~!Manufacturer_Part_Number (EMK107B7104KA-T)
+~!Mouser Part Number (963-EMK107B7104KA-T)
+~!Link Mouser Price/Stock (https://www.mouser.co.uk/ProductDetail/TAIYO-YUDEN/EMK107B7104KA-T?qs=I6KAKw0tg2ybqzX8hKPgfw%3D%3D)
+~!Arrow Part Number (EMK107B7104KA-T)
+~!Link Arrow Price/Stock (https://www.arrow.com/en/products/emk107b7104ka-t/taiyo-yuden)
+~!Link Datasheet (http://www.farnell.com/datasheets/746258.pdf)
+~!Height (0.95mm)
+~!3D_Model (EMK107B7104KA-T)
+EMK107B7104KA-T
+1.1!U 2.1!U 

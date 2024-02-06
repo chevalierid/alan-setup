@@ -1,0 +1,89 @@
+;Proteus Design Interchange Format
+(PDIF
+ (vendor "SamacSys Limited")
+ (version 1 0)
+ (library
+  (part "SDR0403-4R7ML"
+   (description "SDR0403 SMD Power Inductors 4.7uH 20% Bourns SDR0403 Series Wire-wound SMD Inductor with a Ferrite Core, 4.7 uH +/-20% Wire-Wound 1.7A Idc Q:28")
+   (family "IND")
+   (package "SDR0403")
+   (attribute "Datasheet Link" "http://www.bourns.com/docs/Product-Datasheets/sdr0403.pdf")
+   (attribute "Manufacturer_Name" "Bourns")
+   (attribute "Manufacturer_Part_Number" "SDR0403-4R7ML")
+   (attribute "Mouser Part Number" "652-SDR0403-4R7ML")
+   (attribute "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Bourns/SDR0403-4R7ML?qs=xrpI9KL%2FXvtm2g7dmggyxA%3D%3D")
+   (attribute "Arrow Part Number" "SDR0403-4R7ML")
+   (attribute "Arrow Price/Stock" "https://www.arrow.com/en/products/sdr0403-4r7ml/bourns?region=nac")
+   (gate
+    (symbol "SDR0403-4R7ML")
+    (pin "1" 1 PS)
+    (pin "2" 2 PS)
+   )
+  )
+  (symbol "SDR0403-4R7ML"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path
+     (arc (pt 200 0) (pt 200 -52) (pt 300 48) (start -175.4) (sweep 177.7)) (pt 300 0))
+   )
+   (graphic
+    (stroke 10)
+    (path
+     (arc (pt 300 0) (pt 300 -52) (pt 400 48) (start -175.4) (sweep 177.7)) (pt 400 0))
+   )
+   (graphic
+    (stroke 10)
+    (path
+     (arc (pt 400 0) (pt 400 -52) (pt 500 48) (start -175.4) (sweep 177.7)) (pt 500 0))
+   )
+   (graphic
+    (stroke 10)
+    (path
+     (arc (pt 500 0) (pt 500 -52) (pt 600 48) (start -175.4) (sweep 177.7)) (pt 600 0))
+   )
+   (terminal
+    (body (symbol "PIN") (pt 0 0) (rot 0) (mir 0) (visible true))
+    (name (pt 0 -10) (rot 0) (just TOP LEFT) (visible false))
+    (number (pt 0 10) (rot 0) (just BOTTOM LEFT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 800 0) (rot 0) (mir X) (visible true))
+    (name (pt 0 -10) (rot 0) (just TOP LEFT) (visible false))
+    (number (pt 0 10) (rot 0) (just BOTTOM LEFT) (visible true)))
+  )
+  (symbol "PIN"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 200 0))))
+  (symbol "PINSHORT"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 100 0))))
+  (package "SDR0403"
+   (units MM)
+   (layer TASM
+    (graphic
+     (stroke 0.2)
+     (circle
+      (pt 2.25 0) (pt -2.25 0)
+     )
+    )
+   )
+   (leg 1 (pt 0 1.65) (padstack 0))
+   (leg 2 (pt 0 -1.65) (padstack 0))
+   (padstack 0
+    (plated false)
+    (pad (layer TCOP) (rectf 1.8 4.5 0 0 0))
+   )
+   (model "SDR0403-4R7ML.stp"
+    (euler 90 0 90)
+    (offset 0 0 0)
+   )
+  )
+ )
+)

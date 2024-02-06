@@ -1,0 +1,28 @@
+EESchema-LIBRARY Version 2.3
+#encoding utf-8
+#SamacSys ECAD Model C0805C106K8PACTU
+#/12848171/877297/2.50/2/2/Capacitor
+DEF C0805C106K8PACTU C 0 30 Y Y 1 F N
+F0 "C" 350 250 50 H V L CNN
+F1 "C0805C106K8PACTU" 350 150 50 H V L CNN
+F2 "C0805" 350 50 50 H I L CNN
+F3 "https://content.kemet.com/datasheets/KEM_C1006_X5R_SMD.pdf" 350 -50 50 H I L CNN
+F4 "SMD Comm X5R, Ceramic, 10 uF, 10%, 10 VDC, 25 VDC, 85C, -55C, X5R, SMD, MLCC, Temperature Stable, Class II, 10 % , 10 MOhms, 21 mg, 0805, 2mm, 1.25mm, 1.25mm, 0.75mm, 0.5mm, 3000, 78  Weeks, 70" 350 -150 50 H I L CNN "Description"
+F5 "1.1" 350 -250 50 H I L CNN "Height"
+F6 "KEMET" 350 -350 50 H I L CNN "Manufacturer_Name"
+F7 "C0805C106K8PACTU" 350 -450 50 H I L CNN "Manufacturer_Part_Number"
+F8 "80-C0805C106K8P" 350 -550 50 H I L CNN "Mouser Part Number"
+F9 "https://www.mouser.co.uk/ProductDetail/KEMET/C0805C106K8PACTU?qs=Zpyg6gQUYs39C21BeavaKA%3D%3D" 350 -650 50 H I L CNN "Mouser Price/Stock"
+F10 "C0805C106K8PACTU" 350 -750 50 H I L CNN "Arrow Part Number"
+F11 "https://www.arrow.com/en/products/c0805c106k8pactu/kemet-corporation?region=nac" 350 -850 50 H I L CNN "Arrow Price/Stock"
+DRAW
+X ~ 1 0 0 200 R 50 50 0 0 P
+X ~ 2 500 0 200 L 50 50 0 0 P
+P 2 0 1 6 220 100 220 -100 N
+P 2 0 1 6 280 100 280 -100 N
+P 2 0 1 6 200 0 220 0 N
+P 2 0 1 6 280 0 300 0 N
+ENDDRAW
+ENDDEF
+#
+#End Library

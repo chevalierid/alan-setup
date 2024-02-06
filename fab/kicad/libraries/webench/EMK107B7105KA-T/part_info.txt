@@ -1,0 +1,9 @@
+Manufacturer=TAIYO YUDEN
+PartNumber=EMK107B7105KA-T
+PartCategory=Capacitor
+PackageCategory=Capacitor Chip Non-polarised
+PinCount=2
+Version=2.1
+Released=2018-04-01 15:52:21
+Downloaded=2024-02-02 12:57:16
+3D=Y

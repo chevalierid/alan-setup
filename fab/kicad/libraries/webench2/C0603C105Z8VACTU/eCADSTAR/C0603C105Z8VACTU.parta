@@ -1,0 +1,68 @@
+(Japanese_coding: sjis)
+(function "ECS_900821"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2017-12-11-11:25:45)
+    (utime 2023-03-07-16:10:32)
+    (interface
+        (port "1" (symbPinId 1) (portType INOUT))
+        (port "2" (symbPinId 2) (portType INOUT))
+    )
+    (property "symbolName" "C0603C105Z8VACTU")
+)
+
+
+(pinAssign "ECS_900821"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2017-12-11-11:25:45)
+    (utime 2023-03-07-16:10:32)
+    (interface
+        (port "1" (symbPinId 1) (portName "1") (portType INOUT))
+        (port "2" (symbPinId 2) (portName "2") (portType INOUT))
+    )
+    (internal
+        (funcInst (functionRef "ECS_900821")
+                (port "1" (match "1"))
+                (port "2" (match "2"))
+        )
+    )
+    (property "usePowerBox" "No")
+    (property "symbolName" "C0603C105Z8VACTU")
+)
+
+
+(part "C0603C105Z8VACTU"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2017-12-11-11:25:45)
+    (utime 2023-03-07-16:10:32)
+    (packageRef "C0603C105Z8VACTU")
+    (pinAssignRef "ECS_900821")
+    (interface
+        (port "1" (symbPinId 1) (portName "1") (portType INOUT))
+        (port "2" (symbPinId 2) (portName "2") (portType INOUT))
+    )
+    (partClass UNDEF)
+    (useInSchema Y)
+    (useInLayout Y)
+    (inPartsList Y)
+    (partType NORMAL)
+    (placeRestriction FREE)
+    (property "enetNonSeries" "NO")
+    (property "refDesPrefix" "C")
+    (property "description" "SMD Comm Y5V, Ceramic, 1 uF, -20/+80%, 10 VDC, 25 VDC, 85C, -30C, Y5V, SMD, MLCC, General Purpose, Class III, 10 % , 50 MOhms, 6.5 mg, 0603, 1.6mm, 0.8mm, 0.8mm, 0.7mm, 0.35mm, 4000, 78  Weeks, 10")
+    (property "Manufacturer_Name" "KEMET")
+    (property "Manufacturer_Part_Number" "C0603C105Z8VACTU")
+    (property "Mouser_Part_Number" "80-C0603C105Z8V")
+    (property "Mouser_Price/Stock" "https://www.mouser.co.uk/ProductDetail/KEMET/C0603C105Z8VACTU?qs=F2dscFSegBYhJ9ezd9GTzA%3D%3D")
+    (property "Arrow_Part_Number" "C0603C105Z8VACTU")
+    (property "Arrow_Price/Stock" "https://www.arrow.com/en/products/c0603c105z8vactu/kemet-corporation?region=nac")
+    (property "Datasheet_Link" "https://content.kemet.com/datasheets/KEM_C1005_Y5V_SMD.pdf")
+    (property "compAreaTopHeight" 0.87)
+)
+
+

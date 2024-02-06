@@ -1,0 +1,9 @@
+Manufacturer=KEMET
+PartNumber=C0402C100J3GACTU
+PartCategory=Capacitor
+PackageCategory=Other
+PinCount=2
+Version=6.2
+Released=2023-03-07 11:14:15
+Downloaded=2024-02-05 09:39:35
+3D=Y

@@ -1,0 +1,9 @@
+Manufacturer=YAGEO
+PartNumber=RC0603FR-0730KL
+PartCategory=Resistor
+PackageCategory=Resistor Chip
+PinCount=2
+Version=1.1
+Released=2023-10-25 07:17:53
+Downloaded=2024-02-05 09:35:12
+3D=Y

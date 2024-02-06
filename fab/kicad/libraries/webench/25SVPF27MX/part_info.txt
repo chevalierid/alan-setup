@@ -1,0 +1,9 @@
+Manufacturer=Panasonic
+PartNumber=25SVPF27MX
+PartCategory=Capacitor Polarised
+PackageCategory=Other
+PinCount=2
+Version=6.1
+Released=2020-10-07 06:02:29
+Downloaded=2024-02-02 13:55:15
+3D=Y

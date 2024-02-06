@@ -1,0 +1,10 @@
+(unit MM)
+
+(package "16SVF82M"
+    (type UNDEF)
+    (uver 2)
+    (mountForm default
+        (footprintRef "16SVF82M")
+        (spec "default")
+    )
+)

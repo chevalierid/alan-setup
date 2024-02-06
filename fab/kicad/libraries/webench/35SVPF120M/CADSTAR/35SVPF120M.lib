@@ -1,0 +1,18 @@
+.35SVPF120M :1 ;Panasonic 120uF 35 V dc Polymer Aluminium Electrolytic Capacitor F12, OS-CON Series 5000h 10 x 12.6mm
+"16SVF1000M"
+*STM C
+*NGS
+*PLB 1="+" 2="-"
+*MXP 2
+*DFN 35SVPF120M
+~!Manufacturer_Name (Panasonic)
+~!Manufacturer_Part_Number (35SVPF120M)
+~!Mouser Part Number (667-35SVPF120M)
+~!Link Mouser Price/Stock (https://www.mouser.co.uk/ProductDetail/Panasonic/35SVPF120M?qs=OE1iw1LrrPEMtY1ZtoIEvg%3D%3D)
+~!Arrow Part Number (35SVPF120M)
+~!Link Arrow Price/Stock (https://www.arrow.com/en/products/35svpf120m/panasonic?region=nac)
+~!Link Datasheet (http://industrial.panasonic.com/cdbs/www-data/pdf/AAB8000/AAB8000C177.pdf)
+~!Height (12.7mm)
+~!3D_Model (35SVPF120M)
+"35SVPF120M"
+1.1!U 2.1!U 

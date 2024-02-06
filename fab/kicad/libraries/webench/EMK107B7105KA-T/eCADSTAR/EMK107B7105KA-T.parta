@@ -1,0 +1,68 @@
+(Japanese_coding: sjis)
+(function "ECS_267285"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2018-04-01-15:52:21)
+    (utime 2023-03-07-16:10:32)
+    (interface
+        (port "1" (symbPinId 1) (portType INOUT))
+        (port "2" (symbPinId 2) (portType INOUT))
+    )
+    (property "symbolName" "EMK107B7105KA-T")
+)
+
+
+(pinAssign "ECS_267285"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2018-04-01-15:52:21)
+    (utime 2023-03-07-16:10:32)
+    (interface
+        (port "1" (symbPinId 1) (portName "1") (portType INOUT))
+        (port "2" (symbPinId 2) (portName "2") (portType INOUT))
+    )
+    (internal
+        (funcInst (functionRef "ECS_267285")
+                (port "1" (match "1"))
+                (port "2" (match "2"))
+        )
+    )
+    (property "usePowerBox" "No")
+    (property "symbolName" "EMK107B7105KA-T")
+)
+
+
+(part "EMK107B7105KA-T"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2018-04-01-15:52:21)
+    (utime 2023-03-07-16:10:32)
+    (packageRef "EMK107B7105KA-T")
+    (pinAssignRef "ECS_267285")
+    (interface
+        (port "1" (symbPinId 1) (portName "1") (portType INOUT))
+        (port "2" (symbPinId 2) (portName "2") (portType INOUT))
+    )
+    (partClass UNDEF)
+    (useInSchema Y)
+    (useInLayout Y)
+    (inPartsList Y)
+    (partType NORMAL)
+    (placeRestriction FREE)
+    (property "enetNonSeries" "NO")
+    (property "refDesPrefix" "C")
+    (property "description" "Ceramic Capacitor 0603 16V 1uF")
+    (property "Manufacturer_Name" "TAIYO YUDEN")
+    (property "Manufacturer_Part_Number" "EMK107B7105KA-T")
+    (property "Mouser_Part_Number" "963-EMK107B7105KA-T")
+    (property "Mouser_Price/Stock" "https://www.mouser.co.uk/ProductDetail/TAIYO-YUDEN/EMK107B7105KA-T?qs=I6KAKw0tg2zS1zj87Lm%2FxQ%3D%3D")
+    (property "Arrow_Part_Number" "")
+    (property "Arrow_Price/Stock" "")
+    (property "Datasheet_Link" "https://componentsearchengine.com/Datasheets/1/EMK107B7105KA-T.pdf")
+    (property "compAreaTopHeight" 0.9)
+)
+
+

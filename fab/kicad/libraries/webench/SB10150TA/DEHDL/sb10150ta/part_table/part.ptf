@@ -1,0 +1,11 @@
+FILE_TYPE = MULTI_PHYS_TABLE;
+
+PART 'SB10150TA'
+CLASS = DISCRETE
+{========================================================================================}
+:"MANUFACTURER_NAME", "MANUFACTURER_PART_NUMBER"= "PART_NUMBER", "JEDEC_TYPE", "PACK_TYPE", "MOUSER_PART_NUMBER", "MOUSER_PRICE/STOCK", "ARROW_PART_NUMBER", "ARROW_PRICE/STOCK", "DESCRIPTION", "DATASHEET";
+{========================================================================================}
+ "SMC Diode Solutions", "SB10150TA" (!) = "", "DIOAD3020W130L900D530", "Diodes, Axial Diameter Horizontal Mounting", "", "", "", "", "SB10150 SCHOTTKY RECTIFIER", "http://www.smc-diodes.com/propdf/SB10150%20N0884%20REV.A.pdf"
+END_PART
+
+END.

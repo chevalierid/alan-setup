@@ -1,0 +1,13 @@
+(unit MM)
+
+(package "SB10150TA"
+    (type UNDEF)
+    (uver 2)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (utime 2020-02-15-16:49:18)
+    (mountForm default
+        (footprintRef "DIOAD3020W130L900D530")
+        (spec "System")
+    )
+)

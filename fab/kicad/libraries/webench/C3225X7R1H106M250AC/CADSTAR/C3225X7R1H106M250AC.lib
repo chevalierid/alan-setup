@@ -1,0 +1,18 @@
+.C3225X7R1H106M250AC :1 ;TDK 1210 C 10uF Ceramic Multilayer Capacitor, 50 V dc, +125C, X7R Dielectric, +/-20%
+CAPC3225X230N
+*STM C
+*NGS
+*PLB 1="1" 2="2"
+*MXP 2
+*DFN C3225X7R1H106M250AC
+~!Manufacturer_Name (TDK)
+~!Manufacturer_Part_Number (C3225X7R1H106M250AC)
+~!Mouser Part Number (810-C3225X7R1H106MAC)
+~!Link Mouser Price/Stock (https://www.mouser.co.uk/ProductDetail/TDK/C3225X7R1H106M250AC?qs=6JAMGB%252BEdkwY95l8JqNSnw%3D%3D)
+~!Arrow Part Number (C3225X7R1H106M250AC)
+~!Link Arrow Price/Stock (https://www.arrow.com/en/products/c3225x7r1h106m250ac/tdk?region=nac)
+~!Link Datasheet (https://product.tdk.com/info/en/catalog/datasheets/mlcc_commercial_midvoltage_en.pdf)
+~!Height (2.3mm)
+~!3D_Model (C3225X7R1H106M250AC)
+C3225X7R1H106M250AC
+1.1!U 2.1!U 

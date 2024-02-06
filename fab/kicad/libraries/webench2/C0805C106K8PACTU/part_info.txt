@@ -1,0 +1,9 @@
+Manufacturer=KEMET
+PartNumber=C0805C106K8PACTU
+PartCategory=Capacitor
+PackageCategory=Other
+PinCount=2
+Version=6.1
+Released=2020-10-06 05:33:01
+Downloaded=2024-02-06 15:02:14
+3D=Y

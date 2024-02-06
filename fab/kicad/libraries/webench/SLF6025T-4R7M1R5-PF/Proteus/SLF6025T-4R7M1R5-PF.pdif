@@ -1,0 +1,123 @@
+;Proteus Design Interchange Format
+(PDIF
+ (vendor "SamacSys Limited")
+ (version 1 0)
+ (library
+  (part "SLF6025T-4R7M1R5-PF"
+   (description "SMD / SMT Inductors (Coils), L=4.7?H, L x W x T :")
+   (family "IND")
+   (package "SLF6025")
+   (attribute "Datasheet Link" "https://product.tdk.com/system/files/dam/doc/product/inductor/inductor/smd/catalog/inductor_commercial_power_slf6025_en.pdf")
+   (attribute "Manufacturer_Name" "TDK")
+   (attribute "Manufacturer_Part_Number" "SLF6025T-4R7M1R5-PF")
+   (attribute "Mouser Part Number" "810-SLF6025T-4R7M")
+   (attribute "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/TDK/SLF6025T-4R7M1R5-PF?qs=ZkOiLKk8CrAv31GuoYQOdw%3D%3D")
+   (attribute "Arrow Part Number" "SLF6025T-4R7M1R5-PF")
+   (attribute "Arrow Price/Stock" "https://www.arrow.com/en/products/slf6025t-4r7m1r5-pf/tdk")
+   (gate
+    (symbol "SLF6025T-4R7M1R5-PF")
+    (pin "1" 1 PS)
+    (pin "2" 2 PS)
+   )
+  )
+  (symbol "SLF6025T-4R7M1R5-PF"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path
+     (arc (pt 200 0) (pt 200 -52) (pt 300 48) (start -175.4) (sweep 177.7)) (pt 300 0))
+   )
+   (graphic
+    (stroke 10)
+    (path
+     (arc (pt 300 0) (pt 300 -52) (pt 400 48) (start -175.4) (sweep 177.7)) (pt 400 0))
+   )
+   (graphic
+    (stroke 10)
+    (path
+     (arc (pt 400 0) (pt 400 -52) (pt 500 48) (start -175.4) (sweep 177.7)) (pt 500 0))
+   )
+   (graphic
+    (stroke 10)
+    (path
+     (arc (pt 500 0) (pt 500 -52) (pt 600 48) (start -175.4) (sweep 177.7)) (pt 600 0))
+   )
+   (terminal
+    (body (symbol "PIN") (pt 0 0) (rot 0) (mir 0) (visible true))
+    (name (pt 0 -10) (rot 0) (just TOP LEFT) (visible false))
+    (number (pt 0 10) (rot 0) (just BOTTOM LEFT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 800 0) (rot 0) (mir X) (visible true))
+    (name (pt 0 -10) (rot 0) (just TOP LEFT) (visible false))
+    (number (pt 0 10) (rot 0) (just BOTTOM LEFT) (visible true)))
+  )
+  (symbol "PIN"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 200 0))))
+  (symbol "PINSHORT"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 100 0))))
+  (package "SLF6025"
+   (units MM)
+   (layer TASM
+    (graphic
+     (stroke 0.2)
+     (path
+      (closed true)
+      (pt -3 3)
+      (pt 3 3)
+      (pt 3 -3)
+      (pt -3 -3)
+      (pt -3 3))))
+   (layer TSLK
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed false)
+      (pt -3 3)
+      (pt 3 3))))
+   (layer TSLK
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed false)
+      (pt 3 -3)
+      (pt -3 -3))))
+   (layer TSLK
+    (graphic
+     (stroke 0.2)
+     (circle
+      (pt -4.05 0) (pt -3.95 0)
+     )
+    )
+   )
+   (layer OCCA
+    (graphic
+     (stroke 0.05)
+     (path
+      (closed true)
+      (pt -4.6 3.7)
+      (pt 4 3.7)
+      (pt 4 -3.7)
+      (pt -4.6 -3.7)
+      (pt -4.6 3.7))))
+   (leg 1 (pt -2.75 0) (padstack 0))
+   (leg 2 (pt 2.75 0) (padstack 0))
+   (padstack 0
+    (plated false)
+    (pad (layer TCOP) (rectf 1.5 2.2 0 0 90))
+   )
+   (model "SLF6025T-4R7M1R5-PF.stp"
+    (euler 90 0 0)
+    (offset -0.07000000029802322 0 1.25)
+   )
+  )
+ )
+)

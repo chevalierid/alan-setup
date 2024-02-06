@@ -1,0 +1,11 @@
+FILE_TYPE = MULTI_PHYS_TABLE;
+
+PART 'CRCW040248K7FKED'
+CLASS = DISCRETE
+{========================================================================================}
+:"MANUFACTURER_NAME", "MANUFACTURER_PART_NUMBER"= "PART_NUMBER", "JEDEC_TYPE", "PACK_TYPE", "MOUSER_PART_NUMBER", "MOUSER_PRICE/STOCK", "ARROW_PART_NUMBER", "ARROW_PRICE/STOCK", "DESCRIPTION", "DATASHEET", "HEIGHT";
+{========================================================================================}
+ "Vishay", "CRCW040248K7FKED" (!) = "", "RESC1005X40N", "Resistor Chip", "71-CRCW0402-48.7K-E3", "https://www.mouser.co.uk/ProductDetail/Vishay-Dale/CRCW040248K7FKED?qs=hAuyw6LW%252BLjLERyYwOFdTQ%3D%3D", "CRCW040248K7FKED", "https://www.arrow.com/en/products/crcw040248k7fked/vishay", "Vishay CRCW Series Thick Film Resistor 0402 Case 48.7k 1% 0.063W +/-100ppm/K", "http://www.vishay.com/docs/20035/dcrcwe3.pdf", "0.4 mm"
+END_PART
+
+END.

@@ -1,0 +1,13 @@
+﻿Part,Manufacturer,Part Number,Quantity,Price ($),Footprint (mm²),Description
+Rpg,Vishay-Dale,CRCW040210K0FKED,1,0.01,3,Resistance: 10 kΩ  Tolerance: 1.0%  Power: 63 mW  
+Renb,Yageo,RC0603FR-0730KL,1,0.01,4.68,Resistance: 30 kΩ  Tolerance: 1.0%  Power: 100 mW  
+Rent,Vishay-Dale,CRCW0402324KFKED,1,0.01,3,Resistance: 324 kΩ  Tolerance: 1.0%  Power: 63 mW  
+Rfbb,Yageo,RC0603FR-0730KL,1,0.01,4.68,Resistance: 30 kΩ  Tolerance: 1.0%  Power: 100 mW  
+Coutx,MuRata,GRM188R71E104KA01D,1,0.01,4.68,Cap: 100 nF  Total Derated Cap: 99 nF  VDC: 25 V  ESR: 30 mΩ  Package: 0603  
+Cin,MuRata,GRM21BR61E106MA73L,1,0.04,6.75,Cap: 10 µF  Total Derated Cap: 1.4 µF  VDC: 25 V  ESR: 4 mΩ  Package: 0805  
+L1,TDK,SLF6025T-4R7M1R5-PF,1,0.37,64,L: 4.7 µH  DCR: 30.6 mΩ  IDC: 1.5 A  
+Cout,MuRata,GRM21BR61A226ME44L,2,0.09,6.75,Cap: 22 µF  Total Derated Cap: 20 µF  VDC: 10 V  ESR: 3 mΩ  Package: 0805  
+U1,Texas Instruments,TPS564255DRLR,1,0.14,6.76,
+Cinx,MuRata,GRM188R71H104KA93D,1,0.02,4.68,Cap: 100 nF  Total Derated Cap: 94 nF  VDC: 50 V  ESR: 20 mΩ  Package: 0603  
+Cff,Kemet,C0402C100J3GACTU,1,0.01,3,Cap: 10 pF  Total Derated Cap: 10 pF  VDC: 25 V  ESR: 0 Ω  Package: 0402  
+Rfbt,Yageo,RC0603FR-07220KL,1,0.01,4.68,Resistance: 220 kΩ  Tolerance: 1.0%  Power: 100 mW  

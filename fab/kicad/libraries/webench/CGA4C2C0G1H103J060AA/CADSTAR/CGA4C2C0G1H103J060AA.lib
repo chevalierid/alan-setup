@@ -1,0 +1,18 @@
+.CGA4C2C0G1H103J060AA :1 ;TDK 2012 CGA 10nF Ceramic Multilayer Capacitor, 50 V dc, +125C, C0G Dielectric, +/-5%
+CAPC2012X75N
+*STM C
+*NGS
+*PLB 1="1" 2="2"
+*MXP 2
+*DFN CGA4C2C0G1H103J060AA
+~!Manufacturer_Name (TDK)
+~!Manufacturer_Part_Number (CGA4C2C0G1H103J060AA)
+~!Mouser Part Number (810-CGA4C2C0G1H103J)
+~!Link Mouser Price/Stock (https://www.mouser.co.uk/ProductDetail/TDK/CGA4C2C0G1H103J060AA?qs=FxQuwy19cyC9M6v0nMqjhA%3D%3D)
+~!Arrow Part Number (CGA4C2C0G1H103J060AA)
+~!Link Arrow Price/Stock (https://www.arrow.com/en/products/cga4c2c0g1h103j060aa/tdk?region=nac)
+~!Link Datasheet (http://docs-europe.electrocomponents.com/webdocs/14e9/0900766b814e9125.pdf)
+~!Height (0.75mm)
+~!3D_Model (CGA4C2C0G1H103J060AA)
+CGA4C2C0G1H103J060AA
+1.1!U 2.1!U 

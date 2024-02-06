@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP GRM21BR61E106MA73L
+D Murata 0805 (2012M) 10uF MLCC 25V dc +/-20% SMD GRM21BR61E106MA73L
+K
+F http://www.murata.com/~/media/webrenewal/support/library/catalog/products/capacitor/mlcc/c02e.pdf
+$ENDCMP
+#
+#End Doc Library

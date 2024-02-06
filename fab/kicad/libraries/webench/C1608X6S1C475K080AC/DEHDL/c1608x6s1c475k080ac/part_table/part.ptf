@@ -1,0 +1,11 @@
+FILE_TYPE = MULTI_PHYS_TABLE;
+
+PART 'C1608X6S1C475K080AC'
+CLASS = DISCRETE
+{========================================================================================}
+:"MANUFACTURER_NAME", "MANUFACTURER_PART_NUMBER"= "PART_NUMBER", "JEDEC_TYPE", "PACK_TYPE", "MOUSER_PART_NUMBER", "MOUSER_PRICE/STOCK", "ARROW_PART_NUMBER", "ARROW_PRICE/STOCK", "DESCRIPTION", "DATASHEET", "HEIGHT";
+{========================================================================================}
+ "TDK", "C1608X6S1C475K080AC" (!) = "", "CAPC1608X80N", "Capacitor Chip Non-polarised", "810-C1608X6S1C475K", "https://www.mouser.co.uk/ProductDetail/TDK/C1608X6S1C475K080AC?qs=dfay7wIA1uELNO4%252B8xvBDw%3D%3D", "C1608X6S1C475K080AC", "https://www.arrow.com/en/products/c1608x6s1c475k080ac/tdk?region=nac", "MULTILAYER CERAMIC CHIP CAPACITORS, 1608, Commercial grade, general (Up to 75V)", "https://product.tdk.com/info/en/catalog/datasheets/mlcc_commercial_midvoltage_en.pdf", "0.8 mm"
+END_PART
+
+END.

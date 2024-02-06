@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP GRM155R70J104KA01D
+D Capacitor MLCC GRM 0402 100nF 6.3V X7R Murata 0402 GRM 100nF Ceramic Multilayer Capacitor, 6.3 V dc, +125degC, X7R Dielectric,  /-10% SMD
+K
+F http://www.murata.com/~/media/webrenewal/support/library/catalog/products/capacitor/mlcc/c02e.pdf
+$ENDCMP
+#
+#End Doc Library

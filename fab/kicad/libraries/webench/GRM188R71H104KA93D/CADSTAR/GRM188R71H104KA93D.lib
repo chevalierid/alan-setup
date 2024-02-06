@@ -1,0 +1,18 @@
+.GRM188R71H104KA93D :1 ;Ceramic  SMT capacitor 100nF 50Vdc Murata 0603 GRM 100nF Ceramic Multilayer Capacitor, 50 V dc, +125?C, X7R Dielectric, ?10%
+CAPC1608X90N
+*STM C
+*NGS
+*PLB 1="1" 2="2"
+*MXP 2
+*DFN GRM188R71H104KA93D
+~!Manufacturer_Name (Murata Electronics)
+~!Manufacturer_Part_Number (GRM188R71H104KA93D)
+~!Mouser Part Number (81-GRM39X104K50D)
+~!Link Mouser Price/Stock (https://www.mouser.co.uk/ProductDetail/Murata-Electronics/GRM188R71H104KA93D?qs=f7ZljCwbPOm85Y6l%2FNGt7A%3D%3D)
+~!Arrow Part Number (GRM188R71H104KA93D)
+~!Link Arrow Price/Stock (https://www.arrow.com/en/products/grm188r71h104ka93d/murata-manufacturing?region=europe)
+~!Link Datasheet (https://datasheet.datasheetarchive.com/originals/distributors/Datasheets_SAMA/ec4f1577dddcc7a13ddad897a28002d3.pdf)
+~!Height (0.9mm)
+~!3D_Model (GRM188R71H104KA93D)
+GRM188R71H104KA93D
+1.1!U 2.1!U 

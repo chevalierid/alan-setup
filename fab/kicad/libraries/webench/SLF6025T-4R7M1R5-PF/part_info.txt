@@ -1,0 +1,9 @@
+Manufacturer=TDK
+PartNumber=SLF6025T-4R7M1R5-PF
+PartCategory=Inductor
+PackageCategory=Other
+PinCount=2
+Version=2.1
+Released=2021-06-23 12:42:46
+Downloaded=2024-02-05 09:38:12
+3D=Y

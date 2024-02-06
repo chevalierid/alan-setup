@@ -1,0 +1,11 @@
+FILE_TYPE = MULTI_PHYS_TABLE;
+
+PART '25SVPF27MX'
+CLASS = DISCRETE
+{========================================================================================}
+:"MANUFACTURER_NAME", "MANUFACTURER_PART_NUMBER"= "PART_NUMBER", "JEDEC_TYPE", "PACK_TYPE", "MOUSER_PART_NUMBER", "MOUSER_PRICE/STOCK", "ARROW_PART_NUMBER", "ARROW_PRICE/STOCK", "DESCRIPTION", "DATASHEET", "HEIGHT";
+{========================================================================================}
+ "Panasonic", "25SVPF27MX" (!) = "", "16SVF82M", "Other", "667-25SVPF27MX", "https://www.mouser.co.uk/ProductDetail/Panasonic/25SVPF27MX?qs=OE1iw1LrrPHs7V8AgrsYgQ%3D%3D", "25SVPF27MX", "https://www.arrow.com/en/products/25svpf27mx/panasonic?region=nac", "Panasonic 27uF 25V dc Aluminium Polymer Capacitor, Surface Mount 5 Dia. x 5.9mm +105C 5mm", "http://industrial.panasonic.com/cdbs/www-data/pdf/AAB8000/AAB8000C177.pdf", "6 mm"
+END_PART
+
+END.

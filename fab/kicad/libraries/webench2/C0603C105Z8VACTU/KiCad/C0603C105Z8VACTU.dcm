@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP C0603C105Z8VACTU
+D SMD Comm Y5V, Ceramic, 1 uF, -20/+80%, 10 VDC, 25 VDC, 85C, -30C, Y5V, SMD, MLCC, General Purpose, Class III, 10 % , 50 MOhms, 6.5 mg, 0603, 1.6mm, 0.8mm, 0.8mm, 0.7mm, 0.35mm, 4000, 78  Weeks, 10
+K
+F https://content.kemet.com/datasheets/KEM_C1005_Y5V_SMD.pdf
+$ENDCMP
+#
+#End Doc Library

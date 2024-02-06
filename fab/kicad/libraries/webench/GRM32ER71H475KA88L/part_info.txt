@@ -1,0 +1,9 @@
+Manufacturer=Murata Electronics
+PartNumber=GRM32ER71H475KA88L
+PartCategory=Capacitor
+PackageCategory=Capacitor Chip Non-polarised
+PinCount=2
+Version=1.1
+Released=2023-03-07 11:17:37
+Downloaded=2024-02-02 13:32:03
+3D=Y

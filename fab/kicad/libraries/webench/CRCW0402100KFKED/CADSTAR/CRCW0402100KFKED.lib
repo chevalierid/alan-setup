@@ -1,0 +1,18 @@
+.CRCW0402100KFKED :1 ;CRCW0402 Resistor T/R 0.063W,1%,100K Vishay CRCW Series Thick Film Surface Mount Resistor 0402 Case 100k +/-1% 0.063W +/-100ppm/C
+RESC1005X40N
+*STM R
+*NGS
+*PLB 1="1" 2="2"
+*MXP 2
+*DFN CRCW0402100KFKED
+~!Manufacturer_Name (Vishay)
+~!Manufacturer_Part_Number (CRCW0402100KFKED)
+~!Mouser Part Number (71-CRCW0402-100K-E3)
+~!Link Mouser Price/Stock (https://www.mouser.co.uk/ProductDetail/Vishay-Dale/CRCW0402100KFKED?qs=OlqPY1CiralZGKRwQ4Glcg%3D%3D)
+~!Arrow Part Number (CRCW0402100KFKED)
+~!Link Arrow Price/Stock (https://www.arrow.com/en/products/crcw0402100kfked/vishay?region=nac)
+~!Link Datasheet (http://www.vishay.com/docs/20035/dcrcwe3.pdf)
+~!Height (0.4mm)
+~!3D_Model (CRCW0402100KFKED)
+CRCW0402100KFKED
+1.1!U 2.1!U 

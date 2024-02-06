@@ -1,0 +1,9 @@
+Manufacturer=SMC Diode Solutions
+PartNumber=SB10150TA
+PartCategory=Schottky Diode
+PackageCategory=Diodes, Axial Diameter Horizontal Mounting
+PinCount=2
+Version=1.1
+Released=2018-11-15 09:48:07
+Downloaded=2024-02-02 12:55:18
+3D=Y

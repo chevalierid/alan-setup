@@ -1,0 +1,11 @@
+FILE_TYPE = MULTI_PHYS_TABLE;
+
+PART 'GRM32ER71H475KA88L'
+CLASS = DISCRETE
+{========================================================================================}
+:"MANUFACTURER_NAME", "MANUFACTURER_PART_NUMBER"= "PART_NUMBER", "JEDEC_TYPE", "PACK_TYPE", "MOUSER_PART_NUMBER", "MOUSER_PRICE/STOCK", "ARROW_PART_NUMBER", "ARROW_PRICE/STOCK", "DESCRIPTION", "DATASHEET", "HEIGHT";
+{========================================================================================}
+ "Murata Electronics", "GRM32ER71H475KA88L" (!) = "", "CAPC3225X270N", "Capacitor Chip Non-polarised", "81-GRM32R71H475KA88L", "https://www.mouser.co.uk/ProductDetail/Murata-Electronics/GRM32ER71H475KA88L?qs=IjyrXs0Hof%252B8EBN5DE4S3A%3D%3D", "GRM32ER71H475KA88L", "https://www.arrow.com/en/products/grm32er71h475ka88l/murata-manufacturing?region=nac", "1210 X7R ceramic cap,4.7uF 50V Murata 4.7uF Multilayer Ceramic Capacitor (MLCC) 50 V dc +/-10% X7R dielectric GRM max op. temp. +125C", "http://psearch.en.murata.com/capacitor/product/GRM32ER71E226KE15%23.pdf", "2.7 mm"
+END_PART
+
+END.

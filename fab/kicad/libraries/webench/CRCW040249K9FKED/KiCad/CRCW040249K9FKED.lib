@@ -1,0 +1,25 @@
+EESchema-LIBRARY Version 2.3
+#encoding utf-8
+#SamacSys ECAD Model CRCW040249K9FKED
+#/185434/877297/2.50/2/5/Resistor
+DEF CRCW040249K9FKED R 0 30 Y Y 1 F N
+F0 "R" 550 250 50 H V L CNN
+F1 "CRCW040249K9FKED" 550 150 50 H V L CNN
+F2 "RESC1005X40N" 550 50 50 H I L CNN
+F3 "http://www.vishay.com/docs/20035/dcrcwe3.pdf" 550 -50 50 H I L CNN
+F4 "Vishay CRCW Series Thick Film Surface Mount Resistor 0402 Case 49.9k +/-1% 0.063W +/-100ppm/C" 550 -150 50 H I L CNN "Description"
+F5 "0.4" 550 -250 50 H I L CNN "Height"
+F6 "Vishay" 550 -350 50 H I L CNN "Manufacturer_Name"
+F7 "CRCW040249K9FKED" 550 -450 50 H I L CNN "Manufacturer_Part_Number"
+F8 "71-CRCW0402-49.9K-E3" 550 -550 50 H I L CNN "Mouser Part Number"
+F9 "https://www.mouser.co.uk/ProductDetail/Vishay-Dale/CRCW040249K9FKED?qs=hAuyw6LW%252BLhwjtjsHx%2FGDQ%3D%3D" 550 -650 50 H I L CNN "Mouser Price/Stock"
+F10 "CRCW040249K9FKED" 550 -750 50 H I L CNN "Arrow Part Number"
+F11 "https://www.arrow.com/en/products/crcw040249k9fked/vishay?region=nac" 550 -850 50 H I L CNN "Arrow Price/Stock"
+DRAW
+X ~ 1 0 0 200 R 50 50 0 0 P
+X ~ 2 700 0 200 L 50 50 0 0 P
+P 5 0 1 6 200 50 500 50 500 -50 200 -50 200 50 N
+ENDDRAW
+ENDDEF
+#
+#End Library

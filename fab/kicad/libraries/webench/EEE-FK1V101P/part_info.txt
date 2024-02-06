@@ -1,0 +1,9 @@
+Manufacturer=Panasonic
+PartNumber=EEE-FK1V101P
+PartCategory=Capacitor Polarised
+PackageCategory=Other
+PinCount=2
+Version=4.3
+Released=2019-05-17 12:38:40
+Downloaded=2024-02-06 13:55:52
+3D=Y

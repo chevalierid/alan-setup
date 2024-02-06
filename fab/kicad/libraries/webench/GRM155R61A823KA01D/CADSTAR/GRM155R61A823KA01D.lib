@@ -1,0 +1,18 @@
+.GRM155R61A823KA01D :1 ;Multilayer Ceramic Capacitors MLCC - SMD/SMT 0402 0.082uF 10volts 10%
+CAPC1005X55N
+*STM C
+*NGS
+*PLB 1="1" 2="2"
+*MXP 2
+*DFN GRM155R61A823KA01D
+~!Manufacturer_Name (Murata Electronics)
+~!Manufacturer_Part_Number (GRM155R61A823KA01D)
+~!Mouser Part Number (81-GRM155R61A823KA1D)
+~!Link Mouser Price/Stock (https://www.mouser.co.uk/ProductDetail/Murata-Electronics/GRM155R61A823KA01D?qs=9U7yHM2lsjTmY4eOdx%2FDrA%3D%3D)
+~!Arrow Part Number (GRM155R61A823KA01D)
+~!Link Arrow Price/Stock (https://www.arrow.com/en/products/grm155r61a823ka01d/murata-manufacturing)
+~!Link Datasheet (http://www.murata.com/~/media/webrenewal/support/library/catalog/products/capacitor/mlcc/c02e.pdf)
+~!Height (0.55mm)
+~!3D_Model (GRM155R61A823KA01D)
+GRM155R61A823KA01D
+1.1!U 2.1!U 

@@ -1,0 +1,86 @@
+;Proteus Design Interchange Format
+(PDIF
+ (vendor "SamacSys Limited")
+ (version 1 0)
+ (library
+  (part "PRL1632-R006-F-T1"
+   (description "Current Sense Resistors - SMD 1W 0.006ohm 1%")
+   (family "RES")
+   (package "RESC1632X60N")
+   (attribute "Datasheet Link" "https://componentsearchengine.com/Datasheets/1/PRL1632-R006-F-T1.pdf")
+   (attribute "Geometry.Height" "0.6mm")
+   (attribute "Manufacturer_Name" "Susumu")
+   (attribute "Manufacturer_Part_Number" "PRL1632-R006-F-T1")
+   (attribute "Mouser Part Number" "754-PRL1632-R006-FT1")
+   (attribute "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Susumu/PRL1632-R006-F-T1?qs=juJhw1yPxAHGKYokg5pJ8Q%3D%3D")
+   (attribute "Arrow Part Number" "PRL1632-R006-F-T1")
+   (attribute "Arrow Price/Stock" "https://www.arrow.com/en/products/prl1632-r006-f-t1/susumu")
+   (gate
+    (symbol "PRL1632-R006-F-T1")
+    (pin "1" 1 PS)
+    (pin "2" 2 PS)
+   )
+  )
+  (symbol "PRL1632-R006-F-T1"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 200 50) (pt 500 50) (pt 500 -50) (pt 200 -50) (pt 200 50) (closed))
+   )
+   (terminal
+    (body (symbol "PIN") (pt 0 0) (rot 0) (mir 0) (visible true))
+    (name (pt 0 -10) (rot 0) (just TOP LEFT) (visible false))
+    (number (pt 0 10) (rot 0) (just BOTTOM LEFT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 700 0) (rot 0) (mir X) (visible true))
+    (name (pt 0 -10) (rot 0) (just TOP LEFT) (visible false))
+    (number (pt 0 10) (rot 0) (just BOTTOM LEFT) (visible true)))
+  )
+  (symbol "PIN"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 200 0))))
+  (symbol "PINSHORT"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 100 0))))
+  (package "RESC1632X60N"
+   (units MM)
+   (layer OCCA
+    (graphic
+     (stroke 0.05)
+     (path
+      (closed true)
+      (pt -1.525 1.95)
+      (pt 1.525 1.95)
+      (pt 1.525 -1.95)
+      (pt -1.525 -1.95)
+      (pt -1.525 1.95))))
+   (layer TASM
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed true)
+      (pt -0.8 1.6)
+      (pt 0.8 1.6)
+      (pt 0.8 -1.6)
+      (pt -0.8 -1.6)
+      (pt -0.8 1.6))))
+   (leg 1 (pt -0.75 0) (padstack 0))
+   (leg 2 (pt 0.75 0) (padstack 0))
+   (padstack 0
+    (plated false)
+    (pad (layer TCOP) (rectf 1.05 3.4 0 0 90))
+   )
+   (model "PRL1632-R006-F-T1.stp"
+    (euler 0 0 0)
+    (offset 0 0 0)
+   )
+  )
+ )
+)

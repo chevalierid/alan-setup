@@ -1,0 +1,9 @@
+Manufacturer=YAGEO
+PartNumber=RC0201FR-07249KL
+PartCategory=Resistor
+PackageCategory=Resistor Chip
+PinCount=2
+Version=1.2
+Released=2023-08-22 17:24:06
+Downloaded=2024-02-02 12:53:56
+3D=Y

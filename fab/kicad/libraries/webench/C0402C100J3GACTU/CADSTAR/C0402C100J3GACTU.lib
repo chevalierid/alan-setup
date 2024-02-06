@@ -1,0 +1,18 @@
+.C0402C100J3GACTU :1 ;SMD Comm C0G, Ceramic, 10 pF, 5%, 25 VDC, 62.5 VDC, 125C, -55C, C0G, SMD, MLCC, Ultra-Stable, Low Loss, Class I, 0.1 % , 100 GOhms, 1.06 mg, 0402, 1mm, 0.5mm, 0.5mm, 0.3mm, 0.3mm, 10000, 78  Weeks, 120
+C0402C104J4RACTU
+*STM C
+*NGS
+*PLB 1="1" 2="2"
+*MXP 2
+*DFN C0402C100J3GACTU
+~!Manufacturer_Name (KEMET)
+~!Manufacturer_Part_Number (C0402C100J3GACTU)
+~!Mouser Part Number (80-C0402C100J3G)
+~!Link Mouser Price/Stock (https://www.mouser.co.uk/ProductDetail/KEMET/C0402C100J3GACTU?qs=B6asEe1xA0Wwdizk9L7KoQ%3D%3D)
+~!Arrow Part Number (C0402C100J3GACTU)
+~!Link Arrow Price/Stock (https://www.arrow.com/en/products/c0402c100j3gactu/kemet-corporation?region=nac)
+~!Link Datasheet (https://content.kemet.com/datasheets/KEM_C1002_X7R_SMD.pdf)
+~!Height (0.55mm)
+~!3D_Model (C0402C100J3GACTU)
+C0402C100J3GACTU
+1.1!U 2.1!U 

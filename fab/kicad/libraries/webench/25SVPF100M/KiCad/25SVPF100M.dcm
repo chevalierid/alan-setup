@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP 25SVPF100M
+D Panasonic 100uF 25 V dc Polymer Aluminium Electrolytic Capacitor E7, OS-CON Series 5000h 8 x 6.9mm
+K
+F http://industrial.panasonic.com/cdbs/www-data/pdf/AAB8000/AAB8000C177.pdf
+$ENDCMP
+#
+#End Doc Library

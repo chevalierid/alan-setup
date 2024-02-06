@@ -1,0 +1,18 @@
+.SB10150TA :1 ;SB10150 SCHOTTKY RECTIFIER
+DIOAD3020W130L900D530
+*STM D
+*NGS
+*PLB 1="K" 2="A"
+*MXP 2
+*DFN SB10150TA
+~!Manufacturer_Name (SMC Diode Solutions)
+~!Manufacturer_Part_Number (SB10150TA)
+~!Mouser Part Number (-)
+~!Mouser Price/Stock (-)
+~!Arrow Part Number (-)
+~!Arrow Price/Stock (-)
+~!Link Datasheet (http://www.smc-diodes.com/propdf/SB10150%20N0884%20REV.A.pdf)
+~!Height (-)
+~!3D_Model (SB10150TA)
+SB10150TA
+1.1!U 2.1!U 

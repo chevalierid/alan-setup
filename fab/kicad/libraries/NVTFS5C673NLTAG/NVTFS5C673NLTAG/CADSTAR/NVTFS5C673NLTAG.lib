@@ -1,0 +1,17 @@
+.NVTFS5C673NLTAG :1 ;Trans MOSFET N-CH 60V 13A Automotive 8-Pin WDFN EP T/R
+NVTFS5C673NLTAG
+*STM Q
+*NGS
+*PLB 1="S_1" 2="S_2" 3="S_3" 4="G" 5="D_1" 6="D_2" 7="D_3" 8="D_4" 9="D_5" 10="D_6" 11="D_7"
+*MXP 11
+*DFN NVTFS5C673NLTAG
+~!Manufacturer_Name (onsemi)
+~!Manufacturer_Part_Number (NVTFS5C673NLTAG)
+~!Mouser Part Number (863-NVTFS5C673NLTAG)
+~!Link Mouser Price/Stock (https://www.mouser.co.uk/ProductDetail/ON-Semiconductor/NVTFS5C673NLTAG?qs=5aG0NVq1C4w4bkBmZ0y2Ug%3D%3D)
+~!Arrow Part Number (NVTFS5C673NLTAG)
+~!Link Arrow Price/Stock (https://www.arrow.com/en/products/nvtfs5c673nltag/on-semiconductor)
+~!Link Datasheet (https://www.onsemi.com/pdf/datasheet/nvtfs5c673nl-d.pdf)
+~!Height (0.8mm)
+NVTFS5C673NLTAG
+1.1!U 2.1!U 3.1!U 4.1!U 5.1!U 6.1!U 7.1!U 8.1!U 9.1!U 10.1!U 11.1!U 

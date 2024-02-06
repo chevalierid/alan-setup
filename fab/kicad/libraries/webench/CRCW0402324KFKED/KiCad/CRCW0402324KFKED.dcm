@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP CRCW0402324KFKED
+D Vishay CRCW Series Thick Film Resistor 0402 Case 324k 1% 0.063W +/-100ppm/K
+K
+F http://www.vishay.com/docs/20035/dcrcwe3.pdf
+$ENDCMP
+#
+#End Doc Library

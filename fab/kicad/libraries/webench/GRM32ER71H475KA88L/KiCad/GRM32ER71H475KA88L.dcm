@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP GRM32ER71H475KA88L
+D 1210 X7R ceramic cap,4.7uF 50V Murata 4.7uF Multilayer Ceramic Capacitor (MLCC) 50 V dc +/-10% X7R dielectric GRM max op. temp. +125C
+K
+F http://psearch.en.murata.com/capacitor/product/GRM32ER71E226KE15%23.pdf
+$ENDCMP
+#
+#End Doc Library

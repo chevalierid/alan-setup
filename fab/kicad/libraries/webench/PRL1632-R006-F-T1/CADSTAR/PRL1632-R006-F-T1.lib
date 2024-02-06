@@ -1,0 +1,18 @@
+.PRL1632-R006-F-T1 :1 ;Current Sense Resistors - SMD 1W 0.006ohm 1%
+RESC1632X60N
+*STM R
+*NGS
+*PLB 1="1" 2="2"
+*MXP 2
+*DFN PRL1632-R006-F-T1
+~!Manufacturer_Name (Susumu)
+~!Manufacturer_Part_Number (PRL1632-R006-F-T1)
+~!Mouser Part Number (754-PRL1632-R006-FT1)
+~!Link Mouser Price/Stock (https://www.mouser.co.uk/ProductDetail/Susumu/PRL1632-R006-F-T1?qs=juJhw1yPxAHGKYokg5pJ8Q%3D%3D)
+~!Arrow Part Number (PRL1632-R006-F-T1)
+~!Link Arrow Price/Stock (https://www.arrow.com/en/products/prl1632-r006-f-t1/susumu)
+~!Link Datasheet (https://componentsearchengine.com/Datasheets/1/PRL1632-R006-F-T1.pdf)
+~!Height (0.6mm)
+~!3D_Model (PRL1632-R006-F-T1)
+PRL1632-R006-F-T1
+1.1!U 2.1!U 

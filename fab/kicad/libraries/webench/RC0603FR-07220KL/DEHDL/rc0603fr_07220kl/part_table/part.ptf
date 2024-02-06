@@ -1,0 +1,11 @@
+FILE_TYPE = MULTI_PHYS_TABLE;
+
+PART 'RC0603FR_07220KL'
+CLASS = DISCRETE
+{========================================================================================}
+:"MANUFACTURER_NAME", "MANUFACTURER_PART_NUMBER"= "PART_NUMBER", "JEDEC_TYPE", "PACK_TYPE", "MOUSER_PART_NUMBER", "MOUSER_PRICE/STOCK", "ARROW_PART_NUMBER", "ARROW_PRICE/STOCK", "DESCRIPTION", "DATASHEET", "HEIGHT";
+{========================================================================================}
+ "YAGEO", "RC0603FR-07220KL" (!) = "", "RESC1608X55N", "Resistor Chip", "603-RC0603FR-07220KL", "https://www.mouser.co.uk/ProductDetail/YAGEO/RC0603FR-07220KL?qs=nHyvTUT5UJ87BOKAmWeB9w%3D%3D", "", "", "Thick Film Resistors - SMD 220 kOhms 100mW 0603 1%", "https://componentsearchengine.com/Datasheets/2/RC0603FR-07220KL.pdf", "0.55 mm"
+END_PART
+
+END.

@@ -1,0 +1,21 @@
+﻿Part,Manufacturer,Part Number,Quantity,Price ($),Footprint (mm²),Description
+Cin,Panasonic,EEHZA1H330XP,1,0.8833,79.98,Cap: 33 µF  Total Derated Cap: 33 µF  VDC: 50 V  ESR: 40 mΩ  Package: 6.3x8  
+Rrc,Yageo,RC0201FR-07249KL,1,0.01,2.08,Resistance: 249 kΩ  Tolerance: 1.0%  Power: 50 mW  
+D1,SMC Diode Solutions,SB10150TA,1,0.26,166.38,Type: Schottky  VRRM: 150 V  Io: 10 A  
+U1,Texas Instruments,TPS40211DGQR,1,0.585,23.6,
+Ccomp,TDK,CGA4C2C0G1H103J060AA,1,0.06,6.75,Cap: 10 nF  Total Derated Cap: 10 nF  VDC: 50 V  ESR: 0 Ω  Package: 0805  
+Rg,Vishay-Dale,CRCW040223R7FKED,1,0.01,3,Resistance: 23.7 Ω  Tolerance: 1.0%  Power: 63 mW  
+Rcomp,Yageo,RC0201FR-0723K7L,1,0.01,2.08,Resistance: 23.7 kΩ  Tolerance: 1.0%  Power: 50 mW  
+Cbp,Taiyo Yuden,EMK107B7105KA-T,1,0.01,4.68,Cap: 1 µF  Total Derated Cap: 1 µF  VDC: 16 V  ESR: 1 mΩ  Package: 0603  
+Rsense,Susumu Co Ltd,PRL1632-R006-F-T1,1,0.2,10.92,Resistance: 6 mΩ  Tolerance: 1.0%  Power: 1 W  
+Cout,Panasonic,35SVPF120M,1,1.33,151.29,Cap: 120 µF  Total Derated Cap: 120 µF  VDC: 35 V  ESR: 18 mΩ  Package: 10x12.6  
+Crc,MuRata,GRM033R71E121KA01D,1,0.01,2.08,Cap: 120 pF  Total Derated Cap: 120 pF  VDC: 25 V  ESR: 1 mΩ  Package: 0201  
+Rfbt,Susumu Co Ltd,RR1220P-274-D,1,0.02,6.75,Resistance: 270 kΩ  Tolerance: 0.5%  Power: 100 mW  
+L1,CUSTOM,CUSTOM,1,NA,NA,Ns1toNp: 1   Lp: 5.72 µH  Leakage_L: 114.45 nH  
+Css,MuRata,GRM155R61A683KA01D,1,0.01,3,Cap: 68 nF  Total Derated Cap: 68 nF  VDC: 10 V  ESR: 1 mΩ  Package: 0402  
+Ccoup,TDK,C3225X7R1H106M250AC,2,0.27,14.7,Cap: 10 µF  Total Derated Cap: 13 µF  VDC: 50 V  ESR: 1 mΩ  Package: 1210  
+Riflt,Vishay-Dale,CRCW04021K00FKED,1,0.01,3,Resistance: 1 kΩ  Tolerance: 1.0%  Power: 63 mW  
+M1,ON Semiconductor,NVTFS5C673NLTAG,1,0.64,NA,VdsMax: 60 V  IdsMax: 50 Amps  
+Ciflt,Samsung Electro-Mechanics,CL21C101JBANNNC,1,0.01,6.75,Cap: 100 pF  Total Derated Cap: 100 pF  VDC: 50 V  ESR: 0 Ω  Package: 0805  
+Ccomp2,MuRata,GRM1555C1H161GA01D,1,0.03,3,Cap: 160 pF  Total Derated Cap: 160 pF  VDC: 50 V  ESR: 0 Ω  Package: 0402  
+Rfbb,Susumu Co Ltd,RR1220P-4751-D-M,1,0.02,6.75,Resistance: 4.75 kΩ  Tolerance: 0.5%  Power: 100 mW  

@@ -1,0 +1,18 @@
+.25SVPF47M :1 ;Panasonic 47uF 25 V dc Polymer Aluminium Electrolytic Capacitor C6, OS-CON Series 5000h 6.3 x 5.9mm
+"16SVF180M"
+*STM C
+*NGS
+*PLB 1="+" 2="-"
+*MXP 2
+*DFN 25SVPF47M
+~!Manufacturer_Name (Panasonic)
+~!Manufacturer_Part_Number (25SVPF47M)
+~!Mouser Part Number (667-25SVPF47M)
+~!Link Mouser Price/Stock (https://www.mouser.co.uk/ProductDetail/Panasonic/25SVPF47M?qs=OE1iw1LrrPH6vnYaLYl%2FJw%3D%3D)
+~!Arrow Part Number (25SVPF47M)
+~!Link Arrow Price/Stock (https://www.arrow.com/en/products/25svpf47m/panasonic?region=nac)
+~!Link Datasheet (http://industrial.panasonic.com/cdbs/www-data/pdf/AAB8000/AAB8000C177.pdf)
+~!Height (6mm)
+~!3D_Model (25SVPF47M)
+"25SVPF47M"
+1.1!U 2.1!U 

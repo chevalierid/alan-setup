@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP SDR0403-4R7ML
+D SDR0403 SMD Power Inductors 4.7uH 20% Bourns SDR0403 Series Wire-wound SMD Inductor with a Ferrite Core, 4.7 uH +/-20% Wire-Wound 1.7A Idc Q:28
+K
+F http://www.bourns.com/docs/Product-Datasheets/sdr0403.pdf
+$ENDCMP
+#
+#End Doc Library

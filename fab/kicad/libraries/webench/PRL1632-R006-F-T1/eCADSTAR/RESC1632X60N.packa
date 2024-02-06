@@ -1,0 +1,13 @@
+(unit MM)
+
+(package "PRL1632-R006-F-T1"
+    (type UNDEF)
+    (uver 2)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (utime 2019-11-10-17:27:27)
+    (mountForm default
+        (footprintRef "RESC1632X60N")
+        (spec "System")
+    )
+)

@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP EEHZA1H330XP
+D Hybrid Capacitor SMT ZA 50V 33uF low ESR Panasonic 33uF 50 V dc Aluminium Electrolytic Capacitor D8, ZA Series 10000h 6.3 x 7.7mm
+K
+F http://industrial.panasonic.com/cdbs/www-data/pdf/RDD0000/ABA0000C1221.pdf
+$ENDCMP
+#
+#End Doc Library

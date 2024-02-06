@@ -1,0 +1,141 @@
+;Proteus Design Interchange Format
+(PDIF
+ (vendor "SamacSys Limited")
+ (version 1 0)
+ (library
+  (part "25SVPF47M"
+   (description "Panasonic 47uF 25 V dc Polymer Aluminium Electrolytic Capacitor C6, OS-CON Series 5000h 6.3 x 5.9mm")
+   (family "CAP")
+   (package "16SVF180M")
+   (attribute "Datasheet Link" "http://industrial.panasonic.com/cdbs/www-data/pdf/AAB8000/AAB8000C177.pdf")
+   (attribute "Geometry.Height" "6mm")
+   (attribute "Manufacturer_Name" "Panasonic")
+   (attribute "Manufacturer_Part_Number" "25SVPF47M")
+   (attribute "Mouser Part Number" "667-25SVPF47M")
+   (attribute "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Panasonic/25SVPF47M?qs=OE1iw1LrrPH6vnYaLYl%2FJw%3D%3D")
+   (attribute "Arrow Part Number" "25SVPF47M")
+   (attribute "Arrow Price/Stock" "https://www.arrow.com/en/products/25svpf47m/panasonic?region=nac")
+   (gate
+    (symbol "25SVPF47M")
+    (pin "+" 1 PS)
+    (pin "-" 2 PS)
+   )
+  )
+  (symbol "25SVPF47M"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 200 100) (pt 200 -100) (pt 230 -100) (pt 230 100) (pt 200 100) (closed))
+   )
+   (graphic
+    (stroke 10)
+    (path (pt 180 50) (pt 140 50))
+   )
+   (graphic
+    (stroke 10)
+    (path (pt 160 70) (pt 160 30))
+   )
+   (graphic
+    (stroke 10)
+    (path (pt 100 0) (pt 200 0))
+   )
+   (graphic
+    (stroke 10)
+    (path (pt 300 0) (pt 400 0))
+   )
+   (graphic
+    (stroke 10)
+    (path (closed true) (pt 300 100) (pt 300 -100) (pt 270 -100) (pt 270 100) (pt 300 100))
+   )
+   (terminal
+    (body (symbol "PINSHORT") (pt 0 0) (rot 0) (mir 0) (visible true))
+    (name (pt 0 -10) (rot 0) (just TOP LEFT) (visible false))
+    (number (pt 0 10) (rot 0) (just BOTTOM LEFT) (visible true)))
+   (terminal
+    (body (symbol "PINSHORT") (pt 500 0) (rot 0) (mir X) (visible true))
+    (name (pt 0 -10) (rot 0) (just TOP LEFT) (visible false))
+    (number (pt 0 10) (rot 0) (just BOTTOM LEFT) (visible true)))
+  )
+  (symbol "PIN"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 200 0))))
+  (symbol "PINSHORT"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 100 0))))
+  (package "16SVF180M"
+   (units MM)
+   (layer OCCA
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed true)
+      (pt -4.3 5.55)
+      (pt 4.3 5.55)
+      (pt 4.3 -5.55)
+      (pt -4.3 -5.55)
+      (pt -4.3 5.55))))
+   (layer TSLK
+    (graphic
+     (stroke 0.2)
+     (path
+      (closed false)
+      (pt 0 -5.1)
+      (arc (pt 0.000 -5.100) (pt -0.050 -5.200) (pt 0.050 -5.100) (start 180.0) (sweep 90.0))
+      (pt 0 -5.2)
+      (arc (pt 0.000 -5.200) (pt -0.050 -5.200) (pt 0.050 -5.100) (start 180.0) (sweep -90.0))
+      (pt 0 -5.1)
+      (arc (pt 0.000 -5.100) (pt -0.050 -5.200) (pt 0.050 -5.100) (start 180.0) (sweep 90.0))
+      (pt 0 -5.2))))
+   (layer TASM
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed true)
+      (pt -3.3 2.7)
+      (pt -3.3 -1.8)
+      (pt -1.8 -3.3)
+      (pt 1.8 -3.3)
+      (pt 3.3 -1.8)
+      (pt 3.3 3.3)
+      (pt -3.3 3.3)
+      (pt -3.3 2.7))))
+   (layer TSLK
+    (graphic
+     (stroke 0.2)
+     (path
+      (closed false)
+      (pt -1.5 3.3)
+      (pt -3.3 3.3)
+      (pt -3.3 -1.8)
+      (pt -1.8 -3.3)
+      (pt -1.5 -3.3))))
+   (layer TSLK
+    (graphic
+     (stroke 0.2)
+     (path
+      (closed false)
+      (pt 1.5 -3.3)
+      (pt 1.8 -3.3)
+      (pt 3.3 -1.8)
+      (pt 3.3 3.3)
+      (pt 1.5 3.3))))
+   (leg 1 (pt 0.000 -2.800) (padstack 0))
+   (leg 2 (pt 0.000 2.800) (padstack 0))
+   (padstack 0
+    (plated false)
+    (pad (layer TCOP) (rectf 1.600 3.500 0 0 90.000))
+   )
+   (model "25SVPF47M.stp"
+    (euler 90 0 0)
+    (offset 0 0 0.47999998927116394)
+   )
+  )
+ )
+)

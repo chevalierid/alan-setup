@@ -1,0 +1,11 @@
+FILE_TYPE = MULTI_PHYS_TABLE;
+
+PART 'C0805C106K8PACTU'
+CLASS = DISCRETE
+{========================================================================================}
+:"MANUFACTURER_NAME", "MANUFACTURER_PART_NUMBER"= "PART_NUMBER", "JEDEC_TYPE", "PACK_TYPE", "MOUSER_PART_NUMBER", "MOUSER_PRICE/STOCK", "ARROW_PART_NUMBER", "ARROW_PRICE/STOCK", "DESCRIPTION", "DATASHEET", "HEIGHT";
+{========================================================================================}
+ "KEMET", "C0805C106K8PACTU" (!) = "", "C0805", "Other", "80-C0805C106K8P", "https://www.mouser.co.uk/ProductDetail/KEMET/C0805C106K8PACTU?qs=Zpyg6gQUYs39C21BeavaKA%3D%3D", "C0805C106K8PACTU", "https://www.arrow.com/en/products/c0805c106k8pactu/kemet-corporation?region=nac", "SMD Comm X5R, Ceramic, 10 uF, 10%, 10 VDC, 25 VDC, 85C, -55C, X5R, SMD, MLCC, Temperature Stable, Class II, 10 % , 10 MOhms, 21 mg, 0805, 2mm, 1.25mm, 1.25mm, 0.75mm, 0.5mm, 3000, 78  Weeks, 70", "https://content.kemet.com/datasheets/KEM_C1006_X5R_SMD.pdf", "1.1 mm"
+END_PART
+
+END.

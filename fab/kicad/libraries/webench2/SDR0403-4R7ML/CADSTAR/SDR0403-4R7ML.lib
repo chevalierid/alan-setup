@@ -1,0 +1,18 @@
+.SDR0403-4R7ML :1 ;SDR0403 SMD Power Inductors 4.7uH 20% Bourns SDR0403 Series Wire-wound SMD Inductor with a Ferrite Core, 4.7 uH +/-20% Wire-Wound 1.7A Idc Q:28
+SDR0403
+*STM L
+*NGS
+*PLB 1="1" 2="2"
+*MXP 2
+*DFN SDR0403-4R7ML
+~!Manufacturer_Name (Bourns)
+~!Manufacturer_Part_Number (SDR0403-4R7ML)
+~!Mouser Part Number (652-SDR0403-4R7ML)
+~!Link Mouser Price/Stock (https://www.mouser.co.uk/ProductDetail/Bourns/SDR0403-4R7ML?qs=xrpI9KL%2FXvtm2g7dmggyxA%3D%3D)
+~!Arrow Part Number (SDR0403-4R7ML)
+~!Link Arrow Price/Stock (https://www.arrow.com/en/products/sdr0403-4r7ml/bourns?region=nac)
+~!Link Datasheet (http://www.bourns.com/docs/Product-Datasheets/sdr0403.pdf)
+~!Height (-)
+~!3D_Model (SDR0403-4R7ML)
+SDR0403-4R7ML
+1.1!U 2.1!U 

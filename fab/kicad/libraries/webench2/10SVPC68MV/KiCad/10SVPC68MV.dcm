@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP 10SVPC68MV
+D Panasonic 68uF Polymer Capacitor 10V dc, Surface Mount - 10SVPC68MV
+K
+F http://industrial.panasonic.com/cdbs/www-data/pdf/AAB8000/AAB8000C256.pdf
+$ENDCMP
+#
+#End Doc Library

@@ -1,0 +1,18 @@
+.GRM21BR61A226ME44L :1 ;Murata 2012 GRM 22000nF Ceramic Multilayer Capacitor, 10 V dc, +85C, X5R Dielectric, +/-20%
+CAPC2012X145N
+*STM C
+*NGS
+*PLB 1="1" 2="2"
+*MXP 2
+*DFN GRM21BR61A226ME44L
+~!Manufacturer_Name (Murata Electronics)
+~!Manufacturer_Part_Number (GRM21BR61A226ME44L)
+~!Mouser Part Number (81-GRM21BR61A226ME4L)
+~!Link Mouser Price/Stock (https://www.mouser.co.uk/ProductDetail/Murata-Electronics/GRM21BR61A226ME44L?qs=eeBpzGFlv%252B8tSfxib2AMhw%3D%3D)
+~!Arrow Part Number (GRM21BR61A226ME44L)
+~!Link Arrow Price/Stock (https://www.arrow.com/en/products/grm21br61a226me44l/murata-manufacturing?region=nac)
+~!Link Datasheet (http://www.murata.com/~/media/webrenewal/support/library/catalog/products/capacitor/mlcc/c02e.pdf)
+~!Height (1.45mm)
+~!3D_Model (GRM21BR61A226ME44L)
+GRM21BR61A226ME44L
+1.1!U 2.1!U 

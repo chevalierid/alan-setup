@@ -1,0 +1,9 @@
+Manufacturer=Texas Instruments
+PartNumber=TPS564255DRLR
+PartCategory=Integrated Circuit
+PackageCategory=SO Transistor Flat Lead
+PinCount=6
+Version=1.1
+Released=2023-09-26 04:42:16
+Downloaded=2024-02-05 09:38:51
+3D=Y

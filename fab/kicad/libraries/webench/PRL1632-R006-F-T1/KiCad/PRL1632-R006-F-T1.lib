@@ -1,0 +1,25 @@
+EESchema-LIBRARY Version 2.3
+#encoding utf-8
+#SamacSys ECAD Model PRL1632-R006-F-T1
+#/1157070/877297/2.50/2/3/Resistor
+DEF PRL1632-R006-F-T1 R 0 30 Y Y 1 F N
+F0 "R" 550 250 50 H V L CNN
+F1 "PRL1632-R006-F-T1" 550 150 50 H V L CNN
+F2 "RESC1632X60N" 550 50 50 H I L CNN
+F3 "https://componentsearchengine.com/Datasheets/1/PRL1632-R006-F-T1.pdf" 550 -50 50 H I L CNN
+F4 "Current Sense Resistors - SMD 1W 0.006ohm 1%" 550 -150 50 H I L CNN "Description"
+F5 "0.6" 550 -250 50 H I L CNN "Height"
+F6 "Susumu" 550 -350 50 H I L CNN "Manufacturer_Name"
+F7 "PRL1632-R006-F-T1" 550 -450 50 H I L CNN "Manufacturer_Part_Number"
+F8 "754-PRL1632-R006-FT1" 550 -550 50 H I L CNN "Mouser Part Number"
+F9 "https://www.mouser.co.uk/ProductDetail/Susumu/PRL1632-R006-F-T1?qs=juJhw1yPxAHGKYokg5pJ8Q%3D%3D" 550 -650 50 H I L CNN "Mouser Price/Stock"
+F10 "PRL1632-R006-F-T1" 550 -750 50 H I L CNN "Arrow Part Number"
+F11 "https://www.arrow.com/en/products/prl1632-r006-f-t1/susumu" 550 -850 50 H I L CNN "Arrow Price/Stock"
+DRAW
+X ~ 1 0 0 200 R 50 50 0 0 P
+X ~ 2 700 0 200 L 50 50 0 0 P
+P 5 0 1 6 200 50 500 50 500 -50 200 -50 200 50 N
+ENDDRAW
+ENDDEF
+#
+#End Library

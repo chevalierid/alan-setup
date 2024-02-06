@@ -1,0 +1,9 @@
+Manufacturer=Panasonic
+PartNumber=35SVPF120M
+PartCategory=Capacitor Polarised
+PackageCategory=Other
+PinCount=2
+Version=6.3
+Released=2019-11-11 04:21:55
+Downloaded=2024-02-02 12:58:07
+3D=Y

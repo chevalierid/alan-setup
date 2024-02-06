@@ -1,0 +1,11 @@
+FILE_TYPE = MULTI_PHYS_TABLE;
+
+PART 'NVTFS5C673NLTAG'
+CLASS = DISCRETE
+{========================================================================================}
+:"MANUFACTURER_NAME", "MANUFACTURER_PART_NUMBER"= "PART_NUMBER", "JEDEC_TYPE", "PACK_TYPE", "MOUSER_PART_NUMBER", "MOUSER_PRICE/STOCK", "ARROW_PART_NUMBER", "ARROW_PRICE/STOCK", "DESCRIPTION", "DATASHEET", "HEIGHT";
+{========================================================================================}
+ "onsemi", "NVTFS5C673NLTAG" (!) = "", "NVTFS5C673NLTAG", "Other", "863-NVTFS5C673NLTAG", "https://www.mouser.co.uk/ProductDetail/ON-Semiconductor/NVTFS5C673NLTAG?qs=5aG0NVq1C4w4bkBmZ0y2Ug%3D%3D", "NVTFS5C673NLTAG", "https://www.arrow.com/en/products/nvtfs5c673nltag/on-semiconductor", "Trans MOSFET N-CH 60V 13A Automotive 8-Pin WDFN EP T/R", "https://www.onsemi.com/pdf/datasheet/nvtfs5c673nl-d.pdf", "0.8 mm"
+END_PART
+
+END.

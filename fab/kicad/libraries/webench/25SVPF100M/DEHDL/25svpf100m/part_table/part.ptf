@@ -1,0 +1,11 @@
+FILE_TYPE = MULTI_PHYS_TABLE;
+
+PART '25SVPF100M'
+CLASS = DISCRETE
+{========================================================================================}
+:"MANUFACTURER_NAME", "MANUFACTURER_PART_NUMBER"= "PART_NUMBER", "JEDEC_TYPE", "PACK_TYPE", "MOUSER_PART_NUMBER", "MOUSER_PRICE/STOCK", "ARROW_PART_NUMBER", "ARROW_PRICE/STOCK", "DESCRIPTION", "DATASHEET", "HEIGHT";
+{========================================================================================}
+ "Panasonic", "25SVPF100M" (!) = "", "16SVF270M", "Other", "667-25SVPF100M", "https://www.mouser.co.uk/ProductDetail/Panasonic/25SVPF100M?qs=OE1iw1LrrPHrTLW3S9d9vQ%3D%3D", "25SVPF100M", "https://www.arrow.com/en/products/25svpf100m/panasonic?region=nac", "Panasonic 100uF 25 V dc Polymer Aluminium Electrolytic Capacitor E7, OS-CON Series 5000h 8 x 6.9mm", "http://industrial.panasonic.com/cdbs/www-data/pdf/AAB8000/AAB8000C177.pdf", "7 mm"
+END_PART
+
+END.

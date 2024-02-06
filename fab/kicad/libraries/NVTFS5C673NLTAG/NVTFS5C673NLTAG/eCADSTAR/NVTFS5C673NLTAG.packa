@@ -1,0 +1,13 @@
+(unit MM)
+
+(package "NVTFS5C673NLTAG"
+    (type UNDEF)
+    (uver 2)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (utime 2021-06-23-09:53:51)
+    (mountForm default
+        (footprintRef "NVTFS5C673NLTAG")
+        (spec "System")
+    )
+)

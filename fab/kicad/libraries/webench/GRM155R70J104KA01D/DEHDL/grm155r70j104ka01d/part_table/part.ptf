@@ -1,0 +1,11 @@
+FILE_TYPE = MULTI_PHYS_TABLE;
+
+PART 'GRM155R70J104KA01D'
+CLASS = DISCRETE
+{========================================================================================}
+:"MANUFACTURER_NAME", "MANUFACTURER_PART_NUMBER"= "PART_NUMBER", "JEDEC_TYPE", "PACK_TYPE", "MOUSER_PART_NUMBER", "MOUSER_PRICE/STOCK", "ARROW_PART_NUMBER", "ARROW_PRICE/STOCK", "DESCRIPTION", "DATASHEET", "HEIGHT";
+{========================================================================================}
+ "Murata Electronics", "GRM155R70J104KA01D" (!) = "", "CAPC1005X55N", "Capacitor Chip Non-polarised", "81-GRM155R70J104KA1D", "https://www.mouser.co.uk/ProductDetail/Murata-Electronics/GRM155R70J104KA01D?qs=y02iAgv9n61EgJSmMyZ7gQ%3D%3D", "GRM155R70J104KA01D", "https://www.arrow.com/en/products/grm155r70j104ka01d/murata-manufacturing?region=nac", "Capacitor MLCC GRM 0402 100nF 6.3V X7R Murata 0402 GRM 100nF Ceramic Multilayer Capacitor, 6.3 V dc, +125degC, X7R Dielectric,  /-10% SMD", "http://www.murata.com/~/media/webrenewal/support/library/catalog/products/capacitor/mlcc/c02e.pdf", "0.55 mm"
+END_PART
+
+END.

@@ -1,0 +1,176 @@
+;Proteus Design Interchange Format
+(PDIF
+ (vendor "SamacSys Limited")
+ (version 1 0)
+ (library
+  (part "NVTFS5C673NLTAG"
+   (description "Trans MOSFET N-CH 60V 13A Automotive 8-Pin WDFN EP T/R")
+   (family "TRX")
+   (package "NVTFS5C673NLTAG")
+   (attribute "Datasheet Link" "https://www.onsemi.com/pdf/datasheet/nvtfs5c673nl-d.pdf")
+   (attribute "Geometry.Height" "0.8mm")
+   (attribute "Manufacturer_Name" "onsemi")
+   (attribute "Manufacturer_Part_Number" "NVTFS5C673NLTAG")
+   (attribute "Mouser Part Number" "863-NVTFS5C673NLTAG")
+   (attribute "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/ON-Semiconductor/NVTFS5C673NLTAG?qs=5aG0NVq1C4w4bkBmZ0y2Ug%3D%3D")
+   (attribute "Arrow Part Number" "NVTFS5C673NLTAG")
+   (attribute "Arrow Price/Stock" "https://www.arrow.com/en/products/nvtfs5c673nltag/on-semiconductor")
+   (gate
+    (symbol "NVTFS5C673NLTAG")
+    (pin "S_1" 1 PS)
+    (pin "S_2" 2 PS)
+    (pin "S_3" 3 PS)
+    (pin "G" 4 PS)
+    (pin "D_1" 5 PS)
+    (pin "D_2" 6 PS)
+    (pin "D_3" 7 PS)
+    (pin "D_4" 8 PS)
+    (pin "D_5" 9 PS)
+    (pin "D_6" 10 PS)
+    (pin "D_7" 11 PS)
+   )
+  )
+  (symbol "NVTFS5C673NLTAG"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 200 100) (pt 800 100) (pt 800 -600) (pt 200 -600) (pt 200 100) (closed))
+   )
+   (terminal
+    (body (symbol "PIN") (pt 0 0) (rot 0) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 0 -100) (rot 0) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 0 -200) (rot 0) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 0 -300) (rot 0) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 0 -400) (rot 0) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 0 -500) (rot 0) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 1000 0) (rot 0) (mir X) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 1000 -100) (rot 0) (mir X) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 1000 -200) (rot 0) (mir X) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 1000 -300) (rot 0) (mir X) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 1000 -400) (rot 0) (mir X) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+  )
+  (symbol "PIN"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 200 0))))
+  (symbol "PINSHORT"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 100 0))))
+  (package "NVTFS5C673NLTAG"
+   (units MM)
+   (layer TASM
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed true)
+      (pt -1.525 1.525)
+      (pt 1.525 1.525)
+      (pt 1.525 -1.525)
+      (pt -1.525 -1.525)
+      (pt -1.525 1.525))))
+   (layer OCCA
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed true)
+      (pt -2.73 -2.8)
+      (pt 2.73 -2.8)
+      (pt 2.73 2.8)
+      (pt -2.73 2.8)
+      (pt -2.73 -2.8))))
+   (layer TSLK
+    (graphic
+     (stroke 0.2)
+     (path
+      (closed false)
+      (pt -0.975 -2.5)
+      (arc (pt -0.975 -2.500) (pt -1.025 -2.500) (pt -0.925 -2.400) (start 180.0) (sweep -90.0))
+      (pt -0.975 -2.4)
+      (arc (pt -0.975 -2.400) (pt -1.025 -2.500) (pt -0.925 -2.400) (start 180.0) (sweep 90.0))
+      (pt -0.975 -2.5)
+      (arc (pt -0.975 -2.500) (pt -1.025 -2.500) (pt -0.925 -2.400) (start 180.0) (sweep -90.0))
+      (pt -0.975 -2.4))))
+   (leg 1 (pt -0.975 -1.470) (padstack 0))
+   (leg 2 (pt -0.325 -1.470) (padstack 0))
+   (leg 3 (pt 0.325 -1.470) (padstack 0))
+   (leg 4 (pt 0.975 -1.470) (padstack 0))
+   (leg 5 (pt 0.975 1.565) (padstack 5))
+   (leg 6 (pt 0.325 1.565) (padstack 6))
+   (leg 7 (pt -0.325 1.565) (padstack 7))
+   (leg 8 (pt -0.975 1.565) (padstack 8))
+   (leg 9 (pt 0.000 0.790) (padstack 9))
+   (leg 10 (pt 0.000 -0.035) (padstack 10))
+   (leg 11 (pt 0.000 -0.410) (padstack 11))
+   (padstack 0
+    (plated false)
+    (pad (layer TCOP) (rectf 0.420 0.660 0 0 90.000))
+   )
+   (padstack 5
+    (plated false)
+    (pad (layer TCOP) (rectf 0.420 0.470 0 0 90.000))
+   )
+   (padstack 6
+    (plated false)
+    (pad (layer TCOP) (rectf 0.420 0.470 0 0 90.000))
+   )
+   (padstack 7
+    (plated false)
+    (pad (layer TCOP) (rectf 0.420 0.470 0 0 90.000))
+   )
+   (padstack 8
+    (plated false)
+    (pad (layer TCOP) (rectf 0.420 0.470 0 0 90.000))
+   )
+   (padstack 9
+    (plated false)
+    (pad (layer TCOP) (rectf 1.080 2.370 0 0 0.000))
+   )
+   (padstack 10
+    (plated false)
+    (pad (layer TCOP) (rectf 0.570 3.460 0 0 0.000))
+   )
+   (padstack 11
+    (plated false)
+    (pad (layer TCOP) (rectf 0.180 2.370 0 0 0.000))
+   )
+  )
+ )
+)

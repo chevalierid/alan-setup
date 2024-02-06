@@ -1,0 +1,9 @@
+Manufacturer=Murata Electronics
+PartNumber=GRM188R71H104KA93D
+PartCategory=Capacitor
+PackageCategory=Capacitor Chip Non-polarised
+PinCount=2
+Version=4.1
+Released=2023-03-07 08:48:37
+Downloaded=2024-02-05 09:39:16
+3D=Y

@@ -1,0 +1,18 @@
+.EEE-FK1V101P :1 ;Aluminum Electrolytic Capacitors - SMD 100uF 35V
+EEHZT1E331UP
+*STM C
+*NGS
+*PLB 1="+" 2="-"
+*MXP 2
+*DFN EEE-FK1V101P
+~!Manufacturer_Name (Panasonic)
+~!Manufacturer_Part_Number (EEE-FK1V101P)
+~!Mouser Part Number (667-EEE-FK1V101P)
+~!Link Mouser Price/Stock (https://www.mouser.co.uk/ProductDetail/Panasonic/EEE-FK1V101P?qs=qE6bgDGEOCsMXxs4z7sT2w%3D%3D)
+~!Arrow Part Number (EEE-FK1V101P)
+~!Link Arrow Price/Stock (https://www.arrow.com/en/products/eeefk1v101p/panasonic?region=nac)
+~!Link Datasheet (http://industrial.panasonic.com/cdbs/www-data/pdf/RDE0000/ABA0000C1181.pdf)
+~!Height (10.8mm)
+~!3D_Model (EEE-FK1V101P)
+EEE-FK1V101P
+1.1!U 2.1!U 

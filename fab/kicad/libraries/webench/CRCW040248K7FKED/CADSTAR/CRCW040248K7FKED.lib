@@ -1,0 +1,18 @@
+.CRCW040248K7FKED :1 ;Vishay CRCW Series Thick Film Resistor 0402 Case 48.7k 1% 0.063W +/-100ppm/K
+RESC1005X40N
+*STM R
+*NGS
+*PLB 1="1" 2="2"
+*MXP 2
+*DFN CRCW040248K7FKED
+~!Manufacturer_Name (Vishay)
+~!Manufacturer_Part_Number (CRCW040248K7FKED)
+~!Mouser Part Number (71-CRCW0402-48.7K-E3)
+~!Link Mouser Price/Stock (https://www.mouser.co.uk/ProductDetail/Vishay-Dale/CRCW040248K7FKED?qs=hAuyw6LW%252BLjLERyYwOFdTQ%3D%3D)
+~!Arrow Part Number (CRCW040248K7FKED)
+~!Link Arrow Price/Stock (https://www.arrow.com/en/products/crcw040248k7fked/vishay)
+~!Link Datasheet (http://www.vishay.com/docs/20035/dcrcwe3.pdf)
+~!Height (0.4mm)
+~!3D_Model (CRCW040248K7FKED)
+CRCW040248K7FKED
+1.1!U 2.1!U 

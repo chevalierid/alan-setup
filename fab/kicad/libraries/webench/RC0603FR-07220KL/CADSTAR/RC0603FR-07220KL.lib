@@ -1,0 +1,18 @@
+.RC0603FR-07220KL :1 ;Thick Film Resistors - SMD 220 kOhms 100mW 0603 1%
+RESC1608X55N
+*STM R
+*NGS
+*PLB 1="1" 2="2"
+*MXP 2
+*DFN RC0603FR-07220KL
+~!Manufacturer_Name (YAGEO)
+~!Manufacturer_Part_Number (RC0603FR-07220KL)
+~!Mouser Part Number (603-RC0603FR-07220KL)
+~!Link Mouser Price/Stock (https://www.mouser.co.uk/ProductDetail/YAGEO/RC0603FR-07220KL?qs=nHyvTUT5UJ87BOKAmWeB9w%3D%3D)
+~!Arrow Part Number (-)
+~!Arrow Price/Stock (-)
+~!Link Datasheet (https://componentsearchengine.com/Datasheets/2/RC0603FR-07220KL.pdf)
+~!Height (0.55mm)
+~!3D_Model (RC0603FR-07220KL)
+RC0603FR-07220KL
+1.1!U 2.1!U 

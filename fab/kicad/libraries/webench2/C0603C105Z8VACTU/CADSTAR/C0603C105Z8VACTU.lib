@@ -1,0 +1,18 @@
+.C0603C105Z8VACTU :1 ;SMD Comm Y5V, Ceramic, 1 uF, -20/+80%, 10 VDC, 25 VDC, 85C, -30C, Y5V, SMD, MLCC, General Purpose, Class III, 10 % , 50 MOhms, 6.5 mg, 0603, 1.6mm, 0.8mm, 0.8mm, 0.7mm, 0.35mm, 4000, 78  Weeks, 10
+C0603
+*STM C
+*NGS
+*PLB 1="1" 2="2"
+*MXP 2
+*DFN C0603C105Z8VACTU
+~!Manufacturer_Name (KEMET)
+~!Manufacturer_Part_Number (C0603C105Z8VACTU)
+~!Mouser Part Number (80-C0603C105Z8V)
+~!Link Mouser Price/Stock (https://www.mouser.co.uk/ProductDetail/KEMET/C0603C105Z8VACTU?qs=F2dscFSegBYhJ9ezd9GTzA%3D%3D)
+~!Arrow Part Number (C0603C105Z8VACTU)
+~!Link Arrow Price/Stock (https://www.arrow.com/en/products/c0603c105z8vactu/kemet-corporation?region=nac)
+~!Link Datasheet (https://content.kemet.com/datasheets/KEM_C1005_Y5V_SMD.pdf)
+~!Height (0.87mm)
+~!3D_Model (C0603C105Z8VACTU)
+C0603C105Z8VACTU
+1.1!U 2.1!U 

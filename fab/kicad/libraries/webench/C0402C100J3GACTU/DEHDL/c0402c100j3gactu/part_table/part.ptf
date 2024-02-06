@@ -1,0 +1,11 @@
+FILE_TYPE = MULTI_PHYS_TABLE;
+
+PART 'C0402C100J3GACTU'
+CLASS = DISCRETE
+{========================================================================================}
+:"MANUFACTURER_NAME", "MANUFACTURER_PART_NUMBER"= "PART_NUMBER", "JEDEC_TYPE", "PACK_TYPE", "MOUSER_PART_NUMBER", "MOUSER_PRICE/STOCK", "ARROW_PART_NUMBER", "ARROW_PRICE/STOCK", "DESCRIPTION", "DATASHEET", "HEIGHT";
+{========================================================================================}
+ "KEMET", "C0402C100J3GACTU" (!) = "", "C0402C104J4RACTU", "Other", "80-C0402C100J3G", "https://www.mouser.co.uk/ProductDetail/KEMET/C0402C100J3GACTU?qs=B6asEe1xA0Wwdizk9L7KoQ%3D%3D", "C0402C100J3GACTU", "https://www.arrow.com/en/products/c0402c100j3gactu/kemet-corporation?region=nac", "SMD Comm C0G, Ceramic, 10 pF, 5%, 25 VDC, 62.5 VDC, 125C, -55C, C0G, SMD, MLCC, Ultra-Stable, Low Loss, Class I, 0.1 % , 100 GOhms, 1.06 mg, 0402, 1mm, 0.5mm, 0.5mm, 0.3mm, 0.3mm, 10000, 78  Weeks, 120", "https://content.kemet.com/datasheets/KEM_C1002_X7R_SMD.pdf", "0.55 mm"
+END_PART
+
+END.

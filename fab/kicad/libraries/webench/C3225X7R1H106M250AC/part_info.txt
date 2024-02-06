@@ -1,0 +1,9 @@
+Manufacturer=TDK
+PartNumber=C3225X7R1H106M250AC
+PartCategory=Capacitor
+PackageCategory=Capacitor Chip Non-polarised
+PinCount=2
+Version=5.1
+Released=2023-03-07 10:43:48
+Downloaded=2024-02-02 13:27:04
+3D=Y

@@ -1,0 +1,11 @@
+FILE_TYPE = MULTI_PHYS_TABLE;
+
+PART '35SVPF120M'
+CLASS = DISCRETE
+{========================================================================================}
+:"MANUFACTURER_NAME", "MANUFACTURER_PART_NUMBER"= "PART_NUMBER", "JEDEC_TYPE", "PACK_TYPE", "MOUSER_PART_NUMBER", "MOUSER_PRICE/STOCK", "ARROW_PART_NUMBER", "ARROW_PRICE/STOCK", "DESCRIPTION", "DATASHEET", "HEIGHT";
+{========================================================================================}
+ "Panasonic", "35SVPF120M" (!) = "", "16SVF1000M", "Other", "667-35SVPF120M", "https://www.mouser.co.uk/ProductDetail/Panasonic/35SVPF120M?qs=OE1iw1LrrPEMtY1ZtoIEvg%3D%3D", "35SVPF120M", "https://www.arrow.com/en/products/35svpf120m/panasonic?region=nac", "Panasonic 120uF 35 V dc Polymer Aluminium Electrolytic Capacitor F12, OS-CON Series 5000h 10 x 12.6mm", "http://industrial.panasonic.com/cdbs/www-data/pdf/AAB8000/AAB8000C177.pdf", "12.7 mm"
+END_PART
+
+END.

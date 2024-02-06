@@ -1,0 +1,13 @@
+(unit MM)
+
+(package "EEHZA1H330XP"
+    (type UNDEF)
+    (uver 2)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (utime 2021-10-26-14:56:17)
+    (mountForm default
+        (footprintRef "EEHZA1E101XP")
+        (spec "System")
+    )
+)

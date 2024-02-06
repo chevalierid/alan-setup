@@ -1,0 +1,13 @@
+(unit MM)
+
+(package "SLF6025T-4R7M1R5-PF"
+    (type UNDEF)
+    (uver 2)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (utime 2021-06-23-12:42:46)
+    (mountForm default
+        (footprintRef "SLF6025")
+        (spec "System")
+    )
+)

@@ -1,0 +1,67 @@
+(Japanese_coding: sjis)
+(function "ECS_1164378"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2021-06-23-12:42:46)
+    (utime 2023-03-07-16:10:32)
+    (interface
+        (port "1" (symbPinId 1) (portType INOUT))
+        (port "2" (symbPinId 2) (portType INOUT))
+    )
+    (property "symbolName" "SLF6025T-4R7M1R5-PF")
+)
+
+
+(pinAssign "ECS_1164378"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2021-06-23-12:42:46)
+    (utime 2023-03-07-16:10:32)
+    (interface
+        (port "1" (symbPinId 1) (portName "1") (portType INOUT))
+        (port "2" (symbPinId 2) (portName "2") (portType INOUT))
+    )
+    (internal
+        (funcInst (functionRef "ECS_1164378")
+                (port "1" (match "1"))
+                (port "2" (match "2"))
+        )
+    )
+    (property "usePowerBox" "No")
+    (property "symbolName" "SLF6025T-4R7M1R5-PF")
+)
+
+
+(part "SLF6025T-4R7M1R5-PF"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2021-06-23-12:42:46)
+    (utime 2023-03-07-16:10:32)
+    (packageRef "SLF6025T-4R7M1R5-PF")
+    (pinAssignRef "ECS_1164378")
+    (interface
+        (port "1" (symbPinId 1) (portName "1") (portType INOUT))
+        (port "2" (symbPinId 2) (portName "2") (portType INOUT))
+    )
+    (partClass UNDEF)
+    (useInSchema Y)
+    (useInLayout Y)
+    (inPartsList Y)
+    (partType NORMAL)
+    (placeRestriction FREE)
+    (property "enetNonSeries" "NO")
+    (property "refDesPrefix" "L")
+    (property "description" "SMD / SMT Inductors (Coils), L=4.7?H, L x W x T :")
+    (property "Manufacturer_Name" "TDK")
+    (property "Manufacturer_Part_Number" "SLF6025T-4R7M1R5-PF")
+    (property "Mouser_Part_Number" "810-SLF6025T-4R7M")
+    (property "Mouser_Price/Stock" "https://www.mouser.co.uk/ProductDetail/TDK/SLF6025T-4R7M1R5-PF?qs=ZkOiLKk8CrAv31GuoYQOdw%3D%3D")
+    (property "Arrow_Part_Number" "SLF6025T-4R7M1R5-PF")
+    (property "Arrow_Price/Stock" "https://www.arrow.com/en/products/slf6025t-4r7m1r5-pf/tdk")
+    (property "Datasheet_Link" "https://product.tdk.com/system/files/dam/doc/product/inductor/inductor/smd/catalog/inductor_commercial_power_slf6025_en.pdf")
+)
+
+

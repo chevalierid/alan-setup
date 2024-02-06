@@ -1,0 +1,18 @@
+.GRM188R71E104KA01D :1 ;Multilayer Ceramic Capacitors MLCC - SMD/SMT 0603 0.1uF 25volts X7R 10%
+CAPC1608X90N
+*STM C
+*NGS
+*PLB 1="1" 2="2"
+*MXP 2
+*DFN GRM188R71E104KA01D
+~!Manufacturer_Name (Murata Electronics)
+~!Manufacturer_Part_Number (GRM188R71E104KA01D)
+~!Mouser Part Number (81-GRM39X104K25)
+~!Link Mouser Price/Stock (https://www.mouser.co.uk/ProductDetail/Murata-Electronics/GRM188R71E104KA01D?qs=kZszf6EFsb%252BcS4JW42Ze0A%3D%3D)
+~!Arrow Part Number (GRM188R71E104KA01D)
+~!Link Arrow Price/Stock (https://www.arrow.com/en/products/grm188r71e104ka01d/murata-manufacturing?region=europe)
+~!Link Datasheet (https://datasheet.datasheetarchive.com/originals/distributors/Datasheets_SAMA/ec4f1577dddcc7a13ddad897a28002d3.pdf)
+~!Height (0.9mm)
+~!3D_Model (GRM188R71E104KA01D)
+GRM188R71E104KA01D
+1.1!U 2.1!U 

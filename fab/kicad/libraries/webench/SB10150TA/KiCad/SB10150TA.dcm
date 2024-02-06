@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP SB10150TA
+D SB10150 SCHOTTKY RECTIFIER
+K
+F http://www.smc-diodes.com/propdf/SB10150%20N0884%20REV.A.pdf
+$ENDCMP
+#
+#End Doc Library

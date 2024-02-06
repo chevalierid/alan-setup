@@ -1,0 +1,18 @@
+.10SVPC68MV :1 ;Panasonic 68uF Polymer Capacitor 10V dc, Surface Mount - 10SVPC68MV
+"16SVF82M"
+*STM C
+*NGS
+*PLB 1="+" 2="-"
+*MXP 2
+*DFN 10SVPC68MV
+~!Manufacturer_Name (Panasonic)
+~!Manufacturer_Part_Number (10SVPC68MV)
+~!Mouser Part Number (667-10SVPC68MV)
+~!Link Mouser Price/Stock (https://www.mouser.com/Search/Refine.aspx?Keyword=667-10SVPC68MV)
+~!Arrow Part Number (10SVPC68MV)
+~!Link Arrow Price/Stock (https://www.arrow.com/en/products/10svpc68mv/panasonic)
+~!Link Datasheet (http://industrial.panasonic.com/cdbs/www-data/pdf/AAB8000/AAB8000C256.pdf)
+~!Height (6mm)
+~!3D_Model (10SVPC68MV)
+"10SVPC68MV"
+1.1!U 2.1!U 

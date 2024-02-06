@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP GRM21BR61A226ME44L
+D Murata 2012 GRM 22000nF Ceramic Multilayer Capacitor, 10 V dc, +85C, X5R Dielectric, +/-20%
+K
+F http://www.murata.com/~/media/webrenewal/support/library/catalog/products/capacitor/mlcc/c02e.pdf
+$ENDCMP
+#
+#End Doc Library

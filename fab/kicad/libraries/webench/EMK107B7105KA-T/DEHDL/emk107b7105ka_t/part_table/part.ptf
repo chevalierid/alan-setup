@@ -1,0 +1,11 @@
+FILE_TYPE = MULTI_PHYS_TABLE;
+
+PART 'EMK107B7105KA_T'
+CLASS = DISCRETE
+{========================================================================================}
+:"MANUFACTURER_NAME", "MANUFACTURER_PART_NUMBER"= "PART_NUMBER", "JEDEC_TYPE", "PACK_TYPE", "MOUSER_PART_NUMBER", "MOUSER_PRICE/STOCK", "ARROW_PART_NUMBER", "ARROW_PRICE/STOCK", "DESCRIPTION", "DATASHEET", "HEIGHT";
+{========================================================================================}
+ "TAIYO YUDEN", "EMK107B7105KA-T" (!) = "", "CAPC1608X90N", "Capacitor Chip Non-polarised", "963-EMK107B7105KA-T", "https://www.mouser.co.uk/ProductDetail/TAIYO-YUDEN/EMK107B7105KA-T?qs=I6KAKw0tg2zS1zj87Lm%2FxQ%3D%3D", "", "", "Ceramic Capacitor 0603 16V 1uF", "https://componentsearchengine.com/Datasheets/1/EMK107B7105KA-T.pdf", "0.9 mm"
+END_PART
+
+END.

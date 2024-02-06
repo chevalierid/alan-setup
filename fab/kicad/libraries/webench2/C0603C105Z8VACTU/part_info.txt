@@ -1,0 +1,9 @@
+Manufacturer=KEMET
+PartNumber=C0603C105Z8VACTU
+PartCategory=Capacitor
+PackageCategory=Other
+PinCount=2
+Version=5.1
+Released=2017-12-11 11:25:45
+Downloaded=2024-02-06 15:01:31
+3D=Y

@@ -1,0 +1,11 @@
+FILE_TYPE = MULTI_PHYS_TABLE;
+
+PART 'GRM21BR61E106MA73L'
+CLASS = DISCRETE
+{========================================================================================}
+:"MANUFACTURER_NAME", "MANUFACTURER_PART_NUMBER"= "PART_NUMBER", "JEDEC_TYPE", "PACK_TYPE", "MOUSER_PART_NUMBER", "MOUSER_PRICE/STOCK", "ARROW_PART_NUMBER", "ARROW_PRICE/STOCK", "DESCRIPTION", "DATASHEET", "HEIGHT";
+{========================================================================================}
+ "Murata Electronics", "GRM21BR61E106MA73L" (!) = "", "CAPC2012X145N", "Capacitor Chip Non-polarised", "81-GRM21BR61E106MA3L", "https://www.mouser.co.uk/ProductDetail/Murata-Electronics/GRM21BR61E106MA73L?qs=2W5sgKM%2F371odLMyCilkag%3D%3D", "GRM21BR61E106MA73L", "https://www.arrow.com/en/products/grm21br61e106ma73l/murata-manufacturing?region=nac", "Murata 0805 (2012M) 10uF MLCC 25V dc +/-20% SMD GRM21BR61E106MA73L", "http://www.murata.com/~/media/webrenewal/support/library/catalog/products/capacitor/mlcc/c02e.pdf", "1.45 mm"
+END_PART
+
+END.

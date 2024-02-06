@@ -1,0 +1,11 @@
+FILE_TYPE = MULTI_PHYS_TABLE;
+
+PART 'GRM155R61A823KA01D'
+CLASS = DISCRETE
+{========================================================================================}
+:"MANUFACTURER_NAME", "MANUFACTURER_PART_NUMBER"= "PART_NUMBER", "JEDEC_TYPE", "PACK_TYPE", "MOUSER_PART_NUMBER", "MOUSER_PRICE/STOCK", "ARROW_PART_NUMBER", "ARROW_PRICE/STOCK", "DESCRIPTION", "DATASHEET", "HEIGHT";
+{========================================================================================}
+ "Murata Electronics", "GRM155R61A823KA01D" (!) = "", "CAPC1005X55N", "Capacitor Chip Non-polarised", "81-GRM155R61A823KA1D", "https://www.mouser.co.uk/ProductDetail/Murata-Electronics/GRM155R61A823KA01D?qs=9U7yHM2lsjTmY4eOdx%2FDrA%3D%3D", "GRM155R61A823KA01D", "https://www.arrow.com/en/products/grm155r61a823ka01d/murata-manufacturing", "Multilayer Ceramic Capacitors MLCC - SMD/SMT 0402 0.082uF 10volts 10%", "http://www.murata.com/~/media/webrenewal/support/library/catalog/products/capacitor/mlcc/c02e.pdf", "0.55 mm"
+END_PART
+
+END.

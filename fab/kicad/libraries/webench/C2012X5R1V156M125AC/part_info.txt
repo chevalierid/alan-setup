@@ -1,0 +1,9 @@
+Manufacturer=TDK
+PartNumber=C2012X5R1V156M125AC
+PartCategory=Capacitor
+PackageCategory=Capacitor Chip Non-polarised
+PinCount=2
+Version=4.1
+Released=2023-03-07 09:28:06
+Downloaded=2024-02-06 13:57:01
+3D=Y

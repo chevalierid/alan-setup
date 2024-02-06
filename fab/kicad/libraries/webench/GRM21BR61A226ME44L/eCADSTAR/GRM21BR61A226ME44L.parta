@@ -1,0 +1,68 @@
+(Japanese_coding: sjis)
+(function "ECS_336696"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2023-03-07-08:57:12)
+    (utime 2023-03-07-08:57:12)
+    (interface
+        (port "1" (symbPinId 1) (portType INOUT))
+        (port "2" (symbPinId 2) (portType INOUT))
+    )
+    (property "symbolName" "GRM21BR61A226ME44L")
+)
+
+
+(pinAssign "ECS_336696"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2023-03-07-08:57:12)
+    (utime 2023-03-07-08:57:12)
+    (interface
+        (port "1" (symbPinId 1) (portName "1") (portType INOUT))
+        (port "2" (symbPinId 2) (portName "2") (portType INOUT))
+    )
+    (internal
+        (funcInst (functionRef "ECS_336696")
+                (port "1" (match "1"))
+                (port "2" (match "2"))
+        )
+    )
+    (property "usePowerBox" "No")
+    (property "symbolName" "GRM21BR61A226ME44L")
+)
+
+
+(part "GRM21BR61A226ME44L"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2023-03-07-08:57:12)
+    (utime 2023-03-07-08:57:12)
+    (packageRef "GRM21BR61A226ME44L")
+    (pinAssignRef "ECS_336696")
+    (interface
+        (port "1" (symbPinId 1) (portName "1") (portType INOUT))
+        (port "2" (symbPinId 2) (portName "2") (portType INOUT))
+    )
+    (partClass UNDEF)
+    (useInSchema Y)
+    (useInLayout Y)
+    (inPartsList Y)
+    (partType NORMAL)
+    (placeRestriction FREE)
+    (property "enetNonSeries" "NO")
+    (property "refDesPrefix" "C")
+    (property "description" "Murata 2012 GRM 22000nF Ceramic Multilayer Capacitor, 10 V dc, +85C, X5R Dielectric, +/-20%")
+    (property "Manufacturer_Name" "Murata Electronics")
+    (property "Manufacturer_Part_Number" "GRM21BR61A226ME44L")
+    (property "Mouser_Part_Number" "81-GRM21BR61A226ME4L")
+    (property "Mouser_Price/Stock" "https://www.mouser.co.uk/ProductDetail/Murata-Electronics/GRM21BR61A226ME44L?qs=eeBpzGFlv%252B8tSfxib2AMhw%3D%3D")
+    (property "Arrow_Part_Number" "GRM21BR61A226ME44L")
+    (property "Arrow_Price/Stock" "https://www.arrow.com/en/products/grm21br61a226me44l/murata-manufacturing?region=nac")
+    (property "Datasheet_Link" "http://www.murata.com/~/media/webrenewal/support/library/catalog/products/capacitor/mlcc/c02e.pdf")
+    (property "compAreaTopHeight" 1.45)
+)
+
+

@@ -1,0 +1,18 @@
+.C1005X5R1V105K050BC :1 ;MULTILAYER CERAMIC CHIP CAPACITORS, 1005, Commercial grade, general (Up to 75V)
+CAPC1005X55N
+*STM C
+*NGS
+*PLB 1="1" 2="2"
+*MXP 2
+*DFN C1005X5R1V105K050BC
+~!Manufacturer_Name (TDK)
+~!Manufacturer_Part_Number (C1005X5R1V105K050BC)
+~!Mouser Part Number (810-C1005X5R1V105K)
+~!Link Mouser Price/Stock (https://www.mouser.co.uk/ProductDetail/TDK/C1005X5R1V105K050BC?qs=dfay7wIA1uGr1NSDQs%2Ftnw%3D%3D)
+~!Arrow Part Number (C1005X5R1V105K050BC)
+~!Link Arrow Price/Stock (https://www.arrow.com/en/products/c1005x5r1v105k050bc/tdk?region=nac)
+~!Link Datasheet (https://product.tdk.com/info/en/catalog/datasheets/mlcc_commercial_midvoltage_en.pdf)
+~!Height (0.55mm)
+~!3D_Model (C1005X5R1V105K050BC)
+C1005X5R1V105K050BC
+1.1!U 2.1!U 

@@ -1,0 +1,86 @@
+;Proteus Design Interchange Format
+(PDIF
+ (vendor "SamacSys Limited")
+ (version 1 0)
+ (library
+  (part "RC0201FR-07249KL"
+   (description "The resistor is constructed on top of a high-grade ceramic body. Internal metal electrodes are added on each end to make the contacts to the thick film resistive element. The composition of the resistive element is a noble metal imbedded into a glass and covered by a second glass to prevent environmental influences. The resistor is laser trimmed to the rated resistance value. The resistor is covered with a protective epoxy coat, finally the two external terminations")
+   (family "RES")
+   (package "RESC0603X26N")
+   (attribute "Datasheet Link" "https://www.mouser.com/datasheet/2/447/PYu-RC_Group_51_RoHS_L_9-1314892.pdf")
+   (attribute "Geometry.Height" "0.26mm")
+   (attribute "Manufacturer_Name" "YAGEO")
+   (attribute "Manufacturer_Part_Number" "RC0201FR-07249KL")
+   (attribute "Mouser Part Number" "")
+   (attribute "Mouser Price/Stock" "")
+   (attribute "Arrow Part Number" "")
+   (attribute "Arrow Price/Stock" "")
+   (gate
+    (symbol "RC0201FR-07249KL")
+    (pin "1" 1 IO)
+    (pin "2" 2 IO)
+   )
+  )
+  (symbol "RC0201FR-07249KL"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 200 50) (pt 500 50) (pt 500 -50) (pt 200 -50) (pt 200 50) (closed))
+   )
+   (terminal
+    (body (symbol "PIN") (pt 0 0) (rot 0) (mir 0) (visible true))
+    (name (pt 0 -10) (rot 0) (just TOP LEFT) (visible false))
+    (number (pt 0 10) (rot 0) (just BOTTOM LEFT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 700 0) (rot 0) (mir X) (visible true))
+    (name (pt 0 -10) (rot 0) (just TOP LEFT) (visible false))
+    (number (pt 0 10) (rot 0) (just BOTTOM LEFT) (visible true)))
+  )
+  (symbol "PIN"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 200 0))))
+  (symbol "PINSHORT"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 100 0))))
+  (package "RESC0603X26N"
+   (units MM)
+   (layer OCCA
+    (graphic
+     (stroke 0.05)
+     (path
+      (closed true)
+      (pt -0.975 0.45)
+      (pt 0.975 0.45)
+      (pt 0.975 -0.45)
+      (pt -0.975 -0.45)
+      (pt -0.975 0.45))))
+   (layer TASM
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed true)
+      (pt -0.3 0.15)
+      (pt 0.3 0.15)
+      (pt 0.3 -0.15)
+      (pt -0.3 -0.15)
+      (pt -0.3 0.15))))
+   (leg 1 (pt -0.412 0) (padstack 0))
+   (leg 2 (pt 0.412 0) (padstack 0))
+   (padstack 0
+    (plated false)
+    (pad (layer TCOP) (rectf 0.4 0.625 0 0 0))
+   )
+   (model "RC0201FR-07249KL.stp"
+    (euler 0 0 0)
+    (offset 0 0 0)
+   )
+  )
+ )
+)

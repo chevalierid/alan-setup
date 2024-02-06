@@ -1,0 +1,10 @@
+(unit MM)
+
+(package "NVTFS5C673NLTAG"
+    (type UNDEF)
+    (uver 2)
+    (mountForm default
+        (footprintRef "NVTFS5C673NLTAG")
+        (spec "default")
+    )
+)

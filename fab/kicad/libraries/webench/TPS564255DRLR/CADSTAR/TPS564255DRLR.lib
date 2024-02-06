@@ -1,0 +1,18 @@
+.TPS564255DRLR :1 ;3-V to 17-V input voltage, 4-A OOA mode, synchronous buck converter with PG
+SOTFL50P160X60-6N
+*STM IC
+*NGS
+*PLB 1="VIN" 2="SW" 3="GND" 4="PG" 5="EN" 6="FB"
+*MXP 6
+*DFN TPS564255DRLR
+~!Manufacturer_Name (Texas Instruments)
+~!Manufacturer_Part_Number (TPS564255DRLR)
+~!Mouser Part Number (595-TPS564255DRLR)
+~!Link Mouser Price/Stock (https://www.mouser.co.uk/ProductDetail/Texas-Instruments/TPS564255DRLR?qs=ulEaXIWI0c8mPomYtvsyTw%3D%3D)
+~!Arrow Part Number (-)
+~!Arrow Price/Stock (-)
+~!Link Datasheet (https://www.ti.com/lit/ds/symlink/tps564257.pdf?HQS=dis-mous-null-mousermode-dsf-pf-null-wwe&ts=1695645096067&ref_url=https%253A%252F%252Fwww.mouser.com%252F)
+~!Height (0.6mm)
+~!3D_Model (TPS564255DRLR)
+TPS564255DRLR
+1.1!U 2.1!U 3.1!U 4.1!U 5.1!U 6.1!U 

@@ -1,0 +1,11 @@
+FILE_TYPE = MULTI_PHYS_TABLE;
+
+PART 'RC0201FR_07249KL'
+CLASS = DISCRETE
+{========================================================================================}
+:"MANUFACTURER_NAME", "MANUFACTURER_PART_NUMBER"= "PART_NUMBER", "JEDEC_TYPE", "PACK_TYPE", "MOUSER_PART_NUMBER", "MOUSER_PRICE/STOCK", "ARROW_PART_NUMBER", "ARROW_PRICE/STOCK", "DESCRIPTION", "DATASHEET", "HEIGHT";
+{========================================================================================}
+ "YAGEO", "RC0201FR-07249KL" (!) = "", "RESC0603X26N", "Resistor Chip", "", "", "", "", "The resistor is constructed on top of a high-grade ceramic body. Internal metal electrodes are added on each end to make the contacts to the thick film resistive element. The composition of the resistive element is a noble metal imbedded into a glass and covered by a second glass to prevent environmental influences. The resistor is laser trimmed to the rated resistance value. The resistor is covered with a protective epoxy coat, finally the two external terminations", "https://www.mouser.com/datasheet/2/447/PYu-RC_Group_51_RoHS_L_9-1314892.pdf", "0.26 mm"
+END_PART
+
+END.

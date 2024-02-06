@@ -1,0 +1,13 @@
+(unit MM)
+
+(package "RC0201FR-07249KL"
+    (type UNDEF)
+    (uver 2)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (utime 2023-08-22-17:24:06)
+    (mountForm default
+        (footprintRef "RESC0603X26N")
+        (spec "System")
+    )
+)

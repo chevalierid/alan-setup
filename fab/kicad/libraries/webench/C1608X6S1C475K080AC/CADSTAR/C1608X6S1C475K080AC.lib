@@ -1,0 +1,18 @@
+.C1608X6S1C475K080AC :1 ;MULTILAYER CERAMIC CHIP CAPACITORS, 1608, Commercial grade, general (Up to 75V)
+CAPC1608X80N
+*STM C
+*NGS
+*PLB 1="1" 2="2"
+*MXP 2
+*DFN C1608X6S1C475K080AC
+~!Manufacturer_Name (TDK)
+~!Manufacturer_Part_Number (C1608X6S1C475K080AC)
+~!Mouser Part Number (810-C1608X6S1C475K)
+~!Link Mouser Price/Stock (https://www.mouser.co.uk/ProductDetail/TDK/C1608X6S1C475K080AC?qs=dfay7wIA1uELNO4%252B8xvBDw%3D%3D)
+~!Arrow Part Number (C1608X6S1C475K080AC)
+~!Link Arrow Price/Stock (https://www.arrow.com/en/products/c1608x6s1c475k080ac/tdk?region=nac)
+~!Link Datasheet (https://product.tdk.com/info/en/catalog/datasheets/mlcc_commercial_midvoltage_en.pdf)
+~!Height (0.8mm)
+~!3D_Model (C1608X6S1C475K080AC)
+C1608X6S1C475K080AC
+1.1!U 2.1!U 

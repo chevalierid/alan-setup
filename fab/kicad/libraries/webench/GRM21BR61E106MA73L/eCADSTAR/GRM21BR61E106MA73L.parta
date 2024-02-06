@@ -1,0 +1,68 @@
+(Japanese_coding: sjis)
+(function "ECS_640264"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2023-03-07-08:57:24)
+    (utime 2023-03-07-08:57:24)
+    (interface
+        (port "1" (symbPinId 1) (portType INOUT))
+        (port "2" (symbPinId 2) (portType INOUT))
+    )
+    (property "symbolName" "GRM21BR61E106MA73L")
+)
+
+
+(pinAssign "ECS_640264"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2023-03-07-08:57:24)
+    (utime 2023-03-07-08:57:24)
+    (interface
+        (port "1" (symbPinId 1) (portName "1") (portType INOUT))
+        (port "2" (symbPinId 2) (portName "2") (portType INOUT))
+    )
+    (internal
+        (funcInst (functionRef "ECS_640264")
+                (port "1" (match "1"))
+                (port "2" (match "2"))
+        )
+    )
+    (property "usePowerBox" "No")
+    (property "symbolName" "GRM21BR61E106MA73L")
+)
+
+
+(part "GRM21BR61E106MA73L"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2023-03-07-08:57:24)
+    (utime 2023-03-07-08:57:24)
+    (packageRef "GRM21BR61E106MA73L")
+    (pinAssignRef "ECS_640264")
+    (interface
+        (port "1" (symbPinId 1) (portName "1") (portType INOUT))
+        (port "2" (symbPinId 2) (portName "2") (portType INOUT))
+    )
+    (partClass UNDEF)
+    (useInSchema Y)
+    (useInLayout Y)
+    (inPartsList Y)
+    (partType NORMAL)
+    (placeRestriction FREE)
+    (property "enetNonSeries" "NO")
+    (property "refDesPrefix" "C")
+    (property "description" "Murata 0805 (2012M) 10uF MLCC 25V dc +/-20% SMD GRM21BR61E106MA73L")
+    (property "Manufacturer_Name" "Murata Electronics")
+    (property "Manufacturer_Part_Number" "GRM21BR61E106MA73L")
+    (property "Mouser_Part_Number" "81-GRM21BR61E106MA3L")
+    (property "Mouser_Price/Stock" "https://www.mouser.co.uk/ProductDetail/Murata-Electronics/GRM21BR61E106MA73L?qs=2W5sgKM%2F371odLMyCilkag%3D%3D")
+    (property "Arrow_Part_Number" "GRM21BR61E106MA73L")
+    (property "Arrow_Price/Stock" "https://www.arrow.com/en/products/grm21br61e106ma73l/murata-manufacturing?region=nac")
+    (property "Datasheet_Link" "http://www.murata.com/~/media/webrenewal/support/library/catalog/products/capacitor/mlcc/c02e.pdf")
+    (property "compAreaTopHeight" 1.45)
+)
+
+

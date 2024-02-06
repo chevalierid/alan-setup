@@ -1,0 +1,9 @@
+Manufacturer=Vishay
+PartNumber=CRCW040223R7FKED
+PartCategory=Resistor
+PackageCategory=Resistor Chip
+PinCount=2
+Version=1.5
+Released=2023-03-07 09:01:23
+Downloaded=2024-02-02 12:56:15
+3D=Y

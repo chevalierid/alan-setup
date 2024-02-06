@@ -1,0 +1,11 @@
+FILE_TYPE = MULTI_PHYS_TABLE;
+
+PART 'C1005X5R1V105K050BC'
+CLASS = DISCRETE
+{========================================================================================}
+:"MANUFACTURER_NAME", "MANUFACTURER_PART_NUMBER"= "PART_NUMBER", "JEDEC_TYPE", "PACK_TYPE", "MOUSER_PART_NUMBER", "MOUSER_PRICE/STOCK", "ARROW_PART_NUMBER", "ARROW_PRICE/STOCK", "DESCRIPTION", "DATASHEET", "HEIGHT";
+{========================================================================================}
+ "TDK", "C1005X5R1V105K050BC" (!) = "", "CAPC1005X55N", "Capacitor Chip Non-polarised", "810-C1005X5R1V105K", "https://www.mouser.co.uk/ProductDetail/TDK/C1005X5R1V105K050BC?qs=dfay7wIA1uGr1NSDQs%2Ftnw%3D%3D", "C1005X5R1V105K050BC", "https://www.arrow.com/en/products/c1005x5r1v105k050bc/tdk?region=nac", "MULTILAYER CERAMIC CHIP CAPACITORS, 1005, Commercial grade, general (Up to 75V)", "https://product.tdk.com/info/en/catalog/datasheets/mlcc_commercial_midvoltage_en.pdf", "0.55 mm"
+END_PART
+
+END.

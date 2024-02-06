@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP EMK107B7104KA-T
+D EMK107B7104KA-T 0.1F +/-10% 16V Ceramic Capacitor X7R 0603
+K
+F http://www.farnell.com/datasheets/746258.pdf
+$ENDCMP
+#
+#End Doc Library

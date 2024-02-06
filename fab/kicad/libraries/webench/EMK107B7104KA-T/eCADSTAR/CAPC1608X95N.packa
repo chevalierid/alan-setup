@@ -1,0 +1,13 @@
+(unit MM)
+
+(package "EMK107B7104KA-T"
+    (type UNDEF)
+    (uver 2)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (utime 2022-04-28-12:29:19)
+    (mountForm default
+        (footprintRef "CAPC1608X95N")
+        (spec "System")
+    )
+)

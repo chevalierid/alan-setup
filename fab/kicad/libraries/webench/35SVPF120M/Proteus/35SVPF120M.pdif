@@ -1,0 +1,141 @@
+;Proteus Design Interchange Format
+(PDIF
+ (vendor "SamacSys Limited")
+ (version 1 0)
+ (library
+  (part "35SVPF120M"
+   (description "Panasonic 120uF 35 V dc Polymer Aluminium Electrolytic Capacitor F12, OS-CON Series 5000h 10 x 12.6mm")
+   (family "CAP")
+   (package "16SVF1000M")
+   (attribute "Datasheet Link" "http://industrial.panasonic.com/cdbs/www-data/pdf/AAB8000/AAB8000C177.pdf")
+   (attribute "Geometry.Height" "12.7mm")
+   (attribute "Manufacturer_Name" "Panasonic")
+   (attribute "Manufacturer_Part_Number" "35SVPF120M")
+   (attribute "Mouser Part Number" "667-35SVPF120M")
+   (attribute "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Panasonic/35SVPF120M?qs=OE1iw1LrrPEMtY1ZtoIEvg%3D%3D")
+   (attribute "Arrow Part Number" "35SVPF120M")
+   (attribute "Arrow Price/Stock" "https://www.arrow.com/en/products/35svpf120m/panasonic?region=nac")
+   (gate
+    (symbol "35SVPF120M")
+    (pin "+" 1 PS)
+    (pin "-" 2 PS)
+   )
+  )
+  (symbol "35SVPF120M"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 200 100) (pt 200 -100) (pt 230 -100) (pt 230 100) (pt 200 100) (closed))
+   )
+   (graphic
+    (stroke 10)
+    (path (pt 180 50) (pt 140 50))
+   )
+   (graphic
+    (stroke 10)
+    (path (pt 160 70) (pt 160 30))
+   )
+   (graphic
+    (stroke 10)
+    (path (pt 100 0) (pt 200 0))
+   )
+   (graphic
+    (stroke 10)
+    (path (pt 300 0) (pt 400 0))
+   )
+   (graphic
+    (stroke 10)
+    (path (closed true) (pt 300 100) (pt 300 -100) (pt 270 -100) (pt 270 100) (pt 300 100))
+   )
+   (terminal
+    (body (symbol "PINSHORT") (pt 0 0) (rot 0) (mir 0) (visible true))
+    (name (pt 0 -10) (rot 0) (just TOP LEFT) (visible false))
+    (number (pt 0 10) (rot 0) (just BOTTOM LEFT) (visible true)))
+   (terminal
+    (body (symbol "PINSHORT") (pt 500 0) (rot 0) (mir X) (visible true))
+    (name (pt 0 -10) (rot 0) (just TOP LEFT) (visible false))
+    (number (pt 0 10) (rot 0) (just BOTTOM LEFT) (visible true)))
+  )
+  (symbol "PIN"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 200 0))))
+  (symbol "PINSHORT"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 100 0))))
+  (package "16SVF1000M"
+   (units MM)
+   (layer OCCA
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed true)
+      (pt -6.15 7.55)
+      (pt 6.15 7.55)
+      (pt 6.15 -8.8)
+      (pt -6.15 -8.8)
+      (pt -6.15 7.55))))
+   (layer TSLK
+    (graphic
+     (stroke 0.2)
+     (path
+      (closed false)
+      (pt 0 -7.7)
+      (arc (pt 0.000 -7.700) (pt -0.050 -7.800) (pt 0.050 -7.700) (start 180.0) (sweep 90.0))
+      (pt 0 -7.8)
+      (arc (pt 0.000 -7.800) (pt -0.050 -7.800) (pt 0.050 -7.700) (start 180.0) (sweep -90.0))
+      (pt 0 -7.7)
+      (arc (pt 0.000 -7.700) (pt -0.050 -7.800) (pt 0.050 -7.700) (start 180.0) (sweep 90.0))
+      (pt 0 -7.8))))
+   (layer TASM
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed false)
+      (pt -5.15 -3.75)
+      (pt -3.5 -5.15)
+      (pt 3.5 -5.15)
+      (pt 5.15 -3.75)
+      (pt 5.15 5.15)
+      (pt -5.15 5.15)
+      (pt -5.15 -3.75)
+      (pt -3.5 -5.15))))
+   (layer TSLK
+    (graphic
+     (stroke 0.2)
+     (path
+      (closed false)
+      (pt -1.75 -5.15)
+      (pt -3.5 -5.15)
+      (pt -5.15 -3.75)
+      (pt -5.15 5.15)
+      (pt -1.75 5.15))))
+   (layer TSLK
+    (graphic
+     (stroke 0.2)
+     (path
+      (closed false)
+      (pt 1.75 5.15)
+      (pt 5.15 5.15)
+      (pt 5.15 -3.75)
+      (pt 3.5 -5.15)
+      (pt 1.75 -5.15))))
+   (leg 1 (pt 0.000 -4.350) (padstack 0))
+   (leg 2 (pt 0.000 4.350) (padstack 0))
+   (padstack 0
+    (plated false)
+    (pad (layer TCOP) (rectf 1.900 4.400 0 0 90.000))
+   )
+   (model "35SVPF120M.stp"
+    (euler 90 0 0)
+    (offset 0 0 0.6299999952316284)
+   )
+  )
+ )
+)

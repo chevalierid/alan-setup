@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP 25SVPF27MX
+D Panasonic 27uF 25V dc Aluminium Polymer Capacitor, Surface Mount 5 Dia. x 5.9mm +105C 5mm
+K
+F http://industrial.panasonic.com/cdbs/www-data/pdf/AAB8000/AAB8000C177.pdf
+$ENDCMP
+#
+#End Doc Library

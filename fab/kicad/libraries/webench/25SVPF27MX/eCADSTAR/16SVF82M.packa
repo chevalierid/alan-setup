@@ -1,0 +1,13 @@
+(unit MM)
+
+(package "25SVPF27MX"
+    (type UNDEF)
+    (uver 2)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (utime 2021-04-01-11:00:21)
+    (mountForm default
+        (footprintRef "16SVF82M")
+        (spec "System")
+    )
+)

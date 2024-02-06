@@ -1,0 +1,9 @@
+Manufacturer=Panasonic
+PartNumber=25SVPF100M
+PartCategory=Capacitor Polarised
+PackageCategory=Other
+PinCount=2
+Version=7.1
+Released=2021-04-01 10:46:50
+Downloaded=2024-02-04 15:46:59
+3D=Y

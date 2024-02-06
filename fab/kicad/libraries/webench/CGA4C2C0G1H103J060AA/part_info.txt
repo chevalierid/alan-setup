@@ -1,0 +1,9 @@
+Manufacturer=TDK
+PartNumber=CGA4C2C0G1H103J060AA
+PartCategory=Capacitor
+PackageCategory=Capacitor Chip Non-polarised
+PinCount=2
+Version=3.2
+Released=2023-03-07 10:46:41
+Downloaded=2024-02-02 12:55:46
+3D=Y

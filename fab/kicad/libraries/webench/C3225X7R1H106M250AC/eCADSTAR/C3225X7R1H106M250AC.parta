@@ -1,0 +1,68 @@
+(Japanese_coding: sjis)
+(function "ECS_523097"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2023-03-07-10:43:48)
+    (utime 2023-03-07-10:43:48)
+    (interface
+        (port "1" (symbPinId 1) (portType INOUT))
+        (port "2" (symbPinId 2) (portType INOUT))
+    )
+    (property "symbolName" "C3225X7R1H106M250AC")
+)
+
+
+(pinAssign "ECS_523097"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2023-03-07-10:43:48)
+    (utime 2023-03-07-10:43:48)
+    (interface
+        (port "1" (symbPinId 1) (portName "1") (portType INOUT))
+        (port "2" (symbPinId 2) (portName "2") (portType INOUT))
+    )
+    (internal
+        (funcInst (functionRef "ECS_523097")
+                (port "1" (match "1"))
+                (port "2" (match "2"))
+        )
+    )
+    (property "usePowerBox" "No")
+    (property "symbolName" "C3225X7R1H106M250AC")
+)
+
+
+(part "C3225X7R1H106M250AC"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2023-03-07-10:43:48)
+    (utime 2023-03-07-10:43:48)
+    (packageRef "C3225X7R1H106M250AC")
+    (pinAssignRef "ECS_523097")
+    (interface
+        (port "1" (symbPinId 1) (portName "1") (portType INOUT))
+        (port "2" (symbPinId 2) (portName "2") (portType INOUT))
+    )
+    (partClass UNDEF)
+    (useInSchema Y)
+    (useInLayout Y)
+    (inPartsList Y)
+    (partType NORMAL)
+    (placeRestriction FREE)
+    (property "enetNonSeries" "NO")
+    (property "refDesPrefix" "C")
+    (property "description" "TDK 1210 C 10uF Ceramic Multilayer Capacitor, 50 V dc, +125C, X7R Dielectric, +/-20%")
+    (property "Manufacturer_Name" "TDK")
+    (property "Manufacturer_Part_Number" "C3225X7R1H106M250AC")
+    (property "Mouser_Part_Number" "810-C3225X7R1H106MAC")
+    (property "Mouser_Price/Stock" "https://www.mouser.co.uk/ProductDetail/TDK/C3225X7R1H106M250AC?qs=6JAMGB%252BEdkwY95l8JqNSnw%3D%3D")
+    (property "Arrow_Part_Number" "C3225X7R1H106M250AC")
+    (property "Arrow_Price/Stock" "https://www.arrow.com/en/products/c3225x7r1h106m250ac/tdk?region=nac")
+    (property "Datasheet_Link" "https://product.tdk.com/info/en/catalog/datasheets/mlcc_commercial_midvoltage_en.pdf")
+    (property "compAreaTopHeight" 2.3)
+)
+
+

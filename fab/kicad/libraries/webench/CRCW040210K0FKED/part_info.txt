@@ -1,0 +1,9 @@
+Manufacturer=Vishay
+PartNumber=CRCW040210K0FKED
+PartCategory=Resistor
+PackageCategory=Resistor Chip
+PinCount=2
+Version=3.5
+Released=2023-03-07 08:59:38
+Downloaded=2024-02-05 09:32:38
+3D=Y

@@ -1,0 +1,18 @@
+.RC0603FR-0730KL :1 ;Yageo 30k, 0603 (1608M) Thick Film SMD Resistor +/-1% 0.1W - RC0603FR-0730KL
+RESC1608X55N
+*STM R
+*NGS
+*PLB 1="1" 2="2"
+*MXP 2
+*DFN RC0603FR-0730KL
+~!Manufacturer_Name (YAGEO)
+~!Manufacturer_Part_Number (RC0603FR-0730KL)
+~!Mouser Part Number (603-RC0603FR-0730KL)
+~!Link Mouser Price/Stock (https://www.mouser.co.uk/ProductDetail/YAGEO/RC0603FR-0730KL?qs=diQw95jMAeNFr44yr782FQ%3D%3D)
+~!Arrow Part Number (RC0603FR-0730KL)
+~!Link Arrow Price/Stock (https://www.arrow.com/en/products/rc0603fr-0730kl/yageo?region=nac)
+~!Link Datasheet (https://www.yageo.com/upload/media/product/app/datasheet/rchip/pyu-rc_group_51_rohs_l.pdf)
+~!Height (0.55mm)
+~!3D_Model (RC0603FR-0730KL)
+RC0603FR-0730KL
+1.1!U 2.1!U 
