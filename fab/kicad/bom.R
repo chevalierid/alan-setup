@@ -17,10 +17,42 @@ cbind(des2$Part.Number,des3$Part.Number)
 
 des3$Part.Number %in% des2$Part.Number
 
-des_5v <- read.csv("5VBOM.csv")
-des_5v
+des5v <- read.csv("5VBOM.csv")
+des5v
 
-cbind(des_5v$Part.Number[order(des_5v$Part.Number)])
+cbind(des5v$Part.Number[order(des5v$Part.Number)])
+
+des_1a <- read.csv("1ABOM2.csv")
+
+setdiff(des3$Part.Number,des_1a$Part.Number)
+setdiff(des_1a$Part.Number,des3$Part.Number)
+des3[!(des3$Part.Number %in% des_1a$Part.Number),]
+des_1a[!(des_1a$Part.Number %in% des3$Part.Number),]
+
+des_1a
 
 
 
+des5v2 <- read.csv("5VBOM2.csv")
+
+des5v2[!(des5v2$Part.Number %in% des_1a$Part.Number),]
+
+des5v2
+
+
+
+
+
+
+
+
+
+# R1:
+  # Part = "R1"
+  # Manufacturer = ""
+  # Part.Number = ""
+  # Quantity = ""
+  # Price = ""
+  # Footprint.mm.. = ""
+  # Description = "Resistance: 100 k"
+ds3231 <- data.frame()

@@ -1,0 +1,18 @@
+.CRCW12104K70JNEA :1 ;RESISTOR, 1210 4.7K Ohm +/-5% 0.5W
+RESC3225X60N
+*STM R
+*NGS
+*PLB 1="1" 2="2"
+*MXP 2
+*DFN CRCW12104K70JNEA
+~!Manufacturer_Name (Vishay)
+~!Manufacturer_Part_Number (CRCW12104K70JNEA)
+~!Mouser Part Number (71-CRCW1210J-4.7K-E3)
+~!Link Mouser Price/Stock (https://www.mouser.co.uk/ProductDetail/Vishay-Dale/CRCW12104K70JNEA?qs=%2FqQFlUriJiy4FdqFuj0GnQ%3D%3D)
+~!Arrow Part Number (CRCW12104K70JNEA)
+~!Link Arrow Price/Stock (https://www.arrow.com/en/products/crcw12104k70jnea/vishay)
+~!Link Datasheet (-)
+~!Height (0.6mm)
+~!3D_Model (CRCW12104K70JNEA)
+CRCW12104K70JNEA
+1.1!U 2.1!U 

@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP CRCW12104K70JNEA
+D RESISTOR, 1210 4.7K Ohm +/-5% 0.5W
+K
+F 
+$ENDCMP
+#
+#End Doc Library

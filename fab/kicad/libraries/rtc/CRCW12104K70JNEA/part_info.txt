@@ -1,0 +1,9 @@
+Manufacturer=Vishay
+PartNumber=CRCW12104K70JNEA
+PartCategory=Resistor
+PackageCategory=Resistor Chip
+PinCount=2
+Version=1.2
+Released=2023-03-07 09:46:17
+Downloaded=2024-02-07 09:34:16
+3D=Y

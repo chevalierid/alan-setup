@@ -1,0 +1,9 @@
+Manufacturer=Analog Devices
+PartNumber=DS3231SN#
+PartCategory=Integrated Circuit
+PackageCategory=Small Outline Packages
+PinCount=16
+Version=4.1
+Released=2016-01-11 03:49:15
+Downloaded=2024-02-06 15:24:25
+3D=Y

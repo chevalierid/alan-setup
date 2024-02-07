@@ -1,0 +1,11 @@
+FILE_TYPE = MULTI_PHYS_TABLE;
+
+PART 'CRCW12104K70JNEA'
+CLASS = DISCRETE
+{========================================================================================}
+:"MANUFACTURER_NAME", "MANUFACTURER_PART_NUMBER"= "PART_NUMBER", "JEDEC_TYPE", "PACK_TYPE", "MOUSER_PART_NUMBER", "MOUSER_PRICE/STOCK", "ARROW_PART_NUMBER", "ARROW_PRICE/STOCK", "DESCRIPTION", "DATASHEET", "HEIGHT";
+{========================================================================================}
+ "Vishay", "CRCW12104K70JNEA" (!) = "", "RESC3225X60N", "Resistor Chip", "71-CRCW1210J-4.7K-E3", "https://www.mouser.co.uk/ProductDetail/Vishay-Dale/CRCW12104K70JNEA?qs=%2FqQFlUriJiy4FdqFuj0GnQ%3D%3D", "CRCW12104K70JNEA", "https://www.arrow.com/en/products/crcw12104k70jnea/vishay", "RESISTOR, 1210 4.7K Ohm +/-5% 0.5W", "", "0.6 mm"
+END_PART
+
+END.

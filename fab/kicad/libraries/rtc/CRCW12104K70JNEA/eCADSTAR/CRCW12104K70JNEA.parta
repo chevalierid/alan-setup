@@ -1,0 +1,68 @@
+(Japanese_coding: sjis)
+(function "ECS_602808"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2023-03-07-09:46:17)
+    (utime 2023-03-07-09:46:17)
+    (interface
+        (port "1" (symbPinId 1) (portType INOUT))
+        (port "2" (symbPinId 2) (portType INOUT))
+    )
+    (property "symbolName" "CRCW12104K70JNEA")
+)
+
+
+(pinAssign "ECS_602808"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2023-03-07-09:46:17)
+    (utime 2023-03-07-09:46:17)
+    (interface
+        (port "1" (symbPinId 1) (portName "1") (portType INOUT))
+        (port "2" (symbPinId 2) (portName "2") (portType INOUT))
+    )
+    (internal
+        (funcInst (functionRef "ECS_602808")
+                (port "1" (match "1"))
+                (port "2" (match "2"))
+        )
+    )
+    (property "usePowerBox" "No")
+    (property "symbolName" "CRCW12104K70JNEA")
+)
+
+
+(part "CRCW12104K70JNEA"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2023-03-07-09:46:17)
+    (utime 2023-03-07-09:46:17)
+    (packageRef "CRCW12104K70JNEA")
+    (pinAssignRef "ECS_602808")
+    (interface
+        (port "1" (symbPinId 1) (portName "1") (portType INOUT))
+        (port "2" (symbPinId 2) (portName "2") (portType INOUT))
+    )
+    (partClass UNDEF)
+    (useInSchema Y)
+    (useInLayout Y)
+    (inPartsList Y)
+    (partType NORMAL)
+    (placeRestriction FREE)
+    (property "enetNonSeries" "NO")
+    (property "refDesPrefix" "R")
+    (property "description" "RESISTOR, 1210 4.7K Ohm +/-5% 0.5W")
+    (property "Manufacturer_Name" "Vishay")
+    (property "Manufacturer_Part_Number" "CRCW12104K70JNEA")
+    (property "Mouser_Part_Number" "71-CRCW1210J-4.7K-E3")
+    (property "Mouser_Price/Stock" "https://www.mouser.co.uk/ProductDetail/Vishay-Dale/CRCW12104K70JNEA?qs=%2FqQFlUriJiy4FdqFuj0GnQ%3D%3D")
+    (property "Arrow_Part_Number" "CRCW12104K70JNEA")
+    (property "Arrow_Price/Stock" "https://www.arrow.com/en/products/crcw12104k70jnea/vishay")
+    (property "Datasheet_Link" "")
+    (property "compAreaTopHeight" 0.6)
+)
+
+
