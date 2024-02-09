@@ -1,0 +1,96 @@
+;Proteus Design Interchange Format
+(PDIF
+ (vendor "SamacSys Limited")
+ (version 1 0)
+ (library
+  (part "ERJ-2RKF2400X"
+   (description "Thick Film Resistors - SMD 0402 240ohms 1% AEC-Q200")
+   (family "RES")
+   (package "ERJ2RKD1004X")
+   (attribute "Datasheet Link" "https://industrial.panasonic.com/cdbs/www-data/pdf/RDA0000/AOA0000C86.pdf")
+   (attribute "Geometry.Height" "0.4mm")
+   (attribute "Manufacturer_Name" "Panasonic")
+   (attribute "Manufacturer_Part_Number" "ERJ-2RKF2400X")
+   (attribute "Mouser Part Number" "667-ERJ-2RKF2400X")
+   (attribute "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Panasonic/ERJ-2RKF2400X?qs=YMBIwoNQYdU72k3QMprnfQ%3D%3D")
+   (attribute "Arrow Part Number" "ERJ-2RKF2400X")
+   (attribute "Arrow Price/Stock" "https://www.arrow.com/en/products/erj-2rkf2400x/panasonic?region=nac")
+   (gate
+    (symbol "ERJ-2RKF2400X")
+    (pin "1" 1 PS)
+    (pin "2" 2 PS)
+   )
+  )
+  (symbol "ERJ-2RKF2400X"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 200 50) (pt 500 50) (pt 500 -50) (pt 200 -50) (pt 200 50) (closed))
+   )
+   (terminal
+    (body (symbol "PIN") (pt 0 0) (rot 0) (mir 0) (visible true))
+    (name (pt 0 -10) (rot 0) (just TOP LEFT) (visible false))
+    (number (pt 0 10) (rot 0) (just BOTTOM LEFT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 700 0) (rot 0) (mir X) (visible true))
+    (name (pt 0 -10) (rot 0) (just TOP LEFT) (visible false))
+    (number (pt 0 10) (rot 0) (just BOTTOM LEFT) (visible true)))
+  )
+  (symbol "PIN"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 200 0))))
+  (symbol "PINSHORT"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 100 0))))
+  (package "ERJ2RKD1004X"
+   (units MM)
+   (layer OCCA
+    (graphic
+     (stroke 0.05)
+     (path
+      (closed true)
+      (pt -1.175 0.55)
+      (pt 1.175 0.55)
+      (pt 1.175 -0.55)
+      (pt -1.175 -0.55)
+      (pt -1.175 0.55))))
+   (layer TASM
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed true)
+      (pt -0.5 0.25)
+      (pt 0.5 0.25)
+      (pt 0.5 -0.25)
+      (pt -0.5 -0.25)
+      (pt -0.5 0.25))))
+   (layer TSLK
+    (graphic
+     (stroke 0.05)
+     (path
+      (closed true)
+      (pt -0.95 0.025)
+      (arc (pt -0.950 0.025) (pt -0.975 -0.025) (pt -0.925 0.025) (start 180.0) (sweep 90.0))
+      (pt -0.95 -0.025)
+      (arc (pt -0.950 -0.025) (pt -0.975 -0.025) (pt -0.925 0.025) (start 180.0) (sweep -90.0))
+      (pt -0.95 0.025))))
+   (leg 1 (pt -0.512 0.000) (padstack 0))
+   (leg 2 (pt 0.512 0.000) (padstack 0))
+   (padstack 0
+    (plated false)
+    (pad (layer TCOP) (rectf 0.475 0.500 0 0 90.000))
+   )
+   (model "ERJ-2RKF2400X.stp"
+    (euler 0 0 0)
+    (offset 0 0 0)
+   )
+  )
+ )
+)

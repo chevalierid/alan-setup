@@ -1,0 +1,72 @@
+(Japanese_coding: sjis)
+(function "ECS_554132"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2019-02-03-04:42:22)
+    (utime 2023-06-22-02:40:13)
+    (interface
+        (port "1" (symbPinId 1) (portType INOUT))
+        (port "2" (symbPinId 2) (portType INOUT))
+        (port "3" (symbPinId 3) (portType INOUT))
+    )
+    (property "symbolName" "IRLZ44N")
+)
+
+
+(pinAssign "ECS_554132"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2019-02-03-04:42:22)
+    (utime 2023-06-22-02:40:13)
+    (interface
+        (port "1" (symbPinId 1) (portName "G") (portType INOUT))
+        (port "2" (symbPinId 2) (portName "D") (portType INOUT))
+        (port "3" (symbPinId 3) (portName "S") (portType INOUT))
+    )
+    (internal
+        (funcInst (functionRef "ECS_554132")
+                (port "1" (match "1"))
+                (port "2" (match "2"))
+                (port "3" (match "3"))
+        )
+    )
+    (property "usePowerBox" "No")
+    (property "symbolName" "IRLZ44N")
+)
+
+
+(part "IRLZ44N"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2019-02-03-04:42:22)
+    (utime 2023-06-22-02:40:13)
+    (packageRef "IRLZ44N")
+    (pinAssignRef "ECS_554132")
+    (interface
+        (port "1" (symbPinId 1) (portName "G") (portType INOUT))
+        (port "2" (symbPinId 2) (portName "D") (portType INOUT))
+        (port "3" (symbPinId 3) (portName "S") (portType INOUT))
+    )
+    (partClass UNDEF)
+    (useInSchema Y)
+    (useInLayout Y)
+    (inPartsList Y)
+    (partType NORMAL)
+    (placeRestriction FREE)
+    (property "enetNonSeries" "YES")
+    (property "refDesPrefix" "Q")
+    (property "description" "MOSFET MOSFET, 55V, 41A, 22 mOhm, 32 nC Qg, Logic Level, TO-220AB")
+    (property "Manufacturer_Name" "Infineon")
+    (property "Manufacturer_Part_Number" "IRLZ44N")
+    (property "Mouser_Part_Number" "N/A")
+    (property "Mouser_Price/Stock" "https://www.mouser.co.uk/ProductDetail/Infineon-IR/IRLZ44N?qs=zO0nedAqnNIAphT7g5cSVQ%3D%3D")
+    (property "Arrow_Part_Number" "")
+    (property "Arrow_Price/Stock" "")
+    (property "Datasheet_Link" "https://www.mouser.com/catalog/specsheets/international rectifier_irlz44n.pdf")
+    (property "compAreaTopHeight" 4.69)
+)
+
+

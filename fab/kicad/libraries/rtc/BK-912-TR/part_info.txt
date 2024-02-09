@@ -1,0 +1,9 @@
+Manufacturer=Memory Protection Devices
+PartNumber=BK-912-TR
+PartCategory=Undefined or Miscellaneous
+PackageCategory=Other
+PinCount=3
+Version=1.2
+Released=2020-04-23 08:18:49
+Downloaded=2024-02-09 10:13:45
+3D=Y

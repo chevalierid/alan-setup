@@ -1,0 +1,68 @@
+(Japanese_coding: sjis)
+(function "ECS_921593"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2023-03-07-11:07:36)
+    (utime 2023-03-07-11:07:36)
+    (interface
+        (port "1" (symbPinId 1) (portType INOUT))
+        (port "2" (symbPinId 2) (portType INOUT))
+    )
+    (property "symbolName" "ERJ-2RKF2400X")
+)
+
+
+(pinAssign "ECS_921593"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2023-03-07-11:07:36)
+    (utime 2023-03-07-11:07:36)
+    (interface
+        (port "1" (symbPinId 1) (portName "1") (portType INOUT))
+        (port "2" (symbPinId 2) (portName "2") (portType INOUT))
+    )
+    (internal
+        (funcInst (functionRef "ECS_921593")
+                (port "1" (match "1"))
+                (port "2" (match "2"))
+        )
+    )
+    (property "usePowerBox" "No")
+    (property "symbolName" "ERJ-2RKF2400X")
+)
+
+
+(part "ERJ-2RKF2400X"
+    (uver 1)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (ctime 2023-03-07-11:07:36)
+    (utime 2023-03-07-11:07:36)
+    (packageRef "ERJ-2RKF2400X")
+    (pinAssignRef "ECS_921593")
+    (interface
+        (port "1" (symbPinId 1) (portName "1") (portType INOUT))
+        (port "2" (symbPinId 2) (portName "2") (portType INOUT))
+    )
+    (partClass UNDEF)
+    (useInSchema Y)
+    (useInLayout Y)
+    (inPartsList Y)
+    (partType NORMAL)
+    (placeRestriction FREE)
+    (property "enetNonSeries" "NO")
+    (property "refDesPrefix" "R")
+    (property "description" "Thick Film Resistors - SMD 0402 240ohms 1% AEC-Q200")
+    (property "Manufacturer_Name" "Panasonic")
+    (property "Manufacturer_Part_Number" "ERJ-2RKF2400X")
+    (property "Mouser_Part_Number" "667-ERJ-2RKF2400X")
+    (property "Mouser_Price/Stock" "https://www.mouser.co.uk/ProductDetail/Panasonic/ERJ-2RKF2400X?qs=YMBIwoNQYdU72k3QMprnfQ%3D%3D")
+    (property "Arrow_Part_Number" "ERJ-2RKF2400X")
+    (property "Arrow_Price/Stock" "https://www.arrow.com/en/products/erj-2rkf2400x/panasonic?region=nac")
+    (property "Datasheet_Link" "https://industrial.panasonic.com/cdbs/www-data/pdf/RDA0000/AOA0000C86.pdf")
+    (property "compAreaTopHeight" 0.4)
+)
+
+

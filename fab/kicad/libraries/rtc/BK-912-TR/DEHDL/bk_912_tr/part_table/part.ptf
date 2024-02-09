@@ -1,0 +1,11 @@
+FILE_TYPE = MULTI_PHYS_TABLE;
+
+PART 'BK_912_TR'
+CLASS = DISCRETE
+{========================================================================================}
+:"MANUFACTURER_NAME", "MANUFACTURER_PART_NUMBER"= "PART_NUMBER", "JEDEC_TYPE", "PACK_TYPE", "MOUSER_PART_NUMBER", "MOUSER_PRICE/STOCK", "ARROW_PART_NUMBER", "ARROW_PRICE/STOCK", "DESCRIPTION", "DATASHEET", "HEIGHT";
+{========================================================================================}
+ "Memory Protection Devices", "BK-912-TR" (!) = "", "BK912TR", "Other", "", "", "", "", "BATTERY RETAINER COIN 20MM SMD", "https://www.memoryprotectiondevices.com/datasheets/BK-912-datasheet.pdf", "4.32 mm"
+END_PART
+
+END.

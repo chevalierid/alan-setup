@@ -1,0 +1,188 @@
+;Proteus Design Interchange Format
+(PDIF
+ (vendor "SamacSys Limited")
+ (version 1 0)
+ (library
+  (part "BK-912-TR"
+   (description "BATTERY RETAINER COIN 20MM SMD")
+   (family "ANA")
+   (package "BK912TR")
+   (attribute "Datasheet Link" "https://www.memoryprotectiondevices.com/datasheets/BK-912-datasheet.pdf")
+   (attribute "Geometry.Height" "4.32mm")
+   (attribute "Manufacturer_Name" "Memory Protection Devices")
+   (attribute "Manufacturer_Part_Number" "BK-912-TR")
+   (attribute "Mouser Part Number" "")
+   (attribute "Mouser Price/Stock" "")
+   (attribute "Arrow Part Number" "")
+   (attribute "Arrow Price/Stock" "")
+   (gate
+    (symbol "BK-912-TR")
+    (pin "+_1" 1 PS)
+    (pin "+_2" 2 PS)
+    (pin "-" 3 PS)
+   )
+  )
+  (symbol "BK-912-TR"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 200 100) (pt 700 100) (pt 700 -300) (pt 200 -300) (pt 200 100) (closed))
+   )
+   (terminal
+    (body (symbol "PIN") (pt 0 0) (rot 0) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 0 -200) (rot 0) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PIN") (pt 0 -100) (rot 0) (mir 0) (visible true))
+    (name (pt 230 0) (rot 0) (just MIDDLE LEFT) (visible true))
+    (number (pt 140 20) (rot 0) (just BOTTOM RIGHT) (visible true)))
+  )
+  (symbol "PIN"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 200 0))))
+  (symbol "PINSHORT"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 100 0))))
+  (package "BK912TR"
+   (units MM)
+   (layer TASM
+    (graphic
+     (stroke 0.2)
+     (path
+      (closed true)
+      (pt -11.43 -7.62)
+      (pt 11.43 -7.62)
+      (pt 11.43 7.62)
+      (pt -11.43 7.62)
+      (pt -11.43 -7.62))))
+   (layer TSLK
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed true)
+      (pt -11.43 3.25)
+      (pt -11.43 3.25)
+      (pt -11.43 7.62)
+      (pt -11.43 7.62)
+      (pt -11.43 3.25))))
+   (layer TSLK
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed true)
+      (pt -11.43 7.62)
+      (pt -5.5 7.62)
+      (pt -5.5 7.62)
+      (pt -11.43 7.62)
+      (pt -11.43 7.62))))
+   (layer TSLK
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed true)
+      (pt 5.5 7.62)
+      (pt 11.43 7.62)
+      (pt 11.43 7.62)
+      (pt 5.5 7.62)
+      (pt 5.5 7.62))))
+   (layer TSLK
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed true)
+      (pt 11.43 7.62)
+      (pt 11.43 7.62)
+      (pt 11.43 3.25)
+      (pt 11.43 3.25)
+      (pt 11.43 7.62))))
+   (layer TSLK
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed true)
+      (pt 11.43 -3.25)
+      (pt 11.43 -3.25)
+      (pt 11.43 -7.62)
+      (pt 11.43 -7.62)
+      (pt 11.43 -3.25))))
+   (layer TSLK
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed true)
+      (pt 11.43 -7.62)
+      (pt 5.75 -7.62)
+      (pt 5.75 -7.62)
+      (pt 11.43 -7.62)
+      (pt 11.43 -7.62))))
+   (layer TSLK
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed true)
+      (pt -5.75 -7.62)
+      (pt -11.43 -7.62)
+      (pt -11.43 -7.62)
+      (pt -5.75 -7.62)
+      (pt -5.75 -7.62))))
+   (layer TSLK
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed true)
+      (pt -11.43 -7.62)
+      (pt -11.43 -7.62)
+      (pt -11.43 -3.5)
+      (pt -11.43 -3.5)
+      (pt -11.43 -7.62))))
+   (layer OCCA
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed true)
+      (pt -14.4 9.89)
+      (pt 13.38 9.89)
+      (pt 13.38 -9.89)
+      (pt -14.4 -9.89)
+      (pt -14.4 9.89))))
+   (layer TSLK
+    (graphic
+     (stroke 0.2)
+     (path
+      (closed false)
+      (pt -13.4 0.9)
+      (arc (pt -13.400 0.900) (pt -13.400 0.850) (pt -13.300 0.950) (start 180.0) (sweep 180.0))
+      (pt -13.3 0.9)
+      (arc (pt -13.300 0.900) (pt -13.400 0.850) (pt -13.300 0.950) (start 180.0) (sweep .0))
+      (pt -13.4 0.9)
+      (arc (pt -13.400 0.900) (pt -13.400 0.850) (pt -13.300 0.950) (start 180.0) (sweep 180.0))
+      (pt -13.3 0.9))))
+   (leg 1 (pt -10.985 0.000) (padstack 0))
+   (leg 2 (pt 10.985 0.000) (padstack 0))
+   (leg 3 (pt 0.000 0.000) (padstack 3))
+   (padstack 0
+    (plated false)
+    (pad (layer TCOP) (rectf 2.790 5.080 0 0 90.000))
+   )
+   (padstack 3
+    (plated false)
+    (pad (layer TCOP) (round 17.780))
+   )
+   (model "BK-912-TR.stp"
+    (euler 0 0 0)
+    (offset 0 0 0)
+   )
+  )
+ )
+)

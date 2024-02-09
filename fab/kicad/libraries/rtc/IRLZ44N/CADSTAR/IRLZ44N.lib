@@ -1,0 +1,18 @@
+.IRLZ44N :1 ;MOSFET MOSFET, 55V, 41A, 22 mOhm, 32 nC Qg, Logic Level, TO-220AB
+TO254P469X1042X1967-3P
+*STM Q
+*NGS
+*PLB 1="G" 2="D" 3="S"
+*MXP 3
+*DFN IRLZ44N
+~!Manufacturer_Name (Infineon)
+~!Manufacturer_Part_Number (IRLZ44N)
+~!Mouser Part Number (N/A)
+~!Link Mouser Price/Stock (https://www.mouser.co.uk/ProductDetail/Infineon-IR/IRLZ44N?qs=zO0nedAqnNIAphT7g5cSVQ%3D%3D)
+~!Arrow Part Number (-)
+~!Arrow Price/Stock (-)
+~!Link Datasheet (https://www.mouser.com/catalog/specsheets/international rectifier_irlz44n.pdf)
+~!Height (4.69mm)
+~!3D_Model (IRLZ44N)
+IRLZ44N
+1.1!U 2.1!U 3.1!U 

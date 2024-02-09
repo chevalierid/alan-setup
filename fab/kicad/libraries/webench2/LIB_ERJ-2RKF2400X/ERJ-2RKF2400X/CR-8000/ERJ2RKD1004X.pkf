@@ -1,0 +1,10 @@
+(unit MM)
+
+(package "ERJ2RKD1004X"
+    (type UNDEF)
+    (uver 2)
+    (mountForm default
+        (footprintRef "ERJ2RKD1004X")
+        (spec "default")
+    )
+)

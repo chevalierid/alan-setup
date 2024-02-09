@@ -1,0 +1,13 @@
+(unit MM)
+
+(package "BK-912-TR"
+    (type UNDEF)
+    (uver 2)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (utime 2022-03-25-11:44:24)
+    (mountForm default
+        (footprintRef "BK912TR")
+        (spec "System")
+    )
+)

@@ -1,0 +1,11 @@
+FILE_TYPE = MULTI_PHYS_TABLE;
+
+PART 'ERJ_2RKF2400X'
+CLASS = DISCRETE
+{========================================================================================}
+:"MANUFACTURER_NAME", "MANUFACTURER_PART_NUMBER"= "PART_NUMBER", "JEDEC_TYPE", "PACK_TYPE", "MOUSER_PART_NUMBER", "MOUSER_PRICE/STOCK", "ARROW_PART_NUMBER", "ARROW_PRICE/STOCK", "DESCRIPTION", "DATASHEET", "HEIGHT";
+{========================================================================================}
+ "Panasonic", "ERJ-2RKF2400X" (!) = "", "ERJ2RKD1004X", "Other", "667-ERJ-2RKF2400X", "https://www.mouser.co.uk/ProductDetail/Panasonic/ERJ-2RKF2400X?qs=YMBIwoNQYdU72k3QMprnfQ%3D%3D", "ERJ-2RKF2400X", "https://www.arrow.com/en/products/erj-2rkf2400x/panasonic?region=nac", "Thick Film Resistors - SMD 0402 240ohms 1% AEC-Q200", "https://industrial.panasonic.com/cdbs/www-data/pdf/RDA0000/AOA0000C86.pdf", "0.4 mm"
+END_PART
+
+END.

@@ -1,0 +1,9 @@
+Manufacturer=Panasonic
+PartNumber=ERJ-2RKF2400X
+PartCategory=Resistor
+PackageCategory=Other
+PinCount=2
+Version=3.5
+Released=2023-03-07 11:07:36
+Downloaded=2024-02-09 13:18:39
+3D=Y

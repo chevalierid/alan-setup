@@ -1,0 +1,9 @@
+Manufacturer=Infineon
+PartNumber=IRLZ44N
+PartCategory=MOSFET (N-Channel)
+PackageCategory=Transistor Outline, Vertical
+PinCount=3
+Version=2.1
+Released=2019-02-03 04:42:22
+Downloaded=2024-02-09 10:11:26
+3D=Y

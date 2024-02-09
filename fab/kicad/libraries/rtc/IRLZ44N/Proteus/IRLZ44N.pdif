@@ -1,0 +1,158 @@
+;Proteus Design Interchange Format
+(PDIF
+ (vendor "SamacSys Limited")
+ (version 1 0)
+ (library
+  (part "IRLZ44N"
+   (description "MOSFET MOSFET, 55V, 41A, 22 mOhm, 32 nC Qg, Logic Level, TO-220AB")
+   (family "TRX")
+   (package "TO254P469X1042X1967-3P")
+   (attribute "Datasheet Link" "https://www.mouser.com/catalog/specsheets/international rectifier_irlz44n.pdf")
+   (attribute "Geometry.Height" "4.69mm")
+   (attribute "Manufacturer_Name" "Infineon")
+   (attribute "Manufacturer_Part_Number" "IRLZ44N")
+   (attribute "Mouser Part Number" "N/A")
+   (attribute "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Infineon-IR/IRLZ44N?qs=zO0nedAqnNIAphT7g5cSVQ%3D%3D")
+   (attribute "Arrow Part Number" "")
+   (attribute "Arrow Price/Stock" "")
+   (gate
+    (symbol "IRLZ44N")
+    (pin "G" 1 PS)
+    (pin "D" 2 PS)
+    (pin "S" 3 PS)
+   )
+  )
+  (symbol "IRLZ44N"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (circle (pt 400 100) (pt 100 100))
+   )
+   (graphic
+    (stroke 10)
+    (path (pt 300 100) (pt 300 -100))
+   )
+   (graphic
+    (stroke 10)
+    (path (pt 300 200) (pt 300 300))
+   )
+   (graphic
+    (stroke 10)
+    (path (pt 100 0) (pt 200 0) (pt 200 200))
+   )
+   (graphic
+    (stroke 10)
+    (path (pt 300 100) (pt 230 100))
+   )
+   (graphic
+    (stroke 10)
+    (path (pt 300 200) (pt 230 200))
+   )
+   (graphic
+    (stroke 10)
+    (path (pt 230 0) (pt 300 0))
+   )
+   (graphic
+    (stroke 10)
+    (path (pt 230 220) (pt 230 180))
+   )
+   (graphic
+    (stroke 10)
+    (path (pt 230 -20) (pt 230 20))
+   )
+   (graphic
+    (stroke 10)
+    (path (pt 230 80) (pt 230 120))
+   )
+   (graphic
+    (stroke 10)
+    (path (closed true) (pt 230 100) (pt 270 120) (pt 270 80) (pt 230 100))
+   )
+   (terminal
+    (body (symbol "PINSHORT") (pt 0 0) (rot 0) (mir 0) (visible true))
+    (name (pt 0 -20) (rot 0) (just TOP LEFT) (visible false))
+    (number (pt 80 10) (rot 0) (just BOTTOM RIGHT) (visible true)))
+   (terminal
+    (body (symbol "PINSHORT") (pt 300 400) (rot 90) (mir X) (visible true))
+    (name (pt 0 -20) (rot 90) (just TOP RIGHT) (visible false))
+    (number (pt 0 20) (rot 90) (just TOP LEFT) (visible true)))
+   (terminal
+    (body (symbol "PINSHORT") (pt 300 -200) (rot 90) (mir 0) (visible true))
+    (name (pt 0 -20) (rot 90) (just TOP RIGHT) (visible false))
+    (number (pt 0 20) (rot 90) (just TOP LEFT) (visible true)))
+  )
+  (symbol "PIN"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 200 0))))
+  (symbol "PINSHORT"
+   (units THOU)
+   (origin (pt 0 0))
+   (graphic
+    (stroke 10)
+    (path (pt 0 0) (pt 100 0))))
+  (package "TO254P469X1042X1967-3P"
+   (units MM)
+   (layer OCCA
+    (graphic
+     (stroke 0.05)
+     (path
+      (closed true)
+      (pt -2.98 3.4)
+      (pt 8.06 3.4)
+      (pt 8.06 -1.79)
+      (pt -2.98 -1.79)
+      (pt -2.98 3.4))))
+   (layer TASM
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed true)
+      (pt -2.73 3.15)
+      (pt 7.81 3.15)
+      (pt 7.81 -1.54)
+      (pt -2.73 -1.54)
+      (pt -2.73 3.15))))
+   (layer TASM
+    (graphic
+     (stroke 0.1)
+     (path
+      (closed false)
+      (pt -2.73 1.88)
+      (pt -1.46 3.15))))
+   (layer TSLK
+    (graphic
+     (stroke 0.2)
+     (path
+      (closed false)
+      (pt 7.81 -1.54)
+      (pt 7.81 3.15)
+      (pt -2.73 3.15)
+      (pt -2.73 0))))
+   (leg 1 (pt 0 0) (padstack 1))
+   (leg 2 (pt 2.54 0) (padstack 0))
+   (leg 3 (pt 5.08 0) (padstack 0))
+   (padstack 0
+    (hole 1.28)
+    (plated true)
+    (pad (layer TCOP) (round 1.92))
+    (pad (layer INNER) (round 1.92))
+    (pad (layer BCOP) (round 1.92))
+   )
+   (padstack 1
+    (hole 1.28)
+    (plated true)
+    (pad (layer TCOP) (square 1.92))
+    (pad (layer INNER) (round 1.92))
+    (pad (layer BCOP) (square 1.92))
+   )
+   (model "IRLZ44N.stp"
+    (euler 0 0 0)
+    (offset 0 0 0)
+   )
+  )
+ )
+)

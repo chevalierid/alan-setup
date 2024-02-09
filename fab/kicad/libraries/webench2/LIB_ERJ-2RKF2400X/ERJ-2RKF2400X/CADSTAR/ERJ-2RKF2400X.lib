@@ -1,0 +1,18 @@
+.ERJ-2RKF2400X :1 ;Thick Film Resistors - SMD 0402 240ohms 1% AEC-Q200
+ERJ2RKD1004X
+*STM R
+*NGS
+*PLB 1="1" 2="2"
+*MXP 2
+*DFN ERJ-2RKF2400X
+~!Manufacturer_Name (Panasonic)
+~!Manufacturer_Part_Number (ERJ-2RKF2400X)
+~!Mouser Part Number (667-ERJ-2RKF2400X)
+~!Link Mouser Price/Stock (https://www.mouser.co.uk/ProductDetail/Panasonic/ERJ-2RKF2400X?qs=YMBIwoNQYdU72k3QMprnfQ%3D%3D)
+~!Arrow Part Number (ERJ-2RKF2400X)
+~!Link Arrow Price/Stock (https://www.arrow.com/en/products/erj-2rkf2400x/panasonic?region=nac)
+~!Link Datasheet (https://industrial.panasonic.com/cdbs/www-data/pdf/RDA0000/AOA0000C86.pdf)
+~!Height (0.4mm)
+~!3D_Model (ERJ-2RKF2400X)
+ERJ-2RKF2400X
+1.1!U 2.1!U 

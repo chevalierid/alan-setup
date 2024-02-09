@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP IRLZ44N
+D MOSFET MOSFET, 55V, 41A, 22 mOhm, 32 nC Qg, Logic Level, TO-220AB
+K
+F https://www.mouser.com/catalog/specsheets/international rectifier_irlz44n.pdf
+$ENDCMP
+#
+#End Doc Library

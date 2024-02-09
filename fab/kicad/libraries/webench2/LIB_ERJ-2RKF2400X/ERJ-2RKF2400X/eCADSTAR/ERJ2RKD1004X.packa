@@ -1,0 +1,13 @@
+(unit MM)
+
+(package "ERJ-2RKF2400X"
+    (type UNDEF)
+    (uver 2)
+    (cuser "SamacSys")
+    (uuser "SamacSys")
+    (utime 2021-05-11-12:26:09)
+    (mountForm default
+        (footprintRef "ERJ2RKD1004X")
+        (spec "System")
+    )
+)

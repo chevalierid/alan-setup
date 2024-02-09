@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP ERJ-2RKF2400X
+D Thick Film Resistors - SMD 0402 240ohms 1% AEC-Q200
+K
+F https://industrial.panasonic.com/cdbs/www-data/pdf/RDA0000/AOA0000C86.pdf
+$ENDCMP
+#
+#End Doc Library

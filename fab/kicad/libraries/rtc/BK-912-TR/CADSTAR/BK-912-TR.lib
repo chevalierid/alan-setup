@@ -1,0 +1,18 @@
+.BK-912-TR :1 ;BATTERY RETAINER COIN 20MM SMD
+BK912TR
+*STM U
+*NGS
+*PLB 1="+_1" 2="+_2" 3="-"
+*MXP 3
+*DFN BK-912-TR
+~!Manufacturer_Name (Memory Protection Devices)
+~!Manufacturer_Part_Number (BK-912-TR)
+~!Mouser Part Number (-)
+~!Mouser Price/Stock (-)
+~!Arrow Part Number (-)
+~!Arrow Price/Stock (-)
+~!Link Datasheet (https://www.memoryprotectiondevices.com/datasheets/BK-912-datasheet.pdf)
+~!Height (4.32mm)
+~!3D_Model (BK-912-TR)
+BK-912-TR
+1.1!U 2.1!U 3.1!U 
