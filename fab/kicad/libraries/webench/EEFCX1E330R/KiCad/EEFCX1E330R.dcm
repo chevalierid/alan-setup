@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP EEFCX1E330R
+D Conductive Polymer Aluminum Electrolytic Capacitors
+K
+F http://industrial.panasonic.com/cdbs/www-data/pdf/ABE0000/ABE0000C49.pdf
+$ENDCMP
+#
+#End Doc Library

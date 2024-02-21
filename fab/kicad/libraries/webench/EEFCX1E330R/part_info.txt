@@ -1,0 +1,9 @@
+Manufacturer=Panasonic
+PartNumber=EEFCX1E330R
+PartCategory=Capacitor Polarised
+PackageCategory=Capacitor Moulded Polarised
+PinCount=2
+Version=1.1
+Released=2015-12-28 02:38:03
+Downloaded=2024-02-21 15:15:37
+3D=Y

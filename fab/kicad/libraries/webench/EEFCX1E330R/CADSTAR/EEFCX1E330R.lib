@@ -1,0 +1,18 @@
+.EEFCX1E330R :1 ;Conductive Polymer Aluminum Electrolytic Capacitors
+CAPPM7343X200N
+*STM C
+*NGS
+*PLB 1="A" 2="K"
+*MXP 2
+*DFN EEFCX1E330R
+~!Manufacturer_Name (Panasonic)
+~!Manufacturer_Part_Number (EEFCX1E330R)
+~!Mouser Part Number (-)
+~!Mouser Price/Stock (-)
+~!Arrow Part Number (-)
+~!Arrow Price/Stock (-)
+~!Link Datasheet (http://industrial.panasonic.com/cdbs/www-data/pdf/ABE0000/ABE0000C49.pdf)
+~!Height (2mm)
+~!3D_Model (EEFCX1E330R)
+EEFCX1E330R
+1.1!U 2.1!U 
