@@ -1,0 +1,11 @@
+FILE_TYPE = MULTI_PHYS_TABLE;
+
+PART 'MSS1210_103MEB'
+CLASS = DISCRETE
+{========================================================================================}
+:"MANUFACTURER_NAME", "MANUFACTURER_PART_NUMBER"= "PART_NUMBER", "JEDEC_TYPE", "PACK_TYPE", "MOUSER_PART_NUMBER", "MOUSER_PRICE/STOCK", "ARROW_PART_NUMBER", "ARROW_PRICE/STOCK", "DESCRIPTION", "DATASHEET", "HEIGHT";
+{========================================================================================}
+ "COILCRAFT", "MSS1210-103MEB" (!) = "", "INDPM120120X1020N", "Inductors Precision Moulded", "994-MSS1210-103MEB", "https://www.mouser.co.uk/ProductDetail/Coilcraft/MSS1210-103MEB?qs=VJjuEbE9QBNwjoERzwkOMg%3D%3D", "", "", "Fixed Inductors MSS1210 AEC-Q200 10 uH 20 % 10 A", "https://g.componentsearchengine.com/Datasheets/34/MSS1210-103MEB.pdf", "10.2 mm"
+END_PART
+
+END.

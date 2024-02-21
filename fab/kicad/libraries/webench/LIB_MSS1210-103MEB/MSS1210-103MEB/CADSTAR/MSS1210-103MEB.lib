@@ -1,0 +1,18 @@
+.MSS1210-103MEB :1 ;Fixed Inductors MSS1210 AEC-Q200 10 uH 20 % 10 A
+INDPM120120X1020N
+*STM L
+*NGS
+*PLB 1="1" 2="2"
+*MXP 2
+*DFN MSS1210-103MEB
+~!Manufacturer_Name (COILCRAFT)
+~!Manufacturer_Part_Number (MSS1210-103MEB)
+~!Mouser Part Number (994-MSS1210-103MEB)
+~!Link Mouser Price/Stock (https://www.mouser.co.uk/ProductDetail/Coilcraft/MSS1210-103MEB?qs=VJjuEbE9QBNwjoERzwkOMg%3D%3D)
+~!Arrow Part Number (-)
+~!Arrow Price/Stock (-)
+~!Link Datasheet (https://g.componentsearchengine.com/Datasheets/34/MSS1210-103MEB.pdf)
+~!Height (10.2mm)
+~!3D_Model (MSS1210-103MEB)
+MSS1210-103MEB
+1.1!U 2.1!U 

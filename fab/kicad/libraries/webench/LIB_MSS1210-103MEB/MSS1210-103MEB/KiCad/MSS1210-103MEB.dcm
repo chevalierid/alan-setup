@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP MSS1210-103MEB
+D Fixed Inductors MSS1210 AEC-Q200 10 uH 20 % 10 A
+K
+F https://g.componentsearchengine.com/Datasheets/34/MSS1210-103MEB.pdf
+$ENDCMP
+#
+#End Doc Library

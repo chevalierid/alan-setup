@@ -1,4 +1,33 @@
 setwd("~/Documents/alan-setup/fab/kicad")
+bom <- read.csv("controller_pcb.csv",skip=8)
+head(bom)
+bom
+bom$Value
+bom$Value_1
+
+cbind(bom$Reference.s.,bom$Value)
+# add a row for all entries with commas in Reference.s
+
+bom15 <- read.csv("15VBOM.csv")
+cbind(bom15$Part,bom15$Part.Number)
+
+bom5 <- read.csv("5VBOM.csv")
+cbind(bom5$Part,bom5$Part.Number)
+# append "-2
+
+
+
+
+
+
+
+
+
+
+
+
+
+setwd("~/Documents/alan-setup/fab/kicad")
 
 des1 <- read.csv("WBBOMDesign2.csv")
 des2 <- read.csv("WBBOMDesignTPS55289RYQR.csv")
