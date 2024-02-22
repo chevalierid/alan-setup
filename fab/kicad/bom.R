@@ -1,3 +1,5 @@
+library(splitstackshape)
+library(tidyverse)
 setwd("~/Documents/alan-setup/fab/kicad")
 bom <- read.csv("controller_pcb.csv",skip=8)
 head(bom)
@@ -5,15 +7,24 @@ bom
 bom$Value
 bom$Value_1
 
+
 cbind(bom$Reference.s.,bom$Value)
-# add a row for all entries with commas in Reference.s
+# for all entries with commas in Reference.s.
+# add a row
+bom
+
+bom <- separate_rows(bom, Reference.s.)
+
 
 bom15 <- read.csv("15VBOM.csv")
 cbind(bom15$Part,bom15$Part.Number)
 
 bom5 <- read.csv("5VBOM.csv")
 cbind(bom5$Part,bom5$Part.Number)
-# append "-2
+bom5$Part <- paste(bom5$Part,"-2",sep="")
+bom5$Part <- str_to_upper(bom5$Part)
+bom[,bom5$Part]
+
 
 
 

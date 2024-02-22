@@ -1,0 +1,18 @@
+.74439346100 :1 ;SMD Power Inductor 6060 10uH R0265
+"74439346100"
+*STM L
+*NGS
+*PLB 1="1" 2="2"
+*MXP 2
+*DFN 74439346100
+~!Manufacturer_Name (Wurth Elektronik)
+~!Manufacturer_Part_Number (74439346100)
+~!Mouser Part Number (710-74439346100)
+~!Link Mouser Price/Stock (https://www.mouser.co.uk/ProductDetail/Wurth-Elektronik/74439346100?qs=NSAOzM2zc%2FVyLWPfcgBqKw%3D%3D)
+~!Arrow Part Number (-)
+~!Arrow Price/Stock (-)
+~!Link Datasheet (https://www.we-online.de/katalog/datasheet/74439346100.pdf)
+~!Height (6.1mm)
+~!3D_Model (74439346100)
+"74439346100"
+1.1!U 2.1!U 

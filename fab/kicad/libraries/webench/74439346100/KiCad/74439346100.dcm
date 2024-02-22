@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP 74439346100
+D SMD Power Inductor 6060 10uH R0265
+K
+F https://www.we-online.de/katalog/datasheet/74439346100.pdf
+$ENDCMP
+#
+#End Doc Library
