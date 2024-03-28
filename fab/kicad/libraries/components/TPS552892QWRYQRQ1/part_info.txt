@@ -1,0 +1,9 @@
+Manufacturer=Texas Instruments
+PartNumber=TPS552892QWRYQRQ1
+PartCategory=Integrated Circuit
+PackageCategory=Other
+PinCount=23
+Version=1.4
+Released=2023-09-27 10:38:10
+Downloaded=2024-02-28 10:07:41
+3D=Y

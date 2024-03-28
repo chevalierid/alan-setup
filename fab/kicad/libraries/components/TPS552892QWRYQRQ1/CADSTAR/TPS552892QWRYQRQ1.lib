@@ -1,0 +1,18 @@
+.TPS552892QWRYQRQ1 :1 ;Switching Voltage Regulators Automotive 36-V, 8-A fully integrated buck-boost converter 21-VQFN-HR -40 to 125
+TPS552892QWRYQRQ1
+*STM IC
+*NGS
+*PLB 1="EN/UVLO" 2="MODE" 3="PG" 4="'CC'" 5="DITH/SYNC" 6="FSW" 7="VIN" 8="SW1" 9="PGND_1" 10="SW2" 11="VOUT" 12="ISP" 13="ISN" 14="FB" 15="COMP" 16="CDC" 17="AGND" 18="VCC" 19="BOOT2" 20="BOOT1" 21="EXTVCC" 22="PGND_2" 23="PGND_3"
+*MXP 23
+*DFN TPS552892QWRYQRQ1
+~!Manufacturer_Name (Texas Instruments)
+~!Manufacturer_Part_Number (TPS552892QWRYQRQ1)
+~!Mouser Part Number (595-PS552892QWRYQRQ1)
+~!Link Mouser Price/Stock (https://www.mouser.co.uk/ProductDetail/Texas-Instruments/TPS552892QWRYQRQ1?qs=ulEaXIWI0c%2Fb5I1dUhUhNg%3D%3D)
+~!Arrow Part Number (-)
+~!Arrow Price/Stock (-)
+~!Link Datasheet (https://www.ti.com/general/docs/suppproductinfo.tsp?distId=26&gotoUrl=https://www.ti.com/lit/gpn/tps552892-q1)
+~!Height (1mm)
+~!3D_Model (TPS552892QWRYQRQ1)
+TPS552892QWRYQRQ1
+1.1!U 2.1!U 3.1!U 4.1!U 5.1!U 6.1!U 7.1!U 8.1!U 9.1!U 10.1!U 11.1!U 12.1!U 13.1!U 14.1!U 15.1!U 16.1!U 17.1!U 18.1!U 19.1!U 20.1!U 21.1!U 22.1!U 23.1!U 

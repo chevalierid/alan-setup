@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP TPS552892QWRYQRQ1
+D Switching Voltage Regulators Automotive 36-V, 8-A fully integrated buck-boost converter 21-VQFN-HR -40 to 125
+K
+F https://www.ti.com/general/docs/suppproductinfo.tsp?distId=26&gotoUrl=https://www.ti.com/lit/gpn/tps552892-q1
+$ENDCMP
+#
+#End Doc Library
