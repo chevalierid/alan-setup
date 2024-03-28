@@ -1,0 +1,59 @@
+### Module positions - created on Fri 01 Mar 2024 05:35:15 PM ###
+### Printed by Pcbnew version 6.0.2+dfsg-1
+## Unit = mm, Angle = deg.
+## Side : All
+# Ref     Val                   Package                                                            PosX       PosY       Rot  Side
+C1        EEFCX1E330R           CAPPM7343X200N                                                  31.1912    43.5102    0.0000  top
+C2        25SVPF27MX            16SVF82M                                                        20.9296    34.3408  180.0000  top
+C3        EEFCX1E330R           CAPPM7343X200N                                                   4.2914    26.2174   90.0000  top
+C4        10SVPC68MV            16SVF82M                                                        13.6906    12.9286    0.0000  top
+C5        C3225X7R1H106M250AC   CAPC3225X230N                                                   30.6926    19.6088    0.0000  top
+C6        C2012X5R1V156M125AC   CAPC2012X145N                                                   25.0946    28.2366    0.0000  top
+C7        C0805C106K8PACTU      C0805                                                            3.4036    12.8778  -90.0000  top
+C8        C3225X7R1H106M250AC   CAPC3225X230N                                                    4.8780    18.4448    0.0000  top
+C9        C1005X5R1V105K050BC   CAPC1005X55N                                                    30.4666    22.9026    0.0000  top
+C10       C1005X5R1V105K050BC   CAPC1005X55N                                                    24.8786    30.0146    0.0000  top
+C11       C0603C105Z8VACTU      C0603                                                            6.5532    12.8778  -90.0000  top
+C12       C1005X5R1V105K050BC   CAPC1005X55N                                                     7.8232    16.7894   90.0000  top
+C13       GRM155R70J104KA01D    CAPC1005X55N                                                    25.6406    26.7126    0.0000  top
+C14       GRM155R70J473KA01D    CAPC1005X55N                                                    16.7144    20.6714   90.0000  top
+C15       C1608X6S1C475K080AC   CAPC1608X80N                                                    35.7886    26.9666  -90.0000  top
+C16       EMK107B7104KA-T       CAPC1608X95N                                                    11.0448    25.0236    0.0000  top
+C17       EMK107B7104KA-T       CAPC1608X95N                                                    33.0786    22.8010  180.0000  top
+C18       EMK107B7104KA-T       CAPC1608X95N                                                    18.9938    25.9334   90.0000  top
+C19       C1608X6S1C475K080AC   CAPC1608X80N                                                    35.3688    23.2156  -90.0000  top
+C20       C1608X6S1C475K080AC   CAPC1608X80N                                                    16.8668    22.8900   90.0000  top
+C21       EMK107B7104KA-T       CAPC1608X95N                                                    27.9266    22.9026    0.0000  top
+C22       GRM155R70J104KA01D    CAPC1005X55N                                                    43.5610    37.3292   90.0000  top
+C23       GRM155R70J104KA01D    CAPC1005X55N                                                    56.7436    37.2618   90.0000  top
+J1        Screw_Terminal_01x04  TerminalBlock_Phoenix_MPT-0,5-4-2.54_1x04_P2.54mm_Horizontal    81.6152     4.8514  180.0000  top
+J2        Screw_Terminal_01x03  TerminalBlock_Phoenix_MPT-0,5-3-2.54_1x03_P2.54mm_Horizontal    69.0118     4.8514  180.0000  top
+J3        Screw_Terminal_01x03  TerminalBlock_Phoenix_MPT-0,5-3-2.54_1x03_P2.54mm_Horizontal    44.9580    53.1368  -90.0000  top
+J4        Screw_Terminal_01x03  TerminalBlock_Phoenix_MPT-0,5-3-2.54_1x03_P2.54mm_Horizontal    53.1876    48.0314   90.0000  top
+J5        Screw_Terminal_01x06  TerminalBlock_Phoenix_MPT-0,5-6-2.54_1x06_P2.54mm_Horizontal    30.0990    66.9290  180.0000  top
+J6        Screw_Terminal_01x06  TerminalBlock_Phoenix_MPT-0,5-6-2.54_1x06_P2.54mm_Horizontal    49.3014    66.8782  180.0000  top
+J7        Screw_Terminal_01x02  TerminalBlock_Phoenix_MPT-0,5-2-2.54_1x02_P2.54mm_Horizontal    24.8920     4.8768  180.0000  top
+J8        1935161               TerminalBlock_Phoenix_PT-1,5-2-5.0-H_1x02_P5.00mm_Horizontal     7.0866    52.5018  -90.0000  top
+J9        Screw_Terminal_01x02  TerminalBlock_Phoenix_MPT-0,5-2-2.54_1x02_P2.54mm_Horizontal    58.6486     4.9022  180.0000  top
+J10       1935161               TerminalBlock_Phoenix_PT-1,5-2-5.0-H_1x02_P5.00mm_Horizontal     7.3326    39.5078  -90.0000  top
+J11       Screw_Terminal_01x06  TerminalBlock_Phoenix_MPT-0,5-6-2.54_1x06_P2.54mm_Horizontal    56.5658    66.8331    0.0000  top
+L1        SDR0403-4R7ML         SDR0403                                                         15.3108    27.3558   90.0000  top
+L2        74439346100           74439346100                                                     31.1658    36.2204  -90.0000  top
+Q1        IRLZ44N               TO254P469X1042X1967-3P                                          42.9006    17.1958   90.0000  top
+R1        ERJ-2RKF2400X         ERJ2RKD1004X                                                    45.4406    16.6878  -90.0000  top
+R2        CRCW040210K0FKED      RESC1005X40N                                                    38.0746    27.7368    0.0000  top
+R3        CRCW0402301RFKED      RESC1005X40N                                                    24.6246    25.4426    0.0000  top
+R4        CRCW040213K0FKED      RESC1005X40N                                                    18.0098    20.4770  -90.0000  top
+R5        CRCW040248K7FKED      RESC1005X40N                                                    35.5466    28.9986  180.0000  top
+R6        CRCW0402301KFKED      RESC1005X40N                                                     8.8912    27.1064   90.0000  top
+R7        CRCW0402100KFKED      RESC1005X40N                                                     7.7216    23.2664  -90.0000  top
+R8        CRCW040248K7FKED      RESC1005X40N                                                     9.5758    18.1356    0.0000  top
+R9        CRCW0402301KFKED      RESC1005X40N                                                    34.2646    18.8468  180.0000  top
+R10       CRCW0402100KFKED      RESC1005X40N                                                    36.8166    24.1726   90.0000  top
+R11       CRCW12104K70JNEA      RESC3225X60N                                                    58.8772    40.8432   90.0000  top
+R12       CRCW12104K70JNEA      RESC3225X60N                                                    53.2384    43.2562  180.0000  top
+U1        TPS55289RYQR          TPS552892QWRYQRQ1                                               30.4546    26.3906  180.0000  top
+U2        TPS55289RYQR          TPS552892QWRYQRQ1                                               12.3698    21.4630    0.0000  top
+U3        DS3231SN              SOIC127P1032X265-16N                                            50.1142    36.0426    0.0000  top
+U4        BK-912-TR             BK912TR                                                         82.2706    42.4942   90.0000  top
+## End

@@ -1,0 +1,2906 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export version="E">
+  <design>
+    <source>/home/dchevalier/Documents/alan-setup/fab/kicad/controller_pcb/controller_pcb.kicad_sch</source>
+    <date>Mon 19 Feb 2024 02:30:48 PM</date>
+    <tool>Eeschema 6.0.2+dfsg-1</tool>
+    <sheet number="1" name="/" tstamps="/">
+      <title_block>
+        <title>controller_pcb</title>
+        <company/>
+        <rev>v01</rev>
+        <date>2024-01-23</date>
+        <source>controller_pcb.kicad_sch</source>
+        <comment number="1" value=""/>
+        <comment number="2" value=""/>
+        <comment number="3" value="creativecommons.org/licenses/by/4.0/"/>
+        <comment number="4" value="License: CC BY 4.0"/>
+        <comment number="5" value="Author: Daphne Chevalier"/>
+        <comment number="6" value=""/>
+        <comment number="7" value=""/>
+        <comment number="8" value=""/>
+        <comment number="9" value=""/>
+      </title_block>
+    </sheet>
+  </design>
+  <components>
+    <comp ref="A1">
+      <value>Arduino_Mega2560_R3_Shield</value>
+      <footprint>PCM_arduino-library:Arduino_Mega2560_R3_Shield</footprint>
+      <datasheet>https://docs.arduino.cc/hardware/mega-2560</datasheet>
+      <libsource lib="arduino-library" part="Arduino_Mega2560_R3_Shield" description="Shield for Arduino Mega 2560 R3"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>e657bf50-2891-419a-9bb9-9686760c3791</tstamps>
+    </comp>
+    <comp ref="CBAT1">
+      <value>GRM155R70J104KA01D</value>
+      <fields>
+        <field name="Arrow Part Number">GRM155R70J104KA01D</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/grm155r70j104ka01d/murata-manufacturing?region=nac</field>
+        <field name="Datasheet_1">http://www.murata.com/~/media/webrenewal/support/library/catalog/products/capacitor/mlcc/c02e.pdf</field>
+        <field name="Footprint_1">CAPC1005X55N</field>
+        <field name="Height">0.55</field>
+        <field name="Manufacturer_Name">Murata Electronics</field>
+        <field name="Manufacturer_Part_Number">GRM155R70J104KA01D</field>
+        <field name="Mouser Part Number">81-GRM155R70J104KA1D</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Murata-Electronics/GRM155R70J104KA01D?qs=y02iAgv9n61EgJSmMyZ7gQ%3D%3D</field>
+        <field name="Reference_1">C</field>
+        <field name="Value_1">GRM155R70J104KA01D</field>
+      </fields>
+      <libsource lib="GRM155R70J104KA01D" part="GRM155R70J104KA01D" description="Capacitor MLCC GRM 0402 100nF 6.3V X7R Murata 0402 GRM 100nF Ceramic Multilayer Capacitor, 6.3 V dc, +125degC, X7R Dielectric,  /-10% SMD"/>
+      <property name="Reference_1" value="C"/>
+      <property name="Value_1" value="GRM155R70J104KA01D"/>
+      <property name="Footprint_1" value="CAPC1005X55N"/>
+      <property name="Datasheet_1" value="http://www.murata.com/~/media/webrenewal/support/library/catalog/products/capacitor/mlcc/c02e.pdf"/>
+      <property name="Height" value="0.55"/>
+      <property name="Manufacturer_Name" value="Murata Electronics"/>
+      <property name="Manufacturer_Part_Number" value="GRM155R70J104KA01D"/>
+      <property name="Mouser Part Number" value="81-GRM155R70J104KA1D"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/Murata-Electronics/GRM155R70J104KA01D?qs=y02iAgv9n61EgJSmMyZ7gQ%3D%3D"/>
+      <property name="Arrow Part Number" value="GRM155R70J104KA01D"/>
+      <property name="Arrow Price/Stock" value="https://www.arrow.com/en/products/grm155r70j104ka01d/murata-manufacturing?region=nac"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>4d72ae0d-3884-43ca-b063-e51394ca2043</tstamps>
+    </comp>
+    <comp ref="CBOOT1">
+      <value>EMK107B7104KA-T</value>
+      <fields>
+        <field name="Arrow Part Number">EMK107B7104KA-T</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/emk107b7104ka-t/taiyo-yuden</field>
+        <field name="Datasheet_1">http://www.farnell.com/datasheets/746258.pdf</field>
+        <field name="Footprint_1">CAPC1608X95N</field>
+        <field name="Height">0.95</field>
+        <field name="Manufacturer_Name">TAIYO YUDEN</field>
+        <field name="Manufacturer_Part_Number">EMK107B7104KA-T</field>
+        <field name="Mouser Part Number">963-EMK107B7104KA-T</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/TAIYO-YUDEN/EMK107B7104KA-T?qs=I6KAKw0tg2ybqzX8hKPgfw%3D%3D</field>
+        <field name="Reference_1">C</field>
+        <field name="Value_1">EMK107B7104KA-T</field>
+      </fields>
+      <libsource lib="EMK107B7104KA-T" part="EMK107B7104KA-T" description="EMK107B7104KA-T 0.1F +/-10% 16V Ceramic Capacitor X7R 0603"/>
+      <property name="Reference_1" value="C"/>
+      <property name="Value_1" value="EMK107B7104KA-T"/>
+      <property name="Footprint_1" value="CAPC1608X95N"/>
+      <property name="Datasheet_1" value="http://www.farnell.com/datasheets/746258.pdf"/>
+      <property name="Height" value="0.95"/>
+      <property name="Manufacturer_Name" value="TAIYO YUDEN"/>
+      <property name="Manufacturer_Part_Number" value="EMK107B7104KA-T"/>
+      <property name="Mouser Part Number" value="963-EMK107B7104KA-T"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/TAIYO-YUDEN/EMK107B7104KA-T?qs=I6KAKw0tg2ybqzX8hKPgfw%3D%3D"/>
+      <property name="Arrow Part Number" value="EMK107B7104KA-T"/>
+      <property name="Arrow Price/Stock" value="https://www.arrow.com/en/products/emk107b7104ka-t/taiyo-yuden"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>44d6b017-8310-4dbc-9c43-5aaa369b21a7</tstamps>
+    </comp>
+    <comp ref="CBOOT1-2">
+      <value>EMK107B7104KA-T</value>
+      <fields>
+        <field name="Arrow Part Number">EMK107B7104KA-T</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/emk107b7104ka-t/taiyo-yuden</field>
+        <field name="Datasheet_1">http://www.farnell.com/datasheets/746258.pdf</field>
+        <field name="Footprint_1">CAPC1608X95N</field>
+        <field name="Height">0.95</field>
+        <field name="Manufacturer_Name">TAIYO YUDEN</field>
+        <field name="Manufacturer_Part_Number">EMK107B7104KA-T</field>
+        <field name="Mouser Part Number">963-EMK107B7104KA-T</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/TAIYO-YUDEN/EMK107B7104KA-T?qs=I6KAKw0tg2ybqzX8hKPgfw%3D%3D</field>
+        <field name="Reference_1">C</field>
+        <field name="Value_1">EMK107B7104KA-T</field>
+      </fields>
+      <libsource lib="EMK107B7104KA-T" part="EMK107B7104KA-T" description="EMK107B7104KA-T 0.1F +/-10% 16V Ceramic Capacitor X7R 0603"/>
+      <property name="Reference_1" value="C"/>
+      <property name="Value_1" value="EMK107B7104KA-T"/>
+      <property name="Footprint_1" value="CAPC1608X95N"/>
+      <property name="Datasheet_1" value="http://www.farnell.com/datasheets/746258.pdf"/>
+      <property name="Height" value="0.95"/>
+      <property name="Manufacturer_Name" value="TAIYO YUDEN"/>
+      <property name="Manufacturer_Part_Number" value="EMK107B7104KA-T"/>
+      <property name="Mouser Part Number" value="963-EMK107B7104KA-T"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/TAIYO-YUDEN/EMK107B7104KA-T?qs=I6KAKw0tg2ybqzX8hKPgfw%3D%3D"/>
+      <property name="Arrow Part Number" value="EMK107B7104KA-T"/>
+      <property name="Arrow Price/Stock" value="https://www.arrow.com/en/products/emk107b7104ka-t/taiyo-yuden"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>61d0822f-5c90-4e7f-affe-972f0332e95b</tstamps>
+    </comp>
+    <comp ref="CBOOT2">
+      <value>EMK107B7104KA-T</value>
+      <fields>
+        <field name="Arrow Part Number">EMK107B7104KA-T</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/emk107b7104ka-t/taiyo-yuden</field>
+        <field name="Datasheet_1">http://www.farnell.com/datasheets/746258.pdf</field>
+        <field name="Footprint_1">CAPC1608X95N</field>
+        <field name="Height">0.95</field>
+        <field name="Manufacturer_Name">TAIYO YUDEN</field>
+        <field name="Manufacturer_Part_Number">EMK107B7104KA-T</field>
+        <field name="Mouser Part Number">963-EMK107B7104KA-T</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/TAIYO-YUDEN/EMK107B7104KA-T?qs=I6KAKw0tg2ybqzX8hKPgfw%3D%3D</field>
+        <field name="Reference_1">C</field>
+        <field name="Value_1">EMK107B7104KA-T</field>
+      </fields>
+      <libsource lib="EMK107B7104KA-T" part="EMK107B7104KA-T" description="EMK107B7104KA-T 0.1F +/-10% 16V Ceramic Capacitor X7R 0603"/>
+      <property name="Reference_1" value="C"/>
+      <property name="Value_1" value="EMK107B7104KA-T"/>
+      <property name="Footprint_1" value="CAPC1608X95N"/>
+      <property name="Datasheet_1" value="http://www.farnell.com/datasheets/746258.pdf"/>
+      <property name="Height" value="0.95"/>
+      <property name="Manufacturer_Name" value="TAIYO YUDEN"/>
+      <property name="Manufacturer_Part_Number" value="EMK107B7104KA-T"/>
+      <property name="Mouser Part Number" value="963-EMK107B7104KA-T"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/TAIYO-YUDEN/EMK107B7104KA-T?qs=I6KAKw0tg2ybqzX8hKPgfw%3D%3D"/>
+      <property name="Arrow Part Number" value="EMK107B7104KA-T"/>
+      <property name="Arrow Price/Stock" value="https://www.arrow.com/en/products/emk107b7104ka-t/taiyo-yuden"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>c49eacce-3d33-4a10-9638-1269f8e099d1</tstamps>
+    </comp>
+    <comp ref="CBOOT2-2">
+      <value>EMK107B7104KA-T</value>
+      <fields>
+        <field name="Arrow Part Number">EMK107B7104KA-T</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/emk107b7104ka-t/taiyo-yuden</field>
+        <field name="Datasheet_1">http://www.farnell.com/datasheets/746258.pdf</field>
+        <field name="Footprint_1">CAPC1608X95N</field>
+        <field name="Height">0.95</field>
+        <field name="Manufacturer_Name">TAIYO YUDEN</field>
+        <field name="Manufacturer_Part_Number">EMK107B7104KA-T</field>
+        <field name="Mouser Part Number">963-EMK107B7104KA-T</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/TAIYO-YUDEN/EMK107B7104KA-T?qs=I6KAKw0tg2ybqzX8hKPgfw%3D%3D</field>
+        <field name="Reference_1">C</field>
+        <field name="Value_1">EMK107B7104KA-T</field>
+      </fields>
+      <libsource lib="EMK107B7104KA-T" part="EMK107B7104KA-T" description="EMK107B7104KA-T 0.1F +/-10% 16V Ceramic Capacitor X7R 0603"/>
+      <property name="Reference_1" value="C"/>
+      <property name="Value_1" value="EMK107B7104KA-T"/>
+      <property name="Footprint_1" value="CAPC1608X95N"/>
+      <property name="Datasheet_1" value="http://www.farnell.com/datasheets/746258.pdf"/>
+      <property name="Height" value="0.95"/>
+      <property name="Manufacturer_Name" value="TAIYO YUDEN"/>
+      <property name="Manufacturer_Part_Number" value="EMK107B7104KA-T"/>
+      <property name="Mouser Part Number" value="963-EMK107B7104KA-T"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/TAIYO-YUDEN/EMK107B7104KA-T?qs=I6KAKw0tg2ybqzX8hKPgfw%3D%3D"/>
+      <property name="Arrow Part Number" value="EMK107B7104KA-T"/>
+      <property name="Arrow Price/Stock" value="https://www.arrow.com/en/products/emk107b7104ka-t/taiyo-yuden"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>4cb8197e-5d3a-41aa-b9ea-2b48b9407c6a</tstamps>
+    </comp>
+    <comp ref="CCC1">
+      <value>GRM155R70J104KA01D</value>
+      <fields>
+        <field name="Arrow Part Number">GRM155R70J104KA01D</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/grm155r70j104ka01d/murata-manufacturing?region=nac</field>
+        <field name="Datasheet_1">http://www.murata.com/~/media/webrenewal/support/library/catalog/products/capacitor/mlcc/c02e.pdf</field>
+        <field name="Footprint_1">CAPC1005X55N</field>
+        <field name="Height">0.55</field>
+        <field name="Manufacturer_Name">Murata Electronics</field>
+        <field name="Manufacturer_Part_Number">GRM155R70J104KA01D</field>
+        <field name="Mouser Part Number">81-GRM155R70J104KA1D</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Murata-Electronics/GRM155R70J104KA01D?qs=y02iAgv9n61EgJSmMyZ7gQ%3D%3D</field>
+        <field name="Reference_1">C</field>
+        <field name="Value_1">GRM155R70J104KA01D</field>
+      </fields>
+      <libsource lib="GRM155R70J104KA01D" part="GRM155R70J104KA01D" description="Capacitor MLCC GRM 0402 100nF 6.3V X7R Murata 0402 GRM 100nF Ceramic Multilayer Capacitor, 6.3 V dc, +125degC, X7R Dielectric,  /-10% SMD"/>
+      <property name="Reference_1" value="C"/>
+      <property name="Value_1" value="GRM155R70J104KA01D"/>
+      <property name="Footprint_1" value="CAPC1005X55N"/>
+      <property name="Datasheet_1" value="http://www.murata.com/~/media/webrenewal/support/library/catalog/products/capacitor/mlcc/c02e.pdf"/>
+      <property name="Height" value="0.55"/>
+      <property name="Manufacturer_Name" value="Murata Electronics"/>
+      <property name="Manufacturer_Part_Number" value="GRM155R70J104KA01D"/>
+      <property name="Mouser Part Number" value="81-GRM155R70J104KA1D"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/Murata-Electronics/GRM155R70J104KA01D?qs=y02iAgv9n61EgJSmMyZ7gQ%3D%3D"/>
+      <property name="Arrow Part Number" value="GRM155R70J104KA01D"/>
+      <property name="Arrow Price/Stock" value="https://www.arrow.com/en/products/grm155r70j104ka01d/murata-manufacturing?region=nac"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>e2045fba-fee9-404c-a76d-343eb4e7fb5a</tstamps>
+    </comp>
+    <comp ref="CCOMP-2">
+      <value>GRM155R70J473KA01D</value>
+      <fields>
+        <field name="Arrow Part Number">GRM155R70J473KA01D</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/grm155r70j473ka01d/murata-manufacturing?region=nac</field>
+        <field name="Datasheet_1">http://www.murata.com/~/media/webrenewal/support/library/catalog/products/capacitor/mlcc/c02e.pdf</field>
+        <field name="Footprint_1">CAPC1005X55N</field>
+        <field name="Height">0.55</field>
+        <field name="Manufacturer_Name">Murata Electronics</field>
+        <field name="Manufacturer_Part_Number">GRM155R70J473KA01D</field>
+        <field name="Mouser Part Number">81-GRM155R70J473KA1D</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Murata-Electronics/GRM155R70J473KA01D?qs=y02iAgv9n63DJ80zfdDo8g%3D%3D</field>
+        <field name="Reference_1">C</field>
+        <field name="Value_1">GRM155R70J473KA01D</field>
+      </fields>
+      <libsource lib="GRM155R70J473KA01D" part="GRM155R70J473KA01D" description="Multilayer Ceramic Capacitors MLCC - SMD/SMT 0.047uF 6.3VDC 10%"/>
+      <property name="Reference_1" value="C"/>
+      <property name="Value_1" value="GRM155R70J473KA01D"/>
+      <property name="Footprint_1" value="CAPC1005X55N"/>
+      <property name="Datasheet_1" value="http://www.murata.com/~/media/webrenewal/support/library/catalog/products/capacitor/mlcc/c02e.pdf"/>
+      <property name="Height" value="0.55"/>
+      <property name="Manufacturer_Name" value="Murata Electronics"/>
+      <property name="Manufacturer_Part_Number" value="GRM155R70J473KA01D"/>
+      <property name="Mouser Part Number" value="81-GRM155R70J473KA1D"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/Murata-Electronics/GRM155R70J473KA01D?qs=y02iAgv9n63DJ80zfdDo8g%3D%3D"/>
+      <property name="Arrow Part Number" value="GRM155R70J473KA01D"/>
+      <property name="Arrow Price/Stock" value="https://www.arrow.com/en/products/grm155r70j473ka01d/murata-manufacturing?region=nac"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>55fd0bbb-b3a0-4a8b-a311-37eeb3859f78</tstamps>
+    </comp>
+    <comp ref="CCOMP1">
+      <value>GRM155R70J104KA01D</value>
+      <fields>
+        <field name="Arrow Part Number">GRM155R70J104KA01D</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/grm155r70j104ka01d/murata-manufacturing?region=nac</field>
+        <field name="Datasheet_1">http://www.murata.com/~/media/webrenewal/support/library/catalog/products/capacitor/mlcc/c02e.pdf</field>
+        <field name="Footprint_1">CAPC1005X55N</field>
+        <field name="Height">0.55</field>
+        <field name="Manufacturer_Name">Murata Electronics</field>
+        <field name="Manufacturer_Part_Number">GRM155R70J104KA01D</field>
+        <field name="Mouser Part Number">81-GRM155R70J104KA1D</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Murata-Electronics/GRM155R70J104KA01D?qs=y02iAgv9n61EgJSmMyZ7gQ%3D%3D</field>
+        <field name="Reference_1">C</field>
+        <field name="Value_1">GRM155R70J104KA01D</field>
+      </fields>
+      <libsource lib="GRM155R70J104KA01D" part="GRM155R70J104KA01D" description="Capacitor MLCC GRM 0402 100nF 6.3V X7R Murata 0402 GRM 100nF Ceramic Multilayer Capacitor, 6.3 V dc, +125degC, X7R Dielectric,  /-10% SMD"/>
+      <property name="Reference_1" value="C"/>
+      <property name="Value_1" value="GRM155R70J104KA01D"/>
+      <property name="Footprint_1" value="CAPC1005X55N"/>
+      <property name="Datasheet_1" value="http://www.murata.com/~/media/webrenewal/support/library/catalog/products/capacitor/mlcc/c02e.pdf"/>
+      <property name="Height" value="0.55"/>
+      <property name="Manufacturer_Name" value="Murata Electronics"/>
+      <property name="Manufacturer_Part_Number" value="GRM155R70J104KA01D"/>
+      <property name="Mouser Part Number" value="81-GRM155R70J104KA1D"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/Murata-Electronics/GRM155R70J104KA01D?qs=y02iAgv9n61EgJSmMyZ7gQ%3D%3D"/>
+      <property name="Arrow Part Number" value="GRM155R70J104KA01D"/>
+      <property name="Arrow Price/Stock" value="https://www.arrow.com/en/products/grm155r70j104ka01d/murata-manufacturing?region=nac"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>9c2fd074-e3c1-48be-b880-26d5a4339dc5</tstamps>
+    </comp>
+    <comp ref="CEN1">
+      <value>C1608X6S1C475K080AC</value>
+      <fields>
+        <field name="Arrow Part Number">C1608X6S1C475K080AC</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/c1608x6s1c475k080ac/tdk?region=nac</field>
+        <field name="Datasheet_1">https://product.tdk.com/info/en/catalog/datasheets/mlcc_commercial_midvoltage_en.pdf</field>
+        <field name="Footprint_1">CAPC1608X80N</field>
+        <field name="Height">0.8</field>
+        <field name="Manufacturer_Name">TDK</field>
+        <field name="Manufacturer_Part_Number">C1608X6S1C475K080AC</field>
+        <field name="Mouser Part Number">810-C1608X6S1C475K</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/TDK/C1608X6S1C475K080AC?qs=dfay7wIA1uELNO4%252B8xvBDw%3D%3D</field>
+        <field name="Reference_1">C</field>
+        <field name="Value_1">C1608X6S1C475K080AC</field>
+      </fields>
+      <libsource lib="C1608X6S1C475K080AC" part="C1608X6S1C475K080AC" description="MULTILAYER CERAMIC CHIP CAPACITORS, 1608, Commercial grade, general (Up to 75V)"/>
+      <property name="Reference_1" value="C"/>
+      <property name="Value_1" value="C1608X6S1C475K080AC"/>
+      <property name="Footprint_1" value="CAPC1608X80N"/>
+      <property name="Datasheet_1" value="https://product.tdk.com/info/en/catalog/datasheets/mlcc_commercial_midvoltage_en.pdf"/>
+      <property name="Height" value="0.8"/>
+      <property name="Manufacturer_Name" value="TDK"/>
+      <property name="Manufacturer_Part_Number" value="C1608X6S1C475K080AC"/>
+      <property name="Mouser Part Number" value="810-C1608X6S1C475K"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/TDK/C1608X6S1C475K080AC?qs=dfay7wIA1uELNO4%252B8xvBDw%3D%3D"/>
+      <property name="Arrow Part Number" value="C1608X6S1C475K080AC"/>
+      <property name="Arrow Price/Stock" value="https://www.arrow.com/en/products/c1608x6s1c475k080ac/tdk?region=nac"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>0d244d73-2d7f-4d46-b101-e72a17b700b0</tstamps>
+    </comp>
+    <comp ref="CIN-2">
+      <value>25SVPF47M</value>
+      <fields>
+        <field name="Arrow Part Number">25SVPF47M</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/25svpf47m/panasonic?region=nac</field>
+        <field name="Datasheet_1">http://industrial.panasonic.com/cdbs/www-data/pdf/AAB8000/AAB8000C177.pdf</field>
+        <field name="Footprint_1">16SVF180M</field>
+        <field name="Height">6</field>
+        <field name="Manufacturer_Name">Panasonic</field>
+        <field name="Manufacturer_Part_Number">25SVPF47M</field>
+        <field name="Mouser Part Number">667-25SVPF47M</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Panasonic/25SVPF47M?qs=OE1iw1LrrPH6vnYaLYl%2FJw%3D%3D</field>
+        <field name="Reference_1">C</field>
+        <field name="Value_1">25SVPF47M</field>
+      </fields>
+      <libsource lib="25SVPF47M" part="25SVPF47M" description="Panasonic 47uF 25 V dc Polymer Aluminium Electrolytic Capacitor C6, OS-CON Series 5000h 6.3 x 5.9mm"/>
+      <property name="Reference_1" value="C"/>
+      <property name="Value_1" value="25SVPF47M"/>
+      <property name="Footprint_1" value="16SVF180M"/>
+      <property name="Datasheet_1" value="http://industrial.panasonic.com/cdbs/www-data/pdf/AAB8000/AAB8000C177.pdf"/>
+      <property name="Height" value="6"/>
+      <property name="Manufacturer_Name" value="Panasonic"/>
+      <property name="Manufacturer_Part_Number" value="25SVPF47M"/>
+      <property name="Mouser Part Number" value="667-25SVPF47M"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/Panasonic/25SVPF47M?qs=OE1iw1LrrPH6vnYaLYl%2FJw%3D%3D"/>
+      <property name="Arrow Part Number" value="25SVPF47M"/>
+      <property name="Arrow Price/Stock" value="https://www.arrow.com/en/products/25svpf47m/panasonic?region=nac"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>ab318a39-de42-4147-b0c3-0023f483a5d6</tstamps>
+    </comp>
+    <comp ref="CIN1">
+      <value>EEE-FK1V101P</value>
+      <fields>
+        <field name="Arrow Part Number">EEE-FK1V101P</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/eeefk1v101p/panasonic?region=nac</field>
+        <field name="Datasheet_1">http://industrial.panasonic.com/cdbs/www-data/pdf/RDE0000/ABA0000C1181.pdf</field>
+        <field name="Footprint_1">EEHZT1E331UP</field>
+        <field name="Height">10.8</field>
+        <field name="Manufacturer_Name">Panasonic</field>
+        <field name="Manufacturer_Part_Number">EEE-FK1V101P</field>
+        <field name="Mouser Part Number">667-EEE-FK1V101P</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Panasonic/EEE-FK1V101P?qs=qE6bgDGEOCsMXxs4z7sT2w%3D%3D</field>
+        <field name="Reference_1">C</field>
+        <field name="Value_1">EEE-FK1V101P</field>
+      </fields>
+      <libsource lib="EEE-FK1V101P" part="EEE-FK1V101P" description="Aluminum Electrolytic Capacitors - SMD 100uF 35V"/>
+      <property name="Reference_1" value="C"/>
+      <property name="Value_1" value="EEE-FK1V101P"/>
+      <property name="Footprint_1" value="EEHZT1E331UP"/>
+      <property name="Datasheet_1" value="http://industrial.panasonic.com/cdbs/www-data/pdf/RDE0000/ABA0000C1181.pdf"/>
+      <property name="Height" value="10.8"/>
+      <property name="Manufacturer_Name" value="Panasonic"/>
+      <property name="Manufacturer_Part_Number" value="EEE-FK1V101P"/>
+      <property name="Mouser Part Number" value="667-EEE-FK1V101P"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/Panasonic/EEE-FK1V101P?qs=qE6bgDGEOCsMXxs4z7sT2w%3D%3D"/>
+      <property name="Arrow Part Number" value="EEE-FK1V101P"/>
+      <property name="Arrow Price/Stock" value="https://www.arrow.com/en/products/eeefk1v101p/panasonic?region=nac"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>af7f0ab4-9687-4e2a-9445-9e4f04ef6aea</tstamps>
+    </comp>
+    <comp ref="CINX-2">
+      <value>C3225X7R1H106M250AC</value>
+      <fields>
+        <field name="Arrow Part Number">C3225X7R1H106M250AC</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/c3225x7r1h106m250ac/tdk?region=nac</field>
+        <field name="Datasheet_1">https://product.tdk.com/info/en/catalog/datasheets/mlcc_commercial_midvoltage_en.pdf</field>
+        <field name="Footprint_1">CAPC3225X230N</field>
+        <field name="Height">2.3</field>
+        <field name="Manufacturer_Name">TDK</field>
+        <field name="Manufacturer_Part_Number">C3225X7R1H106M250AC</field>
+        <field name="Mouser Part Number">810-C3225X7R1H106MAC</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/TDK/C3225X7R1H106M250AC?qs=6JAMGB%252BEdkwY95l8JqNSnw%3D%3D</field>
+        <field name="Reference_1">C</field>
+        <field name="Value_1">C3225X7R1H106M250AC</field>
+      </fields>
+      <libsource lib="C3225X7R1H106M250AC" part="C3225X7R1H106M250AC" description="TDK 1210 C 10uF Ceramic Multilayer Capacitor, 50 V dc, +125C, X7R Dielectric, +/-20%"/>
+      <property name="Reference_1" value="C"/>
+      <property name="Value_1" value="C3225X7R1H106M250AC"/>
+      <property name="Footprint_1" value="CAPC3225X230N"/>
+      <property name="Datasheet_1" value="https://product.tdk.com/info/en/catalog/datasheets/mlcc_commercial_midvoltage_en.pdf"/>
+      <property name="Height" value="2.3"/>
+      <property name="Manufacturer_Name" value="TDK"/>
+      <property name="Manufacturer_Part_Number" value="C3225X7R1H106M250AC"/>
+      <property name="Mouser Part Number" value="810-C3225X7R1H106MAC"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/TDK/C3225X7R1H106M250AC?qs=6JAMGB%252BEdkwY95l8JqNSnw%3D%3D"/>
+      <property name="Arrow Part Number" value="C3225X7R1H106M250AC"/>
+      <property name="Arrow Price/Stock" value="https://www.arrow.com/en/products/c3225x7r1h106m250ac/tdk?region=nac"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>edf902df-5e4c-4a30-8f8a-87b0d06ba957</tstamps>
+    </comp>
+    <comp ref="CINX1">
+      <value>C3225X7R1H106M250AC</value>
+      <fields>
+        <field name="Arrow Part Number">C3225X7R1H106M250AC</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/c3225x7r1h106m250ac/tdk?region=nac</field>
+        <field name="Datasheet_1">https://product.tdk.com/info/en/catalog/datasheets/mlcc_commercial_midvoltage_en.pdf</field>
+        <field name="Footprint_1">CAPC3225X230N</field>
+        <field name="Height">2.3</field>
+        <field name="Manufacturer_Name">TDK</field>
+        <field name="Manufacturer_Part_Number">C3225X7R1H106M250AC</field>
+        <field name="Mouser Part Number">810-C3225X7R1H106MAC</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/TDK/C3225X7R1H106M250AC?qs=6JAMGB%252BEdkwY95l8JqNSnw%3D%3D</field>
+        <field name="Reference_1">C</field>
+        <field name="Value_1">C3225X7R1H106M250AC</field>
+      </fields>
+      <libsource lib="C3225X7R1H106M250AC" part="C3225X7R1H106M250AC" description="TDK 1210 C 10uF Ceramic Multilayer Capacitor, 50 V dc, +125C, X7R Dielectric, +/-20%"/>
+      <property name="Reference_1" value="C"/>
+      <property name="Value_1" value="C3225X7R1H106M250AC"/>
+      <property name="Footprint_1" value="CAPC3225X230N"/>
+      <property name="Datasheet_1" value="https://product.tdk.com/info/en/catalog/datasheets/mlcc_commercial_midvoltage_en.pdf"/>
+      <property name="Height" value="2.3"/>
+      <property name="Manufacturer_Name" value="TDK"/>
+      <property name="Manufacturer_Part_Number" value="C3225X7R1H106M250AC"/>
+      <property name="Mouser Part Number" value="810-C3225X7R1H106MAC"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/TDK/C3225X7R1H106M250AC?qs=6JAMGB%252BEdkwY95l8JqNSnw%3D%3D"/>
+      <property name="Arrow Part Number" value="C3225X7R1H106M250AC"/>
+      <property name="Arrow Price/Stock" value="https://www.arrow.com/en/products/c3225x7r1h106m250ac/tdk?region=nac"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>1fd9754e-b9c6-4fef-88e1-1a8c66136c10</tstamps>
+    </comp>
+    <comp ref="CINX2">
+      <value>C1005X5R1V105K050BC</value>
+      <fields>
+        <field name="Arrow Part Number">C1005X5R1V105K050BC</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/c1005x5r1v105k050bc/tdk?region=nac</field>
+        <field name="Datasheet_1">https://product.tdk.com/info/en/catalog/datasheets/mlcc_commercial_midvoltage_en.pdf</field>
+        <field name="Footprint_1">CAPC1005X55N</field>
+        <field name="Height">0.55</field>
+        <field name="Manufacturer_Name">TDK</field>
+        <field name="Manufacturer_Part_Number">C1005X5R1V105K050BC</field>
+        <field name="Mouser Part Number">810-C1005X5R1V105K</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/TDK/C1005X5R1V105K050BC?qs=dfay7wIA1uGr1NSDQs%2Ftnw%3D%3D</field>
+        <field name="Reference_1">C</field>
+        <field name="Value_1">C1005X5R1V105K050BC</field>
+      </fields>
+      <libsource lib="C1005X5R1V105K050BC" part="C1005X5R1V105K050BC" description="MULTILAYER CERAMIC CHIP CAPACITORS, 1005, Commercial grade, general (Up to 75V)"/>
+      <property name="Reference_1" value="C"/>
+      <property name="Value_1" value="C1005X5R1V105K050BC"/>
+      <property name="Footprint_1" value="CAPC1005X55N"/>
+      <property name="Datasheet_1" value="https://product.tdk.com/info/en/catalog/datasheets/mlcc_commercial_midvoltage_en.pdf"/>
+      <property name="Height" value="0.55"/>
+      <property name="Manufacturer_Name" value="TDK"/>
+      <property name="Manufacturer_Part_Number" value="C1005X5R1V105K050BC"/>
+      <property name="Mouser Part Number" value="810-C1005X5R1V105K"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/TDK/C1005X5R1V105K050BC?qs=dfay7wIA1uGr1NSDQs%2Ftnw%3D%3D"/>
+      <property name="Arrow Part Number" value="C1005X5R1V105K050BC"/>
+      <property name="Arrow Price/Stock" value="https://www.arrow.com/en/products/c1005x5r1v105k050bc/tdk?region=nac"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>03fcec5a-f9c1-4e29-82eb-b3c5b562a146</tstamps>
+    </comp>
+    <comp ref="CINX2-2">
+      <value>C1005X5R1V105K050BC</value>
+      <fields>
+        <field name="Arrow Part Number">C1005X5R1V105K050BC</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/c1005x5r1v105k050bc/tdk?region=nac</field>
+        <field name="Datasheet_1">https://product.tdk.com/info/en/catalog/datasheets/mlcc_commercial_midvoltage_en.pdf</field>
+        <field name="Footprint_1">CAPC1005X55N</field>
+        <field name="Height">0.55</field>
+        <field name="Manufacturer_Name">TDK</field>
+        <field name="Manufacturer_Part_Number">C1005X5R1V105K050BC</field>
+        <field name="Mouser Part Number">810-C1005X5R1V105K</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/TDK/C1005X5R1V105K050BC?qs=dfay7wIA1uGr1NSDQs%2Ftnw%3D%3D</field>
+        <field name="Reference_1">C</field>
+        <field name="Value_1">C1005X5R1V105K050BC</field>
+      </fields>
+      <libsource lib="C1005X5R1V105K050BC" part="C1005X5R1V105K050BC" description="MULTILAYER CERAMIC CHIP CAPACITORS, 1005, Commercial grade, general (Up to 75V)"/>
+      <property name="Reference_1" value="C"/>
+      <property name="Value_1" value="C1005X5R1V105K050BC"/>
+      <property name="Footprint_1" value="CAPC1005X55N"/>
+      <property name="Datasheet_1" value="https://product.tdk.com/info/en/catalog/datasheets/mlcc_commercial_midvoltage_en.pdf"/>
+      <property name="Height" value="0.55"/>
+      <property name="Manufacturer_Name" value="TDK"/>
+      <property name="Manufacturer_Part_Number" value="C1005X5R1V105K050BC"/>
+      <property name="Mouser Part Number" value="810-C1005X5R1V105K"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/TDK/C1005X5R1V105K050BC?qs=dfay7wIA1uGr1NSDQs%2Ftnw%3D%3D"/>
+      <property name="Arrow Part Number" value="C1005X5R1V105K050BC"/>
+      <property name="Arrow Price/Stock" value="https://www.arrow.com/en/products/c1005x5r1v105k050bc/tdk?region=nac"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>b5a3e63e-4b58-4e74-933b-53153ce4cb9e</tstamps>
+    </comp>
+    <comp ref="COUT-2">
+      <value>10SVPC68MV</value>
+      <fields>
+        <field name="Arrow Part Number">10SVPC68MV</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/10svpc68mv/panasonic</field>
+        <field name="Datasheet_1">http://industrial.panasonic.com/cdbs/www-data/pdf/AAB8000/AAB8000C256.pdf</field>
+        <field name="Footprint_1">16SVF82M</field>
+        <field name="Height">6</field>
+        <field name="Manufacturer_Name">Panasonic</field>
+        <field name="Manufacturer_Part_Number">10SVPC68MV</field>
+        <field name="Mouser Part Number">667-10SVPC68MV</field>
+        <field name="Mouser Price/Stock">https://www.mouser.com/Search/Refine.aspx?Keyword=667-10SVPC68MV</field>
+        <field name="Reference_1">C</field>
+        <field name="Value_1">10SVPC68MV</field>
+      </fields>
+      <libsource lib="10SVPC68MV" part="10SVPC68MV" description="Panasonic 68uF Polymer Capacitor 10V dc, Surface Mount - 10SVPC68MV"/>
+      <property name="Reference_1" value="C"/>
+      <property name="Value_1" value="10SVPC68MV"/>
+      <property name="Footprint_1" value="16SVF82M"/>
+      <property name="Datasheet_1" value="http://industrial.panasonic.com/cdbs/www-data/pdf/AAB8000/AAB8000C256.pdf"/>
+      <property name="Height" value="6"/>
+      <property name="Manufacturer_Name" value="Panasonic"/>
+      <property name="Manufacturer_Part_Number" value="10SVPC68MV"/>
+      <property name="Mouser Part Number" value="667-10SVPC68MV"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.com/Search/Refine.aspx?Keyword=667-10SVPC68MV"/>
+      <property name="Arrow Part Number" value="10SVPC68MV"/>
+      <property name="Arrow Price/Stock" value="https://www.arrow.com/en/products/10svpc68mv/panasonic"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>d9bfcf45-e9b1-447d-97d4-ccd2d2f08dec</tstamps>
+    </comp>
+    <comp ref="COUT1">
+      <value>25SVPF27MX</value>
+      <fields>
+        <field name="Arrow Part Number">25SVPF27MX</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/25svpf27mx/panasonic?region=nac</field>
+        <field name="Datasheet_1">http://industrial.panasonic.com/cdbs/www-data/pdf/AAB8000/AAB8000C177.pdf</field>
+        <field name="Footprint_1">16SVF82M</field>
+        <field name="Height">6</field>
+        <field name="Manufacturer_Name">Panasonic</field>
+        <field name="Manufacturer_Part_Number">25SVPF27MX</field>
+        <field name="Mouser Part Number">667-25SVPF27MX</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Panasonic/25SVPF27MX?qs=OE1iw1LrrPHs7V8AgrsYgQ%3D%3D</field>
+        <field name="Reference_1">C</field>
+        <field name="Value_1">25SVPF27MX</field>
+      </fields>
+      <libsource lib="25SVPF27MX" part="25SVPF27MX" description="Panasonic 27uF 25V dc Aluminium Polymer Capacitor, Surface Mount 5 Dia. x 5.9mm +105C 5mm"/>
+      <property name="Reference_1" value="C"/>
+      <property name="Value_1" value="25SVPF27MX"/>
+      <property name="Footprint_1" value="16SVF82M"/>
+      <property name="Datasheet_1" value="http://industrial.panasonic.com/cdbs/www-data/pdf/AAB8000/AAB8000C177.pdf"/>
+      <property name="Height" value="6"/>
+      <property name="Manufacturer_Name" value="Panasonic"/>
+      <property name="Manufacturer_Part_Number" value="25SVPF27MX"/>
+      <property name="Mouser Part Number" value="667-25SVPF27MX"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/Panasonic/25SVPF27MX?qs=OE1iw1LrrPHs7V8AgrsYgQ%3D%3D"/>
+      <property name="Arrow Part Number" value="25SVPF27MX"/>
+      <property name="Arrow Price/Stock" value="https://www.arrow.com/en/products/25svpf27mx/panasonic?region=nac"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>580449a3-a2b8-416f-8750-306e5036327e</tstamps>
+    </comp>
+    <comp ref="COUTX-2">
+      <value>C0805C106K8PACTU</value>
+      <fields>
+        <field name="Arrow Part Number">C0805C106K8PACTU</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/c0805c106k8pactu/kemet-corporation?region=nac</field>
+        <field name="Datasheet_1">https://content.kemet.com/datasheets/KEM_C1006_X5R_SMD.pdf</field>
+        <field name="Footprint_1">C0805</field>
+        <field name="Height">1.1</field>
+        <field name="Manufacturer_Name">KEMET</field>
+        <field name="Manufacturer_Part_Number">C0805C106K8PACTU</field>
+        <field name="Mouser Part Number">80-C0805C106K8P</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/KEMET/C0805C106K8PACTU?qs=Zpyg6gQUYs39C21BeavaKA%3D%3D</field>
+        <field name="Reference_1">C</field>
+        <field name="Value_1">C0805C106K8PACTU</field>
+      </fields>
+      <libsource lib="C0805C106K8PACTU" part="C0805C106K8PACTU" description="SMD Comm X5R, Ceramic, 10 uF, 10%, 10 VDC, 25 VDC, 85C, -55C, X5R, SMD, MLCC, Temperature Stable, Class II, 10 % , 10 MOhms, 21 mg, 0805, 2mm, 1.25mm, 1.25mm, 0.75mm, 0.5mm, 3000, 78  Weeks, 70"/>
+      <property name="Reference_1" value="C"/>
+      <property name="Value_1" value="C0805C106K8PACTU"/>
+      <property name="Footprint_1" value="C0805"/>
+      <property name="Datasheet_1" value="https://content.kemet.com/datasheets/KEM_C1006_X5R_SMD.pdf"/>
+      <property name="Height" value="1.1"/>
+      <property name="Manufacturer_Name" value="KEMET"/>
+      <property name="Manufacturer_Part_Number" value="C0805C106K8PACTU"/>
+      <property name="Mouser Part Number" value="80-C0805C106K8P"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/KEMET/C0805C106K8PACTU?qs=Zpyg6gQUYs39C21BeavaKA%3D%3D"/>
+      <property name="Arrow Part Number" value="C0805C106K8PACTU"/>
+      <property name="Arrow Price/Stock" value="https://www.arrow.com/en/products/c0805c106k8pactu/kemet-corporation?region=nac"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>b7d46722-c74e-4c49-a6e1-07c40ace3d7a</tstamps>
+    </comp>
+    <comp ref="COUTX1">
+      <value>C2012X5R1V156M125AC</value>
+      <fields>
+        <field name="Arrow Part Number">C2012X5R1V156M125AC</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/c2012x5r1v156m125ac/tdk?region=nac</field>
+        <field name="Datasheet_1">https://product.tdk.com/info/en/catalog/datasheets/mlcc_commercial_midvoltage_en.pdf</field>
+        <field name="Footprint_1">CAPC2012X145N</field>
+        <field name="Height">1.45</field>
+        <field name="Manufacturer_Name">TDK</field>
+        <field name="Manufacturer_Part_Number">C2012X5R1V156M125AC</field>
+        <field name="Mouser Part Number">810-C2012X5R1V156M1C</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/TDK/C2012X5R1V156M125AC?qs=xLDY6iXSiQZGpZ5eDP6b8w%3D%3D</field>
+        <field name="Reference_1">C</field>
+        <field name="Value_1">C2012X5R1V156M125AC</field>
+      </fields>
+      <libsource lib="C2012X5R1V156M125AC" part="C2012X5R1V156M125AC" description="MULTILAYER CERAMIC CHIP CAPACITORS, 2012, Commercial grade, general (Up to 75V)"/>
+      <property name="Reference_1" value="C"/>
+      <property name="Value_1" value="C2012X5R1V156M125AC"/>
+      <property name="Footprint_1" value="CAPC2012X145N"/>
+      <property name="Datasheet_1" value="https://product.tdk.com/info/en/catalog/datasheets/mlcc_commercial_midvoltage_en.pdf"/>
+      <property name="Height" value="1.45"/>
+      <property name="Manufacturer_Name" value="TDK"/>
+      <property name="Manufacturer_Part_Number" value="C2012X5R1V156M125AC"/>
+      <property name="Mouser Part Number" value="810-C2012X5R1V156M1C"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/TDK/C2012X5R1V156M125AC?qs=xLDY6iXSiQZGpZ5eDP6b8w%3D%3D"/>
+      <property name="Arrow Part Number" value="C2012X5R1V156M125AC"/>
+      <property name="Arrow Price/Stock" value="https://www.arrow.com/en/products/c2012x5r1v156m125ac/tdk?region=nac"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>415ef262-6205-422d-a27f-d74d540b0453</tstamps>
+    </comp>
+    <comp ref="COUTX2">
+      <value>C1005X5R1V105K050BC</value>
+      <fields>
+        <field name="Arrow Part Number">C1005X5R1V105K050BC</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/c1005x5r1v105k050bc/tdk?region=nac</field>
+        <field name="Datasheet_1">https://product.tdk.com/info/en/catalog/datasheets/mlcc_commercial_midvoltage_en.pdf</field>
+        <field name="Footprint_1">CAPC1005X55N</field>
+        <field name="Height">0.55</field>
+        <field name="Manufacturer_Name">TDK</field>
+        <field name="Manufacturer_Part_Number">C1005X5R1V105K050BC</field>
+        <field name="Mouser Part Number">810-C1005X5R1V105K</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/TDK/C1005X5R1V105K050BC?qs=dfay7wIA1uGr1NSDQs%2Ftnw%3D%3D</field>
+        <field name="Reference_1">C</field>
+        <field name="Value_1">C1005X5R1V105K050BC</field>
+      </fields>
+      <libsource lib="C1005X5R1V105K050BC" part="C1005X5R1V105K050BC" description="MULTILAYER CERAMIC CHIP CAPACITORS, 1005, Commercial grade, general (Up to 75V)"/>
+      <property name="Reference_1" value="C"/>
+      <property name="Value_1" value="C1005X5R1V105K050BC"/>
+      <property name="Footprint_1" value="CAPC1005X55N"/>
+      <property name="Datasheet_1" value="https://product.tdk.com/info/en/catalog/datasheets/mlcc_commercial_midvoltage_en.pdf"/>
+      <property name="Height" value="0.55"/>
+      <property name="Manufacturer_Name" value="TDK"/>
+      <property name="Manufacturer_Part_Number" value="C1005X5R1V105K050BC"/>
+      <property name="Mouser Part Number" value="810-C1005X5R1V105K"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/TDK/C1005X5R1V105K050BC?qs=dfay7wIA1uGr1NSDQs%2Ftnw%3D%3D"/>
+      <property name="Arrow Part Number" value="C1005X5R1V105K050BC"/>
+      <property name="Arrow Price/Stock" value="https://www.arrow.com/en/products/c1005x5r1v105k050bc/tdk?region=nac"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>ad0cfef3-a835-45e9-8d59-c7fe0e633193</tstamps>
+    </comp>
+    <comp ref="COUTX2-2">
+      <value>C0603C105Z8VACTU</value>
+      <fields>
+        <field name="Arrow Part Number">C0603C105Z8VACTU</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/c0603c105z8vactu/kemet-corporation?region=nac</field>
+        <field name="Datasheet_1">https://content.kemet.com/datasheets/KEM_C1005_Y5V_SMD.pdf</field>
+        <field name="Footprint_1">C0603</field>
+        <field name="Height">0.87</field>
+        <field name="Manufacturer_Name">KEMET</field>
+        <field name="Manufacturer_Part_Number">C0603C105Z8VACTU</field>
+        <field name="Mouser Part Number">80-C0603C105Z8V</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/KEMET/C0603C105Z8VACTU?qs=F2dscFSegBYhJ9ezd9GTzA%3D%3D</field>
+        <field name="Reference_1">C</field>
+        <field name="Value_1">C0603C105Z8VACTU</field>
+      </fields>
+      <libsource lib="C0603C105Z8VACTU" part="C0603C105Z8VACTU" description="SMD Comm Y5V, Ceramic, 1 uF, -20/+80%, 10 VDC, 25 VDC, 85C, -30C, Y5V, SMD, MLCC, General Purpose, Class III, 10 % , 50 MOhms, 6.5 mg, 0603, 1.6mm, 0.8mm, 0.8mm, 0.7mm, 0.35mm, 4000, 78  Weeks, 10"/>
+      <property name="Reference_1" value="C"/>
+      <property name="Value_1" value="C0603C105Z8VACTU"/>
+      <property name="Footprint_1" value="C0603"/>
+      <property name="Datasheet_1" value="https://content.kemet.com/datasheets/KEM_C1005_Y5V_SMD.pdf"/>
+      <property name="Height" value="0.87"/>
+      <property name="Manufacturer_Name" value="KEMET"/>
+      <property name="Manufacturer_Part_Number" value="C0603C105Z8VACTU"/>
+      <property name="Mouser Part Number" value="80-C0603C105Z8V"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/KEMET/C0603C105Z8VACTU?qs=F2dscFSegBYhJ9ezd9GTzA%3D%3D"/>
+      <property name="Arrow Part Number" value="C0603C105Z8VACTU"/>
+      <property name="Arrow Price/Stock" value="https://www.arrow.com/en/products/c0603c105z8vactu/kemet-corporation?region=nac"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>9309569b-5973-421f-a12a-54c6eeffb514</tstamps>
+    </comp>
+    <comp ref="CVCC-2">
+      <value>C1608X6S1C475K080AC</value>
+      <fields>
+        <field name="Arrow Part Number">C1608X6S1C475K080AC</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/c1608x6s1c475k080ac/tdk?region=nac</field>
+        <field name="Datasheet_1">https://product.tdk.com/info/en/catalog/datasheets/mlcc_commercial_midvoltage_en.pdf</field>
+        <field name="Footprint_1">CAPC1608X80N</field>
+        <field name="Height">0.8</field>
+        <field name="Manufacturer_Name">TDK</field>
+        <field name="Manufacturer_Part_Number">C1608X6S1C475K080AC</field>
+        <field name="Mouser Part Number">810-C1608X6S1C475K</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/TDK/C1608X6S1C475K080AC?qs=dfay7wIA1uELNO4%252B8xvBDw%3D%3D</field>
+        <field name="Reference_1">C</field>
+        <field name="Value_1">C1608X6S1C475K080AC</field>
+      </fields>
+      <libsource lib="C1608X6S1C475K080AC" part="C1608X6S1C475K080AC" description="MULTILAYER CERAMIC CHIP CAPACITORS, 1608, Commercial grade, general (Up to 75V)"/>
+      <property name="Reference_1" value="C"/>
+      <property name="Value_1" value="C1608X6S1C475K080AC"/>
+      <property name="Footprint_1" value="CAPC1608X80N"/>
+      <property name="Datasheet_1" value="https://product.tdk.com/info/en/catalog/datasheets/mlcc_commercial_midvoltage_en.pdf"/>
+      <property name="Height" value="0.8"/>
+      <property name="Manufacturer_Name" value="TDK"/>
+      <property name="Manufacturer_Part_Number" value="C1608X6S1C475K080AC"/>
+      <property name="Mouser Part Number" value="810-C1608X6S1C475K"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/TDK/C1608X6S1C475K080AC?qs=dfay7wIA1uELNO4%252B8xvBDw%3D%3D"/>
+      <property name="Arrow Part Number" value="C1608X6S1C475K080AC"/>
+      <property name="Arrow Price/Stock" value="https://www.arrow.com/en/products/c1608x6s1c475k080ac/tdk?region=nac"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>cdca97fa-5cd8-4240-b481-ed2950a5adc2</tstamps>
+    </comp>
+    <comp ref="CVCC1">
+      <value>C1608X6S1C475K080AC</value>
+      <fields>
+        <field name="Arrow Part Number">C1608X6S1C475K080AC</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/c1608x6s1c475k080ac/tdk?region=nac</field>
+        <field name="Datasheet_1">https://product.tdk.com/info/en/catalog/datasheets/mlcc_commercial_midvoltage_en.pdf</field>
+        <field name="Footprint_1">CAPC1608X80N</field>
+        <field name="Height">0.8</field>
+        <field name="Manufacturer_Name">TDK</field>
+        <field name="Manufacturer_Part_Number">C1608X6S1C475K080AC</field>
+        <field name="Mouser Part Number">810-C1608X6S1C475K</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/TDK/C1608X6S1C475K080AC?qs=dfay7wIA1uELNO4%252B8xvBDw%3D%3D</field>
+        <field name="Reference_1">C</field>
+        <field name="Value_1">C1608X6S1C475K080AC</field>
+      </fields>
+      <libsource lib="C1608X6S1C475K080AC" part="C1608X6S1C475K080AC" description="MULTILAYER CERAMIC CHIP CAPACITORS, 1608, Commercial grade, general (Up to 75V)"/>
+      <property name="Reference_1" value="C"/>
+      <property name="Value_1" value="C1608X6S1C475K080AC"/>
+      <property name="Footprint_1" value="CAPC1608X80N"/>
+      <property name="Datasheet_1" value="https://product.tdk.com/info/en/catalog/datasheets/mlcc_commercial_midvoltage_en.pdf"/>
+      <property name="Height" value="0.8"/>
+      <property name="Manufacturer_Name" value="TDK"/>
+      <property name="Manufacturer_Part_Number" value="C1608X6S1C475K080AC"/>
+      <property name="Mouser Part Number" value="810-C1608X6S1C475K"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/TDK/C1608X6S1C475K080AC?qs=dfay7wIA1uELNO4%252B8xvBDw%3D%3D"/>
+      <property name="Arrow Part Number" value="C1608X6S1C475K080AC"/>
+      <property name="Arrow Price/Stock" value="https://www.arrow.com/en/products/c1608x6s1c475k080ac/tdk?region=nac"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>420c164a-1573-4cac-a701-3e5c734bda85</tstamps>
+    </comp>
+    <comp ref="J5V1">
+      <value>Screw_Terminal_01x06</value>
+      <libsource lib="Connector" part="Screw_Terminal_01x06" description="Generic screw terminal, single row, 01x06, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>975e9432-630e-431d-8b26-c3c77f21a84f</tstamps>
+    </comp>
+    <comp ref="JA5-11">
+      <value>Screw_Terminal_01x07</value>
+      <libsource lib="Connector" part="Screw_Terminal_01x07" description="Generic screw terminal, single row, 01x07, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>ef939a6e-6a20-419d-b067-858cd5d32288</tstamps>
+    </comp>
+    <comp ref="JA23">
+      <value>Screw_Terminal_01x02</value>
+      <libsource lib="Connector" part="Screw_Terminal_01x02" description="Generic screw terminal, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>636b311b-d850-4da2-a6d7-1981d8f26485</tstamps>
+    </comp>
+    <comp ref="JARRAY1">
+      <value>1935161</value>
+      <footprint>digikey-footprints:Terminal_Block_D1.3mm_P5mm</footprint>
+      <datasheet>https://media.digikey.com/pdf/Data%20Sheets/Phoenix%20Contact%20PDFs/1935161.pdf</datasheet>
+      <fields>
+        <field name="Category">Connectors, Interconnects</field>
+        <field name="DK_Datasheet_Link">https://media.digikey.com/pdf/Data%20Sheets/Phoenix%20Contact%20PDFs/1935161.pdf</field>
+        <field name="DK_Detail_Page">/product-detail/en/phoenix-contact/1935161/277-1667-ND/568614</field>
+        <field name="Description">TERM BLK 2POS SIDE ENTRY 5MM PCB</field>
+        <field name="Digi-Key_PN">277-1667-ND</field>
+        <field name="Family">Terminal Blocks - Wire to Board</field>
+        <field name="MPN">1935161</field>
+        <field name="Manufacturer">Phoenix Contact</field>
+        <field name="Status">Active</field>
+      </fields>
+      <libsource lib="dk_Terminal-Blocks-Wire-to-Board" part="1935161" description="TERM BLK 2POS SIDE ENTRY 5MM PCB"/>
+      <property name="Digi-Key_PN" value="277-1667-ND"/>
+      <property name="MPN" value="1935161"/>
+      <property name="Category" value="Connectors, Interconnects"/>
+      <property name="Family" value="Terminal Blocks - Wire to Board"/>
+      <property name="DK_Datasheet_Link" value="https://media.digikey.com/pdf/Data%20Sheets/Phoenix%20Contact%20PDFs/1935161.pdf"/>
+      <property name="DK_Detail_Page" value="/product-detail/en/phoenix-contact/1935161/277-1667-ND/568614"/>
+      <property name="Description" value="TERM BLK 2POS SIDE ENTRY 5MM PCB"/>
+      <property name="Manufacturer" value="Phoenix Contact"/>
+      <property name="Status" value="Active"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>f4b34e37-16a1-4a0c-8d2b-167e11319b68</tstamps>
+    </comp>
+    <comp ref="JGND1">
+      <value>Screw_Terminal_01x06</value>
+      <libsource lib="Connector" part="Screw_Terminal_01x06" description="Generic screw terminal, single row, 01x06, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>ffce62be-41da-489a-bb4c-8a8a003501d2</tstamps>
+    </comp>
+    <comp ref="JPERIPH1">
+      <value>Screw_Terminal_01x04</value>
+      <libsource lib="Connector" part="Screw_Terminal_01x04" description="Generic screw terminal, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>87ec4e85-6b4c-409c-a795-ce60b3fe8437</tstamps>
+    </comp>
+    <comp ref="JSCL1">
+      <value>Screw_Terminal_01x03</value>
+      <libsource lib="Connector" part="Screw_Terminal_01x03" description="Generic screw terminal, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>51f6215c-e6aa-4888-84ee-225a6f3a7c46</tstamps>
+    </comp>
+    <comp ref="JSD1">
+      <value>Screw_Terminal_01x06</value>
+      <libsource lib="Connector" part="Screw_Terminal_01x06" description="Generic screw terminal, single row, 01x06, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>fe2ee49b-dde7-4423-917e-d9a465f7fd37</tstamps>
+    </comp>
+    <comp ref="JSDA1">
+      <value>Screw_Terminal_01x03</value>
+      <libsource lib="Connector" part="Screw_Terminal_01x03" description="Generic screw terminal, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>c9be18dc-5100-4f81-991d-fd6b4ee535d6</tstamps>
+    </comp>
+    <comp ref="L1">
+      <value>MSS1210-103MEB</value>
+      <fields>
+        <field name="Datasheet_1">https://g.componentsearchengine.com/Datasheets/34/MSS1210-103MEB.pdf</field>
+        <field name="Footprint_1">INDPM120120X1020N</field>
+        <field name="Height">10.2</field>
+        <field name="Manufacturer_Name">COILCRAFT</field>
+        <field name="Manufacturer_Part_Number">MSS1210-103MEB</field>
+        <field name="Mouser Part Number">994-MSS1210-103MEB</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Coilcraft/MSS1210-103MEB?qs=VJjuEbE9QBNwjoERzwkOMg%3D%3D</field>
+        <field name="Reference_1">L</field>
+        <field name="Value_1">MSS1210-103MEB</field>
+      </fields>
+      <libsource lib="MSS1210-103MEB" part="MSS1210-103MEB" description="Fixed Inductors MSS1210 AEC-Q200 10 uH 20 % 10 A"/>
+      <property name="Reference_1" value="L"/>
+      <property name="Value_1" value="MSS1210-103MEB"/>
+      <property name="Footprint_1" value="INDPM120120X1020N"/>
+      <property name="Datasheet_1" value="https://g.componentsearchengine.com/Datasheets/34/MSS1210-103MEB.pdf"/>
+      <property name="Height" value="10.2"/>
+      <property name="Manufacturer_Name" value="COILCRAFT"/>
+      <property name="Manufacturer_Part_Number" value="MSS1210-103MEB"/>
+      <property name="Mouser Part Number" value="994-MSS1210-103MEB"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/Coilcraft/MSS1210-103MEB?qs=VJjuEbE9QBNwjoERzwkOMg%3D%3D"/>
+      <property name="Arrow Part Number" value=""/>
+      <property name="Arrow Price/Stock" value=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>ba8704d2-9209-4be2-a682-435ada3e1ecb</tstamps>
+    </comp>
+    <comp ref="L1-2">
+      <value>SDR0403-4R7ML</value>
+      <fields>
+        <field name="Arrow Part Number">SDR0403-4R7ML</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/sdr0403-4r7ml/bourns?region=nac</field>
+        <field name="Datasheet_1">http://www.bourns.com/docs/Product-Datasheets/sdr0403.pdf</field>
+        <field name="Footprint_1">SDR0403</field>
+        <field name="Manufacturer_Name">Bourns</field>
+        <field name="Manufacturer_Part_Number">SDR0403-4R7ML</field>
+        <field name="Mouser Part Number">652-SDR0403-4R7ML</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Bourns/SDR0403-4R7ML?qs=xrpI9KL%2FXvtm2g7dmggyxA%3D%3D</field>
+        <field name="Reference_1">L</field>
+        <field name="Value_1">SDR0403-4R7ML</field>
+      </fields>
+      <libsource lib="SDR0403-4R7ML" part="SDR0403-4R7ML" description="SDR0403 SMD Power Inductors 4.7uH 20% Bourns SDR0403 Series Wire-wound SMD Inductor with a Ferrite Core, 4.7 uH +/-20% Wire-Wound 1.7A Idc Q:28"/>
+      <property name="Reference_1" value="L"/>
+      <property name="Value_1" value="SDR0403-4R7ML"/>
+      <property name="Footprint_1" value="SDR0403"/>
+      <property name="Datasheet_1" value="http://www.bourns.com/docs/Product-Datasheets/sdr0403.pdf"/>
+      <property name="Height" value=""/>
+      <property name="Manufacturer_Name" value="Bourns"/>
+      <property name="Manufacturer_Part_Number" value="SDR0403-4R7ML"/>
+      <property name="Mouser Part Number" value="652-SDR0403-4R7ML"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/Bourns/SDR0403-4R7ML?qs=xrpI9KL%2FXvtm2g7dmggyxA%3D%3D"/>
+      <property name="Arrow Part Number" value="SDR0403-4R7ML"/>
+      <property name="Arrow Price/Stock" value="https://www.arrow.com/en/products/sdr0403-4r7ml/bourns?region=nac"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>5eabc055-6d45-4a95-9405-a1c440a5b3a2</tstamps>
+    </comp>
+    <comp ref="Q1">
+      <value>IRLZ44N</value>
+      <fields>
+        <field name="Datasheet_1">https://www.mouser.com/catalog/specsheets/international rectifier_irlz44n.pdf</field>
+        <field name="Footprint_1">TO254P469X1042X1967-3P</field>
+        <field name="Height">4.69</field>
+        <field name="Manufacturer_Name">Infineon</field>
+        <field name="Manufacturer_Part_Number">IRLZ44N</field>
+        <field name="Mouser Part Number">N/A</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Infineon-IR/IRLZ44N?qs=zO0nedAqnNIAphT7g5cSVQ%3D%3D</field>
+        <field name="Reference_1">Q</field>
+        <field name="Value_1">IRLZ44N</field>
+      </fields>
+      <libsource lib="IRLZ44N" part="IRLZ44N" description="MOSFET MOSFET, 55V, 41A, 22 mOhm, 32 nC Qg, Logic Level, TO-220AB"/>
+      <property name="Reference_1" value="Q"/>
+      <property name="Value_1" value="IRLZ44N"/>
+      <property name="Footprint_1" value="TO254P469X1042X1967-3P"/>
+      <property name="Datasheet_1" value="https://www.mouser.com/catalog/specsheets/international rectifier_irlz44n.pdf"/>
+      <property name="Height" value="4.69"/>
+      <property name="Manufacturer_Name" value="Infineon"/>
+      <property name="Manufacturer_Part_Number" value="IRLZ44N"/>
+      <property name="Mouser Part Number" value="N/A"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/Infineon-IR/IRLZ44N?qs=zO0nedAqnNIAphT7g5cSVQ%3D%3D"/>
+      <property name="Arrow Part Number" value=""/>
+      <property name="Arrow Price/Stock" value=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>a616439b-046a-4ced-83b8-0d6db04ee13b</tstamps>
+    </comp>
+    <comp ref="RA41">
+      <value>ERJ-2RKF2400X</value>
+      <fields>
+        <field name="Arrow Part Number">ERJ-2RKF2400X</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/erj-2rkf2400x/panasonic?region=nac</field>
+        <field name="Datasheet_1">https://industrial.panasonic.com/cdbs/www-data/pdf/RDA0000/AOA0000C86.pdf</field>
+        <field name="Footprint_1">ERJ2RKD1004X</field>
+        <field name="Height">0.4</field>
+        <field name="Manufacturer_Name">Panasonic</field>
+        <field name="Manufacturer_Part_Number">ERJ-2RKF2400X</field>
+        <field name="Mouser Part Number">667-ERJ-2RKF2400X</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Panasonic/ERJ-2RKF2400X?qs=YMBIwoNQYdU72k3QMprnfQ%3D%3D</field>
+        <field name="Reference_1">R</field>
+        <field name="Value_1">ERJ-2RKF2400X</field>
+      </fields>
+      <libsource lib="ERJ-2RKF2400X" part="ERJ-2RKF2400X" description="Thick Film Resistors - SMD 0402 240ohms 1% AEC-Q200"/>
+      <property name="Reference_1" value="R"/>
+      <property name="Value_1" value="ERJ-2RKF2400X"/>
+      <property name="Footprint_1" value="ERJ2RKD1004X"/>
+      <property name="Datasheet_1" value="https://industrial.panasonic.com/cdbs/www-data/pdf/RDA0000/AOA0000C86.pdf"/>
+      <property name="Height" value="0.4"/>
+      <property name="Manufacturer_Name" value="Panasonic"/>
+      <property name="Manufacturer_Part_Number" value="ERJ-2RKF2400X"/>
+      <property name="Mouser Part Number" value="667-ERJ-2RKF2400X"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/Panasonic/ERJ-2RKF2400X?qs=YMBIwoNQYdU72k3QMprnfQ%3D%3D"/>
+      <property name="Arrow Part Number" value="ERJ-2RKF2400X"/>
+      <property name="Arrow Price/Stock" value="https://www.arrow.com/en/products/erj-2rkf2400x/panasonic?region=nac"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>c0da693f-b5fa-465e-bb27-e2d034b14cc8</tstamps>
+    </comp>
+    <comp ref="RA42">
+      <value>CRCW040210K0FKED</value>
+      <fields>
+        <field name="Arrow Part Number">CRCW040210K0FKED</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/crcw040210k0fked/vishay?region=nac</field>
+        <field name="Datasheet_1">http://www.vishay.com/docs/20035/dcrcwe3.pdf</field>
+        <field name="Footprint_1">RESC1005X40N</field>
+        <field name="Height">0.4</field>
+        <field name="Manufacturer_Name">Vishay</field>
+        <field name="Manufacturer_Part_Number">CRCW040210K0FKED</field>
+        <field name="Mouser Part Number">71-CRCW0402-10K-E3</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Vishay-Dale/CRCW040210K0FKED?qs=rlE3Te1NifyN3e8vvxacSw%3D%3D</field>
+        <field name="Reference_1">R</field>
+        <field name="Value_1">CRCW040210K0FKED</field>
+      </fields>
+      <libsource lib="CRCW040210K0FKED" part="CRCW040210K0FKED" description="CRCW0402 Resistor T/R 0.063W,1%,10K Vishay CRCW Series Thick Film Surface Mount Resistor 0402 Case 10k +/-1% 0.063W +/-100ppm/C"/>
+      <property name="Reference_1" value="R"/>
+      <property name="Value_1" value="CRCW040210K0FKED"/>
+      <property name="Footprint_1" value="RESC1005X40N"/>
+      <property name="Datasheet_1" value="http://www.vishay.com/docs/20035/dcrcwe3.pdf"/>
+      <property name="Height" value="0.4"/>
+      <property name="Manufacturer_Name" value="Vishay"/>
+      <property name="Manufacturer_Part_Number" value="CRCW040210K0FKED"/>
+      <property name="Mouser Part Number" value="71-CRCW0402-10K-E3"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/Vishay-Dale/CRCW040210K0FKED?qs=rlE3Te1NifyN3e8vvxacSw%3D%3D"/>
+      <property name="Arrow Part Number" value="CRCW040210K0FKED"/>
+      <property name="Arrow Price/Stock" value="https://www.arrow.com/en/products/crcw040210k0fked/vishay?region=nac"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>9067cff9-f9b8-429e-a9dd-4403256256d1</tstamps>
+    </comp>
+    <comp ref="RCOMP-2">
+      <value>CRCW040213K0FKED</value>
+      <fields>
+        <field name="Arrow Part Number">CRCW040213K0FKED</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/crcw040213k0fked/vishay?region=nac</field>
+        <field name="Datasheet_1">http://www.vishay.com/docs/20035/dcrcwe3.pdf</field>
+        <field name="Footprint_1">RESC1005X40N</field>
+        <field name="Height">0.4</field>
+        <field name="Manufacturer_Name">Vishay</field>
+        <field name="Manufacturer_Part_Number">CRCW040213K0FKED</field>
+        <field name="Mouser Part Number">71-CRCW0402-13K-E3</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Vishay-Dale/CRCW040213K0FKED?qs=8wskyPz2qw0HXggAygo%252BmA%3D%3D</field>
+        <field name="Reference_1">R</field>
+        <field name="Value_1">CRCW040213K0FKED</field>
+      </fields>
+      <libsource lib="CRCW040213K0FKED" part="CRCW040213K0FKED" description="Vishay CRCW Series Thick Film Surface Mount Resistor 0402 Case 13k +/-1% 0.063W +/-100ppm/C"/>
+      <property name="Reference_1" value="R"/>
+      <property name="Value_1" value="CRCW040213K0FKED"/>
+      <property name="Footprint_1" value="RESC1005X40N"/>
+      <property name="Datasheet_1" value="http://www.vishay.com/docs/20035/dcrcwe3.pdf"/>
+      <property name="Height" value="0.4"/>
+      <property name="Manufacturer_Name" value="Vishay"/>
+      <property name="Manufacturer_Part_Number" value="CRCW040213K0FKED"/>
+      <property name="Mouser Part Number" value="71-CRCW0402-13K-E3"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/Vishay-Dale/CRCW040213K0FKED?qs=8wskyPz2qw0HXggAygo%252BmA%3D%3D"/>
+      <property name="Arrow Part Number" value="CRCW040213K0FKED"/>
+      <property name="Arrow Price/Stock" value="https://www.arrow.com/en/products/crcw040213k0fked/vishay?region=nac"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>1a13bfe7-2fbf-4394-8820-85c00928868b</tstamps>
+    </comp>
+    <comp ref="RCOMP1">
+      <value>CRCW0402301RFKED</value>
+      <fields>
+        <field name="Datasheet_1">http://www.vishay.com/docs/20035/dcrcwe3.pdf</field>
+        <field name="Footprint_1">RESC1005X40N</field>
+        <field name="Height">0.4</field>
+        <field name="Manufacturer_Name">Vishay</field>
+        <field name="Manufacturer_Part_Number">CRCW0402301RFKED</field>
+        <field name="Mouser Part Number">71-CRCW0402-301-E3</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Vishay-Dale/CRCW0402301RFKED?qs=TNtMkGKFKOyEoDLmqluwsQ%3D%3D</field>
+        <field name="Reference_1">R</field>
+        <field name="Value_1">CRCW0402301RFKED</field>
+      </fields>
+      <libsource lib="CRCW0402301RFKED" part="CRCW0402301RFKED" description="Vishay CRCW Series Thick Film Surface Mount Resistor 402 Case 301 +/-1% 0.063W +/-100ppm/C"/>
+      <property name="Reference_1" value="R"/>
+      <property name="Value_1" value="CRCW0402301RFKED"/>
+      <property name="Footprint_1" value="RESC1005X40N"/>
+      <property name="Datasheet_1" value="http://www.vishay.com/docs/20035/dcrcwe3.pdf"/>
+      <property name="Height" value="0.4"/>
+      <property name="Manufacturer_Name" value="Vishay"/>
+      <property name="Manufacturer_Part_Number" value="CRCW0402301RFKED"/>
+      <property name="Mouser Part Number" value="71-CRCW0402-301-E3"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/Vishay-Dale/CRCW0402301RFKED?qs=TNtMkGKFKOyEoDLmqluwsQ%3D%3D"/>
+      <property name="Arrow Part Number" value=""/>
+      <property name="Arrow Price/Stock" value=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>faabdae3-8eb3-4ea2-972d-1d20e480c4f7</tstamps>
+    </comp>
+    <comp ref="RENB-2">
+      <value>CRCW0402100KFKED</value>
+      <fields>
+        <field name="Arrow Part Number">CRCW0402100KFKED</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/crcw0402100kfked/vishay?region=nac</field>
+        <field name="Datasheet_1">http://www.vishay.com/docs/20035/dcrcwe3.pdf</field>
+        <field name="Footprint_1">RESC1005X40N</field>
+        <field name="Height">0.4</field>
+        <field name="Manufacturer_Name">Vishay</field>
+        <field name="Manufacturer_Part_Number">CRCW0402100KFKED</field>
+        <field name="Mouser Part Number">71-CRCW0402-100K-E3</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Vishay-Dale/CRCW0402100KFKED?qs=OlqPY1CiralZGKRwQ4Glcg%3D%3D</field>
+        <field name="Reference_1">R</field>
+        <field name="Value_1">CRCW0402100KFKED</field>
+      </fields>
+      <libsource lib="CRCW0402100KFKED" part="CRCW0402100KFKED" description="CRCW0402 Resistor T/R 0.063W,1%,100K Vishay CRCW Series Thick Film Surface Mount Resistor 0402 Case 100k +/-1% 0.063W +/-100ppm/C"/>
+      <property name="Reference_1" value="R"/>
+      <property name="Value_1" value="CRCW0402100KFKED"/>
+      <property name="Footprint_1" value="RESC1005X40N"/>
+      <property name="Datasheet_1" value="http://www.vishay.com/docs/20035/dcrcwe3.pdf"/>
+      <property name="Height" value="0.4"/>
+      <property name="Manufacturer_Name" value="Vishay"/>
+      <property name="Manufacturer_Part_Number" value="CRCW0402100KFKED"/>
+      <property name="Mouser Part Number" value="71-CRCW0402-100K-E3"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/Vishay-Dale/CRCW0402100KFKED?qs=OlqPY1CiralZGKRwQ4Glcg%3D%3D"/>
+      <property name="Arrow Part Number" value="CRCW0402100KFKED"/>
+      <property name="Arrow Price/Stock" value="https://www.arrow.com/en/products/crcw0402100kfked/vishay?region=nac"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>9d6aba56-63f3-4e81-8568-4beb3e39e4fa</tstamps>
+    </comp>
+    <comp ref="RENB1">
+      <value>CRCW0402100KFKED</value>
+      <fields>
+        <field name="Arrow Part Number">CRCW0402100KFKED</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/crcw0402100kfked/vishay?region=nac</field>
+        <field name="Datasheet_1">http://www.vishay.com/docs/20035/dcrcwe3.pdf</field>
+        <field name="Footprint_1">RESC1005X40N</field>
+        <field name="Height">0.4</field>
+        <field name="Manufacturer_Name">Vishay</field>
+        <field name="Manufacturer_Part_Number">CRCW0402100KFKED</field>
+        <field name="Mouser Part Number">71-CRCW0402-100K-E3</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Vishay-Dale/CRCW0402100KFKED?qs=OlqPY1CiralZGKRwQ4Glcg%3D%3D</field>
+        <field name="Reference_1">R</field>
+        <field name="Value_1">CRCW0402100KFKED</field>
+      </fields>
+      <libsource lib="CRCW0402100KFKED" part="CRCW0402100KFKED" description="CRCW0402 Resistor T/R 0.063W,1%,100K Vishay CRCW Series Thick Film Surface Mount Resistor 0402 Case 100k +/-1% 0.063W +/-100ppm/C"/>
+      <property name="Reference_1" value="R"/>
+      <property name="Value_1" value="CRCW0402100KFKED"/>
+      <property name="Footprint_1" value="RESC1005X40N"/>
+      <property name="Datasheet_1" value="http://www.vishay.com/docs/20035/dcrcwe3.pdf"/>
+      <property name="Height" value="0.4"/>
+      <property name="Manufacturer_Name" value="Vishay"/>
+      <property name="Manufacturer_Part_Number" value="CRCW0402100KFKED"/>
+      <property name="Mouser Part Number" value="71-CRCW0402-100K-E3"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/Vishay-Dale/CRCW0402100KFKED?qs=OlqPY1CiralZGKRwQ4Glcg%3D%3D"/>
+      <property name="Arrow Part Number" value="CRCW0402100KFKED"/>
+      <property name="Arrow Price/Stock" value="https://www.arrow.com/en/products/crcw0402100kfked/vishay?region=nac"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>3f113187-c7f0-471e-9f8b-f8f7fe5c6964</tstamps>
+    </comp>
+    <comp ref="RENT-2">
+      <value>CRCW0402301KFKED</value>
+      <fields>
+        <field name="Arrow Part Number">CRCW0402301KFKED</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/crcw0402301kfked/vishay</field>
+        <field name="Datasheet_1">http://www.vishay.com/docs/20035/dcrcwe3.pdf</field>
+        <field name="Footprint_1">RESC1005X40N</field>
+        <field name="Height">0.4</field>
+        <field name="Manufacturer_Name">Vishay</field>
+        <field name="Manufacturer_Part_Number">CRCW0402301KFKED</field>
+        <field name="Mouser Part Number">71-CRCW0402-301K-E3</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Vishay-Dale/CRCW0402301KFKED/?qs=TNtMkGKFKOwT423%2FwrBwyQ%3D%3D</field>
+        <field name="Reference_1">R</field>
+        <field name="Value_1">CRCW0402301KFKED</field>
+      </fields>
+      <libsource lib="CRCW0402301KFKED" part="CRCW0402301KFKED" description="Vishay CRCW Series Thick Film Surface Mount Resistor 0402 Case 301k +/-1% 0.063W +/-100ppm/C"/>
+      <property name="Reference_1" value="R"/>
+      <property name="Value_1" value="CRCW0402301KFKED"/>
+      <property name="Footprint_1" value="RESC1005X40N"/>
+      <property name="Datasheet_1" value="http://www.vishay.com/docs/20035/dcrcwe3.pdf"/>
+      <property name="Height" value="0.4"/>
+      <property name="Manufacturer_Name" value="Vishay"/>
+      <property name="Manufacturer_Part_Number" value="CRCW0402301KFKED"/>
+      <property name="Mouser Part Number" value="71-CRCW0402-301K-E3"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/Vishay-Dale/CRCW0402301KFKED/?qs=TNtMkGKFKOwT423%2FwrBwyQ%3D%3D"/>
+      <property name="Arrow Part Number" value="CRCW0402301KFKED"/>
+      <property name="Arrow Price/Stock" value="https://www.arrow.com/en/products/crcw0402301kfked/vishay"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>98d07d02-aee1-49ff-87c6-a0f40360de2a</tstamps>
+    </comp>
+    <comp ref="RENT1">
+      <value>CRCW0402301KFKED</value>
+      <fields>
+        <field name="Arrow Part Number">CRCW0402301KFKED</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/crcw0402301kfked/vishay</field>
+        <field name="Datasheet_1">http://www.vishay.com/docs/20035/dcrcwe3.pdf</field>
+        <field name="Footprint_1">RESC1005X40N</field>
+        <field name="Height">0.4</field>
+        <field name="Manufacturer_Name">Vishay</field>
+        <field name="Manufacturer_Part_Number">CRCW0402301KFKED</field>
+        <field name="Mouser Part Number">71-CRCW0402-301K-E3</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Vishay-Dale/CRCW0402301KFKED/?qs=TNtMkGKFKOwT423%2FwrBwyQ%3D%3D</field>
+        <field name="Reference_1">R</field>
+        <field name="Value_1">CRCW0402301KFKED</field>
+      </fields>
+      <libsource lib="CRCW0402301KFKED" part="CRCW0402301KFKED" description="Vishay CRCW Series Thick Film Surface Mount Resistor 0402 Case 301k +/-1% 0.063W +/-100ppm/C"/>
+      <property name="Reference_1" value="R"/>
+      <property name="Value_1" value="CRCW0402301KFKED"/>
+      <property name="Footprint_1" value="RESC1005X40N"/>
+      <property name="Datasheet_1" value="http://www.vishay.com/docs/20035/dcrcwe3.pdf"/>
+      <property name="Height" value="0.4"/>
+      <property name="Manufacturer_Name" value="Vishay"/>
+      <property name="Manufacturer_Part_Number" value="CRCW0402301KFKED"/>
+      <property name="Mouser Part Number" value="71-CRCW0402-301K-E3"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/Vishay-Dale/CRCW0402301KFKED/?qs=TNtMkGKFKOwT423%2FwrBwyQ%3D%3D"/>
+      <property name="Arrow Part Number" value="CRCW0402301KFKED"/>
+      <property name="Arrow Price/Stock" value="https://www.arrow.com/en/products/crcw0402301kfked/vishay"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>ebd7c22f-291f-477a-9ec7-bcb61f6df0e9</tstamps>
+    </comp>
+    <comp ref="RPU1">
+      <value>CRCW12104K70JNEA</value>
+      <fields>
+        <field name="Arrow Part Number">CRCW12104K70JNEA</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/crcw12104k70jnea/vishay</field>
+        <field name="Footprint_1">RESC3225X60N</field>
+        <field name="Height">0.6</field>
+        <field name="Manufacturer_Name">Vishay</field>
+        <field name="Manufacturer_Part_Number">CRCW12104K70JNEA</field>
+        <field name="Mouser Part Number">71-CRCW1210J-4.7K-E3</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Vishay-Dale/CRCW12104K70JNEA?qs=%2FqQFlUriJiy4FdqFuj0GnQ%3D%3D</field>
+        <field name="Reference_1">R</field>
+        <field name="Value_1">CRCW12104K70JNEA</field>
+      </fields>
+      <libsource lib="CRCW12104K70JNEA" part="CRCW12104K70JNEA" description="RESISTOR, 1210 4.7K Ohm +/-5% 0.5W"/>
+      <property name="Reference_1" value="R"/>
+      <property name="Value_1" value="CRCW12104K70JNEA"/>
+      <property name="Footprint_1" value="RESC3225X60N"/>
+      <property name="Datasheet_1" value=""/>
+      <property name="Height" value="0.6"/>
+      <property name="Manufacturer_Name" value="Vishay"/>
+      <property name="Manufacturer_Part_Number" value="CRCW12104K70JNEA"/>
+      <property name="Mouser Part Number" value="71-CRCW1210J-4.7K-E3"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/Vishay-Dale/CRCW12104K70JNEA?qs=%2FqQFlUriJiy4FdqFuj0GnQ%3D%3D"/>
+      <property name="Arrow Part Number" value="CRCW12104K70JNEA"/>
+      <property name="Arrow Price/Stock" value="https://www.arrow.com/en/products/crcw12104k70jnea/vishay"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>d8ffbd2b-e6a4-413c-98b8-81ebcfeee863</tstamps>
+    </comp>
+    <comp ref="RPU2">
+      <value>CRCW12104K70JNEA</value>
+      <fields>
+        <field name="Arrow Part Number">CRCW12104K70JNEA</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/crcw12104k70jnea/vishay</field>
+        <field name="Footprint_1">RESC3225X60N</field>
+        <field name="Height">0.6</field>
+        <field name="Manufacturer_Name">Vishay</field>
+        <field name="Manufacturer_Part_Number">CRCW12104K70JNEA</field>
+        <field name="Mouser Part Number">71-CRCW1210J-4.7K-E3</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Vishay-Dale/CRCW12104K70JNEA?qs=%2FqQFlUriJiy4FdqFuj0GnQ%3D%3D</field>
+        <field name="Reference_1">R</field>
+        <field name="Value_1">CRCW12104K70JNEA</field>
+      </fields>
+      <libsource lib="CRCW12104K70JNEA" part="CRCW12104K70JNEA" description="RESISTOR, 1210 4.7K Ohm +/-5% 0.5W"/>
+      <property name="Reference_1" value="R"/>
+      <property name="Value_1" value="CRCW12104K70JNEA"/>
+      <property name="Footprint_1" value="RESC3225X60N"/>
+      <property name="Datasheet_1" value=""/>
+      <property name="Height" value="0.6"/>
+      <property name="Manufacturer_Name" value="Vishay"/>
+      <property name="Manufacturer_Part_Number" value="CRCW12104K70JNEA"/>
+      <property name="Mouser Part Number" value="71-CRCW1210J-4.7K-E3"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/Vishay-Dale/CRCW12104K70JNEA?qs=%2FqQFlUriJiy4FdqFuj0GnQ%3D%3D"/>
+      <property name="Arrow Part Number" value="CRCW12104K70JNEA"/>
+      <property name="Arrow Price/Stock" value="https://www.arrow.com/en/products/crcw12104k70jnea/vishay"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>101ddb09-1b68-4dd0-91f6-ccc0636c8bb8</tstamps>
+    </comp>
+    <comp ref="RT-2">
+      <value>CRCW040248K7FKED</value>
+      <fields>
+        <field name="Arrow Part Number">CRCW040248K7FKED</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/crcw040248k7fked/vishay</field>
+        <field name="Datasheet_1">http://www.vishay.com/docs/20035/dcrcwe3.pdf</field>
+        <field name="Footprint_1">RESC1005X40N</field>
+        <field name="Height">0.4</field>
+        <field name="Manufacturer_Name">Vishay</field>
+        <field name="Manufacturer_Part_Number">CRCW040248K7FKED</field>
+        <field name="Mouser Part Number">71-CRCW0402-48.7K-E3</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Vishay-Dale/CRCW040248K7FKED?qs=hAuyw6LW%252BLjLERyYwOFdTQ%3D%3D</field>
+        <field name="Reference_1">R</field>
+        <field name="Value_1">CRCW040248K7FKED</field>
+      </fields>
+      <libsource lib="CRCW040248K7FKED" part="CRCW040248K7FKED" description="Vishay CRCW Series Thick Film Resistor 0402 Case 48.7k 1% 0.063W +/-100ppm/K"/>
+      <property name="Reference_1" value="R"/>
+      <property name="Value_1" value="CRCW040248K7FKED"/>
+      <property name="Footprint_1" value="RESC1005X40N"/>
+      <property name="Datasheet_1" value="http://www.vishay.com/docs/20035/dcrcwe3.pdf"/>
+      <property name="Height" value="0.4"/>
+      <property name="Manufacturer_Name" value="Vishay"/>
+      <property name="Manufacturer_Part_Number" value="CRCW040248K7FKED"/>
+      <property name="Mouser Part Number" value="71-CRCW0402-48.7K-E3"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/Vishay-Dale/CRCW040248K7FKED?qs=hAuyw6LW%252BLjLERyYwOFdTQ%3D%3D"/>
+      <property name="Arrow Part Number" value="CRCW040248K7FKED"/>
+      <property name="Arrow Price/Stock" value="https://www.arrow.com/en/products/crcw040248k7fked/vishay"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>b9e855e1-ac86-4619-9bb7-4363f64eea6f</tstamps>
+    </comp>
+    <comp ref="RT1">
+      <value>CRCW040248K7FKED</value>
+      <fields>
+        <field name="Arrow Part Number">CRCW040248K7FKED</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/crcw040248k7fked/vishay</field>
+        <field name="Datasheet_1">http://www.vishay.com/docs/20035/dcrcwe3.pdf</field>
+        <field name="Footprint_1">RESC1005X40N</field>
+        <field name="Height">0.4</field>
+        <field name="Manufacturer_Name">Vishay</field>
+        <field name="Manufacturer_Part_Number">CRCW040248K7FKED</field>
+        <field name="Mouser Part Number">71-CRCW0402-48.7K-E3</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Vishay-Dale/CRCW040248K7FKED?qs=hAuyw6LW%252BLjLERyYwOFdTQ%3D%3D</field>
+        <field name="Reference_1">R</field>
+        <field name="Value_1">CRCW040248K7FKED</field>
+      </fields>
+      <libsource lib="CRCW040248K7FKED" part="CRCW040248K7FKED" description="Vishay CRCW Series Thick Film Resistor 0402 Case 48.7k 1% 0.063W +/-100ppm/K"/>
+      <property name="Reference_1" value="R"/>
+      <property name="Value_1" value="CRCW040248K7FKED"/>
+      <property name="Footprint_1" value="RESC1005X40N"/>
+      <property name="Datasheet_1" value="http://www.vishay.com/docs/20035/dcrcwe3.pdf"/>
+      <property name="Height" value="0.4"/>
+      <property name="Manufacturer_Name" value="Vishay"/>
+      <property name="Manufacturer_Part_Number" value="CRCW040248K7FKED"/>
+      <property name="Mouser Part Number" value="71-CRCW0402-48.7K-E3"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/Vishay-Dale/CRCW040248K7FKED?qs=hAuyw6LW%252BLjLERyYwOFdTQ%3D%3D"/>
+      <property name="Arrow Part Number" value="CRCW040248K7FKED"/>
+      <property name="Arrow Price/Stock" value="https://www.arrow.com/en/products/crcw040248k7fked/vishay"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>c3f44fc8-2bbc-4b9c-a170-e5ea9cb88ede</tstamps>
+    </comp>
+    <comp ref="U1">
+      <value>TPS55289RYQR</value>
+      <fields>
+        <field name="Arrow Part Number">TPS55289RYQR</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/tps55289ryqr/texas-instruments?region=nac</field>
+        <field name="Datasheet_1">https://www.ti.com/lit/ds/symlink/tps55289.pdf?ts=1664818706180&amp;ref_url=https%253A%252F%252Fwww.ti.com%252Fproduct%252FTPS55289%252Fpart-details%252FTPS55289RYQR%253FkeyMatch%253DTPS55289RYQR</field>
+        <field name="Footprint_1">TPS55289RYQR</field>
+        <field name="Height">1</field>
+        <field name="Manufacturer_Name">Texas Instruments</field>
+        <field name="Manufacturer_Part_Number">TPS55289RYQR</field>
+        <field name="Mouser Part Number">595-TPS55289RYQR</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Texas-Instruments/TPS55289RYQR?qs=T%252BzbugeAwjhgaIN94Lbpjg%3D%3D</field>
+        <field name="Reference_1">15VREG</field>
+        <field name="Value_1">TPS55289RYQR</field>
+      </fields>
+      <libsource lib="TPS55289RYQR" part="TPS55289RYQR" description="30-V, 8-A buck-boost converter with IC interface"/>
+      <property name="Reference_1" value="15VREG"/>
+      <property name="Value_1" value="TPS55289RYQR"/>
+      <property name="Footprint_1" value="TPS55289RYQR"/>
+      <property name="Datasheet_1" value="https://www.ti.com/lit/ds/symlink/tps55289.pdf?ts=1664818706180&amp;ref_url=https%253A%252F%252Fwww.ti.com%252Fproduct%252FTPS55289%252Fpart-details%252FTPS55289RYQR%253FkeyMatch%253DTPS55289RYQR"/>
+      <property name="Height" value="1"/>
+      <property name="Manufacturer_Name" value="Texas Instruments"/>
+      <property name="Manufacturer_Part_Number" value="TPS55289RYQR"/>
+      <property name="Mouser Part Number" value="595-TPS55289RYQR"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/Texas-Instruments/TPS55289RYQR?qs=T%252BzbugeAwjhgaIN94Lbpjg%3D%3D"/>
+      <property name="Arrow Part Number" value="TPS55289RYQR"/>
+      <property name="Arrow Price/Stock" value="https://www.arrow.com/en/products/tps55289ryqr/texas-instruments?region=nac"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>0ccbb4a1-595b-46d9-9357-ab20f25a6ae4</tstamps>
+    </comp>
+    <comp ref="U2">
+      <value>TPS55289RYQR</value>
+      <fields>
+        <field name="Arrow Part Number">TPS55289RYQR</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/tps55289ryqr/texas-instruments?region=nac</field>
+        <field name="Datasheet_1">https://www.ti.com/lit/ds/symlink/tps55289.pdf?ts=1664818706180&amp;ref_url=https%253A%252F%252Fwww.ti.com%252Fproduct%252FTPS55289%252Fpart-details%252FTPS55289RYQR%253FkeyMatch%253DTPS55289RYQR</field>
+        <field name="Footprint_1">TPS55289RYQR</field>
+        <field name="Height">1</field>
+        <field name="Manufacturer_Name">Texas Instruments</field>
+        <field name="Manufacturer_Part_Number">TPS55289RYQR</field>
+        <field name="Mouser Part Number">595-TPS55289RYQR</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Texas-Instruments/TPS55289RYQR?qs=T%252BzbugeAwjhgaIN94Lbpjg%3D%3D</field>
+        <field name="Reference_1">5VREG</field>
+        <field name="Value_1">TPS55289RYQR</field>
+      </fields>
+      <libsource lib="TPS55289RYQR" part="TPS55289RYQR" description="30-V, 8-A buck-boost converter with IC interface"/>
+      <property name="Reference_1" value="5VREG"/>
+      <property name="Value_1" value="TPS55289RYQR"/>
+      <property name="Footprint_1" value="TPS55289RYQR"/>
+      <property name="Datasheet_1" value="https://www.ti.com/lit/ds/symlink/tps55289.pdf?ts=1664818706180&amp;ref_url=https%253A%252F%252Fwww.ti.com%252Fproduct%252FTPS55289%252Fpart-details%252FTPS55289RYQR%253FkeyMatch%253DTPS55289RYQR"/>
+      <property name="Height" value="1"/>
+      <property name="Manufacturer_Name" value="Texas Instruments"/>
+      <property name="Manufacturer_Part_Number" value="TPS55289RYQR"/>
+      <property name="Mouser Part Number" value="595-TPS55289RYQR"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/Texas-Instruments/TPS55289RYQR?qs=T%252BzbugeAwjhgaIN94Lbpjg%3D%3D"/>
+      <property name="Arrow Part Number" value="TPS55289RYQR"/>
+      <property name="Arrow Price/Stock" value="https://www.arrow.com/en/products/tps55289ryqr/texas-instruments?region=nac"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>a9ee4faa-5e7d-4494-99c4-c83d3a84209f</tstamps>
+    </comp>
+    <comp ref="U3">
+      <value>DS3231SN</value>
+      <fields>
+        <field name="Arrow Part Number">DS3231SN#</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/ds3231sn/analog-devices?region=nac</field>
+        <field name="Datasheet_1">https://datasheets.maximintegrated.com/en/ds/DS3231.pdf</field>
+        <field name="Footprint_1">SOIC127P1032X265-16N</field>
+        <field name="Height">2.65</field>
+        <field name="Manufacturer_Name">Analog Devices</field>
+        <field name="Manufacturer_Part_Number">DS3231SN#</field>
+        <field name="Mouser Part Number">700-DS3231SN#</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Analog-Devices-Maxim-Integrated/DS3231SN?qs=1eQvB6Dk1vhUlr8%2FOrV0Fw%3D%3D</field>
+        <field name="Reference_1">IC</field>
+        <field name="Value_1">DS3231SN</field>
+      </fields>
+      <libsource lib="DS3231SN" part="DS3231SN#" description="Real Time Clock Serial Maxim DS3231SN# Real Time Clock, Battery Backup, Calendar, Clock, I2C, 5.5 V, 16-Pin SOIC"/>
+      <property name="Reference_1" value="IC"/>
+      <property name="Value_1" value="DS3231SN"/>
+      <property name="Footprint_1" value="SOIC127P1032X265-16N"/>
+      <property name="Datasheet_1" value="https://datasheets.maximintegrated.com/en/ds/DS3231.pdf"/>
+      <property name="Height" value="2.65"/>
+      <property name="Manufacturer_Name" value="Analog Devices"/>
+      <property name="Manufacturer_Part_Number" value="DS3231SN#"/>
+      <property name="Mouser Part Number" value="700-DS3231SN#"/>
+      <property name="Mouser Price/Stock" value="https://www.mouser.co.uk/ProductDetail/Analog-Devices-Maxim-Integrated/DS3231SN?qs=1eQvB6Dk1vhUlr8%2FOrV0Fw%3D%3D"/>
+      <property name="Arrow Part Number" value="DS3231SN#"/>
+      <property name="Arrow Price/Stock" value="https://www.arrow.com/en/products/ds3231sn/analog-devices?region=nac"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>d11f572d-3956-47db-8c53-898b9ea73264</tstamps>
+    </comp>
+    <comp ref="UBAT1">
+      <value>BK-912-TR</value>
+      <fields>
+        <field name="Datasheet_1">https://www.memoryprotectiondevices.com/datasheets/BK-912-datasheet.pdf</field>
+        <field name="Footprint_1">BK912TR</field>
+        <field name="Height">4.32</field>
+        <field name="Manufacturer_Name">Memory Protection Devices</field>
+        <field name="Manufacturer_Part_Number">BK-912-TR</field>
+        <field name="Reference_1">U</field>
+        <field name="Value_1">BK-912-TR</field>
+      </fields>
+      <libsource lib="BK-912-TR" part="BK-912-TR" description="BATTERY RETAINER COIN 20MM SMD"/>
+      <property name="Reference_1" value="U"/>
+      <property name="Value_1" value="BK-912-TR"/>
+      <property name="Footprint_1" value="BK912TR"/>
+      <property name="Datasheet_1" value="https://www.memoryprotectiondevices.com/datasheets/BK-912-datasheet.pdf"/>
+      <property name="Height" value="4.32"/>
+      <property name="Manufacturer_Name" value="Memory Protection Devices"/>
+      <property name="Manufacturer_Part_Number" value="BK-912-TR"/>
+      <property name="Mouser Part Number" value=""/>
+      <property name="Mouser Price/Stock" value=""/>
+      <property name="Arrow Part Number" value=""/>
+      <property name="Arrow Price/Stock" value=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="controller_pcb.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>cf7b38b0-9ab1-421f-a598-6ee4a17ec382</tstamps>
+    </comp>
+  </components>
+  <libparts>
+    <libpart lib="10SVPC68MV" part="10SVPC68MV">
+      <description>Panasonic 68uF Polymer Capacitor 10V dc, Surface Mount - 10SVPC68MV</description>
+      <fields>
+        <field name="Value">10SVPC68MV</field>
+        <field name="Reference_1">C</field>
+        <field name="Value_1">10SVPC68MV</field>
+        <field name="Footprint_1">16SVF82M</field>
+        <field name="Datasheet_1">http://industrial.panasonic.com/cdbs/www-data/pdf/AAB8000/AAB8000C256.pdf</field>
+        <field name="Height">6</field>
+        <field name="Manufacturer_Name">Panasonic</field>
+        <field name="Manufacturer_Part_Number">10SVPC68MV</field>
+        <field name="Mouser Part Number">667-10SVPC68MV</field>
+        <field name="Mouser Price/Stock">https://www.mouser.com/Search/Refine.aspx?Keyword=667-10SVPC68MV</field>
+        <field name="Arrow Part Number">10SVPC68MV</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/10svpc68mv/panasonic</field>
+      </fields>
+      <pins>
+        <pin num="1" name="+" type="passive"/>
+        <pin num="2" name="-" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="25SVPF27MX" part="25SVPF27MX">
+      <description>Panasonic 27uF 25V dc Aluminium Polymer Capacitor, Surface Mount 5 Dia. x 5.9mm +105C 5mm</description>
+      <fields>
+        <field name="Value">25SVPF27MX</field>
+        <field name="Reference_1">C</field>
+        <field name="Value_1">25SVPF27MX</field>
+        <field name="Footprint_1">16SVF82M</field>
+        <field name="Datasheet_1">http://industrial.panasonic.com/cdbs/www-data/pdf/AAB8000/AAB8000C177.pdf</field>
+        <field name="Height">6</field>
+        <field name="Manufacturer_Name">Panasonic</field>
+        <field name="Manufacturer_Part_Number">25SVPF27MX</field>
+        <field name="Mouser Part Number">667-25SVPF27MX</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Panasonic/25SVPF27MX?qs=OE1iw1LrrPHs7V8AgrsYgQ%3D%3D</field>
+        <field name="Arrow Part Number">25SVPF27MX</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/25svpf27mx/panasonic?region=nac</field>
+      </fields>
+      <pins>
+        <pin num="1" name="+" type="passive"/>
+        <pin num="2" name="-" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="25SVPF47M" part="25SVPF47M">
+      <description>Panasonic 47uF 25 V dc Polymer Aluminium Electrolytic Capacitor C6, OS-CON Series 5000h 6.3 x 5.9mm</description>
+      <fields>
+        <field name="Value">25SVPF47M</field>
+        <field name="Reference_1">C</field>
+        <field name="Value_1">25SVPF47M</field>
+        <field name="Footprint_1">16SVF180M</field>
+        <field name="Datasheet_1">http://industrial.panasonic.com/cdbs/www-data/pdf/AAB8000/AAB8000C177.pdf</field>
+        <field name="Height">6</field>
+        <field name="Manufacturer_Name">Panasonic</field>
+        <field name="Manufacturer_Part_Number">25SVPF47M</field>
+        <field name="Mouser Part Number">667-25SVPF47M</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Panasonic/25SVPF47M?qs=OE1iw1LrrPH6vnYaLYl%2FJw%3D%3D</field>
+        <field name="Arrow Part Number">25SVPF47M</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/25svpf47m/panasonic?region=nac</field>
+      </fields>
+      <pins>
+        <pin num="1" name="+" type="passive"/>
+        <pin num="2" name="-" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="BK-912-TR" part="BK-912-TR">
+      <description>BATTERY RETAINER COIN 20MM SMD</description>
+      <fields>
+        <field name="Value">BK-912-TR</field>
+        <field name="Reference_1">U</field>
+        <field name="Value_1">BK-912-TR</field>
+        <field name="Footprint_1">BK912TR</field>
+        <field name="Datasheet_1">https://www.memoryprotectiondevices.com/datasheets/BK-912-datasheet.pdf</field>
+        <field name="Height">4.32</field>
+        <field name="Manufacturer_Name">Memory Protection Devices</field>
+        <field name="Manufacturer_Part_Number">BK-912-TR</field>
+      </fields>
+      <pins>
+        <pin num="1" name="+_1" type="passive"/>
+        <pin num="2" name="+_2" type="passive"/>
+        <pin num="3" name="-" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="C0603C105Z8VACTU" part="C0603C105Z8VACTU">
+      <description>SMD Comm Y5V, Ceramic, 1 uF, -20/+80%, 10 VDC, 25 VDC, 85C, -30C, Y5V, SMD, MLCC, General Purpose, Class III, 10 % , 50 MOhms, 6.5 mg, 0603, 1.6mm, 0.8mm, 0.8mm, 0.7mm, 0.35mm, 4000, 78  Weeks, 10</description>
+      <fields>
+        <field name="Value">C0603C105Z8VACTU</field>
+        <field name="Reference_1">C</field>
+        <field name="Value_1">C0603C105Z8VACTU</field>
+        <field name="Footprint_1">C0603</field>
+        <field name="Datasheet_1">https://content.kemet.com/datasheets/KEM_C1005_Y5V_SMD.pdf</field>
+        <field name="Height">0.87</field>
+        <field name="Manufacturer_Name">KEMET</field>
+        <field name="Manufacturer_Part_Number">C0603C105Z8VACTU</field>
+        <field name="Mouser Part Number">80-C0603C105Z8V</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/KEMET/C0603C105Z8VACTU?qs=F2dscFSegBYhJ9ezd9GTzA%3D%3D</field>
+        <field name="Arrow Part Number">C0603C105Z8VACTU</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/c0603c105z8vactu/kemet-corporation?region=nac</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="C0805C106K8PACTU" part="C0805C106K8PACTU">
+      <description>SMD Comm X5R, Ceramic, 10 uF, 10%, 10 VDC, 25 VDC, 85C, -55C, X5R, SMD, MLCC, Temperature Stable, Class II, 10 % , 10 MOhms, 21 mg, 0805, 2mm, 1.25mm, 1.25mm, 0.75mm, 0.5mm, 3000, 78  Weeks, 70</description>
+      <fields>
+        <field name="Value">C0805C106K8PACTU</field>
+        <field name="Reference_1">C</field>
+        <field name="Value_1">C0805C106K8PACTU</field>
+        <field name="Footprint_1">C0805</field>
+        <field name="Datasheet_1">https://content.kemet.com/datasheets/KEM_C1006_X5R_SMD.pdf</field>
+        <field name="Height">1.1</field>
+        <field name="Manufacturer_Name">KEMET</field>
+        <field name="Manufacturer_Part_Number">C0805C106K8PACTU</field>
+        <field name="Mouser Part Number">80-C0805C106K8P</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/KEMET/C0805C106K8PACTU?qs=Zpyg6gQUYs39C21BeavaKA%3D%3D</field>
+        <field name="Arrow Part Number">C0805C106K8PACTU</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/c0805c106k8pactu/kemet-corporation?region=nac</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="C1005X5R1V105K050BC" part="C1005X5R1V105K050BC">
+      <description>MULTILAYER CERAMIC CHIP CAPACITORS, 1005, Commercial grade, general (Up to 75V)</description>
+      <fields>
+        <field name="Value">C1005X5R1V105K050BC</field>
+        <field name="Reference_1">C</field>
+        <field name="Value_1">C1005X5R1V105K050BC</field>
+        <field name="Footprint_1">CAPC1005X55N</field>
+        <field name="Datasheet_1">https://product.tdk.com/info/en/catalog/datasheets/mlcc_commercial_midvoltage_en.pdf</field>
+        <field name="Height">0.55</field>
+        <field name="Manufacturer_Name">TDK</field>
+        <field name="Manufacturer_Part_Number">C1005X5R1V105K050BC</field>
+        <field name="Mouser Part Number">810-C1005X5R1V105K</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/TDK/C1005X5R1V105K050BC?qs=dfay7wIA1uGr1NSDQs%2Ftnw%3D%3D</field>
+        <field name="Arrow Part Number">C1005X5R1V105K050BC</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/c1005x5r1v105k050bc/tdk?region=nac</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="C1608X6S1C475K080AC" part="C1608X6S1C475K080AC">
+      <description>MULTILAYER CERAMIC CHIP CAPACITORS, 1608, Commercial grade, general (Up to 75V)</description>
+      <fields>
+        <field name="Value">C1608X6S1C475K080AC</field>
+        <field name="Reference_1">C</field>
+        <field name="Value_1">C1608X6S1C475K080AC</field>
+        <field name="Footprint_1">CAPC1608X80N</field>
+        <field name="Datasheet_1">https://product.tdk.com/info/en/catalog/datasheets/mlcc_commercial_midvoltage_en.pdf</field>
+        <field name="Height">0.8</field>
+        <field name="Manufacturer_Name">TDK</field>
+        <field name="Manufacturer_Part_Number">C1608X6S1C475K080AC</field>
+        <field name="Mouser Part Number">810-C1608X6S1C475K</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/TDK/C1608X6S1C475K080AC?qs=dfay7wIA1uELNO4%252B8xvBDw%3D%3D</field>
+        <field name="Arrow Part Number">C1608X6S1C475K080AC</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/c1608x6s1c475k080ac/tdk?region=nac</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="C2012X5R1V156M125AC" part="C2012X5R1V156M125AC">
+      <description>MULTILAYER CERAMIC CHIP CAPACITORS, 2012, Commercial grade, general (Up to 75V)</description>
+      <fields>
+        <field name="Value">C2012X5R1V156M125AC</field>
+        <field name="Reference_1">C</field>
+        <field name="Value_1">C2012X5R1V156M125AC</field>
+        <field name="Footprint_1">CAPC2012X145N</field>
+        <field name="Datasheet_1">https://product.tdk.com/info/en/catalog/datasheets/mlcc_commercial_midvoltage_en.pdf</field>
+        <field name="Height">1.45</field>
+        <field name="Manufacturer_Name">TDK</field>
+        <field name="Manufacturer_Part_Number">C2012X5R1V156M125AC</field>
+        <field name="Mouser Part Number">810-C2012X5R1V156M1C</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/TDK/C2012X5R1V156M125AC?qs=xLDY6iXSiQZGpZ5eDP6b8w%3D%3D</field>
+        <field name="Arrow Part Number">C2012X5R1V156M125AC</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/c2012x5r1v156m125ac/tdk?region=nac</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="C3225X7R1H106M250AC" part="C3225X7R1H106M250AC">
+      <description>TDK 1210 C 10uF Ceramic Multilayer Capacitor, 50 V dc, +125C, X7R Dielectric, +/-20%</description>
+      <fields>
+        <field name="Value">C3225X7R1H106M250AC</field>
+        <field name="Reference_1">C</field>
+        <field name="Value_1">C3225X7R1H106M250AC</field>
+        <field name="Footprint_1">CAPC3225X230N</field>
+        <field name="Datasheet_1">https://product.tdk.com/info/en/catalog/datasheets/mlcc_commercial_midvoltage_en.pdf</field>
+        <field name="Height">2.3</field>
+        <field name="Manufacturer_Name">TDK</field>
+        <field name="Manufacturer_Part_Number">C3225X7R1H106M250AC</field>
+        <field name="Mouser Part Number">810-C3225X7R1H106MAC</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/TDK/C3225X7R1H106M250AC?qs=6JAMGB%252BEdkwY95l8JqNSnw%3D%3D</field>
+        <field name="Arrow Part Number">C3225X7R1H106M250AC</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/c3225x7r1h106m250ac/tdk?region=nac</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CRCW0402100KFKED" part="CRCW0402100KFKED">
+      <description>CRCW0402 Resistor T/R 0.063W,1%,100K Vishay CRCW Series Thick Film Surface Mount Resistor 0402 Case 100k +/-1% 0.063W +/-100ppm/C</description>
+      <fields>
+        <field name="Value">CRCW0402100KFKED</field>
+        <field name="Reference_1">R</field>
+        <field name="Value_1">CRCW0402100KFKED</field>
+        <field name="Footprint_1">RESC1005X40N</field>
+        <field name="Datasheet_1">http://www.vishay.com/docs/20035/dcrcwe3.pdf</field>
+        <field name="Height">0.4</field>
+        <field name="Manufacturer_Name">Vishay</field>
+        <field name="Manufacturer_Part_Number">CRCW0402100KFKED</field>
+        <field name="Mouser Part Number">71-CRCW0402-100K-E3</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Vishay-Dale/CRCW0402100KFKED?qs=OlqPY1CiralZGKRwQ4Glcg%3D%3D</field>
+        <field name="Arrow Part Number">CRCW0402100KFKED</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/crcw0402100kfked/vishay?region=nac</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CRCW040210K0FKED" part="CRCW040210K0FKED">
+      <description>CRCW0402 Resistor T/R 0.063W,1%,10K Vishay CRCW Series Thick Film Surface Mount Resistor 0402 Case 10k +/-1% 0.063W +/-100ppm/C</description>
+      <fields>
+        <field name="Value">CRCW040210K0FKED</field>
+        <field name="Reference_1">R</field>
+        <field name="Value_1">CRCW040210K0FKED</field>
+        <field name="Footprint_1">RESC1005X40N</field>
+        <field name="Datasheet_1">http://www.vishay.com/docs/20035/dcrcwe3.pdf</field>
+        <field name="Height">0.4</field>
+        <field name="Manufacturer_Name">Vishay</field>
+        <field name="Manufacturer_Part_Number">CRCW040210K0FKED</field>
+        <field name="Mouser Part Number">71-CRCW0402-10K-E3</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Vishay-Dale/CRCW040210K0FKED?qs=rlE3Te1NifyN3e8vvxacSw%3D%3D</field>
+        <field name="Arrow Part Number">CRCW040210K0FKED</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/crcw040210k0fked/vishay?region=nac</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CRCW040213K0FKED" part="CRCW040213K0FKED">
+      <description>Vishay CRCW Series Thick Film Surface Mount Resistor 0402 Case 13k +/-1% 0.063W +/-100ppm/C</description>
+      <fields>
+        <field name="Value">CRCW040213K0FKED</field>
+        <field name="Reference_1">R</field>
+        <field name="Value_1">CRCW040213K0FKED</field>
+        <field name="Footprint_1">RESC1005X40N</field>
+        <field name="Datasheet_1">http://www.vishay.com/docs/20035/dcrcwe3.pdf</field>
+        <field name="Height">0.4</field>
+        <field name="Manufacturer_Name">Vishay</field>
+        <field name="Manufacturer_Part_Number">CRCW040213K0FKED</field>
+        <field name="Mouser Part Number">71-CRCW0402-13K-E3</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Vishay-Dale/CRCW040213K0FKED?qs=8wskyPz2qw0HXggAygo%252BmA%3D%3D</field>
+        <field name="Arrow Part Number">CRCW040213K0FKED</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/crcw040213k0fked/vishay?region=nac</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CRCW0402301KFKED" part="CRCW0402301KFKED">
+      <description>Vishay CRCW Series Thick Film Surface Mount Resistor 0402 Case 301k +/-1% 0.063W +/-100ppm/C</description>
+      <fields>
+        <field name="Value">CRCW0402301KFKED</field>
+        <field name="Reference_1">R</field>
+        <field name="Value_1">CRCW0402301KFKED</field>
+        <field name="Footprint_1">RESC1005X40N</field>
+        <field name="Datasheet_1">http://www.vishay.com/docs/20035/dcrcwe3.pdf</field>
+        <field name="Height">0.4</field>
+        <field name="Manufacturer_Name">Vishay</field>
+        <field name="Manufacturer_Part_Number">CRCW0402301KFKED</field>
+        <field name="Mouser Part Number">71-CRCW0402-301K-E3</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Vishay-Dale/CRCW0402301KFKED/?qs=TNtMkGKFKOwT423%2FwrBwyQ%3D%3D</field>
+        <field name="Arrow Part Number">CRCW0402301KFKED</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/crcw0402301kfked/vishay</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CRCW0402301RFKED" part="CRCW0402301RFKED">
+      <description>Vishay CRCW Series Thick Film Surface Mount Resistor 402 Case 301 +/-1% 0.063W +/-100ppm/C</description>
+      <fields>
+        <field name="Value">CRCW0402301RFKED</field>
+        <field name="Reference_1">R</field>
+        <field name="Value_1">CRCW0402301RFKED</field>
+        <field name="Footprint_1">RESC1005X40N</field>
+        <field name="Datasheet_1">http://www.vishay.com/docs/20035/dcrcwe3.pdf</field>
+        <field name="Height">0.4</field>
+        <field name="Manufacturer_Name">Vishay</field>
+        <field name="Manufacturer_Part_Number">CRCW0402301RFKED</field>
+        <field name="Mouser Part Number">71-CRCW0402-301-E3</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Vishay-Dale/CRCW0402301RFKED?qs=TNtMkGKFKOyEoDLmqluwsQ%3D%3D</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CRCW040248K7FKED" part="CRCW040248K7FKED">
+      <description>Vishay CRCW Series Thick Film Resistor 0402 Case 48.7k 1% 0.063W +/-100ppm/K</description>
+      <fields>
+        <field name="Value">CRCW040248K7FKED</field>
+        <field name="Reference_1">R</field>
+        <field name="Value_1">CRCW040248K7FKED</field>
+        <field name="Footprint_1">RESC1005X40N</field>
+        <field name="Datasheet_1">http://www.vishay.com/docs/20035/dcrcwe3.pdf</field>
+        <field name="Height">0.4</field>
+        <field name="Manufacturer_Name">Vishay</field>
+        <field name="Manufacturer_Part_Number">CRCW040248K7FKED</field>
+        <field name="Mouser Part Number">71-CRCW0402-48.7K-E3</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Vishay-Dale/CRCW040248K7FKED?qs=hAuyw6LW%252BLjLERyYwOFdTQ%3D%3D</field>
+        <field name="Arrow Part Number">CRCW040248K7FKED</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/crcw040248k7fked/vishay</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CRCW12104K70JNEA" part="CRCW12104K70JNEA">
+      <description>RESISTOR, 1210 4.7K Ohm +/-5% 0.5W</description>
+      <fields>
+        <field name="Value">CRCW12104K70JNEA</field>
+        <field name="Reference_1">R</field>
+        <field name="Value_1">CRCW12104K70JNEA</field>
+        <field name="Footprint_1">RESC3225X60N</field>
+        <field name="Height">0.6</field>
+        <field name="Manufacturer_Name">Vishay</field>
+        <field name="Manufacturer_Part_Number">CRCW12104K70JNEA</field>
+        <field name="Mouser Part Number">71-CRCW1210J-4.7K-E3</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Vishay-Dale/CRCW12104K70JNEA?qs=%2FqQFlUriJiy4FdqFuj0GnQ%3D%3D</field>
+        <field name="Arrow Part Number">CRCW12104K70JNEA</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/crcw12104k70jnea/vishay</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Connector" part="Screw_Terminal_01x02">
+      <description>Generic screw terminal, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>TerminalBlock*:*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">Screw_Terminal_01x02</field>
+        <field name="Datasheet">~</field>
+      </fields>
+      <pins>
+        <pin num="1" name="Pin_1" type="passive"/>
+        <pin num="2" name="Pin_2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Connector" part="Screw_Terminal_01x03">
+      <description>Generic screw terminal, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>TerminalBlock*:*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">Screw_Terminal_01x03</field>
+        <field name="Datasheet">~</field>
+      </fields>
+      <pins>
+        <pin num="1" name="Pin_1" type="passive"/>
+        <pin num="2" name="Pin_2" type="passive"/>
+        <pin num="3" name="Pin_3" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Connector" part="Screw_Terminal_01x04">
+      <description>Generic screw terminal, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>TerminalBlock*:*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">Screw_Terminal_01x04</field>
+        <field name="Datasheet">~</field>
+      </fields>
+      <pins>
+        <pin num="1" name="Pin_1" type="passive"/>
+        <pin num="2" name="Pin_2" type="passive"/>
+        <pin num="3" name="Pin_3" type="passive"/>
+        <pin num="4" name="Pin_4" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Connector" part="Screw_Terminal_01x06">
+      <description>Generic screw terminal, single row, 01x06, script generated (kicad-library-utils/schlib/autogen/connector/)</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>TerminalBlock*:*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">Screw_Terminal_01x06</field>
+        <field name="Datasheet">~</field>
+      </fields>
+      <pins>
+        <pin num="1" name="Pin_1" type="passive"/>
+        <pin num="2" name="Pin_2" type="passive"/>
+        <pin num="3" name="Pin_3" type="passive"/>
+        <pin num="4" name="Pin_4" type="passive"/>
+        <pin num="5" name="Pin_5" type="passive"/>
+        <pin num="6" name="Pin_6" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Connector" part="Screw_Terminal_01x07">
+      <description>Generic screw terminal, single row, 01x07, script generated (kicad-library-utils/schlib/autogen/connector/)</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>TerminalBlock*:*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">Screw_Terminal_01x07</field>
+        <field name="Datasheet">~</field>
+      </fields>
+      <pins>
+        <pin num="1" name="Pin_1" type="passive"/>
+        <pin num="2" name="Pin_2" type="passive"/>
+        <pin num="3" name="Pin_3" type="passive"/>
+        <pin num="4" name="Pin_4" type="passive"/>
+        <pin num="5" name="Pin_5" type="passive"/>
+        <pin num="6" name="Pin_6" type="passive"/>
+        <pin num="7" name="Pin_7" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="DS3231SN" part="DS3231SN#">
+      <description>Real Time Clock Serial Maxim DS3231SN# Real Time Clock, Battery Backup, Calendar, Clock, I2C, 5.5 V, 16-Pin SOIC</description>
+      <fields>
+        <field name="Value">DS3231SN#</field>
+        <field name="Reference_1">IC</field>
+        <field name="Value_1">DS3231SN#</field>
+        <field name="Footprint_1">SOIC127P1032X265-16N</field>
+        <field name="Datasheet_1">https://datasheets.maximintegrated.com/en/ds/DS3231.pdf</field>
+        <field name="Height">2.65</field>
+        <field name="Manufacturer_Name">Analog Devices</field>
+        <field name="Manufacturer_Part_Number">DS3231SN#</field>
+        <field name="Mouser Part Number">700-DS3231SN#</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Analog-Devices-Maxim-Integrated/DS3231SN?qs=1eQvB6Dk1vhUlr8%2FOrV0Fw%3D%3D</field>
+        <field name="Arrow Part Number">DS3231SN#</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/ds3231sn/analog-devices?region=nac</field>
+      </fields>
+      <pins>
+        <pin num="1" name="32KHZ" type="passive"/>
+        <pin num="2" name="VCC" type="passive"/>
+        <pin num="3" name="~{INT}/SQW" type="passive"/>
+        <pin num="4" name="~{RST}" type="passive"/>
+        <pin num="5" name="N.C._1" type="passive"/>
+        <pin num="6" name="N.C._2" type="passive"/>
+        <pin num="7" name="N.C._3" type="passive"/>
+        <pin num="8" name="N.C._4" type="passive"/>
+        <pin num="9" name="N.C._5" type="passive"/>
+        <pin num="10" name="N.C._6" type="passive"/>
+        <pin num="11" name="N.C._7" type="passive"/>
+        <pin num="12" name="N.C._8" type="passive"/>
+        <pin num="13" name="GND" type="passive"/>
+        <pin num="14" name="VBAT" type="passive"/>
+        <pin num="15" name="SDA" type="passive"/>
+        <pin num="16" name="SCL" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="EEE-FK1V101P" part="EEE-FK1V101P">
+      <description>Aluminum Electrolytic Capacitors - SMD 100uF 35V</description>
+      <fields>
+        <field name="Value">EEE-FK1V101P</field>
+        <field name="Reference_1">C</field>
+        <field name="Value_1">EEE-FK1V101P</field>
+        <field name="Footprint_1">EEHZT1E331UP</field>
+        <field name="Datasheet_1">http://industrial.panasonic.com/cdbs/www-data/pdf/RDE0000/ABA0000C1181.pdf</field>
+        <field name="Height">10.8</field>
+        <field name="Manufacturer_Name">Panasonic</field>
+        <field name="Manufacturer_Part_Number">EEE-FK1V101P</field>
+        <field name="Mouser Part Number">667-EEE-FK1V101P</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Panasonic/EEE-FK1V101P?qs=qE6bgDGEOCsMXxs4z7sT2w%3D%3D</field>
+        <field name="Arrow Part Number">EEE-FK1V101P</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/eeefk1v101p/panasonic?region=nac</field>
+      </fields>
+      <pins>
+        <pin num="1" name="+" type="passive"/>
+        <pin num="2" name="-" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="EMK107B7104KA-T" part="EMK107B7104KA-T">
+      <description>EMK107B7104KA-T 0.1F +/-10% 16V Ceramic Capacitor X7R 0603</description>
+      <fields>
+        <field name="Value">EMK107B7104KA-T</field>
+        <field name="Reference_1">C</field>
+        <field name="Value_1">EMK107B7104KA-T</field>
+        <field name="Footprint_1">CAPC1608X95N</field>
+        <field name="Datasheet_1">http://www.farnell.com/datasheets/746258.pdf</field>
+        <field name="Height">0.95</field>
+        <field name="Manufacturer_Name">TAIYO YUDEN</field>
+        <field name="Manufacturer_Part_Number">EMK107B7104KA-T</field>
+        <field name="Mouser Part Number">963-EMK107B7104KA-T</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/TAIYO-YUDEN/EMK107B7104KA-T?qs=I6KAKw0tg2ybqzX8hKPgfw%3D%3D</field>
+        <field name="Arrow Part Number">EMK107B7104KA-T</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/emk107b7104ka-t/taiyo-yuden</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="ERJ-2RKF2400X" part="ERJ-2RKF2400X">
+      <description>Thick Film Resistors - SMD 0402 240ohms 1% AEC-Q200</description>
+      <fields>
+        <field name="Value">ERJ-2RKF2400X</field>
+        <field name="Reference_1">R</field>
+        <field name="Value_1">ERJ-2RKF2400X</field>
+        <field name="Footprint_1">ERJ2RKD1004X</field>
+        <field name="Datasheet_1">https://industrial.panasonic.com/cdbs/www-data/pdf/RDA0000/AOA0000C86.pdf</field>
+        <field name="Height">0.4</field>
+        <field name="Manufacturer_Name">Panasonic</field>
+        <field name="Manufacturer_Part_Number">ERJ-2RKF2400X</field>
+        <field name="Mouser Part Number">667-ERJ-2RKF2400X</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Panasonic/ERJ-2RKF2400X?qs=YMBIwoNQYdU72k3QMprnfQ%3D%3D</field>
+        <field name="Arrow Part Number">ERJ-2RKF2400X</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/erj-2rkf2400x/panasonic?region=nac</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="GRM155R70J104KA01D" part="GRM155R70J104KA01D">
+      <description>Capacitor MLCC GRM 0402 100nF 6.3V X7R Murata 0402 GRM 100nF Ceramic Multilayer Capacitor, 6.3 V dc, +125degC, X7R Dielectric,  /-10% SMD</description>
+      <fields>
+        <field name="Value">GRM155R70J104KA01D</field>
+        <field name="Reference_1">C</field>
+        <field name="Value_1">GRM155R70J104KA01D</field>
+        <field name="Footprint_1">CAPC1005X55N</field>
+        <field name="Datasheet_1">http://www.murata.com/~/media/webrenewal/support/library/catalog/products/capacitor/mlcc/c02e.pdf</field>
+        <field name="Height">0.55</field>
+        <field name="Manufacturer_Name">Murata Electronics</field>
+        <field name="Manufacturer_Part_Number">GRM155R70J104KA01D</field>
+        <field name="Mouser Part Number">81-GRM155R70J104KA1D</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Murata-Electronics/GRM155R70J104KA01D?qs=y02iAgv9n61EgJSmMyZ7gQ%3D%3D</field>
+        <field name="Arrow Part Number">GRM155R70J104KA01D</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/grm155r70j104ka01d/murata-manufacturing?region=nac</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="GRM155R70J473KA01D" part="GRM155R70J473KA01D">
+      <description>Multilayer Ceramic Capacitors MLCC - SMD/SMT 0.047uF 6.3VDC 10%</description>
+      <fields>
+        <field name="Value">GRM155R70J473KA01D</field>
+        <field name="Reference_1">C</field>
+        <field name="Value_1">GRM155R70J473KA01D</field>
+        <field name="Footprint_1">CAPC1005X55N</field>
+        <field name="Datasheet_1">http://www.murata.com/~/media/webrenewal/support/library/catalog/products/capacitor/mlcc/c02e.pdf</field>
+        <field name="Height">0.55</field>
+        <field name="Manufacturer_Name">Murata Electronics</field>
+        <field name="Manufacturer_Part_Number">GRM155R70J473KA01D</field>
+        <field name="Mouser Part Number">81-GRM155R70J473KA1D</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Murata-Electronics/GRM155R70J473KA01D?qs=y02iAgv9n63DJ80zfdDo8g%3D%3D</field>
+        <field name="Arrow Part Number">GRM155R70J473KA01D</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/grm155r70j473ka01d/murata-manufacturing?region=nac</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="IRLZ44N" part="IRLZ44N">
+      <description>MOSFET MOSFET, 55V, 41A, 22 mOhm, 32 nC Qg, Logic Level, TO-220AB</description>
+      <fields>
+        <field name="Value">IRLZ44N</field>
+        <field name="Reference_1">Q</field>
+        <field name="Value_1">IRLZ44N</field>
+        <field name="Footprint_1">TO254P469X1042X1967-3P</field>
+        <field name="Datasheet_1">https://www.mouser.com/catalog/specsheets/international rectifier_irlz44n.pdf</field>
+        <field name="Height">4.69</field>
+        <field name="Manufacturer_Name">Infineon</field>
+        <field name="Manufacturer_Part_Number">IRLZ44N</field>
+        <field name="Mouser Part Number">N/A</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Infineon-IR/IRLZ44N?qs=zO0nedAqnNIAphT7g5cSVQ%3D%3D</field>
+      </fields>
+      <pins>
+        <pin num="1" name="G" type="passive"/>
+        <pin num="2" name="D" type="passive"/>
+        <pin num="3" name="S" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="MSS1210-103MEB" part="MSS1210-103MEB">
+      <description>Fixed Inductors MSS1210 AEC-Q200 10 uH 20 % 10 A</description>
+      <fields>
+        <field name="Value">MSS1210-103MEB</field>
+        <field name="Reference_1">L</field>
+        <field name="Value_1">MSS1210-103MEB</field>
+        <field name="Footprint_1">INDPM120120X1020N</field>
+        <field name="Datasheet_1">https://g.componentsearchengine.com/Datasheets/34/MSS1210-103MEB.pdf</field>
+        <field name="Height">10.2</field>
+        <field name="Manufacturer_Name">COILCRAFT</field>
+        <field name="Manufacturer_Part_Number">MSS1210-103MEB</field>
+        <field name="Mouser Part Number">994-MSS1210-103MEB</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Coilcraft/MSS1210-103MEB?qs=VJjuEbE9QBNwjoERzwkOMg%3D%3D</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="SDR0403-4R7ML" part="SDR0403-4R7ML">
+      <description>SDR0403 SMD Power Inductors 4.7uH 20% Bourns SDR0403 Series Wire-wound SMD Inductor with a Ferrite Core, 4.7 uH +/-20% Wire-Wound 1.7A Idc Q:28</description>
+      <fields>
+        <field name="Value">SDR0403-4R7ML</field>
+        <field name="Reference_1">L</field>
+        <field name="Value_1">SDR0403-4R7ML</field>
+        <field name="Footprint_1">SDR0403</field>
+        <field name="Datasheet_1">http://www.bourns.com/docs/Product-Datasheets/sdr0403.pdf</field>
+        <field name="Manufacturer_Name">Bourns</field>
+        <field name="Manufacturer_Part_Number">SDR0403-4R7ML</field>
+        <field name="Mouser Part Number">652-SDR0403-4R7ML</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Bourns/SDR0403-4R7ML?qs=xrpI9KL%2FXvtm2g7dmggyxA%3D%3D</field>
+        <field name="Arrow Part Number">SDR0403-4R7ML</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/sdr0403-4r7ml/bourns?region=nac</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="TPS55289RYQR" part="TPS55289RYQR">
+      <description>30-V, 8-A buck-boost converter with IC interface</description>
+      <fields>
+        <field name="Value">TPS55289RYQR</field>
+        <field name="Reference_1">IC</field>
+        <field name="Value_1">TPS55289RYQR</field>
+        <field name="Footprint_1">TPS55289RYQR</field>
+        <field name="Datasheet_1">https://www.ti.com/lit/ds/symlink/tps55289.pdf?ts=1664818706180&amp;ref_url=https%253A%252F%252Fwww.ti.com%252Fproduct%252FTPS55289%252Fpart-details%252FTPS55289RYQR%253FkeyMatch%253DTPS55289RYQR</field>
+        <field name="Height">1</field>
+        <field name="Manufacturer_Name">Texas Instruments</field>
+        <field name="Manufacturer_Part_Number">TPS55289RYQR</field>
+        <field name="Mouser Part Number">595-TPS55289RYQR</field>
+        <field name="Mouser Price/Stock">https://www.mouser.co.uk/ProductDetail/Texas-Instruments/TPS55289RYQR?qs=T%252BzbugeAwjhgaIN94Lbpjg%3D%3D</field>
+        <field name="Arrow Part Number">TPS55289RYQR</field>
+        <field name="Arrow Price/Stock">https://www.arrow.com/en/products/tps55289ryqr/texas-instruments?region=nac</field>
+      </fields>
+      <pins>
+        <pin num="1" name="EN/UVLO" type="passive"/>
+        <pin num="2" name="MODE" type="passive"/>
+        <pin num="3" name="SCL" type="passive"/>
+        <pin num="4" name="SDA" type="passive"/>
+        <pin num="5" name="DITH/SYNC" type="passive"/>
+        <pin num="6" name="FSW" type="passive"/>
+        <pin num="7" name="VIN" type="passive"/>
+        <pin num="8" name="SW1" type="passive"/>
+        <pin num="9" name="PGND_1" type="passive"/>
+        <pin num="10" name="SW2" type="passive"/>
+        <pin num="11" name="VOUT" type="passive"/>
+        <pin num="12" name="ISP" type="passive"/>
+        <pin num="13" name="ISN" type="passive"/>
+        <pin num="14" name="FB/~{INT}" type="passive"/>
+        <pin num="15" name="COMP" type="passive"/>
+        <pin num="16" name="CDC" type="passive"/>
+        <pin num="17" name="AGND" type="passive"/>
+        <pin num="18" name="VCC" type="passive"/>
+        <pin num="19" name="BOOT2" type="passive"/>
+        <pin num="20" name="BOOT1" type="passive"/>
+        <pin num="21" name="EXTVCC" type="passive"/>
+        <pin num="22" name="PGND_2" type="passive"/>
+        <pin num="23" name="PGND_3" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="arduino-library" part="Arduino_Mega2560_R3_Shield">
+      <description>Shield for Arduino Mega 2560 R3</description>
+      <docs>https://docs.arduino.cc/hardware/mega-2560</docs>
+      <footprints>
+        <fp>Arduino_Mega2560_R3_Shield</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">A</field>
+        <field name="Value">Arduino_Mega2560_R3_Shield</field>
+        <field name="Footprint">PCM_arduino-library:Arduino_Mega2560_R3_Shield</field>
+        <field name="Datasheet">https://docs.arduino.cc/hardware/mega-2560</field>
+      </fields>
+      <pins>
+        <pin num="3V3" name="3.3V" type="power_out"/>
+        <pin num="5V1" name="5V" type="power_in"/>
+        <pin num="5V2" name="SPI_5V" type="power_in"/>
+        <pin num="5V3" name="5V" type="power_in"/>
+        <pin num="5V4" name="5V" type="power_in"/>
+        <pin num="A0" name="A0" type="bidirectional"/>
+        <pin num="A1" name="A1" type="bidirectional"/>
+        <pin num="A2" name="A2" type="bidirectional"/>
+        <pin num="A3" name="A3" type="bidirectional"/>
+        <pin num="A4" name="A4" type="bidirectional"/>
+        <pin num="A5" name="A5" type="bidirectional"/>
+        <pin num="A6" name="A6" type="bidirectional"/>
+        <pin num="A7" name="A7" type="bidirectional"/>
+        <pin num="A8" name="A8" type="bidirectional"/>
+        <pin num="A9" name="A9" type="bidirectional"/>
+        <pin num="A10" name="A10" type="bidirectional"/>
+        <pin num="A11" name="A11" type="bidirectional"/>
+        <pin num="A12" name="A12" type="bidirectional"/>
+        <pin num="A13" name="A13" type="bidirectional"/>
+        <pin num="A14" name="A14" type="bidirectional"/>
+        <pin num="A15" name="A15" type="bidirectional"/>
+        <pin num="AREF" name="AREF" type="input"/>
+        <pin num="D0" name="D0/RX0" type="bidirectional"/>
+        <pin num="D1" name="D1/TX0" type="bidirectional"/>
+        <pin num="D2" name="D2_INT0" type="bidirectional"/>
+        <pin num="D3" name="D3_INT1" type="bidirectional"/>
+        <pin num="D4" name="D4" type="bidirectional"/>
+        <pin num="D5" name="D5" type="bidirectional"/>
+        <pin num="D6" name="D6" type="bidirectional"/>
+        <pin num="D7" name="D7" type="bidirectional"/>
+        <pin num="D8" name="D8" type="bidirectional"/>
+        <pin num="D9" name="D9" type="bidirectional"/>
+        <pin num="D10" name="D10" type="bidirectional"/>
+        <pin num="D11" name="D11" type="bidirectional"/>
+        <pin num="D12" name="D12" type="bidirectional"/>
+        <pin num="D13" name="D13" type="bidirectional"/>
+        <pin num="D14" name="D14/TX3" type="bidirectional"/>
+        <pin num="D15" name="D15/RX3" type="bidirectional"/>
+        <pin num="D16" name="D16/TX2" type="bidirectional"/>
+        <pin num="D17" name="D17/RX2" type="bidirectional"/>
+        <pin num="D18" name="D18/TX1" type="bidirectional"/>
+        <pin num="D19" name="D19/RX1" type="bidirectional"/>
+        <pin num="D20" name="D20/SDA" type="bidirectional"/>
+        <pin num="D21" name="D21/SCL" type="bidirectional"/>
+        <pin num="D22" name="D22" type="bidirectional"/>
+        <pin num="D23" name="D23" type="bidirectional"/>
+        <pin num="D24" name="D24" type="bidirectional"/>
+        <pin num="D25" name="D25" type="bidirectional"/>
+        <pin num="D26" name="D26" type="bidirectional"/>
+        <pin num="D27" name="D27" type="bidirectional"/>
+        <pin num="D28" name="D28" type="bidirectional"/>
+        <pin num="D29" name="D29" type="bidirectional"/>
+        <pin num="D30" name="D30" type="bidirectional"/>
+        <pin num="D31" name="D31" type="bidirectional"/>
+        <pin num="D32" name="D32" type="bidirectional"/>
+        <pin num="D33" name="D33" type="bidirectional"/>
+        <pin num="D34" name="D34" type="bidirectional"/>
+        <pin num="D35" name="D35" type="bidirectional"/>
+        <pin num="D36" name="D36" type="bidirectional"/>
+        <pin num="D37" name="D37" type="bidirectional"/>
+        <pin num="D38" name="D38" type="bidirectional"/>
+        <pin num="D39" name="D39" type="bidirectional"/>
+        <pin num="D40" name="D40" type="bidirectional"/>
+        <pin num="D41" name="D41" type="bidirectional"/>
+        <pin num="D42" name="D42" type="bidirectional"/>
+        <pin num="D43" name="D43" type="bidirectional"/>
+        <pin num="D44" name="D44" type="bidirectional"/>
+        <pin num="D45" name="D45" type="bidirectional"/>
+        <pin num="D46" name="D46" type="bidirectional"/>
+        <pin num="D47" name="D47" type="bidirectional"/>
+        <pin num="D48" name="D48" type="bidirectional"/>
+        <pin num="D49" name="D49" type="bidirectional"/>
+        <pin num="D50" name="D50_MISO" type="bidirectional"/>
+        <pin num="D51" name="D51_MOSI" type="bidirectional"/>
+        <pin num="D52" name="D52_SCK" type="bidirectional"/>
+        <pin num="D53" name="D53_CS" type="bidirectional"/>
+        <pin num="GND1" name="GND" type="power_in"/>
+        <pin num="GND2" name="GND" type="power_in"/>
+        <pin num="GND3" name="GND" type="power_in"/>
+        <pin num="GND4" name="SPI_GND" type="power_in"/>
+        <pin num="GND5" name="GND" type="power_in"/>
+        <pin num="GND6" name="GND" type="power_in"/>
+        <pin num="IORF" name="IOREF" type="output"/>
+        <pin num="MISO" name="SPI_MISO" type="input"/>
+        <pin num="MOSI" name="SPI_MOSI" type="output"/>
+        <pin num="RST1" name="RESET" type="open_collector"/>
+        <pin num="RST2" name="SPI_RESET" type="open_collector"/>
+        <pin num="SCK" name="SPI_SCK" type="output"/>
+        <pin num="SCL" name="SCL" type="bidirectional"/>
+        <pin num="SDA" name="SDA" type="bidirectional"/>
+        <pin num="VIN" name="VIN" type="power_in"/>
+      </pins>
+    </libpart>
+    <libpart lib="dk_Terminal-Blocks-Wire-to-Board" part="1935161">
+      <description>TERM BLK 2POS SIDE ENTRY 5MM PCB</description>
+      <docs>https://media.digikey.com/pdf/Data%20Sheets/Phoenix%20Contact%20PDFs/1935161.pdf</docs>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">1935161</field>
+        <field name="Footprint">digikey-footprints:Terminal_Block_D1.3mm_P5mm</field>
+        <field name="Datasheet">https://media.digikey.com/pdf/Data%20Sheets/Phoenix%20Contact%20PDFs/1935161.pdf</field>
+        <field name="Digi-Key_PN">277-1667-ND</field>
+        <field name="MPN">1935161</field>
+        <field name="Category">Connectors, Interconnects</field>
+        <field name="Family">Terminal Blocks - Wire to Board</field>
+        <field name="DK_Datasheet_Link">https://media.digikey.com/pdf/Data%20Sheets/Phoenix%20Contact%20PDFs/1935161.pdf</field>
+        <field name="DK_Detail_Page">/product-detail/en/phoenix-contact/1935161/277-1667-ND/568614</field>
+        <field name="Description">TERM BLK 2POS SIDE ENTRY 5MM PCB</field>
+        <field name="Manufacturer">Phoenix Contact</field>
+        <field name="Status">Active</field>
+      </fields>
+      <pins>
+        <pin num="1" name="" type="passive"/>
+        <pin num="2" name="" type="passive"/>
+      </pins>
+    </libpart>
+  </libparts>
+  <libraries>
+    <library logical="10SVPC68MV">
+      <uri>/home/dchevalier/Documents/alan-setup/fab/kicad/libraries/webench/extracted/10SVPC68MV.kicad_sym</uri>
+    </library>
+    <library logical="25SVPF27MX">
+      <uri>/home/dchevalier/Documents/alan-setup/fab/kicad/libraries/webench/extracted/25SVPF27MX.kicad_sym</uri>
+    </library>
+    <library logical="25SVPF47M">
+      <uri>/home/dchevalier/Documents/alan-setup/fab/kicad/libraries/webench/extracted/25SVPF47M.kicad_sym</uri>
+    </library>
+    <library logical="BK-912-TR">
+      <uri>/home/dchevalier/Documents/alan-setup/fab/kicad/libraries/rtc/BK-912-TR.kicad_sym</uri>
+    </library>
+    <library logical="C0603C105Z8VACTU">
+      <uri>/home/dchevalier/Documents/alan-setup/fab/kicad/libraries/webench/extracted/C0603C105Z8VACTU.kicad_sym</uri>
+    </library>
+    <library logical="C0805C106K8PACTU">
+      <uri>/home/dchevalier/Documents/alan-setup/fab/kicad/libraries/webench/extracted/C0805C106K8PACTU.kicad_sym</uri>
+    </library>
+    <library logical="C1005X5R1V105K050BC">
+      <uri>/home/dchevalier/Documents/alan-setup/fab/kicad/libraries/webench/extracted/C1005X5R1V105K050BC.kicad_sym</uri>
+    </library>
+    <library logical="C1608X6S1C475K080AC">
+      <uri>/home/dchevalier/Documents/alan-setup/fab/kicad/libraries/webench/extracted/C1608X6S1C475K080AC.kicad_sym</uri>
+    </library>
+    <library logical="C2012X5R1V156M125AC">
+      <uri>/home/dchevalier/Documents/alan-setup/fab/kicad/libraries/webench/extracted/C2012X5R1V156M125AC.kicad_sym</uri>
+    </library>
+    <library logical="C3225X7R1H106M250AC">
+      <uri>/home/dchevalier/Documents/alan-setup/fab/kicad/libraries/webench/extracted/C3225X7R1H106M250AC.kicad_sym</uri>
+    </library>
+    <library logical="CRCW0402100KFKED">
+      <uri>/home/dchevalier/Documents/alan-setup/fab/kicad/libraries/webench/extracted/CRCW0402100KFKED.kicad_sym</uri>
+    </library>
+    <library logical="CRCW040210K0FKED">
+      <uri>/home/dchevalier/Documents/alan-setup/fab/kicad/libraries/webench/extracted/CRCW040210K0FKED.kicad_sym</uri>
+    </library>
+    <library logical="CRCW040213K0FKED">
+      <uri>/home/dchevalier/Documents/alan-setup/fab/kicad/libraries/webench/extracted/CRCW040213K0FKED.kicad_sym</uri>
+    </library>
+    <library logical="CRCW0402301KFKED">
+      <uri>/home/dchevalier/Documents/alan-setup/fab/kicad/libraries/webench/extracted/CRCW0402301KFKED.kicad_sym</uri>
+    </library>
+    <library logical="CRCW0402301RFKED">
+      <uri>/home/dchevalier/Documents/alan-setup/fab/kicad/libraries/webench/extracted/CRCW0402301RFKED.kicad_sym</uri>
+    </library>
+    <library logical="CRCW040248K7FKED">
+      <uri>/home/dchevalier/Documents/alan-setup/fab/kicad/libraries/webench/extracted/CRCW040248K7FKED.kicad_sym</uri>
+    </library>
+    <library logical="CRCW12104K70JNEA">
+      <uri>/home/dchevalier/Documents/alan-setup/fab/kicad/libraries/rtc/CRCW12104K70JNEA.kicad_sym</uri>
+    </library>
+    <library logical="Connector">
+      <uri>/usr/share/kicad/symbols//Connector.kicad_sym</uri>
+    </library>
+    <library logical="DS3231SN">
+      <uri>/home/dchevalier/Documents/alan-setup/fab/kicad/libraries/rtc/DS3231SN#.kicad_sym</uri>
+    </library>
+    <library logical="EEE-FK1V101P">
+      <uri>/home/dchevalier/Documents/alan-setup/fab/kicad/libraries/webench/extracted/EEE-FK1V101P.kicad_sym</uri>
+    </library>
+    <library logical="EMK107B7104KA-T">
+      <uri>/home/dchevalier/Documents/alan-setup/fab/kicad/libraries/webench/extracted/EMK107B7104KA-T.kicad_sym</uri>
+    </library>
+    <library logical="ERJ-2RKF2400X">
+      <uri>/home/dchevalier/Documents/alan-setup/fab/kicad/libraries/webench/extracted/ERJ-2RKF2400X.kicad_sym</uri>
+    </library>
+    <library logical="GRM155R70J104KA01D">
+      <uri>/home/dchevalier/Documents/alan-setup/fab/kicad/libraries/webench/extracted/GRM155R70J104KA01D.kicad_sym</uri>
+    </library>
+    <library logical="GRM155R70J473KA01D">
+      <uri>/home/dchevalier/Documents/alan-setup/fab/kicad/libraries/webench/extracted/GRM155R70J473KA01D.kicad_sym</uri>
+    </library>
+    <library logical="IRLZ44N">
+      <uri>/home/dchevalier/Documents/alan-setup/fab/kicad/libraries/rtc/IRLZ44N.kicad_sym</uri>
+    </library>
+    <library logical="MSS1210-103MEB">
+      <uri>/home/dchevalier/Documents/alan-setup/fab/kicad/libraries/webench/extracted/MSS1210-103MEB.kicad_sym</uri>
+    </library>
+    <library logical="SDR0403-4R7ML">
+      <uri>/home/dchevalier/Documents/alan-setup/fab/kicad/libraries/webench/extracted/SDR0403-4R7ML.kicad_sym</uri>
+    </library>
+    <library logical="TPS55289RYQR">
+      <uri>/home/dchevalier/Documents/alan-setup/fab/kicad/libraries/webench/extracted/TPS55289RYQR.kicad_sym</uri>
+    </library>
+    <library logical="arduino-library">
+      <uri>/home/dchevalier/Documents/alan-setup/fab/kicad/libraries/arduino-kicad-library-master/symbols/arduino-library.kicad_sym</uri>
+    </library>
+    <library logical="dk_Terminal-Blocks-Wire-to-Board">
+      <uri>/home/dchevalier/Documents/alan-setup/fab/kicad/libraries/digikey-kicad-library-master/digikey-symbols/dk_Terminal-Blocks-Wire-to-Board.lib</uri>
+    </library>
+  </libraries>
+  <nets>
+    <net code="1" name="5VOUT">
+      <node ref="A1" pin="5V1" pinfunction="5V" pintype="power_in"/>
+      <node ref="J5V1" pin="1" pinfunction="Pin_1" pintype="passive"/>
+      <node ref="J5V1" pin="2" pinfunction="Pin_2" pintype="passive"/>
+      <node ref="J5V1" pin="3" pinfunction="Pin_3" pintype="passive"/>
+      <node ref="J5V1" pin="4" pinfunction="Pin_4" pintype="passive"/>
+      <node ref="J5V1" pin="5" pinfunction="Pin_5" pintype="passive"/>
+      <node ref="J5V1" pin="6" pinfunction="Pin_6" pintype="passive"/>
+    </net>
+    <net code="2" name="A4">
+      <node ref="A1" pin="A4" pinfunction="A4" pintype="bidirectional"/>
+      <node ref="RA41" pin="2" pinfunction="2" pintype="passive"/>
+    </net>
+    <net code="3" name="AGND">
+      <node ref="A1" pin="GND2" pinfunction="GND" pintype="power_in"/>
+      <node ref="CEN1" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="CIN-2" pin="1" pinfunction="+" pintype="passive"/>
+      <node ref="CIN1" pin="1" pinfunction="+" pintype="passive"/>
+      <node ref="CINX-2" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="CINX1" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="CINX2" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="CINX2-2" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="COUT-2" pin="1" pinfunction="+" pintype="passive"/>
+      <node ref="COUT1" pin="1" pinfunction="+" pintype="passive"/>
+      <node ref="COUTX-2" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="COUTX1" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="COUTX2" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="COUTX2-2" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="CVCC-2" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="CVCC1" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="JARRAY1" pin="1" pintype="passive"/>
+      <node ref="JGND1" pin="1" pinfunction="Pin_1" pintype="passive"/>
+      <node ref="JGND1" pin="2" pinfunction="Pin_2" pintype="passive"/>
+      <node ref="JGND1" pin="3" pinfunction="Pin_3" pintype="passive"/>
+      <node ref="JGND1" pin="4" pinfunction="Pin_4" pintype="passive"/>
+      <node ref="JGND1" pin="5" pinfunction="Pin_5" pintype="passive"/>
+      <node ref="JGND1" pin="6" pinfunction="Pin_6" pintype="passive"/>
+      <node ref="JPERIPH1" pin="2" pinfunction="Pin_2" pintype="passive"/>
+      <node ref="JPERIPH1" pin="4" pinfunction="Pin_4" pintype="passive"/>
+      <node ref="RA42" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="RCOMP-2" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="RCOMP1" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="RENB-2" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="RENB1" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="RT-2" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="RT1" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="U1" pin="17" pinfunction="AGND" pintype="passive"/>
+      <node ref="U1" pin="2" pinfunction="MODE" pintype="passive"/>
+      <node ref="U1" pin="5" pinfunction="DITH/SYNC" pintype="passive"/>
+      <node ref="U1" pin="9" pinfunction="PGND_1" pintype="passive"/>
+      <node ref="U2" pin="17" pinfunction="AGND" pintype="passive"/>
+      <node ref="U2" pin="2" pinfunction="MODE" pintype="passive"/>
+      <node ref="U2" pin="5" pinfunction="DITH/SYNC" pintype="passive"/>
+      <node ref="U2" pin="9" pinfunction="PGND_1" pintype="passive"/>
+    </net>
+    <net code="4" name="BATT+">
+      <node ref="CIN-2" pin="2" pinfunction="-" pintype="passive"/>
+      <node ref="CIN1" pin="2" pinfunction="-" pintype="passive"/>
+      <node ref="CINX-2" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="CINX1" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="CINX2" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="CINX2-2" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="RENT-2" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="RENT1" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="U1" pin="7" pinfunction="VIN" pintype="passive"/>
+      <node ref="U2" pin="7" pinfunction="VIN" pintype="passive"/>
+    </net>
+    <net code="5" name="BOOT1">
+      <node ref="CBOOT1" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="U1" pin="20" pinfunction="BOOT1" pintype="passive"/>
+    </net>
+    <net code="6" name="BOOT1-2">
+      <node ref="CBOOT1-2" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="U2" pin="20" pinfunction="BOOT1" pintype="passive"/>
+    </net>
+    <net code="7" name="BOOT2">
+      <node ref="CBOOT2" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="U1" pin="19" pinfunction="BOOT2" pintype="passive"/>
+    </net>
+    <net code="8" name="BOOT2-2">
+      <node ref="CBOOT2-2" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="U2" pin="19" pinfunction="BOOT2" pintype="passive"/>
+    </net>
+    <net code="9" name="COMP">
+      <node ref="CCOMP1" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="U1" pin="15" pinfunction="COMP" pintype="passive"/>
+    </net>
+    <net code="10" name="COMP-2">
+      <node ref="CCOMP-2" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="U2" pin="15" pinfunction="COMP" pintype="passive"/>
+    </net>
+    <net code="11" name="GND">
+      <node ref="CBAT1" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="CCC1" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="U3" pin="10" pinfunction="N.C._6" pintype="passive"/>
+      <node ref="U3" pin="11" pinfunction="N.C._7" pintype="passive"/>
+      <node ref="U3" pin="12" pinfunction="N.C._8" pintype="passive"/>
+      <node ref="U3" pin="13" pinfunction="GND" pintype="passive"/>
+      <node ref="U3" pin="5" pinfunction="N.C._1" pintype="passive"/>
+      <node ref="U3" pin="6" pinfunction="N.C._2" pintype="passive"/>
+      <node ref="U3" pin="7" pinfunction="N.C._3" pintype="passive"/>
+      <node ref="U3" pin="8" pinfunction="N.C._4" pintype="passive"/>
+      <node ref="U3" pin="9" pinfunction="N.C._5" pintype="passive"/>
+      <node ref="UBAT1" pin="3" pinfunction="-" pintype="passive"/>
+    </net>
+    <net code="12" name="ISN">
+      <node ref="COUT1" pin="2" pinfunction="-" pintype="passive"/>
+      <node ref="COUTX1" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="COUTX2" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="JARRAY1" pin="2" pintype="passive"/>
+      <node ref="U1" pin="11" pinfunction="VOUT" pintype="passive"/>
+      <node ref="U1" pin="12" pinfunction="ISP" pintype="passive"/>
+      <node ref="U1" pin="13" pinfunction="ISN" pintype="passive"/>
+    </net>
+    <net code="13" name="ISN-2">
+      <node ref="A1" pin="VIN" pinfunction="VIN" pintype="power_in"/>
+      <node ref="CCC1" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="COUT-2" pin="2" pinfunction="-" pintype="passive"/>
+      <node ref="COUTX-2" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="COUTX2-2" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="JPERIPH1" pin="1" pinfunction="Pin_1" pintype="passive"/>
+      <node ref="JPERIPH1" pin="3" pinfunction="Pin_3" pintype="passive"/>
+      <node ref="RPU1" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="RPU2" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="U2" pin="11" pinfunction="VOUT" pintype="passive"/>
+      <node ref="U2" pin="12" pinfunction="ISP" pintype="passive"/>
+      <node ref="U2" pin="13" pinfunction="ISN" pintype="passive"/>
+      <node ref="U3" pin="2" pinfunction="VCC" pintype="passive"/>
+    </net>
+    <net code="14" name="Net-(A1-Pad5V2)">
+      <node ref="A1" pin="5V2" pinfunction="SPI_5V" pintype="power_in"/>
+      <node ref="JSD1" pin="5" pinfunction="Pin_5" pintype="passive"/>
+    </net>
+    <net code="15" name="Net-(A1-PadA2)">
+      <node ref="A1" pin="A2" pinfunction="A2" pintype="bidirectional"/>
+      <node ref="JA23" pin="1" pinfunction="Pin_1" pintype="passive"/>
+    </net>
+    <net code="16" name="Net-(A1-PadA3)">
+      <node ref="A1" pin="A3" pinfunction="A3" pintype="bidirectional"/>
+      <node ref="JA23" pin="2" pinfunction="Pin_2" pintype="passive"/>
+    </net>
+    <net code="17" name="Net-(A1-PadA5)">
+      <node ref="A1" pin="A5" pinfunction="A5" pintype="bidirectional"/>
+      <node ref="JA5-11" pin="7" pinfunction="Pin_7" pintype="passive"/>
+    </net>
+    <net code="18" name="Net-(A1-PadA6)">
+      <node ref="A1" pin="A6" pinfunction="A6" pintype="bidirectional"/>
+      <node ref="JA5-11" pin="6" pinfunction="Pin_6" pintype="passive"/>
+    </net>
+    <net code="19" name="Net-(A1-PadA7)">
+      <node ref="A1" pin="A7" pinfunction="A7" pintype="bidirectional"/>
+      <node ref="JA5-11" pin="5" pinfunction="Pin_5" pintype="passive"/>
+    </net>
+    <net code="20" name="Net-(A1-PadA8)">
+      <node ref="A1" pin="A8" pinfunction="A8" pintype="bidirectional"/>
+      <node ref="JA5-11" pin="4" pinfunction="Pin_4" pintype="passive"/>
+    </net>
+    <net code="21" name="Net-(A1-PadA9)">
+      <node ref="A1" pin="A9" pinfunction="A9" pintype="bidirectional"/>
+      <node ref="JA5-11" pin="3" pinfunction="Pin_3" pintype="passive"/>
+    </net>
+    <net code="22" name="Net-(A1-PadA10)">
+      <node ref="A1" pin="A10" pinfunction="A10" pintype="bidirectional"/>
+      <node ref="JA5-11" pin="2" pinfunction="Pin_2" pintype="passive"/>
+    </net>
+    <net code="23" name="Net-(A1-PadA11)">
+      <node ref="A1" pin="A11" pinfunction="A11" pintype="bidirectional"/>
+      <node ref="JA5-11" pin="1" pinfunction="Pin_1" pintype="passive"/>
+    </net>
+    <net code="24" name="Net-(A1-PadGND4)">
+      <node ref="A1" pin="GND4" pinfunction="SPI_GND" pintype="power_in"/>
+      <node ref="JSD1" pin="6" pinfunction="Pin_6" pintype="passive"/>
+    </net>
+    <net code="25" name="Net-(A1-PadMISO)">
+      <node ref="A1" pin="MISO" pinfunction="SPI_MISO" pintype="input"/>
+      <node ref="JSD1" pin="1" pinfunction="Pin_1" pintype="passive"/>
+    </net>
+    <net code="26" name="Net-(A1-PadMOSI)">
+      <node ref="A1" pin="MOSI" pinfunction="SPI_MOSI" pintype="output"/>
+      <node ref="JSD1" pin="2" pinfunction="Pin_2" pintype="passive"/>
+    </net>
+    <net code="27" name="Net-(A1-PadRST2)">
+      <node ref="A1" pin="RST2" pinfunction="SPI_RESET" pintype="open_collector"/>
+      <node ref="JSD1" pin="4" pinfunction="Pin_4" pintype="passive"/>
+    </net>
+    <net code="28" name="Net-(A1-PadSCK)">
+      <node ref="A1" pin="SCK" pinfunction="SPI_SCK" pintype="output"/>
+      <node ref="JSD1" pin="3" pinfunction="Pin_3" pintype="passive"/>
+    </net>
+    <net code="29" name="Net-(CBAT1-Pad2)">
+      <node ref="CBAT1" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="U3" pin="14" pinfunction="VBAT" pintype="passive"/>
+      <node ref="UBAT1" pin="1" pinfunction="+_1" pintype="passive"/>
+    </net>
+    <net code="30" name="Net-(CCOMP-2-Pad1)">
+      <node ref="CCOMP-2" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="RCOMP-2" pin="2" pinfunction="2" pintype="passive"/>
+    </net>
+    <net code="31" name="Net-(CCOMP1-Pad1)">
+      <node ref="CCOMP1" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="RCOMP1" pin="2" pinfunction="2" pintype="passive"/>
+    </net>
+    <net code="32" name="Net-(CEN1-Pad2)">
+      <node ref="CEN1" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="Q1" pin="3" pinfunction="S" pintype="passive"/>
+      <node ref="RENB1" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="U1" pin="1" pinfunction="EN/UVLO" pintype="passive"/>
+    </net>
+    <net code="33" name="Net-(CVCC-2-Pad2)">
+      <node ref="CVCC-2" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="U2" pin="18" pinfunction="VCC" pintype="passive"/>
+      <node ref="U2" pin="21" pinfunction="EXTVCC" pintype="passive"/>
+    </net>
+    <net code="34" name="Net-(CVCC1-Pad2)">
+      <node ref="CVCC1" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="U1" pin="18" pinfunction="VCC" pintype="passive"/>
+      <node ref="U1" pin="21" pinfunction="EXTVCC" pintype="passive"/>
+    </net>
+    <net code="35" name="Net-(Q1-Pad1)">
+      <node ref="Q1" pin="1" pinfunction="G" pintype="passive"/>
+      <node ref="RA41" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="RA42" pin="2" pinfunction="2" pintype="passive"/>
+    </net>
+    <net code="36" name="Net-(Q1-Pad2)">
+      <node ref="Q1" pin="2" pinfunction="D" pintype="passive"/>
+      <node ref="RENT1" pin="1" pinfunction="1" pintype="passive"/>
+    </net>
+    <net code="37" name="Net-(RENB-2-Pad2)">
+      <node ref="RENB-2" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="RENT-2" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="U2" pin="1" pinfunction="EN/UVLO" pintype="passive"/>
+    </net>
+    <net code="38" name="Net-(RT-2-Pad2)">
+      <node ref="RT-2" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="U2" pin="6" pinfunction="FSW" pintype="passive"/>
+    </net>
+    <net code="39" name="Net-(RT1-Pad2)">
+      <node ref="RT1" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="U1" pin="6" pinfunction="FSW" pintype="passive"/>
+    </net>
+    <net code="40" name="SCL">
+      <node ref="A1" pin="SCL" pinfunction="SCL" pintype="bidirectional"/>
+      <node ref="JSCL1" pin="1" pinfunction="Pin_1" pintype="passive"/>
+      <node ref="JSCL1" pin="2" pinfunction="Pin_2" pintype="passive"/>
+      <node ref="JSCL1" pin="3" pinfunction="Pin_3" pintype="passive"/>
+      <node ref="RPU1" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="U3" pin="16" pinfunction="SCL" pintype="passive"/>
+    </net>
+    <net code="41" name="SDA">
+      <node ref="A1" pin="SDA" pinfunction="SDA" pintype="bidirectional"/>
+      <node ref="JSDA1" pin="1" pinfunction="Pin_1" pintype="passive"/>
+      <node ref="JSDA1" pin="2" pinfunction="Pin_2" pintype="passive"/>
+      <node ref="JSDA1" pin="3" pinfunction="Pin_3" pintype="passive"/>
+      <node ref="RPU2" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="U3" pin="15" pinfunction="SDA" pintype="passive"/>
+    </net>
+    <net code="42" name="SW1">
+      <node ref="CBOOT1" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="L1" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="U1" pin="8" pinfunction="SW1" pintype="passive"/>
+    </net>
+    <net code="43" name="SW1-2">
+      <node ref="CBOOT1-2" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="L1-2" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="U2" pin="8" pinfunction="SW1" pintype="passive"/>
+    </net>
+    <net code="44" name="SW2">
+      <node ref="CBOOT2" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="L1" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="U1" pin="10" pinfunction="SW2" pintype="passive"/>
+    </net>
+    <net code="45" name="SW2-2">
+      <node ref="CBOOT2-2" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="L1-2" pin="2" pinfunction="2" pintype="passive"/>
+      <node ref="U2" pin="10" pinfunction="SW2" pintype="passive"/>
+    </net>
+    <net code="46" name="unconnected-(A1-Pad3V3)">
+      <node ref="A1" pin="3V3" pinfunction="3.3V" pintype="power_out"/>
+    </net>
+    <net code="47" name="unconnected-(A1-Pad5V3)">
+      <node ref="A1" pin="5V3" pinfunction="5V" pintype="power_in"/>
+    </net>
+    <net code="48" name="unconnected-(A1-Pad5V4)">
+      <node ref="A1" pin="5V4" pinfunction="5V" pintype="power_in"/>
+    </net>
+    <net code="49" name="unconnected-(A1-PadA0)">
+      <node ref="A1" pin="A0" pinfunction="A0" pintype="bidirectional"/>
+    </net>
+    <net code="50" name="unconnected-(A1-PadA1)">
+      <node ref="A1" pin="A1" pinfunction="A1" pintype="bidirectional"/>
+    </net>
+    <net code="51" name="unconnected-(A1-PadA12)">
+      <node ref="A1" pin="A12" pinfunction="A12" pintype="bidirectional"/>
+    </net>
+    <net code="52" name="unconnected-(A1-PadA13)">
+      <node ref="A1" pin="A13" pinfunction="A13" pintype="bidirectional"/>
+    </net>
+    <net code="53" name="unconnected-(A1-PadA14)">
+      <node ref="A1" pin="A14" pinfunction="A14" pintype="bidirectional"/>
+    </net>
+    <net code="54" name="unconnected-(A1-PadA15)">
+      <node ref="A1" pin="A15" pinfunction="A15" pintype="bidirectional"/>
+    </net>
+    <net code="55" name="unconnected-(A1-PadAREF)">
+      <node ref="A1" pin="AREF" pinfunction="AREF" pintype="input"/>
+    </net>
+    <net code="56" name="unconnected-(A1-PadD0)">
+      <node ref="A1" pin="D0" pinfunction="D0/RX0" pintype="bidirectional"/>
+    </net>
+    <net code="57" name="unconnected-(A1-PadD1)">
+      <node ref="A1" pin="D1" pinfunction="D1/TX0" pintype="bidirectional"/>
+    </net>
+    <net code="58" name="unconnected-(A1-PadD2)">
+      <node ref="A1" pin="D2" pinfunction="D2_INT0" pintype="bidirectional"/>
+    </net>
+    <net code="59" name="unconnected-(A1-PadD3)">
+      <node ref="A1" pin="D3" pinfunction="D3_INT1" pintype="bidirectional"/>
+    </net>
+    <net code="60" name="unconnected-(A1-PadD4)">
+      <node ref="A1" pin="D4" pinfunction="D4" pintype="bidirectional"/>
+    </net>
+    <net code="61" name="unconnected-(A1-PadD5)">
+      <node ref="A1" pin="D5" pinfunction="D5" pintype="bidirectional"/>
+    </net>
+    <net code="62" name="unconnected-(A1-PadD6)">
+      <node ref="A1" pin="D6" pinfunction="D6" pintype="bidirectional"/>
+    </net>
+    <net code="63" name="unconnected-(A1-PadD7)">
+      <node ref="A1" pin="D7" pinfunction="D7" pintype="bidirectional"/>
+    </net>
+    <net code="64" name="unconnected-(A1-PadD8)">
+      <node ref="A1" pin="D8" pinfunction="D8" pintype="bidirectional"/>
+    </net>
+    <net code="65" name="unconnected-(A1-PadD9)">
+      <node ref="A1" pin="D9" pinfunction="D9" pintype="bidirectional"/>
+    </net>
+    <net code="66" name="unconnected-(A1-PadD10)">
+      <node ref="A1" pin="D10" pinfunction="D10" pintype="bidirectional"/>
+    </net>
+    <net code="67" name="unconnected-(A1-PadD11)">
+      <node ref="A1" pin="D11" pinfunction="D11" pintype="bidirectional"/>
+    </net>
+    <net code="68" name="unconnected-(A1-PadD12)">
+      <node ref="A1" pin="D12" pinfunction="D12" pintype="bidirectional"/>
+    </net>
+    <net code="69" name="unconnected-(A1-PadD13)">
+      <node ref="A1" pin="D13" pinfunction="D13" pintype="bidirectional"/>
+    </net>
+    <net code="70" name="unconnected-(A1-PadD14)">
+      <node ref="A1" pin="D14" pinfunction="D14/TX3" pintype="bidirectional"/>
+    </net>
+    <net code="71" name="unconnected-(A1-PadD15)">
+      <node ref="A1" pin="D15" pinfunction="D15/RX3" pintype="bidirectional"/>
+    </net>
+    <net code="72" name="unconnected-(A1-PadD16)">
+      <node ref="A1" pin="D16" pinfunction="D16/TX2" pintype="bidirectional"/>
+    </net>
+    <net code="73" name="unconnected-(A1-PadD17)">
+      <node ref="A1" pin="D17" pinfunction="D17/RX2" pintype="bidirectional"/>
+    </net>
+    <net code="74" name="unconnected-(A1-PadD18)">
+      <node ref="A1" pin="D18" pinfunction="D18/TX1" pintype="bidirectional"/>
+    </net>
+    <net code="75" name="unconnected-(A1-PadD19)">
+      <node ref="A1" pin="D19" pinfunction="D19/RX1" pintype="bidirectional"/>
+    </net>
+    <net code="76" name="unconnected-(A1-PadD20)">
+      <node ref="A1" pin="D20" pinfunction="D20/SDA" pintype="bidirectional"/>
+    </net>
+    <net code="77" name="unconnected-(A1-PadD21)">
+      <node ref="A1" pin="D21" pinfunction="D21/SCL" pintype="bidirectional"/>
+    </net>
+    <net code="78" name="unconnected-(A1-PadD22)">
+      <node ref="A1" pin="D22" pinfunction="D22" pintype="bidirectional"/>
+    </net>
+    <net code="79" name="unconnected-(A1-PadD23)">
+      <node ref="A1" pin="D23" pinfunction="D23" pintype="bidirectional"/>
+    </net>
+    <net code="80" name="unconnected-(A1-PadD24)">
+      <node ref="A1" pin="D24" pinfunction="D24" pintype="bidirectional"/>
+    </net>
+    <net code="81" name="unconnected-(A1-PadD25)">
+      <node ref="A1" pin="D25" pinfunction="D25" pintype="bidirectional"/>
+    </net>
+    <net code="82" name="unconnected-(A1-PadD26)">
+      <node ref="A1" pin="D26" pinfunction="D26" pintype="bidirectional"/>
+    </net>
+    <net code="83" name="unconnected-(A1-PadD27)">
+      <node ref="A1" pin="D27" pinfunction="D27" pintype="bidirectional"/>
+    </net>
+    <net code="84" name="unconnected-(A1-PadD28)">
+      <node ref="A1" pin="D28" pinfunction="D28" pintype="bidirectional"/>
+    </net>
+    <net code="85" name="unconnected-(A1-PadD29)">
+      <node ref="A1" pin="D29" pinfunction="D29" pintype="bidirectional"/>
+    </net>
+    <net code="86" name="unconnected-(A1-PadD30)">
+      <node ref="A1" pin="D30" pinfunction="D30" pintype="bidirectional"/>
+    </net>
+    <net code="87" name="unconnected-(A1-PadD31)">
+      <node ref="A1" pin="D31" pinfunction="D31" pintype="bidirectional"/>
+    </net>
+    <net code="88" name="unconnected-(A1-PadD32)">
+      <node ref="A1" pin="D32" pinfunction="D32" pintype="bidirectional"/>
+    </net>
+    <net code="89" name="unconnected-(A1-PadD33)">
+      <node ref="A1" pin="D33" pinfunction="D33" pintype="bidirectional"/>
+    </net>
+    <net code="90" name="unconnected-(A1-PadD34)">
+      <node ref="A1" pin="D34" pinfunction="D34" pintype="bidirectional"/>
+    </net>
+    <net code="91" name="unconnected-(A1-PadD35)">
+      <node ref="A1" pin="D35" pinfunction="D35" pintype="bidirectional"/>
+    </net>
+    <net code="92" name="unconnected-(A1-PadD36)">
+      <node ref="A1" pin="D36" pinfunction="D36" pintype="bidirectional"/>
+    </net>
+    <net code="93" name="unconnected-(A1-PadD37)">
+      <node ref="A1" pin="D37" pinfunction="D37" pintype="bidirectional"/>
+    </net>
+    <net code="94" name="unconnected-(A1-PadD38)">
+      <node ref="A1" pin="D38" pinfunction="D38" pintype="bidirectional"/>
+    </net>
+    <net code="95" name="unconnected-(A1-PadD39)">
+      <node ref="A1" pin="D39" pinfunction="D39" pintype="bidirectional"/>
+    </net>
+    <net code="96" name="unconnected-(A1-PadD40)">
+      <node ref="A1" pin="D40" pinfunction="D40" pintype="bidirectional"/>
+    </net>
+    <net code="97" name="unconnected-(A1-PadD41)">
+      <node ref="A1" pin="D41" pinfunction="D41" pintype="bidirectional"/>
+    </net>
+    <net code="98" name="unconnected-(A1-PadD42)">
+      <node ref="A1" pin="D42" pinfunction="D42" pintype="bidirectional"/>
+    </net>
+    <net code="99" name="unconnected-(A1-PadD43)">
+      <node ref="A1" pin="D43" pinfunction="D43" pintype="bidirectional"/>
+    </net>
+    <net code="100" name="unconnected-(A1-PadD44)">
+      <node ref="A1" pin="D44" pinfunction="D44" pintype="bidirectional"/>
+    </net>
+    <net code="101" name="unconnected-(A1-PadD45)">
+      <node ref="A1" pin="D45" pinfunction="D45" pintype="bidirectional"/>
+    </net>
+    <net code="102" name="unconnected-(A1-PadD46)">
+      <node ref="A1" pin="D46" pinfunction="D46" pintype="bidirectional"/>
+    </net>
+    <net code="103" name="unconnected-(A1-PadD47)">
+      <node ref="A1" pin="D47" pinfunction="D47" pintype="bidirectional"/>
+    </net>
+    <net code="104" name="unconnected-(A1-PadD48)">
+      <node ref="A1" pin="D48" pinfunction="D48" pintype="bidirectional"/>
+    </net>
+    <net code="105" name="unconnected-(A1-PadD49)">
+      <node ref="A1" pin="D49" pinfunction="D49" pintype="bidirectional"/>
+    </net>
+    <net code="106" name="unconnected-(A1-PadD50)">
+      <node ref="A1" pin="D50" pinfunction="D50_MISO" pintype="bidirectional"/>
+    </net>
+    <net code="107" name="unconnected-(A1-PadD51)">
+      <node ref="A1" pin="D51" pinfunction="D51_MOSI" pintype="bidirectional"/>
+    </net>
+    <net code="108" name="unconnected-(A1-PadD52)">
+      <node ref="A1" pin="D52" pinfunction="D52_SCK" pintype="bidirectional"/>
+    </net>
+    <net code="109" name="unconnected-(A1-PadD53)">
+      <node ref="A1" pin="D53" pinfunction="D53_CS" pintype="bidirectional"/>
+    </net>
+    <net code="110" name="unconnected-(A1-PadGND1)">
+      <node ref="A1" pin="GND1" pinfunction="GND" pintype="power_in"/>
+    </net>
+    <net code="111" name="unconnected-(A1-PadGND3)">
+      <node ref="A1" pin="GND3" pinfunction="GND" pintype="power_in"/>
+    </net>
+    <net code="112" name="unconnected-(A1-PadGND5)">
+      <node ref="A1" pin="GND5" pinfunction="GND" pintype="power_in"/>
+    </net>
+    <net code="113" name="unconnected-(A1-PadGND6)">
+      <node ref="A1" pin="GND6" pinfunction="GND" pintype="power_in"/>
+    </net>
+    <net code="114" name="unconnected-(A1-PadIORF)">
+      <node ref="A1" pin="IORF" pinfunction="IOREF" pintype="output"/>
+    </net>
+    <net code="115" name="unconnected-(A1-PadRST1)">
+      <node ref="A1" pin="RST1" pinfunction="RESET" pintype="open_collector"/>
+    </net>
+    <net code="116" name="unconnected-(U1-Pad3)">
+      <node ref="U1" pin="3" pinfunction="SCL" pintype="passive"/>
+    </net>
+    <net code="117" name="unconnected-(U1-Pad4)">
+      <node ref="U1" pin="4" pinfunction="SDA" pintype="passive"/>
+    </net>
+    <net code="118" name="unconnected-(U1-Pad14)">
+      <node ref="U1" pin="14" pinfunction="FB/~{INT}" pintype="passive"/>
+    </net>
+    <net code="119" name="unconnected-(U1-Pad16)">
+      <node ref="U1" pin="16" pinfunction="CDC" pintype="passive"/>
+    </net>
+    <net code="120" name="unconnected-(U1-Pad22)">
+      <node ref="U1" pin="22" pinfunction="PGND_2" pintype="passive"/>
+    </net>
+    <net code="121" name="unconnected-(U1-Pad23)">
+      <node ref="U1" pin="23" pinfunction="PGND_3" pintype="passive"/>
+    </net>
+    <net code="122" name="unconnected-(U2-Pad3)">
+      <node ref="U2" pin="3" pinfunction="SCL" pintype="passive"/>
+    </net>
+    <net code="123" name="unconnected-(U2-Pad4)">
+      <node ref="U2" pin="4" pinfunction="SDA" pintype="passive"/>
+    </net>
+    <net code="124" name="unconnected-(U2-Pad14)">
+      <node ref="U2" pin="14" pinfunction="FB/~{INT}" pintype="passive"/>
+    </net>
+    <net code="125" name="unconnected-(U2-Pad16)">
+      <node ref="U2" pin="16" pinfunction="CDC" pintype="passive"/>
+    </net>
+    <net code="126" name="unconnected-(U2-Pad22)">
+      <node ref="U2" pin="22" pinfunction="PGND_2" pintype="passive"/>
+    </net>
+    <net code="127" name="unconnected-(U2-Pad23)">
+      <node ref="U2" pin="23" pinfunction="PGND_3" pintype="passive"/>
+    </net>
+    <net code="128" name="unconnected-(U3-Pad1)">
+      <node ref="U3" pin="1" pinfunction="32KHZ" pintype="passive"/>
+    </net>
+    <net code="129" name="unconnected-(U3-Pad3)">
+      <node ref="U3" pin="3" pinfunction="~{INT}/SQW" pintype="passive"/>
+    </net>
+    <net code="130" name="unconnected-(U3-Pad4)">
+      <node ref="U3" pin="4" pinfunction="~{RST}" pintype="passive"/>
+    </net>
+    <net code="131" name="unconnected-(UBAT1-Pad2)">
+      <node ref="UBAT1" pin="2" pinfunction="+_2" pintype="passive"/>
+    </net>
+  </nets>
+</export>
