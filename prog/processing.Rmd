@@ -1,0 +1,585 @@
+```{r}
+library(data.table)
+library(ggplot2)
+library(lubridate)
+library(remedy)
+```
+## Set working directory
+```{r setup}
+knitr::opts_knit$set(root.dir="~/Documents/alan-setup")
+```
+
+### Import labels table (prescribed states)
+```{r}
+source("./prog/site_assign_label_gen.R")
+labels_table <- melt(setDT(labels), measure = patterns(c("^dates_out","^sites","^site_settings")),
+     value.name = c("Timestamp", "Site", "LTreatment"))
+labels_table <- labels_table[,.SD,
+             .SDcols = c("Timestamp", "Site", "LTreatment")]
+labels_table$Timestamp <- as.POSIXct(labels_table$Timestamp)
+setorder(labels_table,Timestamp)
+```
+
+### Import status table (whether sites were collecting data over a given interval)
+```{r}
+source("./prog/reshape.R")
+str(status_table)
+#max(labels_table[Timestamp <= max(status_table$Date)]$Timestamp)
+# equality comparison works between labels_table$Timestamp and status_table$Date :-)
+
+# add a column to labels_table that indicates the actual status of given site at given interval
+# retrieve status_table$Status by matching labels_table$Timestamp to status_table$Timestamp and labels_table$Site to status_table$Site
+labels_table[status_table, on = c("Timestamp","Site"), Status := i.Status]
+```
+
+### Downloading sensor data
+* s3cmd la
+* s3cmd get --recursive s3://alan-stations-sensordata/
+* stored in alan-setup/sensordata
+
+### Set up timeframe bounds
+We want to bound the time frame within study period (hardcoded in here) to only download files that are from the correct timespan. Recall the format string is month.day.hour.
+```{r}
+start_date <- as.POSIXct("23.06.21.00",format="%y.%m.%d.%H")
+end_date <- as.POSIXct("23.12.04.23",format="%y.%m.%d.%H")
+all_dates <- seq.POSIXt(start_date, end_date, "hour")
+
+all_dates <- format(all_dates,"%m-%d-%H")
+```
+
+
+### Format file names as dates
+We need to remove the ".CSV" termination and convert the remaining string to a POSIXct (date-time) format. Malfunctioning clocks resulted in some data saved under impossible dates, e.g. 85-9-18, so we want to remove those as well.
+```{r}
+reform <- function (site_files_arg) {
+  site_files_arg <- gsub(".CSV|\"","",site_files_arg)
+  site_files_arg <- gsub("^","23-",site_files_arg)
+  site_files_arg <- as.POSIXct(site_files_arg,format="%y-%m-%d-%H")
+  format(site_files_arg,"%m-%d-%H")
+}
+```
+
+### Get all site paths
+```{r}
+sites <- list.files(path="./sensordata", full.names = TRUE)
+header <- c("Timestamp", "Site", "Amber", "White", "On", "Override", "Intensity",
+               "AS00", "AS01", "AS02", "AS03", "AS04", "AS05", "AS06", "AS07", "AS08",
+               "AS09", "AS10", "AS11")
+```
+ 
+### Reading in files
+For a given site path, we want to read in and rbind together all non-blank files whose names fall within our timeframe. Some files have headers while others don't, so we always set the file header manually.
+```{r}
+get_files <- function(site) {
+  files_within_bounds <- list.files(site)[reform(list.files(site)) %in% all_dates]
+  # exclude blank files
+  files_within_bounds <- files_within_bounds[file.size(paste(site,"/",files_within_bounds,sep=""))>0]
+  site_table <- do.call(rbind,lapply(files_within_bounds,function(file) {
+    data <- read.csv(paste(site,"/",file,sep=""))
+    names(data) <- header
+    return(data)
+    # 2
+  }))
+}
+```
+
+### Read in data from all sites
+```{r}
+raw_output <- lapply(sites,get_files)
+```
+
+List of dataframes
+```{r}
+big_table <- raw_output
+```
+
+Now we have a list of dataframes. Some have char columns only, other have int and num. We'll have to convert them all before combining into a master table.
+
+### Convert timestamp column to POSIXct
+This has the added bonus of removing rogue "header rows" since their timestamp (which just reads "Timestamp") is converted to NA and excluded from the subset.
+```{r}
+big_table <- lapply(big_table, function(df) {
+  df$Timestamp <- with_tz(as.POSIXct(as.numeric(df$Timestamp), origin = "1970-01-01"), "PST")
+  df <- subset(df, Timestamp > start_date & Timestamp < end_date)
+})
+```
+
+### Convert all the other columns to the correct type
+```{r}
+big_table <- lapply(big_table, function(df) {
+  df[,-1] <- lapply(df[,-1], type.convert, as.is = TRUE)
+  return(df)
+    })
+```
+
+### Merge into a single data.table
+Take unique values since some files were duplicated
+```{r}
+big_table <- unique(rbindlist(big_table,idcol="Folder"))
+```
+
+### Remove bad/corrupted files where Site is 0; sort by time
+```{r}
+big_table <- big_table[big_table$Site %in% 1:12,]
+setorder(big_table,cols = "Timestamp")
+```
+
+### Get min and max timestamp
+```{r}
+x_min <- min(big_table$Timestamp)
+x_max <- max(big_table$Timestamp)
+```
+
+
+### Create new x
+Use linear interpolation (approxfun) from floor(min_timestamp/300) * 300 to ceiling(max_timestamp/300) * 300, using seq(from, to, by=300). Do all of this for one series.
+
+```{r}
+x_inter <- seq(floor(as.numeric(x_min)/300)*300,
+    ceiling(as.numeric(x_max)/300)*300,
+    by=300)
+```
+
+### Make column for treatment (converting amber/white/on)
+
+ A | W | O | Override | State
+-------------------------
+ 0 | 1 | 1 | 0 | white, on
+ 0 | 1 | 0 | 0 | white, off
+ 0 | 1 | 1 | 1 | white, off, override
+ 1 | 1 | 1 | 0 | control, on
+ 1 | 1 | 0 | 0 | control, off
+ 1 | 1 | 1 | 1 | control, off, override
+ 1 | 0 | 1 | 0 | amber, on
+ 1 | 0 | 0 | 0 | amber, off
+ 1 | 0 | 1 | 1 | amber, off, override
+ 
+How many observations actually have override triggered?
+```{r}
+big_table[Override==1]
+```
+Just 5...
+
+A=0 W=1: white
+A=1 W=0: amber
+A=1 W=1: control
+
+Compute treatment column as follows:
+* control = A & W
+* amber = A & !W
+* white = !A & W
+
+```{r}
+big_table[, Treatment := fcase(
+  big_table$Amber & big_table$White, "C",
+  big_table$Amber & !big_table$White, "A",
+  !big_table$Amber & big_table$White, "W"
+  #,!big_table$Amber & !big_table$White, "U"
+)]
+```
+
+
+Anything that is NA should be removed (checked).
+```{r}
+big_table[is.na(Treatment), .N]
+dim(big_table[is.na(Treatment)])
+dim(big_table[!is.na(Treatment)])
+big_table <- big_table[!is.na(Treatment)]
+
+## get the timestamps at which treatment changes
+# changepoints <- big_table[rowid(rleid(Treatment)) == 1]
+# changepoints$Timestamp <- as.Date(changepoints$Timestamp)
+```
+
+### Fixing specific problems
+The files in site01 folder that are labelled site 3 are mislabelled--should be labelled 1. 
+"Master table" notes:
+* how can we add folder information to the master table? ("folder: site01; labelled site: 3; actual site: 1")
+* seems excessive to have a 12x12 table where this is the only really useful piece of information
+* leave as-is for now but let's slap a #FIXME on there
+
+# FIXME put this in metadata table
+# FIXME add variable for interval ID
+```{r}
+#big_table[, lapply(.SD, get_min_diff), by=Site, .SDcols = "Timestamp"]
+#id_table <- unique(rbindlist(big_table,idcol="Folder"))
+
+get_min_diff <- function(data) {
+  return(min(abs(diff(as.numeric(data,origin="1970-01-01"))),na.rm=TRUE))
+}
+
+dcast(big_table, Site + Folder ~ Timestamp, fun=get_min_diff,
+      value.var="Timestamp")
+
+min_diffs <- big_table[, lapply(.SD, get_min_diff), by=.(Site,Folder), .SDcols = "Timestamp"]
+min_diffs
+
+dcast(min_diffs, Site ~ Folder, value.var = "Timestamp")
+
+pdf("overlap.pdf", w=16, h=9)
+ggplot() +
+  geom_point(data=big_table, aes(x=Timestamp,y=Treatment,colour=as.factor(Site))) +
+  geom_point(data=labels_table, aes(x=Timestamp,y=LTreatment),colour="orange") +
+  facet_grid(rows = vars(Folder))
+dev.off()
+#raw_output[[1]] <- as.data.frame(as.data.table(raw_output[[1]])[Site==3, Site := 1])
+```
+
+## Compare with official states
+
+How many C, A, W states at each site? How many state changes?
+```{r}
+big_table[, .N, by=.(Site, Treatment)][order(Site,Treatment)]
+#changepoints <- changepoints[,.SD, .SDcols = names(labels_table)]
+```
+
+Pulling expected state from labels table:
+```{r}
+#labels_table[ big_table, x.LTreatment, on = .(Site, Timestamp), roll = Inf ]
+#big_table[, LTreatment := labels_table[ big_table, x.LTreatment, on = .(Site, Timestamp), roll = Inf ] ]
+#dim(big_table[Treatment==LTreatment])
+#dim(big_table[Treatment != LTreatment])
+```
+
+### Visualise the intended and actual state changes over time for each site
+```{r}
+ggplot() +
+  geom_point(data=big_table, aes(x=Timestamp,y=Treatment,colour=Site)) +
+  geom_point(data=labels_table, aes(x=Timestamp,y=LTreatment),colour="orange") +
+  facet_grid(rows = vars(Site))
+
+ggplot() +
+  geom_point(data=big_table, aes(x=Timestamp,y=Treatment,colour=Site)) +
+  geom_point(data=labels_table, aes(x=Timestamp,y=LTreatment),colour="orange") +
+  facet_grid(rows = vars(Site))
+```
+
+Checking minimum time difference between observations for a given site (e.g. determine whether a given dataset has been mislabelled as a different dataset):
+```{r}
+get_min_diff <- function(data) {
+  return(min(abs(diff(as.numeric(data,origin="1970-01-01")))))
+}
+# site3_diffs <- data.table(diffs = abs(diff(big_table[Site==3]$Timestamp)))
+# site4_diffs <- data.table(diffs = abs(diff(big_table[Site==4]$Timestamp)))
+# site3_diffs[,.N,by=diffs][order(diffs)]
+# site4_diffs[,.N,by=diffs][order(diffs)]
+#min(abs(diff(as.numeric(big_table[Site==5]$Timestamp),origin="1970-01-01")))/60
+big_table[, lapply(.SD, get_min_diff), by=Site, .SDcols = "Timestamp"]
+```
+
+
+### learn more about unsorted time series
+```{r}
+diag_table <- data.table(
+  site = big_table[, by=Site, is.unsorted(Timestamp)]$Site,
+  is_unsorted = big_table[, by=Site, is.unsorted(Timestamp)]$V1,
+  min_diff = big_table[, by=Site, as.difftime(min(diff(as.numeric(Timestamp),origin="1970-01-01"))/60/60/24,units="days")]$V1,
+  min = big_table[, by=Site, min(Timestamp)]$V1,
+  max = big_table[, by=Site, max(Timestamp)]$V1,
+  max_minus_min = big_table[, by=Site, max(Timestamp)-min(Timestamp)]$V1
+)
+setorder(diag_table,cols="site")
+diag_table
+```
+### Interpolate
+```{r}
+approx_x <- function(subdata, x_inter_arg) {
+  # returns x and y
+  return(na.omit(as.data.table(approx(x = subdata$Timestamp, y = subdata$AS05,
+                              xout = x_inter_arg, method = "linear"))))
+}
+```
+
+```{r}
+# approx_table <- big_table[,approx_x(.SD,x_inter)
+#            ,by=Site]
+
+approx_table <- big_table[,approx_x(.SD,x_inter)
+                          ,by=c("Site","Treatment")]
+pdf("site2_plot.pdf", w=16, h=9)
+# ggplot(approx_table[Site==2], aes(x=x,y=y)) +
+#  geom_point(alpha=0.3)#+
+#  facet_grid(rows = vars(Site))
+
+# FIXME check interpolation
+
+ggplot(approx_table[Site==2], aes(x=x,y=c(NA,diff(x)))) +
+  geom_point(alpha=0.3)
+
+dev.off()
+
+```
+* we should refer to a site's interval by its start date
+* to derive from a given POSIXct: as.numeric(floor(this_date - start_date)/5) + 1
+* however this might be challenging: midnight isn't when we were changing the traps
+* maybe instead find nearest changepoint <= current_timestamp, then nearest value in labels$Timestamp <= changepoint
+
+
+# make long table with intensity as a channel
+
+
+# can take SD as argument
+# 
+
+# make this work by converting treatment column
+
+ggplot(approx_table, aes(x=as.POSIXct(x, origin = "1970-01-01"),y=y)) +
+  geom_line() +
+  facet_wrap(~Site) +
+  scale_x_datetime()
+
+
+
+
+# another column
+# approx_table[channels="Intensity"]
+# grid: 
+
+
+
+
+
+ggplot(approx_table, aes(x=as.POSIXct(x, origin = "1970-01-01"),y=y)) +
+  geom_line() +
+  facet_wrap(~Site) +
+  scale_x_datetime(name="Date")
+
+
+
+
+str(approx(x = site_tables_list[[1]]$Timestamp, y = site_tables_list[[1]]$Intensity,
+              xout = x_inter, method = "linear"))
+
+interp_1 <- approx(x = site_tables_list[[1]]$Timestamp, y = site_tables_list[[1]]$Intensity,
+       xout = x_inter, method = "linear")
+interp_1 <- as.data.frame(interp_1)
+
+plot(na.omit(interp_1))
+
+# median filter (runmed)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# bmtest table:
+# 10 biomass measurements
+# 10 dates
+BmDate = seq.Date(from = as.Date("2023/06/01"), by = "5 days", length.out = 10)
+set.seed(1)
+bmtest <- data.table(
+  BmDate,
+  Biomass = rnorm(10, mean = 2, sd = 1)
+)
+bmtest
+
+# stest table:
+# 7 sensor measurements
+# 7 dates
+stest <- data.table(
+  SDate = sort(sample(BmDate,7)),
+  Sensor = rnorm(7, mean = 1000, sd = 300)
+)
+stest
+
+setkey(stest,"SDate")
+setkey(bmtest,"BmDate")
+bmtest[stest, roll = TRUE]
+
+
+
+
+# now to apply rolling joins to our actual data
+# - table of biomass data
+# - table of sensor measurements over time
+# - want to associate each biomass datapoint with a sensor measurement
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 1
+{
+  #all.equal(header,unlist(names_1[1])
+  #all_files <- lapply(sites,list.files)
+  
+  ## get a list of file names for given site
+  #site_files <- list.files(sites[4])
+  # length(reform(site_files))
+  # length(all_dates)
+  # length(reform(site_files)[reform(site_files) %in% all_dates])
+  #files_within_bounds <- site_files[reform(site_files) %in% all_dates]
+}
+
+# 2
+{    #print(names(data))
+  #   #print(file)
+  #   #try(print(names(read.csv(paste(site,"/",file,sep="")))))
+  #   tryCatch(
+  #     {
+  #       all.equal(names(read.csv(paste(site,"/",file,sep=""))),header)
+  #       read.csv(paste(site,"/",file,sep=""))
+  #     },
+  #     error=function(e) {
+  #       read.csv(paste(site,"/",file,sep=""),header = FALSE)
+  #     }
+  #   )
+  #   #names(data) <- header
+}
+
+
+# 3
+{# #
+  # si <- 3
+  # files_within_bounds <- list.files(sites[si])[reform(list.files(sites[si])) %in% all_dates]
+  # files_within_bounds <- files_within_bounds[file.size(paste(sites[si],"/",files_within_bounds,sep=""))>0]
+  # site_table_1 <- lapply(files_within_bounds,function(file) {
+  #   tryCatch(
+  #     {
+  #       read.csv(paste(sites[si],"/",file,sep=""))
+  #     },
+  #     error=function(e) {
+  #       read.csv(paste(sites[si],"/",file,sep=""), header = FALSE)
+  #     }
+  #   )
+  # })
+  # 
+  # names_1 <- lapply(site_table_1,names)
+  # for (i in 1:length(names_1)) {
+  #   #try (all.equal(names_1[i],names_1[1]))
+  #   print(paste(i, files_within_bounds[i], names_1[i]))
+  #   if (!all.equal(names_1[i],names_1[1])) {
+  #     print(files_within_bounds[i])
+  #   }
+  # }
+  # 
+  # all.equal(tail(names_1,n=1),names_1[1])
+  # 
+  # 
+  # all(sapply(names_1, identical, names_1[1]))
+  # names_1[1]
+  # 
+  # files_within_bounds <- list.files(sites[3])[reform(list.files(sites[3])) %in% all_dates]
+  # files_within_bounds <- files_within_bounds[file.size(paste(sites[3],"/",files_within_bounds,sep=""))>0]
+  # site_table_3 <- lapply(files_within_bounds,function(file) {
+  #   read.csv(paste(sites[3],"/",file,sep=""))
+  # })
+  # 
+  # str(get_files(sites[1]))
+  # str(get_files(sites[3]))
+  # for (i in 1:length(files_within_bounds)) {
+  #   print(files_within_bounds[i])
+  #   rbind_debug <- rbind(rbind_debug, read.csv(paste(sites[3],"/",files_within_bounds[i],sep="")))
+  # }
+  # 
+  # site_table <- do.call(rbind,lapply(files_within_bounds,function(file) {
+  #   read.csv(paste(site,"/",file,sep=""))
+  # }))
+  #
+}
+
+# 4
+{
+  # # convert one single dataframe's columns
+  # lapply(
+  #   big_table[[1]],type.convert,as.is = TRUE)
+  # # double-check this worked
+  # lapply(
+  #   lapply(
+  #     big_table[[1]],type.convert,as.is = TRUE),class)
+  
+}
+
+# 5
+{
+  # # double-check this worked
+  # #lapply(
+  # str(
+  # lapply(
+  #   big_table, function(df) {
+  #     lapply(df,type.convert, as.is = TRUE)
+  #   })
+  # )
+  # #  [1],class)
+}
+
+# 6
+{
+  # for every timestamp in big_table, we want to retrieve the corresponding treatment value from the labels table (what it's SUPPOSED to be)
+  # e.g. big_table$Timestamp "2023-06-29 09:26:07 PST"
+  # find 2023-06-26
+  # NOT 2023-07-01
+  # rolling join closest(x >= y) where x = big_table$Timestamp and y = labels_table$Timestamp
+  
+  # print(df1)
+  # ticker       date
+  # 1   AAPL 2019-01-06
+  # 2   AAPL 2019-02-06
+  # 3   MSFT 2019-01-06
+  # 4   MSFT 2019-05-02
+  # 
+  # 
+  # print(df2)
+  # ticker       date  randomVar
+  # 1   AAPL 2019-01-03 -0.5321493
+  # 2   AAPL 2019-01-07 -0.7909461
+  # 3   AAPL 2019-02-06  0.2121993
+  # 4   MSFT 2019-01-05  1.2336315
+  # 5   MSFT 2019-01-07 -0.2729354
+  # 6   MSFT 2019-05-02 -0.5349596
+  # 
+  # 
+  # #convert sample data to data.table
+  # setDT(df1)
+  # setDT(df2)
+  
+  # #update df1 by reference with a rolling join
+  # df1[, randomVar := df2[ df1, x.randomVar, on = .(ticker, date), roll = Inf ] ]
+  # 
+  # 
+  # #    ticker       date  randomVar
+  # # 1:   AAPL 2019-01-06 -0.5321493
+  # # 2:   AAPL 2019-02-06  0.2121993
+  # # 3:   MSFT 2019-01-06  1.2336315
+  # # 4:   MSFT 2019-05-02 -0.5349596
+  # 
+  # 
+  # 
+  # # in their case:
+  # # get ticker from df1 (site number)
+  # # get date from df1 (timestamp)
+  # # get nearest randomVar from df2 (treatment)
+  # 
+  # # in our case:
+  # # get Site from big_table
+  # # get Timestamp from big_table
+  # # get nearest Treatment from labels_table
+  
+}

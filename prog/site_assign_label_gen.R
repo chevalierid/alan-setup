@@ -1,4 +1,4 @@
-rm(list = ls(all = TRUE))
+#rm(list = ls(all = TRUE))
 # dates-sites-site_settings
 dates <- seq(as.Date("2023/6/21"),as.Date("2023/12/21"),by="5 days")
 dates_out <- t(matrix(rep(dates,each=12),nrow=12))
@@ -48,7 +48,10 @@ labels_out <- as.data.frame(sapply(seq(1,ncol(labels),by=3),function(i)
 #       sapply(split.default(tmp, ceiling(seq_along(tmp)/n)), 
 #              function(x) do.call(paste(sep = "_"), x)))
 
-write.table(labels_out,file="site_states.csv", sep=",", row.names=FALSE, col.names=FALSE)
+
+
+############ uncomment to generate CSV
+#write.table(labels_out,file="site_states.csv", sep=",", row.names=FALSE, col.names=FALSE)
 
 # to_csv <- sprintf(paste(labels_out, collapse=','))
 # cat(to_csv,file = "site_labels_test.csv")
