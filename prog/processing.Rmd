@@ -202,6 +202,14 @@ big_table[, Treatment := fcase(
 )]
 ```
 
+Any NA-treatment observations should be removed (checked).
+```{r}
+big_table[is.na(Treatment), .N]
+dim(big_table[is.na(Treatment)])
+dim(big_table[!is.na(Treatment)])
+big_table <- big_table[!is.na(Treatment)]
+```
+
 ### For each labelled site and folder, retrieve actual site and state from labels_table
 This is harder than it first appears. We must find the time interval corresponding to each data table entry.
 We do this by finding transition points in treatment
@@ -211,20 +219,55 @@ We do this by finding transition points in treatment
 # must group by LabelledSite and order by timestamps
 # then find changepoints
 
-big_table[LabelledSite==1]
-
-#big_table[, rowid(rleid(Treatment)) == 1, by=LabelledSite]
+setorder(big_table,LabelledSite,Timestamp)
 
 # here we get the row indices of every change point by site
-# have to manually handle first item
+# have to manually handle firsts, both by folder and site
 
-big_table[ , Timestamp[Treatment != shift(Treatment, 1L, type="lag")
-            | Timestamp %in% big_table[!duplicated(big_table$LabelledSite)]$Timestamp
-            ], by=LabelledSite]
+#dim(big_table[, !duplicated(LabelledSite), by=.(LabelledSite)])
+#DT[, NEWCLS := as.integer(!duplicated(CLASS)), by = ID]
+
+#str(big_table[, !duplicated(LabelledSite), by=.(LabelledSite,Folder)])
+str(big_table[!duplicated(big_table[,c("LabelledSite","Folder"),with=F])])
+ #dim(,big_table[!duplicated(.SD, by=c("LabelledSite", "Folder")),
+
+# big_table[Treatment != shift(Treatment, 1L, type="lag") | Timestamp %in% big_table[!duplicated(big_table$LabelledSite)]$Timestamp, 
+#     StartDate := as.Date(Timestamp), by=.(LabelledSite,Folder)]
+# big_table[, StartDate := nafill(StartDate, type="locf")]
+# big_table
 
 
-#dat[dat, on=.(person, location, rn > rnp1), back := TRUE]
-changepoints$Timestamp <- as.Date(changepoints$Timestamp)
+big_table[Treatment != shift(Treatment, 1L, type="lag") | Timestamp %in% big_table[!duplicated(big_table[,c("LabelledSite","Folder"),with=F])]$Timestamp, 
+    StartDate := as.Date(Timestamp), by=.(LabelledSite,Folder)]
+
+big_table[, StartDate := nafill(StartDate, type="locf")]
+
+
+
+changepoints <- big_table[ , Timestamp[Treatment != shift(Treatment, 1L, type="lag") 
+                                      | Timestamp %in% big_table[!duplicated(big_table[,c("LabelledSite","Folder"),with=F])]$Timestamp], 
+                        by=.(LabelledSite,Folder)]
+
+
+colnames(changepoints) <- c("LabelledSite","Folder","Timestamp")
+
+changepoints[big_table, on = c("LabelledSite","Folder","Timestamp"), Treatment := i.Treatment]
+
+```
+
+```{r}
+pdf("changepoints.pdf", w=16, h=9)
+ggplot() +
+  geom_point(data=big_table[Timestamp < as.Date("2023-07-01")], aes(x=Timestamp,y=Treatment,colour=as.factor(Folder))) +
+  geom_point(data=labels_table[Timestamp < as.Date("2023-07-01")], aes(x=Timestamp,y=LTreatment,alpha=0.5)) +
+  geom_point(data=changepoints[Timestamp < as.Date("2023-07-01")], aes(x=Timestamp,y=Treatment,colour="red",alpha=0.5)) +
+  scale_x_datetime(
+    breaks=seq(min(labels_table$Timestamp),max(labels_table$Timestamp), by="5 days"),
+    date_labels = "%b %d", timezone="PST") +
+  theme(axis.text.x=element_text(angle=60, hjust=1)) +
+  facet_grid(rows = vars(LabelledSite)) +
+  geom_vline(data = labels_table, aes(xintercept = Timestamp),alpha=0.3)
+dev.off()
 ```
 
 ```{r}
@@ -237,18 +280,19 @@ ggplot() +
     breaks=seq(min(labels_table$Timestamp),max(labels_table$Timestamp), by="5 days"),
     date_labels = "%b %d", timezone="PST") +
   theme(axis.text.x=element_text(angle=60, hjust=1)) +
-  facet_grid(rows = vars(Site)) +
+  facet_grid(rows = vars(LabelledSite)) +
   geom_vline(data = labels_table, aes(xintercept = Timestamp),alpha=0.3)
 dev.off()
 ```
 
-Anything that is NA should be removed (checked).
+### Now that we've found the interval start periods for all sites, we can make a date column that assigns them to the interval itself, referred to by its date.
+
 ```{r}
-big_table[is.na(Treatment), .N]
-dim(big_table[is.na(Treatment)])
-dim(big_table[!is.na(Treatment)])
-big_table <- big_table[!is.na(Treatment)]
+
 ```
+
+
+
 
 
 
