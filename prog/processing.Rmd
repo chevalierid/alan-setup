@@ -13,23 +13,48 @@ knitr::opts_knit$set(root.dir="~/Documents/alan-setup")
 ```{r}
 source("./prog/site_assign_label_gen.R")
 labels_table <- melt(setDT(labels), measure = patterns(c("^dates_out","^sites","^site_settings")),
-     value.name = c("Timestamp", "Site", "LTreatment"))
+     value.name = c("Timestamp", "LabelledSite", "LTreatment"))
 labels_table <- labels_table[,.SD,
-             .SDcols = c("Timestamp", "Site", "LTreatment")]
+             .SDcols = c("Timestamp", "LabelledSite", "LTreatment")]
 labels_table$Timestamp <- as.POSIXct(labels_table$Timestamp)
 setorder(labels_table,Timestamp)
 ```
+
+
+"Long Collection Date Site Treatment and Notes"
+
 
 ### Import status table (whether sites were collecting data over a given interval)
 ```{r}
 source("./prog/reshape.R")
 str(status_table)
+str(labels_table)
+summary(status_table)
 #max(labels_table[Timestamp <= max(status_table$Date)]$Timestamp)
 # equality comparison works between labels_table$Timestamp and status_table$Date :-)
 
+# trim labels_table
+labels_table <- labels_table[Timestamp <= max(status_table$Timestamp)]
+
+dim(labels_table)
+dim(status_table)
+
 # add a column to labels_table that indicates the actual status of given site at given interval
 # retrieve status_table$Status by matching labels_table$Timestamp to status_table$Timestamp and labels_table$Site to status_table$Site
-labels_table[status_table, on = c("Timestamp","Site"), Status := i.Status]
+
+labels_table[status_table, on = c("Timestamp","LabelledSite"), c("Status", "Folder", "Site") := list(fcase(
+  i.Status %in% c("", "dep") | is.na(i.Folder) | is.na(i.Site), 1,
+  default = 0 # FIXME add a case for NA folder and site
+  ), i.Folder, i.Site)]
+
+# labels_table[status_table, on = c("Timestamp","Site"), Status := fcase(
+#   i.Status %in% c("", "dep"), 1,
+#   default = 0
+#   )]
+
+
+
+head(labels_table)
 ```
 
 ### Downloading sensor data
@@ -62,7 +87,7 @@ reform <- function (site_files_arg) {
 ### Get all site paths
 ```{r}
 sites <- list.files(path="./sensordata", full.names = TRUE)
-header <- c("Timestamp", "Site", "Amber", "White", "On", "Override", "Intensity",
+header <- c("Timestamp", "LabelledSite", "Amber", "White", "On", "Override", "Intensity",
                "AS00", "AS01", "AS02", "AS03", "AS04", "AS05", "AS06", "AS07", "AS08",
                "AS09", "AS10", "AS11")
 ```
@@ -118,26 +143,30 @@ Take unique values since some files were duplicated
 big_table <- unique(rbindlist(big_table,idcol="Folder"))
 ```
 
-### Remove bad/corrupted files where Site is 0; sort by time
+### Count how many of each timestamp for each LabelledSite and Folder
 ```{r}
-big_table <- big_table[big_table$Site %in% 1:12,]
+big_table[,.N,by=.(as.Date(Timestamp),LabelledSite,Folder)][N>288]
+```
+
+### Remove bad/corrupted files where LabelledSite is 0
+### Sort by time
+```{r}
+big_table <- big_table[big_table$LabelledSite %in% 1:12,]
+str(labels_table)
+# fix labels_table, up above
+# match:
+  # labels_table$Timestamp to big_table$Timestamp
+  # labels_table$
+
+#labels_table[Timestamp==big_table$Timestamp,]
+
+# labels_table[status_table, on = c("Timestamp","LabelledSite"), c("Status", "Folder", "Site") := list(fcase(
+#   i.Status %in% c("", "dep") | is.na(i.Folder) | is.na(i.Site), 1,
+#   default = 0 # FIXME add a case for NA folder and site
+#   ), i.Folder, i.Site)]
+
+
 setorder(big_table,cols = "Timestamp")
-```
-
-### Get min and max timestamp
-```{r}
-x_min <- min(big_table$Timestamp)
-x_max <- max(big_table$Timestamp)
-```
-
-
-### Create new x
-Use linear interpolation (approxfun) from floor(min_timestamp/300) * 300 to ceiling(max_timestamp/300) * 300, using seq(from, to, by=300). Do all of this for one series.
-
-```{r}
-x_inter <- seq(floor(as.numeric(x_min)/300)*300,
-    ceiling(as.numeric(x_max)/300)*300,
-    by=300)
 ```
 
 ### Make column for treatment (converting amber/white/on)
@@ -154,12 +183,7 @@ x_inter <- seq(floor(as.numeric(x_min)/300)*300,
  1 | 0 | 0 | 0 | amber, off
  1 | 0 | 1 | 1 | amber, off, override
  
-How many observations actually have override triggered?
-```{r}
-big_table[Override==1]
-```
-Just 5...
-
+ 
 A=0 W=1: white
 A=1 W=0: amber
 A=1 W=1: control
@@ -178,6 +202,45 @@ big_table[, Treatment := fcase(
 )]
 ```
 
+### For each labelled site and folder, retrieve actual site and state from labels_table
+This is harder than it first appears. We must find the time interval corresponding to each data table entry.
+We do this by finding transition points in treatment
+
+```{r}
+## get the timestamps at which treatment changes
+# must group by LabelledSite and order by timestamps
+# then find changepoints
+
+big_table[LabelledSite==1]
+
+#big_table[, rowid(rleid(Treatment)) == 1, by=LabelledSite]
+
+# here we get the row indices of every change point by site
+# have to manually handle first item
+
+big_table[ , Timestamp[Treatment != shift(Treatment, 1L, type="lag")
+            | Timestamp %in% big_table[!duplicated(big_table$LabelledSite)]$Timestamp
+            ], by=LabelledSite]
+
+
+#dat[dat, on=.(person, location, rn > rnp1), back := TRUE]
+changepoints$Timestamp <- as.Date(changepoints$Timestamp)
+```
+
+```{r}
+pdf("changepoints.pdf", w=16, h=9)
+ggplot() +
+  geom_point(data=big_table, aes(x=Timestamp,y=Treatment,colour=as.factor(Folder))) +
+  geom_point(data=labels_table, aes(x=Timestamp,y=LTreatment,alpha=0.5)) +
+  geom_point(data=changepoints, aes(x=Timestamp,y=Treatment,colour="red",alpha=0.5)) +
+  scale_x_datetime(
+    breaks=seq(min(labels_table$Timestamp),max(labels_table$Timestamp), by="5 days"),
+    date_labels = "%b %d", timezone="PST") +
+  theme(axis.text.x=element_text(angle=60, hjust=1)) +
+  facet_grid(rows = vars(Site)) +
+  geom_vline(data = labels_table, aes(xintercept = Timestamp),alpha=0.3)
+dev.off()
+```
 
 Anything that is NA should be removed (checked).
 ```{r}
@@ -185,11 +248,41 @@ big_table[is.na(Treatment), .N]
 dim(big_table[is.na(Treatment)])
 dim(big_table[!is.na(Treatment)])
 big_table <- big_table[!is.na(Treatment)]
-
-## get the timestamps at which treatment changes
-# changepoints <- big_table[rowid(rleid(Treatment)) == 1]
-# changepoints$Timestamp <- as.Date(changepoints$Timestamp)
 ```
+
+
+
+
+
+
+
+
+
+
+### Get min and max timestamp
+```{r}
+x_min <- min(big_table$Timestamp)
+x_max <- max(big_table$Timestamp)
+```
+
+
+### Create new x
+Use linear interpolation (approxfun) from floor(min_timestamp/300) * 300 to ceiling(max_timestamp/300) * 300, using seq(from, to, by=300). Do all of this for one series.
+
+```{r}
+x_inter <- seq(floor(as.numeric(x_min)/300)*300,
+    ceiling(as.numeric(x_max)/300)*300,
+    by=300)
+```
+
+
+ 
+How many observations actually have override triggered?
+```{r}
+big_table[Override==1]
+```
+Just 5...
+
 
 ### Fixing specific problems
 The files in site01 folder that are labelled site 3 are mislabelled--should be labelled 1. 
@@ -207,9 +300,6 @@ The files in site01 folder that are labelled site 3 are mislabelled--should be l
 get_min_diff <- function(data) {
   return(min(abs(diff(as.numeric(data,origin="1970-01-01"))),na.rm=TRUE))
 }
-
-dcast(big_table, Site + Folder ~ Timestamp, fun=get_min_diff,
-      value.var="Timestamp")
 
 min_diffs <- big_table[, lapply(.SD, get_min_diff), by=.(Site,Folder), .SDcols = "Timestamp"]
 min_diffs
@@ -242,16 +332,48 @@ Pulling expected state from labels table:
 ```
 
 ### Visualise the intended and actual state changes over time for each site
-```{r}
-ggplot() +
-  geom_point(data=big_table, aes(x=Timestamp,y=Treatment,colour=Site)) +
-  geom_point(data=labels_table, aes(x=Timestamp,y=LTreatment),colour="orange") +
-  facet_grid(rows = vars(Site))
+We want to catch cases where files were saved with the wrong Site. 
+--> don't match up with their plotted Site's ons and offs
+--> coloured with a different folder
+--> in interval table, manually indicate which folder each in
+| site | labelled site | folder
 
+
+```{r}
+# ggplot() +
+#   geom_point(data=big_table, aes(x=Timestamp,y=Treatment,colour=Site)) +
+#   geom_point(data=labels_table, aes(x=Timestamp,y=LTreatment),colour="orange") +
+#   facet_grid(rows = vars(Site))
+
+# ggplot() +
+#   geom_point(data=big_table, aes(x=Timestamp,y=Treatment),colour="orange") +
+#   geom_point(data=labels_table, aes(x=Timestamp,y=LTreatment,colour=as.factor(Status))) +
+#   facet_grid(rows = vars(Site))
+
+pdf("overlap.pdf", w=16, h=3)
 ggplot() +
-  geom_point(data=big_table, aes(x=Timestamp,y=Treatment,colour=Site)) +
-  geom_point(data=labels_table, aes(x=Timestamp,y=LTreatment),colour="orange") +
-  facet_grid(rows = vars(Site))
+  geom_point(data=big_table[Folder == 12], aes(x=Timestamp,y=Treatment,colour=as.factor(Site))) +
+  geom_point(data=labels_table[Site == 12], aes(x=Timestamp,y=LTreatment,colour=as.factor(Status)))+
+  scale_x_datetime(
+    breaks=seq(min(labels_table$Timestamp),max(labels_table$Timestamp), by="5 days"),
+    date_labels = "%b %d", timezone="PST") +
+  theme(axis.text.x=element_text(angle=60, hjust=1))
+dev.off()
+
+pdf("overlap.pdf", w=16, h=9)
+ggplot() +
+  geom_point(data=big_table, aes(x=Timestamp,y=Treatment,colour=as.factor(Folder))) +
+  geom_point(data=labels_table, aes(x=Timestamp,y=LTreatment,alpha=as.factor(Status))) +
+  scale_x_datetime(
+    breaks=seq(min(labels_table$Timestamp),max(labels_table$Timestamp), by="5 days"),
+    date_labels = "%b %d", timezone="PST") +
+  theme(axis.text.x=element_text(angle=60, hjust=1)) +
+  facet_grid(rows = vars(Site)) +
+  geom_vline(data = labels_table, aes(xintercept = Timestamp),alpha=0.3)
+dev.off()
+
+
+
 ```
 
 Checking minimum time difference between observations for a given site (e.g. determine whether a given dataset has been mislabelled as a different dataset):
@@ -271,7 +393,7 @@ big_table[, lapply(.SD, get_min_diff), by=Site, .SDcols = "Timestamp"]
 ### learn more about unsorted time series
 ```{r}
 diag_table <- data.table(
-  site = big_table[, by=Site, is.unsorted(Timestamp)]$Site,
+  site = big_table[, by=Site, is.unsorted(Timestamp)]$LabelledSite,
   is_unsorted = big_table[, by=Site, is.unsorted(Timestamp)]$V1,
   min_diff = big_table[, by=Site, as.difftime(min(diff(as.numeric(Timestamp),origin="1970-01-01"))/60/60/24,units="days")]$V1,
   min = big_table[, by=Site, min(Timestamp)]$V1,
