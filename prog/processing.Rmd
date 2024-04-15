@@ -16,7 +16,7 @@ labels_table <- melt(setDT(labels), measure = patterns(c("^dates_out","^sites","
      value.name = c("Timestamp", "LabelledSite", "LTreatment"))
 labels_table <- labels_table[,.SD,
              .SDcols = c("Timestamp", "LabelledSite", "LTreatment")]
-labels_table$Timestamp <- as.POSIXct(labels_table$Timestamp)
+labels_table$Timestamp <- with_tz(as.POSIXct(labels_table$Timestamp), "PST")
 setorder(labels_table,Timestamp)
 ```
 
@@ -224,43 +224,67 @@ setorder(big_table,LabelledSite,Timestamp)
 # here we get the row indices of every change point by site
 # have to manually handle firsts, both by folder and site
 
-#dim(big_table[, !duplicated(LabelledSite), by=.(LabelledSite)])
-#DT[, NEWCLS := as.integer(!duplicated(CLASS)), by = ID]
-
-#str(big_table[, !duplicated(LabelledSite), by=.(LabelledSite,Folder)])
 str(big_table[!duplicated(big_table[,c("LabelledSite","Folder"),with=F])])
- #dim(,big_table[!duplicated(.SD, by=c("LabelledSite", "Folder")),
 
 # big_table[Treatment != shift(Treatment, 1L, type="lag") | Timestamp %in% big_table[!duplicated(big_table$LabelledSite)]$Timestamp, 
 #     StartDate := as.Date(Timestamp), by=.(LabelledSite,Folder)]
 # big_table[, StartDate := nafill(StartDate, type="locf")]
 # big_table
 
+# big_table[select rows where treatment != prev treatment OR timestamp is the first timestamp]
+# dim(big_table[Treatment != shift(Treatment, 1L, type="lag") | Timestamp %in% big_table[!duplicated(big_table[,c("LabelledSite","Folder"),with=F])]$Timestamp, , by=.(LabelledSite,Folder)],)
 
-big_table[Treatment != shift(Treatment, 1L, type="lag") | Timestamp %in% big_table[!duplicated(big_table[,c("LabelledSite","Folder"),with=F])]$Timestamp, 
-    StartDate := as.Date(Timestamp), by=.(LabelledSite,Folder)]
+setorder(big_table,LabelledSite,Timestamp)
+
+big_table[Treatment != shift(Treatment, 1L, type="lag") | Timestamp %in% big_table[!duplicated(big_table[,c("LabelledSite","Folder"),with=F])]$Timestamp, StartDate := as.Date(Timestamp), by=.(LabelledSite,Folder)]
+
+
+
+
 
 big_table[, StartDate := nafill(StartDate, type="locf")]
 
 
+# original changepoints (returns only 168 rows):
+# dim(big_table[ , Timestamp[Treatment != shift(Treatment, 1L, type="lag") | Timestamp %in% big_table[!duplicated(big_table[,c("LabelledSite","Folder"),with=F])]$Timestamp], by=.(LabelledSite,Folder)])
 
-changepoints <- big_table[ , Timestamp[Treatment != shift(Treatment, 1L, type="lag") 
-                                      | Timestamp %in% big_table[!duplicated(big_table[,c("LabelledSite","Folder"),with=F])]$Timestamp], 
-                        by=.(LabelledSite,Folder)]
-
+# changepoints <- big_table[ , Timestamp[Treatment != shift(Treatment, 1L, type="lag") | Timestamp %in% big_table[!duplicated(big_table[,c("LabelledSite","Folder"),with=F])]$Timestamp], by=.(LabelledSite,Folder)]
 
 colnames(changepoints) <- c("LabelledSite","Folder","Timestamp")
-
 changepoints[big_table, on = c("LabelledSite","Folder","Timestamp"), Treatment := i.Treatment]
 
+# big_table[
+#           Treatment != shift(Treatment, 1L, type="lag") | Timestamp %in% big_table[!duplicated(big_table[,c("LabelledSite","Folder"),with=F])]$Timestamp,
+#           StartDate := as.Date(Timestamp), 
+#           by=.(LabelledSite,Folder)
+#          ]
+
+
+
+
+
 ```
+
+
+```{r}
+unclass(changepoints[LabelledSite==10 & Timestamp < as.POSIXct("2023-08-01") & Timestamp > as.POSIXct("2023-07-30")]$Timestamp)
+# on Jul 31, site 10 was changed at 11:48ish
+# RTC says 2023-07-31 18:53:44
+# this implies that 7h should be subtracted from all the timestamps
+# makes sense! UTC = PST + 7
+# if we unclass we get 1690829624 which, according to EpochConverter, is 18:53:44 UTC and 11:53:44 PST
+# our timestamps are correct, but they display in UTC
+```
+
+Now we have a handy new column where 
+
 
 ```{r}
 pdf("changepoints.pdf", w=16, h=9)
 ggplot() +
-  geom_point(data=big_table[Timestamp < as.Date("2023-07-01")], aes(x=Timestamp,y=Treatment,colour=as.factor(Folder))) +
-  geom_point(data=labels_table[Timestamp < as.Date("2023-07-01")], aes(x=Timestamp,y=LTreatment,alpha=0.5)) +
-  geom_point(data=changepoints[Timestamp < as.Date("2023-07-01")], aes(x=Timestamp,y=Treatment,colour="red",alpha=0.5)) +
+  #geom_point(data=big_table, aes(x=Timestamp,y=Treatment,colour=as.factor(Folder))) +
+  geom_point(data=labels_table, aes(x=Timestamp,y=LTreatment,alpha=0.5)) +
+  geom_point(data=changepoints, aes(x=Timestamp,y=Treatment,colour="yellow")) +
   scale_x_datetime(
     breaks=seq(min(labels_table$Timestamp),max(labels_table$Timestamp), by="5 days"),
     date_labels = "%b %d", timezone="PST") +
