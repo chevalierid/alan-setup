@@ -224,8 +224,6 @@ setorder(big_table,LabelledSite,Timestamp)
 # here we get the row indices of every change point by site
 # have to manually handle firsts, both by folder and site
 
-str(big_table[!duplicated(big_table[,c("LabelledSite","Folder"),with=F])])
-
 # big_table[Treatment != shift(Treatment, 1L, type="lag") | Timestamp %in% big_table[!duplicated(big_table$LabelledSite)]$Timestamp, 
 #     StartDate := as.Date(Timestamp), by=.(LabelledSite,Folder)]
 # big_table[, StartDate := nafill(StartDate, type="locf")]
@@ -234,20 +232,24 @@ str(big_table[!duplicated(big_table[,c("LabelledSite","Folder"),with=F])])
 # big_table[select rows where treatment != prev treatment OR timestamp is the first timestamp]
 # dim(big_table[Treatment != shift(Treatment, 1L, type="lag") | Timestamp %in% big_table[!duplicated(big_table[,c("LabelledSite","Folder"),with=F])]$Timestamp, , by=.(LabelledSite,Folder)],)
 
-setorder(big_table,LabelledSite,Timestamp)
 
-big_table[Treatment != shift(Treatment, 1L, type="lag") | Timestamp %in% big_table[!duplicated(big_table[,c("LabelledSite","Folder"),with=F])]$Timestamp, StartDate := as.Date(Timestamp), by=.(LabelledSite,Folder)]
+big_table[Treatment != shift(Treatment, 1L, type="lag") | Timestamp %in% big_table[!duplicated(big_table[,c("LabelledSite","Folder"),with=F])]$Timestamp, Changepoint := Timestamp, by=.(LabelledSite,Folder)]
 
+# set each value of StartDate to the closest entry in unique(labels_table$Timestamp)
+maxless <- function(input, labels) {
+  #return(max(unique(as.numeric(labels))[unique(as.numeric(labels)) <= as.numeric(input)]))
+  return(as.Date(as.POSIXct(max(as.numeric(labels)[as.numeric(labels) <= as.numeric(input)]),origin="1970-01-01")))
+}
+#view(big_table[, maxless(Changepoint, labels_table$Timestamp), by=1:nrow(big_table)])
+view(big_table[, StartDate := maxless(Changepoint, unique(labels_table$Timestamp)), by=1:nrow(big_table)])
 
-
+# big_table[Treatment != shift(Treatment, 1L, type="lag") | Timestamp %in% big_table[!duplicated(big_table[,c("LabelledSite","Folder"),with=F])]$Timestamp, StartDate := max(unique(labels_table$Timestamp)[StartDate <= unique(labels_table$Timestamp)]), by=.()]
 
 
 big_table[, StartDate := nafill(StartDate, type="locf")]
 
 
 # original changepoints (returns only 168 rows):
-# dim(big_table[ , Timestamp[Treatment != shift(Treatment, 1L, type="lag") | Timestamp %in% big_table[!duplicated(big_table[,c("LabelledSite","Folder"),with=F])]$Timestamp], by=.(LabelledSite,Folder)])
-
 # changepoints <- big_table[ , Timestamp[Treatment != shift(Treatment, 1L, type="lag") | Timestamp %in% big_table[!duplicated(big_table[,c("LabelledSite","Folder"),with=F])]$Timestamp], by=.(LabelledSite,Folder)]
 
 colnames(changepoints) <- c("LabelledSite","Folder","Timestamp")
