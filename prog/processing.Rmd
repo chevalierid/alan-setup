@@ -35,25 +35,39 @@ summary(status_table)
 
 # trim labels_table
 labels_table <- labels_table[Timestamp <= max(status_table$Timestamp)]
+#labels_table <- labels_table[Timestamp %in% status_table$Timestamp]
 
-dim(labels_table)
-dim(status_table)
+#labels_table <- labels_table[status_table, on = c("Timestamp" , "LabelledSite")]
 
 # add a column to labels_table that indicates the actual status of given site at given interval
 # retrieve status_table$Status by matching labels_table$Timestamp to status_table$Timestamp and labels_table$Site to status_table$Site
 
-labels_table[status_table, on = c("Timestamp","LabelledSite"), c("Status", "Folder", "Site") := list(fcase(
-  i.Status %in% c("", "dep") | is.na(i.Folder) | is.na(i.Site), 1,
-  default = 0 # FIXME add a case for NA folder and site
+# view(labels_table[status_table, on = c("Timestamp","LabelledSite"), fcase(
+#   !(i.Status %in% c("", "dep")) | is.na(i.Folder) | is.na(i.Site), 0,
+#   default = 1
+#   )])
+
+labels_table[status_table, on = c("Timestamp","LabelledSite"), c("Status","Folder","Site") := list(fcase(
+  !(i.Status %in% c("", "dep")) | is.na(i.Folder) | is.na(i.Site), 0,
+  default = 1
   ), i.Folder, i.Site)]
+
+view(labels_table[Status==1])
+# labels_table[status_table, on = c("Timestamp","LabelledSite"), c("Status", "Folder", "Site") := list(fcase(
+#   i.Status %in% c("", "dep"), 1,
+#   default = 0 # FIXME add a case for NA folder and site
+#   ), i.Folder, i.Site)]
+
+
+# labels_table[status_table, on = c("Timestamp","LabelledSite"), c("Status", "Folder", "Site") := list(fcase(
+#   i.Status %in% c("", "dep") | is.na(i.Folder) | is.na(i.Site), 1,
+#   default = 0 # FIXME add a case for NA folder and site
+#   ), i.Folder, i.Site)]
 
 # labels_table[status_table, on = c("Timestamp","Site"), Status := fcase(
 #   i.Status %in% c("", "dep"), 1,
 #   default = 0
 #   )]
-
-
-
 head(labels_table)
 ```
 
@@ -243,33 +257,38 @@ maxless <- function(input, labels) {
 #view(big_table[, maxless(Changepoint, labels_table$Timestamp), by=1:nrow(big_table)])
 view(big_table[, StartDate := maxless(Changepoint, unique(labels_table$Timestamp)), by=1:nrow(big_table)])
 
-# big_table[Treatment != shift(Treatment, 1L, type="lag") | Timestamp %in% big_table[!duplicated(big_table[,c("LabelledSite","Folder"),with=F])]$Timestamp, StartDate := max(unique(labels_table$Timestamp)[StartDate <= unique(labels_table$Timestamp)]), by=.()]
-
-
 big_table[, StartDate := nafill(StartDate, type="locf")]
-
 
 # original changepoints (returns only 168 rows):
 # changepoints <- big_table[ , Timestamp[Treatment != shift(Treatment, 1L, type="lag") | Timestamp %in% big_table[!duplicated(big_table[,c("LabelledSite","Folder"),with=F])]$Timestamp], by=.(LabelledSite,Folder)]
+#colnames(changepoints) <- c("LabelledSite","Folder","Timestamp")
+#changepoints[big_table, on = c("LabelledSite","Folder","Timestamp"), Treatment := i.Treatment]
+```
 
-colnames(changepoints) <- c("LabelledSite","Folder","Timestamp")
-changepoints[big_table, on = c("LabelledSite","Folder","Timestamp"), Treatment := i.Treatment]
+Now we have a column stating the interval (identified by its first sampling day) for each observation. Let's properly assign site labels.
+```{r}
+# labels_table$Timestamp    & big_table$StartDate
+# labels_table$Folder       & big_table$Folder
+# labels_table$LabelledSite & big_table$LabelledSite
+# labels_table$Site         & big_table$Site (:=)
 
-# big_table[
-#           Treatment != shift(Treatment, 1L, type="lag") | Timestamp %in% big_table[!duplicated(big_table[,c("LabelledSite","Folder"),with=F])]$Timestamp,
-#           StartDate := as.Date(Timestamp), 
-#           by=.(LabelledSite,Folder)
-#          ]
+# labels_table[status_table, on = c("Timestamp","LabelledSite"), 
+#              c("Status", "Folder", "Site") := list(fcase(
+#   i.Status %in% c("", "dep") | is.na(i.Folder) | is.na(i.Site), 1,
+#   default = 0
+# ), i.Folder, i.Site)]
 
+# dt_a[dt_b, on = .(b = y, c > z)]
 
-
+view(big_table[labels_table, on=.(StartDate = Timestamp, Folder = Folder, LabelledSite = LabelledSite),
+          Site := i.Site])
 
 
 ```
 
 
 ```{r}
-unclass(changepoints[LabelledSite==10 & Timestamp < as.POSIXct("2023-08-01") & Timestamp > as.POSIXct("2023-07-30")]$Timestamp)
+#unclass(changepoints[LabelledSite==10 & Timestamp < as.POSIXct("2023-08-01") & Timestamp > as.POSIXct("2023-07-30")]$Timestamp)
 # on Jul 31, site 10 was changed at 11:48ish
 # RTC says 2023-07-31 18:53:44
 # this implies that 7h should be subtracted from all the timestamps
@@ -278,22 +297,19 @@ unclass(changepoints[LabelledSite==10 & Timestamp < as.POSIXct("2023-08-01") & T
 # our timestamps are correct, but they display in UTC
 ```
 
-Now we have a handy new column where 
-
-
 ```{r}
-pdf("changepoints.pdf", w=16, h=9)
-ggplot() +
-  #geom_point(data=big_table, aes(x=Timestamp,y=Treatment,colour=as.factor(Folder))) +
-  geom_point(data=labels_table, aes(x=Timestamp,y=LTreatment,alpha=0.5)) +
-  geom_point(data=changepoints, aes(x=Timestamp,y=Treatment,colour="yellow")) +
-  scale_x_datetime(
-    breaks=seq(min(labels_table$Timestamp),max(labels_table$Timestamp), by="5 days"),
-    date_labels = "%b %d", timezone="PST") +
-  theme(axis.text.x=element_text(angle=60, hjust=1)) +
-  facet_grid(rows = vars(LabelledSite)) +
-  geom_vline(data = labels_table, aes(xintercept = Timestamp),alpha=0.3)
-dev.off()
+# pdf("changepoints.pdf", w=16, h=9)
+# ggplot() +
+#   #geom_point(data=big_table, aes(x=Timestamp,y=Treatment,colour=as.factor(Folder))) +
+#   geom_point(data=labels_table, aes(x=Timestamp,y=LTreatment,alpha=0.5)) +
+#   geom_point(data=changepoints, aes(x=Timestamp,y=Treatment,colour="yellow")) +
+#   scale_x_datetime(
+#     breaks=seq(min(labels_table$Timestamp),max(labels_table$Timestamp), by="5 days"),
+#     date_labels = "%b %d", timezone="PST") +
+#   theme(axis.text.x=element_text(angle=60, hjust=1)) +
+#   facet_grid(rows = vars(LabelledSite)) +
+#   geom_vline(data = labels_table, aes(xintercept = Timestamp),alpha=0.3)
+# dev.off()
 ```
 
 ```{r}
@@ -310,24 +326,6 @@ ggplot() +
   geom_vline(data = labels_table, aes(xintercept = Timestamp),alpha=0.3)
 dev.off()
 ```
-
-### Now that we've found the interval start periods for all sites, we can make a date column that assigns them to the interval itself, referred to by its date.
-
-```{r}
-
-```
-
-
-
-
-
-
-
-
-
-
-
-
 
 ### Get min and max timestamp
 ```{r}
