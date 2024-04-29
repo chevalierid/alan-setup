@@ -20,10 +20,6 @@ labels_table$Timestamp <- with_tz(as.POSIXct(labels_table$Timestamp), "PST")
 setorder(labels_table,Timestamp)
 ```
 
-
-"Long Collection Date Site Treatment and Notes"
-
-
 ### Import status table (whether sites were collecting data over a given interval)
 ```{r}
 source("./prog/reshape.R")
@@ -52,22 +48,6 @@ labels_table[status_table, on = c("Timestamp","LabelledSite"), c("Status","Folde
   default = 1
   ), i.Folder, i.Site)]
 
-view(labels_table[Status==1])
-# labels_table[status_table, on = c("Timestamp","LabelledSite"), c("Status", "Folder", "Site") := list(fcase(
-#   i.Status %in% c("", "dep"), 1,
-#   default = 0 # FIXME add a case for NA folder and site
-#   ), i.Folder, i.Site)]
-
-
-# labels_table[status_table, on = c("Timestamp","LabelledSite"), c("Status", "Folder", "Site") := list(fcase(
-#   i.Status %in% c("", "dep") | is.na(i.Folder) | is.na(i.Site), 1,
-#   default = 0 # FIXME add a case for NA folder and site
-#   ), i.Folder, i.Site)]
-
-# labels_table[status_table, on = c("Timestamp","Site"), Status := fcase(
-#   i.Status %in% c("", "dep"), 1,
-#   default = 0
-#   )]
 head(labels_table)
 ```
 
@@ -225,8 +205,7 @@ big_table <- big_table[!is.na(Treatment)]
 ```
 
 ### For each labelled site and folder, retrieve actual site and state from labels_table
-This is harder than it first appears. We must find the time interval corresponding to each data table entry.
-We do this by finding transition points in treatment
+This is harder than it first appears. We first must find the time interval corresponding to each data table entry. The labels table contains each site's scheduled treatment for each 5-day interval and refers to each interval by its start date. In practice, the sites' states were changed on a regular schedule, but sometime during the day (slightly after the theoretical start date) rather than at midnight. We must make sure that all data corresponding to each interval is associated with that interval's start date. We first find points in time where treatment changed and create a new column for these timestamps (titled Changepoints).
 
 ```{r}
 ## get the timestamps at which treatment changes
@@ -238,31 +217,21 @@ setorder(big_table,LabelledSite,Timestamp)
 # here we get the row indices of every change point by site
 # have to manually handle firsts, both by folder and site
 
-# big_table[Treatment != shift(Treatment, 1L, type="lag") | Timestamp %in% big_table[!duplicated(big_table$LabelledSite)]$Timestamp, 
-#     StartDate := as.Date(Timestamp), by=.(LabelledSite,Folder)]
-# big_table[, StartDate := nafill(StartDate, type="locf")]
-# big_table
-
-# big_table[select rows where treatment != prev treatment OR timestamp is the first timestamp]
-# dim(big_table[Treatment != shift(Treatment, 1L, type="lag") | Timestamp %in% big_table[!duplicated(big_table[,c("LabelledSite","Folder"),with=F])]$Timestamp, , by=.(LabelledSite,Folder)],)
-
-
 big_table[Treatment != shift(Treatment, 1L, type="lag") | Timestamp %in% big_table[!duplicated(big_table[,c("LabelledSite","Folder"),with=F])]$Timestamp, Changepoint := Timestamp, by=.(LabelledSite,Folder)]
 
+```
+
+For each changepoint, we find the most recent start date in a new column, StartDate. Then we fill that column downward with NAs.
+```{r}
 # set each value of StartDate to the closest entry in unique(labels_table$Timestamp)
 maxless <- function(input, labels) {
-  #return(max(unique(as.numeric(labels))[unique(as.numeric(labels)) <= as.numeric(input)]))
-  return(as.Date(as.POSIXct(max(as.numeric(labels)[as.numeric(labels) <= as.numeric(input)]),origin="1970-01-01")))
+  return(as.POSIXct(max(as.numeric(labels)[as.numeric(labels) <= as.numeric(input)]),origin="1970-01-01"))
 }
+
 #view(big_table[, maxless(Changepoint, labels_table$Timestamp), by=1:nrow(big_table)])
-view(big_table[, StartDate := maxless(Changepoint, unique(labels_table$Timestamp)), by=1:nrow(big_table)])
+big_table[, StartDate := maxless(Changepoint, unique(labels_table$Timestamp)), by=1:nrow(big_table)]
 
 big_table[, StartDate := nafill(StartDate, type="locf")]
-
-# original changepoints (returns only 168 rows):
-# changepoints <- big_table[ , Timestamp[Treatment != shift(Treatment, 1L, type="lag") | Timestamp %in% big_table[!duplicated(big_table[,c("LabelledSite","Folder"),with=F])]$Timestamp], by=.(LabelledSite,Folder)]
-#colnames(changepoints) <- c("LabelledSite","Folder","Timestamp")
-#changepoints[big_table, on = c("LabelledSite","Folder","Timestamp"), Treatment := i.Treatment]
 ```
 
 Now we have a column stating the interval (identified by its first sampling day) for each observation. Let's properly assign site labels.
@@ -280,8 +249,21 @@ Now we have a column stating the interval (identified by its first sampling day)
 
 # dt_a[dt_b, on = .(b = y, c > z)]
 
-view(big_table[labels_table, on=.(StartDate = Timestamp, Folder = Folder, LabelledSite = LabelledSite),
-          Site := i.Site])
+# labels_table[status_table, on = c("Timestamp","LabelledSite"), c("Status","Folder","Site") := list(fcase(
+#   !(i.Status %in% c("", "dep")) | is.na(i.Folder) | is.na(i.Site), 0,
+#   default = 1
+#   ), i.Folder, i.Site)]
+
+# view(big_table[labels_table, on=.(StartDate = Timestamp, Folder = Folder, LabelledSite = LabelledSite),
+#           i.Site])
+labels_table [, StartDate := as.Date(Timestamp),]
+labels_table[, c("Timestamp","LTreatment") := NULL,]
+big_table[, StartDate := as.Date(StartDate),]
+
+#joined_table <- na.omit(labels_table[, !c("Timestamp","LTreatment", with = FALSE)])[big_table, on=.(StartDate, Folder, LabelledSite)]
+joined_table <- na.omit(labels_table)[big_table, on=.(StartDate, Folder, LabelledSite)]
+
+joined_table[, Changepoint := NULL,]
 
 
 ```
@@ -310,6 +292,21 @@ view(big_table[labels_table, on=.(StartDate = Timestamp, Folder = Folder, Labell
 #   facet_grid(rows = vars(LabelledSite)) +
 #   geom_vline(data = labels_table, aes(xintercept = Timestamp),alpha=0.3)
 # dev.off()
+```
+
+```{r}
+pdf("startdates.pdf", w=16, h=9)
+ggplot() +
+  # plot changepoint against startdate
+  geom_point(data=big_table, aes(x=as.Date(Changepoint),y=Treatment,colour=as.factor(StartDate))) +
+  geom_point(data=big_table, aes(x=StartDate,y=Treatment,colour=as.factor(StartDate))) +
+  # scale_x_date(
+  #   date_breaks=seq(min(big_table$StartDate),max(big_table$StartDate), by="5 days"),
+  #   date_labels = "%b %d") +
+  theme(axis.text.x=element_text(angle=60, hjust=1)) +
+  facet_grid(rows = vars(LabelledSite))
+  # geom_vline(data = labels_table, aes(xintercept = Timestamp),alpha=0.3)
+dev.off()
 ```
 
 ```{r}
@@ -351,36 +348,19 @@ big_table[Override==1]
 ```
 Just 5...
 
-
-### Fixing specific problems
-The files in site01 folder that are labelled site 3 are mislabelled--should be labelled 1. 
-"Master table" notes:
-* how can we add folder information to the master table? ("folder: site01; labelled site: 3; actual site: 1")
-* seems excessive to have a 12x12 table where this is the only really useful piece of information
-* leave as-is for now but let's slap a #FIXME on there
-
-# FIXME put this in metadata table
-# FIXME add variable for interval ID
+Look at min difference between observations in a given interval to determine whether multiple sets accidentally collected under same labels.
 ```{r}
-#big_table[, lapply(.SD, get_min_diff), by=Site, .SDcols = "Timestamp"]
-#id_table <- unique(rbindlist(big_table,idcol="Folder"))
-
-get_min_diff <- function(data) {
-  return(min(abs(diff(as.numeric(data,origin="1970-01-01"))),na.rm=TRUE))
-}
-
-min_diffs <- big_table[, lapply(.SD, get_min_diff), by=.(Site,Folder), .SDcols = "Timestamp"]
-min_diffs
-
-dcast(min_diffs, Site ~ Folder, value.var = "Timestamp")
-
-pdf("overlap.pdf", w=16, h=9)
-ggplot() +
-  geom_point(data=big_table, aes(x=Timestamp,y=Treatment,colour=as.factor(Site))) +
-  geom_point(data=labels_table, aes(x=Timestamp,y=LTreatment),colour="orange") +
-  facet_grid(rows = vars(Folder))
-dev.off()
-#raw_output[[1]] <- as.data.frame(as.data.table(raw_output[[1]])[Site==3, Site := 1])
+# #big_table[, lapply(.SD, get_min_diff), by=Site, .SDcols = "Timestamp"]
+# #id_table <- unique(rbindlist(big_table,idcol="Folder"))
+# 
+# get_min_diff <- function(data) {
+#   return(min(abs(diff(as.numeric(data,origin="1970-01-01"))),na.rm=TRUE))
+# }
+# 
+# min_diffs <- big_table[, lapply(.SD, get_min_diff), by=.(Site,Folder), .SDcols = "Timestamp"]
+# min_diffs
+# 
+# dcast(min_diffs, Site ~ Folder, value.var = "Timestamp")
 ```
 
 ## Compare with official states
@@ -409,24 +389,10 @@ We want to catch cases where files were saved with the wrong Site.
 
 ```{r}
 # ggplot() +
-#   geom_point(data=big_table, aes(x=Timestamp,y=Treatment,colour=Site)) +
-#   geom_point(data=labels_table, aes(x=Timestamp,y=LTreatment),colour="orange") +
-#   facet_grid(rows = vars(Site))
-
-# ggplot() +
 #   geom_point(data=big_table, aes(x=Timestamp,y=Treatment),colour="orange") +
 #   geom_point(data=labels_table, aes(x=Timestamp,y=LTreatment,colour=as.factor(Status))) +
 #   facet_grid(rows = vars(Site))
 
-pdf("overlap.pdf", w=16, h=3)
-ggplot() +
-  geom_point(data=big_table[Folder == 12], aes(x=Timestamp,y=Treatment,colour=as.factor(Site))) +
-  geom_point(data=labels_table[Site == 12], aes(x=Timestamp,y=LTreatment,colour=as.factor(Status)))+
-  scale_x_datetime(
-    breaks=seq(min(labels_table$Timestamp),max(labels_table$Timestamp), by="5 days"),
-    date_labels = "%b %d", timezone="PST") +
-  theme(axis.text.x=element_text(angle=60, hjust=1))
-dev.off()
 
 pdf("overlap.pdf", w=16, h=9)
 ggplot() +
@@ -439,24 +405,15 @@ ggplot() +
   facet_grid(rows = vars(Site)) +
   geom_vline(data = labels_table, aes(xintercept = Timestamp),alpha=0.3)
 dev.off()
-
-
-
 ```
 
-Checking minimum time difference between observations for a given site (e.g. determine whether a given dataset has been mislabelled as a different dataset):
+Repeated from above but slightly different (FIXME). Checking minimum time difference between observations for a given site (e.g. determine whether a given dataset has been mislabelled as a different dataset):
 ```{r}
 get_min_diff <- function(data) {
   return(min(abs(diff(as.numeric(data,origin="1970-01-01")))))
 }
-# site3_diffs <- data.table(diffs = abs(diff(big_table[Site==3]$Timestamp)))
-# site4_diffs <- data.table(diffs = abs(diff(big_table[Site==4]$Timestamp)))
-# site3_diffs[,.N,by=diffs][order(diffs)]
-# site4_diffs[,.N,by=diffs][order(diffs)]
-#min(abs(diff(as.numeric(big_table[Site==5]$Timestamp),origin="1970-01-01")))/60
 big_table[, lapply(.SD, get_min_diff), by=Site, .SDcols = "Timestamp"]
 ```
-
 
 ### learn more about unsorted time series
 ```{r}
@@ -471,13 +428,51 @@ diag_table <- data.table(
 setorder(diag_table,cols="site")
 diag_table
 ```
+
 ### Interpolate
+
 ```{r}
-approx_x <- function(subdata, x_inter_arg) {
-  # returns x and y
-  return(na.omit(as.data.table(approx(x = subdata$Timestamp, y = subdata$AS05,
-                              xout = x_inter_arg, method = "linear"))))
-}
+# change to:
+# subdata_x = joined_table$Timestamp
+# subdata_y = columns in range of columns (since we will be using lapply here)
+# approx_x <- function(subdata_y, subdata_x, x_inter_arg) {
+#   # subdata_y = multiple columns of data????
+#   return(na.omit(as.data.table(approx(x = subdata_x, y = subdata_y, xout = x_inter_arg, method = "linear")))$y)
+# }
+
+data_cols <- c(paste("AS", c(1:9), sep="0"), "AS10", "AS11", "Intensity")
+
+interp_table <- joined_table[Site %in% 1:12, lapply(.SD, function(col) approx(x = Timestamp, y = col, xout = x_inter)$y), by=Site, .SDcols = data_cols]
+interp_table[, Timestamp := as.POSIXct(x_inter,origin="1970-01-01"), by=Site]
+interp_table[, Treatment := joined_table[interp_table, x.Treatment, on=.(Site, Timestamp), roll = "nearest"]]
+interp_table[, StartDate := joined_table[interp_table, x.StartDate, on=.(Site, Timestamp), roll = "nearest"]]
+interp_table[, LightOn := joined_table[interp_table, x.On, on=.(Site, Timestamp), roll = "nearest"]]
+interp_table
+
+
+
+pdf("interp.pdf", w=16, h=9)
+ggplot(data=interp_table[Site == 6 & LightOn == 1 & Timestamp %between% c(as.POSIXct("2023-07-01"), as.POSIXct("2023-08-01"))]) +
+  geom_point(aes(x=Timestamp,y=Intensity,colour=as.factor(Treatment))) +
+  geom_point(aes(x=Timestamp,y=AS03),colour="blue") +
+  geom_point(aes(x=Timestamp,y=AS06),colour="orange")
+dev.off()
+
+pdf("interp.pdf", w=16, h=9)
+ggplot(data=interp_table[Site == 6 & LightOn == 1 & Timestamp %between% c(as.POSIXct("2023-07-01"), as.POSIXct("2023-08-01"))]) +
+  geom_point(aes(x=Timestamp,y=Intensity),colour="black") +
+  scale_y_log10()
+dev.off()
+
+#                         from labels_table
+#labels_table[ big_table, x.LTreatment, on = .(Site, Timestamp), roll = Inf ]
+#big_table[, LTreatment := labels_table[ big_table, x.LTreatment, on = .(Site, Timestamp), roll = Inf ] ]
+#dim(big_table[Treatment==LTreatment])
+#dim(big_table[Treatment != LTreatment])
+
+fwrite(labels_table)
+fwrite(interp_table, file = "prog/interpolated_data.csv")
+getwd()
 ```
 
 ```{r}

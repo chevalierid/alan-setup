@@ -1,0 +1,138 @@
+---
+title: "collate_sensor_data"
+output: html_document
+date: "2024-04-24"
+---
+
+The purpose of this script is to generate a raw metadata and a raw data file. The raw metadata file combines information about the prescribed site treatments for each interval and the actual status of each site for each interval. The raw data file combines all the raw sensor data into a single table.
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(data.table)
+library(lubridate)
+library(remedy)
+library(ggplot2)
+```
+
+### Import labels table (prescribed states)
+```{r}
+source("site_assign_label_gen.R")
+metadata <- melt(setDT(labels), measure = patterns(c("^dates_out","^sites","^site_settings")),
+     value.name = c("Timestamp", "LabelledSite", "PrescribedTreatment"))
+metadata <- metadata[,.SD,
+             .SDcols = c("Timestamp", "LabelledSite", "PrescribedTreatment")]
+metadata$Timestamp <- with_tz(as.POSIXct(metadata$Timestamp), "PST")
+setorder(metadata,Timestamp)
+```
+
+### Import status table (whether sites were collecting data over a given interval)
+```{r}
+source("reshape.R")
+str(status_table)
+str(metadata)
+summary(status_table)
+
+# trim metadata
+metadata <- metadata[Timestamp <= max(status_table$Timestamp)]
+
+# add a column to metadata that indicates the actual status of given site at given interval
+# retrieve status_table$Status by matching metadata$Timestamp to status_table$Timestamp and metadata$Site to status_table$Site
+
+metadata[status_table, on = c("Timestamp","LabelledSite"), c("Status","Folder","Site") := list(fcase(
+  !(i.Status %in% c("", "dep")) | is.na(i.Folder) | is.na(i.Site), 0,
+  default = 1
+  ), i.Folder, i.Site)]
+
+head(metadata)
+
+
+ggplot() +
+  geom_point(data=metadata, aes(x=as.Date(Timestamp),y=PrescribedTreatment,colour=as.factor(PrescribedTreatment))) +
+  facet_grid(rows = vars(Site))
+  # geom_vline(data = labels_table, aes(xintercept = Timestamp),alpha=0.3)
+```
+
+### Downloading sensor data
+* s3cmd la
+* s3cmd get --recursive s3://alan-stations-sensordata/
+* stored in ../raw_data/sensordata
+
+### Set up timeframe bounds
+We want to bound the time frame within study period (hardcoded in here) to only download files that are from the correct timespan. Recall the format string is month.day.hour.
+```{r}
+start_date <- as.POSIXct("23.06.21.00",format="%y.%m.%d.%H")
+end_date <- as.POSIXct("23.12.04.23",format="%y.%m.%d.%H")
+all_dates <- seq.POSIXt(start_date, end_date, "hour")
+
+all_dates <- format(all_dates,"%m-%d-%H")
+```
+
+### Format file names as dates
+We need to remove the ".CSV" termination and convert the remaining string to a POSIXct (date-time) format. Malfunctioning clocks resulted in some data saved under impossible dates, e.g. 85-9-18, so we want to remove those as well.
+
+```{r}
+reform <- function (site_files_arg) {
+  site_files_arg <- gsub(".CSV|\"","",site_files_arg)
+  site_files_arg <- gsub("^","23-",site_files_arg)
+  site_files_arg <- as.POSIXct(site_files_arg,format="%y-%m-%d-%H")
+  format(site_files_arg,"%m-%d-%H")
+}
+```
+
+### Get all site paths
+```{r}
+sites <- list.files(path="../raw_data/sensordata", full.names = TRUE)
+header <- c("Timestamp", "LabelledSite", "Amber", "White", "On", "Override", "Intensity",
+               "AS00", "AS01", "AS02", "AS03", "AS04", "AS05", "AS06", "AS07", "AS08",
+               "AS09", "AS10", "AS11")
+```
+
+### Reading in files
+For a given site path, we want to read in and rbind together all non-blank files whose names fall within our timeframe. Some files have headers while others don't, so we always set the file header manually.
+```{r}
+get_files <- function(site) {
+  files_within_bounds <- list.files(site)[reform(list.files(site)) %in% all_dates]
+  # exclude blank files
+  files_within_bounds <- files_within_bounds[file.size(paste(site,"/",files_within_bounds,sep=""))>0]
+  site_table <- do.call(rbind,lapply(files_within_bounds,function(file) {
+    data <- read.csv(paste(site,"/",file,sep=""))
+    names(data) <- header
+    return(data)
+  }))
+}
+```
+
+### Read in data from all sites
+```{r}
+raw_output <- lapply(sites,get_files)
+```
+
+Now we have a list of dataframes. Some have char columns only, other have int and num. We'll have to convert them all before combining into a master table.
+
+### Convert timestamp column to POSIXct
+This has the added bonus of removing rogue "header rows" since their timestamp (which just reads "Timestamp") is converted to NA and excluded from the subset.
+
+```{r}
+raw_output <- lapply(raw_output, function(df) {
+  df$Timestamp <- with_tz(as.POSIXct(as.numeric(df$Timestamp), origin = "1970-01-01"), "PST")
+  df <- subset(df, Timestamp > start_date & Timestamp < end_date)
+})
+```
+
+### Merge into a single data.table
+Take unique values since some files were duplicated
+```{r}
+raw_output <- unique(rbindlist(raw_output,idcol="Folder"))
+```
+
+### Write the metadata and data tables to CSVs
+```{r}
+fwrite(raw_output,"../raw_data/raw_sensor_data_collated.csv")
+
+setnames(metadata, "Timestamp", "StartDate")
+fwrite(metadata, "../raw_data/raw_sensor_metadata_collated.csv")
+```
