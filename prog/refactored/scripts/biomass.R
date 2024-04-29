@@ -24,11 +24,10 @@ ggplot(biomass, aes(Treatment, Index)) +
   geom_hline(aes(yintercept = 0.5),colour="red",linetype="dotted")
 
 
-
-
-dcast(foo,group+num_users~times,value.var=c("action_rate","action_rate_c95"))
-
-
+wilcoxon_biomass <- data.frame(W = wilcox.test(biomass[Treatment == ("W"),Index], biomass[Treatment == ("C"),Index], 
+            alternative = "two.sided", exact = FALSE)$p.value,
+            A = wilcox.test(biomass[Treatment == ("A"),Index], biomass[Treatment == ("C"),Index], 
+            alternative = "two.sided", exact = FALSE)$p.value)
 
 
 
