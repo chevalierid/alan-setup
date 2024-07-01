@@ -10,6 +10,7 @@ The purpose of this file is to clean the sensor data and interpolate it so that 
 library(data.table)
 library(lubridate)
 library(remedy)
+library(ggplot2)
 ```
 
 ## Read in our collated data
@@ -81,26 +82,24 @@ setorder(sensor_data,LabelledSite,Timestamp)
 sensor_data[Treatment != shift(Treatment, 1L, type="lag") | 
             Timestamp %in% sensor_data[!duplicated(sensor_data[,c("LabelledSite","Folder"),with=F])]$Timestamp, 
             Changepoint := Timestamp, by=.(LabelledSite,Folder)]
-
+  
 # have to manually handle when it's been too long since a changepoint (to capture times where there was a long gap in data collection), by folder and site
 
 ```
 
 ```{r}
-pdf("../plots/changepoints.pdf", w=16, h=9)
+pdf("../plots/changepoints_before.pdf", w=16, h=9)
 ggplot() +
   geom_point(data=sensor_data, aes(x=Timestamp,y=Treatment,colour=as.factor(Folder),alpha=0.5)) +
   geom_point(data=metadata, aes(x=StartDate,y=PrescribedTreatment,alpha=0.5)) +
   geom_point(data=sensor_data, aes(x=Changepoint,y=Treatment,colour="red")) +
   scale_x_datetime(
-    breaks=seq(min(metadata$StartDate),max(metadata$StartDate), by="5 days"),
+    breaks=seq(min(as.POSIXct(metadata$StartDate,origin="1970-01-01", tz="PST")),max(as.POSIXct(metadata$StartDate,origin="1970-01-01", tz="PST")), by="5 days"),
     date_labels = "%b %d", timezone="PST") +
   theme(axis.text.x=element_text(angle=60, hjust=1)) +
   facet_grid(rows = vars(LabelledSite)) +
   geom_vline(data = metadata, aes(xintercept = StartDate),alpha=0.3)
 dev.off()
-
-
 
 pdf("../plots/changepoints2.pdf", w=16, h=9)
 ggplot() +
@@ -112,9 +111,89 @@ ggplot() +
   #facet_grid(rows = vars(LabelledSite)) +
   geom_vline(data = metadata, aes(xintercept = StartDate),alpha=0.3)
 dev.off()
+
+find_data <- sensor_data[LabelledSite == 5 & Timestamp < as.POSIXct("2023-07-31", origin = "1970-01-01")]
+find_metadata <- metadata[Site == 5 & StartDate < as.Date("2023-07-31", origin = "19")]
+pdf("../plots/changepoints-find.pdf", w=16, h=3)
+ggplot() +
+  geom_point(data=find_data, aes(x=Timestamp,y=Treatment,colour=as.factor(Folder),alpha=0.5)) +
+  geom_point(data=find_metadata, aes(x=StartDate,y=PrescribedTreatment,alpha=0.5)) +
+  geom_point(data=find_data, aes(x=Changepoint,y=Treatment,colour="red")) +
+  scale_x_datetime(
+    breaks=seq(min(find_metadata$StartDate),max(find_metadata$StartDate), by="12 hours"),
+    date_labels = "%d %H", timezone="PST") +
+  theme(axis.text.x=element_text(angle=60, hjust=1)) +
+  facet_grid(rows = vars(LabelledSite)) +
+  geom_vline(data = find_metadata, aes(xintercept = StartDate),alpha=0.3)
+dev.off()
+
+
+find_data <- sensor_data[LabelledSite == 10
+                         & Timestamp > as.POSIXct("2023-10-18", origin = "1970-01-01")
+                         & Timestamp < as.POSIXct("2023-10-25", origin = "1970-01-01")]
+# find_metadata <- metadata[Site == 10 
+#                           & StartDate > as.Date("2023-10-18", origin = "1970-01-01")
+#                           & StartDate < as.Date("2023-10-25", origin = "1970-01-01")]
+
+find_data <- sensor_data[LabelledSite %in% c(10), Timestamp := Timestamp - hours(8)]
+find_data <- find_data[LabelledSite %in% c(6), Timestamp := Timestamp - hours(7)]
+find_data <- sensor_data[Timestamp > as.POSIXct("2023-10-28 09:52:11", origin = "1970-01-01", tz = "PST")
+                         & Timestamp < as.POSIXct("2023-11-12 10:30:24", origin = "1970-01-01", tz = "PST")]
+# find_metadata <- metadata[StartDate > as.Date("2023-10-18", origin = "1970-01-01")
+#                           & StartDate < as.Date("2023-10-25", origin = "1970-01-01")]
+
+# find_data <- sensor_data[Timestamp > as.POSIXct("2023-10-28 12:17:28", origin = "1970-01-01", tz = "PST")
+#                          & Timestamp < as.POSIXct("2023-10-30 17:54:13", origin = "1970-01-01", tz = "PST")]
+find_data <- sensor_data[LabelledSite == 12 & Timestamp > as.POSIXct("2023-10-28 09:52:11", origin = "1970-01-01", tz = "PST")
+                                            & Timestamp < as.POSIXct("2023-11-12 10:30:24", origin = "1970-01-01", tz = "PST")]
+pdf("../plots/changepoints-12.pdf", w=16, h=3)
+ggplot() +
+  geom_point(data=find_data, aes(x=Timestamp,y=Treatment,colour=as.factor(LabelledSite),alpha=0.5)) +
+  #geom_point(data=find_data, aes(x=Changepoint,y=1,colour="red")) +
+  scale_x_datetime(
+    breaks=seq(min(find_data$Timestamp),max(find_data$Timestamp), by="12 hours"),
+    date_labels = "%d %H", timezone="PST") +
+  theme(axis.text.x=element_text(angle=60, hjust=1)) +
+  facet_grid(rows = vars(Folder)) +
+  geom_vline(data = find_metadata, aes(xintercept = StartDate),alpha=0.3)
+dev.off()
+
+find_data <- sensor_data[Timestamp > as.POSIXct("2023-07-26 09:52:11", origin = "1970-01-01", tz = "PST")
+                                            & Timestamp < as.POSIXct("2023-08-26 10:30:24", origin = "1970-01-01", tz = "PST")]
+pdf("../plots/changepoints-2.pdf", w=16, h=16)
+ggplot() +
+  geom_point(data=find_data, aes(x=Timestamp,y=AS04,colour=as.factor(LabelledSite),alpha=0.5)) +
+  geom_line(data=find_data, aes(x=Timestamp,y=Intensity,colour=as.factor(LabelledSite),alpha=0.5)) +
+  #geom_point(data=find_data, aes(x=Changepoint,y=1,colour="red")) +
+  scale_x_datetime(
+    breaks=seq(min(as.POSIXct("2023-06-26 12:00:00", origin = "1970-01-01", tz = "PST")),
+               max(as.POSIXct("2023-12-03 12:00:00", origin = "1970-01-01", tz = "PST")),
+               by="24 hour"),
+    date_labels = "%d %H", timezone="PST") +
+  theme(axis.text.x=element_text(angle=60, hjust=1)) +
+  facet_grid(rows = vars(LabelledSite)) +
+  geom_vline(data = find_metadata, aes(xintercept = StartDate),alpha=0.3)
+dev.off()
+
+
 ```
 
-For each changepoint, we find the most recent start date in a new column, StartDate. Then we fill that column downward with NAs.
+We add manual changepoints for exceptional cases. We also add a special treatment symbol because some had a wiggly cable and had a lot of NA treatment values.
+```{r}
+# match based on LabelledSite, Folder, and Timestamp
+manual_changepoints <- fread("../raw_data/Collection Date Site Treatment and Notes(Manual).csv")
+manual_changepoints[, `:=` (Timestamp = gsub("\xa0"," ",Timestamp), LastPoint = gsub("\xa0"," ",LastPoint))]
+manual_changepoints[, `:=` (Timestamp = as.POSIXct(Timestamp, origin = "1970-01-01", tz="UTC"),
+                      LastPoint = as.POSIXct(LastPoint, origin = "1970-01-01", tz="UTC"))]
+manual_changepoints[, Treatment := gsub("$","*",Treatment)]
+sensor_data[Changepoint %in% manual_changepoints$Timestamp]
+
+# match row in sensor_data to row in manual_changepoints
+sensor_data[manual_changepoints, `:=` (Changepoint = i.Timestamp, Treatment = i.Treatment), on = .(Folder,LabelledSite,Timestamp)]
+sensor_data[Changepoint %in% manual_changepoints$Timestamp]
+```
+
+For each changepoint, we find the most recent start date in a new column, StartDate. 
 ```{r}
 # set each value of StartDate to the closest entry in unique(metadata$StartDate)
 maxless <- function(input, labels) {
@@ -125,14 +204,58 @@ maxless <- function(input, labels) {
 #unique(metadata$StartDate)[1] < unique(metadata$StartDate)[2]
 #as.POSIXct(max(as.numeric(labels)[as.numeric(labels) <= as.numeric(input)]),origin="1970-01-01")
 
-
 sensor_data[, StartDate := maxless(Changepoint, unique(metadata$StartDate)), by=1:nrow(sensor_data)]
 #sensor_data[, Changepoint := ifelse(as.numeric(Changepoint) - as.numeric(Timestamp))]
+```
+
+
+
+Then we fill that column downward with NAs.
+```{r}
 sensor_data[, StartDate := nafill(StartDate, type="locf")]
+## select combination of folder + labelledsite + startdate where sensor_data[grep("*",Treatment)]
+
+sensor_data[sensor_data[,.SD[which(Treatment %in% c("A*","W*","C*"))]],
+            on=.(Folder,LabelledSite,StartDate)]
+
+sensor_data[sensor_data[,.SD[which(Treatment %in% c("A*","W*","C*"))]],
+            on=.(Folder,LabelledSite,StartDate),
+            Treatment := Treatment[nafill(replace(.I, is.na(Treatment), NA),"locf")]]
+
+sensor_data[sensor_data[,.SD[which(Treatment %in% c("A*","W*","C*"))]],
+            on=.(Folder,LabelledSite,StartDate),
+            Treatment := gsub("*","",Treatment,fixed=TRUE)]
+
+sensor_data[LabelledSite == 5
+                         & Timestamp > as.POSIXct("2023-06-26", origin = "1970-01-01")
+                         & Timestamp < as.POSIXct("2023-07-26", origin = "1970-01-01")]
+```
+
+
+```{r}
+pdf("../plots/changepoints_after.pdf", w=16, h=9)
+ggplot() +
+  geom_point(data=sensor_data, aes(x=Timestamp,y=Treatment,colour=as.factor(Folder),alpha=0.5)) +
+  geom_point(data=metadata, aes(x=StartDate,y=PrescribedTreatment,alpha=0.5)) +
+  geom_point(data=sensor_data, aes(x=Changepoint,y=Treatment,colour="red")) +
+  scale_x_datetime(
+    breaks=seq(min(as.POSIXct(metadata$StartDate,origin="1970-01-01", tz="PST")),max(as.POSIXct(metadata$StartDate,origin="1970-01-01", tz="PST")), by="5 days"),
+    date_labels = "%b %d", timezone="PST") +
+  theme(axis.text.x=element_text(angle=60, hjust=1)) +
+  facet_grid(rows = vars(LabelledSite)) +
+  geom_vline(data = metadata, aes(xintercept = StartDate),alpha=0.3)
+dev.off()
 ```
 
 Now we have a column stating the interval (identified by its first sampling day) for each observation. Let's properly assign site labels.
 ```{r}
+#fread("../raw_data/Collection Date Site Treatment and Notes(LongFormat).csv")
+source("reshape.R")
+str(status_table)
+str(metadata)
+summary(status_table)
+
+
 # metadata$Timestamp    & sensor_data$StartDate
 # metadata$Folder       & sensor_data$Folder
 # metadata$LabelledSite & sensor_data$LabelledSite
@@ -148,9 +271,12 @@ metadata[, StartDate := as.Date(StartDate),]
 #    long           short           long
 #joined_table <- na.omit(metadata)[sensor_data, on=.(StartDate, Folder, LabelledSite)]
 
+joined_table
+
 joined_table <- metadata[sensor_data, on=.(StartDate, Folder, LabelledSite)][!is.na(Site)]
 
-joined_table[, Changepoint := NULL,]
+
+#joined_table[, Changepoint := NULL,]
 
 unique(joined_table[Site == 7]$StartDate)
 
@@ -176,13 +302,29 @@ ggplot() +
   geom_point(data=na.omit(metadata), aes(x=as.Date(StartDate),y=Treatment,colour=as.factor(Treatment))) +
   facet_grid(rows = vars(Site))
 dev.off()
-
 ```
 
 ### Get min and max timestamp
 ```{r}
 x_min <- min(sensor_data$Timestamp)
 x_max <- max(sensor_data$Timestamp)
+```
+
+## Plot before interpolation
+```{r}
+pdf("../plots/changepoints_final.pdf", w=16, h=9)
+ggplot() +
+  geom_point(data=joined_table, aes(x=Timestamp,y=Treatment,colour=as.factor(Folder),alpha=0.5)) +
+  geom_point(data=metadata, aes(x=as.POSIXct(StartDate),y=PrescribedTreatment,alpha=0.5)) +
+  #geom_point(data=joined_table, aes(x=Changepoint,y=Treatment,colour="red")) +
+  scale_x_datetime(
+    breaks=seq(min(as.POSIXct(metadata$StartDate,origin="1970-01-01", tz="PST")),
+               max(as.POSIXct(metadata$StartDate,origin="1970-01-01", tz="PST")), by="5 days"),
+    date_labels = "%b %d", timezone="PST") +
+  theme(axis.text.x=element_text(angle=60, hjust=1)) +
+  facet_grid(rows = vars(Site)) +
+  geom_vline(data = metadata, aes(xintercept = as.POSIXct(StartDate)),alpha=0.3)
+dev.off()
 ```
 
 ### Create new x
@@ -192,6 +334,8 @@ x_inter <- seq(floor(as.numeric(x_min)/300)*300,
     ceiling(as.numeric(x_max)/300)*300,
     by=300)
 ```
+
+
 
 ### Interpolate
 ```{r}
@@ -205,10 +349,13 @@ interp_table[, LightOn := joined_table[interp_table, x.On, on=.(Site, Timestamp)
 interp_table
 
 pdf("../plots/interp.pdf", w=16, h=9)
-ggplot(data=interp_table[Site == 6 & LightOn == 1 & Timestamp %between% c(as.POSIXct("2023-07-01"), as.POSIXct("2023-08-01"))]) +
-  geom_point(aes(x=Timestamp,y=Intensity,colour=as.factor(Treatment))) +
-  geom_point(aes(x=Timestamp,y=AS03),colour="blue") +
-  geom_point(aes(x=Timestamp,y=AS06),colour="orange")
+ggplot(data=interp_table[Site == 6 & LightOn == 1 & Timestamp %between% c(as.POSIXct("2023-07-05"), as.POSIXct("2023-08-01"))]) +
+  geom_point(aes(x=Timestamp,y=Intensity)) +
+  #geom_point(aes(x=Timestamp,y=AS03),colour="blue") +
+  #geom_point(aes(x=Timestamp,y=AS05),colour="green") +
+  #geom_point(aes(x=Timestamp,y=AS06),colour="orange")+
+  theme(text = element_text(size=rel(3.5))) +
+  labs(y = "Intensity")
 dev.off()
 
 fwrite(metadata, file="../cleaned_data/metadata.csv")
