@@ -1,14 +1,13 @@
 library(data.table)
-filename <- "../raw_data/Collection Date Site Treatment and Notes(LongFormat).csv"
-status_data <- fread(file=filename)
-
-#format_master <- function(filename) {
+#filename <- "../raw_data/Collection Date Site Treatment and Notes(LongFormat).csv"
+#status_data <- fread(file=filename)
+format_master <- function(filename) {
   #data <- read.csv(filename)
   #data <- na.omit(data)
-status_data[, V6 := NULL]
-status_data[, StartDate := as.Date(StartDate, format="%Y-%m-%d", origin = "1970-01-01",tz="PST")]
-status_data
-  # # data$Folder <- as.numeric(data$Folder)
+  status_arg <- fread(file=filename)
+  status_arg[, V6 := NULL]
+  status_arg[, StartDate := as.Date(StartDate, format="%Y-%m-%d", origin = "1970-01-01",tz="PST")]
+# # data$Folder <- as.numeric(data$Folder)
   # # data$Site <- as.numeric(data$Site)
   # 
   # 
@@ -24,7 +23,8 @@ status_data
   # colnames(data) <- c("Timestamp","LabelledSite","Status","Folder","Site")
   # rownames(data) <- NULL
   # return(data)
-#}
+  return(status_arg)
+}
 
 # # tdata <- read.csv("./prog/Collection Date Site Treatment and Notes.csv")
 # # tdata$Timestamp <- as.POSIXct(tdata$Timestamp, format="%d-%m-%Y", origin = "1970-01-01",tz="PDT")

@@ -22,36 +22,35 @@ library(ggplot2)
 ```{r}
 source("site_assign_label_gen.R")
 metadata <- melt(setDT(labels), measure = patterns(c("^dates_out","^sites","^site_settings")),
-     value.name = c("Timestamp", "LabelledSite", "PrescribedTreatment"))
+     value.name = c("StartDate", "Site", "PrescribedTreatment"))
 metadata <- metadata[,.SD,
-             .SDcols = c("Timestamp", "LabelledSite", "PrescribedTreatment")]
-metadata$Timestamp <- with_tz(as.POSIXct(metadata$Timestamp), "PST")
-setorder(metadata,Timestamp)
+             .SDcols = c("StartDate", "Site", "PrescribedTreatment")]
+metadata[, StartDate := as.Date(StartDate, format="%Y-%m-%d", origin = "1970-01-01",tz="PST"),]
+#metadata$StartDate <- with_tz(as.POSIXct(metadata$StartDate), "PST")
+setorder(metadata,StartDate)
 ```
 
 ### Import status table (whether sites were collecting data over a given interval)
 ```{r}
-source("reshape.R")
-str(status_table)
-str(metadata)
-summary(status_table)
+source("./reshape.R")
+status_table <- format_master("../raw_data/Collection Date Site Treatment and Notes(LongFormat).csv")
+status_table
 
 # trim metadata
-metadata <- metadata[Timestamp <= max(status_table$Timestamp)]
+metadata <- metadata[StartDate <= max(as.POSIXct(status_table$StartDate,origin="1970-01-01",tz="PST"))]
+
+# add folder and label columns to metadata
+metadata <- metadata[status_table, `:=` (Folder = i.Folder , LabelledSite = i.Label), on = .(StartDate,Site)]
 
 # add a column to metadata that indicates the actual status of given site at given interval
 # retrieve status_table$Status by matching metadata$Timestamp to status_table$Timestamp and metadata$Site to status_table$Site
-
-metadata[status_table, on = c("Timestamp","LabelledSite"), c("Status","Folder","Site") := list(fcase(
-  !(i.Status %in% c("", "dep")) | is.na(i.Folder) | is.na(i.Site), 0,
-  default = 1
-  ), i.Folder, i.Site)]
-
-head(metadata)
-
+# metadata[status_table, on = c("Timestamp","Site"), c("Status","Folder","Site") := list(fcase(
+#   !(i.Status %in% c("", "dep")) | is.na(i.Folder) | is.na(i.Site), 0,
+#   default = 1
+#   ), i.Folder, i.Site)]
 
 ggplot() +
-  geom_point(data=metadata, aes(x=as.Date(Timestamp),y=PrescribedTreatment,colour=as.factor(PrescribedTreatment))) +
+  geom_point(data=metadata, aes(x=StartDate,y=PrescribedTreatment,colour=as.factor(PrescribedTreatment))) +
   facet_grid(rows = vars(Site))
   # geom_vline(data = labels_table, aes(xintercept = Timestamp),alpha=0.3)
 ```
@@ -132,7 +131,5 @@ raw_output <- unique(rbindlist(raw_output,idcol="Folder"))
 ### Write the metadata and data tables to CSVs
 ```{r}
 fwrite(raw_output,"../raw_data/raw_sensor_data_collated.csv")
-
-setnames(metadata, "Timestamp", "StartDate")
 fwrite(metadata, "../raw_data/raw_sensor_metadata_collated.csv")
 ```
